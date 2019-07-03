@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+<div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <a class="hiddenanchor" id="email_send"></a>
+
+    <div class="container" style="margin-top: 0px">
+        <div class="page-header" align="center">
+            <h1>Portal Laboral Corporacion PJ</h1>
+        </div>
+        <div align="center">
+            <img src="~/images/pj.png" alt="" style="width: 75px; height:75px;">
+        </div>
+    </div>
+    <div class="login_wrapper" style="margin-top: 0px;">
+        <!--Formulario de acceso al Sistema-->
+        <div class="animate form login_form">
+            <section class="login_content">
+
+                <form>
+                    <h1>Acceso</h1>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Email" required="" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                    </div>
+                    <div>
+                        <a class="btn btn-default submit" href="index.html">INICIAR SESION</a>
+                        <a class="reset_pass change_link" href="#email_send">Olvido su contraseña?</a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <p class="change_link">
+                            No esta Registrado?
+                            <a href="#signup" class="to_register"> REGISTRESE AQUI! </a>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+                            <p>©@DateTime.Now.Year Corporacion PJ</p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+        <!--Formulario de registro de Usuario-->
+        <div id="register" class="animate form registration_form">
+            <section class="login_content">
+                <form>
+                    <h1>Registro</h1>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Nombre" required="" />
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Apellido" required="" />
+                    </div>
+                    <div>
+                        <input type="email" class="form-control" placeholder="Email" required="" />
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="DNI" required="" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                    </div>
+                    <div>
+                        <h6>Al hacer clic en REGISTRAR, aceptas las <a href="">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</h6>
+                    </div>
+                    <div>
+                        <a class="btn btn-default submit" href="index.html">REGISTRAR</a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <p class="change_link">
+                            Ya tiene una cuenta?
+                            <a href="#signin" class="to_register"> ACCEDER </a>
+                        </p>
+
+                        <div class="clearfix"></div>
+                        <br />
+
+                        <div>
+
+                            <p>©@DateTime.Now.Year Corporacion PJ</p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <!--Formulario de envio de contraseña-->
+        <div id="send_email" class="animate form send_email_form">
+            <section class="login_content">
+                <form>
+                    <h1>Recuperar Cuenta</h1>
+                    <div class="clearfix">
+                    </div>
+                    <div>
+                        <p>Se le enviara una contraseña al correo que uso para su registro</p>
+                    </div>
+                    <div>
+                        <input type="email" class="form-control" placeholder="Email" required="" />
+                    </div>
+
+                    <div>
+                        <a class="btn btn-default submit" href="index.html">ENVIAR</a>
+                        <a href="#signin" class="btn btn-default">CANCELAR</a>
+
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <div class="clearfix"></div>
+
+                        <br />
+                        <div>
+                            <p>©@DateTime.Now.Year Corporacion PJ</p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+
+    </div>
+</div>
