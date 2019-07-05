@@ -19,18 +19,19 @@
     <div class="login_wrapper" style="margin-top: 0px;">
         <!--Formulario de acceso al Sistema-->
         <div class="animate form login_form">
-            <section class="login_content">
+            <section class="login_content" style="padding-top:0px;">
 
-                <form>
+                <form id="frmLogin">
                     <h1>Acceso</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Email" required="" />
+                        <input type="text" name="usu_login" id="usu_login" class="form-control" placeholder="Email" required="" />
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                        <input type="password" name="usu_password" id="usu_password" class="form-control" placeholder="Contraseña" required="" />
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">INICIAR SESION</a>
+                        <button type="button" id="btnSesion" class="btn btn-default submit">Iniciar Sesión</button>
+                        @*<a class="btn btn-default submit" href="index.html">INICIAR SESION</a>*@
                         <a class="reset_pass change_link" href="#email_send">Olvido su contraseña?</a>
                     </div>
 
@@ -137,3 +138,7 @@
 
     </div>
 </div>
+@section js
+{
+    <script src="~/Content/viewjs/Login/LoginJs.js"></script>
+}

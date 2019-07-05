@@ -2275,6 +2275,7 @@
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-canvas.js" />
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-vml.js" />
     <Content Include="Content\vendors\jquery-sparkline\version.txt" />
+    <Content Include="Content\vendors\jquery-validation\jquery.validate.min.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\.gitignore" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.min.js" />
@@ -2588,6 +2589,7 @@
     <Content Include="Content\vendors\jszip\lib\zipEntries.js" />
     <Content Include="Content\vendors\jszip\lib\zipEntry.js" />
     <Content Include="Content\vendors\jszip\vendor\FileSaver.js" />
+    <Content Include="Content\vendors\loadingoverlay\loadingoverlay.min.js" />
     <Content Include="Content\vendors\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.concat.min.js" />
     <Content Include="Content\vendors\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.css" />
     <Content Include="Content\vendors\malihu-custom-scrollbar-plugin\jquery.mCustomScrollbar.js" />
@@ -3606,6 +3608,8 @@
     <Content Include="Content\vendors\switchery\package.js" />
     <Content Include="Content\vendors\switchery\switchery.css" />
     <Content Include="Content\vendors\switchery\switchery.js" />
+    <Content Include="Content\vendors\toastr\toastr.min.css" />
+    <Content Include="Content\vendors\toastr\toastr.min.js" />
     <Content Include="Content\vendors\transitionize\dist\transitionize.js" />
     <Content Include="Content\vendors\transitionize\dist\transitionize.min.js" />
     <Content Include="Content\vendors\transitionize\examples\browserify.js" />
@@ -3617,6 +3621,9 @@
     <Content Include="Content\vendors\validator\index.html" />
     <Content Include="Content\vendors\validator\multifield.js" />
     <Content Include="Content\vendors\validator\validator.js" />
+    <Content Include="Content\viewjs\general.js" />
+    <Content Include="Content\viewjs\Login\LoginJs.js" />
+    <Content Include="Content\viewjs\Login\RegistroUsuarioJs.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\american-express.png" />
@@ -4561,10 +4568,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Entidades\personaEntidad.cs" />
+    <Compile Include="Entidades\usuarioEntidad.cs" />
+    <Compile Include="Entidades\usuarioPersonaEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\personaModel.cs" />
+    <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilitarios\Conversiones.cs" />
+    <Compile Include="Utilitarios\ManejoNulos.cs" />
+    <Compile Include="Utilitarios\Seguridad.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -4584,7 +4600,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="Views\persona\" />
+    <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

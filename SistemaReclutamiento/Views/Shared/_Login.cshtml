@@ -1,4 +1,14 @@
-﻿<!DOCTYPE html>
+﻿@using SistemaReclutamiento.Models;
+@using SistemaReclutamiento.Entidades;
+@{
+    usuarioEntidad usuario = (usuarioEntidad)Session["UsuarioFull"];
+
+    if (usuario != null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,12 +27,29 @@
     <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
     <link href="~/Content/vendors/animate.css/animate.min.css" rel="stylesheet">
-
+    <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.min.css" rel="stylesheet">
 </head>
 
 <body class="login">
     @RenderBody()
+    <script src="~/Content/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
+    <script src="~/Content/vendors/toastr/toastr.min.js"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/Content/docs/js/bootstrap.min.js"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/viewjs/general.js"></script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' /* optional */
+            });
+        });
+    </script>
+    @RenderSection("js", required: false)
 </body>
 </html>

@@ -1,4 +1,21 @@
-﻿<!DOCTYPE html>
+﻿@using SistemaReclutamiento.Models;
+@using SistemaReclutamiento.Entidades;
+@{
+    int id = 0;
+    string NombreUsuario = "";
+    usuarioEntidad usuario = (usuarioEntidad)Session["UsuarioFull"];
+
+    if (usuario == null)
+    {
+        Response.Redirect("~/");
+    }
+    else
+    {
+        id = usuario.usuarioId;
+        NombreUsuario = usuario.usuarioEmail;
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,7 +32,10 @@
     <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
-
+    <!-- bootstrap-daterangepicker -->
+    <link href="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- jQuery custom content scroller -->
+    <link href="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.min.css" rel="stylesheet">
 </head>
@@ -38,7 +58,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>John Doe</h2>
+                            <h2>@NombreUsuario</h2>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -195,7 +215,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/img.jpg" alt="">John Doe
+                                    <img src="~/images/img.jpg" alt="">@NombreUsuario
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -207,7 +227,8 @@
                                         </a>
                                     </li>
                                     <li><a href="javascript:;">Help</a></li>
-                                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                                    @*<li><button type="button" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesión</button></li>*@
+                                    <li><a href="#" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                 </ul>
                             </li>
 
@@ -285,7 +306,7 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            <h3>Plain Page</h3>
+                            <h3>Perfil de Usuario</h3>
                         </div>
 
                         <div class="title_right">
@@ -340,7 +361,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    ©@DateTime.Now.Year Corporacion PJ
                 </div>
                 <div class="clearfix"></div>
             </footer>
@@ -356,8 +377,37 @@
     <script src="~/Content/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="~/Content/vendors/nprogress/nprogress.js"></script>
-
+    <!-- morris.js -->
+    <script src="~/Content/vendors/raphael/raphael.min.js"></script>
+    <script src="~/Content/vendors/morris.js/morris.min.js"></script>
+    <script src="~/Content/vendors/morris.js/morris.min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="~/Content/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="~/Content/vendors/moment/min/moment.min.js"></script>
+    <script src="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- jQuery custom content scroller -->
+    <script src="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="~/Content/build/js/custom.min.js"></script>
+    <script src="~/Content/viewjs/general.js"></script>
+    <script>
+        $("#btnCerrarSesion").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: basePath + "/Login/CerrarSesionLoginJson",
+                success: function (response) {
+                    var resp = response.respuesta;
+                    var msj = response.mensaje;
+                    if (resp) {
+                        window.location.replace("/");
+                    } else {
+                        alert(msj);
+                    }
+                }
+            });
+        });
+    </script>
+    @RenderSection("js", required: false)
 </body>
 </html>
