@@ -3624,6 +3624,7 @@
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Login\RegistroUsuarioJs.js" />
+    <Content Include="Database\BD_RECLUTAMIENTO.sql" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\american-express.png" />
