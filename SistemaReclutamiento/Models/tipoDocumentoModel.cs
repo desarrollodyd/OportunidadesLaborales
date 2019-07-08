@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models
         {
             List<tipoDocumentoEntidad> listaTipoDocumento = new List<tipoDocumentoEntidad>();
             string consulta = @"SELECT [tipoDocumentoId]
-                              ,[tidpoDocumentoDescripcion]
+                              ,[tipoDocumentoDescripcion]
                           FROM [dbo].[TipoDocumento]";
             try
             {
@@ -36,7 +36,7 @@ namespace SistemaReclutamiento.Models
                             var tipoDocumento = new tipoDocumentoEntidad
                             {
                                 tipoDocumentoId = ManejoNulos.ManageNullInteger(dr["tipoDocumentoId"]),
-                                tipoDocumentoDescripcion = ManejoNulos.ManageNullStr(dr["tidpoDocumentoDescripcion"])
+                                tipoDocumentoDescripcion = ManejoNulos.ManageNullStr(dr["tipoDocumentoDescripcion"])
                                 
                             };
                             listaTipoDocumento.Add(tipoDocumento);
