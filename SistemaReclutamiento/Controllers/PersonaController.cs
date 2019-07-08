@@ -28,15 +28,14 @@ namespace SistemaReclutamiento.Controllers
             int respuestaPersonaInsertada = 0;
             bool respuestaConsulta = false;
             try
-            {
-
-                
+            {               
                 persona.personaNroDocumento = datos.personaNroDocumento;
                 persona.personaNombre = datos.personaNombre;
                 persona.personaApellidoPaterno = datos.personaApellidoPaterno;
                 persona.personaApellidoMaterno = datos.personaApellidoMaterno;
                 persona.personaEmail = datos.personaEmail;
                 persona.personaEstado = 1;
+                persona.tipoDocumentoId = datos.tipoDocumentoId;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
                     var personaRepetida = personabl.PersonaDniEmailObtenerJson(persona.personaEmail, persona.personaNroDocumento);
