@@ -90,10 +90,10 @@ namespace SistemaReclutamiento.Models
                                                 ,[usuarioEmail]
                                                 ,[usuarioContrasenia]
                                                 ,[usuarioEstado]
-                                                ,[usuarioValidado]
-                                                ,[usuarioFechaCreacion])
+                                                ,[usuarioValidado])
+                                               
                                                 VALUES
-                                                (@p0,@p1,@p2,@p3,@p4,@p5)";
+                                                (@p0,@p1,@p2,@p3,@p4)";
                 try
                 {
                     using (var con = new SqlConnection(_conexion))
@@ -105,7 +105,7 @@ namespace SistemaReclutamiento.Models
                         query.Parameters.AddWithValue("@p2", usuario.usuarioContrasenia);
                         query.Parameters.AddWithValue("@p3", usuario.usuarioEstado);
                         query.Parameters.AddWithValue("@p4", usuario.usuarioValidado);
-                        query.Parameters.AddWithValue("@p5", usuario.usuarioFechaCreacion);                
+                        //query.Parameters.AddWithValue("@p5", usuario.usuarioFechaCreacion);                
                         query.ExecuteNonQuery();
                         response = true;
                     }

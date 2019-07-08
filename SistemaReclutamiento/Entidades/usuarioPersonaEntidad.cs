@@ -12,7 +12,8 @@ namespace SistemaReclutamiento.Entidades
         public string usuarioEmail { get; set; }
         public string usuarioContrasenia { get; set; }
         public string usuarioValidado { get; set; }
-        public string personaDni { get; set; }
+        public int tipoDocumentoId { get; set; }
+        public string personaNroDocumento { get; set; }
         public string personaNombre { get; set; }
         public string personaApellidoPaterno { get; set; }
         public string personaApellidoMaterno { get; set; }

@@ -24,10 +24,10 @@
                 <form id="frmLogin">
                     <h1>Acceso</h1>
                     <div>
-                        <input type="text" name="usu_login" id="usu_login" class="form-control" placeholder="Email" required="" />
+                        <input type="text" name="usu_login" id="usu_login" class="form-control" placeholder="Email"/>
                     </div>
                     <div>
-                        <input type="password" name="usu_password" id="usu_password" class="form-control" placeholder="Contraseña" required="" />
+                        <input type="password" name="usu_password" id="usu_password" class="form-control" placeholder="Contraseña" />
                     </div>
                     <div>
                         <button type="button" id="btnSesion" class="btn btn-default submit">Iniciar Sesión</button>
@@ -54,30 +54,41 @@
             </section>
         </div>
         <!--Formulario de registro de Usuario-->
-        <div id="register" class="animate form registration_form">
+        <div  class="animate form registration_form">
             <section class="login_content">
-                <form>
+                <form id="frmNuevo">
                     <h1>Registro</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Nombre" required="" />
+                        <input type="text" class="form-control" placeholder="Nombre" name="personaNombre" id="personaNombre" />
                     </div>
                     <div>
-                        <input type="text" class="form-control" placeholder="Apellido" required="" />
+                        <input type="text" class="form-control" placeholder="Apellido Paterno" name="personaApellidoPaterno" id="personaApellidoPaterno" />
                     </div>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email" required="" />
+                        <input type="text" class="form-control" placeholder="Apellido Materno" name="personaApellidoMaterno" id="personaApellidoMaterno" />
                     </div>
                     <div>
-                        <input type="text" class="form-control" placeholder="DNI" required="" />
+                        <input type="email" class="form-control" placeholder="Email" name="personaEmail" id="personaEmail" />
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                        <div class="form-group">                          
+                            <select class="form-control" name="tipoDocumentoId" id="cbotipoDocumento">
+                                <option value="">Seleccione Tipo de Documento</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="DNI" name="personaNroDocumento" id="personaNroDocumento" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control" placeholder="Contraseña" name="usuarioContrasenia" id="usuarioContrasenia" />
                     </div>
                     <div>
                         <h6>Al hacer clic en REGISTRAR, aceptas las <a href="">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</h6>
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">REGISTRAR</a>
+                        <button type="button" id="btnGuardar" class="btn btn-default submit">REGISTRARSE</button>
+                        @*<a class="btn btn-default submit" href="index.html">REGISTRAR</a>*@
                     </div>
 
                     <div class="clearfix"></div>

@@ -18,8 +18,9 @@ namespace SistemaReclutamiento.Models
         internal personaEntidad PersonaIdObtenerJson(int idPersona)
         {
             personaEntidad persona = new personaEntidad();
-            string consulta = @"SELECT TOP (1000) [personaId]
-                                                  ,[personaDni]
+            string consulta = @"SELECT [personaId]
+                                                  ,[personaNroDocumento]
+                                                  ,[tipoDocumentoId]
                                                   ,[personaNombre]
                                                   ,[personaApellidoPaterno]
                                                   ,[personaApellidoMaterno]
@@ -48,7 +49,8 @@ namespace SistemaReclutamiento.Models
                             while (dr.Read())
                             {
                                 persona.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
-                                persona.personaDni = ManejoNulos.ManageNullStr(dr["personaDni"]);
+                                persona.tipoDocumentoId = ManejoNulos.ManageNullInteger(dr["tipoDocumentoId"]);
+                                persona.personaNroDocumento = ManejoNulos.ManageNullStr(dr["personaNroDocumento"]);
                                 persona.personaNombre = ManejoNulos.ManageNullStr(dr["personaNombre"]);
                                 persona.personaApellidoPaterno = ManejoNulos.ManageNullStr(dr["personaApellidoPaterno"]);
                                 persona.personaApellidoMaterno = ManejoNulos.ManageNullStr(dr["personaApellidoMaterno"]);
@@ -71,31 +73,36 @@ namespace SistemaReclutamiento.Models
             }
             return persona;
         }
+        
         public int PersonaInsertarJson(personaEntidad persona)
         {
             int idPersonaInsertada=0;
             //bool response = false;
             string consulta = @"INSERT INTO [dbo].[Persona]
-                                   ([personaDni]
+                                   ([personaNroDocumento]
                                     ,[personaNombre]
                                     ,[personaApellidoPaterno]
                                     ,[personaApellidoMaterno]
                                     ,[personaEmail]                                
-                                   ,[personaEstado])
+                                    ,[personaEstado]
+                                    ,[tipoDocumentoId])
                              VALUES
-                                   (@p0,@p1,@p2,@p3,@p4,@p5) SELECT SCOPE_IDENTITY()";
+                                   (@p0,@p1,@p2,@p3,@p4,@p5,@p6) 
+                                SELECT SCOPE_IDENTITY()";
             try
             {
                 using (var con = new SqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new SqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", persona.personaDni);
+                    query.Parameters.AddWithValue("@p0", persona.personaNroDocumento);
                     query.Parameters.AddWithValue("@p1", persona.personaNombre);
                     query.Parameters.AddWithValue("@p2", persona.personaApellidoPaterno);
                     query.Parameters.AddWithValue("@p3", persona.personaApellidoMaterno);
                     query.Parameters.AddWithValue("@p4", persona.personaEmail);
                     query.Parameters.AddWithValue("@p5", persona.personaEstado);
+                    query.Parameters.AddWithValue("@p6", persona.tipoDocumentoId);
+
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                   
                     //response = true;
@@ -111,7 +118,7 @@ namespace SistemaReclutamiento.Models
             bool response = false;
             string consulta = @"UPDATE [dbo].[Persona]
                                 SET 
-                             [personaDni]=@p1
+                             [personaNroDocumento]=@p1
                             ,[personaNombre]=@p2
                             ,[personaApellidoPaterno]=@p3
                             ,[personaApellidoMaterno]=@p4
@@ -132,7 +139,7 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new SqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", persona.personaId);
-                    query.Parameters.AddWithValue("@p1", persona.personaDni);
+                    query.Parameters.AddWithValue("@p1", persona.personaNroDocumento);
                     query.Parameters.AddWithValue("@p2", persona.personaNombre);
                     query.Parameters.AddWithValue("@p3", persona.personaApellidoPaterno);
                     query.Parameters.AddWithValue("@p4", persona.personaApellidoMaterno);
@@ -153,6 +160,42 @@ namespace SistemaReclutamiento.Models
             {
             }
             return response;
+        }
+        internal personaEntidad PersonaDniEmailObtenerJson(string personaEmail, string personaNroDocumento)
+        {
+            personaEntidad persona = new personaEntidad();
+            string consulta = @"SELECT [personaId]
+                                                  ,[personaNroDocumento]                                             
+                                                  ,[personaEmail]                                        
+                                              FROM [dbo].[Persona]
+                                            where personaNroDocumento=@p0 OR personaEmail=@p1";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", personaNroDocumento);
+                    query.Parameters.AddWithValue("@p1", personaEmail);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                persona.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
+                                persona.personaNroDocumento = ManejoNulos.ManageNullStr(dr["personaNroDocumento"]);
+                                persona.personaEmail = ManejoNulos.ManageNullStr(dr["personaEmail"]);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return persona;
         }
     }
 }

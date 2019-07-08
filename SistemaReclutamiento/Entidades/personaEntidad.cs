@@ -8,7 +8,9 @@ namespace SistemaReclutamiento.Entidades
     public class personaEntidad
     {
         public int personaId { get; set; }
-        public string personaDni { get; set; }
+        public int ubigeoId { get; set; }
+        public int tipoDocumentoId { get; set; }
+        public string personaNroDocumento { get; set; }
         public string personaNombre { get; set; }
         public string personaApellidoPaterno { get; set; }
         public string personaApellidoMaterno { get; set; }

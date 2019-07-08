@@ -44,21 +44,21 @@ namespace SistemaReclutamiento.Controllers
                         }
                         else
                         {
-                            mensaje = "La contraseña ingresada es erronea ,Llame Administrador";
+                            mensaje = "La contraseña ingresada es erronea";
                         }
                     }
                 }
                 else
                 {
-                    mensaje = "No se ah encontrando el correo ingresado ,Llame Administrador";
+                    mensaje = "No se ha encontrando el correo ingresado";
                 }
             }
             catch (Exception exp)
             {
-                mensaje = exp.Message + " ,Llame Administrador";
+                mensaje = exp.Message + "";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = mensaje, usuario=usuario });
+            return Json(new { respuesta = respuesta, mensaje = mensaje/*, usuario=usuario*/ });
         }
         [HttpPost]
         public ActionResult CerrarSesionLoginJson()

@@ -3623,7 +3623,6 @@
     <Content Include="Content\vendors\validator\validator.js" />
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
-    <Content Include="Content\viewjs\Login\RegistroUsuarioJs.js" />
     <Content Include="Database\BD_RECLUTAMIENTO.sql" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -4569,14 +4568,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
+    <Compile Include="Entidades\tipoDocumentoEntidad.cs" />
     <Compile Include="Entidades\usuarioEntidad.cs" />
     <Compile Include="Entidades\usuarioPersonaEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\personaModel.cs" />
+    <Compile Include="Models\tipoDocumentoModel.cs" />
     <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
@@ -4592,6 +4593,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Persona\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4602,8 +4604,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\viewjs\Usuario\" />
-    <Folder Include="Views\persona\" />
-    <Folder Include="Views\Usuario\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />
