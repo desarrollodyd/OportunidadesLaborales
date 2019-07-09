@@ -48,6 +48,16 @@ namespace SistemaReclutamiento.Utilitarios
             tdes.Clear();
             //se regresa el resultado en forma de una cadena
             return Convert.ToBase64String(ArrayResultado, 0, ArrayResultado.Length);
+        }   
+        public static string EncriptarSHA512(string str)
+        {
+            SHA512 sha512 = SHA512Managed.Create();
+            ASCIIEncoding encoding = new ASCIIEncoding();
+            byte[] stream = null;
+            StringBuilder sb = new StringBuilder();
+            stream = sha512.ComputeHash(encoding.GetBytes(str));
+            for (int i = 0; i < stream.Length; i++) sb.AppendFormat("{0:x2}", stream[i]);
+            return sb.ToString();
         }
         public static string Desencriptar(string textoEncriptado)
         {

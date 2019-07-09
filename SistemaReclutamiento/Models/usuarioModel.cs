@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
+using Npgsql;
 using System.Linq;
 using System.Web;
 using SistemaReclutamiento.Entidades;
@@ -18,23 +19,14 @@ namespace SistemaReclutamiento.Models
         public usuarioEntidad ValidarCredenciales(string usu_login)
         {
             usuarioEntidad usuario = new usuarioEntidad();
-            string consulta = @"SELECT [usuarioId]
-                                  ,[personaId]
-                                  ,[usuarioEmail]
-                                  ,[usuarioContrasenia]
-                                  ,[usuarioToken]
-                                  ,[usuarioAvatarExtension]
-                                  ,[usuarioEstado]
-                                  ,[usuarioFechaCreacion]
-                                  ,[usuarioValidado]
-                              FROM [dbo].[Usuario] as u
-                                where u.usuarioEmail = @p0";
+            string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,fk_persona
+	                            FROM seguridad.seg_usuario where usu_nombre=@p0";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", usu_login);
                     using (var dr = query.ExecuteReader())
                     {
@@ -42,14 +34,16 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                usuario.usuarioId = ManejoNulos.ManageNullInteger(dr["usuarioId"]);
-                                usuario.usuarioEmail = ManejoNulos.ManageNullStr(dr["usuarioEmail"]);
-                                usuario.usuarioContrasenia = ManejoNulos.ManageNullStr(dr["usuarioContrasenia"]);
-                                usuario.usuarioAvatarExtension = ManejoNulos.ManageNullStr(dr["usuarioAvatarExtension"]);
-                                usuario.usuarioToken = ManejoNulos.ManageNullStr(dr["usuarioToken"]);
-                                usuario.usuarioValidado = ManejoNulos.ManageNullInteger(dr["usuarioValidado"]);
-                                usuario.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
-                                usuario.usuarioEstado = ManejoNulos.ManageNullInteger(dr["usuarioEstado"]);
+                                usuario.usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]);
+                                usuario.usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]);
+                                usuario.usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]);
+                                usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
+                                usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
+                                //usuario.usuarioAvatarExtension = ManejoNulos.ManageNullStr(dr["usuarioAvatarExtension"]);
+                                //usuario.usuarioToken = ManejoNulos.ManageNullStr(dr["usuarioToken"]);
+                                //usuario.usuarioValidado = ManejoNulos.ManageNullInteger(dr["usuarioValidado"]);
+                                //usuario.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
+                                //usuario.usuarioEstado = ManejoNulos.ManageNullInteger(dr["usuarioEstado"]);
                             }
                         }
                     }
@@ -63,16 +57,16 @@ namespace SistemaReclutamiento.Models
         public bool UsuarioValidarEmailJson(usuarioEntidad usuario)
         {
             bool response = false;
-            string consulta = @"UPDATE [dbo].[Usuario]
-            SET [usuarioValidado] = 1
+            string consulta = @"UPDATE seguridad.seg_usuario
+            SET usu_estado = 'A'
             WHERE usuarioID = @p1";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);               
-                    query.Parameters.AddWithValue("@p1", usuario.usuarioId);
+                    var query = new NpgsqlCommand(consulta, con);               
+                    query.Parameters.AddWithValue("@p1", usuario.usu_id);
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -85,27 +79,26 @@ namespace SistemaReclutamiento.Models
             public bool UsuarioInsertarJson(usuarioEntidad usuario)
             {
                 bool response = false;
-                string consulta = @"INSERT INTO [dbo].[Usuario](
-                                                [personaId]
-                                                ,[usuarioEmail]
-                                                ,[usuarioContrasenia]
-                                                ,[usuarioEstado]
-                                                ,[usuarioValidado])
+                string consulta = @"INSERT INTO seguridad.seg_usuario(
+                                                [fk_persona]
+                                                ,[usu_nombre]
+                                                ,[usu_contrasenia]
+                                                ,[usu_estado])
                                                
                                                 VALUES
-                                                (@p0,@p1,@p2,@p3,@p4)";
+                                                (@p0,@p1,@p2,@p3)";
                 try
                 {
-                    using (var con = new SqlConnection(_conexion))
+                    using (var con = new NpgsqlConnection(_conexion))
                     {
                         con.Open();
-                        var query = new SqlCommand(consulta, con);
-                        query.Parameters.AddWithValue("@p0", usuario.personaId);
-                        query.Parameters.AddWithValue("@p1", usuario.usuarioEmail);
-                        query.Parameters.AddWithValue("@p2", usuario.usuarioContrasenia);
-                        query.Parameters.AddWithValue("@p3", usuario.usuarioEstado);
-                        query.Parameters.AddWithValue("@p4", usuario.usuarioValidado);
-                        //query.Parameters.AddWithValue("@p5", usuario.usuarioFechaCreacion);                
+                        var query = new NpgsqlCommand(consulta, con);
+                        query.Parameters.AddWithValue("@p0", usuario.fk_persona);
+                        query.Parameters.AddWithValue("@p1", usuario.usu_nombre);
+                        query.Parameters.AddWithValue("@p2", usuario.usu_contrasenia);
+                        query.Parameters.AddWithValue("@p3", usuario.usu_estado);
+                       
+                                   
                         query.ExecuteNonQuery();
                         response = true;
                     }

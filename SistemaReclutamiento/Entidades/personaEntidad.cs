@@ -7,21 +7,26 @@ namespace SistemaReclutamiento.Entidades
 {
     public class personaEntidad
     {
-        public int personaId { get; set; }
-        public int ubigeoId { get; set; }
-        public int tipoDocumentoId { get; set; }
-        public string personaNroDocumento { get; set; }
-        public string personaNombre { get; set; }
-        public string personaApellidoPaterno { get; set; }
-        public string personaApellidoMaterno { get; set; }
-        public string personaEmail { get; set; }
-        public int personaEstado { get; set; }
-        public DateTime personaFechaNacimiento { get; set; }
-        public string personaDireccion { get; set; }
-        public string personaContacto1 { get; set; }
-        public string personaContacto2 { get; set; }
-        public string personaTelefono { get; set; }
-        public string personaSexo { get; set; }
-        public string personaEstadoCivil { get; set; }
+        public string per_nombre { get; set; }
+        public string per_apellido_pat { get; set; }
+        public string per_direccion { get; set; }
+        public DateTime per_fechanacimiento { get; set; }
+        public string per_correoelectronico { get; set; }
+        public string per_tipo { get; set; }
+        public string per_estado { get; set; }
+        public int per_id { get; set; }
+        public string per_apellido_mat { get; set; }
+        public string per_telefono { get; set; }
+        public string per_celular { get; set; }
+        public string per_tipodoc { get; set; }
+        public string per_numdoc { get; set; }
+        public int fk_ubigeo { get; set; }   
+        public string per_sexo { get; set; }
+        public DateTime per_fecha_reg { get; set; }
+        public DateTime per_fecha_act { get; set; }
+        public int fk_cargo { get; set; }
+        public string per_foto { get; set; }
+       
+
     }
 }

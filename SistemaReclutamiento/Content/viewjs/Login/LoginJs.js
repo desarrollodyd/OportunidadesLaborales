@@ -15,16 +15,30 @@
             $('#btnSesion').click();
         }
     });
-    $.when(llenarSelect(basePath + "Persona/TipoDocumentoListarJson", {}, "cbotipoDocumento", "tipoDocumentoId", "tipoDocumentoDescripcion", "Seleccione un Tipo de Documento")).then(function (response, textStatus) {
-        $("#cbotipoDocumento").select2();
-    });
-    //Formulario de Registro de Usuario
+
+     //Formulario de Registro de Usuario
+
+    $('#cbotipoDocumento').change(function (e) {
+        if ($(this).val() === "") {
+            $('#per_numdoc').prop("disabled", true);
+        } else {
+            $('#per_numdoc').prop("disabled", false);
+        }
+    })  
     $(document).on('click', '#btnGuardar', function () {
+
         var validar = $("#frmNuevo");
         if (validar.valid()) {
-            var dataForm = $("#frmNuevo").serializeFormJSON();
-            var url = basePath + "Persona/PersonaInsertarJson";
-            fncRegistrar(dataForm, url, true);
+            if ($('#cbotipoDocumento').val().trim() === '') {
+                alert('Debe seleccionar un Tipo de Documento');
+
+            } else {
+                var dataForm = $("#frmNuevo").serializeFormJSON();
+                var url = basePath + "Persona/PersonaInsertarJson";
+                fncRegistrar(dataForm, url, true);
+            }
+
+            
         }
     });
 })
@@ -94,23 +108,24 @@ $("#frmLogin")
     });
 
 // Validaciones para el registro
+
 var max_chars = 8;
-$('#personaNroDocumento').keydown(function (e) {
+$('#per_numdoc').keydown(function (e) {
     if ($(this).val().length >= max_chars) {
         $(this).val($(this).val().substr(0, max_chars));
     }
 });
-$('#personaNroDocumento').keyup(function (e) {
+$('#per_numdoc').keyup(function (e) {
     if ($(this).val().length >= max_chars) {
         $(this).val($(this).val().substr(0, max_chars));
     }
 });
 
-$('#personaNroDocumento').keyup(function () {
+$('#per_numdoc').keyup(function () {
     this.value = (this.value + '').replace(/[^0-9]/g, '');
 });
 
-$("#personaNombre").bind('keypress', function (event) {
+$("#per_nombre").bind('keypress', function (event) {
     var regex = new RegExp("^[a-zA-Z ]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) {
@@ -118,7 +133,7 @@ $("#personaNombre").bind('keypress', function (event) {
         return false;
     }
 });
-$("#personaApellidoPaterno").bind('keypress', function (event) {
+$("#per_apellido_pat").bind('keypress', function (event) {
     var regex = new RegExp("^[a-zA-Z ]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) {
@@ -126,7 +141,7 @@ $("#personaApellidoPaterno").bind('keypress', function (event) {
         return false;
     }
 });
-$("#personaApellidoMaterno").bind('keypress', function (event) {
+$("#per_apellido_mat").bind('keypress', function (event) {
     var regex = new RegExp("^[a-zA-Z ]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key)) {
@@ -138,53 +153,53 @@ $("#personaApellidoMaterno").bind('keypress', function (event) {
 $("#frmNuevo")
     .validate({
         rules: {
-            personaNombre:
+            per_nombre:
             {
                 required: true,
             },
-            personaApellidoMaterno:
+            per_apellido_pat:
             {
                 required: true,
             },
-            personaApellidoPaterno:
+            per_apellido_mat:
             {
                 required: true,
             },
-            personaNroDocumento:
+            per_numdoc:
             {
                 required: true,
             },
-            personaEmail:
+            per_correoelectronico:
             {
                 required: true,
             },
-            usuarioContrasenia:
+            usu_contrasenia:
             {
                 required: true,
             }
         },
         messages: {
-            personaNombre:
+            per_nombre:
             {
                 required: 'Nombre Obligatorio',
             },
-            personaApellidoPaterno:
+            per_apellido_pat:
             {
                 required: 'Apellido Paterno Obligatorio',
             },
-            personaApellidoMaterno:
+            per_apellido_mat:
             {
                 required: 'Apellido Materno Obligatorio',
             },
-            personaNroDocumento:
+            per_numdoc:
             {
                 required: 'Dni Obligatorio',
             },
-            personaEmail:
+            per_correoelectronico:
             {
                 required: 'Email Obligatorio',
             },
-            usuarioContrasenia:
+            usu_contrasenia:
             {
                 required: 'Contraseña Obligatoria',
             }

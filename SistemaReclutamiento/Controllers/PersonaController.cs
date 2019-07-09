@@ -19,6 +19,22 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+        public ActionResult PersonaEditarVista(int idPersona)
+        {
+            var errormensaje = "";
+            var persona = new personaEntidad();
+            try
+            {
+                persona = personabl.PersonaIdObtenerJson(idPersona);
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            ViewBag.Persona = persona;
+            ViewBag.errormensaje = errormensaje;
+            return View();
+        }
         [HttpPost]
         public ActionResult PersonaInsertarJson(usuarioPersonaEntidad datos)
         {
@@ -29,30 +45,31 @@ namespace SistemaReclutamiento.Controllers
             bool respuestaConsulta = false;
             try
             {               
-                persona.personaNroDocumento = datos.personaNroDocumento;
-                persona.personaNombre = datos.personaNombre;
-                persona.personaApellidoPaterno = datos.personaApellidoPaterno;
-                persona.personaApellidoMaterno = datos.personaApellidoMaterno;
-                persona.personaEmail = datos.personaEmail;
-                persona.personaEstado = 1;
-                persona.tipoDocumentoId = datos.tipoDocumentoId;
+                persona.per_numdoc = datos.per_numdoc;
+                persona.per_nombre = datos.per_nombre;
+                persona.per_apellido_pat = datos.per_apellido_pat;
+                persona.per_apellido_mat = datos.per_apellido_mat;
+                persona.per_correoelectronico = datos.per_correoelectronico;
+                persona.per_estado = "P";
+                persona.per_tipodoc = datos.per_tipodoc;
+                persona.fk_ubigeo = 1305;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
-                    var personaRepetida = personabl.PersonaDniEmailObtenerJson(persona.personaEmail, persona.personaNroDocumento);
-                    if ( personaRepetida.personaNroDocumento!=persona.personaNroDocumento)
+                    var personaRepetida = personabl.PersonaDniEmailObtenerJson(persona.per_correoelectronico, persona.per_numdoc);
+                    if ( personaRepetida.per_numdoc!=persona.per_numdoc)
                     {
-                        if ( personaRepetida.personaEmail!=persona.personaEmail)
+                        if ( personaRepetida.per_correoelectronico!=persona.per_correoelectronico)
                         {
                             //Insertando persona
                             respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
                         }
                         else
                         {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "El Email : " + personaRepetida.personaEmail + " ya se encuentra Registrado" });
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "El Email : " + personaRepetida.per_correoelectronico + " ya se encuentra Registrado" });
                         }
                     }
                     else {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "El Nro de Documento : " + personaRepetida.personaNroDocumento+ " ya se encuentra registrado" });
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "El Nro de Documento : " + personaRepetida.per_numdoc+ " ya se encuentra registrado" });
                     }
                     
                 }
@@ -60,11 +77,10 @@ namespace SistemaReclutamiento.Controllers
                     errormensaje = ex.Message;
                 }
                 if (respuestaPersonaInsertada != 0) {
-                    usuario.usuarioContrasenia = Seguridad.Encriptar(datos.usuarioContrasenia);
-                    usuario.usuarioEmail = datos.personaEmail;
-                    usuario.personaId = respuestaPersonaInsertada;
-                    usuario.usuarioValidado = 0;
-                    usuario.usuarioEstado = 1;
+                    usuario.usu_contrasenia = Seguridad.EncriptarSHA512(datos.usu_contrasenia);
+                    usuario.usu_nombre = datos.per_correoelectronico;
+                    usuario.fk_persona = respuestaPersonaInsertada;                    
+                    usuario.usu_estado = "A";
                     //usuario.usuarioFechaCreacion = DateTime.Now;
                     respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
                 }
@@ -80,20 +96,20 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        [HttpPost]
-        public ActionResult TipoDocumentoListarJson()
-        {
-            var errormensaje = "";
-            var listaTipoDocumento = new List<tipoDocumentoEntidad>();
-            try
-            {
-                listaTipoDocumento = tipoDocumentobl.tipoDocumentoListarJson();
-            }
-            catch (Exception exp)
-            {
-                errormensaje = exp.Message + ",Llame Administrador";
-            }
-            return Json(new { data = listaTipoDocumento.ToList(), mensaje = errormensaje });
-        }
+        //[HttpPost]
+        //public ActionResult TipoDocumentoListarJson()
+        //{
+        //    var errormensaje = "";
+        //    var listaTipoDocumento = new List<tipoDocumentoEntidad>();
+        //    try
+        //    {
+        //        listaTipoDocumento = tipoDocumentobl.tipoDocumentoListarJson();
+        //    }
+        //    catch (Exception exp)
+        //    {
+        //        errormensaje = exp.Message + ",Llame Administrador";
+        //    }
+        //    return Json(new { data = listaTipoDocumento.ToList(), mensaje = errormensaje });
+        //}
     }
 }

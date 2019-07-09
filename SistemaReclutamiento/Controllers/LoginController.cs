@@ -25,22 +25,22 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 usuario = usuariobl.ValidarCredenciales(usu_login);
-                if (usuario.usuarioId > 0)
+                if (usuario.usu_id > 0)
                 {
-                    if (usuario.usuarioValidado == 0)
+                    if (usuario.usu_estado.Equals('P'))
                     {
-                        mensaje = "El usuario " + usuario.usuarioEmail + " no ha validado su Email";
+                        mensaje = "El usuario " + usuario.usu_nombre + " no ha validado su Email";
                     }
                     else
                     {
-                        string usuario_desencriptado = Seguridad.Desencriptar(usuario.usuarioContrasenia.Trim());
-                        if (usu_password == usuario_desencriptado)
+                        string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
+                        if (usuario.usu_contrasenia == password_encriptado)
                         {
-                            Session["usuarioId"] = usuario.usuarioId;
-                            Session["usuarioEmail"] = usuario.usuarioEmail;
-                            Session["usuarioFull"] = usuario;
+                            Session["usu_id"] = usuario.usu_id;
+                            Session["usu_nombre"] = usuario.usu_nombre;
+                            Session["usu_full"] = usuario;
                             respuesta = true;
-                            mensaje = "Bienvenido, " + usuario.usuarioEmail;
+                            mensaje = "Bienvenido, " + usuario.usu_nombre;
                         }
                         else
                         {
@@ -50,7 +50,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    mensaje = "No se ha encontrando el correo ingresado";
+                    mensaje = "No se ha encontrando el usuario ingresado";
                 }
             }
             catch (Exception exp)
@@ -67,9 +67,9 @@ namespace SistemaReclutamiento.Controllers
             bool respuestaConsulta = false;
             try
             {
-                Session["usuarioId"] = null;
-                Session["usuarioEmail"] = null;
-                Session["usuarioFull"] = null;
+                Session["usu_id"] = null;
+                Session["usu_nombre"] = null;
+                Session["usu_full"] = null;
                 respuestaConsulta = true;
             }
             catch (Exception exp)

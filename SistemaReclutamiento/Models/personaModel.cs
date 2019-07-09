@@ -5,7 +5,8 @@ using System.Linq;
 using System.Web;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Utilitarios;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
+using Npgsql;
 
 namespace SistemaReclutamiento.Models
 {
@@ -15,54 +16,63 @@ namespace SistemaReclutamiento.Models
         public personaModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        internal personaEntidad PersonaIdObtenerJson(int idPersona)
+        internal personaEntidad PersonaIdObtenerJson(int per_id)
         {
             personaEntidad persona = new personaEntidad();
-            string consulta = @"SELECT [personaId]
-                                                  ,[personaNroDocumento]
-                                                  ,[tipoDocumentoId]
-                                                  ,[personaNombre]
-                                                  ,[personaApellidoPaterno]
-                                                  ,[personaApellidoMaterno]
-                                                  ,[personaEmail]
-                                                  ,[personaEstado]
-                                                  ,[personaFechaNacimiento]
-                                                  ,[personaDireccion]
-                                                  ,[personaContacto1]
-                                                  ,[personaContacto2]
-                                                  ,[personaTelefono]
-                                                  ,[personaSexo]
-                                                  ,[personaEstadoCivil]
-                                              FROM [dbo].[Persona]
-                                            where personaId=@p0";         
+            string consulta = @"SELECT 
+                                    per_nombre, 
+                                    per_apellido_pat, 
+                                    per_direccion, 
+                                    per_fechanacimiento, 
+                                    per_correoelectronico, 
+                                    per_tipo, 
+                                    per_estado, 
+                                    per_id, 
+                                    per_apellido_mat, 
+                                    per_telefono, 
+                                    per_celular, 
+                                    per_tipodoc, 
+                                    per_numdoc, 
+                                    fk_ubigeo, 
+                                    per_sexo, 
+                                    per_fecha_reg, 
+                                    per_fecha_act, 
+                                    fk_cargo, 
+                                    per_foto
+	                                    FROM marketing.cpj_persona
+                                            where per_id=@p0;";         
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", idPersona);
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", per_id);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
                         {
                             while (dr.Read())
                             {
-                                persona.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
-                                persona.tipoDocumentoId = ManejoNulos.ManageNullInteger(dr["tipoDocumentoId"]);
-                                persona.personaNroDocumento = ManejoNulos.ManageNullStr(dr["personaNroDocumento"]);
-                                persona.personaNombre = ManejoNulos.ManageNullStr(dr["personaNombre"]);
-                                persona.personaApellidoPaterno = ManejoNulos.ManageNullStr(dr["personaApellidoPaterno"]);
-                                persona.personaApellidoMaterno = ManejoNulos.ManageNullStr(dr["personaApellidoMaterno"]);
-                                persona.personaEmail = ManejoNulos.ManageNullStr(dr["personaEmail"]);
-                                persona.personaEstado = ManejoNulos.ManageNullInteger(dr["personaId"]);
-                                persona.personaFechaNacimiento = ManejoNulos.ManageNullDate(dr["personaFechaNacimiento"]);
-                                persona.personaDireccion = ManejoNulos.ManageNullStr(dr["personaDireccion"]);
-                                persona.personaContacto1 = ManejoNulos.ManageNullStr(dr["personaContacto1"]);
-                                persona.personaContacto2 = ManejoNulos.ManageNullStr(dr["personaContacto2"]);
-                                persona.personaTelefono = ManejoNulos.ManageNullStr(dr["personaTelefono"]);
-                                persona.personaSexo = ManejoNulos.ManageNullStr(dr["personaSexo"]);
-                                persona.personaEstadoCivil = ManejoNulos.ManageNullStr(dr["personaEstadoCivil"]);
+                                persona.per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]);
+                                persona.per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]);
+                                persona.per_direccion = ManejoNulos.ManageNullStr(dr["per_direccion"]);
+                                persona.per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]);
+                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
+                                persona.per_tipo = ManejoNulos.ManageNullStr(dr["per_tipo"]);
+                                persona.per_estado = ManejoNulos.ManageNullStr(dr["per_estado"]);
+                                persona.per_id = ManejoNulos.ManageNullInteger(dr["per_id"]);
+                                persona.per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]);
+                                persona.per_telefono = ManejoNulos.ManageNullStr(dr["per_telefono"]);
+                                persona.per_celular = ManejoNulos.ManageNullStr(dr["per_celular"]);
+                                persona.per_tipodoc = ManejoNulos.ManageNullStr(dr["per_tipodoc"]);
+                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
+                                persona.fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]);
+                                persona.per_sexo = ManejoNulos.ManageNullStr(dr["per_sexo"]);
+                                persona.per_fecha_reg = ManejoNulos.ManageNullDate(dr["per_fecha_reg"]);
+                                persona.per_fecha_act = ManejoNulos.ManageNullDate(dr["per_fecha_act"]);
+                                persona.fk_cargo = ManejoNulos.ManageNullInteger(dr["fk_cargo"]);
+                                persona.per_foto = ManejoNulos.ManageNullStr(dr["per_foto"]);
                             }
                         }
                     }
@@ -78,30 +88,33 @@ namespace SistemaReclutamiento.Models
         {
             int idPersonaInsertada=0;
             //bool response = false;
-            string consulta = @"INSERT INTO [dbo].[Persona]
-                                   ([personaNroDocumento]
-                                    ,[personaNombre]
-                                    ,[personaApellidoPaterno]
-                                    ,[personaApellidoMaterno]
-                                    ,[personaEmail]                                
-                                    ,[personaEstado]
-                                    ,[tipoDocumentoId])
-                             VALUES
-                                   (@p0,@p1,@p2,@p3,@p4,@p5,@p6) 
-                                SELECT SCOPE_IDENTITY()";
+            string consulta = @"
+                            INSERT INTO marketing.cpj_persona(
+                                per_numdoc, 
+                                per_nombre, 
+                                per_apellido_pat, 
+                                per_apellido_mat,  
+                                per_correoelectronico,  
+                                per_estado,   
+                                per_tipodoc, 
+                                fk_ubigeo
+                                )
+	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)                                    
+                                returning per_id;";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", persona.personaNroDocumento);
-                    query.Parameters.AddWithValue("@p1", persona.personaNombre);
-                    query.Parameters.AddWithValue("@p2", persona.personaApellidoPaterno);
-                    query.Parameters.AddWithValue("@p3", persona.personaApellidoMaterno);
-                    query.Parameters.AddWithValue("@p4", persona.personaEmail);
-                    query.Parameters.AddWithValue("@p5", persona.personaEstado);
-                    query.Parameters.AddWithValue("@p6", persona.tipoDocumentoId);
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", persona.per_numdoc);
+                    query.Parameters.AddWithValue("@p1", persona.per_nombre);
+                    query.Parameters.AddWithValue("@p2", persona.per_apellido_pat);
+                    query.Parameters.AddWithValue("@p3", persona.per_apellido_mat);
+                    query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
+                    query.Parameters.AddWithValue("@p5", persona.per_estado);
+                    query.Parameters.AddWithValue("@p6", persona.per_tipodoc);
+                    query.Parameters.AddWithValue("@p6", persona.fk_ubigeo);
 
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                   
@@ -116,42 +129,51 @@ namespace SistemaReclutamiento.Models
         public bool PersonaEditarJson(personaEntidad persona)
         {
             bool response = false;
-            string consulta = @"UPDATE [dbo].[Persona]
-                                SET 
-                             [personaNroDocumento]=@p1
-                            ,[personaNombre]=@p2
-                            ,[personaApellidoPaterno]=@p3
-                            ,[personaApellidoMaterno]=@p4
-                            ,[personaEmail]=@p5
-                            ,[personaEstado]=@p6
-                            ,[personaFechaNacimiento]=@p7
-                            ,[personaDireccion]=@p8
-                            ,[personaContacto1]=@p9
-                            ,[personaContacto2]=@p10
-                            ,[personaTelefono]=@p11
-                            ,[personaSexo]=@p12
-                            ,[personaEstadoCivil]=@p13                          
-                               WHERE personaId= @p0";
+            string consulta = @"
+                UPDATE marketing.cpj_persona
+                SET 
+                per_nombre=@p0, 
+                per_apellido_pat=@p1, 
+                per_direccion=@p2, 
+                per_fechanacimiento=@p3, 
+                per_correoelectronico=@p4, 
+                per_tipo=@p5, 
+                per_estado=@p6,                
+                per_apellido_mat=@p7, 
+                per_telefono=@p8, 
+                per_celular=@p9, 
+                per_tipodoc=@p10, 
+                per_numdoc=@p11, 
+                fk_ubigeo=@p12, 
+                per_sexo=@p13, 
+                per_fecha_reg=@p14, 
+                per_fecha_act=@p15,                 
+                per_foto=@p16
+	                WHERE per_id=@p17;";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", persona.personaId);
-                    query.Parameters.AddWithValue("@p1", persona.personaNroDocumento);
-                    query.Parameters.AddWithValue("@p2", persona.personaNombre);
-                    query.Parameters.AddWithValue("@p3", persona.personaApellidoPaterno);
-                    query.Parameters.AddWithValue("@p4", persona.personaApellidoMaterno);
-                    query.Parameters.AddWithValue("@p5", persona.personaEmail);
-                    query.Parameters.AddWithValue("@p6", persona.personaEstado);
-                    query.Parameters.AddWithValue("@p7", persona.personaFechaNacimiento);
-                    query.Parameters.AddWithValue("@p8", persona.personaDireccion);
-                    query.Parameters.AddWithValue("@p9", persona.personaContacto1);
-                    query.Parameters.AddWithValue("@p10", persona.personaContacto2);
-                    query.Parameters.AddWithValue("@p11", persona.personaTelefono);
-                    query.Parameters.AddWithValue("@p12", persona.personaSexo);
-                    query.Parameters.AddWithValue("@p13", persona.personaEstadoCivil);
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", persona.per_nombre);
+                    query.Parameters.AddWithValue("@p1", persona.per_apellido_pat);
+                    query.Parameters.AddWithValue("@p2", persona.per_direccion);
+                    query.Parameters.AddWithValue("@p3", persona.per_fechanacimiento);
+                    query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
+                    query.Parameters.AddWithValue("@p5", persona.per_tipo);
+                    query.Parameters.AddWithValue("@p6", persona.per_estado);
+                    query.Parameters.AddWithValue("@p7", persona.per_apellido_mat);
+                    query.Parameters.AddWithValue("@p8", persona.per_telefono);
+                    query.Parameters.AddWithValue("@p9", persona.per_celular);
+                    query.Parameters.AddWithValue("@p10", persona.per_tipodoc);
+                    query.Parameters.AddWithValue("@p11", persona.per_numdoc);
+                    query.Parameters.AddWithValue("@p12", persona.fk_ubigeo);
+                    query.Parameters.AddWithValue("@p13", persona.per_sexo);
+                    query.Parameters.AddWithValue("@p14", persona.per_fecha_reg);
+                    query.Parameters.AddWithValue("@p15", persona.per_fecha_act);
+                    query.Parameters.AddWithValue("@p16", persona.per_foto);
+                    query.Parameters.AddWithValue("@p17", persona.per_id);
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -161,31 +183,32 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        internal personaEntidad PersonaDniEmailObtenerJson(string personaEmail, string personaNroDocumento)
+        internal personaEntidad PersonaDniEmailObtenerJson(string per_correoelectronico, string per_numdoc)
         {
             personaEntidad persona = new personaEntidad();
-            string consulta = @"SELECT [personaId]
-                                                  ,[personaNroDocumento]                                             
-                                                  ,[personaEmail]                                        
-                                              FROM [dbo].[Persona]
-                                            where personaNroDocumento=@p0 OR personaEmail=@p1";
+            string consulta = @"SELECT
+                                    per_correoelectronico,                                   
+                                    per_id,                          
+                                    per_numdoc, 
+	                                FROM marketing.cpj_persona
+                                    where per_correoelectronico=@p0 or per_numdoc=@p1;";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", personaNroDocumento);
-                    query.Parameters.AddWithValue("@p1", personaEmail);
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", per_correoelectronico);
+                    query.Parameters.AddWithValue("@p1", per_numdoc);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
                         {
                             while (dr.Read())
                             {
-                                persona.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
-                                persona.personaNroDocumento = ManejoNulos.ManageNullStr(dr["personaNroDocumento"]);
-                                persona.personaEmail = ManejoNulos.ManageNullStr(dr["personaEmail"]);
+                                persona.per_id = ManejoNulos.ManageNullInteger(dr["per_id"]);
+                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
+                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
 
                             }
                         }

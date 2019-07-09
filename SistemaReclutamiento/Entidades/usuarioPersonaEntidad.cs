@@ -7,16 +7,16 @@ namespace SistemaReclutamiento.Entidades
 {
     public class usuarioPersonaEntidad
     {
-        public int usuarioId { get; set; }
-        public int personaId { get; set; }
-        public string usuarioEmail { get; set; }
-        public string usuarioContrasenia { get; set; }
-        public string usuarioValidado { get; set; }
-        public int tipoDocumentoId { get; set; }
-        public string personaNroDocumento { get; set; }
-        public string personaNombre { get; set; }
-        public string personaApellidoPaterno { get; set; }
-        public string personaApellidoMaterno { get; set; }
-        public string personaEmail { get; set; }
+        public int usu_id { get; set; }
+        public int per_id { get; set; }
+        public string usu_nombre { get; set; }
+        public string usu_contrasenia { get; set; }
+        public string usu_estado { get; set; }
+        public string per_tipodoc { get; set; }
+        public string per_numdoc { get; set; }
+        public string per_nombre { get; set; }
+        public string per_apellido_pat { get; set; }
+        public string per_apellido_mat { get; set; }
+        public string per_correoelectronico { get; set; }
     }
 }

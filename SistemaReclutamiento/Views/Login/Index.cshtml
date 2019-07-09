@@ -59,29 +59,33 @@
                 <form id="frmNuevo">
                     <h1>Registro</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Nombre" name="personaNombre" id="personaNombre" />
+                        <input type="text" class="form-control" placeholder="Nombre" name="per_nombre" id="per_nombre" />
                     </div>
                     <div>
-                        <input type="text" class="form-control" placeholder="Apellido Paterno" name="personaApellidoPaterno" id="personaApellidoPaterno" />
+                        <input type="text" class="form-control" placeholder="Apellido Paterno" name="per_apellido_pat" id="per_apellido_pat" />
                     </div>
                     <div>
-                        <input type="text" class="form-control" placeholder="Apellido Materno" name="personaApellidoMaterno" id="personaApellidoMaterno" />
+                        <input type="text" class="form-control" placeholder="Apellido Materno" name="per_apellido_mat" id="per_apellido_mat" />
                     </div>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email" name="personaEmail" id="personaEmail" />
+                        <input type="email" class="form-control" placeholder="Email" name="per_correoelectronico" id="per_correoelectronico" />
                     </div>
-                    <div>
+                   
                         <div class="form-group">                          
-                            <select class="form-control" name="tipoDocumentoId" id="cbotipoDocumento">
+                            <select class="form-control" name="per_tipodoc" id="cbotipoDocumento">
                                 <option value="">Seleccione Tipo de Documento</option>
+                                <option value="DNI">DNI</option>
+                                <option value="Carné de Extranjeria">Carné de Extranjeria</option>
+                                <option value="Otros">Otros</option>
+                             
                             </select>
                         </div>
+                    
+                    <div>
+                        <input type="text" class="form-control" placeholder="Nro. de Documento" name="per_numdoc" id="per_numdoc" disabled="disabled" />
                     </div>
                     <div>
-                        <input type="text" class="form-control" placeholder="DNI" name="personaNroDocumento" id="personaNroDocumento" />
-                    </div>
-                    <div>
-                        <input type="password" class="form-control" placeholder="Contraseña" name="usuarioContrasenia" id="usuarioContrasenia" />
+                        <input type="password" class="form-control" placeholder="Contraseña" name="per_contrasenia" id="per_contrasenia" />
                     </div>
                     <div>
                         <h6>Al hacer clic en REGISTRAR, aceptas las <a href="">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</h6>

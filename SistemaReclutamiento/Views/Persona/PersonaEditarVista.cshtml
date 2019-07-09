@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "EmpresaEditarVista";
+}
+
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@{
+    String persona = new JavaScriptSerializer().Serialize(ViewBag.Persona);
+}
+<script type="text/javascript">
+    persona= (@Html.Raw(persona));
+</script>
+
+<div class="row">
+    <div class="col-md-6">         
+            <h3>Modificar Datos de Usuario</h3>   
+    </div>
+    <div class="col-md-6">     
+         
+                <div class="row">
+                    <div class="col-md-4 pull-right">
+                        <button type="button" id="btnGuardar" class="btn btn-sm btn-block btn-primary">Guardar</button>
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <a href="~/Persona/Index" class="btn btn-sm btn-block btn-success">Volver</a>
+                    </div>
+                </div>         
+    </div>
+</div>
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+          
+                <div class="row">
+                    <form id="frmNuevo">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" name="personaNombre" id="personaNombre" class="form-control" />
+                            </div>
+                        </div>
+                        <input type="hidden" name="codAppEmpresa" id="codAppEmpresa" />
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Apellido Paterno</label>
+                                <input type="text" name="personaApellidoPaterno" id="personaApellidoPaterno" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Apellido Materno</label>
+                                <input type="text" name="personaApellidoMaterno" id="personaApellidoMaterno" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>URI</label>
+                                <input type="text" name="EMP_DIRE_CREADA" id="EMP_DIRE_CREADA" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Consorcio</label>
+                                <select class="form-control" name="COD_CONSORCIO" id="cboConsorcio"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="S_ESTADO" id="cboEstado">
+                                    <option value="1">Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js{
+
+    <script src="~/Content/viewjs/Persona/PersonaEditarVista.js"></script>
+
+}

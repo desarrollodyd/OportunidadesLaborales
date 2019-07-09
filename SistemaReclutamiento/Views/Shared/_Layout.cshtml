@@ -1,9 +1,10 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @{
-    int id = 0;
-    string NombreUsuario = "";
-    usuarioEntidad usuario = (usuarioEntidad)Session["UsuarioFull"];
+    int usu_id = 0;
+    int fk_persona = 0;
+    string usu_nombre = "";
+    usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
 
     if (usuario == null)
     {
@@ -11,8 +12,9 @@
     }
     else
     {
-        id = usuario.usuarioId;
-        NombreUsuario = usuario.usuarioEmail;
+        usu_id = usuario.usu_id;
+        fk_persona = usuario.fk_persona;
+        usu_nombre = usuario.usu_nombre;
     }
 }
 <!DOCTYPE html>
@@ -38,6 +40,7 @@
     <link href="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 
@@ -59,7 +62,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>@NombreUsuario</h2>
+                            <h2>@usu_nombre</h2>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -76,14 +79,14 @@
                                     <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="~/Persona/Index">Perfil de Usuario</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista">Editar Perfil</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/?idPersona=@fk_persona">Editar Perfil</a></li>
                                         <li><a href="index3.html">Dashboard3</a></li>
                                     </ul>
-                                </li>          
+                                </li>
                             </ul>
-                        </div>              
+                        </div>
                     </div>
-                    <!-- /sidebar menu -->             
+                    <!-- /sidebar menu -->
                 </div>
             </div>
 
@@ -98,7 +101,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/img.jpg" alt="">@NombreUsuario
+                                    <img src="~/images/img.jpg" alt="">@usu_nombre
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -113,7 +116,7 @@
                                     @*<li><button type="button" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesión</button></li>*@
                                     <li><a href="#" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                 </ul>
-                            </li>                       
+                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -125,14 +128,14 @@
                     <div class="page-title">
                         <div class="title_left">
                             <h3>Perfil de Usuario</h3>
-                        </div>                   
+                        </div>
                     </div>
 
                     <div class="clearfix"></div>
 
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">                            
+                            <div class="x_panel">
                                 <div class="x_content">
                                     @RenderBody()
                                 </div>
@@ -173,9 +176,11 @@
     <!-- jQuery custom content scroller -->
     <script src="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- Custom Theme Scripts -->
+    <script src="~/Content/vendors/toastr/toastr.min.js"></script>
+    <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
     <script src="~/Content/build/js/custom.min.js"></script>
     <script src="~/Content/viewjs/general.js"></script>
-    <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
+
     <script>
         $("#btnCerrarSesion").click(function () {
             $.ajax({
