@@ -80,13 +80,8 @@ namespace SistemaReclutamiento.Models
             {
                 bool response = false;
                 string consulta = @"INSERT INTO seguridad.seg_usuario(
-                                                [fk_persona]
-                                                ,[usu_nombre]
-                                                ,[usu_contrasenia]
-                                                ,[usu_estado])
-                                               
-                                                VALUES
-                                                (@p0,@p1,@p2,@p3)";
+	                                fk_persona, usu_nombre, usu_contraseña, usu_estado)
+                                    VALUES(@p0,@p1,@p2,@p3); ";
                 try
                 {
                     using (var con = new NpgsqlConnection(_conexion))

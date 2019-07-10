@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "EmpresaEditarVista";
+    ViewBag.Title = "PersonaEditarVista";
 }
 
 @using System.Activities.Expressions
@@ -23,7 +23,7 @@
                         <button type="button" id="btnGuardar" class="btn btn-sm btn-block btn-primary">Guardar</button>
                     </div>
                     <div class="col-md-4 pull-right">
-                        <a href="~/Persona/Index" class="btn btn-sm btn-block btn-success">Volver</a>
+                        <a href="~/Persona/PersonaIndexVista" class="btn btn-sm btn-block btn-success">Volver</a>
                     </div>
                 </div>         
     </div>
@@ -38,20 +38,20 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Nombre</label>
-                                <input type="text" name="personaNombre" id="personaNombre" class="form-control" />
+                                <input type="text" name="per_nombre" id="per_nombre" class="form-control" />
                             </div>
                         </div>
-                        <input type="hidden" name="codAppEmpresa" id="codAppEmpresa" />
+                        <input type="hidden" name="per_id" id="per_id" />
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Apellido Paterno</label>
-                                <input type="text" name="personaApellidoPaterno" id="personaApellidoPaterno" class="form-control" />
+                                <input type="text" name="per_apellido_pat" id="per_apellido_pat" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Apellido Materno</label>
-                                <input type="text" name="personaApellidoMaterno" id="personaApellidoMaterno" class="form-control" />
+                                <input type="text" name="per_apellido_mat" id="per_apellido_mat" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -59,25 +59,76 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>URI</label>
-                                <input type="text" name="EMP_DIRE_CREADA" id="EMP_DIRE_CREADA" class="form-control" />
+                                <label>Direccion</label>
+                                <input type="text" name="per_direccion" id="per_direccion" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Consorcio</label>
-                                <select class="form-control" name="COD_CONSORCIO" id="cboConsorcio"></select>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Estado</label>
-                                <select class="form-control" name="S_ESTADO" id="cboEstado">
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                                <label>Tipo de Documento</label>
+                                <select class="form-control" name="per_tipodoc" id="cbotipoDocumento">
+                                    <option value="">Seleccione Tipo de Documento</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="PASAPORTE">PASAPORTE</option>
+                                    <option value="Pasaporte">Pasaporte</option>
+                                    <option value="Carné de Extranjeria">Carné de Extranjeria</option>
+                                    <option value="CARNÉ DE EXTRANJERIA">CARNÉ DE EXTRANJERIA</option>
+                                    <option value="Otros">Otros</option>
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Nro de Documento</label>
+                                <input type="text" name="per_numdoc" id="per_numdoc" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+                        <div class="col-md-4">
+                            <label>Fecha de Nacimiento</label>
+                            <div class='input-group date' id='myDatepicker'>
+                                <input type='text' class="form-control" id="per_fechanacimiento" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Telefono</label>
+                                <input type="text" name="per_telefono" id="per_telefono" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Celular</label>
+                                <input type="text" name="per_celular" id="per_celular" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Sexo</label>
+                                <select class="form-control" name="per_sexo" id="cboSexo">
+                                    <option value="">Seleccione Sexo</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+                        @*<div class="col-md-4">
+            <div class="form-group">
+                <label>Estado</label>
+                <select class="form-control" name="S_ESTADO" id="cboEstado">
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                </select>
+            </div>
+        </div>*@
                     </form>
                 </div>
                  
@@ -87,7 +138,5 @@
 </div>
 
 @section js{
-
     <script src="~/Content/viewjs/Persona/PersonaEditarVista.js"></script>
-
 }

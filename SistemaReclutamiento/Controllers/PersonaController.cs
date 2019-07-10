@@ -15,13 +15,14 @@ namespace SistemaReclutamiento.Controllers
         usuarioModel usuariobl = new usuarioModel();
         tipoDocumentoModel tipoDocumentobl = new tipoDocumentoModel();
         // GET: Usuario
-        public ActionResult Index()
+        public ActionResult PersonaIndexVista()
         {
             return View();
         }
-        public ActionResult PersonaEditarVista(int idPersona)
+        public ActionResult PersonaEditarVista(string id)
         {
             var errormensaje = "";
+            int idPersona = Convert.ToInt32(Seguridad.Desencriptar(id));
             var persona = new personaEntidad();
             try
             {
@@ -96,6 +97,23 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        public ActionResult PersonaEditarJson(personaEntidad persona)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = true;
+            try
+            {
+                respuestaConsulta = personabl.PersonaEditarJson(persona);
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+
+
         //[HttpPost]
         //public ActionResult TipoDocumentoListarJson()
         //{

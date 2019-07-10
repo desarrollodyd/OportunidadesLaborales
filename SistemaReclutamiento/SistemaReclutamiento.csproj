@@ -3646,6 +3646,7 @@
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
+    <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
     <Content Include="Database\BD_RECLUTAMIENTO.sql" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -4596,6 +4597,7 @@
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
     <Compile Include="Entidades\tipoDocumentoEntidad.cs" />
+    <Compile Include="Entidades\ubigeoEntidad.cs" />
     <Compile Include="Entidades\usuarioEntidad.cs" />
     <Compile Include="Entidades\usuarioPersonaEntidad.cs" />
     <Compile Include="Global.asax.cs">
@@ -4603,6 +4605,7 @@
     </Compile>
     <Compile Include="Models\personaModel.cs" />
     <Compile Include="Models\tipoDocumentoModel.cs" />
+    <Compile Include="Models\ubigeoModel.cs" />
     <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
@@ -4618,7 +4621,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Persona\Index.cshtml" />
+    <Content Include="Views\Persona\PersonaIndexVista.cshtml" />
     <Content Include="Views\Persona\PersonaEditarVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

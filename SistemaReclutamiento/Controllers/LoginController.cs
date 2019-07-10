@@ -12,6 +12,7 @@ namespace SistemaReclutamiento.Controllers
     public class LoginController : Controller
     {
         usuarioModel usuariobl = new usuarioModel();
+        personaModel personabl = new personaModel();
         public ActionResult Index()
         {
             return View();
@@ -21,7 +22,7 @@ namespace SistemaReclutamiento.Controllers
         {
             bool respuesta = false;
             string mensaje = "";
-            var usuario = new usuarioEntidad();
+            var usuario = new usuarioEntidad();            
             try
             {
                 usuario = usuariobl.ValidarCredenciales(usu_login);
@@ -39,6 +40,9 @@ namespace SistemaReclutamiento.Controllers
                             Session["usu_id"] = usuario.usu_id;
                             Session["usu_nombre"] = usuario.usu_nombre;
                             Session["usu_full"] = usuario;
+                            Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            ViewBag.Persona2 = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            Session["fk_persona"] = usuario.fk_persona;
                             respuesta = true;
                             mensaje = "Bienvenido, " + usuario.usu_nombre;
                         }

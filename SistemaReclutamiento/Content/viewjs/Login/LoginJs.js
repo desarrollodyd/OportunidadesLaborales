@@ -65,8 +65,8 @@ function ValidarLogin(url, dataForm) {
             if (respuesta) {
                 toastr.success(mensaje, 'Mensaje Servidor');
                 setTimeout(function () {
-                    window.location.replace(basePath + 'Persona/Index');
-                }, 1000);
+                    window.location.replace(basePath + 'Persona/PersonaIndexVista');
+                }, 2000);
             } else {
                 $("#usu_login").attr('readonly', true);
                 $("#usu_password").attr('readonly', true);

@@ -16,14 +16,14 @@ namespace SistemaReclutamiento.Entidades
         public string per_estado { get; set; }
         public int per_id { get; set; }
         public string per_apellido_mat { get; set; }
-        public string per_telefono { get; set; }
+        public string per_telefono { get; set; }    
         public string per_celular { get; set; }
         public string per_tipodoc { get; set; }
         public string per_numdoc { get; set; }
         public int fk_ubigeo { get; set; }   
         public string per_sexo { get; set; }
-        public DateTime per_fecha_reg { get; set; }
-        public DateTime per_fecha_act { get; set; }
+        public string per_fecha_reg { get; set; }
+        public string per_fecha_act { get; set; }
         public int fk_cargo { get; set; }
         public string per_foto { get; set; }
        

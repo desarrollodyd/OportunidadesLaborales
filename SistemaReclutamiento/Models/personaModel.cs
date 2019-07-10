@@ -16,7 +16,7 @@ namespace SistemaReclutamiento.Models
         public personaModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        internal personaEntidad PersonaIdObtenerJson(int per_id)
+        public personaEntidad PersonaIdObtenerJson(int per_id)
         {
             personaEntidad persona = new personaEntidad();
             string consulta = @"SELECT 
@@ -69,8 +69,8 @@ namespace SistemaReclutamiento.Models
                                 persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
                                 persona.fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]);
                                 persona.per_sexo = ManejoNulos.ManageNullStr(dr["per_sexo"]);
-                                persona.per_fecha_reg = ManejoNulos.ManageNullDate(dr["per_fecha_reg"]);
-                                persona.per_fecha_act = ManejoNulos.ManageNullDate(dr["per_fecha_act"]);
+                                persona.per_fecha_reg = ManejoNulos.ManageNullStr(dr["per_fecha_reg"]);
+                                persona.per_fecha_act = ManejoNulos.ManageNullStr(dr["per_fecha_act"]); 
                                 persona.fk_cargo = ManejoNulos.ManageNullInteger(dr["fk_cargo"]);
                                 persona.per_foto = ManejoNulos.ManageNullStr(dr["per_foto"]);
                             }
@@ -114,7 +114,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
                     query.Parameters.AddWithValue("@p5", persona.per_estado);
                     query.Parameters.AddWithValue("@p6", persona.per_tipodoc);
-                    query.Parameters.AddWithValue("@p6", persona.fk_ubigeo);
+                    query.Parameters.AddWithValue("@p7", persona.fk_ubigeo);
 
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                   
@@ -189,7 +189,7 @@ namespace SistemaReclutamiento.Models
             string consulta = @"SELECT
                                     per_correoelectronico,                                   
                                     per_id,                          
-                                    per_numdoc, 
+                                    per_numdoc
 	                                FROM marketing.cpj_persona
                                     where per_correoelectronico=@p0 or per_numdoc=@p1;";
             try
@@ -219,6 +219,6 @@ namespace SistemaReclutamiento.Models
             {
             }
             return persona;
-        }
+        }        
     }
 }

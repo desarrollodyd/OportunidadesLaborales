@@ -1,7 +1,19 @@
-﻿
-@{
-    ViewBag.Title = "Perfil de Usuario";
+﻿@{
+    ViewBag.Title = "EmpresaEditarVista";
 }
+
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@using SistemaReclutamiento.Utilitarios;
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    string idPersona = Seguridad.Encriptar(Convert.ToString((Session["fk_persona"])));
+}
+<script type="text/javascript">
+    personaIndex = (@Html.Raw(persona));
+   
+</script>
 <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
     <div class="profile_img">
         <div id="crop-avatar">
@@ -9,15 +21,15 @@
             <img class="img-responsive avatar-view" src="~/images/picture.jpg" alt="Avatar" title="Change the avatar">
         </div>
     </div>
-    <h3>Samuel Doe</h3>
+    <h3 id="persona_nombre"></h3>
 
     <ul class="list-unstyled user_data">
         <li>
-            <i class="fa fa-map-marker user-profile-icon"></i> San Francisco, California, USA
+            <i class="fa fa-map-marker user-profile-icon"></i><span id="persona_apellidos"></span>
         </li>
 
         <li>
-            <i class="fa fa-briefcase user-profile-icon"></i> Software Engineer
+            <i class="fa fa-briefcase user-profile-icon"></i><span id="persona_direccion"></span>
         </li>
 
         <li class="m-top-xs">
@@ -26,7 +38,7 @@
         </li>
     </ul>
 
-    <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
+    <a class="btn btn-success" href="~/Persona/PersonaEditarVista/@(idPersona)"><i class="fa fa-edit m-right-xs"></i>Editar Perfil</a>
     <br />
 
     <!-- start skills -->
@@ -238,4 +250,7 @@
         </div>
     </div>
 </div>
-
+@section js
+{
+    <script src="~/Content/viewjs/Persona/PersonaIndexVista.js"></script>
+}

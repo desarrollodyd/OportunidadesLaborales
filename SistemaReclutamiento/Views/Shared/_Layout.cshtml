@@ -1,9 +1,11 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
+@using SistemaReclutamiento.Utilitarios;
 @{
     int usu_id = 0;
     int fk_persona = 0;
     string usu_nombre = "";
+    string encriptado = "";
     usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
 
     if (usuario == null)
@@ -13,8 +15,9 @@
     else
     {
         usu_id = usuario.usu_id;
-        fk_persona = usuario.fk_persona;
         usu_nombre = usuario.usu_nombre;
+        fk_persona = usuario.fk_persona;
+        encriptado = Seguridad.Encriptar(fk_persona.ToString());
     }
 }
 <!DOCTYPE html>
@@ -42,6 +45,8 @@
     <link href="~/Content/build/css/custom.min.css" rel="stylesheet">
     <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
 </head>
 
 <body class="nav-md">
@@ -78,8 +83,8 @@
                                 <li>
                                     <a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="~/Persona/Index">Perfil de Usuario</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/?idPersona=@fk_persona">Editar Perfil</a></li>
+                                        <li><a href="~/Persona/PersonaIndexVista">Perfil de Usuario</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Editar Perfil</a></li>
                                         <li><a href="index3.html">Dashboard3</a></li>
                                     </ul>
                                 </li>
@@ -177,8 +182,13 @@
     <script src="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="~/Content/vendors/toastr/toastr.min.js"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
     <script src="~/Content/build/js/custom.min.js"></script>
+    <script src="~/Content/vendors/moment/moment.js"></script>
+    <script src="~/Content/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/viewjs/general.js"></script>
 
     <script>
