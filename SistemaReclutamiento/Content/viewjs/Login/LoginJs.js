@@ -9,12 +9,13 @@
             ValidarLogin(url, dataForm);
         }
     });
-    $("input").keydown(function (e) {
-        if (e.keyCode == 13) {
-            e.preventDefault();
-            $('#btnSesion').click();
-        }
-    });
+    $('#usu_clave_temp').val(usuario.usu_clave_temp);
+    //$("input").keydown(function (e) {
+    //    if (e.keyCode == 13) {
+    //        e.preventDefault();
+    //        $('#btnSesion').click();
+    //    }
+    //});
 
      //Formulario de Registro de Usuario
 
@@ -66,7 +67,7 @@ function ValidarLogin(url, dataForm) {
                 toastr.success(mensaje, 'Mensaje Servidor');
                 setTimeout(function () {
                     window.location.replace(basePath + 'Persona/PersonaIndexVista');
-                }, 2000);
+                }, 1000);
             } else {
                 $("#usu_login").attr('readonly', true);
                 $("#usu_password").attr('readonly', true);

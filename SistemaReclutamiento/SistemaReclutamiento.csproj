@@ -4609,6 +4609,7 @@
     <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
+    <Compile Include="Utilitarios\Correo.cs" />
     <Compile Include="Utilitarios\ManejoNulos.cs" />
     <Compile Include="Utilitarios\Seguridad.cs" />
   </ItemGroup>

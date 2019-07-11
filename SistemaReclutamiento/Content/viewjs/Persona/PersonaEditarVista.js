@@ -5,6 +5,7 @@
         ignoreReadonly: true,
         allowInputToggle: true
     });
+    $("#per_id").val(persona.per_id);
     $("#per_nombre").val(persona.per_nombre);
     $("#per_apellido_pat").val(persona.per_apellido_pat);
     $("#per_apellido_mat").val(persona.per_apellido_mat);
@@ -14,13 +15,14 @@
     $("#per_celular").val(persona.per_celular);
     $("#per_telefono").val(persona.per_telefono);
     $("#cboSexo").val(persona.per_sexo);
-    $("#cbotipoDocumento").val(persona.per_tipodoc);   
+    $("#cbotipoDocumento").val(persona.per_tipodoc);
+    $("#per_correoelectronico").val(persona.per_correoelectronico);
 
     $(document).on('click', '#btnGuardar', function () {
         var validar = $("#frmNuevo");
         if (validar.valid()) {
             var dataForm = $("#frmNuevo").serializeFormJSON();
-            var url = basePath + "Persona/PersonaEdiarJson";
+            var url = basePath + "Persona/PersonaEditarJson";
             fncRegistrar(dataForm, url, false);
         }
 

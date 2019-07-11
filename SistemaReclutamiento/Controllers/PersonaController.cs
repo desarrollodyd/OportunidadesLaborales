@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Utilitarios;
 using SistemaReclutamiento.Entidades;
+using System.Net.Mail;
 
 namespace SistemaReclutamiento.Controllers
 {
@@ -13,7 +14,8 @@ namespace SistemaReclutamiento.Controllers
     {
         personaModel personabl = new personaModel();
         usuarioModel usuariobl = new usuarioModel();
-        tipoDocumentoModel tipoDocumentobl = new tipoDocumentoModel();
+        tipoDocumentoModel tipoDocumentobl = new tipoDocumentoModel();     
+     
         // GET: Usuario
         public ActionResult PersonaIndexVista()
         {
@@ -81,7 +83,8 @@ namespace SistemaReclutamiento.Controllers
                     usuario.usu_contrasenia = Seguridad.EncriptarSHA512(datos.usu_contrasenia);
                     usuario.usu_nombre = datos.per_correoelectronico;
                     usuario.fk_persona = respuestaPersonaInsertada;                    
-                    usuario.usu_estado = "A";
+                    usuario.usu_estado = "P";
+                    usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     //usuario.usuarioFechaCreacion = DateTime.Now;
                     respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
                 }
@@ -94,6 +97,20 @@ namespace SistemaReclutamiento.Controllers
 
             if (respuestaConsulta) {
                 /*LOGICA PARA ENVIO DE CORREO DE CONFIRMACION*/
+                try
+                {
+                    //string cuerpo_correo = "";
+                    Correo correo = new Correo();
+                    //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
+                    correo.EnviarCorreo(
+                        persona.per_correoelectronico,
+                        "Correo de Confirmacion",
+                        "Hola"+persona.per_nombre +" "+ persona.per_apellido_pat+" "+ persona.per_apellido_mat +" Inicie sesion con su correo y contraseña usados al momento de registrarse en el siguiente enlace para completar su registro : http://localhost:63576/Login/Index?id="+usuario.usu_clave_temp
+                        );                    
+                }
+                catch (Exception ex){
+                    errormensaje = ex.Message;
+                }
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
@@ -101,6 +118,7 @@ namespace SistemaReclutamiento.Controllers
         {
             var errormensaje = "";
             bool respuestaConsulta = true;
+            persona.fk_ubigeo = 1305;           
             try
             {
                 respuestaConsulta = personabl.PersonaEditarJson(persona);
@@ -112,22 +130,5 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-
-
-        //[HttpPost]
-        //public ActionResult TipoDocumentoListarJson()
-        //{
-        //    var errormensaje = "";
-        //    var listaTipoDocumento = new List<tipoDocumentoEntidad>();
-        //    try
-        //    {
-        //        listaTipoDocumento = tipoDocumentobl.tipoDocumentoListarJson();
-        //    }
-        //    catch (Exception exp)
-        //    {
-        //        errormensaje = exp.Message + ",Llame Administrador";
-        //    }
-        //    return Json(new { data = listaTipoDocumento.ToList(), mensaje = errormensaje });
-        //}
     }
 }

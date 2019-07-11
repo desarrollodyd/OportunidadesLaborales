@@ -135,21 +135,15 @@ namespace SistemaReclutamiento.Models
                 per_nombre=@p0, 
                 per_apellido_pat=@p1, 
                 per_direccion=@p2, 
-                per_fechanacimiento=@p3, 
-                per_correoelectronico=@p4, 
-                per_tipo=@p5, 
-                per_estado=@p6,                
-                per_apellido_mat=@p7, 
-                per_telefono=@p8, 
-                per_celular=@p9, 
-                per_tipodoc=@p10, 
-                per_numdoc=@p11, 
-                fk_ubigeo=@p12, 
-                per_sexo=@p13, 
-                per_fecha_reg=@p14, 
-                per_fecha_act=@p15,                 
-                per_foto=@p16
-	                WHERE per_id=@p17;";
+                per_fechanacimiento=@p3,      
+                per_apellido_mat=@p4, 
+                per_telefono=@p5, 
+                per_celular=@p6, 
+                per_tipodoc=@p7, 
+                per_numdoc=@p8, 
+                fk_ubigeo=@p9, 
+                per_sexo=@p10
+	                WHERE per_id=@p11;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -160,26 +154,21 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", persona.per_apellido_pat);
                     query.Parameters.AddWithValue("@p2", persona.per_direccion);
                     query.Parameters.AddWithValue("@p3", persona.per_fechanacimiento);
-                    query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
-                    query.Parameters.AddWithValue("@p5", persona.per_tipo);
-                    query.Parameters.AddWithValue("@p6", persona.per_estado);
-                    query.Parameters.AddWithValue("@p7", persona.per_apellido_mat);
-                    query.Parameters.AddWithValue("@p8", persona.per_telefono);
-                    query.Parameters.AddWithValue("@p9", persona.per_celular);
-                    query.Parameters.AddWithValue("@p10", persona.per_tipodoc);
-                    query.Parameters.AddWithValue("@p11", persona.per_numdoc);
-                    query.Parameters.AddWithValue("@p12", persona.fk_ubigeo);
-                    query.Parameters.AddWithValue("@p13", persona.per_sexo);
-                    query.Parameters.AddWithValue("@p14", persona.per_fecha_reg);
-                    query.Parameters.AddWithValue("@p15", persona.per_fecha_act);
-                    query.Parameters.AddWithValue("@p16", persona.per_foto);
-                    query.Parameters.AddWithValue("@p17", persona.per_id);
+                    query.Parameters.AddWithValue("@p4", persona.per_apellido_mat);
+                    query.Parameters.AddWithValue("@p5", persona.per_telefono);
+                    query.Parameters.AddWithValue("@p6", persona.per_celular);
+                    query.Parameters.AddWithValue("@p7", persona.per_tipodoc);
+                    query.Parameters.AddWithValue("@p8", persona.per_numdoc);
+                    query.Parameters.AddWithValue("@p9", persona.fk_ubigeo);                  
+                    query.Parameters.AddWithValue("@p10", persona.per_sexo);
+                    query.Parameters.AddWithValue("@p11", persona.per_id);
                     query.ExecuteNonQuery();
                     response = true;
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
             return response;
         }

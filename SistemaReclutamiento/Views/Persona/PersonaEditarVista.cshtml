@@ -42,6 +42,7 @@
                             </div>
                         </div>
                         <input type="hidden" name="per_id" id="per_id" />
+                        <input type="hidden" name="per_correoelectronico" id="per_correoelectronico" />
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Apellido Paterno</label>
@@ -86,15 +87,28 @@
                         </div>
                         <div class="col-md-12">
                         </div>
-                        <div class="col-md-4">
-                            <label>Fecha de Nacimiento</label>
-                            <div class='input-group date' id='myDatepicker'>
-                                <input type='text' class="form-control" id="per_fechanacimiento" />
-                                <span class="input-group-addon">
+
+
+                        @*<div class="form-group cbo">
+                            <label for="per_fechanacimiento">Fecha de Nacimiento</label>
+                            <div class="input-group dateOnly">
+                                <input type="text" name="per_fechanacimiento" class="form-control input-sm" id="per_fechanacimiento" placeholder="Fecha Nacimiento">
+                                <span class="input-group-addon input-group-icon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                             </div>
+                        </div>*@
+
+
+                        <div class="col-md-4">
+                        <label>Fecha de Nacimiento</label>
+                        <div class='input-group date' id='myDatepicker'>
+                            <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
+                    </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Telefono</label>
