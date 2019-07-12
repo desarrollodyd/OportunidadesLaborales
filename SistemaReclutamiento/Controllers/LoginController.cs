@@ -32,6 +32,9 @@ namespace SistemaReclutamiento.Controllers
             return View();
 
         }
+        public ActionResult ValidarUsuarioIndex() {
+            return View();
+        }
         [HttpPost]
         public ActionResult ValidarLoginJson(string usu_login, string usu_password, string usu_clave_temp)
         {
@@ -45,29 +48,8 @@ namespace SistemaReclutamiento.Controllers
                 {
                     if (usuario.usu_estado=="P")
                     {
-                        if (usu_clave_temp != "" || usu_clave_temp != null) {
-                            if (usu_clave_temp == usuario.usu_clave_temp)
-                            {
-                                respuesta = usuariobl.UsuarioEditarEstadoJson(usu_clave_temp);
-                                Session["usu_id"] = usuario.usu_id;
-                                Session["usu_nombre"] = usuario.usu_nombre;
-                                Session["usu_full"] = usuario;
-                                Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                                ViewBag.Persona2 = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                                Session["fk_persona"] = usuario.fk_persona;                               
-                                mensaje = "Bienvenido, " + usuario.usu_nombre;
-
-                            }
-                            else {
-                                mensaje = "Token de acceso inválido";
-                            }
-                        }
-                        else
-                        {
-                            mensaje = "El usuario " + usuario.usu_nombre + " no ha validado su Email";
-                        }
-                        
-                    }
+                        mensaje = "*";                       
+                    }                      
                     else
                     {
                         string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());

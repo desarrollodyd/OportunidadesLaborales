@@ -4610,6 +4610,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
+    <Compile Include="Utilitarios\GeneradorPassword.cs" />
     <Compile Include="Utilitarios\ManejoNulos.cs" />
     <Compile Include="Utilitarios\Seguridad.cs" />
   </ItemGroup>
@@ -4624,6 +4625,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Persona\PersonaIndexVista.cshtml" />
     <Content Include="Views\Persona\PersonaEditarVista.cshtml" />
+    <Content Include="Views\Login\ValidarUsuarioIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

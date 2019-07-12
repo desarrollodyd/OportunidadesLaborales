@@ -18,7 +18,7 @@ toastr.options = {
     "hideMethod": "fadeOut"
 };
 
-function fncRegistrar(dataForm, url, resetform) {
+function fncRegistrar(dataForm, url, resetform, url_redirect) {
     $.ajax({
         url: url,
         type: "POST",
@@ -34,6 +34,9 @@ function fncRegistrar(dataForm, url, resetform) {
             var respuesta = response.respuesta;
             if (respuesta === true) {
                 toastr.success("Se Registro Correctamente", "Mensaje Servidor");
+                if (url_redirect != "") {
+                    window.location.replace(basePath + url_redirect);
+                }
                 if (resetform) {
                     $("#frmNuevo")[0].reset();
                     $('select').prop('selectedIndex', 0).change();

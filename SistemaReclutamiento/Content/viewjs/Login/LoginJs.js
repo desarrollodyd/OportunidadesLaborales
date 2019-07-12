@@ -36,7 +36,8 @@
             } else {
                 var dataForm = $("#frmNuevo").serializeFormJSON();
                 var url = basePath + "Persona/PersonaInsertarJson";
-                fncRegistrar(dataForm, url, true);
+                var url_redirect = basePath + "Login/Index";
+                fncRegistrar(dataForm, url, true, url_redirect);
             }
 
             
@@ -67,13 +68,21 @@ function ValidarLogin(url, dataForm) {
                 toastr.success(mensaje, 'Mensaje Servidor');
                 setTimeout(function () {
                     window.location.replace(basePath + 'Persona/PersonaIndexVista');
-                }, 1000);
+                }, 2000);
             } else {
-                $("#usu_login").attr('readonly', true);
-                $("#usu_password").attr('readonly', true);
-                $("#btnSesion").attr('disabled', true);
-                toastr.warning(mensaje, 'Mensaje Servidor');
-              
+                if (mensaje == "*") {
+                    toastr.success('Falta 1 paso para terminar su registro');
+                    setTimeout(function () {
+                        window.location.replace(basePath + 'Login/ValidarUsuarioIndex');
+                    },2000);
+                    
+                }
+                else {
+                    $("#usu_login").attr('readonly', true);
+                    $("#usu_password").attr('readonly', true);
+                    $("#btnSesion").attr('disabled', true);
+                    toastr.warning(mensaje, 'Mensaje Servidor');
+                }
             }
         }
     });
@@ -173,10 +182,6 @@ $("#frmNuevo")
             per_correoelectronico:
             {
                 required: true,
-            },
-            usu_contrasenia:
-            {
-                required: true,
             }
         },
         messages: {
@@ -199,10 +204,6 @@ $("#frmNuevo")
             per_correoelectronico:
             {
                 required: 'Email Obligatorio',
-            },
-            usu_contrasenia:
-            {
-                required: 'Contraseña Obligatoria',
             }
 
         },

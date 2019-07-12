@@ -42,6 +42,9 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult PersonaInsertarJson(usuarioPersonaEntidad datos)
         {
             var errormensaje = "";
+            string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
+            string usuario_envio = "";
+            string contrasenia_envio = "";
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
             int respuestaPersonaInsertada = 0;
@@ -80,13 +83,15 @@ namespace SistemaReclutamiento.Controllers
                     errormensaje = ex.Message;
                 }
                 if (respuestaPersonaInsertada != 0) {
-                    usuario.usu_contrasenia = Seguridad.EncriptarSHA512(datos.usu_contrasenia);
+                    usuario.usu_contrasenia = GeneradorPassword.GenerarPassword(8);                    
                     usuario.usu_nombre = datos.per_correoelectronico;
                     usuario.fk_persona = respuestaPersonaInsertada;                    
                     usuario.usu_estado = "P";
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     //usuario.usuarioFechaCreacion = DateTime.Now;
                     respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
+                    usuario_envio = usuario.usu_nombre;
+                    contrasenia_envio = usuario.usu_contrasenia;
                 }
                 
             }
@@ -105,7 +110,9 @@ namespace SistemaReclutamiento.Controllers
                     correo.EnviarCorreo(
                         persona.per_correoelectronico,
                         "Correo de Confirmacion",
-                        "Hola"+persona.per_nombre +" "+ persona.per_apellido_pat+" "+ persona.per_apellido_mat +" Inicie sesion con su correo y contraseña usados al momento de registrarse en el siguiente enlace para completar su registro : http://localhost:63576/Login/Index?id="+usuario.usu_clave_temp
+                        "Hola! : "+nombre+ " \n " +
+                        "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio+"\n Contraseña : "+ contrasenia_envio              
+                        +"\n por favor ingrese sus datos en el siguiente enlace y siga los pasos indicados completar su registro : http://localhost:63576/Login/Index?id=" + usuario.usu_clave_temp
                         );                    
                 }
                 catch (Exception ex){

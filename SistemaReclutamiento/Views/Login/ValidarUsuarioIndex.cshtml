@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@{
+    String usuario = new JavaScriptSerializer().Serialize(ViewBag.Usuario);
+}
+<script type="text/javascript">
+    usuario= (@Html.Raw(usuario));
+</script>
+<div>
+    <div class="container" style="margin-top: 0px">
+        <div class="page-header" align="center">
+            <h1>Portal Laboral Corporacion PJ</h1>
+        </div>
+        <div align="center">
+            <img src="~/images/pj.png" alt="" style="width: 75px; height:75px;">
+        </div>
+    </div>
+    <div class="login_wrapper" style="margin-top: 0px;">       
+      
+        <!--Formulario de envio de contraseña-->
+        <div class="animate form">
+            <section class="login_content">
+                <form>
+                    <h1>Cambiar Contraseña</h1>
+                    <div class="clearfix">
+                    </div>
+                    <div>
+                        <p>Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder si problemas.</p>
+                    </div>
+                    <div>
+                        <label>Nueva Contraseña</label>
+                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                    </div>
+                    <div>
+                        <label>Escriba Nuevamente su Contraseña</label>
+                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                    </div>
+                    <div>
+                        <a class="btn btn-default submit" href="index.html">CAMBIAR</a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="separator">
+                        <div class="clearfix"></div>
+
+                        <br />
+                        <div>
+                            <p>©@DateTime.Now.Year Corporacion PJ</p>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+
+    </div>
+</div>
+@section js
+{
+    @*<script src="~/Content/viewjs/Login/LoginJs.js"></script>*@
+}
