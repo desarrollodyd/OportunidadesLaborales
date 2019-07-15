@@ -69,8 +69,8 @@ namespace SistemaReclutamiento.Models
                                 persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
                                 persona.fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]);
                                 persona.per_sexo = ManejoNulos.ManageNullStr(dr["per_sexo"]);
-                                persona.per_fecha_reg = ManejoNulos.ManageNullStr(dr["per_fecha_reg"]);
-                                persona.per_fecha_act = ManejoNulos.ManageNullStr(dr["per_fecha_act"]); 
+                                persona.per_fecha_reg = ManejoNulos.ManageNullDate(dr["per_fecha_reg"]);
+                                persona.per_fecha_act = ManejoNulos.ManageNullDate(dr["per_fecha_act"]); 
                                 persona.fk_cargo = ManejoNulos.ManageNullInteger(dr["fk_cargo"]);
                                 persona.per_foto = ManejoNulos.ManageNullStr(dr["per_foto"]);
                             }
@@ -96,10 +96,12 @@ namespace SistemaReclutamiento.Models
                                 per_apellido_mat,  
                                 per_correoelectronico,  
                                 per_estado,   
-                                per_tipodoc, 
+                                per_tipodoc,
+                                per_fechanacimiento,
+                                per_fecha_reg,
                                 fk_ubigeo
                                 )
-	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)                                    
+	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9)                                    
                                 returning per_id;";
             try
             {
@@ -114,7 +116,9 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
                     query.Parameters.AddWithValue("@p5", persona.per_estado);
                     query.Parameters.AddWithValue("@p6", persona.per_tipodoc);
-                    query.Parameters.AddWithValue("@p7", persona.fk_ubigeo);
+                    query.Parameters.AddWithValue("@p7", persona.per_fechanacimiento);
+                    query.Parameters.AddWithValue("@p8", persona.per_fecha_reg);
+                    query.Parameters.AddWithValue("@p9", persona.fk_ubigeo);
 
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                   

@@ -17,7 +17,37 @@
     //    }
     //});
 
+
      //Formulario de Registro de Usuario
+    $.when(llenarSelect(
+        basePath + "Ubigeo/UbigeoListarPaisesJson", {}, "cboPais", "ubi_pais_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboPais").select2();
+        });
+    $("#cboPais").change(function () {
+        var ubi_id_pais = $("#cboPais option:selected").val();
+
+        $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarDepartamentosporPaisJson", { ubi_pais_id: ubi_id_pais }, "cboDepartamento", "ubi_departamento_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboDepartamento").select2();
+        });
+    }); 
+    $("#cboDepartamento").change(function () {
+        var ubi_pais_id = $("#cboPais option:selected").val();
+        var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+        $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarProvinciasporDepartamentoJson", { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id }, "cboProvincia", "ubi_provincia_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboProvincia").select2();
+        });
+    });
+    $("#cboProvincia").change(function () {
+        var ubi_pais_id = $("#cboPais option:selected").val();
+        var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+        var ubi_provincia_id = $("#cboProvincia option:selected").val();
+        $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarDistritosporProvinciaJson", { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id, ubi_provincia_id: ubi_provincia_id }, "cboDistrito", "ubi_distrito_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboDistrito").select2();
+        });
+    });
+
+
+
 
     $('#cbotipoDocumento').change(function (e) {
         if ($(this).val() === "") {
@@ -36,7 +66,7 @@
             } else {
                 var dataForm = $("#frmNuevo").serializeFormJSON();
                 var url = basePath + "Persona/PersonaInsertarJson";
-                var url_redirect = basePath + "Login/Index";
+                var url_redirect = "Login/Index";
                 fncRegistrar(dataForm, url, true, url_redirect);
             }
 

@@ -35,6 +35,7 @@ function fncRegistrar(dataForm, url, resetform, url_redirect) {
             if (respuesta === true) {
                 toastr.success("Se Registro Correctamente", "Mensaje Servidor");
                 if (url_redirect != "") {
+                    toastr.success("Se Registro Correctamente", "Mensaje Servidor");
                     window.location.replace(basePath + url_redirect);
                 }
                 if (resetform) {

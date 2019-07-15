@@ -140,15 +140,16 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
-        public bool UsuarioEditarEstadoJson(string token)
+        public bool UsuarioEditarEstadoJson(int id, string password)
         {
             bool response = false;
             string consulta = @"
                 UPDATE seguridad.seg_usuario
                 SET 
                 usu_estado=@p0,
-                usu_clave_temp=@p1
-	            WHERE usu_clave_temp=@p2;";
+                usu_contraseña=@p1,
+                usu_clave_temp=@p2
+	            WHERE usu_id=@p3;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -156,8 +157,9 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", "A");
-                    query.Parameters.AddWithValue("@p1", "");
-                    query.Parameters.AddWithValue("@p2", token);             
+                    query.Parameters.AddWithValue("@p1", password);
+                    query.Parameters.AddWithValue("@p2", "");
+                    query.Parameters.AddWithValue("@p3", id);
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -167,6 +169,6 @@ namespace SistemaReclutamiento.Models
                 Console.WriteLine(ex.Message);
             }
             return response;
-        }
+        }        
     }
 }

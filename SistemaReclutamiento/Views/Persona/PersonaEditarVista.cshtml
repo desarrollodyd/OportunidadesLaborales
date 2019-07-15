@@ -31,8 +31,7 @@
 <div class="panel">
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-12">
-          
+            <div class="col-md-12">          
                 <div class="row">
                     <form id="frmNuevo">
                         <div class="col-md-4">
@@ -56,7 +55,6 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
@@ -78,7 +76,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Nro de Documento</label>
@@ -90,25 +87,25 @@
 
 
                         @*<div class="form-group cbo">
-                            <label for="per_fechanacimiento">Fecha de Nacimiento</label>
-                            <div class="input-group dateOnly">
-                                <input type="text" name="per_fechanacimiento" class="form-control input-sm" id="per_fechanacimiento" placeholder="Fecha Nacimiento">
-                                <span class="input-group-addon input-group-icon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                            </div>
-                        </div>*@
+            <label for="per_fechanacimiento">Fecha de Nacimiento</label>
+            <div class="input-group dateOnly">
+                <input type="text" name="per_fechanacimiento" class="form-control input-sm" id="per_fechanacimiento" placeholder="Fecha Nacimiento">
+                <span class="input-group-addon input-group-icon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>*@
 
 
                         <div class="col-md-4">
-                        <label>Fecha de Nacimiento</label>
-                        <div class='input-group date' id='myDatepicker'>
-                            <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                            <label>Fecha de Nacimiento</label>
+                            <div class='input-group date' id='myDatepicker'>
+                                <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
                         </div>
-                    </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Telefono</label>
@@ -134,15 +131,40 @@
                                 </select>
                             </div>
                         </div>
-                        @*<div class="col-md-4">
-            <div class="form-group">
-                <label>Estado</label>
-                <select class="form-control" name="S_ESTADO" id="cboEstado">
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                </select>
-            </div>
-        </div>*@
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Pais</label>
+                                <select class="form-control" name="ubi_pais_id" id="cboPais">
+                                    <option value="">--Seleccione--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Departamento</label>
+                                <select class="form-control" name="ubi_departamento_id" id="cboDepartamento">
+                                    <option value="">--Seleccione--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12"></div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Provincia</label>
+                                <select class="form-control" name="ubi_provincia_id" id="cboProvincia">
+                                    <option value="">--Seleccione--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Distrito</label>
+                                <select class="form-control" name="ubi_distrito_id" id="cboDistrito">
+                                    <option value="">--Seleccione--</option>
+                                </select>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
                  

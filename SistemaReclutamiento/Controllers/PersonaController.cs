@@ -14,6 +14,7 @@ namespace SistemaReclutamiento.Controllers
     {
         personaModel personabl = new personaModel();
         usuarioModel usuariobl = new usuarioModel();
+        ubigeoModel ubigeobl = new ubigeoModel();
         tipoDocumentoModel tipoDocumentobl = new tipoDocumentoModel();     
      
         // GET: Usuario
@@ -33,7 +34,7 @@ namespace SistemaReclutamiento.Controllers
             catch (Exception exp)
             {
                 errormensaje = exp.Message + ",Llame Administrador";
-            }
+            }           
             ViewBag.Persona = persona;
             ViewBag.errormensaje = errormensaje;
             return View();
@@ -47,8 +48,11 @@ namespace SistemaReclutamiento.Controllers
             string contrasenia_envio = "";
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
+            ubigeoEntidad ubigeo = new ubigeoEntidad();
             int respuestaPersonaInsertada = 0;
             bool respuestaConsulta = false;
+            string fecha_nacimiento = "01/01/0001 00:00:00";
+            ubigeo = ubigeobl.UbigeoIdObtenerJson(datos.ubi_pais_id,datos.ubi_departamento_id,datos.ubi_provincia_id,datos.ubi_distrito_id);
             try
             {               
                 persona.per_numdoc = datos.per_numdoc;
@@ -58,7 +62,9 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_correoelectronico = datos.per_correoelectronico;
                 persona.per_estado = "P";
                 persona.per_tipodoc = datos.per_tipodoc;
-                persona.fk_ubigeo = 1305;
+                persona.fk_ubigeo = ubigeo.ubi_id;
+                persona.per_fechanacimiento= Convert.ToDateTime(fecha_nacimiento);
+                persona.per_fecha_reg = DateTime.Now;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
                     var personaRepetida = personabl.PersonaDniEmailObtenerJson(persona.per_correoelectronico, persona.per_numdoc);

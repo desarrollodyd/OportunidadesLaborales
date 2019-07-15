@@ -23,7 +23,7 @@
         if (validar.valid()) {
             var dataForm = $("#frmNuevo").serializeFormJSON();
             var url = basePath + "Persona/PersonaEditarJson";
-            fncRegistrar(dataForm, url, false);
+            fncRegistrar(dataForm, url, false,"");
         }
 
     });

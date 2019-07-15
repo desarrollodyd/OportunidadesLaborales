@@ -6,8 +6,10 @@
 @using System.Activities.Expressions
 @using System.Web.Script.Serialization
 @using System.Web.UI.WebControls
+@using SistemaReclutamiento.Utilitarios;
 @{
     String usuario = new JavaScriptSerializer().Serialize(ViewBag.Usuario);
+    var idUsuario = Seguridad.Encriptar(Convert.ToString(Session["usu_id"]));
 }
 <script type="text/javascript">
     usuario= (@Html.Raw(usuario));
@@ -26,23 +28,27 @@
         <!--Formulario de envio de contraseña-->
         <div class="animate form">
             <section class="login_content">
-                <form>
+                <form id="frmCambio">
                     <h1>Cambiar Contraseña</h1>
                     <div class="clearfix">
                     </div>
                     <div>
-                        <p>Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder si problemas.</p>
+                        <p>Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder sin problemas.</p>
+                    </div>
+                    <div>
+                        <input type="hidden" name="usu_id" id="usu_id" value="@idUsuario" />
                     </div>
                     <div>
                         <label>Nueva Contraseña</label>
-                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                        <input type="password" class="form-control" placeholder="Contraseña" name="usu_password" id="usu_password" />
                     </div>
                     <div>
                         <label>Escriba Nuevamente su Contraseña</label>
-                        <input type="password" class="form-control" placeholder="Contraseña" required="" />
+                        <input type="password" class="form-control" placeholder="Contraseña" name="usu_password_repetido" id="usu_password_repetido" />
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">CAMBIAR</a>
+                        <button type="button" id="btnCambio" class="btn btn-default submit">CAMBIAR</button>
+                        @*<a class="btn btn-default submit" href="index.html">CAMBIAR</a>*@
                     </div>
 
                     <div class="clearfix"></div>
@@ -64,5 +70,5 @@
 </div>
 @section js
 {
-    @*<script src="~/Content/viewjs/Login/LoginJs.js"></script>*@
+    <script src="~/Content/viewjs/Login/CambioPassword.js"></script>
 }

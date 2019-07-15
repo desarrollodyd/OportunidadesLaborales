@@ -3644,6 +3644,7 @@
     <Content Include="Content\vendors\validator\multifield.js" />
     <Content Include="Content\vendors\validator\validator.js" />
     <Content Include="Content\viewjs\general.js" />
+    <Content Include="Content\viewjs\Login\CambioPassword.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
@@ -4595,6 +4596,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
     <Compile Include="Entidades\tipoDocumentoEntidad.cs" />
     <Compile Include="Entidades\ubigeoEntidad.cs" />
@@ -4636,6 +4638,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="Views\Ubigeo\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

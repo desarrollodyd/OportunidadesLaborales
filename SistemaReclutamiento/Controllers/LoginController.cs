@@ -33,7 +33,23 @@ namespace SistemaReclutamiento.Controllers
 
         }
         public ActionResult ValidarUsuarioIndex() {
+            ViewBag.Usuario = "usuario";
             return View();
+        }
+        [HttpPost]
+        public ActionResult CambiarPasswordUsuario(string usu_password, string usu_id) {
+            bool respuesta = false;
+            string mensaje = "";
+            var usuario = new usuarioEntidad();
+            usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
+            string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
+            try {
+                respuesta = usuariobl.UsuarioEditarEstadoJson(usuario.usu_id, password_encriptado);
+            }
+            catch (Exception ex) {
+                mensaje = ex.Message + "";
+            }
+            return Json(new { respuesta=respuesta,mensaje=mensaje});
         }
         [HttpPost]
         public ActionResult ValidarLoginJson(string usu_login, string usu_password, string usu_clave_temp)
@@ -48,7 +64,18 @@ namespace SistemaReclutamiento.Controllers
                 {
                     if (usuario.usu_estado=="P")
                     {
-                        mensaje = "*";                       
+                        if (usuario.usu_contrasenia == usu_password.Trim())
+                        {
+                            mensaje = "*";                                            
+                            Session["usu_full"] = usuario;
+                            Session["usu_id"] = usuario.usu_id;
+                            Session["fk_persona"] = usuario.fk_persona;
+                        }
+                        else {
+                            mensaje = "La contraseña ingresada es erronea";
+                        }
+                        
+                        
                     }                      
                     else
                     {
