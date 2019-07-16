@@ -122,20 +122,22 @@ $("#frmLogin")
         rules: {
             usu_login: {
                 required: true,
+                email:true
             },
 
             usu_password: {
                 required: true,
-            },
+            }
         },
         messages: {
             usu_login: {
                 required: 'Debe Ingresar su Correo',
+                email:'Debe Ingresar una Direccion de Correo Valida'
             },
 
             usu_password: {
                 required: 'Debe Ingresar una Constraseña',
-            },
+            }
         },
         errorPlacement: function (error, element) {
             if (element.is(":radio") || element.is(":checkbox")) {

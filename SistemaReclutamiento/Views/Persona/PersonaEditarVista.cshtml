@@ -7,9 +7,11 @@
 @using System.Web.UI.WebControls
 @{
     String persona = new JavaScriptSerializer().Serialize(ViewBag.Persona);
+    String ubigeo = new JavaScriptSerializer().Serialize(ViewBag.Ubigeo);
 }
 <script type="text/javascript">
-    persona= (@Html.Raw(persona));
+    persona = (@Html.Raw(persona));
+    ubigeo = (@Html.Raw(ubigeo));
 </script>
 
 <div class="row">

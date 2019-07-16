@@ -15,7 +15,7 @@ namespace SistemaReclutamiento.Controllers
         personaModel personabl = new personaModel();
         usuarioModel usuariobl = new usuarioModel();
         ubigeoModel ubigeobl = new ubigeoModel();
-        tipoDocumentoModel tipoDocumentobl = new tipoDocumentoModel();     
+      
      
         // GET: Usuario
         public ActionResult PersonaIndexVista()
@@ -27,14 +27,20 @@ namespace SistemaReclutamiento.Controllers
             var errormensaje = "";
             int idPersona = Convert.ToInt32(Seguridad.Desencriptar(id));
             var persona = new personaEntidad();
+            var ubigeo = new ubigeoEntidad();
             try
             {
+               
                 persona = personabl.PersonaIdObtenerJson(idPersona);
+                if (persona.fk_ubigeo!=0) {
+                    ubigeo = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                }
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + ",Llame Administrador";
-            }           
+            }
+            ViewBag.Ubigeo = ubigeo;
             ViewBag.Persona = persona;
             ViewBag.errormensaje = errormensaje;
             return View();
@@ -131,7 +137,9 @@ namespace SistemaReclutamiento.Controllers
         {
             var errormensaje = "";
             bool respuestaConsulta = true;
-            persona.fk_ubigeo = 1305;           
+            ubigeoEntidad ubigeo = new ubigeoEntidad();
+            ubigeo = ubigeobl.UbigeoIdObtenerJson(persona.ubi_pais_id, persona.ubi_departamento_id, persona.ubi_provincia_id, persona.ubi_distrito_id);
+            persona.fk_ubigeo = ubigeo.ubi_id;           
             try
             {
                 respuestaConsulta = personabl.PersonaEditarJson(persona);

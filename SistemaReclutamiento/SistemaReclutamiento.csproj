@@ -3648,7 +3648,6 @@
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
-    <Content Include="Database\BD_RECLUTAMIENTO.sql" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\american-express.png" />
@@ -4597,8 +4596,15 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
+    <Compile Include="Entidades\educacionBasicaEntidad.cs" />
+    <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
+    <Compile Include="Entidades\experienciaEntidad.cs" />
+    <Compile Include="Entidades\idiomaEntidad.cs" />
+    <Compile Include="Entidades\ofimaticaEntidad.cs" />
+    <Compile Include="Entidades\ofimaticaHerramientaEntidad.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
-    <Compile Include="Entidades\tipoDocumentoEntidad.cs" />
+    <Compile Include="Entidades\postgradoEntidad.cs" />
+    <Compile Include="Entidades\postulanteEntidad.cs" />
     <Compile Include="Entidades\ubigeoEntidad.cs" />
     <Compile Include="Entidades\usuarioEntidad.cs" />
     <Compile Include="Entidades\usuarioPersonaEntidad.cs" />
@@ -4606,7 +4612,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\personaModel.cs" />
-    <Compile Include="Models\tipoDocumentoModel.cs" />
     <Compile Include="Models\ubigeoModel.cs" />
     <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

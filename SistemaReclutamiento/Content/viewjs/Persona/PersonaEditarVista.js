@@ -18,6 +18,54 @@
     $("#cbotipoDocumento").val(persona.per_tipodoc);
     $("#per_correoelectronico").val(persona.per_correoelectronico);
 
+    //llenando combos
+    $.when(llenarSelect(
+        basePath + "Ubigeo/UbigeoListarPaisesJson", {}, "cboPais", "ubi_pais_id", "ubi_nombre", ubigeo.ubi_pais_id)).then(function (response, textStatus) {
+            $("#cboPais").select2();
+        });
+    $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarDepartamentosporPaisJson", { ubi_pais_id: ubigeo.ubi_pais_id }, "cboDepartamento", "ubi_departamento_id", "ubi_nombre", ubigeo.ubi_departamento_id)).then(function (response, textStatus) {
+        $("#cboDepartamento").select2();
+    });
+    $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarProvinciasporDepartamentoJson", { ubi_pais_id: ubigeo.ubi_pais_id, ubi_departamento_id: ubigeo.ubi_departamento_id }, "cboProvincia", "ubi_provincia_id", "ubi_nombre", ubigeo.ubi_provincia_id)).then(function (response, textStatus) {
+        $("#cboProvincia").select2();
+    });
+    $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarDistritosporProvinciaJson", { ubi_pais_id: ubigeo.ubi_pais_id, ubi_departamento_id: ubigeo.ubi_departamento_id, ubi_provincia_id: ubigeo.ubi_provincia_id }, "cboDistrito", "ubi_distrito_id", "ubi_nombre", ubigeo.ubi_distrito_id)).then(function (response, textStatus) {
+        $("#cboDistrito").select2();
+    });
+
+    $("#cboPais").change(function () {
+        var ubi_id_pais = $("#cboPais option:selected").val();
+       
+        $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarDepartamentosporPaisJson", { ubi_pais_id: ubi_id_pais }, "cboDepartamento", "ubi_departamento_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboDepartamento").select2();
+            $("#cboDepatamento").val('');
+            $("#cboProvincia").val('');
+            $("#cboDistrito").val('');
+        });
+    });
+    $("#cboDepartamento").change(function () {
+        var ubi_pais_id = $("#cboPais option:selected").val();
+        var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+      
+        $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarProvinciasporDepartamentoJson", { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id }, "cboProvincia", "ubi_provincia_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboProvincia").select2();
+            $("#cboProvincia").val('');
+            $("#cboDistrito").val('');
+        });
+    });
+    $("#cboProvincia").change(function () {
+        var ubi_pais_id = $("#cboPais option:selected").val();
+        var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+        var ubi_provincia_id = $("#cboProvincia option:selected").val();
+       
+        $.when(llenarSelect(basePath + "Ubigeo/UbigeoListarDistritosporProvinciaJson", { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id, ubi_provincia_id: ubi_provincia_id }, "cboDistrito", "ubi_distrito_id", "ubi_nombre", "")).then(function (response, textStatus) {
+            $("#cboDistrito").select2();
+            $("#cboDistrito").val('');
+        });
+    });
+
+
+
     $(document).on('click', '#btnGuardar', function () {
         var validar = $("#frmNuevo");
         if (validar.valid()) {
@@ -84,6 +132,10 @@ $("#frmNuevo")
             {
                 required: true,
 
+            },
+            per_sexo:
+            {
+                required:true,
             }
         },
         messages: {
@@ -118,6 +170,10 @@ $("#frmNuevo")
             per_telefono:
             {
                 required: 'REQUERIDO',
+            },
+            per_sexo:
+            {
+                required:'REQUERIDO',
             }
 
         },

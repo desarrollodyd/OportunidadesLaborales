@@ -34,9 +34,11 @@ function fncRegistrar(dataForm, url, resetform, url_redirect) {
             var respuesta = response.respuesta;
             if (respuesta === true) {
                 toastr.success("Se Registro Correctamente", "Mensaje Servidor");
-                if (url_redirect != "") {
-                    toastr.success("Se Registro Correctamente", "Mensaje Servidor");
-                    window.location.replace(basePath + url_redirect);
+                if (url_redirect != "") {                    
+                    setTimeout(function () {
+                        window.location.replace(basePath + url_redirect);
+                    }, 2000);
+                    
                 }
                 if (resetform) {
                     $("#frmNuevo")[0].reset();

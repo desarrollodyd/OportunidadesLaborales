@@ -27,6 +27,12 @@ namespace SistemaReclutamiento.Entidades
         public int fk_cargo { get; set; }
         public string per_foto { get; set; }
        
+        //Datos de ubigeo
+        public string ubi_id { get; set; }
+        public string ubi_pais_id { get; set; }
+        public string ubi_departamento_id { get; set; }
+        public string ubi_provincia_id { get; set; }
+        public string ubi_distrito_id { get; set; }
 
     }
 }
