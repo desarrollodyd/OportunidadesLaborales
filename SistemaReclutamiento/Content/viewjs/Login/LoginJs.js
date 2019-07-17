@@ -18,7 +18,12 @@
     //});
 
 
-     //Formulario de Registro de Usuario
+    //Formulario de Registro de Usuario
+    $("#cbotipoDocumento").select2();
+    $("#cboPais").select2();
+    $("#cboDepartamento").select2();
+    $("#cboProvincia").select2();
+    $("#cboDistrito").select2();
     $.when(llenarSelect(
         basePath + "Ubigeo/UbigeoListarPaisesJson", {}, "cboPais", "ubi_pais_id", "ubi_nombre", "")).then(function (response, textStatus) {
             $("#cboPais").select2();
@@ -45,10 +50,6 @@
             $("#cboDistrito").select2();
         });
     });
-
-
-
-
     $('#cbotipoDocumento').change(function (e) {
         if ($(this).val() === "") {
             $('#per_numdoc').prop("disabled", true);
@@ -67,7 +68,7 @@
                 var dataForm = $("#frmNuevo").serializeFormJSON();
                 var url = basePath + "Persona/PersonaInsertarJson";
                 var url_redirect = "Login/Index";
-                fncRegistrar(dataForm, url, true, url_redirect);
+                fncRegistrar(dataForm, url, true, url_redirect);                           
             }
 
             

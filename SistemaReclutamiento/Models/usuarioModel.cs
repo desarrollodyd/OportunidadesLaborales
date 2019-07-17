@@ -82,8 +82,8 @@ namespace SistemaReclutamiento.Models
         {
             bool response = false;
             string consulta = @"INSERT INTO seguridad.seg_usuario(
-	                            fk_persona, usu_nombre, usu_contraseña, usu_estado, usu_clave_temp)
-                                VALUES(@p0,@p1,@p2,@p3,@p4); ";
+	                            fk_persona, usu_nombre, usu_contraseña, usu_estado, usu_clave_temp, usu_cambio_pass)
+                                VALUES(@p0,@p1,@p2,@p3,@p4,@p5); ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -95,7 +95,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p2", usuario.usu_contrasenia);
                     query.Parameters.AddWithValue("@p3", usuario.usu_estado);
                     query.Parameters.AddWithValue("@p4", usuario.usu_clave_temp);
-                       
+                    query.Parameters.AddWithValue("@p5", usuario.usu_cambio_pass);
                                    
                     query.ExecuteNonQuery();
                     response = true;

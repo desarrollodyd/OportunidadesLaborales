@@ -99,6 +99,7 @@ namespace SistemaReclutamiento.Controllers
                     usuario.usu_nombre = datos.per_correoelectronico;
                     usuario.fk_persona = respuestaPersonaInsertada;                    
                     usuario.usu_estado = "P";
+                    usuario.usu_cambio_pass = true;
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     //usuario.usuarioFechaCreacion = DateTime.Now;
                     respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);

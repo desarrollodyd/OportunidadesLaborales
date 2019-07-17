@@ -12,7 +12,7 @@
 }
 <script type="text/javascript">
     personaIndex = (@Html.Raw(persona));
-   
+
 </script>
 <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
     <div class="profile_img">
@@ -39,7 +39,7 @@
     </ul>
 
     <a class="btn btn-success" href="~/Persona/PersonaEditarVista/@(idPersona)"><i class="fa fa-edit m-right-xs"></i>Editar Perfil</a>
-    <br / />
+    <br>
 
     <!-- start skills -->
     <h4>Skills</h4>
@@ -72,63 +72,269 @@
     <!-- end of skills -->
 
 </div>
-<div class="col-md-9 col-sm-9 col-xs-12">
-    <div class="col-md-3 col-xs-12 widget widget_tally_box">
-        <div class="x_panel">
-            <div class="x_content">
+<!--Comienzo-->
+<div class="col-md-9">
 
-                <div class="flex">
-                    <ul class="list-inline widget_profile_box">                      
-                        <li>
-                            <h3>Auxiliar de Limpieza</h3>                            
-                        </li>                     
-                    </ul>
-                </div>               
+    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Home</a>
+            </li>
+            <li role="presentation" class="">
+                <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Profile</a>
+            </li>          
+        </ul>
+        <div id="myTabContent" class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+              
 
-                <div class="flex">
-                    <ul class="list-inline">
-                        <li>
-                            <h3 class="name">Surco - Lima</h3>
-                        </li>                      
-                    </ul>
-                </div>
-                <p>
-                    <a href="javascript:void(0);" class="btn btn-success btn-block" role="button">Postular <span> Ahora!</span></a>
-                    Publicado hace 4 Horas
-                </p>
             </div>
-        </div>
-    </div>
-    <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="pricing">
-            <div class="title">
-                <h2>Auxiliar de Limpieza</h2>
-                <h1>Surco - Lima</h1>
+            <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                <!-- start accordion -->
+                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="panel">
+                        <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <h4 class="panel-title">Datos Personales</h4>
+                        </a>
+                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                            <div class="panel-body">
+                                <form id="demo-form2" data-parsley-validate class="">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nombre</label>
+                                            <input type="text" name="per_nombre" id="per_nombre" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="per_id" id="per_id" />
+                                    <input type="hidden" name="per_correoelectronico" id="per_correoelectronico" />
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Apellido Paterno</label>
+                                            <input type="text" name="per_apellido_pat" id="per_apellido_pat" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Apellido Materno</label>
+                                            <input type="text" name="per_apellido_mat" id="per_apellido_mat" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                    </div>
+                                    @*<div class="col-md-4">
+            <div class="form-group">
+                <label>Direccion</label>
+                <input type="text" name="per_direccion" id="per_direccion" class="form-control" />
             </div>
-            <div class="x_content">
-                <div class="">
-                    <div class="pricing_features">
-                        <ul class="list-unstyled text-left">
-                            <li><i class="fa fa-times text-danger"></i> Publicado hace <strong> 4 Horas</strong></li>
-                            @*<li><i class="fa fa-times text-danger"></i> <strong>Unlimited</strong> storage</li>
-                            <li><i class="fa fa-check text-success"></i> Limited <strong> download quota</strong></li>
-                            <li><i class="fa fa-check text-success"></i> <strong>Cash on Delivery</strong></li>
-                            <li><i class="fa fa-check text-success"></i> All time <strong> updates</strong></li>
-                            <li><i class="fa fa-times text-danger"></i> <strong>Unlimited</strong> access to all files</li>
-                            <li><i class="fa fa-times text-danger"></i> <strong>Allowed</strong> to be exclusing per sale</li>*@
-                        </ul>
+        </div>*@
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo de Direccion</label>
+                                            <select class="form-control" name="pos_tipo_direccion" id="cbotipoDireccion">
+                                                <option value="">Seleccione</option>
+                                                <option value="AVENIDA">Avenida</option>
+                                                <option value="CALLE">Calle</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Direccion</label>
+                                            <input type="text" name="pos_direccion" id="pos_direccion" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo de Calle</label>
+                                            <select class="form-control" name="pos_tipo_calle" id="cbotipoCalle">
+                                                <option value="">Seleccione</option>
+                                                <option value="NUMERO">Nro</option>
+                                                <option value="MANZANA">Mza.</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Numero de Casa</label>
+                                            <input type="text" name="pos_numero_casa" id="pos_numero_casa" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo de Vivienda</label>
+                                            <select class="form-control" name="pos_tipo_casa" id="cbotipoCasa">
+                                                <option value="">Seleccione</option>
+                                                <option value="CASA">Casa</option>
+                                                <option value="DEPARTAMENTO">Departamento</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo de Vivienda</label>
+                                            <select class="form-control" name="pos_estado_civil" id="cboestadoCivil">
+                                                <option value="">Seleccione</option>
+                                                <option value="SOLTERO">Soltero</option>
+                                                <option value="CASADO">CASADO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Brevete</label>
+                                            <select class="form-control" name="pos_brevete" id="cboBrevete">
+                                                <option value="">Seleccione</option>
+                                                <option value="SI">SI</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Numero de Brevete</label>
+                                            <input type="text" name="pos_num_brevete" id="pos_num_brevete" class="form-control flat" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo de Documento</label>
+                                            <select class="form-control" name="per_tipodoc" id="cbotipoDocumento">
+                                                <option value="">Seleccione Tipo de Documento</option>
+                                                <option value="DNI">DNI</option>
+                                                <option value="PASAPORTE">PASAPORTE</option>
+                                                <option value="Pasaporte">Pasaporte</option>
+                                                <option value="Carné de Extranjeria">Carné de Extranjeria</option>
+                                                <option value="CARNÉ DE EXTRANJERIA">CARNÉ DE EXTRANJERIA</option>
+                                                <option value="Otros">Otros</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nro de Documento</label>
+                                            <input type="text" name="per_numdoc" id="per_numdoc" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label>Fecha de Nacimiento</label>
+                                        <div class='input-group date' id='myDatepicker'>
+                                            <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Telefono</label>
+                                            <input type="text" name="per_telefono" id="per_telefono" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Celular</label>
+                                            <input type="text" name="per_celular" id="per_celular" class="form-control" />
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Sexo</label>
+                                            <select class="form-control" name="per_sexo" id="cboSexo">
+                                                <option value="">SEXO</option>
+                                                <option value="M">Masculino</option>
+                                                <option value="F">Femenino</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Pais</label>
+                                            <select class="form-control" name="ubi_pais_id" id="cboPais">
+                                                <option value="">PAIS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Departamento</label>
+                                            <select class="form-control" name="ubi_departamento_id" id="cboDepartamento">
+                                                <option value="">DEPARTAMENTO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Provincia</label>
+                                            <select class="form-control" name="ubi_provincia_id" id="cboProvincia">
+                                                <option value="">PROVINCIA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Distrito</label>
+                                            <select class="form-control" name="ubi_distrito_id" id="cboDistrito">
+                                                <option value="">DISTRITO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="ln_solid"></div>
+                                    <div class="form-group">
+                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                            <button type="submit" class="btn btn-success">Editar</button>
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                            <button class="btn btn-primary" type="button">Cancelar</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <h4 class="panel-title">Datos Familiares</h4>
+                        </a>
+                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <h4 class="panel-title">Educacion</h4>
+                        </a>
+                        <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="pricing_footer">
-                    <a href="javascript:void(0);" class="btn btn-success btn-block" role="button">Postular <span> Ahora!</span></a>
-                    <p>
-                        Publicado hace 4 horas
-                    </p>
-                </div>
+                <!-- end of accordion -->
             </div>
+        
         </div>
     </div>
+
 </div>
+<!--Final-->
 @section js
 {
     <script src="~/Content/viewjs/Persona/PersonaIndexVista.js"></script>
