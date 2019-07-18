@@ -18,6 +18,10 @@ namespace SistemaReclutamiento.Entidades
         public string per_apellido_pat { get; set; }
         public string per_apellido_mat { get; set; }
         public string per_correoelectronico { get; set; }
+        public DateTime per_fechanacimiento { get; set; }  
+        public string per_telefono { get; set; }
+        public string per_celular { get; set; }
+        public string per_sexo { get; set; }
         //Datos de Ubigeo
         public string ubi_departamento_id { get; set; }
         public string ubi_distrito_id { get; set; }

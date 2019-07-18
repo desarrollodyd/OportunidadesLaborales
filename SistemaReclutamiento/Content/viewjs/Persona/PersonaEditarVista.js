@@ -73,19 +73,6 @@
     });
 
 });
-//var max_chars_empresa = 2;
-
-//$('#COD_EMPRESA').keydown(function (e) {
-//    if ($(this).val().length >= max_chars_empresa) {
-//        $(this).val($(this).val().substr(0, max_chars_empresa));
-//    }
-//});
-
-//$('#COD_EMPRESA').keyup(function (e) {
-//    if ($(this).val().length >= max_chars_empresa) {
-//        $(this).val($(this).val().substr(0, max_chars_empresa));
-//    }
-//});
 $("#frmNuevo")
     .validate({
         rules: {

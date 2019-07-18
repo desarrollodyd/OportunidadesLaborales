@@ -13,6 +13,8 @@ namespace SistemaReclutamiento.Controllers
     {
         usuarioModel usuariobl = new usuarioModel();
         personaModel personabl = new personaModel();
+        ubigeoModel ubigeobl = new ubigeoModel();
+        postulanteModel postulantebl = new postulanteModel();
         
         public ActionResult Index(string id)
         {
@@ -56,7 +58,8 @@ namespace SistemaReclutamiento.Controllers
         {
             bool respuesta = false;
             string mensaje = "";
-            var usuario = new usuarioEntidad();       
+            var usuario = new usuarioEntidad();        
+            var persona = new personaEntidad();          
             try
             {
                 usuario = usuariobl.ValidarCredenciales(usu_login);
@@ -86,7 +89,9 @@ namespace SistemaReclutamiento.Controllers
                             Session["usu_nombre"] = usuario.usu_nombre;
                             Session["usu_full"] = usuario;
                             Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            ViewBag.Persona2 = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);                         
+                            Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                            Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
                             Session["fk_persona"] = usuario.fk_persona;
                             respuesta = true;
                             mensaje = "Bienvenido, " + usuario.usu_nombre;

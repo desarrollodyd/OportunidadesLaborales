@@ -154,18 +154,18 @@ namespace SistemaReclutamiento.Models
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", persona.per_nombre);
-                    query.Parameters.AddWithValue("@p1", persona.per_apellido_pat);
-                    query.Parameters.AddWithValue("@p2", persona.per_direccion);
-                    query.Parameters.AddWithValue("@p3", persona.per_fechanacimiento);
-                    query.Parameters.AddWithValue("@p4", persona.per_apellido_mat);
-                    query.Parameters.AddWithValue("@p5", persona.per_telefono);
-                    query.Parameters.AddWithValue("@p6", persona.per_celular);
-                    query.Parameters.AddWithValue("@p7", persona.per_tipodoc);
-                    query.Parameters.AddWithValue("@p8", persona.per_numdoc);
-                    query.Parameters.AddWithValue("@p9", persona.fk_ubigeo);                  
-                    query.Parameters.AddWithValue("@p10", persona.per_sexo);
-                    query.Parameters.AddWithValue("@p11", persona.per_id);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(persona.per_nombre));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(persona.per_apellido_pat));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(persona.per_direccion));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(persona.per_fechanacimiento));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(persona.per_apellido_mat));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(persona.per_telefono));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(persona.per_celular));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(persona.per_tipodoc));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(persona.per_numdoc));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(persona.fk_ubigeo));                  
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(persona.per_sexo));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullInteger(persona.per_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

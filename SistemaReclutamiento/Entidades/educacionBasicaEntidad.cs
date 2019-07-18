@@ -7,7 +7,7 @@ namespace SistemaReclutamiento.Entidades
 {
     public class educacionBasicaEntidad
     {
-        public int eva_id { get; set; }
+        public int eba_id { get; set; }
         public string eba_tipo { get; set; }
         public string eba_nombre { get; set; }
         public string eba_condicion { get; set; }

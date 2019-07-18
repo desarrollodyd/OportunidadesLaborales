@@ -15,7 +15,7 @@ namespace SistemaReclutamiento.Controllers
         personaModel personabl = new personaModel();
         usuarioModel usuariobl = new usuarioModel();
         ubigeoModel ubigeobl = new ubigeoModel();
-      
+        postulanteModel postulantebl = new postulanteModel();     
      
         // GET: Usuario
         public ActionResult PersonaIndexVista()
@@ -52,6 +52,7 @@ namespace SistemaReclutamiento.Controllers
             string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
             string usuario_envio = "";
             string contrasenia_envio = "";
+            postulanteEntidad postulante = new postulanteEntidad();
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
             ubigeoEntidad ubigeo = new ubigeoEntidad();
@@ -95,6 +96,7 @@ namespace SistemaReclutamiento.Controllers
                     errormensaje = ex.Message;
                 }
                 if (respuestaPersonaInsertada != 0) {
+                    //Insercion de Usuario
                     usuario.usu_contrasenia = GeneradorPassword.GenerarPassword(8);                    
                     usuario.usu_nombre = datos.per_correoelectronico;
                     usuario.fk_persona = respuestaPersonaInsertada;                    
@@ -103,8 +105,14 @@ namespace SistemaReclutamiento.Controllers
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     //usuario.usuarioFechaCreacion = DateTime.Now;
                     respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
+                    //datos para cuerpo de correo
                     usuario_envio = usuario.usu_nombre;
                     contrasenia_envio = usuario.usu_contrasenia;
+                    //Insercion de Postulante
+                    postulante.fk_persona = respuestaPersonaInsertada;
+                    postulante.pos_fecha_reg = DateTime.Now;
+                    postulante.pos_estado = "A";
+                    respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
                 }
                 
             }
@@ -134,22 +142,77 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        public ActionResult PersonaEditarJson(personaEntidad persona)
+        [HttpPost]
+        public ActionResult PersonaEditarJson(usuarioPersonaEntidad data)
         {
             var errormensaje = "";
             bool respuestaConsulta = true;
             ubigeoEntidad ubigeo = new ubigeoEntidad();
-            ubigeo = ubigeobl.UbigeoIdObtenerJson(persona.ubi_pais_id, persona.ubi_departamento_id, persona.ubi_provincia_id, persona.ubi_distrito_id);
-            persona.fk_ubigeo = ubigeo.ubi_id;           
+            personaEntidad persona = new personaEntidad();
+            postulanteEntidad postulante = new postulanteEntidad();
+            usuarioEntidad usuario = new usuarioEntidad();
+           
+            ubigeo = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, data.ubi_departamento_id, data.ubi_provincia_id, data.ubi_distrito_id);
+            //Seteando datos correspondiente a persona            
+            persona.per_nombre = data.per_nombre;
+            persona.per_apellido_pat = data.per_apellido_pat;
+            persona.per_direccion = data.pos_direccion + data.pos_numero_casa;
+            persona.per_fechanacimiento = data.per_fechanacimiento;
+            persona.per_apellido_mat = data.per_apellido_mat;
+            persona.per_telefono = data.per_telefono;
+            persona.per_celular = data.pos_celular;
+            persona.per_tipodoc = data.per_tipodoc;
+            persona.per_numdoc = data.per_numdoc;
+            persona.fk_ubigeo = ubigeo.ubi_id;
+            persona.per_sexo = data.per_sexo;
+            persona.per_id = data.per_id;
+            //Seteando datos correspondiente a postulante
+            postulante.pos_tipo_direccion = data.pos_tipo_direccion;
+            postulante.pos_direccion = data.pos_direccion;
+            postulante.pos_tipo_calle = data.pos_tipo_calle;
+            postulante.pos_numero_casa = data.pos_numero_casa;
+            postulante.pos_tipo_casa = data.pos_tipo_casa;
+            postulante.pos_celular = data.pos_celular;
+            postulante.pos_estado_civil = data.pos_estado_civil;
+            postulante.pos_brevete = data.pos_brevete;
+            postulante.pos_num_brevete = data.pos_num_brevete;
+            postulante.pos_referido = data.pos_referido;
+            postulante.pos_nombre_referido = data.pos_nombre_referido;
+            postulante.pos_cv = data.pos_cv;
+            postulante.pos_foto = data.pos_foto;
+            postulante.pos_situacion = data.pos_situacion;
+            postulante.pos_fecha_act = data.pos_fecha_act;
+            postulante.pos_estado = data.pos_estado;
+            postulante.pos_id = data.pos_id;
+            postulante.pos_fecha_act = DateTime.Now;
+
+            //persona.fk_ubigeo = ubigeo.ubi_id;           
             try
             {
                 respuestaConsulta = personabl.PersonaEditarJson(persona);
+                if (respuestaConsulta) {
+                    respuestaConsulta = postulantebl.PostulanteEditarJson(postulante);
+                }
+                
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
 
+            if (respuestaConsulta)
+            {
+                Session.Remove("per_full");
+                Session.Remove("ubigeo");
+                Session.Remove("postulante");
+                Session.Remove("fk_persona");
+                Session["per_full"] = personabl.PersonaIdObtenerJson(data.per_id);
+                persona = personabl.PersonaIdObtenerJson(data.per_id);
+                Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                Session["fk_persona"] = data.per_id;
+
+            }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
     }

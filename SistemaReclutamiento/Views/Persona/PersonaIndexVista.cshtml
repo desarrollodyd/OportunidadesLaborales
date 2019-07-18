@@ -8,11 +8,16 @@
 @using SistemaReclutamiento.Utilitarios;
 @{
     String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
-    string idPersona = Seguridad.Encriptar(Convert.ToString((Session["fk_persona"])));
+    string idPersona = Seguridad.Encriptar(Convert.ToString(Session["fk_persona"]));
+    String ubigeo = new JavaScriptSerializer().Serialize(Session["ubigeo"]);
+    String postulante = new JavaScriptSerializer().Serialize(Session["postulante"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
 }
 <script type="text/javascript">
     personaIndex = (@Html.Raw(persona));
-
+    ubigeo = (@Html.Raw(ubigeo));
+    postulante = (@Html.Raw(postulante));
+    usuario = (@Html.Raw(usuario));
 </script>
 <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
     <div class="profile_img">
@@ -92,27 +97,31 @@
             <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                 <!-- start accordion -->
                 <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                   <!--Seccion Datos Personales-->
                     <div class="panel">
                         <a class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <h4 class="panel-title">Datos Personales</h4>
                         </a>
                         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
-                                <form id="demo-form2" data-parsley-validate class="">
+                                <form id="frmDatosPersonales" class="">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nombre</label>
                                             <input type="text" name="per_nombre" id="per_nombre" class="form-control" />
                                         </div>
                                     </div>
-                                    <input type="hidden" name="per_id" id="per_id" />
+                                    <input type="hidden" name="per_id" />
+                                    <input type="hidden" name="pos_id" />
                                     <input type="hidden" name="per_correoelectronico" id="per_correoelectronico" />
+                                    <input type="hidden" name="pos_estado" id="pos_estado" />
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Apellido Paterno</label>
                                             <input type="text" name="per_apellido_pat" id="per_apellido_pat" class="form-control" />
                                         </div>
                                     </div>
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Apellido Materno</label>
@@ -121,12 +130,6 @@
                                     </div>
                                     <div class="col-md-12">
                                     </div>
-                                    @*<div class="col-md-4">
-            <div class="form-group">
-                <label>Direccion</label>
-                <input type="text" name="per_direccion" id="per_direccion" class="form-control" />
-            </div>
-        </div>*@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Tipo de Direccion</label>
@@ -157,6 +160,7 @@
 
                                     </div>
                                     <div class="col-md-4">
+
                                         <div class="form-group">
                                             <label>Numero de Casa</label>
                                             <input type="text" name="pos_numero_casa" id="pos_numero_casa" class="form-control" />
@@ -172,9 +176,10 @@
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Tipo de Vivienda</label>
+                                            <label>Esado Civil</label>
                                             <select class="form-control" name="pos_estado_civil" id="cboestadoCivil">
                                                 <option value="">Seleccione</option>
                                                 <option value="SOLTERO">Soltero</option>
@@ -183,19 +188,18 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-
                                     </div>
-
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Brevete</label>
                                             <select class="form-control" name="pos_brevete" id="cboBrevete">
                                                 <option value="">Seleccione</option>
-                                                <option value="SI">SI</option>
-                                                <option value="NO">NO</option>
+                                                <option value=true>SI</option>
+                                                <option value=false>NO</option>
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Numero de Brevete</label>
@@ -221,7 +225,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Nro de Documento</label>
-                                            <input type="text" name="per_numdoc" id="per_numdoc" class="form-control" />
+                                            <input type="text" name="per_numdoc" id="per_numdoc" class="form-control" disabled />
                                         </div>
                                     </div>
 
@@ -234,6 +238,7 @@
                                             </span>
                                         </div>
                                     </div>
+
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Telefono</label>
@@ -245,15 +250,14 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Celular</label>
-                                            <input type="text" name="per_celular" id="per_celular" class="form-control" />
+                                            <input type="text" name="pos_celular" id="pos_celular" class="form-control" />
                                         </div>
                                     </div>
-
-
+                                   
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Sexo</label>
-                                            <select class="form-control" name="per_sexo" id="cboSexo">
+                                            <select name="per_sexo" id="cboSexo">
                                                 <option value="">SEXO</option>
                                                 <option value="M">Masculino</option>
                                                 <option value="F">Femenino</option>
@@ -268,9 +272,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-12"></div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
+                                    <div class="col-md-12">
+
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <div class="col-md-4">
                                             <label>Departamento</label>
                                             <select class="form-control" name="ubi_departamento_id" id="cboDepartamento">
                                                 <option value="">DEPARTAMENTO</option>
@@ -285,6 +294,7 @@
                                             </select>
                                         </div>
                                     </div>
+                                  
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Distrito</label>
@@ -293,39 +303,148 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="ln_solid"></div>
-                                    <div class="form-group">
-                                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-                                            <button type="submit" class="btn btn-success">Editar</button>
-                                            <button type="submit" class="btn btn-success">Guardar</button>
-                                            <button class="btn btn-primary" type="button">Cancelar</button>
-                                        </div>
-                                    </div>
+
 
                                 </form>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                        <button type="submit" class="btn btn-success">Editar</button>
+                                        <button type="button" id="btnGuardarDatosPersonales" class="btn btn-success">Guardar</button>
+                                        <button class="btn btn-primary" type="button">Cancelar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!--Fin de Datos Personales-->
+                    <!--Seccion Educacion Basica-->
                     <div class="panel">
                         <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            <h4 class="panel-title">Datos Familiares</h4>
+                            <h4 class="panel-title">Educacion Básica</h4>
                         </a>
                         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                             <div class="panel-body">
-
+                                <form id="frmEducacionBasica">
+                                    <input type="hidden" name="per_id" />
+                                    <input type="hidden" name="pos_id" />
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label> Tipo de Educacion</label>
+                                            <select class="form-control" name="eba_tipo" id="cbotipoEducacionBasica">
+                                                <option value="">Seleccione</option>
+                                                <option value="PRIMARIA">Primaria</option>
+                                                <option value="SECUNDARIA">Secundaria</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Institucion</label>
+                                            <input type="text" name="eba_nombre" id="eba_nombre" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Condicion</label>
+                                            <select class="form-control" name="eba_condicion" id="cbocondicionEducacionBasica">
+                                                <option value="">Seleccione</option>
+                                                <option value="TRUNCO">Trunco</option>
+                                                <option value="ENCURSO">En Curso</option>
+                                                <option value="CULMINADO">Culminado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                        <button type="submit" class="btn btn-success">Editar</button>
+                                        <button type="button" id="btnGuardarEducacionBasica" class="btn btn-success">Guardar</button>
+                                        <button class="btn btn-primary" type="button">Cancelar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!--Fin de Educacion Basica-->
+                    <!--Seccion Educacion Superior-->
                     <div class="panel">
                         <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            <h4 class="panel-title">Educacion</h4>
+                            <h4 class="panel-title">Educacion Superior</h4>
                         </a>
                         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                             <div class="panel-body">
+                                <form id="frmEducacionSuperior">
+                                    <input type="hidden" name="per_id" />
+                                    <input type="hidden" name="pos_id" />
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label> Tipo de Educacion</label>
+                                            <select class="form-control" name="esu_tipo" id="cbotipoEducacionSuperior">
+                                                <option value="">Seleccione</option>
+                                                <option value="INSTITUTO">Instituto</option>
+                                                <option value="UNIVERSIDAD">Universidad</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Centro de Estudios</label>
+                                            <input type="text" name="esu_centro_estudio" id="esu_centro_estudio" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Carrera</label>
+                                            <input type="text" name="esu_carrera" id="esu_carrera" class="form-control" />
+                                        </div>
+                                    </div>
 
+                                    <div class="col-md-4">
+                                        <label>Periodo Inicial</label>
+                                        <div class='input-group date' id='myDatepicker'>
+                                            <input type='text' class="form-control" name="esu_fecha_inicio" id="per_fechanacimiento" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label>Periodo Final</label>
+                                        <div class='input-group date' id='myDatepicker'>
+                                            <input type='text' class="form-control" name="esu_fecha_fin" id="per_fechanacimiento" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Condicion</label>
+                                            <select class="form-control" name="esu_condicion" id="cbocondicionEducacionBasica">
+                                                <option value="">Seleccione</option>
+                                                <option value="TRUNCO">Trunco</option>
+                                                <option value="EGRESADO">Egresado</option>
+                                                <option value="BACHILLER">Bachiller</option>
+                                                <option value="TITULADO">Titulado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                                        <button type="submit" class="btn btn-success">Editar</button>
+                                        <button type="button" id="btnGuardarEducacionSuperior" class="btn btn-success">Guardar</button>
+                                        <button class="btn btn-primary" type="button">Cancelar</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <!--Fin de Educacion Superior-->
                 </div>
                 <!-- end of accordion -->
             </div>
