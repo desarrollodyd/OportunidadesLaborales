@@ -4,6 +4,7 @@ using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -97,9 +98,9 @@ namespace SistemaReclutamiento.Models
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", postulante.pos_fecha_reg);
-                    query.Parameters.AddWithValue("@p1", postulante.pos_estado);
-                    query.Parameters.AddWithValue("@p2", postulante.fk_persona);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullDate( postulante.pos_fecha_reg));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_estado));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(postulante.fk_persona));
                 
 
                     query.ExecuteNonQuery();
@@ -125,15 +126,9 @@ namespace SistemaReclutamiento.Models
                     pos_celular=@p5, 
                     pos_estado_civil=@p6, 
                     pos_brevete=@p7, 
-                    pos_num_brevete=@p8, 
-                    pos_referido=@p9, 
-                    pos_nombre_referido=@p10, 
-                    pos_cv=@p11, 
-                    pos_foto=@p12, 
-                    pos_situacion=@p13,          
-                    pos_fecha_act=@p14, 
-                    pos_estado=@p15
-	                    WHERE pos_id=@p16;";
+                    pos_num_brevete=@p8,              
+                    pos_fecha_act=@p9
+ 	                    WHERE pos_id=@p10;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -149,21 +144,76 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(postulante.pos_estado_civil));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManegeNullBool(postulante.pos_brevete));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(postulante.pos_num_brevete));
-                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManegeNullBool(postulante.pos_referido));
-                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
-                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullStr(postulante.pos_cv));
-                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullStr(postulante.pos_foto));
-                    query.Parameters.AddWithValue("@p13", ManejoNulos.ManageNullStr(postulante.pos_situacion));                
-                    query.Parameters.AddWithValue("@p14", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
-                    query.Parameters.AddWithValue("@p15", ManejoNulos.ManageNullStr(postulante.pos_estado));                  
-                    query.Parameters.AddWithValue("@p16", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullInteger(postulante.pos_id));               
                     query.ExecuteNonQuery();
                     response = true;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return response;
+        }
+        public bool PostulanteSubirFotoJson(postulanteEntidad postulante)
+        {
+            bool response = false;
+            string consulta = @"
+                UPDATE gestion_talento.gdt_per_postulante
+	                    SET 
+                    pos_foto=@p0,                                
+                    pos_fecha_act=@p1 
+ 	                    WHERE pos_id=@p2;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_foto));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_id));
+            
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return response;
+        }
+        public bool PostulanteRegistrarReferidoJson(postulanteEntidad postulante)
+        {
+            bool response = false;
+            string consulta = @"
+                UPDATE gestion_talento.gdt_per_postulante
+	                    SET 
+                        pos_referido=@p0,                                
+                        pos_nombre_referido=@p1,
+                        pos_cv=@p2,
+                        pos_fecha_act=@p3   
+ 	                    WHERE pos_id=@p4;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_referido));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_cv));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return response;
         }

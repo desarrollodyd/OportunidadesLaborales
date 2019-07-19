@@ -166,6 +166,7 @@ namespace SistemaReclutamiento.Controllers
             persona.fk_ubigeo = ubigeo.ubi_id;
             persona.per_sexo = data.per_sexo;
             persona.per_id = data.per_id;
+            persona.per_fecha_act = DateTime.Now;
             //Seteando datos correspondiente a postulante
             postulante.pos_tipo_direccion = data.pos_tipo_direccion;
             postulante.pos_direccion = data.pos_direccion;
@@ -175,14 +176,7 @@ namespace SistemaReclutamiento.Controllers
             postulante.pos_celular = data.pos_celular;
             postulante.pos_estado_civil = data.pos_estado_civil;
             postulante.pos_brevete = data.pos_brevete;
-            postulante.pos_num_brevete = data.pos_num_brevete;
-            postulante.pos_referido = data.pos_referido;
-            postulante.pos_nombre_referido = data.pos_nombre_referido;
-            postulante.pos_cv = data.pos_cv;
-            postulante.pos_foto = data.pos_foto;
-            postulante.pos_situacion = data.pos_situacion;
-            postulante.pos_fecha_act = data.pos_fecha_act;
-            postulante.pos_estado = data.pos_estado;
+            postulante.pos_num_brevete = data.pos_num_brevete;                
             postulante.pos_id = data.pos_id;
             postulante.pos_fecha_act = DateTime.Now;
 

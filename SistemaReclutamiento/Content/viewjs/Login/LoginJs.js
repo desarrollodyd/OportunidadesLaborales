@@ -68,7 +68,7 @@
                 var dataForm = $("#frmNuevo").serializeFormJSON();
                 var url = basePath + "Persona/PersonaInsertarJson";
                 var url_redirect = "Login/Index";
-                fncRegistrar(dataForm, url, true, url_redirect);                           
+                fncRegistrar(dataForm, url, false, url_redirect);                           
             }
 
             

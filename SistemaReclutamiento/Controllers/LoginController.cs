@@ -71,8 +71,13 @@ namespace SistemaReclutamiento.Controllers
                         {
                             mensaje = "*";                                            
                             Session["usu_full"] = usuario;
+                            Session["usu_nombre"] = usuario.usu_nombre;
                             Session["usu_id"] = usuario.usu_id;
                             Session["fk_persona"] = usuario.fk_persona;
+                            Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                            Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);                         
                         }
                         else {
                             mensaje = "La contraseña ingresada es erronea";

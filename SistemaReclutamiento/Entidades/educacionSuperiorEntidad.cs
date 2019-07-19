@@ -15,7 +15,7 @@ namespace SistemaReclutamiento.Entidades
         public DateTime esu_periodo_fin { get; set; }
         public string esu_condicion { get; set; }
         public DateTime esu_fecha_reg { get; set; }
-        public DateTime usu_fecha_act { get; set; }
+        public DateTime esu_fecha_act { get; set; }
         public int fk_postulante{get;set;}
     }
 }

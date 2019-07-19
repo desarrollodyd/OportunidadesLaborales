@@ -4592,6 +4592,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EducacionBasicaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
@@ -4614,6 +4615,8 @@
     </Compile>
     <Compile Include="Models\educacionBasicaModel.cs" />
     <Compile Include="Models\educacionSuperiorModel.cs" />
+    <Compile Include="Models\experienciaModel.cs" />
+    <Compile Include="Models\idiomaModel.cs" />
     <Compile Include="Models\personaModel.cs" />
     <Compile Include="Models\postulanteModel.cs" />
     <Compile Include="Models\ubigeoModel.cs" />
@@ -4647,6 +4650,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="Views\educacionBasica\" />
     <Folder Include="Views\postulante\" />
     <Folder Include="Views\Ubigeo\" />
   </ItemGroup>

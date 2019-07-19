@@ -146,8 +146,9 @@ namespace SistemaReclutamiento.Models
                 per_tipodoc=@p7, 
                 per_numdoc=@p8, 
                 fk_ubigeo=@p9, 
-                per_sexo=@p10
-	                WHERE per_id=@p11;";
+                per_sexo=@p10,
+                per_fecha_act=@p11
+	                WHERE per_id=@p12;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -165,7 +166,8 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(persona.per_numdoc));
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(persona.fk_ubigeo));                  
                     query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(persona.per_sexo));
-                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullInteger(persona.per_id));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullDate(persona.per_fecha_act));
+                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullInteger(persona.per_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

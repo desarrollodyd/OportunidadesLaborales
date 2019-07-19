@@ -5,8 +5,6 @@
     $("#persona_direccion").text(personaIndex.per_direccion);
     $("#persona_apellidos").text(personaIndex.per_apellido_pat +" " +personaIndex.per_apellido_mat);
  
-
-
     var opcion = "";
     $('#myDatepicker').datetimepicker({
         format: 'DD/MM/YYYY',
@@ -15,6 +13,7 @@
     });
     $("[name='per_id']").val(personaIndex.per_id);
     $("[name='pos_id']").val(postulante.pos_id);
+    $("[name='fk_postulante']").val(postulante.pos_id);
     //Datos de persona
  
     $("#per_correoelectronico").val(personaIndex.per_correoelectronico)
@@ -26,9 +25,11 @@
     $("#per_telefono").val(personaIndex.per_telefono);  
     $("#cboSexo").val(personaIndex.per_sexo);
     $("#cbotipoDocumento").val(personaIndex.per_tipodoc);
+    //$("#cbotipoDocumento").attr('readonly','readonly');
+    //$("#per_numdoc").attr('readonly', 'readonly');
 
     //Datos de postulante
-    $("#per_celular").val(postulante.pos_celular);
+    $("#pos_celular").val(postulante.pos_celular);
     $("#cbotipoDireccion").val(postulante.pos_tipo_direccion);
     $("#pos_direccion").val(postulante.pos_direccion);
     $("#cbotipoCalle").val(postulante.pos_tipo_calle);
@@ -37,7 +38,9 @@
     $("#cboestadoCivil").val(postulante.pos_estado_civil);
     $("#cboBrevete").val(String(postulante.pos_brevete));
     $("#pos_num_brevete").val(postulante.pos_num_brevete);
-    $("#pos_estado").val(postulante.pos_estado);    
+    $("#pos_estado").val(postulante.pos_estado);   
+   
+
 
     //llenando combos
     $("#cboSexo").select2();
@@ -91,6 +94,14 @@
         }
 
     });
+    $(document).on('click', '#btnGuardarEducacionBasica', function () {
+        var validar = $("#frmEducacionBasica");
+        if (validar.valid()) {
+            var dataForm = $("#frmEducacionBasica").serializeFormJSON();
+            var url = basePath + "EducacionBasica/EducacionBasicaInsertarJson";
+            fncRegistrar(dataForm, url, false,"");
+        }
+    });  
 
 });
 $("#frmDatosPersonales")
@@ -170,6 +181,49 @@ $("#frmDatosPersonales")
                 required: 'REQUERIDO',
             }
 
+        },
+        errorPlacement: function (error, element) {
+            if (element.is(":radio") || element.is(":checkbox")) {
+                element.closest('.option-group').after(error);
+            }
+            else {
+                error.insertAfter(element);
+            }
+        }
+    });
+$("#frmEducacionBasica")
+    .validate({
+        rules: {
+            eba_tipo:
+            {
+                required: true,
+
+            },
+            eba_nombre:
+            {
+                required: true,
+
+            },
+            eba_condicion:
+            {
+                required: true,
+
+            }
+          
+        },
+        messages: {
+            eba_tipo:
+            {
+                required: 'REQUERIDO',
+            },
+            eba_nombre:
+            {
+                required: 'REQUERIDO',
+            },
+            eba_condicion:
+            {
+                required: 'REQUERIDO',
+            }
         },
         errorPlacement: function (error, element) {
             if (element.is(":radio") || element.is(":checkbox")) {
