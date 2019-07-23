@@ -57,8 +57,7 @@ namespace SistemaReclutamiento.Controllers
             personaEntidad persona = new personaEntidad();
             ubigeoEntidad ubigeo = new ubigeoEntidad();
             int respuestaPersonaInsertada = 0;
-            bool respuestaConsulta = false;
-            string fecha_nacimiento = "01/01/0001 00:00:00";
+            bool respuestaConsulta = false;          
             ubigeo = ubigeobl.UbigeoIdObtenerJson(datos.ubi_pais_id,datos.ubi_departamento_id,datos.ubi_provincia_id,datos.ubi_distrito_id);
             try
             {               
@@ -69,8 +68,7 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_correoelectronico = datos.per_correoelectronico;
                 persona.per_estado = "P";
                 persona.per_tipodoc = datos.per_tipodoc;
-                persona.fk_ubigeo = ubigeo.ubi_id;
-                persona.per_fechanacimiento= Convert.ToDateTime(fecha_nacimiento);
+                persona.fk_ubigeo = ubigeo.ubi_id;             
                 persona.per_fecha_reg = DateTime.Now;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
@@ -196,12 +194,12 @@ namespace SistemaReclutamiento.Controllers
 
             if (respuestaConsulta)
             {
+                persona = personabl.PersonaIdObtenerJson(data.per_id);
                 Session.Remove("per_full");
                 Session.Remove("ubigeo");
                 Session.Remove("postulante");
                 Session.Remove("fk_persona");
-                Session["per_full"] = personabl.PersonaIdObtenerJson(data.per_id);
-                persona = personabl.PersonaIdObtenerJson(data.per_id);
+                Session["per_full"] =persona;                
                 Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                 Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
                 Session["fk_persona"] = data.per_id;

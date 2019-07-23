@@ -69,13 +69,13 @@ namespace SistemaReclutamiento.Controllers
                     {
                         if (usuario.usu_contrasenia == usu_password.Trim())
                         {
+                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             mensaje = "*";                                            
                             Session["usu_full"] = usuario;
                             Session["usu_nombre"] = usuario.usu_nombre;
                             Session["usu_id"] = usuario.usu_id;
                             Session["fk_persona"] = usuario.fk_persona;
-                            Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            Session["per_full"] = persona;                            
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                             Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);                         
                         }
@@ -90,11 +90,11 @@ namespace SistemaReclutamiento.Controllers
                         string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
                         if (usuario.usu_contrasenia == password_encriptado)
                         {
+                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             Session["usu_id"] = usuario.usu_id;
                             Session["usu_nombre"] = usuario.usu_nombre;
                             Session["usu_full"] = usuario;
-                            Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);                         
+                            Session["per_full"] = persona;                                                   
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                             Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
                             Session["fk_persona"] = usuario.fk_persona;

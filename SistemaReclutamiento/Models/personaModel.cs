@@ -54,10 +54,11 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
+                                var fechanacimiento= Convert.IsDBNull(dr["per_fechanacimiento"]) ? DateTime.Now : dr["per_fechanacimiento"];
                                 persona.per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]);
                                 persona.per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]);
                                 persona.per_direccion = ManejoNulos.ManageNullStr(dr["per_direccion"]);
-                                persona.per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]);
+                                persona.per_fechanacimiento = Convert.ToDateTime(fechanacimiento);
                                 persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
                                 persona.per_tipo = ManejoNulos.ManageNullStr(dr["per_tipo"]);
                                 persona.per_estado = ManejoNulos.ManageNullStr(dr["per_estado"]);
@@ -80,6 +81,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
             return persona;
         }
@@ -96,12 +98,11 @@ namespace SistemaReclutamiento.Models
                                 per_apellido_mat,  
                                 per_correoelectronico,  
                                 per_estado,   
-                                per_tipodoc,
-                                per_fechanacimiento,
+                                per_tipodoc,                              
                                 per_fecha_reg,
                                 fk_ubigeo
                                 )
-	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9)                                    
+	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8)                                    
                                 returning per_id;";
             try
             {
@@ -115,10 +116,9 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p3", persona.per_apellido_mat);
                     query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
                     query.Parameters.AddWithValue("@p5", persona.per_estado);
-                    query.Parameters.AddWithValue("@p6", persona.per_tipodoc);
-                    query.Parameters.AddWithValue("@p7", persona.per_fechanacimiento);
-                    query.Parameters.AddWithValue("@p8", persona.per_fecha_reg);
-                    query.Parameters.AddWithValue("@p9", persona.fk_ubigeo);
+                    query.Parameters.AddWithValue("@p6", persona.per_tipodoc);                  
+                    query.Parameters.AddWithValue("@p7", persona.per_fecha_reg);
+                    query.Parameters.AddWithValue("@p8", persona.fk_ubigeo);
 
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                   
