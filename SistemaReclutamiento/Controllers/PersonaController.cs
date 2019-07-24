@@ -15,8 +15,9 @@ namespace SistemaReclutamiento.Controllers
         personaModel personabl = new personaModel();
         usuarioModel usuariobl = new usuarioModel();
         ubigeoModel ubigeobl = new ubigeoModel();
-        postulanteModel postulantebl = new postulanteModel();     
-     
+        postulanteModel postulantebl = new postulanteModel();
+        personaSqlModel personasqlbl = new personaSqlModel();
+        
         // GET: Usuario
         public ActionResult PersonaIndexVista()
         {
@@ -48,14 +49,15 @@ namespace SistemaReclutamiento.Controllers
         [HttpPost]
         public ActionResult PersonaInsertarJson(usuarioPersonaEntidad datos)
         {
-            var errormensaje = "";
-            string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
-            string usuario_envio = "";
-            string contrasenia_envio = "";
             postulanteEntidad postulante = new postulanteEntidad();
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
             ubigeoEntidad ubigeo = new ubigeoEntidad();
+            personaSqlEntidad personaSql = new personaSqlEntidad();          
+            var errormensaje = "";
+            string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
+            string usuario_envio = "";
+            string contrasenia_envio = "";
             int respuestaPersonaInsertada = 0;
             bool respuestaConsulta = false;          
             ubigeo = ubigeobl.UbigeoIdObtenerJson(datos.ubi_pais_id,datos.ubi_departamento_id,datos.ubi_provincia_id,datos.ubi_distrito_id);
@@ -68,7 +70,7 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_correoelectronico = datos.per_correoelectronico;
                 persona.per_estado = "P";
                 persona.per_tipodoc = datos.per_tipodoc;
-                persona.fk_ubigeo = ubigeo.ubi_id;             
+                persona.fk_ubigeo = 174;             
                 persona.per_fecha_reg = DateTime.Now;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos

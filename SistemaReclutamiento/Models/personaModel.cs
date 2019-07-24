@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Utilitarios;
-//using System.Data.SqlClient;
+using System.Data.SqlClient;
 using Npgsql;
 
 namespace SistemaReclutamiento.Models
@@ -14,7 +14,7 @@ namespace SistemaReclutamiento.Models
     {
         string _conexion;
         public personaModel() {
-            _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
+            _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;            
         }
         public personaEntidad PersonaIdObtenerJson(int per_id)
         {

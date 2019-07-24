@@ -11,6 +11,13 @@
         ignoreReadonly: true,
         allowInputToggle: true
     });
+
+    $('#').datetimepicker({
+        format: 'DD/MM/YYYY',
+        ignoreReadonly: true,
+        allowInputToggle: true
+    });
+
     $("[name='per_id']").val(personaIndex.per_id);
     $("[name='pos_id']").val(postulante.pos_id);
     $("[name='fk_postulante']").val(postulante.pos_id);
@@ -102,6 +109,14 @@
             fncRegistrar(dataForm, url, false,"");
         }
     });  
+    $(document).on('click', '#btnGuardarEducacionSuperior', function () {
+        var validar = $("#frmEducacionSuperior");
+        if (validar.valid()) {
+            var dataForm = $("#frmEducacionSuperior").serializeFormJSON();
+            var url = basePath + "EducacionSuperior/EducacionSuperiorInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    }); 
 
 });
 $("#frmDatosPersonales")

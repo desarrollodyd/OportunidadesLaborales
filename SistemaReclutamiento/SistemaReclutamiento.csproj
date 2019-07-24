@@ -4593,6 +4593,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EducacionBasicaController.cs" />
+    <Compile Include="Controllers\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
@@ -4605,6 +4606,7 @@
     <Compile Include="Entidades\ofimaticaEntidad.cs" />
     <Compile Include="Entidades\ofimaticaHerramientaEntidad.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
+    <Compile Include="Entidades\personaSqlEntidad.cs" />
     <Compile Include="Entidades\postgradoEntidad.cs" />
     <Compile Include="Entidades\postulanteEntidad.cs" />
     <Compile Include="Entidades\ubigeoEntidad.cs" />
@@ -4618,6 +4620,7 @@
     <Compile Include="Models\experienciaModel.cs" />
     <Compile Include="Models\idiomaModel.cs" />
     <Compile Include="Models\personaModel.cs" />
+    <Compile Include="Models\personaSqlModel.cs" />
     <Compile Include="Models\postulanteModel.cs" />
     <Compile Include="Models\ubigeoModel.cs" />
     <Compile Include="Models\usuarioModel.cs" />
@@ -4651,6 +4654,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="Views\educacionBasica\" />
+    <Folder Include="Views\EducacionSuperior\" />
     <Folder Include="Views\postulante\" />
     <Folder Include="Views\Ubigeo\" />
   </ItemGroup>
