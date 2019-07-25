@@ -7,6 +7,8 @@ using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Utilitarios;
 using SistemaReclutamiento.Entidades;
 using System.Net.Mail;
+using System.IO;
+using System.Configuration;
 
 namespace SistemaReclutamiento.Controllers
 {
@@ -16,7 +18,7 @@ namespace SistemaReclutamiento.Controllers
         usuarioModel usuariobl = new usuarioModel();
         ubigeoModel ubigeobl = new ubigeoModel();
         postulanteModel postulantebl = new postulanteModel();
-        personaSqlModel personasqlbl = new personaSqlModel();
+        personaSqlModel personasqlbl = new personaSqlModel();      
         
         // GET: Usuario
         public ActionResult PersonaIndexVista()
@@ -70,7 +72,7 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_correoelectronico = datos.per_correoelectronico;
                 persona.per_estado = "P";
                 persona.per_tipodoc = datos.per_tipodoc;
-                persona.fk_ubigeo = 174;             
+                persona.fk_ubigeo = ubigeo.ubi_id;             
                 persona.per_fecha_reg = DateTime.Now;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
@@ -208,6 +210,6 @@ namespace SistemaReclutamiento.Controllers
 
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
-        }
+        }        
     }
 }

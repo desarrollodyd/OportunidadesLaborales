@@ -1,30 +1,30 @@
-﻿using System;
+﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using SistemaReclutamiento.Entidades;
-using SistemaReclutamiento.Models;
 
 namespace SistemaReclutamiento.Controllers
 {
-    public class EducacionSuperiorController : Controller
+    public class OfimaticaController : Controller
     {
-        educacionSuperiorModel educacionsuperiorbl = new educacionSuperiorModel();
-        // GET: EducacionSuperior
+        ofimaticaModel ofimaticabl = new ofimaticaModel();
+        // GET: Ofimatica
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult EducacionSuperiorInsertarJson(educacionSuperiorEntidad educacionSuperior)
+        public ActionResult OfimaticaInsertarJson(ofimaticaEntidad ofimatica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
-            educacionSuperior.esu_fecha_reg = DateTime.Now;
+            ofimatica.ofi_fecha_reg = DateTime.Now;
             try
             {
-                respuestaConsulta = educacionsuperiorbl.EducacionSuperiorInsertarJson(educacionSuperior);
+                respuestaConsulta = ofimaticabl.OfimaticaInsertarJson(ofimatica);
 
             }
             catch (Exception exp)
@@ -36,13 +36,13 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult EducacionSuperiorEditarJson(educacionSuperiorEntidad educacionSuperior)
+        public ActionResult OfimaticaEditarJson(ofimaticaEntidad ofimatica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
             try
             {
-                respuestaConsulta = educacionsuperiorbl.EducacionSuperiorEditarJson(educacionSuperior);
+                respuestaConsulta = ofimaticabl.OfimaticaEditarJson(ofimatica);
 
             }
             catch (Exception exp)

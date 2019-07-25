@@ -185,7 +185,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteRegistrarReferidoJson(postulanteEntidad postulante)
+        public bool PostulanteInsertarInformacionAdicionalJson(postulanteEntidad postulante)
         {
             bool response = false;
             string consulta = @"
@@ -202,7 +202,7 @@ namespace SistemaReclutamiento.Models
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_referido));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManegeNullBool(postulante.pos_referido));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_cv));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));

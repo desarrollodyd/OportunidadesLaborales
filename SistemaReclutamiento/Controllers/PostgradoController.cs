@@ -1,30 +1,31 @@
-﻿using System;
+﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using SistemaReclutamiento.Entidades;
-using SistemaReclutamiento.Models;
 
 namespace SistemaReclutamiento.Controllers
 {
-    public class EducacionSuperiorController : Controller
+    public class PostgradoController : Controller
     {
-        educacionSuperiorModel educacionsuperiorbl = new educacionSuperiorModel();
-        // GET: EducacionSuperior
+        // GET: Postgrado    
+        postgradoModel educacionsuperiorbl = new postgradoModel();
+     
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult EducacionSuperiorInsertarJson(educacionSuperiorEntidad educacionSuperior)
+        public ActionResult PostgradoInsertarJson(postgradoEntidad postgrado)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
-            educacionSuperior.esu_fecha_reg = DateTime.Now;
+            postgrado.pos_fecha_reg = DateTime.Now;
             try
             {
-                respuestaConsulta = educacionsuperiorbl.EducacionSuperiorInsertarJson(educacionSuperior);
+                respuestaConsulta = educacionsuperiorbl.PostgradoInsertarJson(postgrado);
 
             }
             catch (Exception exp)
@@ -36,13 +37,13 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult EducacionSuperiorEditarJson(educacionSuperiorEntidad educacionSuperior)
+        public ActionResult PostgradoEditarJson(postgradoEntidad postgrado)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
             try
             {
-                respuestaConsulta = educacionsuperiorbl.EducacionSuperiorEditarJson(educacionSuperior);
+                respuestaConsulta = educacionsuperiorbl.PostgradoEditarJson(postgrado);
 
             }
             catch (Exception exp)
