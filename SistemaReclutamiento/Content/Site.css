@@ -1,18 +1,73 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿
+.validation-invalid-label,
+.validation-valid-label {
+    margin-top: -7px;
+    margin-bottom: 0.3rem;
+    display: block;
+    color: #f44336;
+    position: relative;
+    padding-left: 1.625rem;
+    font-size: 12px;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.validation-valid-label {
+    color: #4caf50
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+    .validation-invalid-label:before,
+    .validation-valid-label:before {
+        font-family: icomoon;
+        font-size: 1rem;
+        position: absolute;
+        top: 9px;
+        left: 0;
+        display: inline-block;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .validation-invalid-label:empty,
+    .validation-valid-label:empty {
+        display: none
+    }
+
+.validation-invalid-label:before {
+    content: ""
 }
 
+.validation-valid-label:before {
+    content: ""
+}
+
+.notify_confirmacion {
+    background: red;
+    color:white;
+}
+
+.jconfirm-box {
+    background-color: red !important;
+    color: white !important;
+}
+
+.jconfirm-buttons button {
+    margin: 1em 4px !important;
+    padding: 0.5em 2em 0.5em 2em !important;
+    width: auto !important;
+    background-color: #000 !important;
+    border: none !important;
+    color: #fff;
+    cursor: pointer !important;
+    font-size: .8em !important;
+    border-radius: 7px !important;
+    background: -moz-linear-gradient(270deg, rgba(105, 221, 201, 1) 0%, rgba(78, 193, 182, 1) 100%) !important;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #555), color-stop(100%, #333)) !important;
+    background: -webkit-linear-gradient(270deg, #555 0%, #333 100%) !important;
+    background: linear-gradient(180deg, #333 0%, rgb(9, 6, 6) 100%) !important;
+    -webkit-box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75) !important;
+    -moz-box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75) !important;
+}
+
+.ui-pnotify-text {
+    line-height: 1.2 !important;
+}

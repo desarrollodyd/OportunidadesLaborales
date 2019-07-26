@@ -82,8 +82,7 @@ namespace SistemaReclutamiento.Models
             {
             }
             return persona;
-        }
-        
+        }     
         public int PersonaInsertarJson(personaEntidad persona)
         {
             int idPersonaInsertada=0;
@@ -97,11 +96,9 @@ namespace SistemaReclutamiento.Models
                                 per_correoelectronico,  
                                 per_estado,   
                                 per_tipodoc,
-                                per_fechanacimiento,
-                                per_fecha_reg,
-                                fk_ubigeo
+                                per_fecha_reg                              
                                 )
-	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9)                                    
+	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)                                    
                                 returning per_id;";
             try
             {
@@ -116,17 +113,15 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
                     query.Parameters.AddWithValue("@p5", persona.per_estado);
                     query.Parameters.AddWithValue("@p6", persona.per_tipodoc);
-                    query.Parameters.AddWithValue("@p7", persona.per_fechanacimiento);
-                    query.Parameters.AddWithValue("@p8", persona.per_fecha_reg);
-                    query.Parameters.AddWithValue("@p9", persona.fk_ubigeo);
-
+                    query.Parameters.AddWithValue("@p7", persona.per_fecha_reg);
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
-                  
+               
                     //response = true;
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
             }
             return idPersonaInsertada;
         }

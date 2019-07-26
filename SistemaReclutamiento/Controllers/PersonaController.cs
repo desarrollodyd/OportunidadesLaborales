@@ -20,7 +20,16 @@ namespace SistemaReclutamiento.Controllers
         // GET: Usuario
         public ActionResult PersonaIndexVista()
         {
-            return View();
+            if (Session["usu_full"] != null)
+            {
+                ViewBag.Message = "Bienvenido.";
+                return View("~/Views/Persona/PersonaIndexVista.cshtml");
+            }
+            else
+            {
+                ViewBag.Message = "Login De Acceso";
+                return View();
+            }
         }
         public ActionResult PersonaEditarVista(string id)
         {
@@ -45,6 +54,7 @@ namespace SistemaReclutamiento.Controllers
             ViewBag.errormensaje = errormensaje;
             return View();
         }
+
         [HttpPost]
         public ActionResult PersonaInsertarJson(usuarioPersonaEntidad datos)
         {
@@ -55,11 +65,9 @@ namespace SistemaReclutamiento.Controllers
             postulanteEntidad postulante = new postulanteEntidad();
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
-            ubigeoEntidad ubigeo = new ubigeoEntidad();
             int respuestaPersonaInsertada = 0;
             bool respuestaConsulta = false;
-            string fecha_nacimiento = "01/01/0001 00:00:00";
-            ubigeo = ubigeobl.UbigeoIdObtenerJson(datos.ubi_pais_id,datos.ubi_departamento_id,datos.ubi_provincia_id,datos.ubi_distrito_id);
+            string contrasenia = "";
             try
             {               
                 persona.per_numdoc = datos.per_numdoc;
@@ -69,8 +77,6 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_correoelectronico = datos.per_correoelectronico;
                 persona.per_estado = "P";
                 persona.per_tipodoc = datos.per_tipodoc;
-                persona.fk_ubigeo = ubigeo.ubi_id;
-                persona.per_fechanacimiento= Convert.ToDateTime(fecha_nacimiento);
                 persona.per_fecha_reg = DateTime.Now;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
@@ -84,7 +90,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         else
                         {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "El Email : " + personaRepetida.per_correoelectronico + " ya se encuentra Registrado" });
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "El Correo : " + personaRepetida.per_correoelectronico + " ya se encuentra Registrado" });
                         }
                     }
                     else {
@@ -93,18 +99,25 @@ namespace SistemaReclutamiento.Controllers
                     
                 }
                 catch (Exception ex) {
-                    errormensaje = ex.Message;
+                    errormensaje = ex.Message + " ,Llame Administrador";
                 }
                 if (respuestaPersonaInsertada != 0) {
                     //Insercion de Usuario
-                    usuario.usu_contrasenia = GeneradorPassword.GenerarPassword(8);                    
+                    contrasenia = GeneradorPassword.GenerarPassword(8);
+                    usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);                    
                     usuario.usu_nombre = datos.per_correoelectronico;
                     usuario.fk_persona = respuestaPersonaInsertada;                    
                     usuario.usu_estado = "P";
                     usuario.usu_cambio_pass = true;
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
-                    //usuario.usuarioFechaCreacion = DateTime.Now;
+                    usuario.usu_fecha_reg = DateTime.Now;
                     respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
+
+                    if (!respuestaConsulta)
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
+                    }
+
                     //datos para cuerpo de correo
                     usuario_envio = usuario.usu_nombre;
                     contrasenia_envio = usuario.usu_contrasenia;
@@ -113,6 +126,14 @@ namespace SistemaReclutamiento.Controllers
                     postulante.pos_fecha_reg = DateTime.Now;
                     postulante.pos_estado = "A";
                     respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
+
+                    if (!respuestaConsulta)
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
+                    }
+                }
+                else{
+                    return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
                 }
                 
             }
@@ -132,9 +153,10 @@ namespace SistemaReclutamiento.Controllers
                         persona.per_correoelectronico,
                         "Correo de Confirmacion",
                         "Hola! : "+nombre+ " \n " +
-                        "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio+"\n Contraseña : "+ contrasenia_envio              
-                        +"\n por favor ingrese sus datos en el siguiente enlace y siga los pasos indicados completar su registro : http://localhost:63576/Login/Index?id=" + usuario.usu_clave_temp
-                        );                    
+                        "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio+"\n Contraseña : "+ contrasenia
+                        + "\n por favor ingrese sus datos en el siguiente enlace y siga los pasos indicados completar su registro : http://localhost:63576/Login/Activacion?id=" + usuario.usu_clave_temp
+                        );
+                    errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }
                 catch (Exception ex){
                     errormensaje = ex.Message;
@@ -142,6 +164,7 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult PersonaEditarJson(usuarioPersonaEntidad data)
         {

@@ -112,8 +112,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\build\css\custom.css" />
     <Content Include="Content\build\css\custom.min.css" />
     <Content Include="Content\build\images\back_disabled.png" />
@@ -143,6 +141,13 @@
     <Content Include="Content\docs\js\jquery.min.js" />
     <Content Include="Content\docs\js\shBrushXml.js" />
     <Content Include="Content\docs\js\shCore.js" />
+    <Content Include="Content\images\dots.png" />
+    <Content Include="Content\images\gears.png" />
+    <Content Include="Content\images\landing.jpg" />
+    <Content Include="Content\images\pj.png" />
+    <Content Include="Content\images\ray.png" />
+    <Content Include="Content\images\splat.png" />
+    <Content Include="Content\login.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\src\js\custom.js" />
     <Content Include="Content\src\js\helpers\smartresize.js" />
@@ -2244,6 +2249,8 @@
     <Content Include="Content\vendors\iCheck\skins\square\yellow.css" />
     <Content Include="Content\vendors\iCheck\skins\square\yellow.png" />
     <Content Include="Content\vendors\iCheck\skins\square\_all.css" />
+    <Content Include="Content\vendors\icomoon\fonts\icomoone627.svg" />
+    <Content Include="Content\vendors\icomoon\styles.min.css" />
     <Content Include="Content\vendors\ion.rangeSlider\.gitignore" />
     <Content Include="Content\vendors\ion.rangeSlider\css\ion.rangeSlider.css" />
     <Content Include="Content\vendors\ion.rangeSlider\css\ion.rangeSlider.skinFlat.css" />
@@ -2298,6 +2305,8 @@
     <Content Include="Content\vendors\jquery-sparkline\src\vcanvas-vml.js" />
     <Content Include="Content\vendors\jquery-sparkline\version.txt" />
     <Content Include="Content\vendors\jquery-validation\jquery.validate.min.js" />
+    <Content Include="Content\vendors\jquery.confirm\jquery-confirm.css" />
+    <Content Include="Content\vendors\jquery.confirm\jquery-confirm.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\.gitignore" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.js" />
     <Content Include="Content\vendors\jquery.easy-pie-chart\dist\angular.easypiechart.min.js" />
@@ -3644,7 +3653,9 @@
     <Content Include="Content\vendors\validator\multifield.js" />
     <Content Include="Content\vendors\validator\validator.js" />
     <Content Include="Content\viewjs\general.js" />
+    <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
+    <Content Include="Content\viewjs\Login\Login.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
@@ -3653,6 +3664,7 @@
     <Content Include="images\american-express.png" />
     <Content Include="images\cropper.jpg" />
     <Content Include="images\favicon.ico" />
+    <Content Include="images\icon.png" />
     <Content Include="images\img.jpg" />
     <Content Include="images\inbox.png" />
     <Content Include="images\mastercard.png" />
@@ -4579,6 +4591,10 @@
     <Content Include="Content\vendors\validator\.bower.json" />
     <Content Include="Content\vendors\validator\README.md" />
     <Content Include="Content\vendors\validator\validator.jquery.json" />
+    <Content Include="Content\vendors\icomoon\fonts\icomoond41d.eot" />
+    <Content Include="Content\vendors\icomoon\fonts\icomoone627.eot" />
+    <Content Include="Content\vendors\icomoon\fonts\icomoone627.ttf" />
+    <Content Include="Content\vendors\icomoon\fonts\icomoone627.woff" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

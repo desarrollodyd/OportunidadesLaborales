@@ -144,7 +144,7 @@ html , body{
     padding: 0 0 4px 0
 }
 .left_col {
-    background: #2A3F54
+    background: #000;
 }
 .nav-sm .container.body .col-md-3.left_col {
     min-height: 100%;
@@ -182,7 +182,7 @@ html , body{
 .site_title i {
     border: 1px solid #EAEAEA;
     padding: 5px 6px;
-    border-radius: 50%
+    /*border-radius: 50%*/
 }
 .site_title img {
     max-height: 66px;
@@ -228,7 +228,9 @@ html , body{
     width: 210px;
     z-index: 4000;
     background: #3E5367;
-    display: none
+    display: none;
+    background: #ffffff;
+    border: 1px solid #000;
 }
 .nav-sm ul.nav.child_menu li {
     padding: 0 10px
@@ -257,18 +259,18 @@ html , body{
     margin-top: 10px
 }
 .profile_pic {
-    width: 35%;
-    float: left
+    width: 50%;
+    margin: auto;
 }
 .img-circle.profile_img {
-    width: 70%;
+    width: 100%;
     background: #fff;
-    margin-left: 15%;
+    /* margin-left: 15%; */
     z-index: 1000;
     position: inherit;
     margin-top: 10px;
     border: 1px solid rgba(52, 73, 94, 0.44);
-    padding: 4px
+    padding: 4px;
 }
 .profile_info {
     padding: 10px;
@@ -326,7 +328,7 @@ html , body{
 }
 .nav_menu {
     float: left;
-    background: #EDEDED;
+    background: linear-gradient(#ea4040, #7d0808), #a50707;
     border-bottom: 1px solid #D9DEE4;
     margin-bottom: 10px;
     width: 100%;
@@ -354,13 +356,14 @@ body .container.body .right_col {
     background: #F7F7F7
 }
 .nav-md .container.body .right_col {
-    padding: 10px 20px 0;
+    padding: 10px 11px 0;
     margin-left: 230px
 }
 .nav_title {
     width: 230px;
     float: left;
-    background: #2A3F54;
+    background: linear-gradient(#ea4040, #7d0808), #a50707;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;
     border-radius: 0;
     height: 57px
 }
@@ -483,12 +486,12 @@ body .container.body .right_col {
 .navbar-nav>li>a {
     color: #fff !important
 }
-.top_nav .nav>li>a:focus,
-.top_nav .nav>li>a:hover,
-.top_nav .nav .open>a,
-.top_nav .nav .open>a:focus,
-.top_nav .nav .open>a:hover {
-    background: #D9DEE4
+.top_nav .nav > li > a:focus,
+.top_nav .nav > li > a:hover,
+.top_nav .nav .open > a,
+.top_nav .nav .open > a:focus,
+.top_nav .nav .open > a:hover {
+    background: #0e0e0e
 }
 body {
     color: #73879C;
@@ -725,7 +728,7 @@ a:focus {
     cursor: pointer
 }
 .nav.side-menu>li>a {
-    margin-bottom: 6px
+    margin-bottom: 1px
 }
 .nav.side-menu>li>a:hover {
     color: #F2F5F7 !important
@@ -736,17 +739,19 @@ a:focus {
     background: transparent
 }
 .nav.child_menu {
-    display: none
+    display: none;
+    background: rgb(255, 255, 255);
+    color: black;
 }
-.nav.child_menu li:hover,
-.nav.child_menu li.active {
-    background-color: rgba(255, 255, 255, 0.06)
-}
+    .nav.child_menu li:hover,
+    .nav.child_menu li.active {
+        background-color: rgb(211, 214, 218)
+    }
 .nav.child_menu li {
     padding-left: 36px
 }
 .nav-md ul.nav.child_menu li:before {
-    background: #425668;
+    background: #880404;
     bottom: auto;
     content: "";
     height: 8px;
@@ -759,7 +764,7 @@ a:focus {
     border-radius: 50%
 }
 .nav-md ul.nav.child_menu li:after {
-    border-left: 1px solid #425668;
+    border-left: 1px solid #880404;
     bottom: 0;
     content: "";
     left: 27px;
@@ -787,9 +792,9 @@ a:focus {
     display: block;
     padding: 13px 15px 12px
 }
-.nav.side-menu>li.current-page,
-.nav.side-menu>li.active {
-    border-right: 5px solid #1ABB9C
+.nav.side-menu > li.current-page,
+.nav.side-menu > li.active {
+    border-right: 5px solid #da6c6c;
 }
 .nav li.current-page {
     background: rgba(255, 255, 255, 0.05)
@@ -800,9 +805,9 @@ a:focus {
 .nav li li.current-page a {
     color: #fff
 }
-.nav.side-menu>li.active>a {
+.nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
-    background: linear-gradient(#334556, #2C4257), #2A3F54;
+    background: linear-gradient(#ea4040, #7d0808), #a50707;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0
 }
 .navbar-brand,
@@ -830,8 +835,8 @@ a:focus {
 .site_title:focus {
     text-decoration: none
 }
-.nav.navbar-nav>li>a {
-    color: #515356 !important
+.nav.navbar-nav > li > a {
+    color: #ffffff !important
 }
 .nav.top_menu>li>a {
     position: relative;
@@ -877,12 +882,13 @@ a:focus {
     cursor: pointer
 }
 .toggle a i {
-    font-size: 26px
+    font-size: 26px;
+
 }
-.nav.child_menu>li>a {
-    color: rgba(255, 255, 255, 0.75);
+.nav.child_menu > li > a {
+    color: rgb(12, 12, 12);
     font-size: 12px;
-    padding: 9px
+    padding: 9px;
 }
 .panel_toolbox {
     float: right;
@@ -1060,7 +1066,7 @@ h2 {
     position: relative;
     width: 100%;
     margin-bottom: 10px;
-    padding: 10px 17px;
+    padding: 10px 10px;
     display: inline-block;
     background: #fff;
     border: 1px solid #E6E9ED;
@@ -1094,7 +1100,7 @@ h2 {
     color: #BDBDBD
 }
 .x_content {
-    padding: 0 5px 6px;
+    padding: 0 0px 6px;
     position: relative;
     width: 100%;
     float: left;
@@ -1530,9 +1536,9 @@ ul.msg_list li a .message {
 }
 .navbar-nav .open .dropdown-menu {
     position: absolute;
-    background: #fff;
+    background: #0e0e0e;
     margin-top: 0;
-    border: 1px solid #D9DEE4;
+    border: 1px solid #0e0e0e;
     -webkit-box-shadow: none;
     right: 0;
     left: auto;
@@ -4253,3 +4259,12 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     background-color: #ffff !important;
 }
 /** /bootstrap-datetimepicker **/
+
+.nav_menu a {
+    color: #fff !important;
+}
+
+.top_nav .dropdown-menu li a:focus, .top_nav .dropdown-menu li a:hover {
+    background-color: #ffffff !important;
+    color:black !important;
+}

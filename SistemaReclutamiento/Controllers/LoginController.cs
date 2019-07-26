@@ -16,50 +16,85 @@ namespace SistemaReclutamiento.Controllers
         ubigeoModel ubigeobl = new ubigeoModel();
         postulanteModel postulantebl = new postulanteModel();
         
-        public ActionResult Index(string id)
+        public ActionResult Index()
         {
+            if (Session["usu_full"] != null)
+            {
+                ViewBag.Message = "Bienvenido.";
+                return View("~/Views/Persona/PersonaIndexVista.cshtml");
+            }
+            else
+            {
+                ViewBag.Message = "Login De Acceso";
+                return View();
+            }
+         
+        }
+
+        public ActionResult Activacion(string id) {
             var usuario = new usuarioEntidad();
+            var datoPendiente = new List<dynamic>();
             var errormensaje = "";
-            if (id != "" || id != null) {
-                try {
+            bool respuestaConsulta = false;
+           
+            if (id != "" || id != null)
+            {
+                try
+                {
                     usuario = usuariobl.UsuarioObtenerTokenJson(id);
+                    if (usuario.usu_id != 0)
+                    {
+                        datoPendiente.Add(new { usuarioID = Seguridad.Encriptar(usuario.usu_id.ToString()), contrasenia = Seguridad.Encriptar(usuario.usu_contrasenia) });
+                        respuestaConsulta = true;
+                    }
+                    else
+                    {
+                        errormensaje = "Ya completo su Registro";
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     errormensaje = ex.Message + "token invalido";
                 }
-                ViewBag.Usuario = usuario;
-                ViewBag.ErrorMessage = errormensaje;
+                ViewBag.respuesta = respuestaConsulta;
+                ViewBag.data = datoPendiente;
+                ViewBag.mensaje = errormensaje;
             }
-            return View();
-
-        }
-        public ActionResult ValidarUsuarioIndex() {
+            else
+            {
+                ViewBag.ErrorMessage = "No se envio la Clave";
+            }
             ViewBag.Usuario = "usuario";
-            return View();
+            return View("~/Views/Login/ValidarUsuarioIndex.cshtml");
         }
+
         [HttpPost]
         public ActionResult CambiarPasswordUsuario(string usu_password, string usu_id) {
-            bool respuesta = false;
-            string mensaje = "";
+            bool respuestaConsulta = false;
+            string errormensaje = "";
             var usuario = new usuarioEntidad();
             usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
             string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
             try {
-                respuesta = usuariobl.UsuarioEditarEstadoJson(usuario.usu_id, password_encriptado);
+                respuestaConsulta = usuariobl.UsuarioEditarEstadoJson(usuario.usu_id, password_encriptado);
+                var usuarioData = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                Session["usu_full"] = usuarioData;
+                errormensaje = "Contraseña actualizada correctamente";
             }
             catch (Exception ex) {
-                mensaje = ex.Message + "";
+                errormensaje = ex.Message + "";
             }
-            return Json(new { respuesta=respuesta,mensaje=mensaje});
+            return Json(new { respuesta= respuestaConsulta, mensaje= errormensaje });
         }
+
         [HttpPost]
-        public ActionResult ValidarLoginJson(string usu_login, string usu_password, string usu_clave_temp)
+        public ActionResult ValidarLoginJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
-            string mensaje = "";
+            string errormensaje = "";
             var usuario = new usuarioEntidad();        
-            var persona = new personaEntidad();          
+            var persona = new personaEntidad();
+            String pendiente = "";
             try
             {
                 usuario = usuariobl.ValidarCredenciales(usu_login);
@@ -67,31 +102,20 @@ namespace SistemaReclutamiento.Controllers
                 {
                     if (usuario.usu_estado=="P")
                     {
-                        if (usuario.usu_contrasenia == usu_password.Trim())
+                        if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
                         {
-                            mensaje = "*";                                            
-                            Session["usu_full"] = usuario;
-                            Session["usu_nombre"] = usuario.usu_nombre;
-                            Session["usu_id"] = usuario.usu_id;
-                            Session["fk_persona"] = usuario.fk_persona;
-                            Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                            Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);                         
+                            pendiente = usuario.usu_clave_temp;
+                            errormensaje = "Usuario Pendiente de Activacion";                                            
                         }
                         else {
-                            mensaje = "La contraseña ingresada es erronea";
-                        }
-                        
-                        
+                            errormensaje = "La contraseña ingresada es erronea";
+                        }                       
                     }                      
                     else
                     {
                         string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
                         if (usuario.usu_contrasenia == password_encriptado)
                         {
-                            Session["usu_id"] = usuario.usu_id;
-                            Session["usu_nombre"] = usuario.usu_nombre;
                             Session["usu_full"] = usuario;
                             Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);                         
@@ -99,26 +123,84 @@ namespace SistemaReclutamiento.Controllers
                             Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
                             Session["fk_persona"] = usuario.fk_persona;
                             respuesta = true;
-                            mensaje = "Bienvenido, " + usuario.usu_nombre;
+                            errormensaje = "Bienvenido, " + usuario.usu_nombre;
                         }
                         else
                         {
-                            mensaje = "La contraseña ingresada es erronea";
+                            errormensaje = "La contraseña ingresada es erronea";
                         }
                     }
                 }
                 else
                 {
-                    mensaje = "No se ha encontrando el usuario ingresado";
+                    errormensaje = "No se ha encontrando el usuario ingresado";
                 }
             }
             catch (Exception exp)
             {
-                mensaje = exp.Message + "";
+                errormensaje = exp.Message + "";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = mensaje/*, usuario=usuario*/ });
+            return Json(new { respuesta = respuesta, mensaje = errormensaje,estado=pendiente/*, usuario=usuario*/ });
         }
+
+        [HttpPost]
+        public ActionResult RecuperarContrasenia(string correo_recuperacion)
+        {
+            var errormensaje = "";          
+            string usuario_envio = "";
+            string contrasenia_envio = "";
+            string nombre = "";
+            string contrasenia = "";
+            usuarioEntidad usuario = new usuarioEntidad();
+            personaEntidad persona = new personaEntidad();
+            bool respuestaConsulta = false;
+            
+
+            try
+            {
+                usuario = usuariobl.ValidarCredenciales(correo_recuperacion);
+                if (usuario.usu_id > 0)
+                {
+                    usuario_envio = usuario.usu_nombre;
+                    contrasenia_envio = GeneradorPassword.GenerarPassword(8);
+                    contrasenia = Seguridad.EncriptarSHA512(contrasenia_envio);
+
+                    respuestaConsulta = usuariobl.UsuarioEditarContraseniaJson(usuario.usu_id, contrasenia);
+                    if (respuestaConsulta)
+                    {
+                        persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                        nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
+                        //string cuerpo_correo = "";
+                        Correo correo = new Correo();
+                        //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
+                        correo.EnviarCorreo(
+                        persona.per_correoelectronico,
+                                 "Correo de Confirmacion",
+                                 "Hola! : " + nombre + " \n " +
+                                 "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia_envio);
+                        errormensaje = "Verifique su Correo ,Se le ha enviado su Contraseña nueva , Gracias.";
+                    }
+                    else
+                    {
+
+                        errormensaje = "No se pudo editar la contraseña";
+                    }
+                }
+                else
+                {
+                    errormensaje = "Verifique su Correo ,No se encontro el Registro, Gracias.";
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+
         [HttpPost]
         public ActionResult CerrarSesionLoginJson()
         {

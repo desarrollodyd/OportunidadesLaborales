@@ -1,74 +1,148 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Activar Registro";
     Layout = "~/Views/Shared/_Login.cshtml";
 }
 @using System.Activities.Expressions
 @using System.Web.Script.Serialization
 @using System.Web.UI.WebControls
-@using SistemaReclutamiento.Utilitarios;
 @{
-    String usuario = new JavaScriptSerializer().Serialize(ViewBag.Usuario);
-    var idUsuario = Seguridad.Encriptar(Convert.ToString(Session["usu_id"]));
+    String respuesta = new JavaScriptSerializer().Serialize(ViewBag.respuesta);
+    String data = new JavaScriptSerializer().Serialize(ViewBag.data);
+    String mensaje = new JavaScriptSerializer().Serialize(ViewBag.mensaje);
 }
 <script type="text/javascript">
-    usuario= (@Html.Raw(usuario));
+    respuesta = (@Html.Raw(respuesta));
+    data = (@Html.Raw(data));
+    mensaje = (@Html.Raw(mensaje));
 </script>
-<div>
-    <div class="container" style="margin-top: 0px">
-        <div class="page-header" align="center">
-            <h1>Portal Laboral Corporacion PJ</h1>
-        </div>
-        <div align="center">
-            <img src="~/images/pj.png" alt="" style="width: 75px; height:75px;">
+
+<div class="wrap">
+    <!-- TOGGLE -->
+    <div id="toggle-wrap">
+        <div id="toggle-terms">
+            <div id="cross">
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
-    <div class="login_wrapper" style="margin-top: 0px;">       
-      
-        <!--Formulario de envio de contraseña-->
-        <div class="animate form">
-            <section class="login_content">
-                <form id="frmCambio">
-                    <h1>Cambiar Contraseña</h1>
-                    <div class="clearfix">
-                    </div>
-                    <div>
-                        <p>Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder sin problemas.</p>
-                    </div>
-                    <div>
-                        <input type="hidden" name="usu_id" id="usu_id" value="@idUsuario" />
-                    </div>
-                    <div>
-                        <label>Nueva Contraseña</label>
-                        <input type="password" class="form-control" placeholder="Contraseña" name="usu_password" id="usu_password" />
-                    </div>
-                    <div>
-                        <label>Escriba Nuevamente su Contraseña</label>
-                        <input type="password" class="form-control" placeholder="Contraseña" name="usu_password_repetido" id="usu_password_repetido" />
-                    </div>
-                    <div>
-                        <button type="button" id="btnCambio" class="btn btn-default submit">CAMBIAR</button>
-                        @*<a class="btn btn-default submit" href="index.html">CAMBIAR</a>*@
-                    </div>
 
-                    <div class="clearfix"></div>
-
-                    <div class="separator">
-                        <div class="clearfix"></div>
-
-                        <br />
-                        <div>
-                            <p>©@DateTime.Now.Year Corporacion PJ</p>
-                        </div>
-                    </div>
-                </form>
-            </section>
+    <!-- SLIDER -->
+    <div class="content" style="text-align: center;">
+        <!-- LOGO -->
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/pj.png" alt=""></a>
         </div>
+        <!-- SLIDESHOW -->
+        <div id="slideshow">
+            <div class="one">
+                <h2><span>Portal Laboral </span></h2>
+                <p>Registrate y podras encontrar las ofertas laborales que brindamos</p>
+            </div>
+            <div class="two">
+                <h2><span>Corporacion PJ</span></h2>
+                <p>Somos una empresa peruana, dedicada a la administración de casinos y salas de juegos.</p>
+            </div>
+            <div class="three">
+                <h2><span>Apostamos por tu Talento</span></h2>
+                <p>Postula a la Oferta laboral que estes buscando</p>
+            </div>
+            <div class="four">
+                <h2><span>Ofrecemos</span></h2>
+                <p>Ser parte de una de las empresas peruanas mas solidas del rubro de entretenimiento</p>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN FORM -->
+    <div class="user">
 
-
+        <div class="form-wrap">
+            <!-- TABS -->
+            <div class="tabs">
+                <h3 class="login-tab" style="width: 100%;"><a class="log-in active" href="#login-tab-content"><span>Actualizar Contraseña</span></a></h3>
+            </div>
+            <!-- TABS CONTENT -->
+            <div class="tabs-content">
+                <!-- TABS CONTENT LOGIN -->
+                <div id="login-tab-content" style="margin-top: 3em;" class="active">
+                    <div>
+                        <p class="divcomentario">Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder sin problemas.</p>
+                    </div>
+                    <form id="activacion-form" class="login-form" action="" method="post">
+                        <input type="hidden" name="usu_id" id="usu_id" value="" />
+                        <input type="password" class="input" id="usu_password" name="usu_password" autocomplete="off" placeholder="Contraseña Nueva">
+                        <input type="password" class="input" id="usu_password_repetido" name="usu_password_repetido" autocomplete="off" placeholder="Repita Contraseña">
+                        <button type="button" class="button btn_guardar">Guardar</button>
+                    </form>
+                </div>
+                <!-- TABS CONTENT SIGNUP -->
+            </div>
+        </div>
     </div>
 </div>
+
+@*<div>
+        <div class="container" style="margin-top: 0px">
+            <div class="page-header" align="center">
+                <h1>Portal Laboral Corporacion PJ</h1>
+            </div>
+            <div align="center">
+                <img src="~/images/pj.png" alt="" style="width: 75px; height:75px;">
+            </div>
+        </div>
+        <div class="login_wrapper" style="margin-top: 0px;">
+
+
+            <div class="animate form">
+                <section class="login_content">
+                    <form id="frmCambio">
+                        <h1>Cambiar Contraseña</h1>
+                        <div class="clearfix">
+                        </div>
+                        <div>
+                            <p>Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder sin problemas.</p>
+                        </div>
+                        <div>
+                            <input type="hidden" name="usu_id" id="usu_id" value="@idUsuario" />
+                        </div>
+                        <div>
+                            <label>Nueva Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Contraseña" name="usu_password" id="usu_password" />
+                        </div>
+                        <div>
+                            <label>Escriba Nuevamente su Contraseña</label>
+                            <input type="password" class="form-control" placeholder="Contraseña" name="usu_password_repetido" id="usu_password_repetido" />
+                        </div>
+                        <div>
+                            <button type="button" id="btnCambio" class="btn btn-default submit">CAMBIAR</button>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <div class="clearfix"></div>
+
+                            <br />
+                            <div>
+                                <p>©@DateTime.Now.Year Corporacion PJ</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+
+        </div>
+    </div>
+    @section js
+    {
+        <script src="~/Content/viewjs/Login/CambioPassword.js"></script>
+    }*@
+
+
 @section js
-{
-    <script src="~/Content/viewjs/Login/CambioPassword.js"></script>
+    {
+    <script src="~/Content/viewjs/Login/Activacion.js"></script>
 }

@@ -6,186 +6,144 @@
 @using System.Activities.Expressions
 @using System.Web.Script.Serialization
 @using System.Web.UI.WebControls
-@{
-    String usuario = new JavaScriptSerializer().Serialize(ViewBag.Usuario);
-}
-<script type="text/javascript">
-    usuario= (@Html.Raw(usuario));
-</script>
-<div>
-    <a class="hiddenanchor" id="signup"></a>
-    <a class="hiddenanchor" id="signin"></a>
-    <a class="hiddenanchor" id="email_send"></a>
 
-    <div class="container" style="margin-top: 0px">
-        <div class="page-header" align="center">
-            <h1>Portal Laboral Corporacion PJ</h1>
-        </div>
-        <div align="center">
-            <img src="~/images/pj.png" alt="" style="width: 75px; height:75px;">
+<div class="wrap">
+    <!-- TOGGLE -->
+    <div id="toggle-wrap">
+        <div id="toggle-terms">
+            <div id="cross">
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
-    <div class="login_wrapper" style="margin-top: 0px;">
-        <!--Formulario de acceso al Sistema-->
-        <div class="animate form login_form">
-            <section class="login_content" style="padding-top:0px;">
+    <!-- TERMS -->
+    <div class="terms">
+        <h2>dp Terms of Service</h2>
+        <p class="small">Last modified: September 23, 2017</p>
+        <h3>Welcome to dp</h3>
+        <p>By using our Services, you are agreeing to these terms. Please read them carefully.</p>
+        <p>Our Services are very diverse, so sometimes additional terms or product requirements (including age requirements) may apply. Additional terms will be available with the relevant Services, and those additional terms become part of your agreement with us if you use those Services.</p>
+        <h3>Using our Services</h3>
+        <p>You must follow any policies made available to you within the Services.</p>
+        <p>Using our Services does not give you ownership of any intellectual property rights in our Services or the content you access. You may not use content from our Services unless you obtain permission from its owner or are otherwise permitted by law. These terms do not grant you the right to use any branding or logos used in our Services. Don’t remove, obscure, or alter any legal notices displayed in or along with our Services.</p>
+        <p>In connection with your use of the Services, we may send you service announcements, administrative messages, and other information. You may opt out of some of those communications.</p>
+        <h3>Your dp Account</h3>
+        <p>You may need a dp Account in order to use some of our Services. You may create your own dp Account, or your dp Account may be assigned to you by an administrator, such as your employer or educational institution. If you are using a dp Account assigned to you by an administrator, different or additional terms may apply and your administrator may be able to access or disable your account.</p>
+        <p>To protect your dp Account, keep your password confidential. You are responsible for the activity that happens on or through your dp Account. Try not to reuse your dp Account password on third-party applications.</p>
+        <h3>Privacy and Copyright Protection</h3>
+        <p>dp’s privacy policies explain how we treat your personal data and protect your privacy when you use our Services. By using our Services, you agree that dp can use such data in accordance with our privacy policies.</p>
+        <p>We respond to notices of alleged copyright infringement and terminate accounts of repeat infringers according to the process set out in the U.S. Digital Millennium Copyright Act.</p>
+        <p>We provide information to help copyright holders manage their intellectual property online. If you think somebody is violating your copyrights and want to notify us, you can find information about submitting notices and dp’s policy about responding to notices in our Help Center.</p>
+        <h3>Modifying and Terminating our Services</h3>
+        <p>We are constantly changing and improving our Services. We may add or remove functionalities or features, and we may suspend or stop a Service altogether.</p>
+        <p>You can stop using our Services at any time, although we’ll be sorry to see you go. dp may also stop providing Services to you, or add or create new limits to our Services at any time.</p>
+        <p>We believe that you own your data and preserving your access to such data is important. If we discontinue a Service, where reasonably possible, we will give you reasonable advance notice and a chance to get information out of that Service.</p>
+        <h3>Our Warranties and Disclaimers</h3>
+        <p>We provide our Services using a commercially reasonable level of skill and care and we hope that you will enjoy using them. But there are certain things that we don’t promise about our Services.</p>
+        <p>OTHER THAN AS EXPRESSLY SET OUT IN THESE TERMS OR ADDITIONAL TERMS, NEITHER dp NOR ITS SUPPLIERS OR DISTRIBUTORS MAKE ANY SPECIFIC PROMISES ABOUT THE SERVICES. FOR EXAMPLE, WE DON’T MAKE ANY COMMITMENTS ABOUT THE CONTENT WITHIN THE SERVICES, THE SPECIFIC FUNCTIONS OF THE SERVICES, OR THEIR RELIABILITY, AVAILABILITY, OR ABILITY TO MEET YOUR NEEDS. WE PROVIDE THE SERVICES “AS IS”.</p>
+        <p>SOME JURISDICTIONS PROVIDE FOR CERTAIN WARRANTIES, LIKE THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. TO THE EXTENT PERMITTED BY LAW, WE EXCLUDE ALL WARRANTIES.</p>
+        <h3>Liability for our Services</h3>
+        <p>WHEN PERMITTED BY LAW, dp, AND dp’S SUPPLIERS AND DISTRIBUTORS, WILL NOT BE RESPONSIBLE FOR LOST PROFITS, REVENUES, OR DATA, FINANCIAL LOSSES OR INDIRECT, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES.</p>
+        <p>TO THE EXTENT PERMITTED BY LAW, THE TOTAL LIABILITY OF dp’S, AND ITS SUPPLIERS AND DISTRIBUTORS, FOR ANY CLAIMS UNDER THESE TERMS, INCLUDING FOR ANY IMPLIED WARRANTIES, IS LIMITED TO THE AMOUNT YOU PAID US TO USE THE SERVICES (OR, IF WE CHOOSE, TO SUPPLYING YOU THE SERVICES AGAIN).</p>
+        <p>IN ALL CASES, dp, AND ITS SUPPLIERS AND DISTRIBUTORS, WILL NOT BE LIABLE FOR ANY LOSS OR DAMAGE THAT IS NOT REASONABLY FORESEEABLE.</p>
+        <h3>About these Terms</h3>
+        <p>We may modify these terms or any additional terms that apply to a Service to, for example, reflect changes to the law or changes to our Services. You should look at the terms regularly. We’ll post notice of modifications to these terms on this page. We’ll post notice of modified additional terms in the applicable Service. Changes will not apply retroactively and will become effective no sooner than fourteen days after they are posted. However, changes addressing new functions for a Service or changes made for legal reasons will be effective immediately. If you do not agree to the modified terms for a Service, you should discontinue your use of that Service.</p>
+        <p>If you do not comply with these terms, and we don’t take action right away, this doesn’t mean that we are giving up any rights that we may have (such as taking action in the future).</p>
+        <p>The laws of California, U.S.A., excluding California’s conflict of laws rules, will apply to any disputes arising out of or relating to these terms or the Services. All claims arising out of or relating to these terms or the Services will be litigated exclusively in the federal or state courts of Santa Clara County, California, USA, and you and dp consent to personal jurisdiction in those courts.</p>
+        <p>For information about how to contact dp, please visit our contact page.</p>
+    </div>
 
-                <form id="frmLogin">
-                    <h1>Acceso</h1>
-                    <div>
-                        <input type="hidden" name="usu_clave_temp" id="usu_clave_temp" />
-                    </div>
-                    <div>
-                        <input type="email" name="usu_login" id="usu_login" class="form-control" placeholder="Email" />
-                    </div>
-                    <div>
-                        <input type="password" name="usu_password" id="usu_password" class="form-control" placeholder="Contraseña" />
-                    </div>
-                    <div>
-                        <button type="button" id="btnSesion" class="btn btn-default submit">Iniciar Sesión</button>
-                        @*<a class="btn btn-default submit" href="index.html">INICIAR SESION</a>*@
-                        <a class="reset_pass change_link" href="#email_send">Olvido su contraseña?</a>
-                    </div>
+    <!-- RECOVERY -->
+    <div class="recovery">
+        <h2>Recuperar Contraseña</h2>
+        <p>Ingrese el <strong>Correo</strong> registrado y presione<strong> Enviar</strong>.</p>
+        <p>Una notificacion le llegara a su correo.</p>
+        <form class="recovery-form" id="recovery-form" action="" method="post">
+            <input type="text" class="input" id="correo_recuperacion" name="correo_recuperacion" placeholder="Ingrese Correo">
+            <button type="button" class="button btn_recuperar">Enviar</button>
+        </form>
+        <p class="mssg">Un Correo le ha sido Enviado.</p>
+    </div>
 
-                    <div class="clearfix"></div>
-
-                    <div class="separator">
-                        <p class="change_link">
-                            No esta Registrado?
-                            <a href="#signup" class="to_register"> REGISTRESE AQUI! </a>
-                        </p>
-
-                        <div class="clearfix"></div>
-                        <br />
-
-                        <div>
-                            <p>©@DateTime.Now.Year Corporacion PJ</p>
-                        </div>
-                    </div>
-                </form>
-            </section>
+    <!-- SLIDER -->
+    <div class="content" style="text-align: center;">
+        <!-- LOGO -->
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/pj.png" alt=""></a>
         </div>
-        <!--Formulario de registro de Usuario-->
-        <div class="animate form registration_form">
-            <section class="login_content">
-                <form id="frmNuevo">
-                    <h1>Registro</h1>
-                    <div>
-                        <input type="text" class="form-control" placeholder="Nombre" name="per_nombre" id="per_nombre" />
+        <!-- SLIDESHOW -->
+        <div id="slideshow">
+            <div class="one">
+                <h2><span>Portal Laboral </span></h2>
+                <p>Registrate y podras encontrar las ofertas laborales que brindamos</p>
+            </div>
+            <div class="two">
+                <h2><span>Corporacion PJ</span></h2>
+                <p>Somos una empresa peruana, dedicada a la administración de casinos y salas de juegos.</p>
+            </div>
+            <div class="three">
+                <h2><span>Apostamos por tu Talento</span></h2>
+                <p>Postula a la Oferta laboral que estes buscando</p>
+            </div>
+            <div class="four">
+                <h2><span>Ofrecemos</span></h2>
+                <p>Ser parte de una de las empresas peruanas mas solidas del rubro de entretenimiento</p>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN FORM -->
+    <div class="user">
+        <!-- ACTIONS
+        <div class="actions">
+            <a class="help" href="#signup-tab-content">Sign Up</a><a class="faq" href="#login-tab-content">Login</a>
+        </div>
+        -->
+        <div class="form-wrap">
+            <!-- TABS -->
+            <div class="tabs">
+                <h3 class="login-tab"><a class="log-in active" href="#login-tab-content"><span>Login</span></a></h3>
+                <h3 class="signup-tab"><a class="sign-up" href="#signup-tab-content"><span>Registro</span></a></h3>
+            </div>
+            <!-- TABS CONTENT -->
+            <div class="tabs-content">
+                <!-- TABS CONTENT LOGIN -->
+                <div id="login-tab-content" style="margin-top: 3em;" class="active">
+                    <form id="login-form" class="login-form" action="" method="post">
+                        <input type="text" class="input" id="usu_login" name="usu_login" autocomplete="off" placeholder="Correo">
+                        <input type="password" class="input" id="usu_password" name="usu_password" autocomplete="off" placeholder="Contraseña">
+                        <button type="button" class="button btn_ingresar">Ingresar</button>
+                    </form>
+                    <div class="help-action">
+                        <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="forgot" href="#">Olvidaste tu Contraseña?</a></p>
                     </div>
-                    <div>
-                        <input type="text" class="form-control" placeholder="Apellido Paterno" name="per_apellido_pat" id="per_apellido_pat" />
-                    </div>
-                    <div>
-                        <input type="text" class="form-control" placeholder="Apellido Materno" name="per_apellido_mat" id="per_apellido_mat" />
-                    </div>
-                    <div>
-                        <input type="email" class="form-control" placeholder="Email" name="per_correoelectronico" id="per_correoelectronico" />
-                    </div>
-
-                    <div class="form-group">
-                        <select class="form-control" name="ubi_pais_id" id="cboPais">
-                            <option value="">PAIS</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="ubi_departamento_id" id="cboDepartamento">
-                            <option value="">DEPARTAMENTO</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="ubi_provincia_id" id="cboProvincia">
-                            <option value="">PROVINCIA</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="ubi_distrito_id" id="cboDistrito">
-                            <option value="">DISTRITO</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <select class="form-control" name="per_tipodoc" id="cbotipoDocumento">
-                            <option value=""> TIPO DE DOCUMENTO</option>
+                </div>
+                <!-- TABS CONTENT SIGNUP -->
+                <div id="signup-tab-content">
+                    <form id="registro-form" class="signup-form" action="" method="post">
+                        <select class="input" name="per_tipodoc" id="per_tipodoc">
+                            <option value=""> Seleccione Documento</option>
                             <option value="DNI">DNI</option>
                             <option value="Carné de Extranjeria">Carné de Extranjeria</option>
                             <option value="Otros">Otros</option>
-
                         </select>
+                        <input type="text" class="input" id="per_numdoc" name="per_numdoc" autocomplete="off" placeholder="Nro Documento">
+                        <input type="text" class="input" id="per_nombre" name="per_nombre" autocomplete="off" placeholder="Nombre">
+                        <input type="text" class="input" id="per_apellido_pat" name="per_apellido_pat" autocomplete="off" placeholder="Apellido Paterno">
+                        <input type="text" class="input" id="per_apellido_mat" name="per_apellido_mat" autocomplete="off" placeholder="Apellido Materno">
+                        <input type="email" class="input" id="per_correoelectronico" name="per_correoelectronico" autocomplete="off" placeholder="Correo">
+                        <button type="button" class="button btn_registrar">Registrar</button>
+                    </form>
+                    <div class="help-action">
+                        <p>Al hacer clic en REGISTRAR, aceptas las <a class="agree" href="#">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</p>
                     </div>
-
-                    <div>
-                        <input type="text" class="form-control" placeholder="Nro. de Documento" name="per_numdoc" id="per_numdoc" disabled="disabled" />
-                    </div>
-                    @*<div>
-            <input type="password" class="form-control" placeholder="Contraseña" name="usu_contrasenia" id="usu_contrasenia" />
-        </div>*@
-                    <div>
-                        <h6>Al hacer clic en REGISTRAR, aceptas las <a href="">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</h6>
-                    </div>
-                    <div>
-                        <button type="button" id="btnGuardar" class="btn btn-default submit">REGISTRARSE</button>
-                        @*<a class="btn btn-default submit" href="index.html">REGISTRAR</a>*@
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                    <div class="separator">
-                        <p class="change_link">
-                            Ya tiene una cuenta?
-                            <a href="#signin" class="to_register"> ACCEDER </a>
-                        </p>
-
-                        <div class="clearfix"></div>
-                        <br />
-
-                        <div>
-
-                            <p>©@DateTime.Now.Year Corporacion PJ</p>
-                        </div>
-                    </div>
-                </form>
-            </section>
+                </div>
+            </div>
         </div>
-
-        <!--Formulario de envio de contraseña-->
-        <div id="send_email" class="animate form send_email_form">
-            <section class="login_content">
-                <form>
-                    <h1>Recuperar Cuenta</h1>
-                    <div class="clearfix">
-                    </div>
-                    <div>
-                        <p>Se le enviara una contraseña al correo que uso para su registro</p>
-                    </div>
-                    <div>
-                        <input type="email" class="form-control" placeholder="Email" required="" />
-                    </div>
-
-                    <div>
-                        <a class="btn btn-default submit" href="index.html">ENVIAR</a>
-                        <a href="#signin" class="btn btn-default">CANCELAR</a>
-
-
-                    </div>
-
-                    <div class="clearfix"></div>
-
-                    <div class="separator">
-                        <div class="clearfix"></div>
-
-                        <br />
-                        <div>
-                            <p>©@DateTime.Now.Year Corporacion PJ</p>
-                        </div>
-                    </div>
-                </form>
-            </section>
-        </div>
-
-
     </div>
 </div>
+
 @section js
 {
-    <script src="~/Content/viewjs/Login/LoginJs.js"></script>
+    <script src="~/Content/viewjs/Login/Login.js"></script>
 }
