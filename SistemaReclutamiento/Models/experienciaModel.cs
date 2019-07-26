@@ -149,7 +149,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(experiencia.exp_fecha_fin));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(experiencia.exp_motivo_cese));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullDate (experiencia.exp_fecha_reg));
-                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr (experiencia.exp_estado));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr (experiencia.exp_estado));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(experiencia.fk_postulante));
                     query.ExecuteNonQuery();
                     response = true;
@@ -157,6 +157,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Console.Write(ex.Message);
             }
             return response;
         }

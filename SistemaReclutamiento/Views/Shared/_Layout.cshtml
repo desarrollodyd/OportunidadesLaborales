@@ -7,6 +7,8 @@
     string usu_nombre = "";
     string encriptado = "";
     usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+    postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
+    personaEntidad persona = (personaEntidad)Session["per_full"];
 
     if (usuario == null)
     {
@@ -49,7 +51,6 @@
     <link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
-
 </head>
 
 <body class="nav-md">
@@ -66,11 +67,11 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="~/images/img.jpg" alt="~/Content." class="img-circle profile_img">
+                            <img src="" alt="~/Content." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>@usu_nombre</h2>
+                            <h2>@persona.per_nombre</h2>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -108,7 +109,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/img.jpg" alt="">@usu_nombre
+                                    <img src="~/archivos/perfil/@postulante.pos_foto" alt="">@usu_nombre
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">

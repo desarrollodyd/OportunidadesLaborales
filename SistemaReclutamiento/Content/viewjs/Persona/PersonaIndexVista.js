@@ -3,8 +3,8 @@
 
     $("#persona_nombre").text(personaIndex.per_nombre);
     $("#persona_direccion").text(personaIndex.per_direccion);
-    $("#persona_apellidos").text(personaIndex.per_apellido_pat +" " +personaIndex.per_apellido_mat);
-    $("#perfil_principal").attr("src", document.location.origin +"/images/user.png");
+    $("#persona_apellidos").text(personaIndex.per_apellido_pat + " " + personaIndex.per_apellido_mat);
+    $("#perfil_principal").attr("src", document.location.origin + "/archivos/perfil/" + postulante.pos_foto);   
 
     var opcion = "";
     var f = new Date();
@@ -152,6 +152,22 @@
             fncRegistrar(dataForm, url, false, "");
         }
     });   
+    $(document).on('click', '#btnGuardarIdioma', function () {
+        var validar = $("#frmIdioma");
+        if (validar.valid()) {
+            var dataForm = $("#frmIdioma").serializeFormJSON();
+            var url = basePath + "Idioma/IdiomaInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    });
+    $(document).on('click', '#btnGuardarExperiencia', function () {
+        var validar = $("#frmExperiencia");
+        if (validar.valid()) {
+            var dataForm = $("#frmExperiencia").serializeFormJSON();
+            var url = basePath + "Experiencia/ExperienciaInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    }); 
     $(document).on('click', '#btnGuardarInformacionAdicional', function () {
         var formData = new FormData(document.getElementById("frmInformacionAdicional"));
         $.ajax({
@@ -166,7 +182,28 @@
             .done(function (res) {
                 console.log(res);
             });
-    }); 
+    });    
+    $('#boton-archivo').change(function () {
+        var data = new FormData();
+        $.each(jQuery('#boton-archivo')[0].files, function (i, file) {
+            data.append('file-' + i, file);
+        });      
+        
+        $.ajax({
+            url: document.location.origin + "/Postulante/PostulanteSubirFotoJson",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            method: 'POST',
+            type: 'POST', // For jQuery < 1.9
+            success: function (data) {               
+                window.location.reload(true);
+               
+            }
+        });
+    });
 
 });
 $("#frmDatosPersonales")

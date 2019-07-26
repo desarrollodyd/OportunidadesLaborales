@@ -93,10 +93,12 @@ namespace SistemaReclutamiento.Controllers
             //file.SaveAs(Server.MapPath("~/Uploads/" + archivo));
         }
         [HttpPost]
-        public ActionResult PostulanteSubirFotoJson(usuarioPersonaEntidad persona)
+        public ActionResult PostulanteSubirFotoJson()
         {
             HttpPostedFileBase file = Request.Files[0];
             postulanteEntidad postulante = new postulanteEntidad();
+            postulante = (postulanteEntidad)Session["postulante"];            
+            
             bool respuestaConsulta = true;
             string extension = "";
             string rutaInsertar = "";
@@ -107,10 +109,10 @@ namespace SistemaReclutamiento.Controllers
                 if (file.ContentLength <= tamanioMaximo)
                 {
                     extension = Path.GetExtension(file.FileName);
-                    if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
+                    if (extension == ".jpg" || extension == ".png")
                     {
-                        var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + persona.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                        rutaInsertar = Path.Combine(Server.MapPath(rutaCv), nombreArchivo);
+                        var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
+                        rutaInsertar = Path.Combine(Server.MapPath(rutaPerfil), nombreArchivo);
                         file.SaveAs(rutaInsertar);
                         postulante.pos_foto = nombreArchivo;
                         respuestaConsulta = true;
@@ -135,7 +137,7 @@ namespace SistemaReclutamiento.Controllers
                 postulante.pos_foto = "";
             }
             postulante.pos_fecha_act = DateTime.Now;
-            postulante.pos_id = persona.pos_id;
+            postulante.pos_id = postulante.pos_id;
             try
             {
                 respuestaConsulta = postulantebl.PostulanteSubirFotoJson(postulante);
@@ -144,6 +146,8 @@ namespace SistemaReclutamiento.Controllers
             {
                 errormensaje = ex.Message + " ,Llame Administrador";
             }
+            Session.Remove("postulante");
+            Session["postulante"] = postulante;
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         
         }

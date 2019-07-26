@@ -4594,14 +4594,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EducacionBasicaController.cs" />
     <Compile Include="Controllers\EducacionSuperiorController.cs" />
+    <Compile Include="Controllers\ExperienciaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IdiomaController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OfimaticaController.cs" />
     <Compile Include="Controllers\OfimaticaHerramientaController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\PostgradoController.cs" />
-    <Compile Include="Controllers\postulanteController.cs" />
+    <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
+    <Compile Include="Entidades\configuracionEntidad.cs" />
     <Compile Include="Entidades\educacionBasicaEntidad.cs" />
     <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
     <Compile Include="Entidades\experienciaEntidad.cs" />
@@ -4618,6 +4621,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\configuracionModel.cs" />
     <Compile Include="Models\educacionBasicaModel.cs" />
     <Compile Include="Models\educacionSuperiorModel.cs" />
     <Compile Include="Models\experienciaModel.cs" />
@@ -4663,6 +4667,8 @@
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="Views\educacionBasica\" />
     <Folder Include="Views\EducacionSuperior\" />
+    <Folder Include="Views\Experiencia\" />
+    <Folder Include="Views\Idioma\" />
     <Folder Include="Views\OfimaticaHerramienta\" />
     <Folder Include="Views\Ofimatica\" />
     <Folder Include="Views\Postgrado\" />

@@ -55,8 +55,9 @@ namespace SistemaReclutamiento.Controllers
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
             ubigeoEntidad ubigeo = new ubigeoEntidad();
-            personaSqlEntidad personaSql = new personaSqlEntidad();          
-            var errormensaje = "";
+            personaSqlEntidad personaSql = new personaSqlEntidad();
+            string fotoperfil = "defaultUser.png";
+            string errormensaje = "";
             string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
             string usuario_envio = "";
             string contrasenia_envio = "";
@@ -114,6 +115,7 @@ namespace SistemaReclutamiento.Controllers
                     postulante.fk_persona = respuestaPersonaInsertada;
                     postulante.pos_fecha_reg = DateTime.Now;
                     postulante.pos_estado = "A";
+                    postulante.pos_foto = fotoperfil;
                     respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
                 }
                 
