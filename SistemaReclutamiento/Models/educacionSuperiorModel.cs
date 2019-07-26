@@ -31,7 +31,7 @@ namespace SistemaReclutamiento.Models
                                 esu_fecha_reg, 
                                 esu_fecha_act, 
                                 fk_postulante
-	                            FROM gestion_talento.gdt_per_educacion_sup;
+	                            FROM gestion_talento.gdt_per_educacion_sup
                                 where fk_postulante=@p0
                                 order by esu_id desc;";
             try
@@ -114,7 +114,7 @@ namespace SistemaReclutamiento.Models
                                 educacionSuperior.esu_periodo_fin = ManejoNulos.ManageNullDate(dr["esu_periodo_fin"]);
                                 educacionSuperior.esu_condicion = ManejoNulos.ManageNullStr(dr["esu_condicion"]);
                                 educacionSuperior.esu_fecha_reg = ManejoNulos.ManageNullDate(dr["esu_fecha_reg"]);
-                                educacionSuperior.esu_fecha_act = ManejoNulos.ManageNullDate(dr["usu_fecha_act"]);
+                                educacionSuperior.esu_fecha_act = ManejoNulos.ManageNullDate(dr["esu_fecha_act"]);
                                 educacionSuperior.fk_postulante = ManejoNulos.ManageNullInteger(dr["fk_postulante"]);                             
 
                             }
@@ -150,10 +150,10 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(educacionSuperior.esu_tipo));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(educacionSuperior.esu_centro_estudio));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(educacionSuperior.esu_carrera));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(educacionSuperior.esu_periodo_ini));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(educacionSuperior.esu_periodo_fin));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(educacionSuperior.esu_periodo_ini));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(educacionSuperior.esu_periodo_fin));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(educacionSuperior.esu_condicion));
-                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(educacionSuperior.esu_fecha_reg));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(educacionSuperior.esu_fecha_reg));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(educacionSuperior.fk_postulante));
                     query.ExecuteNonQuery();
                     response = true;
@@ -161,6 +161,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Console.Write(ex.Message);
             }
             return response;
         }

@@ -3,20 +3,40 @@
 
     $("#persona_nombre").text(personaIndex.per_nombre);
     $("#persona_direccion").text(personaIndex.per_direccion);
-    $("#persona_apellidos").text(personaIndex.per_apellido_pat +" " +personaIndex.per_apellido_mat);
- 
+    $("#persona_apellidos").text(personaIndex.per_apellido_pat + " " + personaIndex.per_apellido_mat);
+    $("#perfil_principal").attr("src", document.location.origin + "/archivos/perfil/" + postulante.pos_foto);   
+
     var opcion = "";
-    $('#myDatepicker').datetimepicker({
+    var f = new Date();
+    $('.date').datetimepicker({
         format: 'DD/MM/YYYY',
         ignoreReadonly: true,
         allowInputToggle: true
     });
+
+    //$('#myDatepicker1').datetimepicker({
+    //    format: 'DD/MM/YYYY',
+    //    ignoreReadonly: true,
+    //    allowInputToggle: true
+    //});
+    //$('#myDatepicker2').datetimepicker({
+    //    format: 'DD/MM/YYYY',
+    //    ignoreReadonly: true,
+    //    allowInputToggle: true
+    //});
+    //$('#myDatepicker3').datetimepicker({
+    //    format: 'DD/MM/YYYY',
+    //    ignoreReadonly: true,
+    //    allowInputToggle: true
+    //});
+    //$("#esu_periodo_ini").val(moment(f.getDate()).format('DD/MM/YYYY'));
+    //$("#esu_periodo_fin").val(moment(f.getDate()).format('DD/MM/YYYY'));
     $("[name='per_id']").val(personaIndex.per_id);
     $("[name='pos_id']").val(postulante.pos_id);
     $("[name='fk_postulante']").val(postulante.pos_id);
     //Datos de persona
  
-    $("#per_correoelectronico").val(personaIndex.per_correoelectronico)
+    $("#per_correoelectronico").val(personaIndex.per_correoelectronico);
     $("#per_nombre").val(personaIndex.per_nombre);
     $("#per_apellido_pat").val(personaIndex.per_apellido_pat);
     $("#per_apellido_mat").val(personaIndex.per_apellido_mat); 
@@ -44,6 +64,10 @@
 
     //llenando combos
     $("#cboSexo").select2();
+    $.when(llenarSelect(
+        basePath + "OfimaticaHerramienta/OfimaticaHerramientaListarJson", {}, "cboofimaticaHerramienta", "her_id", "her_descripcion", "")).then(function (response, textStatus) {
+            $("#cboofimaticaHerramienta").select2();
+        });
     $.when(llenarSelect(
         basePath + "Ubigeo/UbigeoListarPaisesJson", {}, "cboPais", "ubi_pais_id", "ubi_nombre", ubigeo.ubi_pais_id)).then(function (response, textStatus) {
             $("#cboPais").select2();
@@ -84,6 +108,8 @@
         });
     });
 
+  
+
 
     $(document).on('click', '#btnGuardarDatosPersonales', function () {
         var validar = $("#frmDatosPersonales");
@@ -102,6 +128,82 @@
             fncRegistrar(dataForm, url, false,"");
         }
     });  
+    $(document).on('click', '#btnGuardarEducacionSuperior', function () {
+        var validar = $("#frmEducacionSuperior");
+        if (validar.valid()) {
+            var dataForm = $("#frmEducacionSuperior").serializeFormJSON();
+            var url = basePath + "EducacionSuperior/EducacionSuperiorInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    }); 
+    $(document).on('click', '#btnGuardarPostgrado', function () {
+        var validar = $("#frmPostgrado");
+        if (validar.valid()) {
+            var dataForm = $("#frmPostgrado").serializeFormJSON();
+            var url = basePath + "Postgrado/PostgradoInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    }); 
+    $(document).on('click', '#btnGuardarOfimatica', function () {
+        var validar = $("#frmOfimatica");
+        if (validar.valid()) {
+            var dataForm = $("#frmOfimatica").serializeFormJSON();
+            var url = basePath + "Ofimatica/OfimaticaInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    });   
+    $(document).on('click', '#btnGuardarIdioma', function () {
+        var validar = $("#frmIdioma");
+        if (validar.valid()) {
+            var dataForm = $("#frmIdioma").serializeFormJSON();
+            var url = basePath + "Idioma/IdiomaInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    });
+    $(document).on('click', '#btnGuardarExperiencia', function () {
+        var validar = $("#frmExperiencia");
+        if (validar.valid()) {
+            var dataForm = $("#frmExperiencia").serializeFormJSON();
+            var url = basePath + "Experiencia/ExperienciaInsertarJson";
+            fncRegistrar(dataForm, url, false, "");
+        }
+    }); 
+    $(document).on('click', '#btnGuardarInformacionAdicional', function () {
+        var formData = new FormData(document.getElementById("frmInformacionAdicional"));
+        $.ajax({
+            url: document.location.origin +"/Postulante/PostulanteInsertarInformacionAdicionalJson",
+            type: "post",
+            dataType: "html",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        })
+            .done(function (res) {
+                console.log(res);
+            });
+    });    
+    $('#boton-archivo').change(function () {
+        var data = new FormData();
+        $.each(jQuery('#boton-archivo')[0].files, function (i, file) {
+            data.append('file-' + i, file);
+        });      
+        
+        $.ajax({
+            url: document.location.origin + "/Postulante/PostulanteSubirFotoJson",
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            method: 'POST',
+            type: 'POST', // For jQuery < 1.9
+            success: function (data) {               
+                window.location.reload(true);
+               
+            }
+        });
+    });
 
 });
 $("#frmDatosPersonales")
