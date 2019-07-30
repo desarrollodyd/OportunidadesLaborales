@@ -1,0 +1,283 @@
+﻿
+@{
+    ViewBag.Title = "Perfil - Datos Personales";
+}
+
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@using SistemaReclutamiento.Utilitarios;
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String ubigeo = new JavaScriptSerializer().Serialize(Session["ubigeo"]);
+    String postulante = new JavaScriptSerializer().Serialize(Session["postulante"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
+    String rutaImage = new JavaScriptSerializer().Serialize(Session["rutaPerfil"]);
+}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="" role="tabpanel">
+                <ul id="datosPersonales_ul" class="nav nav-tabs bar_tabs hidden-xs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#datosPersonales_tab" role="tab" data-toggle="tab" aria-expanded="true">Datos Personales</a>
+                    </li>
+                    <li class="pull-right">
+                        <button type="button" class="btn btn-danger btn_guardar"><i class="fa fa-save"></i> Guardar</button>
+                        <button class="btn btn-primary btn_cancelar" type="button"><i class="fa fa-ban"></i> Cancelar</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="datosPersonales_tab" aria-labelledby="datosPersonales_tab">
+
+                        <div class="col-md-3 col-sm-12 col-xs-12 profile_left">
+                            <div class="profile_img">
+                                <div id="crop-avatar">
+                                    <!-- Current avatar -->
+                                    <div class="imagen-para-perfil img_postulante">
+                                        <label for="subir-img-perfil" style="width: 100%;">
+                                            <img id="perfil_principal" class="img-responsive avatar-view" style="width:100%;height:225px;" src="~/images/user.png" alt="Avatar" title="Imagen Postulante">
+                                        </label>
+                                        <input id="subir-img-perfil" type="file" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre">Richard Lee</h3>
+                        </div>
+
+                        <form id="frmDatosPersonales-form" class="" method="post">
+                            <div class="col-md-9 col-xs-12" style="padding-top:10px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12 visible-xs" style="margin-bottom:10px;">
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-danger col-xs-12 btn_guardar"><i class="fa fa-save"></i> Guardar</button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-primary col-xs-12 btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" name="per_nombre" id="per_nombre" class="form-control" placeholder="Nombre " />
+                                    </div>
+                                </div>
+                                <input type="hidden" name="per_id" id="per_id" />
+                                <input type="hidden" name="pos_id" id="pos_id" />
+                                <input type="hidden" name="per_correoelectronico" id="per_correoelectronico" />
+                                <input type="hidden" name="pos_estado" id="pos_estado" />
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Apellido Paterno</label>
+                                        <input type="text" name="per_apellido_pat" id="per_apellido_pat" class="form-control" placeholder="Apellido Paterno" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Apellido Materno</label>
+                                        <input type="text" name="per_apellido_mat" id="per_apellido_mat" class="form-control" placeholder="Apellido Materno" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <label>Fecha de Nacimiento</label>
+                                    <div class='input-group date' id='myDatepicker'>
+                                        <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" placeholder="Fecha de Nacimiento" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Sexo</label>
+                                        <div class="form-check pl-0">
+                                            <input type="checkbox" name="per_sexo" id="cboSexo" checked data-height="30" data-toggle="toggle" data-on="Masculino" data-off="Femenino" data-onstyle="primary" data-offstyle="danger" value="M">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Esado Civil</label>
+                                        <select class="form-control" name="pos_estado_civil" id="cboestadoCivil" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="SOLTERO">SOLTERO</option>
+                                            <option value="CASADO">CASADO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Tipo de Documento</label>
+                                        <select class="form-control" name="per_tipodoc" id="cbotipoDocumento" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="DNI">DNI</option>
+                                            <option value="PASAPORTE">PASAPORTE</option>
+                                            <option value="Pasaporte">Pasaporte</option>
+                                            <option value="Carné de Extranjeria">Carné de Extranjeria</option>
+                                            <option value="CARNÉ DE EXTRANJERIA">CARNÉ DE EXTRANJERIA</option>
+                                            <option value="Otros">Otros</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Nro de Documento</label>
+                                        <input type="text" name="per_numdoc" id="per_numdoc" class="form-control" placeholder="Nro. de Documento" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Telefono</label>
+                                        <input type="text" name="per_telefono" id="per_telefono" class="form-control" placeholder="Nr. Telefono" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Celular</label>
+                                        <input type="text" name="pos_celular" id="pos_celular" class="form-control" placeholder="Nro. Celular" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Brevete</label>
+                                        <div class="form-check pl-0">
+                                            <input type="checkbox" name="pos_brevete" id="cboBrevete" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Numero de Brevete</label>
+                                        <input type="text" name="pos_num_brevete" id="pos_num_brevete" class="form-control flat" placeholder="Nro. de Brevete" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Tipo de Vivienda</label>
+                                        <select class="form-control" name="pos_tipo_casa" id="cbotipoCasa" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="CASA">Casa</option>
+                                            <option value="DEPARTAMENTO">Departamento</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Tipo de Calle</label>
+                                        <select class="form-control" name="pos_tipo_calle" id="cbotipoCalle" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="NUMERO">Nro</option>
+                                            <option value="MANZANA">Mza.</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12">
+
+                                <div class="col-md-2 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Tipo de Direccion</label>
+                                        <select class="form-control" name="pos_tipo_direccion" id="cbotipoDireccion" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="AVENIDA">Avenida</option>
+                                            <option value="CALLE">Calle</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Direccion</label>
+                                        <input type="text" name="pos_direccion" id="pos_direccion" class="form-control" placeholder="Direccion" />
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-md-2 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Numero de Casa</label>
+                                        <input type="text" name="pos_numero_casa" id="pos_numero_casa" class="form-control" placeholder="Nro. de Casa" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12">
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Pais</label>
+                                        <select class="form-control" name="ubi_pais_id" id="cboPais" style="width:100%">
+                                            <option value="">PAIS</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Departamento</label>
+                                        <select class="form-control" name="ubi_departamento_id" id="cboDepartamento" style="width:100%">
+                                            <option value="">DEPARTAMENTO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Provincia</label>
+                                        <select class="form-control" name="ubi_provincia_id" id="cboProvincia" style="width:100%">
+                                            <option value="">PROVINCIA</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Distrito</label>
+                                        <select class="form-control" name="ubi_distrito_id" id="cboDistrito" style="width:100%">
+                                            <option value="">DISTRITO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Final-->
+@section js
+{
+    <script type="text/javascript">
+        persona = (@Html.Raw(persona));
+        ubigeo = (@Html.Raw(ubigeo));
+        postulante = (@Html.Raw(postulante));
+        usuario = (@Html.Raw(usuario));
+        rutaImage = (@Html.Raw(rutaImage));
+    </script>
+    <script src="~/Content/viewjs/Persona/DatosPersonaVista.js"></script>
+}
+
+

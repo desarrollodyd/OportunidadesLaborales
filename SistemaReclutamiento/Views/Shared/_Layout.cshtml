@@ -36,6 +36,7 @@
     <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/icomoon/styles.min.css" rel="stylesheet" />
     <!-- NProgress -->
     <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- bootstrap-daterangepicker -->
@@ -48,9 +49,13 @@
     <link href="~/Content/build/css/custom.css" rel="stylesheet">
     <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
-
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
 </head>
 
 <body class="nav-md">
@@ -69,21 +74,29 @@
                         <div class="profile_pic">
                             <img src="~/images/icon.png" alt="~/Content." class="img-circle profile_img" style="border-radius:3%;">
                         </div>
-                       
+
                         <div class="clearfix"></div>
                     </div>
                     <!-- /menu profile quick info -->
-
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <ul class="nav side-menu">
+                            <ul class="nav side-menu" style="margin-left: -1px;">
                                 <li class="active">
                                     <a><i class="fa fa-edit"></i> Perfil <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display:block;">
-                                        <li><a href="~/Persona/PersonaIndexVista">Perfil de Usuario</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Editar Perfil</a></li>
+                                        <li><a href="~/Persona/PersonaIndexVista">Datos Personales</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Educacion Basica</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Educacion Superior</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">PostGrado</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Ofimatica</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Idiomas</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Experiencia</a></li>
+                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Informacion Adicional</a></li>
                                     </ul>
+                                </li>
+                                <li>
+                                    <a><i class="fa fa-search"></i> Ofertas Laborales </a>
                                 </li>
                             </ul>
                         </div>
@@ -103,7 +116,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="~/images/img.jpg" alt="">@usu_nombre
+                                    <img  id="img_layout_post" src="~/images/user.png" alt="">@usu_nombre
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -119,20 +132,14 @@
             <div class="right_col" role="main">
                 <div class="">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                    @RenderBody()
-                                </div>
-                            </div>
-                        </div>
+                        @RenderBody()
                     </div>
                 </div>
             </div>
             <!-- /page content -->
             <!-- footer content -->
             <footer>
-                <div class="pull-right">
+                <div class="pull-right foot">
                     ©@DateTime.Now.Year Corporacion PJ
                 </div>
                 <div class="clearfix"></div>
@@ -149,29 +156,21 @@
     <script src="~/Content/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="~/Content/vendors/nprogress/nprogress.js"></script>
-    <!-- morris.js -->
-    <script src="~/Content/vendors/raphael/raphael.min.js"></script>
-    <script src="~/Content/vendors/morris.js/morris.min.js"></script>
-    <script src="~/Content/vendors/morris.js/morris.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="~/Content/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="~/Content/vendors/moment/min/moment.min.js"></script>
-    <script src="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <!-- jQuery custom content scroller -->
-    <script src="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-    <!-- iCheck -->
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
     <!-- Custom Theme Scripts -->
 
     <script src="~/Content/vendors/toastr/toastr.min.js"></script>
     <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
-    <script src="~/Content/build/js/custom.min.js"></script>
     <script src="~/Content/vendors/moment/moment.js"></script>
-    <script src="~/Content/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
     <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.js"></script>
+    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
     <script src="~/Content/viewjs/general.js"></script>
 
     <script>

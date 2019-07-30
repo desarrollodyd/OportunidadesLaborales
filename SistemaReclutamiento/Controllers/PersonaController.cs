@@ -18,18 +18,23 @@ namespace SistemaReclutamiento.Controllers
         postulanteModel postulantebl = new postulanteModel();     
      
         // GET: Usuario
-        public ActionResult PersonaIndexVista()
+        public ActionResult DatosPersonalesVista()
         {
             if (Session["usu_full"] != null)
             {
                 ViewBag.Message = "Bienvenido.";
-                return View("~/Views/Persona/PersonaIndexVista.cshtml");
+                return View("~/Views/Persona/DatosPersonaVista.cshtml");
             }
             else
             {
                 ViewBag.Message = "Login De Acceso";
-                return View();
+                return View("~/Views/Login/Index.cshtml");
             }
+        }
+
+        public ActionResult PersonaIndexVista()
+        {
+            return View();
         }
         public ActionResult PersonaEditarVista(string id)
         {

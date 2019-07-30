@@ -710,7 +710,7 @@ input {
 }
 
 .form-wrap form .input {
-    margin: 0 0 .8em 0;
+    margin: 0 0 0.1em 0;
     padding: .8em 2em 0px 0;
     width: 100%;
     display: inline-block;
@@ -723,10 +723,11 @@ input {
     color: inherit;
     font-family: inherit;
     color: #fff;
+    margin-bottom: 10px;
 }
 
 .form-wrap form .button {
-    margin: 1em 0;
+    margin: 1.2em 0;
     padding: .2em 3em;
     width: auto;
     display: block;
@@ -1115,3 +1116,95 @@ option {
     line-height: 1.2;
     color: white;
 }
+
+
+/*//////////////////////////////////////////////////////////////*/
+
+
+label.validation-invalid-label,
+label.validation-valid-label {
+    margin-top: -15px;
+    display: block !important;
+    color: #f19191;
+    position: absolute !important;
+    z-index: 1;
+    padding-top: 2px;
+    font-size: 12px;
+}
+
+
+label.validation-valid-label {
+    color: #4caf50
+}
+
+    label.validation-invalid-label:before,
+    label.validation-valid-label:before {
+        font-family: icomoon;
+        font-size: 1rem;
+        position: absolute;
+        top: 10px;
+        left: 4px;
+        display: inline-block;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    label.validation-invalid-label:empty,
+    label.validation-valid-label:empty {
+        display: none !important;
+    }
+
+label.validation-invalid-label:before {
+    content: ""
+}
+
+label.validation-valid-label:before {
+    content: ""
+}
+
+input.validation-invalid-label {
+    border-bottom: 1px solid #ebe9e9 !important;
+}
+
+    input.validation-invalid-label + span {
+        border: 1px solid red;
+    }
+
+.notify_confirmacion {
+    background: red;
+    color: white;
+}
+
+.jconfirm-box {
+    background-color: red !important;
+    color: white !important;
+}
+
+.jconfirm-buttons button {
+    margin: 1em 4px !important;
+    padding: 0.5em 2em 0.5em 2em !important;
+    width: auto !important;
+    background-color: #000 !important;
+    border: none !important;
+    color: #fff;
+    cursor: pointer !important;
+    font-size: .8em !important;
+    border-radius: 7px !important;
+    background: -moz-linear-gradient(270deg, rgba(105, 221, 201, 1) 0%, rgba(78, 193, 182, 1) 100%) !important;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #555), color-stop(100%, #333)) !important;
+    background: -webkit-linear-gradient(270deg, #555 0%, #333 100%) !important;
+    background: linear-gradient(180deg, #333 0%, rgb(9, 6, 6) 100%) !important;
+    -webkit-box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75) !important;
+    -moz-box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75) !important;
+}
+
+.ui-pnotify-text {
+    line-height: 1.2 !important;
+}
+
+
+.error p {
+    color: #f00 !important;
+}
+

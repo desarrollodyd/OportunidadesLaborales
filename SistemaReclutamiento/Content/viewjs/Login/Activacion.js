@@ -30,7 +30,7 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     redirect: true,
-                    redirectUrl: "Persona/PersonaIndexVista",
+                    redirectUrl: "",
                 });
             } else {
                 messageResponse({

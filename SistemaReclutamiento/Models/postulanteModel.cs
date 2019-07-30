@@ -55,7 +55,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var pos_foto = ManejoNulos.ManageNullStr(dr["foto"]) == "" ? "defaultUser.png" : dr["foto"];
+                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "defaultUser.png" : dr["pos_foto"];
                                 postulante.pos_tipo_direccion = ManejoNulos.ManageNullStr(dr["pos_tipo_direccion"]);
                                 postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
                                 postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);

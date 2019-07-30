@@ -97,11 +97,14 @@ namespace SistemaReclutamiento.Controllers
         {
             HttpPostedFileBase file = Request.Files[0];
             postulanteEntidad postulante = new postulanteEntidad();
-            postulante = (postulanteEntidad)Session["postulante"];            
-            
+            postulante.pos_id = Convert.ToInt32(Request.Params["postulanteID"]);
+            postulanteEntidad postulanteFotoAnt = (postulanteEntidad)Session["postulante"];
+            postulante.pos_foto = postulanteFotoAnt.pos_foto;
+
             bool respuestaConsulta = true;
             string extension = "";
             string rutaInsertar = "";
+            string rutaAnterior = "";
             string errormensaje = "";
             int tamanioMaximo = 4194304;
             if (file.ContentLength > 0 || file != null)
@@ -112,9 +115,17 @@ namespace SistemaReclutamiento.Controllers
                     if (extension == ".jpg" || extension == ".png")
                     {
                         var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                        rutaInsertar = Path.Combine(Server.MapPath(rutaPerfil), nombreArchivo);
+                        rutaInsertar = Path.Combine("@"+rutaPerfil , nombreArchivo);
+                        rutaAnterior = Path.Combine("@" + rutaPerfil , postulante.pos_foto);
+
+                        if (System.IO.File.Exists(rutaAnterior))
+                        {
+                            System.IO.File.Delete(rutaAnterior);
+                        }
+
                         file.SaveAs(rutaInsertar);
                         postulante.pos_foto = nombreArchivo;
+                        errormensaje = "Imagen Subida Correctamente";
                         respuestaConsulta = true;
                     }
                     else

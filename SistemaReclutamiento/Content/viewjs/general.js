@@ -197,6 +197,119 @@ function responseSimple(obj) {
                     text: mensaje,
                     type: "success"
                 });
+
+                if (opciones.redirect) {
+                    if (opciones.redirectUrl == null) {
+                        console.warn('Advertencia - redirectUrl no fue declarado.');
+                        return;
+                    };
+                    setTimeout(function () {
+                        redirect({ site: opciones.redirectUrl, time: 0 });
+                    }, opciones.time);
+
+                } else {
+                    if (opciones.refresh) {
+                        setTimeout(function () {
+                            refresh({ estate: true, time: 0 });
+                        }, opciones.time);
+                    } else {
+                        opciones.callBackSuccess(response);
+                    }
+                }
+
+            } else {
+                messageResponse({
+                    text: mensaje,
+                    type: "error"
+                });
+            };
+            
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrow) {
+            unblock("body");
+            console.warn('Message :', xmlHttpRequest);
+        }
+    });
+}
+
+function responseFileSimple(obj) {
+    var defaults = {
+        url: null,
+        type: "POST",
+        method:"POST",
+        data: [],
+        refresh: true,
+        redirect: false,
+        redirectUrl: null,
+        callBackBeforeSend: null,
+        callBackSComplete: null,
+        callBackSuccess: function () {
+            console.warn("funcion vacio finalizada");
+        },
+        time: 2000,
+        loader: true
+    }
+
+    var opciones = $.extend({}, defaults, obj);
+    if (opciones.url == null) {
+        console.warn('Advertencia - url no fue declarado.');
+        return;
+    };
+
+    var url = basePath + opciones.url;
+    $.ajax({
+        url: url,
+        type: opciones.type,
+        method:opciones.method,
+        data: opciones.data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function () {
+            if (opciones.loader) {
+                block_general("body");
+            }
+            if (opciones.callBackBeforeSend != null) {
+                opciones.callBackBeforeSend();
+            }
+        },
+        complete: function () {
+            if (opciones.loader) {
+                unblock("body");
+            }
+            if (opciones.callBackSComplete != null) {
+                opciones.callBackSComplete();
+            }
+        },
+        success: function (response) {
+            var respuesta = response.respuesta;
+            var mensaje = response.mensaje;
+
+            if (respuesta) {
+                messageResponse({
+                    text: mensaje,
+                    type: "success"
+                });
+
+                if (opciones.redirect) {
+                    if (opciones.redirectUrl == null) {
+                        console.warn('Advertencia - redirectUrl no fue declarado.');
+                        return;
+                    };
+                    setTimeout(function () {
+                        redirect({ site: opciones.redirectUrl, time: 0 });
+                    }, opciones.time);
+
+                } else {
+                    if (opciones.refresh) {
+                        setTimeout(function () {
+                            refresh({ estate: true, time: 0 });
+                        }, opciones.time);
+                    } else {
+                        opciones.callBackSuccess(response);
+                    }
+                }
+
             } else {
                 messageResponse({
                     text: mensaje,
@@ -204,27 +317,10 @@ function responseSimple(obj) {
                 });
             };
 
-            if (opciones.redirect) {
-                if (opciones.redirectUrl == null) {
-                    console.warn('Advertencia - redirectUrl no fue declarado.');
-                    return;
-                };
-                setTimeout(function () {
-                    redirect({site:opciones.redirectUrl,time:0 });
-                }, opciones.time);
-                
-            } else {
-                if (opciones.refresh) {
-                    setTimeout(function () {
-                        refresh({estate:true,time:0});
-                    }, opciones.time);
-                } else {
-                    opciones.callBackSuccess(response);
-                }
-            }
         },
         error: function (xmlHttpRequest, textStatus, errorThrow) {
-            console.warn('Message :', xmlHttpRequest.responseJSON.message);
+            unblock("body");
+            console.warn('Message :', xmlHttpRequest);
         }
     });
 }
@@ -259,18 +355,19 @@ function validar_Form(obj) {
         successClass: 'validation-valid-label',
         validClass: 'validation-valid-label',
         highlight: function (element, errorClass) {
-            $(element).removeClass(errorClass);
+            $(element).addClass(errorClass);
         },
         unhighlight: function (element, errorClass) {
             $(element).removeClass(errorClass);
         },
-        success: function (label) {
-            label.addClass('validation-valid-label').text('Correcto.'); // remove to hide Success message
+        success: function (label, element, errorClass) {
+            //label.removeClass('validation-invalid-label');
+            //label.addClass('validation-valid-label').text('Correcto.'); // remove to hide Success message
+            //$(element).removeClass(errorClass);
         },
-
         // Different components require proper error label placement
         errorPlacement: function (error, element) {
-
+          
             // Unstyled checkboxes, radios
             if (element.parents().hasClass('form-check')) {
                 error.appendTo(element.parents('.form-check').parent());
@@ -296,6 +393,7 @@ function validar_Form(obj) {
                 error.insertAfter(element);
             }
         },
+
         submitHandler: function (form) { // for demo
             return false;
         },
@@ -303,6 +401,22 @@ function validar_Form(obj) {
         messages: opciones.messages
     });
 
+}
+//////////////////////////////////////////////////////////////////
+
+function readImage(input,contenedor) {
+
+    if (input != null && contenedor != null) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(contenedor).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input);
+    }
+    else {
+        console.warn("input o contenedor vacio(s)");
+    }   
+    console.warn("input o contenedor vacio(s)");
 }
 
 //////////////////////////////////////////////////////////////////
