@@ -115,8 +115,8 @@ namespace SistemaReclutamiento.Controllers
                     if (extension == ".jpg" || extension == ".png")
                     {
                         var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                        rutaInsertar = Path.Combine("@"+rutaPerfil , nombreArchivo);
-                        rutaAnterior = Path.Combine("@" + rutaPerfil , postulante.pos_foto);
+                        rutaInsertar = Path.Combine(rutaPerfil , nombreArchivo);
+                        rutaAnterior = Path.Combine(rutaPerfil , postulante.pos_foto);
 
                         if (System.IO.File.Exists(rutaAnterior))
                         {
@@ -157,8 +157,9 @@ namespace SistemaReclutamiento.Controllers
             {
                 errormensaje = ex.Message + " ,Llame Administrador";
             }
+            var mipostulante = postulantebl.PostulanteIdObtenerJson(postulante.pos_id);
             Session.Remove("postulante");
-            Session["postulante"] = postulante;
+            Session["postulante"] = mipostulante;
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         
         }

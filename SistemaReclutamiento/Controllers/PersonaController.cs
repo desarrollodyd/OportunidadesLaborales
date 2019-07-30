@@ -85,7 +85,7 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_fecha_reg = DateTime.Now;
                 try {
                     //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
-                    var personaRepetida = personabl.PersonaDniEmailObtenerJson(persona.per_correoelectronico, persona.per_numdoc);
+                    var personaRepetida = personabl.PersonaDniObtenerJson(persona.per_numdoc);
                     if ( personaRepetida.per_numdoc!=persona.per_numdoc)
                     {
                         if ( personaRepetida.per_correoelectronico!=persona.per_correoelectronico)

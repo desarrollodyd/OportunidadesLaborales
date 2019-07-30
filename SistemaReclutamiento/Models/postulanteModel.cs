@@ -85,6 +85,74 @@ namespace SistemaReclutamiento.Models
             }
             return postulante;
         }
+        public postulanteEntidad PostulanteIdObtenerJson(int pos_id)
+        {
+            postulanteEntidad postulante = new postulanteEntidad();
+            string consulta = @"SELECT pos_id, 
+                                        pos_tipo_direccion, 
+                                        pos_direccion, 
+                                        pos_tipo_calle, 
+                                        pos_numero_casa, 
+                                        pos_tipo_casa, 
+                                        pos_celular, 
+                                        pos_estado_civil, 
+                                        pos_brevete, 
+                                        pos_num_brevete, 
+                                        pos_referido, 
+                                        pos_nombre_referido, 
+                                        pos_cv, 
+                                        pos_foto, 
+                                        pos_situacion, 
+                                        pos_fecha_reg, 
+                                        pos_fecha_act, 
+                                        pos_estado, 
+                                        fk_persona
+	                                        FROM gestion_talento.gdt_per_postulante
+	                                  
+                                            where pos_id=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", pos_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "defaultUser.png" : dr["pos_foto"];
+                                postulante.pos_tipo_direccion = ManejoNulos.ManageNullStr(dr["pos_tipo_direccion"]);
+                                postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
+                                postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);
+                                postulante.pos_numero_casa = ManejoNulos.ManageNullStr(dr["pos_numero_casa"]);
+                                postulante.pos_tipo_casa = ManejoNulos.ManageNullStr(dr["pos_tipo_casa"]);
+                                postulante.pos_celular = ManejoNulos.ManageNullStr(dr["pos_celular"]);
+                                postulante.pos_estado_civil = ManejoNulos.ManageNullStr(dr["pos_estado_civil"]);
+                                postulante.pos_brevete = ManejoNulos.ManegeNullBool(dr["pos_brevete"]);
+                                postulante.pos_num_brevete = ManejoNulos.ManageNullStr(dr["pos_num_brevete"]);
+                                postulante.pos_referido = ManejoNulos.ManegeNullBool(dr["pos_referido"]);
+                                postulante.pos_nombre_referido = ManejoNulos.ManageNullStr(dr["pos_nombre_referido"]);
+                                postulante.pos_cv = ManejoNulos.ManageNullStr(dr["pos_cv"]);
+                                postulante.pos_foto = pos_foto.ToString();
+                                postulante.pos_situacion = ManejoNulos.ManageNullStr(dr["pos_situacion"]);
+                                postulante.pos_fecha_reg = ManejoNulos.ManageNullDate(dr["pos_fecha_reg"]);
+                                postulante.pos_fecha_act = ManejoNulos.ManageNullDate(dr["pos_fecha_act"]);
+                                postulante.pos_estado = ManejoNulos.ManageNullStr(dr["pos_estado"]);
+                                postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
+                                postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            return postulante;
+        }
         public bool PostulanteInsertarJson(postulanteEntidad postulante)
         {
             bool response = false;

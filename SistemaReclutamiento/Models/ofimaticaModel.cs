@@ -202,5 +202,30 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
+        public bool OfimaticaEliminarJson(int id)
+        {
+            bool response = false;
+            string consulta = @"DELETE FROM gestion_talento.gdt_per_ofimatica
+                                WHERE  ofi_id=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return response;
+        }
+
     }
 }

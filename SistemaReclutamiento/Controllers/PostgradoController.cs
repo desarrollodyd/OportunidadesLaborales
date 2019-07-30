@@ -11,7 +11,7 @@ namespace SistemaReclutamiento.Controllers
     public class PostgradoController : Controller
     {
         // GET: Postgrado    
-        postgradoModel educacionsuperiorbl = new postgradoModel();
+        postgradoModel postgradobl = new postgradoModel();
      
         public ActionResult Index()
         {
@@ -25,7 +25,7 @@ namespace SistemaReclutamiento.Controllers
             postgrado.pos_fecha_reg = DateTime.Now;
             try
             {
-                respuestaConsulta = educacionsuperiorbl.PostgradoInsertarJson(postgrado);
+                respuestaConsulta = postgradobl.PostgradoInsertarJson(postgrado);
 
             }
             catch (Exception exp)
@@ -43,7 +43,7 @@ namespace SistemaReclutamiento.Controllers
             bool respuestaConsulta = false;
             try
             {
-                respuestaConsulta = educacionsuperiorbl.PostgradoEditarJson(postgrado);
+                respuestaConsulta = postgradobl.PostgradoEditarJson(postgrado);
 
             }
             catch (Exception exp)
@@ -51,6 +51,21 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
 
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult PostgradoEliminarJson(int id)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            try
+            {
+                respuestaConsulta = postgradobl.PostgradoEliminarJson(id);
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
     }

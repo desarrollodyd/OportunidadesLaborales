@@ -3641,6 +3641,7 @@
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
     <Content Include="Content\viewjs\Login\Login.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
+    <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\DatosPersonaVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
@@ -4552,6 +4553,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdiomaController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\OfertaLaboralController.cs" />
     <Compile Include="Controllers\OfimaticaController.cs" />
     <Compile Include="Controllers\OfimaticaHerramientaController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
@@ -4563,6 +4565,7 @@
     <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
     <Compile Include="Entidades\experienciaEntidad.cs" />
     <Compile Include="Entidades\idiomaEntidad.cs" />
+    <Compile Include="Entidades\ofertaLaboralEntidad.cs" />
     <Compile Include="Entidades\ofimaticaEntidad.cs" />
     <Compile Include="Entidades\ofimaticaHerramientaEntidad.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
@@ -4580,6 +4583,7 @@
     <Compile Include="Models\educacionSuperiorModel.cs" />
     <Compile Include="Models\experienciaModel.cs" />
     <Compile Include="Models\idiomaModel.cs" />
+    <Compile Include="Models\ofertaLaboralModel.cs" />
     <Compile Include="Models\ofimaticaHerramientaModel.cs" />
     <Compile Include="Models\ofimaticaModel.cs" />
     <Compile Include="Models\personaModel.cs" />
@@ -4615,6 +4619,7 @@
     <Content Include="Views\Persona\IdiomasVista.cshtml" />
     <Content Include="Views\Persona\ExperienciaVista.cshtml" />
     <Content Include="Views\Persona\InformacionAdicionalVista.cshtml" />
+    <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -52,5 +52,21 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        [HttpPost]
+        public ActionResult IdiomaEliminarJson(int id)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+
+            try
+            {
+                respuestaConsulta = idiomabl.IdiomaEliminarJson(id);
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
     }
 }

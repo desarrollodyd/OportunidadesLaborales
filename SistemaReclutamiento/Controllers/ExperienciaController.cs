@@ -53,5 +53,21 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        [HttpPost]
+        public ActionResult ExperienciaEliminarJson(int id)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+
+            try
+            {
+                respuestaConsulta = experienciabl.ExperienciaEliminarJson(id);
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
     }
 }

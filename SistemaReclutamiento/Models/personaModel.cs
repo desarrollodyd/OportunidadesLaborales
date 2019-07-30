@@ -173,23 +173,21 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        internal personaEntidad PersonaDniEmailObtenerJson(string per_correoelectronico, string per_numdoc)
+        internal personaEntidad PersonaDniObtenerJson(string per_numdoc)
         {
             personaEntidad persona = new personaEntidad();
-            string consulta = @"SELECT
-                                    per_correoelectronico,                                   
+            string consulta = @"SELECT                                                                  
                                     per_id,                          
                                     per_numdoc
 	                                FROM marketing.cpj_persona
-                                    where per_correoelectronico=@p0 or per_numdoc=@p1;";
+                                    where per_numdoc=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", per_correoelectronico);
-                    query.Parameters.AddWithValue("@p1", per_numdoc);
+                    query.Parameters.AddWithValue("@p0", per_numdoc);                   
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -197,9 +195,7 @@ namespace SistemaReclutamiento.Models
                             while (dr.Read())
                             {
                                 persona.per_id = ManejoNulos.ManageNullInteger(dr["per_id"]);
-                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
-                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
-
+                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);                             
                             }
                         }
                     }

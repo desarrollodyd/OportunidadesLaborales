@@ -1,0 +1,43 @@
+﻿@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@using SistemaReclutamiento.Utilitarios;
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String ubigeo = new JavaScriptSerializer().Serialize(Session["ubigeo"]);
+    String postulante = new JavaScriptSerializer().Serialize(Session["postulante"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
+    String rutaImage = new JavaScriptSerializer().Serialize(Session["rutaPerfil"]);
+}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="col-md-4 col-xs-12" id="printcard">
+                @*<div class="card text-center">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            2 days ago
+                        </div>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+@section js
+{
+    <script type="text/javascript">
+        persona = (@Html.Raw(persona));
+        ubigeo = (@Html.Raw(ubigeo));
+        postulante = (@Html.Raw(postulante));
+        usuario = (@Html.Raw(usuario));
+        rutaImage = (@Html.Raw(rutaImage));
+    </script>
+    <script src="~/Content/viewjs/OfertaLaboral/OfertaLaboralListarVista.js"></script>
+}
