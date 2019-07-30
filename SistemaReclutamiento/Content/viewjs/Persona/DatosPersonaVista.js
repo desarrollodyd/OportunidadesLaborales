@@ -25,7 +25,8 @@
         $("#pos_num_brevete").val(postulante.pos_num_brevete);
         $("#pos_estado").val(postulante.pos_estado);   
 
-        $("#perfil_principal").attr("src","file:///"+ rutaImage + postulante.pos_foto);
+
+        $("#perfil_principal").attr("src","data:image/gif;base64,"+ rutaImage);
     };
     var _componentes = function () {
 
