@@ -10,20 +10,16 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
-    
+
     public class LoginController : Controller
     {
         usuarioModel usuariobl = new usuarioModel();
         personaModel personabl = new personaModel();
         ubigeoModel ubigeobl = new ubigeoModel();
         postulanteModel postulantebl = new postulanteModel();
-        
+
         public ActionResult Index()
         {
-
-            Session["rutaCv"] = ConfigurationManager.AppSettings["PathArchivos"];
-            Session["rutaPerfil"] = ConfigurationManager.AppSettings["PathImagenesPerfil"];
-
             if (Session["usu_full"] != null)
             {
                 ViewBag.Message = "Bienvenido.";
@@ -33,8 +29,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 ViewBag.Message = "Login De Acceso";
                 return View();
-            }
-         
+            }        
         }
 
         public ActionResult Activacion(string id) {
@@ -79,6 +74,9 @@ namespace SistemaReclutamiento.Controllers
             bool respuestaConsulta = false;
             string errormensaje = "";
             var usuario = new usuarioEntidad();
+            var persona = new personaEntidad();
+            var postulante = new postulanteEntidad();
+            RutaImagenes rutaImagenes = new RutaImagenes();
             usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
             string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
             try {
@@ -86,10 +84,11 @@ namespace SistemaReclutamiento.Controllers
                 var usuarioData = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                 Session["usu_full"] = usuarioData;
                 Session["per_full"] = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
-                var persona = new personaEntidad();
                 persona = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
                 Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                postulante = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                Session["postulante"] = postulante;
+                rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
                 errormensaje = "Contraseña actualizada correctamente";
             }
             catch (Exception ex) {
@@ -105,6 +104,8 @@ namespace SistemaReclutamiento.Controllers
             string errormensaje = "";
             var usuario = new usuarioEntidad();        
             var persona = new personaEntidad();
+            var postulante = new postulanteEntidad();
+            RutaImagenes rutaImagenes = new RutaImagenes();
             String pendiente = "";
             try
             {
@@ -131,7 +132,9 @@ namespace SistemaReclutamiento.Controllers
                             Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);                         
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                            Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                            postulante = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                            Session["postulante"] = postulante;
+                            rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
                             respuesta = true;
                             errormensaje = "Bienvenido, " + usuario.usu_nombre;
                         }
