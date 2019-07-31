@@ -51,6 +51,34 @@
     };
     var _componentes = function () {
 
+        $("#cboPais").change(function () {
+            var ubi_id_pais = $("#cboPais option:selected").val();
+            selectResponse({
+                url: "Ubigeo/UbigeoListarDepartamentosporPaisJson",
+                select: "cboDepartamento",
+                data: { ubi_pais_id: ubi_id_pais },
+                campoID: "ubi_departamento_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false
+            });
+        });
+
+        $("#cboDepartamento").change(function () {
+            var ubi_pais_id = $("#cboPais option:selected").val();
+            var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+            selectResponse({
+                url: "Ubigeo/UbigeoListarProvinciasporDepartamentoJson",
+                select: "cboProvincia",
+                data: { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id },
+                campoID: "ubi_provincia_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false
+            });
+
+        });
+
         $(document).on("click", ".btn_guardar", function (e) {
             $("#frmDatosPersonales-form").submit();
             if (_objetoForm_frmDatosPersonales.valid()) {
