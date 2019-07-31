@@ -17,7 +17,6 @@ namespace SistemaReclutamiento.Controllers
             return View();
         }
 
-
         [HttpPost]
         public ActionResult EducacionBasicaListarJson(int fkPosID)
         {

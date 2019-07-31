@@ -11,16 +11,16 @@
     var _ListarEducacionSuperior = function () {
 
         responseSimple({
-            url: "EducacionBasica/EducacionBasicaListarJson",
+            url: "EducacionSuperior/EducacionSuperiorListarJson",
             data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val() }),
             refresh: false,
             callBackSuccess: function (response) {
                 var respuesta = response.respuesta;
                 var datos = response.data;
                 if (respuesta) {
-                    $("#tbody_EducacionBasica").html("");
+                    $("#tbody_EducacionSuperior").html("");
                     $.each(datos, function (index, value) {
-                        $("#tbody_EducacionBasica").append('<tr><td>' + value.eba_tipo + '</td><td>' + value.eba_nombre + '</td><td>' + value.eba_condicion + '</td></tr>');
+                        $("#tbody_EducacionSuperior").append('<tr><td>' + value.eba_tipo + '</td><td>' + value.eba_nombre + '</td><td>' + value.eba_condicion + '</td></tr>');
                     });
 
                 }

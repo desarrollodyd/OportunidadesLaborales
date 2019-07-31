@@ -16,6 +16,24 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public ActionResult EducacionSuperiorListarJson(int fkPosID)
+        {
+            var errormensaje = "";
+            var lista = new List<educacionSuperiorEntidad>();
+            try
+            {
+                lista = educacionsuperiorbl.EducacionSuperiorListaporPostulanteJson(fkPosID);
+                errormensaje = "Cargando Data...";
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
+        }
+
         [HttpPost]
         public ActionResult EducacionSuperiorInsertarJson(educacionSuperiorEntidad educacionSuperior)
         {
@@ -25,7 +43,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = educacionsuperiorbl.EducacionSuperiorInsertarJson(educacionSuperior);
-
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Registro Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Registrar";
+                }
             }
             catch (Exception exp)
             {
@@ -43,7 +68,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = educacionsuperiorbl.EducacionSuperiorEditarJson(educacionSuperior);
-
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Edito Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Editar";
+                }
             }
             catch (Exception exp)
             {
@@ -61,6 +93,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = educacionsuperiorbl.EducacionSuperiorEliminarJson(id);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Elimino Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Eliminar";
+                }
             }
             catch (Exception exp)
             {
