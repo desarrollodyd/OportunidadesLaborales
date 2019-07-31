@@ -17,7 +17,7 @@ namespace SistemaReclutamiento.Controllers
         ubigeoModel ubigeobl = new ubigeoModel();
         postulanteModel postulantebl = new postulanteModel();     
      
-        // GET: Usuario
+        // GET: Vista Datos Personales
         public ActionResult DatosPersonalesVista()
         {
             if (Session["usu_full"] != null)
@@ -30,6 +30,56 @@ namespace SistemaReclutamiento.Controllers
                 ViewBag.Message = "Login De Acceso";
                 return View("~/Views/Login/Index.cshtml");
             }
+        }
+
+        // GET: Vista Educacion Basica
+        public ActionResult EducacionBasicaVista()
+        {
+            ViewBag.Message = "Educacion Basica";
+            return View();
+        }
+
+        // GET: Vista Educacion Basica
+        public ActionResult EducacionSuperiorVista()
+        {
+            ViewBag.Message = "Educacion Superior";
+            return View();
+        }
+
+
+        // GET: Vista PostGrado
+        public ActionResult PostGradoVista()
+        {
+            ViewBag.Message = "PostGrado";
+            return View();
+        }
+
+        // GET: Vista Ofimatica
+        public ActionResult OfimaticaVista()
+        {
+            ViewBag.Message = "Ofimatica";
+            return View();
+        }
+
+        // GET: Vista Idiomas
+        public ActionResult IdiomasVista()
+        {
+            ViewBag.Message = "Idiomas";
+            return View();
+        }
+
+        // GET: Vista Experiencia
+        public ActionResult ExperienciaVista()
+        {
+            ViewBag.Message = "Experiencia";
+            return View();
+        }
+
+        // GET: Vista InformacionAdicional
+        public ActionResult InformacionAdicionalVista()
+        {
+            ViewBag.Message = "Informacion Adicional";
+            return View();
         }
 
         public ActionResult PersonaIndexVista()
@@ -214,6 +264,7 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = personabl.PersonaEditarJson(persona);
                 if (respuestaConsulta) {
                     respuestaConsulta = postulantebl.PostulanteEditarJson(postulante);
+                    errormensaje = "Se registro Correctamente";
                 }
                 
             }
@@ -227,12 +278,10 @@ namespace SistemaReclutamiento.Controllers
                 Session.Remove("per_full");
                 Session.Remove("ubigeo");
                 Session.Remove("postulante");
-                Session.Remove("fk_persona");
                 Session["per_full"] = personabl.PersonaIdObtenerJson(data.per_id);
                 persona = personabl.PersonaIdObtenerJson(data.per_id);
                 Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                 Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
-                Session["fk_persona"] = data.per_id;
 
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });

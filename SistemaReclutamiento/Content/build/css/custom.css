@@ -2186,7 +2186,7 @@ span.section {
     border-bottom: 1px solid #e5e5e5
 }
 .form-control {
-    border-radius: 0;
+    border-radius: 2px;
     width: 100%
 }
 .form-horizontal .control-label {
@@ -3682,7 +3682,7 @@ div[data-role="editor-toolbar"] {
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 0;
-    min-height: 38px
+    min-height: 30px
 }
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #73879C;

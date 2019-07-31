@@ -16,6 +16,25 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public ActionResult EducacionBasicaListarJson(int fkPosID)
+        {
+            var errormensaje = "";
+            var lista = new List<educacionBasicaEntidad>();
+            try
+            {
+                lista = educacionBasicabl.EducacionBasicaListaporPostulanteJson(fkPosID);
+                errormensaje = "Cargando Data...";
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta=true, mensaje = errormensaje });
+        }
+
         [HttpPost]
         public ActionResult EducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica)
         {
@@ -24,6 +43,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {             
                 respuestaConsulta = educacionBasicabl.EducacionBasicaInsertarJson(educacionBasica);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Registro Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Registrar";
+                }
 
             }
             catch (Exception exp)
@@ -42,7 +69,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = educacionBasicabl.EducacionBasicaEditarJson(educacionBasica);
-
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Edito Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Editar";
+                }
             }
             catch (Exception exp)
             {
@@ -59,6 +93,14 @@ namespace SistemaReclutamiento.Controllers
 
             try {
                 respuestaConsulta = educacionBasicabl.EducacionBasicaEliminarJson(id);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Elimino Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Eliminar";
+                }
             }
             catch (Exception exp) {
                 errormensaje = exp.Message + ",Llame Administrador";

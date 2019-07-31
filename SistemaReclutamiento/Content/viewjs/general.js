@@ -3,7 +3,7 @@
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {
         messageResponse({
-            message: xmlHttpRequest.responseJSON.message,
+            message: errorThrow,
             type: "error"
         });
     },
@@ -137,7 +137,7 @@ function limpiar_form(obj) {
         return;
     };
 
-    $(opciones.contenedor + " input,select,textarea").val("");
+    $(opciones.contenedor + " input:visible,select:visible,textarea:visible").val("");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ function responseSimple(obj) {
         },
         error: function (xmlHttpRequest, textStatus, errorThrow) {
             unblock("body");
-            console.warn('Message :', xmlHttpRequest);
+            console.warn('Message :', errorThrow);
         }
     });
 }
@@ -423,7 +423,7 @@ function selectResponse(obj) {
     if (opciones.url==null) {
         messageResponse({
             text: "No se Declaro Url",
-            type: "success"
+            type: "warning"
         });
         return false;
     }
@@ -450,13 +450,14 @@ function selectResponse(obj) {
                 }
                 $.each(datos, function (index, value) {
                     var selected = "";
+                   
                     if ($.isArray(opciones.selectVal)) {
                         if (objectFindByKey(opciones.selectVal, opciones.campoID, value[opciones.campoID]) != null) {
                             selected = "selected='selected'";
                         };
                     } else {
 
-                        if (value[opciones.campoTabla] === opciones.selectVal) {
+                        if (value[opciones.campoID] === opciones.selectVal) {
                             selected = "selected='selected'";
                         };
                     }
@@ -471,7 +472,7 @@ function selectResponse(obj) {
             } else {
                 messageResponse({
                     text: "No Hay Registros",
-                    type: "success"
+                    type: "warning"
                 });
             }
             if (mensaje !== "") {
@@ -581,6 +582,7 @@ function llenarSelect(url, data, select, dataId, dataValor, selectVal) {
             var datos = response.data;
             var mensaje = response.mensaje;
             if (datos.length > 0) {
+              
                 $("#" + select).html("");
                 $("#" + select).append('<option value="">--Seleccione--</option>');
                 if (selectVal == "allOption") {

@@ -48,7 +48,7 @@
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.css" rel="stylesheet">
     <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
@@ -64,13 +64,21 @@
             <div class="col-md-3 left_col menu_fixed">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="~/" class="site_title"><i class="fa fa-newspaper-o"></i> <span>Portal Laboral</span></a>
+                        <a href="~/" class="site_title">
+                            <i class="fa fa-newspaper-o" style="display:none;"></i>
+                            <div style="width: 44px;height: 35px;border: 1px solid #fff;float: left;margin-top: 13px;line-height: 0;padding: 4px;margin-right: 6px;
+">
+                                <img src="~/images/icon.png" alt="~/Content." class="profile_img" style="width: 34px;height: 25px;background: #fff;">
+                            </div>
+
+                            <span>Portal Laboral</span>
+                        </a>
                     </div>
 
                     <div class="clearfix"></div>
 
                     <!-- menu profile quick info -->
-                    <div class="profile clearfix">
+                    <div class="profile clearfix" style="display:none;">
                         <div class="profile_pic">
                             <img src="~/images/icon.png" alt="~/Content." class="img-circle profile_img" style="border-radius:3%;">
                         </div>
@@ -85,14 +93,14 @@
                                 <li class="active">
                                     <a><i class="fa fa-edit"></i> Perfil <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display:block;">
-                                        <li><a href="~/Persona/PersonaIndexVista">Datos Personales</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Educacion Basica</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Educacion Superior</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">PostGrado</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Ofimatica</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Idiomas</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Experiencia</a></li>
-                                        <li><a href="~/Persona/PersonaEditarVista/@(encriptado)">Informacion Adicional</a></li>
+                                        <li><a href="~/">Datos Personales</a></li>
+                                        <li><a href="~/Persona/EducacionBasicaVista">Educacion Basica</a></li>
+                                        <li><a href="~/Persona/EducacionSuperiorVista">Educacion Superior</a></li>
+                                        <li><a href="~/Persona/PostGradoVista">PostGrado</a></li>
+                                        <li><a href="~/Persona/OfimaticaVista/@(encriptado)">Ofimatica</a></li>
+                                        <li><a href="~/Persona/IdiomasVista/@(encriptado)">Idiomas</a></li>
+                                        <li><a href="~/Persona/ExperienciaVista/@(encriptado)">Experiencia</a></li>
+                                        <li><a href="~/Persona/InformacionAdicionalVista/@(encriptado)">Informacion Adicional</a></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -116,7 +124,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img  id="img_layout_post" src="~/images/user.png" alt="">@usu_nombre
+                                    <img id="img_layout_post" src="~/images/user.png" alt="">@usu_nombre
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -171,6 +179,8 @@
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.js"></script>
     <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
+    <script src="~/Content/vendors/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
+    <script src="~/Content/build/js/custom.js"></script>
     <script src="~/Content/viewjs/general.js"></script>
 
     <script>
