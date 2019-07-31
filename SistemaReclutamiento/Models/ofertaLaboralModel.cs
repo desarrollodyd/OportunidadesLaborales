@@ -16,9 +16,10 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<ofertaLaboralEntidad> OfertaLaboralListarJson()
+        public List<ofertaLaboralEntidad> OfertaLaboralListarJson(string ola_cod_empresa, string ola_cod_cargo/*,string ola_fecha_pub, int fk_ubigeo*/, string ola_nombre)
         {
             List<ofertaLaboralEntidad> lista = new List<ofertaLaboralEntidad>();
+            
             string consulta = @"SELECT 
                                     ola_id, 
                                     ola_nombre, 
@@ -42,7 +43,38 @@ namespace SistemaReclutamiento.Models
                                     fk_ubigeo,
                                     fk_usuario
 	                                FROM 
-                                    gestion_talento.gdt_ola_oferta_laboral;";
+                                    gestion_talento.gdt_ola_oferta_laboral where ";
+           
+                
+            if (ola_cod_empresa != "")
+            {
+                consulta += "ola_cod_empresa='"+ManejoNulos.ManageNullStr(ola_cod_empresa)+"' and ";
+            }
+            if (ola_cod_cargo != "")
+            {
+                consulta += "ola_cod_cargo='" + ManejoNulos.ManageNullStr(ola_cod_cargo) + "' and ";
+            }
+            //if (ola_fecha_pub != "")
+            //{
+            //    switch (ola_fecha_pub) {
+            //        case "hoy": consulta += "ola_fecha_pub between" +ManejoNulos.ManageNullDate(DateTime.Now ManejoNulos.ManageNullDate(DateTime.Now) + "and";
+            //            break;
+            //    }
+                    
+            //}
+            //if (fk_ubigeo != 0)
+            //{
+            //    consulta += "fk_ubigeo=" + ManejoNulos.ManageNullInteger(fk_ubigeo) + "and";
+            //}
+            if (ola_nombre != "")
+            {
+                consulta += "lower(ola_nombre) Like '%" + ManejoNulos.ManageNullStr(ola_nombre.ToLower()) + "%' and ";
+            }
+            //if (ola_id != 0)
+            //{
+            //    consulta += "ola_id=" + ManejoNulos.ManageNullInteger(ola_id) + " and ";
+            //}
+            consulta += "ola_estado='A'";         
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

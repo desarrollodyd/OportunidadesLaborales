@@ -16,7 +16,6 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public ActionResult EducacionSuperiorListarJson(int fkPosID)
         {
@@ -45,12 +44,13 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = educacionsuperiorbl.EducacionSuperiorInsertarJson(educacionSuperior);
                 if (respuestaConsulta)
                 {
-                    errormensaje = "Se Registro Correctamente";
+                    errormensaje = "Se Registró Correctamente";
                 }
                 else
                 {
-                    errormensaje = "Error no se Puede Registrar";
+                    errormensaje = "Error, no se Puede Registrar";
                 }
+
             }
             catch (Exception exp)
             {
@@ -70,11 +70,11 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = educacionsuperiorbl.EducacionSuperiorEditarJson(educacionSuperior);
                 if (respuestaConsulta)
                 {
-                    errormensaje = "Se Edito Correctamente";
+                    errormensaje = "Se Editó Correctamente";
                 }
                 else
                 {
-                    errormensaje = "Error no se Puede Editar";
+                    errormensaje = "Error, no se Puede Editar";
                 }
             }
             catch (Exception exp)
@@ -95,11 +95,11 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = educacionsuperiorbl.EducacionSuperiorEliminarJson(id);
                 if (respuestaConsulta)
                 {
-                    errormensaje = "Se Elimino Correctamente";
+                    errormensaje = "Se Eliminó Correctamente";
                 }
                 else
                 {
-                    errormensaje = "Error no se Puede Eliminar";
+                    errormensaje = "Error, no se Puede Eliminar";
                 }
             }
             catch (Exception exp)
