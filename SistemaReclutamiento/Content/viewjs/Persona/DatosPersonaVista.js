@@ -10,6 +10,12 @@
         $("#per_apellido_pat").val(persona.per_apellido_pat);
         $("#per_apellido_mat").val(persona.per_apellido_mat);
         $("#per_numdoc").val(persona.per_numdoc);
+
+        $('#per_fechanacimiento').datetimepicker({
+            format: 'DD/MM/YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true
+        });
         $("#per_fechanacimiento").val(moment(persona.per_fechanacimiento).format('DD/MM/YYYY'));
         $("#per_telefono").val(persona.per_telefono);
         $("#cboSexo").val(persona.per_sexo);
@@ -24,9 +30,24 @@
         $("#cboBrevete").val(String(postulante.pos_brevete));
         $("#pos_num_brevete").val(postulante.pos_num_brevete);
         $("#pos_estado").val(postulante.pos_estado);   
+        $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
+        $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
+        selectResponse({
+            url: "Ubigeo/UbigeoListarPaisesJson",
+            select: "cboPais",
+            campoID: "ubi_pais_id",
+            CampoValor: "ubi_nombre",
+            selectVal: ubigeo.ubi_pais_id,
+            select2: true,
+            allOption: false
+        });
 
-        $("#perfil_principal").attr("src","data:image/gif;base64,"+ rutaImage);
+        if (persona.fk_ubigeo != 0) {
+            
+        }
+        
+
     };
     var _componentes = function () {
 

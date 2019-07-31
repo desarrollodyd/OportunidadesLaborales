@@ -402,6 +402,92 @@ function validar_Form(obj) {
     });
 
 }
+
+////////////////////////////////////////////////////////////////
+
+function selectResponse(obj) {
+    // Initialize
+    var defaults = {
+        url: null,
+        data: {},
+        select: null,
+        campoID: null,
+        CampoValor: null,
+        selectVal: null,
+        select2: false,
+        allOption:false
+    }
+
+    var opciones = $.extend({}, defaults, obj);
+
+    if (opciones.url==null) {
+        messageResponse({
+            text: "No se Declaro Url",
+            type: "success"
+        });
+        return false;
+    }
+
+    $.ajax({
+        url: basePath+ opciones.url,
+        type: "POST",
+        data: JSON.stringify(opciones.data),
+        contentType: "application/json",
+        beforeSend: function () {
+            $("#" + opciones.select).html("");
+            $("#" + opciones.select).append('<option value="">Cargando...</option>');
+            $("#" + opciones.select).attr("disabled", "disabled");
+            //$.LoadingOverlay("show");
+        },
+        success: function (response) {
+            var datos = response.data;
+            var mensaje = response.mensaje;
+            if (datos.length > 0) {
+                $("#" + opciones.select).html("");
+                $("#" + opciones.select).append('<option value="">--Seleccione--</option>');
+                if (opciones.allOption) {
+                    $("#" + opciones.select).append('<option value="0">Todos</option>');
+                }
+                $.each(datos, function (index, value) {
+                    var selected = "";
+                    if ($.isArray(opciones.selectVal)) {
+                        if (objectFindByKey(opciones.selectVal, opciones.campoID, value[opciones.campoID]) != null) {
+                            selected = "selected='selected'";
+                        };
+                    } else {
+
+                        if (value[opciones.campoTabla] === opciones.selectVal) {
+                            selected = "selected='selected'";
+                        };
+                    }
+                    $("#" + opciones.select).append('<option value="' + value[opciones.campoID] + '"    ' + selected + '>' + value[opciones.CampoValor] + '</option>');
+
+                });
+                $("#" + opciones.select).removeAttr("disabled");
+                if (opciones.select2) {
+                    $("#" + opciones.select).select2();
+                }
+                
+            } else {
+                messageResponse({
+                    text: "No Hay Registros",
+                    type: "success"
+                });
+            }
+            if (mensaje !== "") {
+                messageResponse({
+                    text: mensaje,
+                    type: "success"
+                });
+            }
+        },
+        complete: function () {
+            //$.LoadingOverlay("hide");
+        },
+    });
+
+}
+
 //////////////////////////////////////////////////////////////////
 
 function readImage(input,contenedor) {

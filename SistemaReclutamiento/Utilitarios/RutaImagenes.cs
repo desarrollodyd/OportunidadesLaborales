@@ -16,13 +16,13 @@ namespace SistemaReclutamiento.Utilitarios
             string postulante_image = @""+ConfigurationManager.AppSettings["PathImagenesPerfil"] +"/"+name;
             if (postulante_image != null)
             {
-                byte[] imagebytes = System.IO.File.ReadAllBytes(postulante_image);
-                string base64String = Convert.ToBase64String(imagebytes);
-                HttpContext.Current.Session["rutaPerfil"] = base64String;
-            }
-            
+                if (System.IO.File.Exists(postulante_image))
+                {
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(postulante_image);
+                    string base64String = Convert.ToBase64String(imagebytes);
+                    HttpContext.Current.Session["rutaPerfil"] = base64String;
+                }              
+            }           
         }
-
-        
     }
 }

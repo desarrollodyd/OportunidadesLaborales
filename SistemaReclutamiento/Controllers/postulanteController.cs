@@ -119,6 +119,11 @@ namespace SistemaReclutamiento.Controllers
                         rutaInsertar = Path.Combine(""+rutaPerfil , nombreArchivo);
                         rutaAnterior = Path.Combine("" + rutaPerfil , postulante.pos_foto);
 
+                        if(!Directory.Exists(rutaPerfil))
+                        {
+                            System.IO.Directory.CreateDirectory(rutaPerfil);
+                        }
+
                         if (System.IO.File.Exists(rutaAnterior))
                         {
                             System.IO.File.Delete(rutaAnterior);
