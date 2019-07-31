@@ -9,27 +9,116 @@
     String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
     String rutaImage = new JavaScriptSerializer().Serialize(Session["rutaPerfil"]);
 }
+
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
         <div class="x_content">
-            <div class="col-md-4 col-xs-12" id="printcard">
-                @*<div class="card text-center">
-                        <div class="card-header">
-                            Featured
+            <div class="" role="tabpanel">
+                <ul id="datosPersonales_ul" class="nav nav-tabs bar_tabs hidden-xs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#datosPersonales_tab" role="tab" data-toggle="tab" aria-expanded="true">Ofertas Laborales</a>
+                    </li>
+                    <li class="pull-right">
+                        <button type="button" class="btn btn-danger btn_guardar"><i class="fa fa-save"></i> Filtrar</button>
+                        <button class="btn btn-primary btn_cancelar" type="button"><i class="fa fa-ban"></i> Cancelar</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="datosPersonales_tab" aria-labelledby="datosPersonales_tab">
+
+                        <div class="col-md-3 col-sm-12 col-xs-12 profile_left">
+                            <div class="profile_img">
+                                <div id="crop-avatar">
+                                    <!-- Current avatar -->
+                                    <div class="imagen-para-perfil img_postulante">
+                                        <label for="subir-img-perfil" style="width: 100%;">
+                                            <img id="perfil_principal" class="img-responsive avatar-view" style="width:100%;height:225px;" alt="Avatar" title="Imagen Postulante">
+                                        </label>
+                                        <input id="subir-img-perfil" type="file" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre">Richard Lee</h3>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+
+                        <form id="frmOfertaLaboral-form" class="" method="post">
+                            <div class="col-md-9 col-xs-12" style="padding-top:10px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12 visible-xs" style="margin-bottom:10px;">
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-danger col-xs-12 btn_guardar"><i class="fa fa-save"></i> Filtrar</button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-primary col-xs-12 btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Nombre del Puesto</label>
+                                        <input type="text" name="ola_nombre" id="ola_nombre" class="form-control" placeholder="Nombre " />
+                                    </div>
+                                </div>
+                                @*<input type="hidden" name="per_id" id="per_id" />
+                <input type="hidden" name="pos_id" id="pos_id" />
+                <input type="hidden" name="per_correoelectronico" id="per_correoelectronico" />
+                <input type="hidden" name="pos_estado" id="pos_estado" />*@
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Empresa</label>
+                                        <select class="form-control" name="ola_cod_empresa" id="cbocodEmpresa" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="22">Wild Gaming</option>
+                                            <option value="04">Software 3000</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Cargo</label>
+                                        <select class="form-control" name="ola_cod_cargo" id="cbocodCargo" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="001">Anfitrion(A)</option>
+                                            <option value="004">Cajero(A)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-xs-12">
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Lugar</label>
+                                        <select class="form-control" name="ubi_departamento_id" id="cboDepartamento" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content">
+                                    <div class="col-md-4 col-xs-12" id="printcard">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-footer text-muted">
-                            2 days ago
-                        </div>
-                    </div>*@
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+@*<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="col-md-4 col-xs-12" id="printcard">       
+            </div>
+        </div>
+    </div>
+</div>*@
 @section js
 {
     <script type="text/javascript">
