@@ -3643,6 +3643,7 @@
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\DatosPersonaVista.js" />
+    <Content Include="Content\viewjs\Persona\EducacionBasicaVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

@@ -84,7 +84,7 @@
                                 <div class="col-md-4 col-xs-12">
                                     <label>Fecha de Nacimiento</label>
                                     <div class='input-group date' id='myDatepicker'>
-                                        <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" placeholder="Fecha de Nacimiento" />
+                                        <input type='text' class="form-control" name="per_fechanacimiento" id="per_fechanacimiento" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Nacimiento" />
                                         <span class="input-group-addon">
                                             <span class="glyphicon glyphicon-calendar"></span>
                                         </span>
@@ -95,9 +95,9 @@
                                     <div class="form-group">
                                         <label>Sexo</label>
                                         <div class="form-check pl-0">
-                                            <input type="checkbox" name="per_sexo" id="cboSexo" checked data-height="30" data-toggle="toggle" data-on="Masculino" data-off="Femenino" data-onstyle="primary" data-offstyle="danger" value="M">
+                                            <input type="checkbox" name="cboSexo" id="cboSexo" checked data-height="30" data-toggle="toggle" data-on="Masculino" data-off="Femenino" data-onstyle="primary" data-offstyle="danger">
                                         </div>
-
+                                        <input type="hidden" name="per_sexo" id="per_sexo" />
                                     </div>
                                 </div>
 
@@ -152,8 +152,8 @@
                                     <div class="form-group">
                                         <label>Brevete</label>
                                         <div class="form-check pl-0">
-                                            <input type="checkbox" name="pos_brevete" id="cboBrevete" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-
+                                            <input type="checkbox" name="cboBrevete" id="cboBrevete" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
+                                            <input type="hidden" name="pos_brevete" id="pos_brevete"/>
                                         </div>
                                     </div>
                                 </div>

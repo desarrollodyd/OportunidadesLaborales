@@ -24,6 +24,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {             
                 respuestaConsulta = educacionBasicabl.EducacionBasicaInsertarJson(educacionBasica);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Registro Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Registrar";
+                }
 
             }
             catch (Exception exp)
@@ -42,7 +50,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = educacionBasicabl.EducacionBasicaEditarJson(educacionBasica);
-
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Edito Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Editar";
+                }
             }
             catch (Exception exp)
             {
@@ -59,6 +74,14 @@ namespace SistemaReclutamiento.Controllers
 
             try {
                 respuestaConsulta = educacionBasicabl.EducacionBasicaEliminarJson(id);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Elimino Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error no se Puede Eliminar";
+                }
             }
             catch (Exception exp) {
                 errormensaje = exp.Message + ",Llame Administrador";

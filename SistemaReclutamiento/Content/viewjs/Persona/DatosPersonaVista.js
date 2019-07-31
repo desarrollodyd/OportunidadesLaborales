@@ -3,6 +3,7 @@
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
+        $("#persona_nombre").text(persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat);
         //Datos de persona
 
         $("#per_correoelectronico").val(persona.per_correoelectronico);
@@ -18,6 +19,22 @@
         });
         $("#per_fechanacimiento").val(moment(persona.per_fechanacimiento).format('DD/MM/YYYY'));
         $("#per_telefono").val(persona.per_telefono);
+
+        if (persona.per_sexo == "") {
+            $('#cboSexo').bootstrapToggle('on');
+            $("#per_sexo").val("M");
+        }
+        else{
+            if (personalbar.per_sexo == "M") {
+                $('#cboSexo').bootstrapToggle('on');
+                $("#per_sexo").val("M");
+            }
+            else {
+                $('#cboSexo').bootstrapToggle('off');
+                $("#per_sexo").val("F");
+            }
+        }
+        
         $("#cboSexo").val(persona.per_sexo);
         $("#cbotipoDocumento").val(persona.per_tipodoc);
         $("#pos_celular").val(postulante.pos_celular);
@@ -28,6 +45,22 @@
         $("#cbotipoCasa").val(postulante.pos_tipo_casa);
         $("#cboestadoCivil").val(postulante.pos_estado_civil);
         $("#cboBrevete").val(String(postulante.pos_brevete));
+
+        if (postulante.pos_brevete == "") {
+            $('#cboBrevete').bootstrapToggle('off');
+            $("#pos_brevete").val("No");
+        }
+        else {
+            if (postulante.pos_brevete == "Si") {
+                $('#cboBrevete').bootstrapToggle('on');
+                $("#pos_brevete").val("Si");
+            }
+            else {
+                $('#cboBrevete').bootstrapToggle('off');
+                $("#pos_brevete").val("No");
+            }
+        }
+
         $("#pos_num_brevete").val(postulante.pos_num_brevete);
         $("#pos_estado").val(postulante.pos_estado);   
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
@@ -43,13 +76,63 @@
             allOption: false
         });
 
-        if (persona.fk_ubigeo != 0) {
-            
-        }
-        
+    
+            selectResponse({
+                url: "Ubigeo/UbigeoListarDepartamentosporPaisJson",
+                select: "cboDepartamento",
+                data: { ubi_pais_id: ubigeo.ubi_pais_id },
+                campoID: "ubi_departamento_id",
+                CampoValor: "ubi_nombre",
+                selectVal: ubigeo.ubi_departamento_id,
+                select2: true,
+                allOption: false
+            });
+
+            selectResponse({
+                url: "Ubigeo/UbigeoListarProvinciasporDepartamentoJson",
+                select: "cboProvincia",
+                data: { ubi_pais_id: ubigeo.ubi_pais_id, ubi_departamento_id: ubigeo.ubi_departamento_id },
+                campoID: "ubi_provincia_id",
+                CampoValor: "ubi_nombre",
+                selectVal: ubigeo.ubi_provincia_id,
+                select2: true,
+                allOption: false
+            });
+       
+        selectResponse({
+            url: "Ubigeo/UbigeoListarDistritosporProvinciaJson",
+            select: "cboDistrito",
+            data: { ubi_pais_id: ubigeo.ubi_pais_id, ubi_departamento_id: ubigeo.ubi_departamento_id, ubi_provincia_id: ubigeo.ubi_provincia_id },
+            campoID: "ubi_distrito_id",
+            CampoValor: "ubi_nombre",
+            selectVal: ubigeo.ubi_distrito_id,
+            select2: true,
+            allOption: false
+        });
 
     };
+
     var _componentes = function () {
+
+        $("#cboSexo").change(function () {
+            var check = $(this).prop('checked');
+            if (check) {
+                $("#per_sexo").val("M");
+            }
+            else {
+                $("#per_sexo").val("F");
+            }
+        });
+
+        $("#cboBrevete").change(function () {
+            var check = $(this).prop('checked');
+            if (check) {
+                $("#pos_brevete").val("Si");
+            }
+            else {
+                $("#pos_brevete").val("No");
+            }
+        });
 
         $("#cboPais").change(function () {
             var ubi_id_pais = $("#cboPais option:selected").val();
@@ -79,6 +162,22 @@
 
         });
 
+        $("#cboProvincia").change(function () {
+            var ubi_pais_id = $("#cboPais option:selected").val();
+            var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+            var ubi_provincia_id = $("#cboProvincia option:selected").val();
+
+            selectResponse({
+                url: "Ubigeo/UbigeoListarDistritosporProvinciaJson",
+                select: "cboDistrito",
+                data: { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id, ubi_provincia_id: ubi_provincia_id },
+                campoID: "ubi_distrito_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false
+            });
+        });
+
         $(document).on("click", ".btn_guardar", function (e) {
             $("#frmDatosPersonales-form").submit();
             if (_objetoForm_frmDatosPersonales.valid()) {
@@ -105,7 +204,6 @@
             
             var _image = $('#subir-img-perfil')[0].files[0];
             dataForm.append('file', _image);
-            console.log(dataForm, "aaaa");
             dataForm.append('postulanteID', $("#pos_id").val());
             responseFileSimple({
                 url: "Postulante/PostulanteSubirFotoJson",
@@ -166,9 +264,19 @@
                 {
                     required: true,
                 },
+                ubi_pais_id: {
+                    required: true
+                },
+                ubi_departamento_id: {
+                    required: true
+                },
+                ubi_provincia_id: {
+                    required: true
+                },
                 ubi_distrito_id: {
                     required: true
                 }
+
             },
             messages: {
                 per_nombre:
@@ -203,6 +311,15 @@
                 per_sexo:
                 {
                     required: '',
+                },
+                ubi_pais_id: {
+                    required: 'Pais Obligatorio'
+                },
+                ubi_departamento_id: {
+                    required: 'Departamento Obligatorio'
+                },
+                ubi_provincia_id: {
+                    required: 'Provincia Obligatorio'
                 },
                 ubi_distrito_id: {
                     required: 'Distrito Obligatorio'
