@@ -25,7 +25,7 @@ namespace SistemaReclutamiento.Models
                                 eba_id, 
                                 eba_tipo, 
                                 eba_nombre,
-                                eba_condicion
+                                eba_condicion,
                                 eba_fecha_reg, 
                                 eba_fecha_act, 
                                 fk_postulante
@@ -48,13 +48,13 @@ namespace SistemaReclutamiento.Models
                                 var educacionbasica = new educacionBasicaEntidad
                                 {
                                                              
-                                    eba_id = ManejoNulos.ManageNullInteger(dr["idi_id"]),
-                                    eba_tipo = ManejoNulos.ManageNullStr(dr["idi_tipo"]),
-                                    eba_nombre = ManejoNulos.ManageNullStr(dr["idi_centro_estudio"]),
-                                    eba_condicion = ManejoNulos.ManageNullStr(dr["idi_idioma"]),
-                                    eba_fecha_reg = ManejoNulos.ManageNullDate(dr["idi_periodo_ini"]),
-                                    eba_fecha_act = ManejoNulos.ManageNullDate(dr["idi_periodo_fin"]),
-                                    fk_postulante = ManejoNulos.ManageNullInteger(dr["idi_nivel"]),                            
+                                    eba_id = ManejoNulos.ManageNullInteger(dr["eba_id"]),
+                                    eba_tipo = ManejoNulos.ManageNullStr(dr["eba_tipo"]),
+                                    eba_nombre = ManejoNulos.ManageNullStr(dr["eba_nombre"]),
+                                    eba_condicion = ManejoNulos.ManageNullStr(dr["eba_condicion"]),
+                                    eba_fecha_reg = ManejoNulos.ManageNullDate(dr["eba_fecha_reg"]),
+                                    eba_fecha_act = ManejoNulos.ManageNullDate(dr["eba_fecha_act"]),
+                                    fk_postulante = ManejoNulos.ManageNullInteger(dr["fk_postulante"]),                            
 
                                 };
 

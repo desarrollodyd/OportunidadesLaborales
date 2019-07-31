@@ -3,7 +3,7 @@
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {
         messageResponse({
-            message: xmlHttpRequest.responseJSON.message,
+            message: errorThrow,
             type: "error"
         });
     },
@@ -137,7 +137,7 @@ function limpiar_form(obj) {
         return;
     };
 
-    $(opciones.contenedor + " input,select,textarea").val("");
+    $(opciones.contenedor + " input:visible,select:visible,textarea:visible").val("");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ function responseSimple(obj) {
         },
         error: function (xmlHttpRequest, textStatus, errorThrow) {
             unblock("body");
-            console.warn('Message :', xmlHttpRequest);
+            console.warn('Message :', errorThrow);
         }
     });
 }
@@ -458,7 +458,6 @@ function selectResponse(obj) {
                     } else {
 
                         if (value[opciones.campoID] === opciones.selectVal) {
-                            console.warn(value[opciones.campoTabla])
                             selected = "selected='selected'";
                         };
                     }

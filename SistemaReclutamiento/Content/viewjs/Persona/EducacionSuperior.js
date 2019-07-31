@@ -1,4 +1,4 @@
-﻿var EducacionBasicaVista = function () {
+﻿var EducacionSuperiorVista = function () {
     var _inicio = function () {
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
@@ -8,11 +8,11 @@
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
     };
-    var _ListarEducacionBasica = function () {
-       
+    var _ListarEducacionSuperior = function () {
+
         responseSimple({
             url: "EducacionBasica/EducacionBasicaListarJson",
-            data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val()}),
+            data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val() }),
             refresh: false,
             callBackSuccess: function (response) {
                 var respuesta = response.respuesta;
@@ -22,7 +22,7 @@
                     $.each(datos, function (index, value) {
                         $("#tbody_EducacionBasica").append('<tr><td>' + value.eba_tipo + '</td><td>' + value.eba_nombre + '</td><td>' + value.eba_condicion + '</td></tr>');
                     });
-                    
+
                 }
             }
         });
@@ -32,19 +32,19 @@
     var _componentes = function () {
 
         $(document).on("click", ".btn_guardar", function (e) {
-            $("#frmEducacionBasica-form").submit();
-            if (_objetoForm_frmEducacionBasica.valid()) {
-                var dataForm = $('#frmEducacionBasica-form').serializeFormJSON();
+            $("#frmEducacionSuperior-form").submit();
+            if (_objetoForm_frmEducacionSuperior.valid()) {
+                var dataForm = $('#frmEducacionSuperior-form').serializeFormJSON();
                 responseSimple({
-                    url: "EducacionBasica/EducacionBasicaInsertarJson",
+                    url: "EducacionSuperior/EducacionSuperiorInsertarJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
-                            limpiar_form({ contenedor: "#frmEducacionBasica-form" });
-                            _objetoForm_frmEducacionBasica.resetForm();
-                            EducacionBasicaVista.init_ListarEducacionBasica();
+                            limpiar_form({ contenedor: "#frmEducacionSuperior-form" });
+                            _objetoForm_frmEducacionSuperior.resetForm();
+                            EducacionSuperiorVista.init__ListarEducacionSuperior();
                         }
                     }
                 });
@@ -54,10 +54,10 @@
                     type: "error"
                 })
             }
-        }); 
+        });
 
         $(document).on("click", ".btn_cancelar", function (e) {
-            _objetoForm_frmEducacionBasica.resetForm();
+            _objetoForm_frmEducacionSuperior.resetForm();
         });
 
         $('#subir-img-perfil').change(function () {
@@ -82,8 +82,8 @@
 
     var _metodos = function () {
         validar_Form({
-            nameVariable: 'frmEducacionBasica',
-            contenedor: '#frmEducacionBasica-form',
+            nameVariable: 'frmEducacionSuperior',
+            contenedor: '#frmEducacionSuperior-form',
             rules: {
                 eba_tipo:
                 {
@@ -126,13 +126,13 @@
     return {
         init: function () {
             _inicio();
-            _ListarEducacionBasica();
+            _ListarEducacionSuperior();
             _componentes();
             _metodos();
 
         },
-        init_ListarEducacionBasica: function() {
-            _ListarEducacionBasica();
+        init__ListarEducacionSuperior: function () {
+            _ListarEducacionSuperior();
         }
     }
 }();
@@ -141,5 +141,5 @@
 // ------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {
-    EducacionBasicaVista.init();
+    EducacionSuperiorVista.init();
 });

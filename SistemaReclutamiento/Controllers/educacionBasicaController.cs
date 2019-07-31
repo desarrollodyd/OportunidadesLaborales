@@ -16,6 +16,25 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public ActionResult EducacionBasicaListarJson(int fkPosID)
+        {
+            var errormensaje = "";
+            var lista = new List<educacionBasicaEntidad>();
+            try
+            {
+                lista = educacionBasicabl.EducacionBasicaListaporPostulanteJson(fkPosID);
+                errormensaje = "Cargando Data...";
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta=true, mensaje = errormensaje });
+        }
+
         [HttpPost]
         public ActionResult EducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica)
         {
