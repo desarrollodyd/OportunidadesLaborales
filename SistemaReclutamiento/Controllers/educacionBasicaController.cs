@@ -16,8 +16,6 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
-
-
         [HttpPost]
         public ActionResult EducacionBasicaListarJson(int fkPosID)
         {
@@ -45,11 +43,11 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = educacionBasicabl.EducacionBasicaInsertarJson(educacionBasica);
                 if (respuestaConsulta)
                 {
-                    errormensaje = "Se Registro Correctamente";
+                    errormensaje = "Se Registró Correctamente";
                 }
                 else
                 {
-                    errormensaje = "Error no se Puede Registrar";
+                    errormensaje = "Error, no se Puede Registrar";
                 }
 
             }
@@ -71,11 +69,11 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = educacionBasicabl.EducacionBasicaEditarJson(educacionBasica);
                 if (respuestaConsulta)
                 {
-                    errormensaje = "Se Edito Correctamente";
+                    errormensaje = "Se Editó Correctamente";
                 }
                 else
                 {
-                    errormensaje = "Error no se Puede Editar";
+                    errormensaje = "Error, no se Puede Editar";
                 }
             }
             catch (Exception exp)
@@ -95,11 +93,11 @@ namespace SistemaReclutamiento.Controllers
                 respuestaConsulta = educacionBasicabl.EducacionBasicaEliminarJson(id);
                 if (respuestaConsulta)
                 {
-                    errormensaje = "Se Elimino Correctamente";
+                    errormensaje = "Se Eliminó Correctamente";
                 }
                 else
                 {
-                    errormensaje = "Error no se Puede Eliminar";
+                    errormensaje = "Error, no se Puede Eliminar";
                 }
             }
             catch (Exception exp) {
