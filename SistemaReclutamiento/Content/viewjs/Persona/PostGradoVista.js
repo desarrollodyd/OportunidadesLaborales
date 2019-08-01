@@ -1,28 +1,39 @@
-﻿var EducacionBasicaVista = function () {
+﻿var PostGradoVista = function () {
     var _inicio = function () {
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
         $("#persona_nombre").text(persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat);
+        $('#myDatepicker1').datetimepicker({
+            format: 'DD/MM/YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true
+        });
+        $('#myDatepicker2').datetimepicker({
+            format: 'DD/MM/YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true
+        });
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
     };
-    var _ListarEducacionBasica = function () {
-       
+    var _ListarPostGrado = function () {
+
         responseSimple({
-            url: "EducacionBasica/EducacionBasicaListarJson",
-            data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val()}),
+            url: "Postgrado/PostgradoListarJson",
+            data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val() }),
             refresh: false,
             callBackSuccess: function (response) {
                 var respuesta = response.respuesta;
                 var datos = response.data;
                 if (respuesta) {
-                    $("#tbody_EducacionBasica").html("");
+                    $("#tbody_PostGrado").html("");
+                    console.log(datos)
                     $.each(datos, function (index, value) {
-                        $("#tbody_EducacionBasica").append('<tr><td>' + value.eba_tipo + '</td><td>' + value.eba_nombre + '</td><td>' + value.eba_condicion + '</td><td><button type="button" data-id="' + value.eba_id+'" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
+                        $("#tbody_PostGrado").append('<tr><td>' + value.pos_tipo + '</td><td>' + value.pos_centro_estudio + '</td><td>' + value.pos_carrera + '</td><td>'+value.pos_nombre+'</td><td>' + moment(value.pos_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.pos_periodo_fin).format("DD/MM/YYYY") + '</td><td>' + value.pos_condicion + '</td><td><button type="button" data-id="' + value.pos_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
-                    
+
                 }
             }
         });
@@ -32,19 +43,19 @@
     var _componentes = function () {
 
         $(document).on("click", ".btn_guardar", function (e) {
-            $("#frmEducacionBasica-form").submit();
-            if (_objetoForm_frmEducacionBasica.valid()) {
-                var dataForm = $('#frmEducacionBasica-form').serializeFormJSON();
+            $("#frmPostGrado-form").submit();
+            if (_objetoForm_frmPostGrado.valid()) {
+                var dataForm = $('#frmPostGrado-form').serializeFormJSON();
                 responseSimple({
-                    url: "EducacionBasica/EducacionBasicaInsertarJson",
+                    url: "Postgrado/PostgradoInsertarJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
-                            limpiar_form({ contenedor: "#frmEducacionBasica-form" });
-                            _objetoForm_frmEducacionBasica.resetForm();
-                            EducacionBasicaVista.init_ListarEducacionBasica();
+                            limpiar_form({ contenedor: "#frmPostGrado-form" });
+                            _objetoForm_frmPostGrado.resetForm();
+                            PostGradoVista.init__ListarPostGrado();
                         }
                     }
                 });
@@ -54,10 +65,10 @@
                     type: "error"
                 })
             }
-        }); 
+        });
 
         $(document).on("click", ".btn_cancelar", function (e) {
-            _objetoForm_frmEducacionBasica.resetForm();
+            _objetoForm_frmPostGrado.resetForm();
         });
 
         $(document).on("click", ".btn_delete", function (e) {
@@ -66,11 +77,11 @@
                 messageConfirmation({
                     callBackSAceptarComplete: function () {
                         responseSimple({
-                            url: "EducacionBasica/EducacionBasicaEliminarJson",
+                            url: "Postgrado/PostgradoEliminarJson",
                             data: JSON.stringify({ id: id }),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                EducacionBasicaVista.init_ListarEducacionBasica();
+                                PostGradoVista.init__ListarPostGrado();
                             }
                         });
                     }
@@ -82,7 +93,7 @@
                     type: "error"
                 })
             }
-        }); 
+        });
 
         $('#subir-img-perfil').change(function () {
             var dataForm = new FormData();
@@ -106,20 +117,40 @@
 
     var _metodos = function () {
         validar_Form({
-            nameVariable: 'frmEducacionBasica',
-            contenedor: '#frmEducacionBasica-form',
+            nameVariable: 'frmPostGrado',
+            contenedor: '#frmPostGrado-form',
             rules: {
-                eba_tipo:
+                pos_tipo:
                 {
                     required: true,
 
                 },
-                eba_nombre:
+                pos_centro_estudio:
                 {
                     required: true,
 
                 },
-                eba_condicion:
+                pos_carrera:
+                {
+                    required: true,
+
+                },
+                pos_nombre:
+                {
+                    required: true,
+
+                },
+                pos_periodo_ini:
+                {
+                    required: true,
+
+                },
+                pos_periodo_fin:
+                {
+                    required: true,
+
+                },
+                pos_condicion:
                 {
                     required: true,
 
@@ -127,15 +158,31 @@
 
             },
             messages: {
-                eba_tipo:
+                pos_tipo:
                 {
                     required: 'Tipo Obligatorio',
                 },
-                eba_nombre:
+                pos_centro_estudio:
                 {
-                    required: 'Instituto Obligatorio',
+                    required: 'Centro Estudios Obligatorio',
                 },
-                eba_condicion:
+                pos_carrera:
+                {
+                    required: 'Carrera Obligatorio',
+                },
+                pos_nombre:
+                {
+                    required: 'Nombre Obligatorio',
+                },
+                pos_periodo_ini:
+                {
+                    required: 'Fecha Inicio Obligatorio',
+                },
+                pos_periodo_fin:
+                {
+                    required: 'Fecha Fin Obligatorio',
+                },
+                pos_condicion:
                 {
                     required: 'Condicion Obligatorio',
                 },
@@ -150,13 +197,13 @@
     return {
         init: function () {
             _inicio();
-            _ListarEducacionBasica();
+            _ListarPostGrado();
             _componentes();
             _metodos();
 
         },
-        init_ListarEducacionBasica: function() {
-            _ListarEducacionBasica();
+        init__ListarPostGrado: function () {
+            _ListarPostGrado();
         }
     }
 }();
@@ -165,5 +212,5 @@
 // ------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {
-    EducacionBasicaVista.init();
+    PostGradoVista.init();
 });

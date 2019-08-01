@@ -89,6 +89,7 @@ namespace SistemaReclutamiento.Controllers
                 postulante = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
                 Session["postulante"] = postulante;
                 rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
+                rutaImagenes.Postulante_CV(postulante.pos_cv);
                 errormensaje = "Contraseña actualizada correctamente";
             }
             catch (Exception ex) {
@@ -135,6 +136,7 @@ namespace SistemaReclutamiento.Controllers
                             postulante = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
                             Session["postulante"] = postulante;
                             rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
+                            rutaImagenes.Postulante_CV(postulante.pos_cv);
                             respuesta = true;
                             errormensaje = "Bienvenido, " + usuario.usu_nombre;
                         }

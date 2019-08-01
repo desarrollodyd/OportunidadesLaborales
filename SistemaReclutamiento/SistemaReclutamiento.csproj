@@ -3644,9 +3644,14 @@
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\DatosPersonaVista.js" />
     <Content Include="Content\viewjs\Persona\EducacionBasicaVista.js" />
-    <Content Include="Content\viewjs\Persona\EducacionSuperior.js" />
+    <Content Include="Content\viewjs\Persona\EducacionSuperiorVista.js" />
+    <Content Include="Content\viewjs\Persona\ExperienciaVista.js" />
+    <Content Include="Content\viewjs\Persona\IdiomasVista.js" />
+    <Content Include="Content\viewjs\Persona\InformacionAdicionalVista.js" />
+    <Content Include="Content\viewjs\Persona\OfimaticaVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
+    <Content Include="Content\viewjs\Persona\PostGradoVista.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\icon.png" />
