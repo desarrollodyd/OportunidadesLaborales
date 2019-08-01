@@ -25,7 +25,7 @@
             $("#per_sexo").val("M");
         }
         else{
-            if (personalbar.per_sexo == "M") {
+            if (persona.per_sexo == "M") {
                 $('#cboSexo').bootstrapToggle('on');
                 $("#per_sexo").val("M");
             }
@@ -48,16 +48,16 @@
 
         if (postulante.pos_brevete == "") {
             $('#cboBrevete').bootstrapToggle('off');
-            $("#pos_brevete").val("No");
+            $("#pos_brevete").val("false");
         }
         else {
-            if (postulante.pos_brevete == "Si") {
+            if (postulante.pos_brevete == true) {
                 $('#cboBrevete').bootstrapToggle('on');
-                $("#pos_brevete").val("Si");
+                $("#pos_brevete").val("true");
             }
             else {
                 $('#cboBrevete').bootstrapToggle('off');
-                $("#pos_brevete").val("No");
+                $("#pos_brevete").val("false");
             }
         }
 
@@ -127,10 +127,10 @@
         $("#cboBrevete").change(function () {
             var check = $(this).prop('checked');
             if (check) {
-                $("#pos_brevete").val("Si");
+                $("#pos_brevete").val("true");
             }
             else {
-                $("#pos_brevete").val("No");
+                $("#pos_brevete").val("false");
             }
         });
 

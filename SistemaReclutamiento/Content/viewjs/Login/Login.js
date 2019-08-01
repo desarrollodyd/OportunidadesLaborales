@@ -4,7 +4,90 @@
     // Setup module components
     //
 
-    var _componentes = function () {
+    var _componentes = function () {     
+        var encontrado = false;
+
+       
+        $('#per_numdoc').on('keydown keypress', function (e) {
+            if (e.key.length === 1) {
+                if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
+                    $(this).val($(this).val() + e.key);
+                    if ($(this).val().length == 8) {
+                        /*Logica para busqueda*/
+                        var dataForm = $('#registro-form').serializeFormJSON();
+                        $('#busqueda').val("nuevo");
+                        $.ajax({
+                            type: "POST",
+                            url: basePath+"Persona/PersonaDniObtenerJson",
+                            data:dataForm,
+                            dataType: "json",
+                            //refresh: false,
+                            success: function (response) {
+                                if (response.respuesta == true) {
+                                    messageConfirmation({
+                                        callBackSAceptarComplete: function () {
+                                            encontrado = true;
+                                            console.log(response.data);
+                                            $("#busqueda").val("postgres");
+                                            $("#per_nombre").val(response.data.per_nombre);
+                                            $("#per_apellido_pat").val(response.data.per_apellido_pat);
+                                            $("#per_apellido_mat").val(response.data.per_apellido_mat);
+                                            $("#per_correoelectronico").val(response.data.per_correoelectronico);
+                                            console.warn(response.data);
+                                        },
+                                        content: "Usted ya se encuentra registrado en nuestra BD Postgres, sus datos seran usados para llenar el formulario."
+                                    });
+                                                                   
+                                   
+                                }
+                                else {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: basePath + "Persona/PersonaSqlDniObtenerJson",
+                                        data: dataForm,
+                                        dataType: "json",
+                                        //refresh: false,
+                                        success: function (response) {
+                                            if (response.respuesta == true) {
+                                                messageConfirmation({
+                                                    callBackSAceptarComplete: function () {
+                                                        encontrado = true;
+                                                        console.log(response.data);
+                                                        $("#busqueda").val("sql");
+                                                        $("#per_nombre").val(response.data.NO_TRAB);
+                                                        $("#per_apellido_pat").val(response.data.NO_APEL_PATE);
+                                                        $("#per_apellido_mat").val(response.data.NO_APEL_MATE);
+                                                        $("#per_correoelectronico").val(response.data.NO_DIRE_MAI1);
+                                                        console.warn(response.data);
+                                                    },
+                                                    content: "Usted ya se encuentra registrado en nuestra BD SQL, sus datos seran usados para llenar el                 formulario."
+                                                });                                             
+
+                                            }
+                                            else {
+                                                console.log("no encontrado");
+                                                console.log(response.data);
+                                                $("#busqueda").val("nuevo");
+                                                $("#per_nombre").val(response.data.NO_TRAB);
+                                                $("#per_apellido_pat").val(response.data.NO_APEL_PATE);
+                                                $("#per_apellido_mat").val(response.data.NO_APEL_MATE);
+                                                $("#per_correoelectronico").val(response.data.NO_DIRE_MAI1);
+                                                console.warn(response.data);
+                                            }
+                                        }
+
+                                    });
+                                }
+                            }
+
+                        });
+                /*Fin de Logica*/
+                    }
+                }
+                return false;
+            }
+        });
+
 
         $(document).on("click", ".btn_ingresar", function (e) {
             $("#login-form").submit();
@@ -40,7 +123,7 @@
                 messageConfirmation({
                     callBackSAceptarComplete: function() {
                         responseSimple({
-                            url: "Persona/PersonaInsertarJson",
+                            url: "Persona/PersonaInsertarJson2",
                             data: JSON.stringify(dataForm),
                             refresh: true,
                             //callBackSuccess: function (response) {
