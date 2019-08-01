@@ -1,7 +1,169 @@
 ﻿
 @{
-    ViewBag.Title = "IdiomasVista";
+    ViewBag.Title = "Perfil - Idiomas";
 }
 
-<h2>IdiomasVista</h2>
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@using SistemaReclutamiento.Utilitarios;
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String postulante = new JavaScriptSerializer().Serialize(Session["postulante"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
+    String rutaImage = new JavaScriptSerializer().Serialize(Session["rutaPerfil"]);
+}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="" role="tabpanel">
+                <ul id="Idiomas_ul" class="nav nav-tabs bar_tabs hidden-xs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#Idiomas_tab" role="tab" data-toggle="tab" aria-expanded="true">Idiomas</a>
+                    </li>
+                    <li class="pull-right">
+                        <button type="button" class="btn btn-danger btn_guardar"><i class="fa fa-save"></i> Guardar</button>
+                        <button class="btn btn-primary btn_cancelar" type="button"><i class="fa fa-ban"></i> Cancelar</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="Idiomas_tab" aria-labelledby="Idiomas_tab">
+
+                        <div class="col-md-3 col-sm-12 col-xs-12 profile_left">
+                            <div class="profile_img">
+                                <div id="crop-avatar">
+                                    <!-- Current avatar -->
+                                    <div class="imagen-para-perfil img_postulante">
+                                        <label for="subir-img-perfil" style="width: 100%;">
+                                            <img id="perfil_principal" class="img-responsive avatar-view" style="width:100%;height:225px;" alt="Avatar" title="Imagen Postulante">
+                                        </label>
+                                        <input id="subir-img-perfil" type="file" style="display:none;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <h3 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre">Richard Lee</h3>
+                        </div>
+
+                        <form id="frmIdiomas-form" class="" method="post">
+                            <div class="col-md-9 col-xs-12" style="padding-top:10px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12 visible-xs" style="margin-bottom:10px;">
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-danger col-xs-12 btn_guardar"><i class="fa fa-save"></i> Guardar</button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-primary col-xs-12 btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="per_id" id="per_id" />
+                                <input type="hidden" name="pos_id" id="pos_id" />
+                                <input type="hidden" name="fk_postulante" id="fk_postulante" />
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Tipo de Educacion</label>
+                                        <select class="form-control" name="idi_tipo" id="cbotipoCentroEstudioIdioma" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="INSTITUTO">Instituto</option>
+                                            <option value="UNIVERSIDAD">Universidad</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Idioma </label>
+                                        <select class="form-control" name="idi_idioma" id="cboIdioma" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="INGLES">Ingles</option>
+                                            <option value="PORTUGUES">Portugués</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Centro de Estudios</label>
+                                        <input type="text" name="idi_centro_estudio" id="idi_centro_estudio" class="form-control" placeholder="Centro de Estudios" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Fecha Inicio</label>
+                                        <div class='input-group date' id='myDatepicker1'>
+                                            <input type='text' class="form-control" name="idi_periodo_ini" id="idi_periodo_ini" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Fecha Fin</label>
+                                        <div class='input-group date' id='myDatepicker2'>
+                                            <input type='text' class="form-control" name="idi_periodo_fin" id="idi_periodo_fin" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Fin" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Nivel </label>
+                                        <select class="form-control" name="idi_nivel" id="cbonivelIdioma" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="BASICO">Basico</option>
+                                            <option value="INTERMEDIO">Intermedio</option>
+                                            <option value="AVANZADO">Avanzado</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12">
+                                    <div class="ln_solid"></div>
+                                </div>
+                                <div class="col-md-12 col-xs-12">
+
+                                    <table id="Idioma-table" class="table table-bordered table-condensed table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th width="20%">Tipo <span class="hidden-xs">Educacion</span></th>
+                                                <th>Idioma</th>
+                                                <th>Centro de Estudios</th>
+                                                <th>Inicio</th>
+                                                <th>Fin</th>
+                                                <th>Nivel</th>
+                                                <th width="4%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_idioma"></tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Final-->
+@section js
+{
+    <script type="text/javascript">
+        persona = (@Html.Raw(persona));
+        postulante = (@Html.Raw(postulante));
+        usuario = (@Html.Raw(usuario));
+        rutaImage = (@Html.Raw(rutaImage));
+    </script>
+    <script src="~/Content/viewjs/Persona/IdiomasVista.js"></script>
+}
+
 

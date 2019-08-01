@@ -1,28 +1,39 @@
-﻿var EducacionBasicaVista = function () {
+﻿var ExperienciaVista = function () {
     var _inicio = function () {
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
         $("#persona_nombre").text(persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat);
+        $('#myDatepicker1').datetimepicker({
+            format: 'DD/MM/YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true
+        });
+        $('#myDatepicker2').datetimepicker({
+            format: 'DD/MM/YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true
+        });
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
     };
-    var _ListarEducacionBasica = function () {
-       
+    var _ListarExperiencia = function () {
+
         responseSimple({
-            url: "EducacionBasica/EducacionBasicaListarJson",
-            data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val()}),
+            url: "Experiencia/ExperienciaListarJson",
+            data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val() }),
             refresh: false,
             callBackSuccess: function (response) {
                 var respuesta = response.respuesta;
                 var datos = response.data;
                 if (respuesta) {
-                    $("#tbody_EducacionBasica").html("");
+                    $("#tbody_experiencia").html("");
+                    console.log(datos)
                     $.each(datos, function (index, value) {
-                        $("#tbody_EducacionBasica").append('<tr><td>' + value.eba_tipo + '</td><td>' + value.eba_nombre + '</td><td>' + value.eba_condicion + '</td><td><button type="button" data-id="' + value.eba_id+'" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
+                        $("#tbody_experiencia").append('<tr><td>' + value.exp_empresa + '</td><td>' + value.exp_cargo + '</td><td>' + value.exp_motivo_cese + '</td><td>' + moment(value.exp_fecha_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.exp_fecha_fin).format("DD/MM/YYYY") + '</td><td><button type="button" data-id="' + value.exp_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
-                    
+
                 }
             }
         });
@@ -32,19 +43,19 @@
     var _componentes = function () {
 
         $(document).on("click", ".btn_guardar", function (e) {
-            $("#frmEducacionBasica-form").submit();
-            if (_objetoForm_frmEducacionBasica.valid()) {
-                var dataForm = $('#frmEducacionBasica-form').serializeFormJSON();
+            $("#frmExperiencia-form").submit();
+            if (_objetoForm_frmExperiencia.valid()) {
+                var dataForm = $('#frmExperiencia-form').serializeFormJSON();
                 responseSimple({
-                    url: "EducacionBasica/EducacionBasicaInsertarJson",
+                    url: "Experiencia/ExperienciaInsertarJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
-                            limpiar_form({ contenedor: "#frmEducacionBasica-form" });
-                            _objetoForm_frmEducacionBasica.resetForm();
-                            EducacionBasicaVista.init_ListarEducacionBasica();
+                            limpiar_form({ contenedor: "#frmExperiencia-form" });
+                            _objetoForm_frmExperiencia.resetForm();
+                            ExperienciaVista.init__ListarExperiencia();
                         }
                     }
                 });
@@ -54,10 +65,10 @@
                     type: "error"
                 })
             }
-        }); 
+        });
 
         $(document).on("click", ".btn_cancelar", function (e) {
-            _objetoForm_frmEducacionBasica.resetForm();
+            _objetoForm_frmExperiencia.resetForm();
         });
 
         $(document).on("click", ".btn_delete", function (e) {
@@ -66,11 +77,11 @@
                 messageConfirmation({
                     callBackSAceptarComplete: function () {
                         responseSimple({
-                            url: "EducacionBasica/EducacionBasicaEliminarJson",
+                            url: "Experiencia/ExperienciaEliminarJson",
                             data: JSON.stringify({ id: id }),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                EducacionBasicaVista.init_ListarEducacionBasica();
+                                ExperienciaVista.init__ListarExperiencia();
                             }
                         });
                     }
@@ -82,7 +93,7 @@
                     type: "error"
                 })
             }
-        }); 
+        });
 
         $('#subir-img-perfil').change(function () {
             var dataForm = new FormData();
@@ -106,39 +117,59 @@
 
     var _metodos = function () {
         validar_Form({
-            nameVariable: 'frmEducacionBasica',
-            contenedor: '#frmEducacionBasica-form',
+            nameVariable: 'frmExperiencia',
+            contenedor: '#frmExperiencia-form',
             rules: {
-                eba_tipo:
+                exp_empresa:
                 {
                     required: true,
 
                 },
-                eba_nombre:
+                exp_cargo:
                 {
                     required: true,
 
                 },
-                eba_condicion:
+                exp_motivo_cese:
                 {
                     required: true,
 
-                }
+                },
+                exp_fecha_ini:
+                {
+                    required: true,
+
+                },
+                exp_fecha_fin:
+                {
+                    required: true,
+
+                },
+                
 
             },
             messages: {
-                eba_tipo:
+                exp_empresa:
                 {
-                    required: 'Tipo Obligatorio',
+                    required: 'Empresa Obligatorio',
                 },
-                eba_nombre:
+                exp_cargo:
                 {
-                    required: 'Instituto Obligatorio',
+                    required: 'Cargo Obligatorio',
                 },
-                eba_condicion:
+                exp_motivo_cese:
                 {
-                    required: 'Condicion Obligatorio',
+                    required: 'Motivo Cese Obligatorio',
                 },
+                exp_fecha_ini:
+                {
+                    required: 'Fecha Inicio Obligatorio',
+                },
+                exp_fecha_fin:
+                {
+                    required: 'Fecha Fin Obligatorio',
+                },
+
             }
         });
 
@@ -150,13 +181,13 @@
     return {
         init: function () {
             _inicio();
-            _ListarEducacionBasica();
+            _ListarExperiencia();
             _componentes();
             _metodos();
 
         },
-        init_ListarEducacionBasica: function() {
-            _ListarEducacionBasica();
+        init__ListarExperiencia: function () {
+            _ListarExperiencia();
         }
     }
 }();
@@ -165,5 +196,5 @@
 // ------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {
-    EducacionBasicaVista.init();
+    ExperienciaVista.init();
 });

@@ -24,5 +24,19 @@ namespace SistemaReclutamiento.Utilitarios
                 }              
             }           
         }
+
+        public void Postulante_CV(string name)
+        {
+            string postulante_cv = @"" + ConfigurationManager.AppSettings["PathArchivos"] + "/" + name;
+            if (postulante_cv != null)
+            {
+                if (System.IO.File.Exists(postulante_cv))
+                {
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(postulante_cv);
+                    string base64String = Convert.ToBase64String(imagebytes);
+                    HttpContext.Current.Session["rutaCv"] = base64String;
+                }
+            }
+        }
     }
 }

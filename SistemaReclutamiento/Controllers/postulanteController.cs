@@ -41,10 +41,12 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult PostulanteInsertarInformacionAdicionalJson(usuarioPersonaEntidad persona)
         {
             HttpPostedFileBase file = Request.Files[0];
-            postulanteEntidad postulante = new postulanteEntidad();
+            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"]; ;
+
             bool respuestaConsulta = true ;
             string extension = "";
             string rutaInsertar = "";
+            string rutaAnterior = "";
             string errormensaje = "";
             int tamanioMaximo = 4194304;
             if (file.ContentLength > 0 || file != null)
@@ -55,9 +57,22 @@ namespace SistemaReclutamiento.Controllers
                     if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
                     {
                         var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + persona.pos_id.ToString()+"_" + DateTime.Now.ToString("yyyyMMddHHmmss")+extension);
-                        rutaInsertar = Path.Combine(Server.MapPath(rutaCv), nombreArchivo);
+                        rutaInsertar = Path.Combine("" + rutaCv, nombreArchivo);
+                        rutaAnterior = Path.Combine("" + rutaCv, postulante.pos_cv);
+
+                        if (!Directory.Exists(rutaCv))
+                        {
+                            System.IO.Directory.CreateDirectory(rutaCv);
+                        }
+
+                        if (System.IO.File.Exists(rutaAnterior))
+                        {
+                            System.IO.File.Delete(rutaAnterior);
+                        }
+
                         file.SaveAs(rutaInsertar);
                         postulante.pos_cv = nombreArchivo;
+                        errormensaje = "CV Subido Correctamente";
                         respuestaConsulta = true;
                     }
                     else
@@ -80,19 +95,33 @@ namespace SistemaReclutamiento.Controllers
             }          
             postulante.pos_referido = persona.pos_referido;
             postulante.pos_nombre_referido = persona.pos_nombre_referido;
-            postulante.pos_id = persona.pos_id;
+            postulante.pos_id = postulante.pos_id;
             try
             {
-                respuestaConsulta = postulantebl.PostulanteInsertarInformacionAdicionalJson(postulante);              
+                if (respuestaConsulta)
+                {
+                    respuestaConsulta = postulantebl.PostulanteInsertarInformacionAdicionalJson(postulante);
+                    if (respuestaConsulta)
+                    {
+                        Session.Remove("postulante");
+                        Session["postulante"] = postulante;
+                        RutaImagenes rutaImagenes = new RutaImagenes();
+                        rutaImagenes.Postulante_CV(postulante.pos_cv);
+                        errormensaje = "CV Subido Correctamente";
+                    }
+                    else
+                    {
+                        errormensaje = "Error al registrar cv";
+                    }
+                }
+                             
             }
             catch (Exception ex) {
                 errormensaje = ex.Message + " ,Llame Administrador";
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
-            //if (file == null) return;
-            //string archivo = (DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + file.FileName).ToLower();
-            //file.SaveAs(Server.MapPath("~/Uploads/" + archivo));
         }
+
         [HttpPost]
         public ActionResult PostulanteSubirFotoJson()
         {
@@ -113,7 +142,7 @@ namespace SistemaReclutamiento.Controllers
                 if (file.ContentLength <= tamanioMaximo)
                 {
                     extension = Path.GetExtension(file.FileName);
-                    if (extension == ".jpg" || extension == ".png")
+                    if (extension == ".jpg" || extension == ".png" || extension == ".PNG" || extension == ".JPG" || extension == ".JPEG" || extension == ".jpeg")
                     {
                         var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
                         rutaInsertar = Path.Combine(""+rutaPerfil , nombreArchivo);
@@ -157,7 +186,19 @@ namespace SistemaReclutamiento.Controllers
             postulante.pos_id = postulante.pos_id;
             try
             {
-                respuestaConsulta = postulantebl.PostulanteSubirFotoJson(postulante);
+                
+                if (respuestaConsulta)
+                {
+                    respuestaConsulta = postulantebl.PostulanteSubirFotoJson(postulante);
+                    if (respuestaConsulta)
+                    {
+                        errormensaje = "Imagen Subida Correctamente";
+                    }
+                    else
+                    {
+                        errormensaje = "Error al registrar Imagen";
+                    }
+                }
             }
             catch (Exception ex)
             {

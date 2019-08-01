@@ -86,9 +86,9 @@
 
                                 <div class="col-md-4 col-xs-12">
                                     <div class="form-group">
-                                        <label>Fecha de Inicio</label>
+                                        <label>Fecha Inicio</label>
                                         <div class='input-group date' id='myDatepicker1'>
-                                            <input type='text' class="form-control" name="esu_periodo_ini" id="esu_periodo_ini" placeholder="Fecha de Inicio" />
+                                            <input type='text' class="form-control" name="esu_periodo_ini" id="esu_periodo_ini" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -100,7 +100,7 @@
                                     <div class="form-group">
                                         <label>Fecha Fin</label>
                                         <div class='input-group date' id='myDatepicker2'>
-                                            <input type='text' class="form-control" name="esu_periodo_fin" id="esu_periodo_fin" placeholder="Fecha de Fin" />
+                                            <input type='text' class="form-control" name="esu_periodo_fin" id="esu_periodo_fin" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Fin" />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -134,7 +134,8 @@
                                                 <th>Carrera</th>
                                                 <th>Fin</th>
                                                 <th>Inicio</th>
-                                                <th width="20%">Condicion</th>
+                                                <th >Condicion</th>
+                                                <th width="4%"></th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbody_EducacionSuperior"></tbody>
