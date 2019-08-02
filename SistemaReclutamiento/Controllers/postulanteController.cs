@@ -49,7 +49,7 @@ namespace SistemaReclutamiento.Controllers
             string rutaAnterior = "";
             string errormensaje = "";
             int tamanioMaximo = 4194304;
-            if (file.ContentLength > 0 || file != null)
+            if (file.ContentLength > 0 && file != null)
             {
                 if (file.ContentLength <= tamanioMaximo)
                 {
@@ -91,7 +91,10 @@ namespace SistemaReclutamiento.Controllers
                 
             }
             else {
-                postulante.pos_cv = "";
+                if (postulante.pos_cv == "")
+                {
+                    postulante.pos_cv = "";
+                }
             }          
             postulante.pos_referido = persona.pos_referido;
             postulante.pos_nombre_referido = persona.pos_nombre_referido;
@@ -107,11 +110,11 @@ namespace SistemaReclutamiento.Controllers
                         Session["postulante"] = postulante;
                         RutaImagenes rutaImagenes = new RutaImagenes();
                         rutaImagenes.Postulante_CV(postulante.pos_cv);
-                        errormensaje = "CV Subido Correctamente";
+                        errormensaje = "Se Registro Correctamente";
                     }
                     else
                     {
-                        errormensaje = "Error al registrar cv";
+                        errormensaje = "Error al registrar ";
                     }
                 }
                              
@@ -211,5 +214,24 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         
         }
+        public void DescargarArchivo()
+        {
+            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
+            string postulante_cv = @"" + ConfigurationManager.AppSettings["PathArchivos"] + "/" + postulante.pos_cv;
+            if (postulante_cv != null)
+            {
+                if (System.IO.File.Exists(postulante_cv))
+                {
+                    FileInfo ObjArchivo = new System.IO.FileInfo(postulante_cv);
+                    Response.Clear();
+                    Response.AddHeader("Content-Disposition", "attachment; filename=" + postulante.pos_cv);
+                    Response.AddHeader("Content-Length", ObjArchivo.Length.ToString());
+                    Response.ContentType = "application/octet-stream";
+                    Response.WriteFile(ObjArchivo.FullName);
+                    Response.End();
+                }
+            }
+        }
+
     }
 }
