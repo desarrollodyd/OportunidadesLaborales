@@ -82,7 +82,75 @@ namespace SistemaReclutamiento.Models
             {
             }
             return persona;
-        }     
+        }
+        public personaEntidad PersonaDniObtenerJson(string num_doc)
+        {
+            personaEntidad persona = new personaEntidad();
+            string consulta = @"SELECT 
+                                    per_nombre, 
+                                    per_apellido_pat, 
+                                    per_direccion, 
+                                    per_fechanacimiento, 
+                                    per_correoelectronico, 
+                                    per_tipo, 
+                                    per_estado, 
+                                    per_id, 
+                                    per_apellido_mat, 
+                                    per_telefono, 
+                                    per_celular, 
+                                    per_tipodoc, 
+                                    per_numdoc, 
+                                    fk_ubigeo, 
+                                    per_sexo, 
+                                    per_fecha_reg, 
+                                    per_fecha_act, 
+                                    fk_cargo, 
+                                    per_foto
+	                                    FROM marketing.cpj_persona
+                                            where per_numdoc=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", num_doc);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                persona.per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]);
+                                persona.per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]);
+                                persona.per_direccion = ManejoNulos.ManageNullStr(dr["per_direccion"]);
+                                persona.per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]);
+                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
+                                persona.per_tipo = ManejoNulos.ManageNullStr(dr["per_tipo"]);
+                                persona.per_estado = ManejoNulos.ManageNullStr(dr["per_estado"]);
+                                persona.per_id = ManejoNulos.ManageNullInteger(dr["per_id"]);
+                                persona.per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]);
+                                persona.per_telefono = ManejoNulos.ManageNullStr(dr["per_telefono"]);
+                                persona.per_celular = ManejoNulos.ManageNullStr(dr["per_celular"]);
+                                persona.per_tipodoc = ManejoNulos.ManageNullStr(dr["per_tipodoc"]);
+                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
+                                persona.fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]);
+                                persona.per_sexo = ManejoNulos.ManageNullStr(dr["per_sexo"]);
+                                persona.per_fecha_reg = ManejoNulos.ManageNullDate(dr["per_fecha_reg"]);
+                                persona.per_fecha_act = ManejoNulos.ManageNullDate(dr["per_fecha_act"]);
+                                persona.fk_cargo = ManejoNulos.ManageNullInteger(dr["fk_cargo"]);
+                                persona.per_foto = ManejoNulos.ManageNullStr(dr["per_foto"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return persona;
+        }
         public int PersonaInsertarJson(personaEntidad persona)
         {
             int idPersonaInsertada=0;
@@ -173,21 +241,23 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        internal personaEntidad PersonaDniObtenerJson(string per_numdoc)
+        internal personaEntidad PersonaEmailDniObtenerJson(string per_correoelectronico,string per_numdoc)
         {
             personaEntidad persona = new personaEntidad();
             string consulta = @"SELECT                                                                  
                                     per_id,                          
-                                    per_numdoc
+                                    per_numdoc,
+                                    per_correoelectronico
 	                                FROM marketing.cpj_persona
-                                    where per_numdoc=@p0;";
+                                    where per_numdoc=@p0 and  per_correoelectronico=@p1;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", per_numdoc);                   
+                    query.Parameters.AddWithValue("@p0", per_numdoc);
+                    query.Parameters.AddWithValue("@p1", per_correoelectronico);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -195,7 +265,8 @@ namespace SistemaReclutamiento.Models
                             while (dr.Read())
                             {
                                 persona.per_id = ManejoNulos.ManageNullInteger(dr["per_id"]);
-                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);                             
+                                persona.per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]);
+                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
                             }
                         }
                     }

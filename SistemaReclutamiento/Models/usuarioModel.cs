@@ -238,5 +238,37 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
+        public usuarioEntidad UsuarioObtenerxCorreo(string direccion_correo)
+        {
+            usuarioEntidad usuario = new usuarioEntidad();
+            string consulta = @"SELECT usu_id,usu_nombre,usu_estado
+	                            FROM seguridad.seg_usuario where usu_nombre=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", direccion_correo);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                usuario.usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]);
+                                usuario.usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]);                      
+                                usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return usuario;
+        }
     }
 }
