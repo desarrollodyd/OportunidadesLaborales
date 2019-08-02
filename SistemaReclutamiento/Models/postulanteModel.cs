@@ -288,5 +288,308 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
+        public bool PostulanteTablaPostulacionInsertarJson(postulanteEntidad postulante, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_postulacion(                         
+                                ppo_tipo_direccion, 
+                                ppo_direccion, 
+                                ppo_tipo_calle, 
+                                ppo_numero_casa, 
+                                ppo_tipo_casa,
+                                ppo_celular,
+                                ppo_estado_civil,
+                                ppo_brevete,
+                                ppo_num_brevete,
+                                ppo_referido,
+                                ppo_nombre_referido, 
+                                ppo_cv,
+                                ppo_foto, 
+                                ppo_situacion, 
+                                ppo_fecha_reg, 
+                                ppo_fecha_act, 
+                                ppo_estado, 
+                                fk_postulante, 
+                                fk_oferta_laboral)
+	                            VALUES 
+                                (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p5, @p16, @p17, @p18);";
+            try {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_tipo_direccion));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_direccion));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_tipo_calle));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(postulante.pos_numero_casa));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(postulante.pos_tipo_casa));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(postulante.pos_celular));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(postulante.pos_estado_civil));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManegeNullBool(postulante.pos_brevete));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(postulante.pos_num_brevete));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManegeNullBool(postulante.pos_referido));
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullStr(postulante.pos_cv));
+                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullStr(postulante.pos_foto));
+                    query.Parameters.AddWithValue("@p13", ManejoNulos.ManageNullStr(postulante.pos_situacion));
+                    query.Parameters.AddWithValue("@p14", ManejoNulos.ManageNullDate(postulante.pos_fecha_reg));
+                    query.Parameters.AddWithValue("@p15", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
+                    query.Parameters.AddWithValue("@p16", ManejoNulos.ManageNullStr(postulante.pos_estado));
+                    query.Parameters.AddWithValue("@p17", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p18", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return response;
+        }
+        public bool PostulanteTablaPostulacionEducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO 
+                                gestion_talento.gdt_pos_educacion_bas(
+                                eba_tipo,
+                                eba_nombre,
+                                eba_condicion,
+                                eba_fecha_reg, 
+                                eba_fecha_act,
+                                fk_postulante,
+                                fk_oferta_laboral)
+	                            VALUES (@p0, @p1, @p2, @p3, @p4,@p5,@p6); ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(educacionBasica.eba_tipo));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(educacionBasica.eba_nombre));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(educacionBasica.eba_condicion));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(educacionBasica.eba_fecha_reg));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(educacionBasica.eba_fecha_act));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(educacionBasica.fk_postulante));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return response;
+        }
+        public bool PostulanteTablaPostulacionEducacionSuperiorInsertarJson(educacionSuperiorEntidad educacionSuperior, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_educacion_sup(                    
+                                esu_tipo, 
+                                esu_centro_estudio, 
+                                esu_carrera, 
+                                esu_periodo_ini, 
+                                esu_periodo_fin,
+                                esu_condicion, 
+                                eso_fecha_reg, 
+                                esu_fecha_act, 
+                                fk_postulante,
+                                fk_oferta_laboral)
+                                VALUES 
+                                (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7,@p8,@p9); ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(educacionSuperior.esu_tipo));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(educacionSuperior.esu_centro_estudio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(educacionSuperior.esu_carrera));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(educacionSuperior.esu_periodo_ini));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(educacionSuperior.esu_periodo_fin));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(educacionSuperior.esu_condicion));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(educacionSuperior.esu_fecha_reg));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullDate(educacionSuperior.esu_fecha_act));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(educacionSuperior.fk_postulante));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return response;
+        }
+        public bool PostulanteTablaPostulacionExperienciaInsertarJson(experienciaEntidad experiencia, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_experiencia(
+                                    exp_empresa,
+                                    exp_cargo,
+                                    exp_fecha_ini,
+                                    exp_fecha_fin,
+                                    exp_motivo_cese,
+                                    exp_fecha_reg, 
+                                    exp_fecha_act, 
+                                    exp_estado,
+                                    fk_postulante,
+                                    fk_oferta_laboral)
+                                    VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7,@p8,@p9); ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(experiencia.exp_empresa));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(experiencia.exp_cargo));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(experiencia.exp_fecha_ini));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(experiencia.exp_fecha_fin));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(experiencia.exp_motivo_cese));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullDate(experiencia.exp_fecha_reg));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(experiencia.exp_fecha_act));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(experiencia.exp_estado));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(experiencia.fk_postulante));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return response;
+        }
+        public bool PostulanteTablaPostulacionIdiomaInsertarJson(idiomaEntidad idioma, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_idioma(
+                                    idi_tipo, 
+                                    idi_centro_estudio, 
+                                    idi_idioma, 
+                                    idi_periodo_ini, 
+                                    idi_periodo_fin, 
+                                    idi_nivel, 
+                                    idi_fecha_reg, 
+                                    idi_fecha_act, 
+                                    fk_postulante, 
+                                    fk_oferta_laboral)
+                                    VALUES (@p0, @p1, @p2, @p3, @p4,@p5,@p6,@p7,@p8,@p9); ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(idioma.idi_tipo));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(idioma.idi_centro_estudio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(idioma.idi_idioma));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(idioma.idi_periodo_ini));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(idioma.idi_periodo_fin));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(idioma.idi_nivel));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(idioma.idi_fecha_reg));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullDate(idioma.idi_fecha_act));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(idioma.fk_postulante));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return response;
+        }
+        public bool PostulanteTablaPostulacionOfimaticaInsertarJson(ofimaticaEntidad ofimatica, string ofi_herramienta, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_ofimatica(
+                                    ofi_tipo,
+                                    ofi_centro_estudio, 
+                                    ofi_herramienta, 
+                                    ofi_nivel,
+                                    ofi_periodo_ini,
+                                    ofi_periodo_fin,
+                                    ofi_fecha_reg, 
+                                    ofi_fecha_act,
+                                    fk_postulante,
+                                    fk_oferta_laboral)
+	                                VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7,@p8,@p9); ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(ofimatica.ofi_tipo));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(ofimatica.ofi_centro_estudio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(ofi_herramienta));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(ofimatica.ofi_nivel));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(ofimatica.ofi_periodo_ini));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullDate(ofimatica.ofi_periodo_fin));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(ofimatica.ofi_fecha_reg));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullDate(ofimatica.ofi_fecha_act));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(ofimatica.fk_postulante));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return response;
+        }
+        public bool PostulanteTablaPostulacionPostgradoInsertarJson(postgradoEntidad postgrado, int fk_oferta_laboral)
+        {
+            bool response = false;
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_postgrado(
+                                    pos_tipo,
+                                    pos_centro_estudio,
+                                    pos_carrera, 
+                                    pos_nombre,
+                                    pos_periodo_ini,
+                                    pos_periodo_fin,
+                                    pos_condicion, 
+                                    pos_fecha_reg,
+                                    pos_fecha_act, 
+                                    fk_postulante, 
+                                    fk_oferta_laboral)
+	                                VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7,@p8,@p9,@p10); ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postgrado.pos_tipo));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postgrado.pos_centro_estudio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postgrado.pos_carrera));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(postgrado.pos_nombre));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(postgrado.pos_periodo_ini));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullDate(postgrado.pos_periodo_fin));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(postgrado.pos_condicion));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullDate(postgrado.pos_fecha_reg));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullDate(postgrado.pos_fecha_act));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(postgrado.fk_postulante));
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+            return response;
+        }
     }
 }

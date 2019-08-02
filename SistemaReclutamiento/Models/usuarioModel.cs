@@ -20,7 +20,7 @@ namespace SistemaReclutamiento.Models
         public usuarioEntidad UsuarioObtenerxID(int id)
         {
             usuarioEntidad usuario = new usuarioEntidad();
-            string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,usu_clave_temp
+            string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,usu_clave_temp,fk_persona 
 	                            FROM seguridad.seg_usuario where usu_id=@p0;";
             try
             {
@@ -40,6 +40,7 @@ namespace SistemaReclutamiento.Models
                                 usuario.usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]);
                                 usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
                                 usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
+                                usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
 
                             }
                         }
@@ -56,8 +57,8 @@ namespace SistemaReclutamiento.Models
         public usuarioEntidad ValidarCredenciales(string usu_login)
         {
             usuarioEntidad usuario = new usuarioEntidad();
-            string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
-	                            FROM seguridad.seg_usuario where usu_nombre=@p0";
+            string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
+	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

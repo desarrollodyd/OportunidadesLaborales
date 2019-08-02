@@ -14,6 +14,8 @@ namespace SistemaReclutamiento.Controllers
     public class postulanteController : Controller
     {
         postulanteModel postulantebl = new postulanteModel();
+        ofimaticaHerramientaModel ofimaticaherramientabl = new ofimaticaHerramientaModel();
+        ofimaticaModel ofimaticabl = new ofimaticaModel();
         string rutaCv = ConfigurationManager.AppSettings["PathArchivos"];
         string rutaPerfil=ConfigurationManager.AppSettings["PathImagenesPerfil"];
         // GET: postulante
@@ -41,7 +43,7 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult PostulanteInsertarInformacionAdicionalJson(usuarioPersonaEntidad persona)
         {
             HttpPostedFileBase file = Request.Files[0];
-            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"]; ;
+            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
 
             bool respuestaConsulta = true ;
             string extension = "";
@@ -210,6 +212,30 @@ namespace SistemaReclutamiento.Controllers
             rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         
+        }
+        [HttpPost]
+        public ActionResult PostulanteMigrarDataJson(postulanteEntidad postulante, int fk_oferta_laboral)
+        {
+            bool respuestaConsulta = true;
+            string errormensaje = "";
+            List<ofimaticaEntidad> ofimatica = new List<ofimaticaEntidad>();
+            ofimaticaHerramientaEntidad ofimaticaherramienta = new ofimaticaHerramientaEntidad();
+            ofimatica = ofimaticabl.OfimaticaListaporPostulanteJson(postulante.pos_id);
+            try
+            {
+                /*Insertar Tabla postulacion*/
+                respuestaConsulta = postulantebl.PostulanteTablaPostulacionInsertarJson(postulante, fk_oferta_laboral);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Inserto en Tabla Postulaciones";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message + ", LLame Administrador";
+            }
+            return Json(new {respuesta=respuestaConsulta, mensaje=errormensaje });
         }
     }
 }

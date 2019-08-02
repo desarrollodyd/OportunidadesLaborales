@@ -6,8 +6,8 @@
     int fk_persona = 0;
     string usu_nombre = "";
     string encriptado = "";
-    
-    if (Session["usu_full"]==null)
+
+    if (Session["usu_full"]==null || Session["per_full"] ==null|| Session["postulante"]==null)
     {
         Response.Redirect("~/");
     }

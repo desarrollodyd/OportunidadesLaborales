@@ -197,33 +197,30 @@ function responseSimple(obj) {
                     text: mensaje,
                     type: "success"
                 });
-
-                if (opciones.redirect) {
-                    if (opciones.redirectUrl == null) {
-                        console.warn('Advertencia - redirectUrl no fue declarado.');
-                        return;
-                    };
-                    setTimeout(function () {
-                        redirect({ site: opciones.redirectUrl, time: 0 });
-                    }, opciones.time);
-
-                } else {
-                    if (opciones.refresh) {
-                        setTimeout(function () {
-                            refresh({ estate: true, time: 0 });
-                        }, opciones.time);
-                    } else {
-                        opciones.callBackSuccess(response);
-                    }
-                }
-
             } else {
                 messageResponse({
                     text: mensaje,
                     type: "error"
                 });
             };
-            
+            if (opciones.redirect) {
+                if (opciones.redirectUrl == null) {
+                    console.warn('Advertencia - redirectUrl no fue declarado.');
+                    return;
+                };
+                setTimeout(function () {
+                    redirect({ site: opciones.redirectUrl, time: 0 });
+                }, opciones.time);
+
+            } else {
+                if (opciones.refresh) {
+                    setTimeout(function () {
+                        refresh({ estate: true, time: 0 });
+                    }, opciones.time);
+                } else {
+                    opciones.callBackSuccess(response);
+                }
+            }
         },
         error: function (xmlHttpRequest, textStatus, errorThrow) {
             unblock("body");

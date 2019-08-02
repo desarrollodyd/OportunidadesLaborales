@@ -110,7 +110,7 @@ namespace SistemaReclutamiento.Controllers
             String pendiente = "";
             try
             {
-                usuario = usuariobl.ValidarCredenciales(usu_login);
+                usuario = usuariobl.ValidarCredenciales(usu_login.ToLower());
                 if (usuario.usu_id > 0)
                 {
                     if (usuario.usu_estado=="P")
@@ -174,7 +174,7 @@ namespace SistemaReclutamiento.Controllers
 
             try
             {
-                usuario = usuariobl.ValidarCredenciales(correo_recuperacion);
+                usuario = usuariobl.ValidarCredenciales(correo_recuperacion.ToLower());
                 if (usuario.usu_id > 0)
                 {
                     usuario_envio = usuario.usu_nombre;

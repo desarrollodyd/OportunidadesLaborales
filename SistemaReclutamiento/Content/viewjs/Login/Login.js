@@ -13,16 +13,14 @@
                 if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
                     $(this).val($(this).val() + e.key);
                     if ($(this).val().length == 8) {
-                        /*Logica para busqueda*/
+                    /*Logica para busqueda*/
                         var dataForm = $('#registro-form').serializeFormJSON();
                         $('#busqueda').val("nuevo");
-                        $.ajax({
-                            type: "POST",
-                            url: basePath+"Persona/PersonaDniObtenerJson",
-                            data:dataForm,
-                            dataType: "json",
-                            //refresh: false,
-                            success: function (response) {
+                        responseSimple({
+                            url: "Persona/PersonaDniObtenerJson",//Postgres
+                            data: JSON.stringify(dataForm),
+                            refresh: false,
+                            callBackSuccess: function (response) {
                                 if (response.respuesta == true) {
                                     messageConfirmation({
                                         callBackSAceptarComplete: function () {
@@ -37,17 +35,14 @@
                                         },
                                         content: "Usted ya se encuentra registrado en nuestra BD Postgres, sus datos seran usados para llenar el formulario."
                                     });
-                                                                   
-                                   
                                 }
                                 else {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: basePath + "Persona/PersonaSqlDniObtenerJson",
-                                        data: dataForm,
-                                        dataType: "json",
-                                        //refresh: false,
-                                        success: function (response) {
+                                    /*Busqueda en SQL*/
+                                    responseSimple({
+                                        url: "Persona/PersonaSQLDniObtenerJson",
+                                        data: JSON.stringify(dataForm),
+                                        refresh: false,
+                                        callBackSuccess: function (response) {
                                             if (response.respuesta == true) {
                                                 messageConfirmation({
                                                     callBackSAceptarComplete: function () {
@@ -58,30 +53,26 @@
                                                         $("#per_apellido_pat").val(response.data.NO_APEL_PATE);
                                                         $("#per_apellido_mat").val(response.data.NO_APEL_MATE);
                                                         $("#per_correoelectronico").val(response.data.NO_DIRE_MAI1);
-                                                        console.warn(response.data);
                                                     },
-                                                    content: "Usted ya se encuentra registrado en nuestra BD SQL, sus datos seran usados para llenar el                 formulario."
-                                                });                                             
-
+                                                    content: "Usted ya se encuentra registrado en nuestra BD SQL, sus datos seran usados para llenar el formulario."
+                                                });
                                             }
                                             else {
                                                 console.log("no encontrado");
                                                 console.log(response.data);
                                                 $("#busqueda").val("nuevo");
-                                                $("#per_nombre").val(response.data.NO_TRAB);
-                                                $("#per_apellido_pat").val(response.data.NO_APEL_PATE);
-                                                $("#per_apellido_mat").val(response.data.NO_APEL_MATE);
-                                                $("#per_correoelectronico").val(response.data.NO_DIRE_MAI1);
-                                                console.warn(response.data);
+                                                $("#per_nombre").val("");
+                                                $("#per_apellido_pat").val("");
+                                                $("#per_apellido_mat").val("");
+                                                $("#per_correoelectronico").val("");                                                
                                             }
                                         }
-
                                     });
+                                    /*Fin Busqueda SQL*/                                    
                                 }
                             }
-
                         });
-                /*Fin de Logica*/
+                    /*Fin de Logica*/
                     }
                 }
                 return false;
@@ -99,7 +90,8 @@
                     refresh: false,                 
                     callBackSuccess: function (response) {
                         var pendiente = response.estado;
-                        if(pendiente != "") {
+                        if (pendiente != "") {
+                            console.log(pendiente);
                               redirect({ site: "Login/Activacion?id=" + pendiente });
                         }
                         else {

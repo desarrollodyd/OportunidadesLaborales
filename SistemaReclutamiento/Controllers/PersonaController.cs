@@ -288,9 +288,9 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
         [HttpPost]
-        public ActionResult PersonaDniObtenerJson()
+        public ActionResult PersonaDniObtenerJson(string per_numdoc)
         {
-            string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
+            //string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
             var errormensaje = "";
             bool respuestaConsulta = false;
             personaEntidad persona = new personaEntidad();
@@ -313,11 +313,11 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje });
         }
         [HttpPost]
-        public ActionResult PersonaSQLDniObtenerJson()
+        public ActionResult PersonaSQLDniObtenerJson(string per_numdoc)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
-            string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
+            //string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
             personaSqlEntidad persona = new personaSqlEntidad();
             personaSqlModel personasqlbl = new personaSqlModel();
             try
