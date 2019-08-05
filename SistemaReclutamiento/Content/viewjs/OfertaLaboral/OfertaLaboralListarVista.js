@@ -1,85 +1,77 @@
-﻿
-    //var data = [{ "image": "abc.png", "para": "Hi..iam rohit.and this 1st card" }, { "image": "sqr.png", "para": "Hi..iam rakesh.and this 2st card" }]
-    var html = '<div class="col-md-4">';
-    html += '<div class="card">';    
-    html += '<h4 class="card-title">Ofertas Laborales</h4>';
-    html += '<div class="col-md-4 userimg"> </div>';
-    html += '</div>';
-    html += '</div>';
-  
-$(document).ready(function () {
+﻿var OfertaLaboralVista = function () {
 
+    var _ListarOfertas = function () {
+        var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
+        responseSimple({
+            url: "OfertaLaboral/OfertaLaboralListarJson",
+            data: JSON.stringify(dataForm),
+            refresh: false,
+            callBackSuccess: function (response) {
+                var data = response.data;
+                var respuesta = response.respuesta;
+                $("#ofertasContenido").html("");
+                if (respuesta) {
+                    console.log(data);
+                    $.each(data, function (index, value) {
+                        $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12 profile_details">'+
+                                                            '<div class="well profile_view">'+
+                                                               '<div class="col-sm-12" style="text-align: center;">'+
+                                                                    '<h3 class="brief" style="margin: 0px !important;"><i>'+value.ola_nombre+'</i></h3>'+
+                                                                    '<h6 style="margin: 0px !important;">direccion</h6>'+
+                                                                    '<div class=" col-xs-12" style="padding-bottom: 10px;">'+
+                                                                        '<div class="ln_solid" style="margin-top: 10px !important;"></div>'+
+                                                                            '<button type="button" class="btn btn-primary btn-sm" style="font-size: 15px !important;">  Detalle </button>'+
+                                                                            '<button type="button" class="btn btn-success btn-sm" style="font-size: 15px !important;"> Postula</button>'+
+                                                                    '</div>'+
+                                                                '</div>'+
+                                                                '<div class="col-xs-12 bottom text-center">'+
+                                                                     '<div class="col-xs-12 col-sm-12 emphasis">'+
+                                                                          '<p class="ratings" style="text-align: center;">'+
+                                                                              '<a>Publicado hace 4 dias</a>'+
+                                                                              '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>'+
+                                                                          '</p>'+
+                                                                     '</div>'+
+                                                                '</div>'+
+                                                            '</div>'+
+                                                      '</div >');
+                    });
 
-    //var data = {
-    //    ola_nombre: "",
-    //    fk_ubigeo: 0,
-    //    ola_cod_empresa: "",
-    //    ola_cod_cargo: ""
-    //};
-    //var dataForm = {
-    //    ola_nombre: "",
-    //    fk_ubigeo: 0,
-    //    ola_cod_empresa: "",
-    //    ola_cod_cargo: ""
-    //};
-    //var dataForm = new FormData();  
-    //dataForm.append('ola_nombre', "");
-    //dataForm.append('fk_ubigeo', 0);
-    //dataForm.append('ola_cod_empresa', "");
-    //dataForm.append('ola_cod_cargo', "");
-    //var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
-    //responseSimple({
-    //    url: "OfertaLaboral/OfertaLaboralListarJson",
-    //    data: JSON.stringify(dataForm),
-    //    refresh: false,
-    //    callBackSuccess: function (data) {
-    //        console.log(data);
-    //        for (var i = 0; i < data.data.length; i++) {
-    //            $('#printcard').append(html);
-    //            var $img = $("<p>" + data.data[i].ola_nombre + "</p>");
-    //            $(".userimg:eq(" + i + ")").append($img);
-    //        }
-    //    }
-    //});
-    $.ajax({
-        type: 'POST',
-        data: {           
-            ola_nombre: "",
-            fk_ubigeo: 0,
-            ola_cod_empresa: "",
-            ola_cod_cargo:""
-        },
-        url: basePath + 'OfertaLaboral/OfertaLaboralListarJson',
-        dataType: 'json',
-        success: function (data) {    /* Here data length is 5*/
-            console.log(data);
-            for (var i = 0; i < data.data.length; i++) {
-                $('#printcard').append(html);
-                var $img = $("<p>" + data.data[i].ola_nombre + "</p>");
-                $(".userimg:eq(" + i + ")").append($img);
-            }
-
-        }
-    });
-    $(document).on('click', '.btn_guardar', function () {
-        var dataform = $("#frmOfertaLaboral-form").serializeFormJSON();
-        $.ajax({
-            type: 'POST',
-            data: dataform,
-            url: basePath + 'OfertaLaboral/OfertaLaboralListarJson',
-            dataType: 'json',
-            success: function (data) {    /* Here data length is 5*/
-                console.log(data);
-                $("#printcard").empty();
-                for (var i = 0; i < data.data.length; i++) {
-                    $('#printcard').append(html);
-                    var $img = $("<p>" + data.data[i].ola_nombre + "</p>");
-                    $(".userimg:eq(" + i + ")").append($img);
                 }
-
             }
         });
-    });
 
-    });
-    
+    };
+    var _componentes = function () {
+
+        $(document).on("click", ".btn_filtrar", function (e) {
+            OfertaLaboralVista.__ListarOfertas();
+        });
+
+    };
+
+    var _metodos = function () {
+
+    };
+
+    //
+    // Return objects assigned to module
+    //
+    return {
+        init: function () {
+            _componentes();
+            _ListarOfertas();
+            _metodos();
+        },
+        __ListarOfertas: function () {
+            _ListarOfertas();
+        },
+    }
+}();
+
+
+// Initialize module
+// ------------------------------
+
+document.addEventListener('DOMContentLoaded', function () {
+    OfertaLaboralVista.init();
+});

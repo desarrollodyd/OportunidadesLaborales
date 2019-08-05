@@ -9,7 +9,8 @@
         $("#pos_nombre_referido").val(postulante.pos_nombre_referido);
 
         if (postulante.pos_cv != "") {
-            $("#cvnombre").text(postulante.pos_cv);
+            var nombre_arr = postulante.pos_cv.split(".");
+            $("#cvnombre").text(nombre_arr[0].substring(0, 28) + "." + nombre_arr[1]);
             $("#cvfecha").text(moment(postulante.pos_fecha_act).format("DD-MM-YYYY HH:MM:SS A"));
             $("#divCV").show();
         }
@@ -111,7 +112,7 @@
             if (_image != null) {
                 var image_arr = _image.name.split(".");
                 var extension = image_arr[1].toLowerCase();
-                console.log(extension);
+                //console.log(extension);
                 if (extension != "pdf" && extension != "doc" && extension != "docx") {
                     messageResponse({
                         text: 'Solo Se Permite formato word o pdf',
@@ -119,7 +120,7 @@
                     });
                 }
                 else {
-                    var nombre = image_arr[0].substring(0, 8);
+                    var nombre = image_arr[0].substring(0, 11);
                     var actualicon = image_arr[1].toLowerCase();
                     var icon = "";
                     if (actualicon == "doc" || actualicon == "docx") {
@@ -129,7 +130,8 @@
                         icon = '<i class="fa fa-file-pdf-o"></i>';
                     };
                     $("#spancv").html("");
-                    $("#spancv").append(icon + " " + nombre + "...");
+                    $("#spancv").append(icon + " " + nombre + "... ." + actualicon);
+                    //$("#spancv").css({ 'font-size': '10px' });  
                 }
             }
             else {
@@ -178,8 +180,20 @@
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
+                            var imagen = $('#pos_cv')[0].files[0];
+                            if (imagen != null) {
+                                console.warn("asasas");
+                                var image_arr = imagen.name.split(".");
+                                var image_name = image_arr[0].substring(0, 28) + "." + image_arr[1];
+                                $("#cvnombre").text(image_name.toLowerCase());
+                                $("#cvfecha").text(moment().format("DD-MM-YYYY HH:MM:SS A"));
+                                $("#divCV").show();
+                            }
                             $("#spancv").html("");
                             $("#spancv").append('<i class="fa fa-upload"></i>  Subir CV');
+                            $('#pos_cv').val("");
+                            
+                            
                         }
                     }
                 });

@@ -46,11 +46,11 @@ namespace SistemaReclutamiento.Models
                                     gestion_talento.gdt_ola_oferta_laboral where ";
            
                 
-            if (ola_cod_empresa != "")
+            if (ola_cod_empresa != "" && ola_cod_empresa!=null)
             {
                 consulta += "ola_cod_empresa='"+ManejoNulos.ManageNullStr(ola_cod_empresa)+"' and ";
             }
-            if (ola_cod_cargo != "")
+            if (ola_cod_cargo != "" && ola_cod_cargo != null)
             {
                 consulta += "ola_cod_cargo='" + ManejoNulos.ManageNullStr(ola_cod_cargo) + "' and ";
             }
@@ -66,7 +66,7 @@ namespace SistemaReclutamiento.Models
             //{
             //    consulta += "fk_ubigeo=" + ManejoNulos.ManageNullInteger(fk_ubigeo) + "and";
             //}
-            if (ola_nombre != "")
+            if (ola_nombre != "" && ola_nombre != null)
             {
                 consulta += "lower(ola_nombre) Like '%" + ManejoNulos.ManageNullStr(ola_nombre.ToLower()) + "%' and ";
             }
