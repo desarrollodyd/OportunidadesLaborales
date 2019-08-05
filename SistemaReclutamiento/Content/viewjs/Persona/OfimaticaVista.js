@@ -40,7 +40,14 @@
                     $.each(datos, function (index, value) {
                         $("#tbody_Ofimatica").append('<tr><td>' + value.ofi_tipo + '</td><td>' + value.ofi_centro_estudio + '</td><td>' + value.fk_herramienta + '</td><td>' + value.ofi_nivel + '</td><td>' + moment(value.ofi_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.ofi_periodo_fin).format("DD/MM/YYYY") + '</td><td><button type="button" data-id="' + value.ofi_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
-
+                    CloseMessages();
+                    if (datos.length == 0) {
+                        CloseMessages();
+                        messageResponse({
+                            text: "No se Encontraron Registros",
+                            type: "warning"
+                        });
+                    }
                 }
             }
         });

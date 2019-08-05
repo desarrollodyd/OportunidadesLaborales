@@ -95,6 +95,10 @@ function messageResponse(obj) {
     });
 }
 
+function CloseMessages() {
+    PNotify.removeAll();
+}
+
 function messageConfirmation(obj) {
     var defaults = {
         title: 'Confirmacion',
@@ -138,6 +142,7 @@ function limpiar_form(obj) {
     };
 
     $(opciones.contenedor + " input:visible,select:visible,textarea:visible").val("");
+    $(opciones.contenedor + ' select').val(null).trigger("change");
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -412,7 +417,8 @@ function selectResponse(obj) {
         CampoValor: null,
         selectVal: null,
         select2: false,
-        allOption:false
+        allOption: false,
+        placeholder:"Seleccione"
     }
 
     var opciones = $.extend({}, defaults, obj);
@@ -431,6 +437,9 @@ function selectResponse(obj) {
         data: JSON.stringify(opciones.data),
         contentType: "application/json",
         beforeSend: function () {
+            if ($("#" + opciones.select).hasClass('select2-hidden-accessible')) {
+                $("#" + opciones.select).select2('destroy');
+            }
             $("#" + opciones.select).html("");
             $("#" + opciones.select).append('<option value="">Cargando...</option>');
             $("#" + opciones.select).attr("disabled", "disabled");
@@ -439,9 +448,9 @@ function selectResponse(obj) {
         success: function (response) {
             var datos = response.data;
             var mensaje = response.mensaje;
+            $("#" + opciones.select).html("");
+            $("#" + opciones.select).append('<option value="">' + opciones.placeholder + '</option>');
             if (datos.length > 0) {
-                $("#" + opciones.select).html("");
-                $("#" + opciones.select).append('<option value="">--Seleccione--</option>');
                 if (opciones.allOption) {
                     $("#" + opciones.select).append('<option value="0">Todos</option>');
                 }
@@ -467,6 +476,7 @@ function selectResponse(obj) {
                 }
                 
             } else {
+                $("#" + opciones.select).removeAttr("disabled");
                 messageResponse({
                     text: "No Hay Registros",
                     type: "warning"

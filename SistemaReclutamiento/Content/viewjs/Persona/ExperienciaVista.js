@@ -29,11 +29,17 @@
                 var datos = response.data;
                 if (respuesta) {
                     $("#tbody_experiencia").html("");
-                    console.log(datos)
                     $.each(datos, function (index, value) {
                         $("#tbody_experiencia").append('<tr><td>' + value.exp_empresa + '</td><td>' + value.exp_cargo + '</td><td>' + value.exp_motivo_cese + '</td><td>' + moment(value.exp_fecha_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.exp_fecha_fin).format("DD/MM/YYYY") + '</td><td><button type="button" data-id="' + value.exp_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
-
+                    CloseMessages();
+                    if (datos.length == 0) {
+                        CloseMessages();
+                        messageResponse({
+                            text: "No se Encontraron Registros",
+                            type: "warning"
+                        });
+                    }
                 }
             }
         });

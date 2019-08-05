@@ -4597,6 +4597,7 @@
     <Compile Include="Models\personaSqlModel.cs" />
     <Compile Include="Models\postgradoModel.cs" />
     <Compile Include="Models\postulanteModel.cs" />
+    <Compile Include="Models\ClaseLibreModel.cs" />
     <Compile Include="Models\ubigeoModel.cs" />
     <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

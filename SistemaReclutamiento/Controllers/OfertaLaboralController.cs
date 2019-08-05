@@ -17,18 +17,17 @@ namespace SistemaReclutamiento.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult OfertaLaboralListarJson()
+        public ActionResult OfertaLaboralListarJson(ReporteOfertaLaboral reporte)
         {
-            string ola_nombre = Convert.ToString(Request.Params["ola_nombre"]);       
-            string ola_cod_empresa =Convert.ToString(Request.Params["ola_cod_empresa"]);
-            string ola_cod_cargo = Convert.ToString(Request.Params["ola_cod_cargo"]);         
+
+           // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]);         
             bool respuestaConsulta = false;
             string errormensaje = "";
             var lista = new List<ofertaLaboralEntidad>();
 
             try
             {
-                lista = ofertaLaboralbl.OfertaLaboralListarJson(ola_cod_empresa,ola_cod_cargo,ola_nombre);
+                lista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
                 errormensaje = "Listando Ofertas";
                 respuestaConsulta = true;
             }
