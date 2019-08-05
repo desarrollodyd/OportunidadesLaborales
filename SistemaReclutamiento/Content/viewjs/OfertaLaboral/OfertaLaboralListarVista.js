@@ -15,7 +15,7 @@
                     $.each(data, function (index, value) {
                         $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12 profile_details">'+
                                                             '<div class="well profile_view">'+
-                                                               '<div class="col-sm-12" style="text-align: center;">'+
+                                                               '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">'+
                                                                     '<h3 class="brief" style="margin: 0px !important;"><i>'+value.ola_nombre+'</i></h3>'+
                                                                     '<h6 style="margin: 0px !important;">direccion</h6>'+
                                                                     '<div class=" col-xs-12" style="padding-bottom: 10px;">'+
@@ -25,7 +25,7 @@
                                                                     '</div>'+
                                                                 '</div>'+
                                                                 '<div class="col-xs-12 bottom text-center">'+
-                                                                     '<div class="col-xs-12 col-sm-12 emphasis">'+
+                                                                     '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">'+
                                                                           '<p class="ratings" style="text-align: center;">'+
                                                                               '<a>Publicado hace 4 dias</a>'+
                                                                               '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>'+
