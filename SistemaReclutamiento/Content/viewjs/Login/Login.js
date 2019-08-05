@@ -79,6 +79,29 @@
             }
         });
 
+        //$('#per_numdoc').on('keydown keypress', function (e) {
+        //    if (e.key.length === 1) {
+        //        if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
+        //            $(this).val($(this).val() + e.key);
+        //            if ($(this).val().length == 8) {
+        //                /*Logica para busqueda*/
+        //                var dataForm = $('#registro-form').serializeFormJSON();
+        //                $('#busqueda').val("nuevo");
+        //                responseSimple({
+        //                    url: "Persona/PersonaDniObtenerJson2",//Postgres
+        //                    data: JSON.stringify(dataForm),
+        //                    refresh: false,
+        //                    callBackSuccess: function (response) {
+        //                        var data = response.data;                                
+        //                    }
+        //                });
+        //                /*Fin de Logica*/
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //});
+
 
         $(document).on("click", ".btn_ingresar", function (e) {
             $("#login-form").submit();

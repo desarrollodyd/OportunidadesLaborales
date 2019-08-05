@@ -147,14 +147,14 @@ namespace SistemaReclutamiento.Models
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", idioma.idi_tipo);
-                    query.Parameters.AddWithValue("@p1", idioma.idi_centro_estudio);
-                    query.Parameters.AddWithValue("@p2", idioma.idi_idioma);
-                    query.Parameters.AddWithValue("@p3", idioma.idi_periodo_ini);
-                    query.Parameters.AddWithValue("@p4", idioma.idi_periodo_fin);
-                    query.Parameters.AddWithValue("@p5", idioma.idi_nivel);
-                    query.Parameters.AddWithValue("@p6", idioma.idi_fecha_reg);
-                    query.Parameters.AddWithValue("@p7", idioma.fk_postulante);                  
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(idioma.idi_tipo));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(idioma.idi_centro_estudio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(idioma.idi_idioma));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(idioma.idi_periodo_ini));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(idioma.idi_periodo_fin));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(idioma.idi_nivel));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(idioma.idi_fecha_reg));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(idioma.fk_postulante));                  
                     query.ExecuteNonQuery();
                     response = true;
                 }

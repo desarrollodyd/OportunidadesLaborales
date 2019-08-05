@@ -4568,6 +4568,7 @@
     <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\configuracionEntidad.cs" />
+    <Compile Include="Entidades\detalleRespuestaPostulanteEntidad.cs" />
     <Compile Include="Entidades\educacionBasicaEntidad.cs" />
     <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
     <Compile Include="Entidades\experienciaEntidad.cs" />
@@ -4586,6 +4587,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\configuracionModel.cs" />
+    <Compile Include="Models\detalleRespuestaPostulanteModel.cs" />
     <Compile Include="Models\educacionBasicaModel.cs" />
     <Compile Include="Models\educacionSuperiorModel.cs" />
     <Compile Include="Models\experienciaModel.cs" />

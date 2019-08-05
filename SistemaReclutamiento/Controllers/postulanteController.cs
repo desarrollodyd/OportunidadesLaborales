@@ -14,6 +14,13 @@ namespace SistemaReclutamiento.Controllers
     public class postulanteController : Controller
     {
         postulanteModel postulantebl = new postulanteModel();
+        educacionBasicaModel educacionbasicabl = new educacionBasicaModel();
+        educacionSuperiorModel educacionsuperiorbl = new educacionSuperiorModel();
+        experienciaModel experienciabl = new experienciaModel();
+        idiomaModel idiomabl = new idiomaModel();
+        ofimaticaModel ofimaticabl = new ofimaticaModel();
+        postgradoModel postgradobl = new postgradoModel();
+        ofimaticaHerramientaModel ofimaticaHerramientabl = new ofimaticaHerramientaModel();
         string rutaCv = ConfigurationManager.AppSettings["PathArchivos"];
         string rutaPerfil=ConfigurationManager.AppSettings["PathImagenesPerfil"];
         // GET: postulante
@@ -231,6 +238,92 @@ namespace SistemaReclutamiento.Controllers
                     Response.End();
                 }
             }
+        }
+        /*Migracion de datos de tablas de postulante a tablas de postulaciones*/
+        [HttpPost]
+        public ActionResult PostulanteMigrarDataJson(int fk_oferta_laboral)
+        {
+            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
+            educacionBasicaEntidad educacionbasica = new educacionBasicaEntidad();
+            educacionSuperiorEntidad educacionsuperior = new educacionSuperiorEntidad();
+            experienciaEntidad experiencia = new experienciaEntidad();
+            idiomaEntidad idioma = new idiomaEntidad();
+            ofimaticaEntidad ofimatica = new ofimaticaEntidad();
+            postgradoEntidad postgrado = new postgradoEntidad();
+            //ofimaticaHerramientaEntidad ofimaticaHerramienta = new ofimaticaHerramientaEntidad();
+
+
+            List<educacionBasicaEntidad> listaeducacionBasica = new List<educacionBasicaEntidad>();
+            List<educacionSuperiorEntidad> listaeducacionSuperior = new List<educacionSuperiorEntidad>();
+            List<experienciaEntidad> listaexperiencia = new List<experienciaEntidad>();
+            List<idiomaEntidad> listaidioma = new List<idiomaEntidad>();
+            List<ofimaticaEntidad> listaofimatica = new List<ofimaticaEntidad>();
+            List<postgradoEntidad> listapostgrado = new List<postgradoEntidad>();
+            bool respuestaConsulta = false;
+            string errormensaje = "";            
+            try
+            {
+                respuestaConsulta = postulantebl.PostulanteTablaPostulacionInsertarJson(postulante, fk_oferta_laboral);
+                if (respuestaConsulta)
+                {
+                    listaeducacionBasica = educacionbasicabl.EducacionBasicaListaporPostulanteJson(postulante.pos_id);
+                    listaeducacionSuperior = educacionsuperiorbl.EducacionSuperiorListaporPostulanteJson(postulante.pos_id);
+                    listaexperiencia = experienciabl.ExperienciaListaporPostulanteJson(postulante.pos_id);
+                    listaidioma = idiomabl.IdiomaListaporPostulanteJson(postulante.pos_id);
+                    listaofimatica = ofimaticabl.OfimaticaListaporPostulanteJson(postulante.pos_id);
+                    listapostgrado = postgradobl.PostgradoListaporPostulanteJson(postulante.pos_id);
+                    if (listaeducacionBasica.Count > 0) {
+                        foreach (educacionBasicaEntidad item in listaeducacionBasica)
+                        {
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionEducacionBasicaInsertarJson(item,fk_oferta_laboral);
+                        }
+                    }
+                    if (listaeducacionSuperior.Count > 0) {
+                        foreach(educacionSuperiorEntidad item in listaeducacionSuperior)
+                        {
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionEducacionSuperiorInsertarJson(item, fk_oferta_laboral);
+                        }
+                    }
+                    if (listaexperiencia.Count > 0)
+                    {
+                        foreach (experienciaEntidad item in listaexperiencia)
+                        {
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionExperienciaInsertarJson(item, fk_oferta_laboral);
+                        }
+                    }
+                    if (listaidioma.Count > 0)
+                    {
+                        foreach (idiomaEntidad item in listaidioma)
+                        {
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionIdiomaInsertarJson(item, fk_oferta_laboral);
+                        }
+                    }
+                    if (listaofimatica.Count > 0)
+                    {
+                        foreach (ofimaticaEntidad item in listaofimatica)
+                        {
+                            var ofimaticaHerramienta = ofimaticaHerramientabl.OfimaticaHerramientaIdObtenerJson(item.fk_herramienta);
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionOfimaticaInsertarJson(item,ofimaticaHerramienta.her_descripcion, fk_oferta_laboral);
+                        }
+                    }
+                    if (listapostgrado.Count > 0)
+                    {
+                        foreach (postgradoEntidad item in listapostgrado)
+                        {
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionPostgradoInsertarJson(item, fk_oferta_laboral);
+                        }
+                    }
+
+                }
+                else {
+                    errormensaje = "Error al Postular";
+                }
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message + ", Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
 
     }

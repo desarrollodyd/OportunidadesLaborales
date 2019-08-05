@@ -530,5 +530,51 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new {respuesta= respuestaConsulta, mensaje=errormensaje });
         }
+        public ActionResult PersonaDniObtenerJson2(string per_numdoc)
+        {
+            //string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
+            var errormensaje = "";
+            bool respuestaConsulta = true;
+            string _encontrado="";
+            personaEntidad persona = new personaEntidad();
+            personaSqlEntidad personasql = new personaSqlEntidad();
+            try
+            {
+                persona = personabl.PersonaDniObtenerJson(per_numdoc);
+                if (persona.per_id != 0)
+                {
+                    _encontrado = "postgres";
+                    //respuestaConsulta = true;
+                    errormensaje = "Cargando Data...";
+                }
+                else {                    
+                    personasql = personasqlbl.PersonaDniObtenerJson(per_numdoc);
+                    if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
+                    {
+                        persona.per_nombre = personasql.NO_TRAB;
+                        persona.per_apellido_pat = personasql.NO_APEL_PATE;
+                        persona.per_apellido_mat = personasql.NO_APEL_MATE;
+                        persona.per_correoelectronico = personasql.NO_DIRE_MAI1;
+                        _encontrado = "sql";
+                        errormensaje = "Cargando Data...";
+                      //  respuestaConsulta = true;
+                    }
+                    else {
+                        errormensaje = "Cargando Data...";
+                        _encontrado = "nuevo";
+                    }
+                    
+                }
+                
+
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje,encontrado=_encontrado });
+        }
+        
     }
 }

@@ -39,6 +39,18 @@
                 }
             }
         });
+        /*Postular a ofertas laborales*/
+        $(document).on("click", ".btn_postular", function (e) {
+            $("#frm-postular").submit();
+                var formData = $('#frm-postular').serializeFormJSON();
+                responseSimple({
+                    url: "Postulante/PostulanteMigrarDataJson",
+                    data: JSON.stringify(formData),
+                    refresh: false,
+                });
+            
+        });
+        /*Fin de Postulacion*/
 
     };
     var _componentes = function () {
