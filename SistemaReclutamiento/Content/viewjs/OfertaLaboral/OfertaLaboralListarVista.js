@@ -1,5 +1,18 @@
 ﻿var OfertaLaboralVista = function () {
 
+    var _inicio = function () {
+        $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
+        selectResponse({
+            url: "Ubigeo/UbigeoListarPaisesJson",
+            select: "cboPais",
+            campoID: "ubi_pais_id",
+            CampoValor: "ubi_nombre",
+            select2: true,
+            allOption: false,
+            placeholder: "PAIS"
+        });
+    };
+
     var _ListarOfertas = function () {
         var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
         responseSimple({
@@ -36,6 +49,13 @@
                                                       '</div >');
                     });
 
+                    if (data.length == 0) {
+                        CloseMessages();
+                        messageResponse({
+                            text: "No se Encontraron Ofertas",
+                            type: "warning"
+                        });
+                    }
                 }
             }
         });
@@ -53,16 +73,152 @@
         /*Fin de Postulacion*/
 
     };
+
     var _componentes = function () {
 
         $(document).on("click", ".btn_filtrar", function (e) {
-            OfertaLaboralVista.__ListarOfertas();
+            $("#frmOfertaLaboral-form").submit();
+            if (_objetoForm_frmOfertaLaboral.valid()) {
+                OfertaLaboralVista.__ListarOfertas();
+            } else {
+                messageResponse({
+                    text: "Complete los campos Obligatorios",
+                    type: "error"
+                })
+            }
         });
 
+        $("#cboPais").change(function () {
+            var ubi_id_pais = $("#cboPais option:selected").val();
+            selectResponse({
+                url: "Ubigeo/UbigeoListarDepartamentosporPaisJson",
+                select: "cboDepartamento",
+                data: { ubi_pais_id: ubi_id_pais },
+                campoID: "ubi_departamento_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false,
+                placeholder:"DEPARTAMENTO"
+            });
+
+            $("#cboProvincia").html('<option value="">PROVINCIA</option>');
+            if ($('#cboProvincia').hasClass('select2-hidden-accessible')) {
+                $('#cboProvincia').select2('destroy');
+            }
+            $("#cboDistrito").html('<option value="">DISTRITO</option>');
+            if ($('#cboDistrito').hasClass('select2-hidden-accessible')) {
+                $('#cboDistrito').select2('destroy');
+            }
+            if (ubi_id_pais != "") {
+                $("#cboPais").rules('remove', 'required');
+                $("#cboDepartamento").rules('remove', 'required');
+                $("#cboProvincia").rules('remove', 'required');
+                $("#cboDistrito").rules('remove', 'required');
+            }
+          
+        });
+
+        $("#cboDepartamento").change(function () {
+            var ubi_pais_id = $("#cboPais option:selected").val();
+            var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+            selectResponse({
+                url: "Ubigeo/UbigeoListarProvinciasporDepartamentoJson",
+                select: "cboProvincia",
+                data: { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id },
+                campoID: "ubi_provincia_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false,
+                placeholder: "PROVINCIA"
+            });
+            $("#cboDistrito").html('<option value="">DISTRITO</option>');
+            if ($('#cboDistrito').hasClass('select2-hidden-accessible')) {
+                $('#cboDistrito').select2('destroy');
+            }
+            if (ubi_departamento_id != "") {
+                $("#cboPais").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Pais Obligatorio"
+                    }
+                });
+                $("#cboDepartamento").rules('remove', 'required');
+                $("#cboProvincia").rules('remove', 'required');
+                $("#cboDistrito").rules('remove', 'required');
+            }
+        });
+
+        $("#cboProvincia").change(function () {
+            var ubi_pais_id = $("#cboPais option:selected").val();
+            var ubi_departamento_id = $("#cboDepartamento option:selected").val();
+            var ubi_provincia_id = $("#cboProvincia option:selected").val();
+
+            selectResponse({
+                url: "Ubigeo/UbigeoListarDistritosporProvinciaJson",
+                select: "cboDistrito",
+                data: { ubi_pais_id: ubi_pais_id, ubi_departamento_id: ubi_departamento_id, ubi_provincia_id: ubi_provincia_id },
+                campoID: "ubi_distrito_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false,
+                placeholder: "DISTRITO"
+            });
+            if (ubi_provincia_id != "") {
+                $("#cboPais").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Pais Obligatorio"
+                    }
+                });
+                $("#cboDepartamento").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Pais Obligatorio"
+                    }
+                });
+                $("#cboProvincia").rules('remove', 'required');
+                $("#cboDistrito").rules('remove', 'required');
+            }
+          
+        });
+
+        $("#cboDistrito").change(function () {
+            var ubi_distrito_id = $("#cboDistrito option:selected").val();
+            if (ubi_distrito_id != "") {
+                $("#cboPais").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Pais Obligatorio"
+                    }
+                });
+                $("#cboDepartamento").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Pais Obligatorio"
+                    }
+                });
+                $("#cboProvincia").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Pais Obligatorio"
+                    }
+                });
+                $("#cboDistrito").rules('remove', 'required');
+            }
+        });
     };
 
     var _metodos = function () {
-
+        validar_Form({
+            nameVariable: 'frmOfertaLaboral',
+            contenedor: '#frmOfertaLaboral-form',
+            rules: {
+               
+            },
+            messages: {
+                
+            }
+        });
     };
 
     //
@@ -70,6 +226,7 @@
     //
     return {
         init: function () {
+            _inicio();
             _componentes();
             _ListarOfertas();
             _metodos();

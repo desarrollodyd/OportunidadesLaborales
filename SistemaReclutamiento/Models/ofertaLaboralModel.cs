@@ -16,7 +16,7 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<ofertaLaboralEntidad> OfertaLaboralListarJson(string ola_cod_empresa, string ola_cod_cargo/*,string ola_fecha_pub, int fk_ubigeo*/, string ola_nombre)
+        public List<ofertaLaboralEntidad> OfertaLaboralListarJson(ReporteOfertaLaboral filtros)
         {
             List<ofertaLaboralEntidad> lista = new List<ofertaLaboralEntidad>();
             
@@ -46,13 +46,13 @@ namespace SistemaReclutamiento.Models
                                     gestion_talento.gdt_ola_oferta_laboral where ";
            
                 
-            if (ola_cod_empresa != "" && ola_cod_empresa!=null)
+            if (filtros.ola_cod_empresa != "" && filtros.ola_cod_empresa != null)
             {
-                consulta += "ola_cod_empresa='"+ManejoNulos.ManageNullStr(ola_cod_empresa)+"' and ";
+                consulta += "ola_cod_empresa='"+ManejoNulos.ManageNullStr(filtros.ola_cod_empresa) +"' and ";
             }
-            if (ola_cod_cargo != "" && ola_cod_cargo != null)
+            if (filtros.ola_cod_cargo != "" && filtros.ola_cod_cargo != null)
             {
-                consulta += "ola_cod_cargo='" + ManejoNulos.ManageNullStr(ola_cod_cargo) + "' and ";
+                consulta += "ola_cod_cargo='" + ManejoNulos.ManageNullStr(filtros.ola_cod_cargo) + "' and ";
             }
             //if (ola_fecha_pub != "")
             //{
@@ -60,20 +60,18 @@ namespace SistemaReclutamiento.Models
             //        case "hoy": consulta += "ola_fecha_pub between" +ManejoNulos.ManageNullDate(DateTime.Now ManejoNulos.ManageNullDate(DateTime.Now) + "and";
             //            break;
             //    }
-                    
+
             //}
-            //if (fk_ubigeo != 0)
-            //{
-            //    consulta += "fk_ubigeo=" + ManejoNulos.ManageNullInteger(fk_ubigeo) + "and";
-            //}
-            if (ola_nombre != "" && ola_nombre != null)
+            if (filtros.ubi_distrito_id != 0)
             {
-                consulta += "lower(ola_nombre) Like '%" + ManejoNulos.ManageNullStr(ola_nombre.ToLower()) + "%' and ";
+                consulta += "fk_ubigeo=" + ManejoNulos.ManageNullInteger(filtros.ubi_distrito_id) + "and";
             }
-            //if (ola_id != 0)
-            //{
-            //    consulta += "ola_id=" + ManejoNulos.ManageNullInteger(ola_id) + " and ";
-            //}
+
+            if (filtros.ola_nombre != "" && filtros.ola_nombre != null)
+            {
+                consulta += "lower(ola_nombre) Like '%" + ManejoNulos.ManageNullStr(filtros.ola_nombre.ToLower()) + "%' and ";
+            }
+
             consulta += "ola_estado='A'";         
             try
             {

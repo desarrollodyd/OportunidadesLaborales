@@ -1,4 +1,4 @@
-﻿var EducacionBasicaVista = function () {
+﻿var InformacionAdicionalVista = function () {
     var _inicio = function () {
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
@@ -104,7 +104,7 @@
     var _componentes = function () {
 
         $("#frm_cv").on("click", function () {
-            EducacionBasicaVista.DescargaArchivo();
+            InformacionAdicionalVista.DescargaArchivo();
         });
 
         $("#pos_cv").change(function () {
@@ -285,5 +285,5 @@
 // ------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {
-    EducacionBasicaVista.init();
+    InformacionAdicionalVista.init();
 });
