@@ -8,12 +8,83 @@
         var encontrado = false;
 
        
+        //$('#per_numdoc').on('keydown keypress', function (e) {
+        //    if (e.key.length === 1) {
+        //        if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
+        //            $(this).val($(this).val() + e.key);
+        //            if ($(this).val().length == 8) {
+        //            /*Logica para busqueda*/
+        //                var dataForm = $('#registro-form').serializeFormJSON();
+        //                $('#busqueda').val("nuevo");
+        //                responseSimple({
+        //                    url: "Persona/PersonaDniObtenerJson",//Postgres
+        //                    data: JSON.stringify(dataForm),
+        //                    refresh: false,
+        //                    callBackSuccess: function (response) {
+        //                        if (response.respuesta == true) {
+        //                            messageConfirmation({
+        //                                callBackSAceptarComplete: function () {
+        //                                    encontrado = true;
+        //                                    console.log(response.data);
+        //                                    $("#busqueda").val("postgres");
+        //                                    $("#per_nombre").val(response.data.per_nombre);
+        //                                    $("#per_apellido_pat").val(response.data.per_apellido_pat);
+        //                                    $("#per_apellido_mat").val(response.data.per_apellido_mat);
+        //                                    $("#per_correoelectronico").val(response.data.per_correoelectronico);
+        //                                    console.warn(response.data);
+        //                                },
+        //                                content: "Usted ya se encuentra registrado en nuestra BD Postgres, sus datos seran usados para llenar el formulario."
+        //                            });
+        //                        }
+        //                        else {
+        //                            /*Busqueda en SQL*/
+        //                            responseSimple({
+        //                                url: "Persona/PersonaSQLDniObtenerJson",
+        //                                data: JSON.stringify(dataForm),
+        //                                refresh: false,
+        //                                callBackSuccess: function (response) {
+        //                                    if (response.respuesta == true) {
+        //                                        messageConfirmation({
+        //                                            callBackSAceptarComplete: function () {
+        //                                                encontrado = true;
+        //                                                console.log(response.data);
+        //                                                $("#busqueda").val("sql");
+        //                                                $("#per_nombre").val(response.data.NO_TRAB);
+        //                                                $("#per_apellido_pat").val(response.data.NO_APEL_PATE);
+        //                                                $("#per_apellido_mat").val(response.data.NO_APEL_MATE);
+        //                                                $("#per_correoelectronico").val(response.data.NO_DIRE_MAI1);
+        //                                            },
+        //                                            content: "Usted ya se encuentra registrado en nuestra BD SQL, sus datos seran usados para llenar el formulario."
+        //                                        });
+        //                                    }
+        //                                    else {
+        //                                        console.log("no encontrado");
+        //                                        console.log(response.data);
+        //                                        $("#busqueda").val("nuevo");
+        //                                        $("#per_nombre").val("");
+        //                                        $("#per_apellido_pat").val("");
+        //                                        $("#per_apellido_mat").val("");
+        //                                        $("#per_correoelectronico").val("");                                                
+        //                                    }
+        //                                }
+        //                            });
+        //                            /*Fin Busqueda SQL*/                                    
+        //                        }
+        //                    }
+        //                });
+        //            /*Fin de Logica*/
+        //            }
+        //        }
+        //        return false;
+        //    }
+        //});
+//Usted forma o formó parte de nuestra empresa, se usaran sus datos para completar algunos campos. ¿Está de acuerdo?
         $('#per_numdoc').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
                 if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
                     $(this).val($(this).val() + e.key);
                     if ($(this).val().length == 8) {
-                    /*Logica para busqueda*/
+                        /*Logica para busqueda*/
                         var dataForm = $('#registro-form').serializeFormJSON();
                         $('#busqueda').val("nuevo");
                         responseSimple({
@@ -21,86 +92,32 @@
                             data: JSON.stringify(dataForm),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                if (response.respuesta == true) {
+                                var data = response.data;
+                                var encontrado = response.encontrado;
+                                if (encontrado == "postgres" || encontrado == "sql") {
                                     messageConfirmation({
                                         callBackSAceptarComplete: function () {
-                                            encontrado = true;
-                                            console.log(response.data);
-                                            $("#busqueda").val("postgres");
-                                            $("#per_nombre").val(response.data.per_nombre);
-                                            $("#per_apellido_pat").val(response.data.per_apellido_pat);
-                                            $("#per_apellido_mat").val(response.data.per_apellido_mat);
-                                            $("#per_correoelectronico").val(response.data.per_correoelectronico);
-                                            console.warn(response.data);
+                                            $("#busqueda").val(encontrado);
+                                            $("#per_nombre").val(data.per_nombre);
+                                            $("#per_apellido_pat").val(data.per_apellido_pat);
+                                            $("#per_apellido_mat").val(data.per_apellido_mat);
+                                            $("#per_correoelectronico").val(data.per_correoelectronico);
                                         },
-                                        content: "Usted ya se encuentra registrado en nuestra BD Postgres, sus datos seran usados para llenar el formulario."
+                                        content: "Usted forma o formó parte de nuestra empresa, se usaran sus datos para completar algunos campos. ¿Está de acuerdo?"
                                     });
+                                    
                                 }
                                 else {
-                                    /*Busqueda en SQL*/
-                                    responseSimple({
-                                        url: "Persona/PersonaSQLDniObtenerJson",
-                                        data: JSON.stringify(dataForm),
-                                        refresh: false,
-                                        callBackSuccess: function (response) {
-                                            if (response.respuesta == true) {
-                                                messageConfirmation({
-                                                    callBackSAceptarComplete: function () {
-                                                        encontrado = true;
-                                                        console.log(response.data);
-                                                        $("#busqueda").val("sql");
-                                                        $("#per_nombre").val(response.data.NO_TRAB);
-                                                        $("#per_apellido_pat").val(response.data.NO_APEL_PATE);
-                                                        $("#per_apellido_mat").val(response.data.NO_APEL_MATE);
-                                                        $("#per_correoelectronico").val(response.data.NO_DIRE_MAI1);
-                                                    },
-                                                    content: "Usted ya se encuentra registrado en nuestra BD SQL, sus datos seran usados para llenar el formulario."
-                                                });
-                                            }
-                                            else {
-                                                console.log("no encontrado");
-                                                console.log(response.data);
-                                                $("#busqueda").val("nuevo");
-                                                $("#per_nombre").val("");
-                                                $("#per_apellido_pat").val("");
-                                                $("#per_apellido_mat").val("");
-                                                $("#per_correoelectronico").val("");                                                
-                                            }
-                                        }
-                                    });
-                                    /*Fin Busqueda SQL*/                                    
+                                    $("#busqueda").val("postgres");
                                 }
                             }
                         });
-                    /*Fin de Logica*/
+                        /*Fin de Logica*/
                     }
                 }
                 return false;
             }
         });
-
-        //$('#per_numdoc').on('keydown keypress', function (e) {
-        //    if (e.key.length === 1) {
-        //        if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
-        //            $(this).val($(this).val() + e.key);
-        //            if ($(this).val().length == 8) {
-        //                /*Logica para busqueda*/
-        //                var dataForm = $('#registro-form').serializeFormJSON();
-        //                $('#busqueda').val("nuevo");
-        //                responseSimple({
-        //                    url: "Persona/PersonaDniObtenerJson2",//Postgres
-        //                    data: JSON.stringify(dataForm),
-        //                    refresh: false,
-        //                    callBackSuccess: function (response) {
-        //                        var data = response.data;                                
-        //                    }
-        //                });
-        //                /*Fin de Logica*/
-        //            }
-        //        }
-        //        return false;
-        //    }
-        //});
 
 
         $(document).on("click", ".btn_ingresar", function (e) {
@@ -138,7 +155,7 @@
                 messageConfirmation({
                     callBackSAceptarComplete: function() {
                         responseSimple({
-                            url: "Persona/PersonaInsertarJson2",
+                            url: "Persona/PersonaInsertarJson",
                             data: JSON.stringify(dataForm),
                             refresh: true,
                             //callBackSuccess: function (response) {

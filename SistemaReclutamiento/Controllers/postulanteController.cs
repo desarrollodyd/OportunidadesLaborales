@@ -21,8 +21,7 @@ namespace SistemaReclutamiento.Controllers
         ofimaticaModel ofimaticabl = new ofimaticaModel();
         postgradoModel postgradobl = new postgradoModel();
         ofimaticaHerramientaModel ofimaticaHerramientabl = new ofimaticaHerramientaModel();
-        string rutaCv = ConfigurationManager.AppSettings["PathArchivos"];
-        string rutaPerfil=ConfigurationManager.AppSettings["PathImagenesPerfil"];
+        configuracionModel configuracionbl = new configuracionModel();
         // GET: postulante
         public ActionResult Index()
         {
@@ -47,7 +46,9 @@ namespace SistemaReclutamiento.Controllers
         [HttpPost]
         public ActionResult PostulanteInsertarInformacionAdicionalJson(usuarioPersonaEntidad persona)
         {
+            string nemonic = "RUTA_CV_POSTULANTE";
             HttpPostedFileBase file = Request.Files[0];
+            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             postulanteEntidad postulante = (postulanteEntidad)Session["postulante"]; ;
 
             bool respuestaConsulta = true ;
@@ -63,13 +64,13 @@ namespace SistemaReclutamiento.Controllers
                     extension = Path.GetExtension(file.FileName);
                     if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
                     {
-                        var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + persona.pos_id.ToString()+"_" + DateTime.Now.ToString("yyyyMMddHHmmss")+extension);
-                        rutaInsertar = Path.Combine("" + rutaCv, nombreArchivo);
-                        rutaAnterior = Path.Combine("" + rutaCv, postulante.pos_cv);
+                        var nombreArchivo = (persona.pos_id.ToString()+"_" + DateTime.Now.ToString("yyyyMMddHHmmss")+extension);
+                        rutaInsertar = Path.Combine("" + configuracion.config_nombre, nombreArchivo);
+                        rutaAnterior = Path.Combine("" + configuracion.config_nombre, postulante.pos_cv);
 
-                        if (!Directory.Exists(rutaCv))
+                        if (!Directory.Exists(configuracion.config_nombre))
                         {
-                            System.IO.Directory.CreateDirectory(rutaCv);
+                            System.IO.Directory.CreateDirectory(configuracion.config_nombre);
                         }
 
                         if (System.IO.File.Exists(rutaAnterior))
@@ -116,7 +117,7 @@ namespace SistemaReclutamiento.Controllers
                         Session.Remove("postulante");
                         Session["postulante"] = postulante;
                         RutaImagenes rutaImagenes = new RutaImagenes();
-                        rutaImagenes.Postulante_CV(postulante.pos_cv);
+                        rutaImagenes.Postulante_CV(configuracion.config_nombre, postulante.pos_cv);
                         errormensaje = "Se Registro Correctamente";
                     }
                     else
@@ -136,13 +137,18 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult PostulanteSubirFotoJson()
         {
             HttpPostedFileBase file = Request.Files[0];
+            string foto_default = "user.png";
+            string nemonic = "RUTA_FOTO_POSTULANTE";
+            configuracionModel configuracionbl = new configuracionModel();
             postulanteEntidad postulante = new postulanteEntidad();
+            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             postulante.pos_id = Convert.ToInt32(Request.Params["postulanteID"]);
             postulanteEntidad postulanteFotoAnt = (postulanteEntidad)Session["postulante"];
             postulante.pos_foto = postulanteFotoAnt.pos_foto;
 
             bool respuestaConsulta = true;
             string extension = "";
+            string rutaPerfilDefault="";
             string rutaInsertar = "";
             string rutaAnterior = "";
             string errormensaje = "";
@@ -154,18 +160,22 @@ namespace SistemaReclutamiento.Controllers
                     extension = Path.GetExtension(file.FileName);
                     if (extension == ".jpg" || extension == ".png" || extension == ".PNG" || extension == ".JPG" || extension == ".JPEG" || extension == ".jpeg")
                     {
-                        var nombreArchivo = (Path.GetFileNameWithoutExtension(file.FileName).ToLower() + "_" + postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                        rutaInsertar = Path.Combine(""+rutaPerfil , nombreArchivo);
-                        rutaAnterior = Path.Combine("" + rutaPerfil , postulante.pos_foto);
+                        var nombreArchivo = (postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
+                        rutaInsertar = Path.Combine("" + configuracion.config_nombre , nombreArchivo);
+                        rutaAnterior = Path.Combine("" + configuracion.config_nombre , postulante.pos_foto);
+                        rutaPerfilDefault = Path.Combine("" + configuracion.config_nombre, foto_default);
 
-                        if(!Directory.Exists(rutaPerfil))
+                        if(!Directory.Exists(configuracion.config_nombre))
                         {
-                            System.IO.Directory.CreateDirectory(rutaPerfil);
+                            System.IO.Directory.CreateDirectory(configuracion.config_nombre);
                         }
 
                         if (System.IO.File.Exists(rutaAnterior))
                         {
-                            System.IO.File.Delete(rutaAnterior);
+                            if (!rutaAnterior.Equals(rutaPerfilDefault))
+                            {
+                                System.IO.File.Delete(rutaAnterior);
+                            }
                         }
 
                         file.SaveAs(rutaInsertar);
@@ -217,14 +227,16 @@ namespace SistemaReclutamiento.Controllers
             Session.Remove("postulante");
             Session["postulante"] = postulante;
             RutaImagenes rutaImagenes = new RutaImagenes();
-            rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
+            rutaImagenes.imagenPostulante_CV(configuracion.config_nombre,postulante.pos_foto);
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         
         }
         public void DescargarArchivo()
         {
+            string nemonic = "RUTA_CV_POSTULANTE";
             postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
-            string postulante_cv = @"" + ConfigurationManager.AppSettings["PathArchivos"] + "/" + postulante.pos_cv;
+            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
+            string postulante_cv = @"" + configuracion.config_nombre + "/" + postulante.pos_cv;
             if (postulante_cv != null)
             {
                 if (System.IO.File.Exists(postulante_cv))

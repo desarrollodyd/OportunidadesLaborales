@@ -121,55 +121,90 @@ namespace SistemaReclutamiento.Controllers
             postulanteEntidad postulante = new postulanteEntidad();
             usuarioEntidad usuario = new usuarioEntidad();
             personaEntidad persona = new personaEntidad();
+            personaSqlEntidad personasql = new personaSqlEntidad();
             int respuestaPersonaInsertada = 0;
+            int respuestaUsuarioInsertado = 0;
             bool respuestaConsulta = false;
-            string contrasenia = "";
-            try
-            {
-                persona.per_numdoc = datos.per_numdoc;
-                persona.per_nombre = datos.per_nombre;
-                persona.per_apellido_pat = datos.per_apellido_pat;
-                persona.per_apellido_mat = datos.per_apellido_mat;
-                persona.per_correoelectronico = datos.per_correoelectronico;
-                persona.per_estado = "P";
-                persona.per_tipodoc = datos.per_tipodoc;
-                persona.per_fecha_reg = DateTime.Now;
-                try {
-                    //Revisar que no hayan personas con el CAMPO Email o DNI iguales dentro de la Base de Datos
-                    var personaRepetida = personabl.PersonaEmailDniObtenerJson(persona.per_numdoc, persona.per_correoelectronico);
-                    if (personaRepetida.per_numdoc != persona.per_numdoc)
-                    {
-                        if (personaRepetida.per_correoelectronico != persona.per_correoelectronico)
-                        {
-                            //Insertando persona
-                            respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
-                        }
-                        else
-                        {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "El Correo : " + personaRepetida.per_correoelectronico + " ya se encuentra Registrado" });
-                        }
-                    }
-                    else {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "El Nro de Documento : " + personaRepetida.per_numdoc + " ya se encuentra registrado" });
-                    }
 
+            string contrasenia = "";
+            string correo = datos.per_correoelectronico;
+            string busqueda = datos.busqueda;
+            if (busqueda == "nuevo")
+            {
+                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                if (usuario_repetido.usu_id == 0)
+                {
+                    //Seteando datos correspondiente a persona            
+                    persona.per_numdoc = datos.per_numdoc;
+                    persona.per_nombre = datos.per_nombre;
+                    persona.per_apellido_pat = datos.per_apellido_pat;
+                    persona.per_apellido_mat = datos.per_apellido_mat;
+                    persona.per_correoelectronico = datos.per_correoelectronico;
+                    persona.per_estado = "P";
+                    persona.per_tipodoc = datos.per_tipodoc;
+                    persona.per_fecha_reg = DateTime.Now;
+                    respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
+                    if (respuestaPersonaInsertada != 0)
+                    {
+                        //Insercion de Usuario
+                        contrasenia = GeneradorPassword.GenerarPassword(8);
+                        usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
+                        usuario.usu_nombre = datos.per_correoelectronico;
+                        usuario.fk_persona = respuestaPersonaInsertada;
+                        usuario.usu_estado = "P";
+                        usuario.usu_cambio_pass = true;
+                        usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
+                        usuario.usu_fecha_reg = DateTime.Now;
+                        respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+
+                        if (respuestaUsuarioInsertado == 0)
+                        {
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
+                        }
+
+                        //datos para cuerpo de correo
+                        usuario_envio = usuario.usu_nombre;
+                        contrasenia_envio = usuario.usu_contrasenia;
+                        //Insercion de Postulante
+                        postulante.fk_usuario = respuestaUsuarioInsertado;
+                        postulante.fk_persona = respuestaPersonaInsertada;
+                        postulante.pos_fecha_reg = DateTime.Now;
+                        postulante.pos_estado = "A";
+                        respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
+
+                        if (!respuestaConsulta)
+                        {
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
+                    }
                 }
-                catch (Exception ex) {
-                    errormensaje = ex.Message + " ,Llame Administrador";
+                else
+                {
+                    return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
                 }
-                if (respuestaPersonaInsertada != 0) {
-                    //Insercion de Usuario
+            }
+            else if (busqueda == "postgres")
+            {
+                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                if (usuario_repetido.usu_id == 0)
+                {
+                    //Insercion de Usuario                   
+                    persona = personabl.PersonaDniObtenerJson(datos.per_numdoc);
                     contrasenia = GeneradorPassword.GenerarPassword(8);
                     usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
-                    usuario.usu_nombre = datos.per_correoelectronico;
-                    usuario.fk_persona = respuestaPersonaInsertada;
+                    usuario.usu_nombre = correo;
+                    usuario.fk_persona = persona.per_id;
                     usuario.usu_estado = "P";
                     usuario.usu_cambio_pass = true;
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     usuario.usu_fecha_reg = DateTime.Now;
-                    respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
+                    respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
 
-                    if (!respuestaConsulta)
+                    if (respuestaUsuarioInsertado == 0)
                     {
                         return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
                     }
@@ -178,35 +213,90 @@ namespace SistemaReclutamiento.Controllers
                     usuario_envio = usuario.usu_nombre;
                     contrasenia_envio = usuario.usu_contrasenia;
                     //Insercion de Postulante
-                    postulante.fk_persona = respuestaPersonaInsertada;
+                    postulante.fk_usuario = respuestaUsuarioInsertado;
+                    postulante.fk_persona = persona.per_id;
                     postulante.pos_fecha_reg = DateTime.Now;
                     postulante.pos_estado = "A";
                     respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
+                    errormensaje = "Registrado con éxito";
 
                     if (!respuestaConsulta)
                     {
                         return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
                     }
                 }
-                else {
-                    return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
+                else
+                {
+                    return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
                 }
 
             }
-            catch (Exception exp)
+            else if (busqueda == "sql")
             {
-                errormensaje = exp.Message + " ,Llame Administrador";
-            }
+                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                if (usuario_repetido.usu_id == 0)
+                {
+                    personasql = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);
+                    persona.per_numdoc = personasql.CO_TRAB;
+                    persona.per_nombre = personasql.NO_TRAB;
+                    persona.per_apellido_pat = personasql.NO_APEL_PATE;
+                    persona.per_apellido_mat = personasql.NO_APEL_MATE;
+                    persona.per_correoelectronico = correo;
+                    persona.per_estado = "P";
+                    persona.per_tipodoc = datos.per_tipodoc;
+                    persona.per_fecha_reg = DateTime.Now;
+                    respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
+                    if (respuestaPersonaInsertada != 0)
+                    {
+                        //Insercion de Usuario
+                        contrasenia = GeneradorPassword.GenerarPassword(8);
+                        usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
+                        usuario.usu_nombre = datos.per_correoelectronico;
+                        usuario.fk_persona = respuestaPersonaInsertada;
+                        usuario.usu_estado = "P";
+                        usuario.usu_cambio_pass = true;
+                        usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
+                        usuario.usu_fecha_reg = DateTime.Now;
+                        respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
 
-            if (respuestaConsulta) {
+                        if (respuestaUsuarioInsertado == 0)
+                        {
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
+                        }
+
+                        //datos para cuerpo de correo
+                        usuario_envio = usuario.usu_nombre;
+                        contrasenia_envio = usuario.usu_contrasenia;
+                        //Insercion de Postulante
+                        postulante.fk_usuario = respuestaUsuarioInsertado;
+                        postulante.fk_persona = respuestaPersonaInsertada;
+                        postulante.pos_fecha_reg = DateTime.Now;
+                        postulante.pos_estado = "A";
+                        respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
+                        errormensaje = "Registrado con éxito";
+
+                        if (!respuestaConsulta)
+                        {
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
+                    }
+
+                }
+            }
+            if (respuestaConsulta)
+            {
                 /*LOGICA PARA ENVIO DE CORREO DE CONFIRMACION*/
                 try
                 {
                     //string cuerpo_correo = "";
-                    Correo correo = new Correo();
+                    Correo correo_enviar = new Correo();
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
-                    correo.EnviarCorreo(
-                        persona.per_correoelectronico,
+                    correo_enviar.EnviarCorreo(
+                        correo,
                         "Correo de Confirmacion",
                         "Hola! : " + nombre + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
@@ -214,7 +304,8 @@ namespace SistemaReclutamiento.Controllers
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     errormensaje = ex.Message;
                 }
             }
@@ -282,7 +373,7 @@ namespace SistemaReclutamiento.Controllers
                 Session["per_full"] = personabl.PersonaIdObtenerJson(data.per_id);
                 persona = personabl.PersonaIdObtenerJson(data.per_id);
                 Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                Session["postulante"] = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                Session["postulante"] = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
 
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
@@ -292,250 +383,8 @@ namespace SistemaReclutamiento.Controllers
         {
             //string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
             var errormensaje = "";
-            bool respuestaConsulta = false;
-            personaEntidad persona = new personaEntidad();
-            try
-            {
-                persona = personabl.PersonaDniObtenerJson(per_numdoc);
-                if (persona.per_id != 0)
-                {
-                    respuestaConsulta = true;
-                }
-
-                errormensaje = "Cargando Data...";
-
-            }
-            catch (Exception exp)
-            {
-                errormensaje = exp.Message + " ,Llame Administrador";
-            }
-
-            return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje });
-        }
-        [HttpPost]
-        public ActionResult PersonaSQLDniObtenerJson(string per_numdoc)
-        {
-            var errormensaje = "";
-            bool respuestaConsulta = false;
-            //string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
-            personaSqlEntidad persona = new personaSqlEntidad();
-            personaSqlModel personasqlbl = new personaSqlModel();
-            try
-            {
-                persona = personasqlbl.PersonaDniObtenerJson(per_numdoc);
-                if (persona.CO_TRAB != "" && persona.CO_TRAB != null)
-                {
-                    respuestaConsulta = true;
-                }
-                errormensaje = "Cargando Data...";
-
-            }
-            catch (Exception exp)
-            {
-                errormensaje = exp.Message + " ,Llame Administrador";
-            }
-
-            return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje });
-        }
-        [HttpPost]
-        public ActionResult PersonaInsertarJson2(usuarioPersonaEntidad datos){
-            var errormensaje = "";
-            string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
-            string usuario_envio = "";
-            string contrasenia_envio = "";
-            postulanteEntidad postulante = new postulanteEntidad();
-            usuarioEntidad usuario = new usuarioEntidad();
-            personaEntidad persona = new personaEntidad();
-            personaSqlEntidad personasql = new personaSqlEntidad();
-            int respuestaPersonaInsertada = 0;
-            bool respuestaConsulta = false;
-            string contrasenia = "";
-            string correo = datos.per_correoelectronico;
-            string busqueda = datos.busqueda;
-            if (busqueda == "nuevo")
-            {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
-                if (usuario_repetido.usu_id == 0)
-                {
-                    //Seteando datos correspondiente a persona            
-                    persona.per_numdoc = datos.per_numdoc;
-                    persona.per_nombre = datos.per_nombre;
-                    persona.per_apellido_pat = datos.per_apellido_pat;
-                    persona.per_apellido_mat = datos.per_apellido_mat;
-                    persona.per_correoelectronico = datos.per_correoelectronico;
-                    persona.per_estado = "P";
-                    persona.per_tipodoc = datos.per_tipodoc;
-                    persona.per_fecha_reg = DateTime.Now;
-                    respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
-                    if (respuestaPersonaInsertada != 0)
-                    {
-                        //Insercion de Usuario
-                        contrasenia = GeneradorPassword.GenerarPassword(8);
-                        usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
-                        usuario.usu_nombre = datos.per_correoelectronico;
-                        usuario.fk_persona = respuestaPersonaInsertada;
-                        usuario.usu_estado = "P";
-                        usuario.usu_cambio_pass = true;
-                        usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
-                        usuario.usu_fecha_reg = DateTime.Now;
-                        respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
-
-                        if (!respuestaConsulta)
-                        {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
-                        }
-
-                        //datos para cuerpo de correo
-                        usuario_envio = usuario.usu_nombre;
-                        contrasenia_envio = usuario.usu_contrasenia;
-                        //Insercion de Postulante
-                        postulante.fk_persona = respuestaPersonaInsertada;
-                        postulante.pos_fecha_reg = DateTime.Now;
-                        postulante.pos_estado = "A";
-                        respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
-
-                        if (!respuestaConsulta)
-                        {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
-                        }
-                    }
-                    else
-                    {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
-                    }
-                }
-                else {
-                    return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " +datos.per_correoelectronico });
-                }
-            }
-            else if (busqueda == "postgres")
-            {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
-                if (usuario_repetido.usu_id == 0)
-                {
-                    //Insercion de Usuario                   
-                    persona = personabl.PersonaDniObtenerJson(datos.per_numdoc);
-                    contrasenia = GeneradorPassword.GenerarPassword(8);
-                    usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
-                    usuario.usu_nombre = correo;
-                    usuario.fk_persona = persona.per_id;
-                    usuario.usu_estado = "P";
-                    usuario.usu_cambio_pass = true;
-                    usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
-                    usuario.usu_fecha_reg = DateTime.Now;
-                    respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
-
-                    if (!respuestaConsulta)
-                    {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
-                    }
-
-                    //datos para cuerpo de correo
-                    usuario_envio = usuario.usu_nombre;
-                    contrasenia_envio = usuario.usu_contrasenia;
-                    //Insercion de Postulante
-                    postulante.fk_persona = persona.per_id;
-                    postulante.pos_fecha_reg = DateTime.Now;
-                    postulante.pos_estado = "A";
-                    respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
-                    errormensaje = "Registrado con éxito";
-
-                    if (!respuestaConsulta)
-                    {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
-                    }
-                }
-                else
-                {
-                    return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
-                }
-
-            }
-            else if (busqueda == "sql")
-            {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
-                if (usuario_repetido.usu_id == 0)
-                {
-                    personasql = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);                    
-                    persona.per_numdoc = personasql.CO_TRAB;
-                    persona.per_nombre = personasql.NO_TRAB;
-                    persona.per_apellido_pat = personasql.NO_APEL_PATE;
-                    persona.per_apellido_mat = personasql.NO_APEL_MATE;
-                    persona.per_correoelectronico = correo;
-                    persona.per_estado = "P";
-                    persona.per_tipodoc = datos.per_tipodoc;
-                    persona.per_fecha_reg = DateTime.Now;
-                    respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
-                    if (respuestaPersonaInsertada != 0)
-                    {
-                        //Insercion de Usuario
-                        contrasenia = GeneradorPassword.GenerarPassword(8);
-                        usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
-                        usuario.usu_nombre = datos.per_correoelectronico;
-                        usuario.fk_persona = respuestaPersonaInsertada;
-                        usuario.usu_estado = "P";
-                        usuario.usu_cambio_pass = true;
-                        usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
-                        usuario.usu_fecha_reg = DateTime.Now;
-                        respuestaConsulta = usuariobl.UsuarioInsertarJson(usuario);
-
-                        if (!respuestaConsulta)
-                        {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
-                        }
-
-                        //datos para cuerpo de correo
-                        usuario_envio = usuario.usu_nombre;
-                        contrasenia_envio = usuario.usu_contrasenia;
-                        //Insercion de Postulante
-                        postulante.fk_persona = respuestaPersonaInsertada;
-                        postulante.pos_fecha_reg = DateTime.Now;
-                        postulante.pos_estado = "A";
-                        respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
-                        errormensaje = "Registrado con éxito";
-
-                        if (!respuestaConsulta)
-                        {
-                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Postulante" });
-                        }
-                    }
-                    else
-                    {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
-                    }
-
-                }
-            }
-            if (respuestaConsulta)
-            {
-                /*LOGICA PARA ENVIO DE CORREO DE CONFIRMACION*/
-                try
-                {
-                    //string cuerpo_correo = "";
-                    Correo correo_enviar = new Correo();
-                    //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
-                    correo_enviar.EnviarCorreo(
-                        correo,
-                        "Correo de Confirmacion",
-                        "Hola! : " + nombre + " \n " +
-                        "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
-                        + "\n por favor ingrese sus datos en el siguiente enlace y siga los pasos indicados completar su registro : http://localhost:63576/Login/Activacion?id=" + usuario.usu_clave_temp
-                        );
-                    errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
-                }
-                catch (Exception ex)
-                {
-                    errormensaje = ex.Message;
-                }
-            }
-            return Json(new {respuesta= respuestaConsulta, mensaje=errormensaje });
-        }
-        public ActionResult PersonaDniObtenerJson2(string per_numdoc)
-        {
-            //string per_numdoc = Convert.ToString(Request.Params["per_numdoc"]);
-            var errormensaje = "";
             bool respuestaConsulta = true;
-            string _encontrado="";
+            string _encontrado = "";
             personaEntidad persona = new personaEntidad();
             personaSqlEntidad personasql = new personaSqlEntidad();
             try
@@ -545,9 +394,10 @@ namespace SistemaReclutamiento.Controllers
                 {
                     _encontrado = "postgres";
                     //respuestaConsulta = true;
-                    errormensaje = "Cargando Data...";
+                    errormensaje = "";
                 }
-                else {                    
+                else
+                {
                     personasql = personasqlbl.PersonaDniObtenerJson(per_numdoc);
                     if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
                     {
@@ -556,16 +406,17 @@ namespace SistemaReclutamiento.Controllers
                         persona.per_apellido_mat = personasql.NO_APEL_MATE;
                         persona.per_correoelectronico = personasql.NO_DIRE_MAI1;
                         _encontrado = "sql";
-                        errormensaje = "Cargando Data...";
-                      //  respuestaConsulta = true;
+                        errormensaje = "";
+                        //  respuestaConsulta = true;
                     }
-                    else {
-                        errormensaje = "Cargando Data...";
+                    else
+                    {
+                        errormensaje = "";
                         _encontrado = "nuevo";
                     }
-                    
+
                 }
-                
+
 
             }
             catch (Exception exp)
@@ -573,8 +424,9 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje,encontrado=_encontrado });
+            return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje, encontrado = _encontrado });
         }
-        
+
+             
     }
 }

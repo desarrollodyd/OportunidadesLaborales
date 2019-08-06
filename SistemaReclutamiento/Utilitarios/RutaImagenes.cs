@@ -11,9 +11,9 @@ namespace SistemaReclutamiento.Utilitarios
 {
     public class RutaImagenes
     {
-        public void imagenPostulante_CV(string name)
+        public void imagenPostulante_CV(string ruta,string name)
         {
-            string postulante_image = @""+ConfigurationManager.AppSettings["PathImagenesPerfil"] +"/"+name;
+            string postulante_image = @""+ruta+"/"+name;
             if (postulante_image != null)
             {
                 if (System.IO.File.Exists(postulante_image))
@@ -25,9 +25,9 @@ namespace SistemaReclutamiento.Utilitarios
             }           
         }
 
-        public void Postulante_CV(string name)
+        public void Postulante_CV(string ruta,string name)
         {
-            string postulante_cv = @"" + ConfigurationManager.AppSettings["PathArchivos"] + "/" + name;
+            string postulante_cv = @"" + ruta + "/" + name;
             if (postulante_cv != null)
             {
                 if (System.IO.File.Exists(postulante_cv))

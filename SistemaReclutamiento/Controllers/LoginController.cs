@@ -17,6 +17,7 @@ namespace SistemaReclutamiento.Controllers
         personaModel personabl = new personaModel();
         ubigeoModel ubigeobl = new ubigeoModel();
         postulanteModel postulantebl = new postulanteModel();
+        configuracionModel configuracionbl = new configuracionModel();
 
         public ActionResult Index()
         {
@@ -71,11 +72,14 @@ namespace SistemaReclutamiento.Controllers
 
         [HttpPost]
         public ActionResult CambiarPasswordUsuario(string usu_password, string usu_id) {
+            //string ruta = "";
+            string nemonic = "RUTA_FOTO_POSTULANTE";
             bool respuestaConsulta = false;
             string errormensaje = "";
             var usuario = new usuarioEntidad();
             var persona = new personaEntidad();
             var postulante = new postulanteEntidad();
+            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
             usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
             string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
@@ -86,9 +90,9 @@ namespace SistemaReclutamiento.Controllers
                 Session["per_full"] = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
                 persona = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
                 Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                postulante = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuarioData.usu_id);
                 Session["postulante"] = postulante;
-                rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
+                rutaImagenes.imagenPostulante_CV(configuracion.config_nombre,postulante.pos_foto);
                 errormensaje = "Contraseña actualizada correctamente";
             }
             catch (Exception ex) {
@@ -101,10 +105,12 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult ValidarLoginJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
+            string nemonic = "RUTA_FOTO_POSTULANTE";
             string errormensaje = "";
             var usuario = new usuarioEntidad();        
             var persona = new personaEntidad();
             var postulante = new postulanteEntidad();
+            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
             String pendiente = "";
             try
@@ -132,9 +138,9 @@ namespace SistemaReclutamiento.Controllers
                             Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);                         
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                            postulante = postulantebl.PostulanteIdObtenerporPersonaJson(persona.per_id);
+                            postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
                             Session["postulante"] = postulante;
-                            rutaImagenes.imagenPostulante_CV(postulante.pos_foto);
+                            rutaImagenes.imagenPostulante_CV(configuracion.config_nombre,postulante.pos_foto);
                             respuesta = true;
                             errormensaje = "Bienvenido, " + usuario.usu_nombre;
                         }

@@ -37,13 +37,23 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-xs-12">
+                                <div class="col-md-3 col-xs-12">
                                     <div class="form-group">
                                         <label>Nombre del Puesto</label>
                                         <input type="text" name="ola_nombre" id="ola_nombre" class="form-control" placeholder="Nombre " />
                                     </div>
                                 </div>
-
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Fecha de Publicacion</label>
+                                        <select class="form-control" name="ola_rango_fecha" id="cborangoFecha" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="hoy">Hoy</option>
+                                            <option value="semana">Hace una Semana</option>
+                                            <option value="mes">Hace un Mes</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-3 col-xs-12">
                                     <div class="form-group">
                                         <label>Empresa</label>
@@ -116,10 +126,10 @@
                                 </div>
                             </div>
                         </div>
-                        <form id="frm-postular">
+                        @*<form id="frm-postular">
                             <input type="hidden" name="fk_oferta_laboral" id="fk_oferta_laboral" value="1" />
                             <button type="button" class="btn btn-danger col-xs-12 btn_postular"><i class="fa fa-save"></i> Postular</button>
-                        </form>
+                        </form>*@
                     </div>
                 </div>
             </div>

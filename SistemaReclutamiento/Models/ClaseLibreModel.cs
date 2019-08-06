@@ -15,5 +15,7 @@ namespace SistemaReclutamiento.Models
         public String ola_cod_empresa { get; set; }
         public String ola_cod_cargo { get; set; }
         public int ubi_distrito_id { get; set; }
+        public string ola_rango_fecha { get; set; }
+        public DateTime ola_fecha_ini { get; set; }
     }
 }

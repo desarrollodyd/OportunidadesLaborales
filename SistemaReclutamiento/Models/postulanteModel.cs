@@ -17,7 +17,7 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public postulanteEntidad PostulanteIdObtenerporPersonaJson(int fk_persona)
+        public postulanteEntidad PostulanteIdObtenerporUsuarioJson(int fk_usuario)
         {
             postulanteEntidad postulante = new postulanteEntidad();
             string consulta = @"SELECT pos_id, 
@@ -38,24 +38,25 @@ namespace SistemaReclutamiento.Models
                                         pos_fecha_reg, 
                                         pos_fecha_act, 
                                         pos_estado, 
-                                        fk_persona
+                                        fk_persona,
+                                        fk_usuario
 	                                        FROM gestion_talento.gdt_per_postulante
 	                                  
-                                            where fk_persona=@p0;";
+                                            where fk_usuario=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_persona);
+                    query.Parameters.AddWithValue("@p0", fk_usuario);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
                         {
                             while (dr.Read())
                             {
-                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "defaultUser.png" : dr["pos_foto"];
+                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "user.png" : dr["pos_foto"];
                                 postulante.pos_tipo_direccion = ManejoNulos.ManageNullStr(dr["pos_tipo_direccion"]);
                                 postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
                                 postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);
@@ -75,6 +76,7 @@ namespace SistemaReclutamiento.Models
                                 postulante.pos_estado = ManejoNulos.ManageNullStr(dr["pos_estado"]);
                                 postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
+                                postulante.fk_usuario=ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
                             }
                         }
                     }
@@ -107,8 +109,7 @@ namespace SistemaReclutamiento.Models
                                         pos_fecha_act, 
                                         pos_estado, 
                                         fk_persona
-	                                        FROM gestion_talento.gdt_per_postulante
-	                                  
+	                                        FROM gestion_talento.gdt_per_postulante	                                  
                                             where pos_id=@p0;";
             try
             {
@@ -123,7 +124,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "defaultUser.png" : dr["pos_foto"];
+                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "user.png" : dr["pos_foto"];
                                 postulante.pos_tipo_direccion = ManejoNulos.ManageNullStr(dr["pos_tipo_direccion"]);
                                 postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
                                 postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);
@@ -143,6 +144,7 @@ namespace SistemaReclutamiento.Models
                                 postulante.pos_estado = ManejoNulos.ManageNullStr(dr["pos_estado"]);
                                 postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
+                                postulante.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
                             }
                         }
                     }
@@ -160,8 +162,9 @@ namespace SistemaReclutamiento.Models
                                 pos_fecha_reg, 
                                 pos_estado, 
                                 fk_persona,
-                                pos_foto)
-	                                VALUES (@p0, @p1, @p2,@p3); ";
+                                pos_foto,
+                                fk_usuario)
+	                                VALUES (@p0, @p1, @p2,@p3,@p4); ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -172,8 +175,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_estado));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(postulante.fk_persona));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(postulante.pos_foto));
-                
-
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(postulante.fk_usuario));
                     query.ExecuteNonQuery();
                     response = true;
                 }

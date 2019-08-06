@@ -20,11 +20,28 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult OfertaLaboralListarJson(ReporteOfertaLaboral reporte)
         {
 
-           // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]);         
+            // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
+            DateTime fecha_fin = DateTime.Now;
+            DateTime fecha_ayuda;
             bool respuestaConsulta = false;
             string errormensaje = "";
             var lista = new List<ofertaLaboralEntidad>();
-
+            if (reporte.ola_rango_fecha == "hoy")
+            {
+                reporte.ola_fecha_ini = DateTime.Parse(fecha_fin.ToShortDateString());
+                //reporte.ola_fecha_ini = fecha_inicio;
+            }
+            if (reporte.ola_rango_fecha == "semana")
+            {
+                fecha_ayuda = fecha_fin.AddDays(-7);
+                reporte.ola_fecha_ini = DateTime.Parse(fecha_ayuda.ToShortDateString());
+            }
+            if (reporte.ola_rango_fecha == "mes")
+            {
+                int dias = DateTime.DaysInMonth(fecha_fin.Year, fecha_fin.Month);
+                fecha_ayuda = fecha_fin.AddDays(-dias);
+                reporte.ola_fecha_ini = DateTime.Parse(fecha_ayuda.ToShortDateString());
+            }
             try
             {
                 lista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
