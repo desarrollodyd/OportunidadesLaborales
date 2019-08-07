@@ -30,8 +30,11 @@ namespace SistemaReclutamiento.Models
                                 ofi_periodo_fin, 
                                 ofi_fecha_reg, 
                                 ofi_fecha_act, 
-                                fk_postulante
-	                            FROM gestion_talento.gdt_per_ofimatica
+                                fk_postulante, 
+                                her_descripcion
+	                            FROM gestion_talento.gdt_per_ofimatica inner join gestion_talento.gdt_per_ofimatica_her 
+	                            on
+	                            gestion_talento.gdt_per_ofimatica.fk_herramienta=gestion_talento.gdt_per_ofimatica_her.her_id
                                 where fk_postulante=@p0
                                 order by ofi_id desc;";
             try
@@ -60,6 +63,7 @@ namespace SistemaReclutamiento.Models
                                     ofi_fecha_reg = ManejoNulos.ManageNullDate(dr["ofi_fecha_reg"]),
                                     ofi_fecha_act = ManejoNulos.ManageNullDate(dr["ofi_fecha_act"]),
                                     fk_postulante = ManejoNulos.ManageNullInteger(dr["fk_postulante"]),
+                                    her_descripcion=ManejoNulos.ManageNullStr(dr["her_descripcion"]),
 
                                 };
 

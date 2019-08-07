@@ -21,7 +21,15 @@ namespace SistemaReclutamiento.Controllers
         ofimaticaModel ofimaticabl = new ofimaticaModel();
         postgradoModel postgradobl = new postgradoModel();
         ofimaticaHerramientaModel ofimaticaHerramientabl = new ofimaticaHerramientaModel();
-        configuracionModel configuracionbl = new configuracionModel();
+        static configuracionModel configuracionbl = new configuracionModel();
+        //static string rutaPostulantePerfil = "RUTA_FOTO_POSTULANTE";
+        //static string rutaPostulanteCv = "RUTA_CV_POSTULANTE";
+        //static string rutaPostulacionPerfil = "RUTA_FOTO_POSTULACION";
+        //static string rutaPostulacionCv = "RUTA_CV_POSTULACION";
+        static configuracionEntidad rutaPerfilPostulante = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_FOTO_POSTULANTE");
+        static configuracionEntidad rutaCvPostulante = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_CV_POSTULANTE");
+        static configuracionEntidad rutaPerfilPostulacion = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_FOTO_POSTULACION");
+        static configuracionEntidad rutaCvPostulacion = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_CV_POSTULACION");
         // GET: postulante
         public ActionResult Index()
         {
@@ -46,9 +54,9 @@ namespace SistemaReclutamiento.Controllers
         [HttpPost]
         public ActionResult PostulanteInsertarInformacionAdicionalJson(usuarioPersonaEntidad persona)
         {
-            string nemonic = "RUTA_CV_POSTULANTE";
+            //rutaPostulanteCv = "RUTA_CV_POSTULANTE";
             HttpPostedFileBase file = Request.Files[0];
-            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
+            //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(rutaPostulanteCv);
             postulanteEntidad postulante = (postulanteEntidad)Session["postulante"]; ;
 
             bool respuestaConsulta = true ;
@@ -65,12 +73,12 @@ namespace SistemaReclutamiento.Controllers
                     if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
                     {
                         var nombreArchivo = (persona.pos_id.ToString()+"_" + DateTime.Now.ToString("yyyyMMddHHmmss")+extension);
-                        rutaInsertar = Path.Combine("" + configuracion.config_nombre, nombreArchivo);
-                        rutaAnterior = Path.Combine("" + configuracion.config_nombre, postulante.pos_cv);
+                        rutaInsertar = Path.Combine("" + rutaCvPostulante.config_nombre, nombreArchivo);
+                        rutaAnterior = Path.Combine("" + rutaCvPostulante.config_nombre, postulante.pos_cv);
 
-                        if (!Directory.Exists(configuracion.config_nombre))
+                        if (!Directory.Exists(rutaCvPostulante.config_nombre))
                         {
-                            System.IO.Directory.CreateDirectory(configuracion.config_nombre);
+                            System.IO.Directory.CreateDirectory(rutaCvPostulante.config_nombre);
                         }
 
                         if (System.IO.File.Exists(rutaAnterior))
@@ -117,7 +125,7 @@ namespace SistemaReclutamiento.Controllers
                         Session.Remove("postulante");
                         Session["postulante"] = postulante;
                         RutaImagenes rutaImagenes = new RutaImagenes();
-                        rutaImagenes.Postulante_CV(configuracion.config_nombre, postulante.pos_cv);
+                        rutaImagenes.Postulante_CV(rutaCvPostulante.config_nombre, postulante.pos_cv);
                         errormensaje = "Se Registro Correctamente";
                     }
                     else
@@ -138,10 +146,10 @@ namespace SistemaReclutamiento.Controllers
         {
             HttpPostedFileBase file = Request.Files[0];
             string foto_default = "user.png";
-            string nemonic = "RUTA_FOTO_POSTULANTE";
-            configuracionModel configuracionbl = new configuracionModel();
+            //string nemonic = "RUTA_FOTO_POSTULANTE";
+            //configuracionModel configuracionbl = new configuracionModel();
             postulanteEntidad postulante = new postulanteEntidad();
-            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
+            //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(rutaPostulantePerfil);
             postulante.pos_id = Convert.ToInt32(Request.Params["postulanteID"]);
             postulanteEntidad postulanteFotoAnt = (postulanteEntidad)Session["postulante"];
             postulante.pos_foto = postulanteFotoAnt.pos_foto;
@@ -161,13 +169,13 @@ namespace SistemaReclutamiento.Controllers
                     if (extension == ".jpg" || extension == ".png" || extension == ".PNG" || extension == ".JPG" || extension == ".JPEG" || extension == ".jpeg")
                     {
                         var nombreArchivo = (postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                        rutaInsertar = Path.Combine("" + configuracion.config_nombre , nombreArchivo);
-                        rutaAnterior = Path.Combine("" + configuracion.config_nombre , postulante.pos_foto);
-                        rutaPerfilDefault = Path.Combine("" + configuracion.config_nombre, foto_default);
+                        rutaInsertar = Path.Combine("" + rutaPerfilPostulante.config_nombre , nombreArchivo);
+                        rutaAnterior = Path.Combine("" + rutaPerfilPostulante.config_nombre , postulante.pos_foto);
+                        rutaPerfilDefault = Path.Combine("" + rutaPerfilPostulante.config_nombre, foto_default);
 
-                        if(!Directory.Exists(configuracion.config_nombre))
+                        if(!Directory.Exists(rutaPerfilPostulante.config_nombre))
                         {
-                            System.IO.Directory.CreateDirectory(configuracion.config_nombre);
+                            System.IO.Directory.CreateDirectory(rutaPerfilPostulante.config_nombre);
                         }
 
                         if (System.IO.File.Exists(rutaAnterior))
@@ -225,18 +233,18 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = ex.Message + " ,Llame Administrador";
             }
             Session.Remove("postulante");
-            Session["postulante"] = postulante;
+            Session["postulante"]=postulantebl.PostulanteIdObtenerJson(postulante.pos_id);
             RutaImagenes rutaImagenes = new RutaImagenes();
-            rutaImagenes.imagenPostulante_CV(configuracion.config_nombre,postulante.pos_foto);
+            rutaImagenes.imagenPostulante_CV(rutaPerfilPostulante.config_nombre,postulante.pos_foto);
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         
         }
         public void DescargarArchivo()
         {
-            string nemonic = "RUTA_CV_POSTULANTE";
+            //string nemonic = "RUTA_CV_POSTULANTE";
             postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
-            var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
-            string postulante_cv = @"" + configuracion.config_nombre + "/" + postulante.pos_cv;
+            //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
+            string postulante_cv = @"" + rutaCvPostulante.config_nombre + "/" + postulante.pos_cv;
             if (postulante_cv != null)
             {
                 if (System.IO.File.Exists(postulante_cv))
@@ -251,39 +259,78 @@ namespace SistemaReclutamiento.Controllers
                 }
             }
         }
-        /*Migracion de datos de tablas de postulante a tablas de postulaciones*/
+        /// <summary>
+        /// Metodo para Migrar Datos de Tablas gdt_per... a tablas gdt_pos... de Postgres
+        /// </summary>
+        /// <param name="fk_oferta_laboral">Id de la oferta Laboral a la que se postula (int)</param>
+        /// 
+        /// <returns>Devuelve un Json de respuesta</returns>
         [HttpPost]
         public ActionResult PostulanteMigrarDataJson(int fk_oferta_laboral)
         {
-            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
-            educacionBasicaEntidad educacionbasica = new educacionBasicaEntidad();
-            educacionSuperiorEntidad educacionsuperior = new educacionSuperiorEntidad();
-            experienciaEntidad experiencia = new experienciaEntidad();
-            idiomaEntidad idioma = new idiomaEntidad();
-            ofimaticaEntidad ofimatica = new ofimaticaEntidad();
-            postgradoEntidad postgrado = new postgradoEntidad();
-            //ofimaticaHerramientaEntidad ofimaticaHerramienta = new ofimaticaHerramientaEntidad();
-
-
+            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];           
             List<educacionBasicaEntidad> listaeducacionBasica = new List<educacionBasicaEntidad>();
             List<educacionSuperiorEntidad> listaeducacionSuperior = new List<educacionSuperiorEntidad>();
             List<experienciaEntidad> listaexperiencia = new List<experienciaEntidad>();
             List<idiomaEntidad> listaidioma = new List<idiomaEntidad>();
             List<ofimaticaEntidad> listaofimatica = new List<ofimaticaEntidad>();
             List<postgradoEntidad> listapostgrado = new List<postgradoEntidad>();
+            string extension = "";
+            string nombreArchivo = "";
+            string rutaCopiar = "";
+            string rutaAnterior = "";
             bool respuestaConsulta = false;
+            int idPostulacion = 0;
             string errormensaje = "";            
             try
             {
-                respuestaConsulta = postulantebl.PostulanteTablaPostulacionInsertarJson(postulante, fk_oferta_laboral);
-                if (respuestaConsulta)
+
+                idPostulacion = postulantebl.PostulanteTablaPostulacionInsertarJson(postulante, fk_oferta_laboral);
+                if (idPostulacion>0)
                 {
+                    /*migrar foto de perfil*/
+                    if (postulante.pos_foto != "" || postulante.pos_foto != null)
+                    {
+                        string[] extesionFotoPostulante = postulante.pos_foto.Split('.');
+                        extension = extesionFotoPostulante[1];
+                        nombreArchivo = (fk_oferta_laboral + "_" + postulante.pos_id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + idPostulacion + "." + extension);
+                        rutaAnterior = Path.Combine("" + rutaPerfilPostulante.config_nombre, postulante.pos_foto);
+                        rutaCopiar = Path.Combine("" + rutaPerfilPostulacion.config_nombre, nombreArchivo);
+                        if (!Directory.Exists(rutaPerfilPostulacion.config_nombre))
+                        {
+                            Directory.CreateDirectory(rutaPerfilPostulacion.config_nombre);
+                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                        }
+                        else
+                        {
+                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                        }
+                    }
+                    /*Migrar Cv*/
+                    if (postulante.pos_cv != "" || postulante.pos_cv != null)
+                    {
+                        string[] extesionCvPostulante = postulante.pos_cv.Split('.');
+                        extension = extesionCvPostulante[1];
+                        nombreArchivo = (fk_oferta_laboral + "_" + postulante.pos_id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + idPostulacion + "." + extension);
+                        rutaAnterior = Path.Combine("" + rutaCvPostulante.config_nombre, postulante.pos_cv);
+                        rutaCopiar = Path.Combine("" + rutaCvPostulacion.config_nombre, nombreArchivo);
+                        if (!Directory.Exists(rutaCvPostulacion.config_nombre))
+                        {
+                            Directory.CreateDirectory(rutaCvPostulacion.config_nombre);
+                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                        }
+                        else
+                        {
+                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                        }
+                    }
+                    /*Migrar Data de Tablas*/
                     listaeducacionBasica = educacionbasicabl.EducacionBasicaListaporPostulanteJson(postulante.pos_id);
                     listaeducacionSuperior = educacionsuperiorbl.EducacionSuperiorListaporPostulanteJson(postulante.pos_id);
                     listaexperiencia = experienciabl.ExperienciaListaporPostulanteJson(postulante.pos_id);
                     listaidioma = idiomabl.IdiomaListaporPostulanteJson(postulante.pos_id);
                     listaofimatica = ofimaticabl.OfimaticaListaporPostulanteJson(postulante.pos_id);
-                    listapostgrado = postgradobl.PostgradoListaporPostulanteJson(postulante.pos_id);
+                    listapostgrado = postgradobl.PostgradoListaporPostulanteJson(postulante.pos_id);                    
                     if (listaeducacionBasica.Count > 0) {
                         foreach (educacionBasicaEntidad item in listaeducacionBasica)
                         {
@@ -324,11 +371,10 @@ namespace SistemaReclutamiento.Controllers
                         {
                             respuestaConsulta = postulantebl.PostulanteTablaPostulacionPostgradoInsertarJson(item, fk_oferta_laboral);
                         }
-                    }
-
+                    }                   
                 }
                 else {
-                    errormensaje = "Error al Postular";
+                    errormensaje = "Error al Migrar";
                 }
             }
             catch (Exception ex)

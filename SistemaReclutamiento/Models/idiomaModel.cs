@@ -154,7 +154,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(idioma.idi_periodo_fin));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(idioma.idi_nivel));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(idioma.idi_fecha_reg));
-                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(idioma.fk_postulante));                  
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(idioma.fk_postulante));                  
                     query.ExecuteNonQuery();
                     response = true;
                 }

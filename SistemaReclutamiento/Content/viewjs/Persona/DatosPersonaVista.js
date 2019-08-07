@@ -3,6 +3,7 @@
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
+
         $("#persona_nombre").text(persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat);
         //Datos de persona
 
@@ -11,13 +12,15 @@
         $("#per_apellido_pat").val(persona.per_apellido_pat);
         $("#per_apellido_mat").val(persona.per_apellido_mat);
         $("#per_numdoc").val(persona.per_numdoc);
-
         $('#per_fechanacimiento').datetimepicker({
             format: 'DD/MM/YYYY',
             ignoreReadonly: true,
             allowInputToggle: true
         });
-        $("#per_fechanacimiento").val(moment(persona.per_fechanacimiento).format('DD/MM/YYYY'));
+        var fecha = moment(persona.per_fechanacimiento).format('DD/MM/YYYY');
+        if (fecha != "31/12/1752") {
+            $("#per_fechanacimiento").val(moment(persona.per_fechanacimiento).format('DD/MM/YYYY'));
+        }
         $("#per_telefono").val(persona.per_telefono);
 
         if (persona.per_sexo == "") {
@@ -49,15 +52,17 @@
         if (postulante.pos_brevete == "") {
             $('#cboBrevete').bootstrapToggle('off');
             $("#pos_brevete").val("false");
+            $('#pos_num_brevete').prop('disabled', true);
         }
         else {
             if (postulante.pos_brevete == true) {
                 $('#cboBrevete').bootstrapToggle('on');
-                $("#pos_brevete").val("true");
+                $("#pos_brevete").val(true);
             }
             else {
                 $('#cboBrevete').bootstrapToggle('off');
-                $("#pos_brevete").val("false");
+                $("#pos_brevete").val(false);
+                $('#pos_num_brevete').prop('disabled', true);
             }
         }
 
@@ -66,17 +71,16 @@
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
-        selectResponse({
-            url: "Ubigeo/UbigeoListarPaisesJson",
-            select: "cboPais",
-            campoID: "ubi_pais_id",
-            CampoValor: "ubi_nombre",
-            selectVal: ubigeo.ubi_pais_id,
-            select2: true,
-            allOption: false
-        });
-
-    
+        if (ubigeo.ubi_id > 0) {
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboPais",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                selectVal: ubigeo.ubi_pais_id,
+                select2: true,
+                allOption: false
+            });
             selectResponse({
                 url: "Ubigeo/UbigeoListarDepartamentosporPaisJson",
                 select: "cboDepartamento",
@@ -98,17 +102,28 @@
                 select2: true,
                 allOption: false
             });
-       
-        selectResponse({
-            url: "Ubigeo/UbigeoListarDistritosporProvinciaJson",
-            select: "cboDistrito",
-            data: { ubi_pais_id: ubigeo.ubi_pais_id, ubi_departamento_id: ubigeo.ubi_departamento_id, ubi_provincia_id: ubigeo.ubi_provincia_id },
-            campoID: "ubi_distrito_id",
-            CampoValor: "ubi_nombre",
-            selectVal: ubigeo.ubi_distrito_id,
-            select2: true,
-            allOption: false
-        });
+
+            selectResponse({
+                url: "Ubigeo/UbigeoListarDistritosporProvinciaJson",
+                select: "cboDistrito",
+                data: { ubi_pais_id: ubigeo.ubi_pais_id, ubi_departamento_id: ubigeo.ubi_departamento_id, ubi_provincia_id: ubigeo.ubi_provincia_id },
+                campoID: "ubi_distrito_id",
+                CampoValor: "ubi_nombre",
+                selectVal: ubigeo.ubi_distrito_id,
+                select2: true,
+                allOption: false
+            });
+        }
+        else {
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboPais",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false
+            });
+        }
 
     };
 
@@ -127,10 +142,22 @@
         $("#cboBrevete").change(function () {
             var check = $(this).prop('checked');
             if (check) {
-                $("#pos_brevete").val("true");
+                $("#pos_brevete").val(true);
+                _objetoForm_frmDatosPersonales.valid();
+                $("#pos_num_brevete").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Nro. de Brevete Obligatorio"
+                    }
+                });
+                $("#pos_num_brevete").prop("disabled", false);
+                $("#pos_num_brevete").val(postulante.pos_num_brevete);
             }
             else {
-                $("#pos_brevete").val("false");
+                $("#pos_brevete").val(false);
+                $("#pos_num_brevete").prop("disabled", true);
+                $("#pos_num_brevete").rules('remove', 'required');
+                $("#pos_num_brevete").val("");               
             }
         });
 

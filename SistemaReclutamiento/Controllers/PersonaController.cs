@@ -300,7 +300,8 @@ namespace SistemaReclutamiento.Controllers
                         "Correo de Confirmacion",
                         "Hola! : " + nombre + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
-                        + "\n por favor ingrese sus datos en el siguiente enlace y siga los pasos indicados completar su registro : http://localhost:63576/Login/Activacion?id=" + usuario.usu_clave_temp
+                        + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
+                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : http://localhost:63576/Login/Activacion?id=" + usuario.usu_clave_temp
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }
@@ -320,8 +321,7 @@ namespace SistemaReclutamiento.Controllers
             ubigeoEntidad ubigeo = new ubigeoEntidad();
             personaEntidad persona = new personaEntidad();
             postulanteEntidad postulante = new postulanteEntidad();
-            usuarioEntidad usuario = new usuarioEntidad();
-
+            usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
             ubigeo = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, data.ubi_departamento_id, data.ubi_provincia_id, data.ubi_distrito_id);
             //Seteando datos correspondiente a persona            
             persona.per_nombre = data.per_nombre;
@@ -393,8 +393,7 @@ namespace SistemaReclutamiento.Controllers
                 if (persona.per_id != 0)
                 {
                     _encontrado = "postgres";
-                    //respuestaConsulta = true;
-                    errormensaje = "";
+                    errormensaje = "Encontrado en POSGRES";
                 }
                 else
                 {
@@ -406,18 +405,15 @@ namespace SistemaReclutamiento.Controllers
                         persona.per_apellido_mat = personasql.NO_APEL_MATE;
                         persona.per_correoelectronico = personasql.NO_DIRE_MAI1;
                         _encontrado = "sql";
-                        errormensaje = "";
+                        errormensaje = "Encontrado en SQL SERVER";
                         //  respuestaConsulta = true;
                     }
                     else
                     {
-                        errormensaje = "";
+                        errormensaje = "Usuario Nuevo";
                         _encontrado = "nuevo";
                     }
-
                 }
-
-
             }
             catch (Exception exp)
             {

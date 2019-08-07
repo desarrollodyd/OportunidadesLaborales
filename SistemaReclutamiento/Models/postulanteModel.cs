@@ -290,9 +290,10 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionInsertarJson(postulanteEntidad postulante, int fk_oferta_laboral)
+        public int PostulanteTablaPostulacionInsertarJson(postulanteEntidad postulante, int fk_oferta_laboral)
         {
             bool response = false;
+            int idPostulacionInsertada = 0;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_postulacion(                         
                                 ppo_tipo_direccion, 
                                 ppo_direccion, 
@@ -314,7 +315,8 @@ namespace SistemaReclutamiento.Models
                                 fk_postulante, 
                                 fk_oferta_laboral)
 	                            VALUES 
-                                (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18);";
+                                (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18)
+                                    returning ppo_id;";
             try {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
@@ -339,15 +341,16 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p16", ManejoNulos.ManageNullStr(postulante.pos_estado));
                     query.Parameters.AddWithValue("@p17", ManejoNulos.ManageNullInteger(postulante.pos_id));
                     query.Parameters.AddWithValue("@p18", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
-                    query.ExecuteNonQuery();
-                    response = true;
+                    idPostulacionInsertada = Int32.Parse(query.ExecuteScalar().ToString());
+                    //query.ExecuteNonQuery();
+                    //response = true;
                 }
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
             }
-            return response;
+            return idPostulacionInsertada;
         }
         public bool PostulanteTablaPostulacionEducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica, int fk_oferta_laboral)
         {

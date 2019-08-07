@@ -92,11 +92,13 @@
                             data: JSON.stringify(dataForm),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                var data = response.data;
+                                CloseMessages();
+                                var data = response.data;                              
                                 var encontrado = response.encontrado;
                                 if (encontrado == "postgres" || encontrado == "sql") {
                                     messageConfirmation({
                                         callBackSAceptarComplete: function () {
+                                            //CloseMessages();
                                             $("#busqueda").val(encontrado);
                                             $("#per_nombre").val(data.per_nombre);
                                             $("#per_apellido_pat").val(data.per_apellido_pat);

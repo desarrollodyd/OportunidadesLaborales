@@ -192,8 +192,6 @@
                             $("#spancv").html("");
                             $("#spancv").append('<i class="fa fa-upload"></i>  Subir CV');
                             $('#pos_cv').val("");
-                            
-                            
                         }
                     }
                 });

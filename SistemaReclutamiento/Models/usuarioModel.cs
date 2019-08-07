@@ -16,7 +16,11 @@ namespace SistemaReclutamiento.Models
         public usuarioModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-
+        /// <summary>
+        /// Metodo para obtener un usuario por Id
+        /// </summary>
+        /// <param name="id"> (int) Id de Usuario</param>
+        /// <returns>(usuarioEntidad)retorna un Usuario</returns>
         public usuarioEntidad UsuarioObtenerxID(int id)
         {
             usuarioEntidad usuario = new usuarioEntidad();
@@ -53,7 +57,11 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
-
+        /// <summary>
+        /// Metodo para Validar Credenciales para Formulario de Login y otorgar Acceso al Sistema
+        /// </summary>
+        /// <param name="usu_login">(string) nombre de usuario obtenido de formulario de login</param>
+        /// <returns>(usuarioEntidad)retorna el usuario cuya columna usu_nombre coincida con el parametro usu_login (usu_nombre es una direccion email)</returns>
         public usuarioEntidad ValidarCredenciales(string usu_login)
         {
             usuarioEntidad usuario = new usuarioEntidad();
@@ -78,11 +86,6 @@ namespace SistemaReclutamiento.Models
                                 usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
                                 usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
-                                //usuario.usuarioAvatarExtension = ManejoNulos.ManageNullStr(dr["usuarioAvatarExtension"]);
-                                //usuario.usuarioToken = ManejoNulos.ManageNullStr(dr["usuarioToken"]);
-                                //usuario.usuarioValidado = ManejoNulos.ManageNullInteger(dr["usuarioValidado"]);
-                                //usuario.personaId = ManejoNulos.ManageNullInteger(dr["personaId"]);
-                                //usuario.usuarioEstado = ManejoNulos.ManageNullInteger(dr["usuarioEstado"]);
                             }
                         }
                     }
@@ -94,6 +97,11 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
+        /// <summary>
+        /// Metodo para Validar Una cuenta de usuario creada y que no ha sido activada
+        /// </summary>
+        /// <param name="usuario">(usuarioEntidad) datos del usuario</param>
+        /// <returns>true o false</returns>
         public bool UsuarioValidarEmailJson(usuarioEntidad usuario)
         {
             bool response = false;
@@ -117,6 +125,11 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
+        /// <summary>
+        /// Metodo para Insertar un nuevo Usuario
+        /// </summary>
+        /// <param name="usuario"> (usuarioEntidad) datos del usuario a insertar</param>
+        /// <returns>retorna idUsuarioInsertado; que es id del usuario que se inserto</returns>
         public int UsuarioInsertarJson(usuarioEntidad usuario)
         {
             int idUsuarioInsertado = 0;
@@ -148,6 +161,11 @@ namespace SistemaReclutamiento.Models
             }
             return idUsuarioInsertado;
         }
+        /// <summary>
+        /// Metodo para Obtener un token de acceso que se crea para activaciones o cambios de contraseña, encriptado con SHA512
+        /// </summary>
+        /// <param name="token">token obtenido desde URL</param>
+        /// <returns>(usuarioEntidad) usuario al que le corresponde el token enviado</returns>
         public usuarioEntidad UsuarioObtenerTokenJson(string token)
         {
             usuarioEntidad usuario = new usuarioEntidad();
@@ -183,7 +201,6 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
-
         public bool UsuarioEditarEstadoJson(int id, string password)
         {
             bool response = false;
@@ -241,6 +258,11 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
+        /// <summary>
+        /// Metodo que sirve para verificar que nombres de usuario no se repitan
+        /// </summary>
+        /// <param name="direccion_correo">(string) direccion de correo obtenida de formulario de Registro</param>
+        /// <returns>retorna la informacion del usuario buscado</returns>
         public usuarioEntidad UsuarioObtenerxCorreo(string direccion_correo)
         {
             usuarioEntidad usuario = new usuarioEntidad();

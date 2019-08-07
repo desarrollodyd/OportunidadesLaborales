@@ -17,5 +17,6 @@ namespace SistemaReclutamiento.Entidades
         public DateTime ofi_fecha_reg { get; set; }
         public DateTime ofi_fecha_act { get; set; }
         public int fk_postulante { get; set; }
+        public string her_descripcion { get; set; }
     }
 }
