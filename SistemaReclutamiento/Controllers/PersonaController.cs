@@ -82,7 +82,11 @@ namespace SistemaReclutamiento.Controllers
             ViewBag.Message = "Informacion Adicional";
             return View();
         }
-
+        public ActionResult CambiarPasswordVista()
+        {
+            ViewBag.Message = "Cambio de Contraseña";
+            return View();
+        }
         public ActionResult PersonaIndexVista()
         {
             return View();
@@ -110,7 +114,6 @@ namespace SistemaReclutamiento.Controllers
             ViewBag.errormensaje = errormensaje;
             return View();
         }
-
         [HttpPost]
         public ActionResult PersonaInsertarJson(usuarioPersonaEntidad datos)
         {
@@ -422,7 +425,24 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje, encontrado = _encontrado });
         }
+        [HttpPost]
+        public ActionResult CambiarPasswordVistaJson(string usu_password)
+        {
+            usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+            string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
+            try
+            {
+                respuestaConsulta = usuariobl.UsuarioEditarContraseniaJson(usuario.usu_id, password_encriptado);
+                errormensaje = "Contraseña actualizada correctamente";
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message + "";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
 
-             
     }
 }
