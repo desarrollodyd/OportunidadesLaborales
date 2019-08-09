@@ -21,15 +21,14 @@
                     $("#tbody_EducacionBasica").html("");
                     $.each(datos, function (index, value) {
                         $("#tbody_EducacionBasica").append('<tr><td>' + value.eba_tipo + '</td><td>' + value.eba_nombre + '</td><td>' + value.eba_condicion + '</td><td><button type="button" data-id="' + value.eba_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
-                    });
-                    CloseMessages();
+                    });                   
                     if (datos.length == 0) {
-                        CloseMessages();
                         messageResponse({
                             text: "No se Encontraron Registros",
                             type: "warning"
                         });
                     }
+                    CloseMessages();
                 }
             }
         });

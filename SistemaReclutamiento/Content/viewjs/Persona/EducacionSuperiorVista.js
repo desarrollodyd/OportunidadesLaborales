@@ -19,27 +19,25 @@
 
     };
     var _ListarEducacionSuperior = function () {
-
         responseSimple({
             url: "EducacionSuperior/EducacionSuperiorListarJson",
             data: JSON.stringify({ fkPosID: $("[name='fk_postulante']").val() }),
             refresh: false,
-            callBackSuccess: function (response) {
+            callBackSuccess: function (response) {   
                 var respuesta = response.respuesta;
                 var datos = response.data;
                 if (respuesta) {
                     $("#tbody_EducacionSuperior").html("");
                     $.each(datos, function (index, value) {
                         $("#tbody_EducacionSuperior").append('<tr><td>' + value.esu_tipo + '</td><td>' + value.esu_centro_estudio + '</td><td>' + value.esu_carrera + '</td><td>' +moment(value.esu_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.esu_periodo_fin).format("DD/MM/YYYY") + '</td><td>' + value.esu_condicion+'</td><td><button type="button" data-id="' + value.esu_id +'" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
-                    });
-                    CloseMessages();
-                    if (datos.length == 0) {
-                        CloseMessages();
+                    });                  
+                    if (datos.length == 0) {                    
                         messageResponse({
                             text: "No se Encontraron Registros",
                             type: "warning"
                         });
                     }
+                    CloseMessages();
                 }
             }
         });

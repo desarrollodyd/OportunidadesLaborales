@@ -33,8 +33,8 @@
                                                                     '<h6 style="margin: 0px !important;">direccion</h6>'+
                                                                     '<div class=" col-xs-12" style="padding-bottom: 10px;">'+
                                                                         '<div class="ln_solid" style="margin-top: 10px !important;"></div>'+
-                                                                            '<button type="button" class="btn btn-primary btn-sm" style="font-size: 15px !important;">  Detalle </button>'+
-                                                                            '<button type="button" class="btn btn-success btn-sm" style="font-size: 15px !important;"> Postula</button>'+
+                            '<button type="button" class="btn btn-primary btn-sm" style="font-size: 15px !important;">  Detalle </button>' +
+                            '<button type="button" id=postular' + value.ola_id + ' data-id=' + value.ola_id + ' class="btn btn-success btn-sm btn_postular" style="font-size: 15px !important;"> Postula</button>' +
                                                                     '</div>'+
                                                                 '</div>'+
                                                                 '<div class="col-xs-12 bottom text-center">'+
@@ -61,19 +61,19 @@
         });
         /*Postular a ofertas laborales*/
         $(document).on("click", ".btn_postular", function (e) {
-            $("#frm-postular").submit();
-                var formData = $('#frm-postular').serializeFormJSON();
-                responseSimple({
-                    url: "Postulante/PostulanteMigrarDataJson",
-                    data: JSON.stringify(formData),
-                    refresh: false,
+           var data = { fk_oferta_laboral:$(this).data("id") };
+            responseSimple({
+                url: "Postulante/PostulanteMigrarDataJson",
+                data: JSON.stringify(data),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                }
                 });
-            
         });
         /*Fin de Postulacion*/
 
     };
-
     var _componentes = function () {
 
         $(document).on("click", ".btn_filtrar", function (e) {

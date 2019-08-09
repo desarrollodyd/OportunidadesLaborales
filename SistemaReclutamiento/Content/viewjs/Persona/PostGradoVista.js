@@ -32,7 +32,7 @@
                     $.each(datos, function (index, value) {
                         $("#tbody_PostGrado").append('<tr><td>' + value.pos_tipo + '</td><td>' + value.pos_centro_estudio + '</td><td>' + value.pos_carrera + '</td><td>'+value.pos_nombre+'</td><td>' + moment(value.pos_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.pos_periodo_fin).format("DD/MM/YYYY") + '</td><td>' + value.pos_condicion + '</td><td><button type="button" data-id="' + value.pos_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
-                    CloseMessages();
+                    
                     if (datos.length == 0) {
                         CloseMessages();
                         messageResponse({
@@ -40,6 +40,7 @@
                             type: "warning"
                         });
                     }
+                    CloseMessages();
                 }
             }
         });

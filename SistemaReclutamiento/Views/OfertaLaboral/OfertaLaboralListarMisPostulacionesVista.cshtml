@@ -1,0 +1,53 @@
+﻿@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@using SistemaReclutamiento.Utilitarios;
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String ubigeo = new JavaScriptSerializer().Serialize(Session["ubigeo"]);
+    String postulante = new JavaScriptSerializer().Serialize(Session["postulante"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
+    String rutaImage = new JavaScriptSerializer().Serialize(Session["rutaPerfil"]);
+}
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_content">
+            <div class="" role="tabpanel">
+                <ul id="datosPersonales_ul" class="nav nav-tabs bar_tabs hidden-xs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#datosPersonales_tab" role="tab" data-toggle="tab" aria-expanded="true">Mis Postulaciones</a>
+                    </li>
+                    <li class="pull-right">
+                        <button type="button" class="btn btn-danger btn_filtrar"><i class="fa fa-save"></i> Filtrar</button>
+                        <button class="btn btn-primary btn_cancelar" type="button"><i class="fa fa-ban"></i> Cancelar</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade active in" id="datosPersonales_tab" aria-labelledby="datosPersonales_tab">
+                        <div class="x_panel">
+                            <div class="x_content">
+                                <div class="col-md-12 col-sm-12 col-xs-12" id="ofertasContenido">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js
+{
+    <script type="text/javascript">
+        persona = (@Html.Raw(persona));
+        ubigeo = (@Html.Raw(ubigeo));
+        postulante = (@Html.Raw(postulante));
+        usuario = (@Html.Raw(usuario));
+        rutaImage = (@Html.Raw(rutaImage));
+    </script>
+    <script src="~/Content/viewjs/OfertaLaboral/OfertaLaboralListarMisPostulacionesVista.js"></script>
+}
+

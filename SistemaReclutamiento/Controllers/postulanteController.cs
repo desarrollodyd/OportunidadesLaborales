@@ -284,7 +284,6 @@ namespace SistemaReclutamiento.Controllers
             string errormensaje = "";            
             try
             {
-
                 idPostulacion = postulantebl.PostulanteTablaPostulacionInsertarJson(postulante, fk_oferta_laboral);
                 if (idPostulacion>0)
                 {
@@ -305,6 +304,7 @@ namespace SistemaReclutamiento.Controllers
                         {
                             System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
                         }
+                        errormensaje = "Archivos Copiados Correctamente";
                     }
                     /*Migrar Cv*/
                     if (postulante.pos_cv != "" || postulante.pos_cv != null)
@@ -371,11 +371,13 @@ namespace SistemaReclutamiento.Controllers
                         {
                             respuestaConsulta = postulantebl.PostulanteTablaPostulacionPostgradoInsertarJson(item, fk_oferta_laboral);
                         }
-                    }                   
+                    }
+                    errormensaje = "Postulacion Correcta";
                 }
                 else {
                     errormensaje = "Error al Migrar";
                 }
+                
             }
             catch (Exception ex)
             {

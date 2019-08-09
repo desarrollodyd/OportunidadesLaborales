@@ -16,6 +16,7 @@ namespace SistemaReclutamiento.Models
         public int ubi_distrito_id { get; set; }
         public string ola_rango_fecha { get; set; }
         public DateTime ola_fecha_ini { get; set; }
+        public int pos_id { get; set; }
     }
     public class postulacionEntidad
     {

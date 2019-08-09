@@ -3641,6 +3641,7 @@
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
     <Content Include="Content\viewjs\Login\Login.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
+    <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\CambiarPasswordVista.js" />
     <Content Include="Content\viewjs\Persona\DatosPersonaVista.js" />
@@ -4633,6 +4634,7 @@
     <Content Include="Views\Persona\InformacionAdicionalVista.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista.cshtml" />
     <Content Include="Views\Persona\CambiarPasswordVista.cshtml" />
+    <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

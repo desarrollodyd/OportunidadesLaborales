@@ -16,11 +16,16 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+        public ActionResult OfertaLaboralListarMisPostulacionesVista()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult OfertaLaboralListarJson(ReporteOfertaLaboral reporte)
         {
 
             // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
+            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
             DateTime fecha_fin = DateTime.Now;
             DateTime fecha_ayuda;
             bool respuestaConsulta = false;
@@ -42,6 +47,7 @@ namespace SistemaReclutamiento.Controllers
                 fecha_ayuda = fecha_fin.AddDays(-dias);
                 reporte.ola_fecha_ini = DateTime.Parse(fecha_ayuda.ToShortDateString());
             }
+            reporte.pos_id = postulante.pos_id;
             try
             {
                 lista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
@@ -53,6 +59,25 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje, respuesta=respuestaConsulta });
+        }
+        [HttpPost]
+        public ActionResult OfertaLaboralListarMisPostulacionesJson()
+        {
+            var postulante = (postulanteEntidad)Session["postulante"];           
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+            var lista = new List<ofertaLaboralEntidad>();
+            try
+            {
+                lista = ofertaLaboralbl.PostulanteListarPostulacionesJson(postulante.pos_id);
+                errormensaje = "Listando Mis Postulaciones";
+                respuestaConsulta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), mensaje = errormensaje, respuesta = respuestaConsulta });
         }
     }
 }
