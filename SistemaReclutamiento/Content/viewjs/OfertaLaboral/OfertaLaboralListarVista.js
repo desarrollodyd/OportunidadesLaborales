@@ -65,7 +65,7 @@
             responseSimple({
                 url: "Postulante/PostulanteMigrarDataJson",
                 data: JSON.stringify(data),
-                refresh: false,
+                refresh: true,
                 callBackSuccess: function (response) {
                     console.log(response);
                 }
