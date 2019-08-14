@@ -7,6 +7,7 @@ using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Utilitarios;
 //using System.Data.SqlClient;
 using Npgsql;
+using System.Diagnostics;
 
 namespace SistemaReclutamiento.Models
 {
@@ -80,6 +81,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return persona;
         }
@@ -274,6 +276,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return persona;
         }        

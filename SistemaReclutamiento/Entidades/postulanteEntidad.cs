@@ -27,5 +27,8 @@ namespace SistemaReclutamiento.Entidades
         public string pos_estado { get; set; }
         public int fk_persona{get;set;}
         public int fk_usuario { get; set; }
+        public int fk_nacionalidad { get; set; }
+        public string pos_url_perfil { get; set; }
+
     }
 }

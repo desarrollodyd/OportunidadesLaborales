@@ -7,6 +7,7 @@
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
         $("#pos_nombre_referido").val(postulante.pos_nombre_referido);
+        $("#pos_url_perfil").val(postulante.pos_url_perfil);
 
         if (postulante.pos_cv != "") {
             var nombre_arr = postulante.pos_cv.split(".");
@@ -160,12 +161,12 @@
                 $("#pos_nombre_referido").prop("disabled", true);
                 $("#pos_nombre_referido").rules('remove', 'required');
                 $("#pos_nombre_referido").val("");
-                $("#pos_cv").rules('add', {
-                    required: true,
-                    messages: {
-                        required: "Subir CV Obligatorio"
-                    }
-                });
+                //$("#pos_cv").rules('add', {
+                //    required: true,
+                //    messages: {
+                //        required: "Subir CV Obligatorio"
+                //    }
+                //});
             }
         });
 
@@ -254,12 +255,12 @@
         }
         else {
             $("#pos_nombre_referido").prop("disabled", true);
-            $("#pos_cv").rules('add', {
-                required: true,
-                messages: {
-                    required: "Subir CV Obligatorio"
-                }
-            });
+            //$("#pos_cv").rules('add', {
+            //    required: true,
+            //    messages: {
+            //        required: "Subir CV Obligatorio"
+            //    }
+            //});
         }
     };
 

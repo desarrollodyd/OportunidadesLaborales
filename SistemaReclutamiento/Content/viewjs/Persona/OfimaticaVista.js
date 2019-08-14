@@ -18,10 +18,10 @@
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
         selectResponse({
-            url: "OfimaticaHerramienta/OfimaticaHerramientaListarJson",
+            url: "EstOfimatica/EstOfimaticaListarJson",
             select: "cboofimaticaHerramienta",
-            campoID: "her_id",
-            CampoValor: "her_descripcion",
+            campoID: "eof_id",
+            CampoValor: "eof_nombre",
             select2: true,
             allOption: false
         });
@@ -38,15 +38,14 @@
                 if (respuesta) {
                     $("#tbody_Ofimatica").html("");
                     $.each(datos, function (index, value) {
-                        $("#tbody_Ofimatica").append('<tr><td>' + value.ofi_tipo + '</td><td>' + value.ofi_centro_estudio + '</td><td>' + value.her_descripcion + '</td><td>' + value.ofi_nivel + '</td><td>' + moment(value.ofi_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.ofi_periodo_fin).format("DD/MM/YYYY") + '</td><td><button type="button" data-id="' + value.ofi_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
+                        $("#tbody_Ofimatica").append('<tr><td>' + value.ofi_tipo + '</td><td>' + value.ofi_centro_estudio + '</td><td>' + value.eof_nombre + '</td><td>' + value.ofi_nivel + '</td><td>' + moment(value.ofi_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.ofi_periodo_fin).format("DD/MM/YYYY") + '</td><td><button type="button" data-id="' + value.ofi_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
                     
-                    if (datos.length == 0) {
-                        CloseMessages();
+                    if (datos.length == 0) {                    
                         messageResponse({
                             text: "No se Encontraron Registros",
                             type: "warning"
-                        });
+                        });                       
                     }
                     CloseMessages();
                 }
@@ -145,7 +144,7 @@
                     required: true,
 
                 },
-                fk_herramienta:
+                fk_ofimatica:
                 {
                     required: true,
 
@@ -176,7 +175,7 @@
                 {
                     required: 'Centro Estudios Obligatorio',
                 },
-                fk_herramienta:
+                fk_ofimatica:
                 {
                     required: 'Carrera Obligatorio',
                 },

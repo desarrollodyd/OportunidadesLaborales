@@ -326,6 +326,7 @@ namespace SistemaReclutamiento.Controllers
             postulanteEntidad postulante = new postulanteEntidad();
             usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
             ubigeo = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, data.ubi_departamento_id, data.ubi_provincia_id, data.ubi_distrito_id);
+            
             //Seteando datos correspondiente a persona            
             persona.per_nombre = data.per_nombre;
             persona.per_apellido_pat = data.per_apellido_pat;
@@ -341,6 +342,8 @@ namespace SistemaReclutamiento.Controllers
             persona.per_id = data.per_id;
             persona.per_fecha_act = DateTime.Now;
             //Seteando datos correspondiente a postulante
+            var nacionalidad = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, "0", "0", "0");
+            postulante.fk_nacionalidad = nacionalidad.ubi_id;
             postulante.pos_tipo_direccion = data.pos_tipo_direccion;
             postulante.pos_direccion = data.pos_direccion;
             postulante.pos_tipo_calle = data.pos_tipo_calle;
@@ -352,7 +355,6 @@ namespace SistemaReclutamiento.Controllers
             postulante.pos_num_brevete = data.pos_num_brevete;
             postulante.pos_id = data.pos_id;
             postulante.pos_fecha_act = DateTime.Now;
-
             //persona.fk_ubigeo = ubigeo.ubi_id;           
             try
             {

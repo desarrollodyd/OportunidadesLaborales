@@ -4558,13 +4558,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EducacionBasicaController.cs" />
     <Compile Include="Controllers\EducacionSuperiorController.cs" />
+    <Compile Include="Controllers\EstIdiomaController.cs" />
     <Compile Include="Controllers\ExperienciaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdiomaController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OfertaLaboralController.cs" />
     <Compile Include="Controllers\OfimaticaController.cs" />
-    <Compile Include="Controllers\OfimaticaHerramientaController.cs" />
+    <Compile Include="Controllers\EstOfimaticaController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\PostgradoController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
@@ -4573,11 +4574,12 @@
     <Compile Include="Entidades\detalleRespuestaPostulanteEntidad.cs" />
     <Compile Include="Entidades\educacionBasicaEntidad.cs" />
     <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
+    <Compile Include="Entidades\estIdiomaEntidad.cs" />
     <Compile Include="Entidades\experienciaEntidad.cs" />
     <Compile Include="Entidades\idiomaEntidad.cs" />
     <Compile Include="Entidades\ofertaLaboralEntidad.cs" />
     <Compile Include="Entidades\ofimaticaEntidad.cs" />
-    <Compile Include="Entidades\ofimaticaHerramientaEntidad.cs" />
+    <Compile Include="Entidades\estOfimaticaEntidad.cs" />
     <Compile Include="Entidades\personaEntidad.cs" />
     <Compile Include="Entidades\personaSqlEntidad.cs" />
     <Compile Include="Entidades\postgradoEntidad.cs" />
@@ -4592,10 +4594,11 @@
     <Compile Include="Models\detalleRespuestaPostulanteModel.cs" />
     <Compile Include="Models\educacionBasicaModel.cs" />
     <Compile Include="Models\educacionSuperiorModel.cs" />
+    <Compile Include="Models\estIdiomaModel.cs" />
     <Compile Include="Models\experienciaModel.cs" />
     <Compile Include="Models\idiomaModel.cs" />
     <Compile Include="Models\ofertaLaboralModel.cs" />
-    <Compile Include="Models\ofimaticaHerramientaModel.cs" />
+    <Compile Include="Models\estOfimaticaModel.cs" />
     <Compile Include="Models\ofimaticaModel.cs" />
     <Compile Include="Models\personaModel.cs" />
     <Compile Include="Models\personaSqlModel.cs" />
@@ -4647,6 +4650,7 @@
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="Views\EstIdioma\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

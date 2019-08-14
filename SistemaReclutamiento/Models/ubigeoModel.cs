@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using Npgsql;
@@ -26,7 +27,7 @@ namespace SistemaReclutamiento.Models
                                 ubi_nombre, 
                                 ubi_estado
 	                                FROM marketing.cpj_ubigeo
-                                where ubi_departamento_id=@p0;";
+                                where ubi_departamento_id=@p0 and ubi_estado='A';";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -56,7 +57,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return lista;
         }
@@ -104,7 +105,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
 
             return lista;
@@ -155,7 +156,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
 
             return lista;
@@ -207,7 +208,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return lista;
         }
@@ -258,6 +259,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return ubigeo;
         }
@@ -303,6 +305,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return ubigeo;
         }

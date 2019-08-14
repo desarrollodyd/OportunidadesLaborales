@@ -37,7 +37,9 @@ namespace SistemaReclutamiento.Models
                                         pos_situacion, 
                                         pos_fecha_reg, 
                                         pos_fecha_act, 
-                                        pos_estado, 
+                                        pos_estado,
+                                        fk_nacionalidad,
+                                        pos_url_perfil,
                                         fk_persona,
                                         fk_usuario
 	                                        FROM gestion_talento.gdt_per_postulante
@@ -77,6 +79,8 @@ namespace SistemaReclutamiento.Models
                                 postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
                                 postulante.fk_usuario=ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
+                                postulante.fk_nacionalidad = ManejoNulos.ManageNullInteger(dr["fk_nacionalidad"]);
+                                postulante.pos_url_perfil = ManejoNulos.ManageNullStr(dr["pos_url_perfil"]);
                             }
                         }
                     }
@@ -84,6 +88,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return postulante;
         }
@@ -108,6 +113,8 @@ namespace SistemaReclutamiento.Models
                                         pos_fecha_reg, 
                                         pos_fecha_act, 
                                         pos_estado, 
+                                        fk_nacionalidad,
+                                        pos_url_perfil,
                                         fk_persona
 	                                        FROM gestion_talento.gdt_per_postulante	                                  
                                             where pos_id=@p0;";
@@ -145,6 +152,8 @@ namespace SistemaReclutamiento.Models
                                 postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
                                 postulante.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
+                                postulante.fk_nacionalidad = ManejoNulos.ManageNullInteger(dr["fk_nacionalidad"]);
+                                postulante.pos_url_perfil = ManejoNulos.ManageNullStr(dr["pos_url_perfil"]);
                             }
                         }
                     }
@@ -152,6 +161,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return postulante;
         }
@@ -183,6 +193,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return response;
         }
@@ -201,8 +212,9 @@ namespace SistemaReclutamiento.Models
                     pos_estado_civil=@p6, 
                     pos_brevete=@p7, 
                     pos_num_brevete=@p8,              
-                    pos_fecha_act=@p9
- 	                    WHERE pos_id=@p10;";
+                    pos_fecha_act=@p9,
+                    fk_nacionalidad=@p10
+ 	                WHERE pos_id=@p11;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -219,7 +231,8 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManegeNullBool(postulante.pos_brevete));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(postulante.pos_num_brevete));
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
-                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullInteger(postulante.pos_id));               
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullInteger(postulante.fk_nacionalidad));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullInteger(postulante.pos_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -268,8 +281,9 @@ namespace SistemaReclutamiento.Models
                         pos_referido=@p0,                                
                         pos_nombre_referido=@p1,
                         pos_cv=@p2,
-                        pos_fecha_act=@p3   
- 	                    WHERE pos_id=@p4;";
+                        pos_fecha_act=@p3,
+                        pos_url_perfil=@p4
+ 	                    WHERE pos_id=@p5;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -280,7 +294,8 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_cv));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(postulante.pos_url_perfil));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(postulante.pos_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -293,30 +308,32 @@ namespace SistemaReclutamiento.Models
         }
         public int PostulanteTablaPostulacionInsertarJson(postulanteEntidad postulante, int fk_oferta_laboral)
         {
-            bool response = false;
+            //bool response = false;
             int idPostulacionInsertada = 0;
-            string consulta = @"INSERT INTO gestion_talento.gdt_pos_postulacion(                         
-                                ppo_tipo_direccion, 
-                                ppo_direccion, 
-                                ppo_tipo_calle, 
+            string consulta = @"INSERT INTO gestion_talento.gdt_pos_postulacion(                        
+                                ppo_tipo_direccion,
+                                ppo_direccion,
+                                ppo_tipo_calle,
                                 ppo_numero_casa, 
                                 ppo_tipo_casa,
-                                ppo_celular,
+                                ppo_celular, 
                                 ppo_estado_civil,
                                 ppo_brevete,
                                 ppo_num_brevete,
                                 ppo_referido,
                                 ppo_nombre_referido, 
                                 ppo_cv,
-                                ppo_foto, 
-                                ppo_situacion, 
+                                ppo_foto,
+                                ppo_situacion,
                                 ppo_fecha_reg, 
                                 ppo_fecha_act, 
                                 ppo_estado, 
-                                fk_postulante, 
-                                fk_oferta_laboral)
+                                fk_postulante,
+                                fk_nacionalidad,
+                                fk_oferta_laboral, 
+                                ppo_url_perfil)
 	                            VALUES 
-                                (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18)
+                                (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18,@p19,@p20)
                                     returning ppo_id;";
             try {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -341,7 +358,9 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p15", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
                     query.Parameters.AddWithValue("@p16", ManejoNulos.ManageNullStr(postulante.pos_estado));
                     query.Parameters.AddWithValue("@p17", ManejoNulos.ManageNullInteger(postulante.pos_id));
-                    query.Parameters.AddWithValue("@p18", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.Parameters.AddWithValue("@p18", ManejoNulos.ManageNullInteger(postulante.fk_nacionalidad));
+                    query.Parameters.AddWithValue("@p19", ManejoNulos.ManageNullInteger(fk_oferta_laboral));
+                    query.Parameters.AddWithValue("@p20", ManejoNulos.ManageNullStr(postulante.pos_url_perfil));
                     idPostulacionInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -399,7 +418,7 @@ namespace SistemaReclutamiento.Models
                                 esu_periodo_ini, 
                                 esu_periodo_fin,
                                 esu_condicion, 
-                                eso_fecha_reg, 
+                                esu_fecha_reg, 
                                 esu_fecha_act, 
                                 fk_postulante,
                                 fk_oferta_laboral)
@@ -478,7 +497,7 @@ namespace SistemaReclutamiento.Models
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_idioma(
                                     idi_tipo, 
                                     idi_centro_estudio, 
-                                    idi_idioma, 
+                                    fk_idioma, 
                                     idi_periodo_ini, 
                                     idi_periodo_fin, 
                                     idi_nivel, 
@@ -495,7 +514,7 @@ namespace SistemaReclutamiento.Models
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(idioma.idi_tipo));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(idioma.idi_centro_estudio));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(idioma.idi_idioma));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(idioma.fk_idioma));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(idioma.idi_periodo_ini));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(idioma.idi_periodo_fin));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(idioma.idi_nivel));
@@ -513,13 +532,13 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionOfimaticaInsertarJson(ofimaticaEntidad ofimatica, string ofi_herramienta, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionOfimaticaInsertarJson(ofimaticaEntidad ofimatica, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_ofimatica(
                                     ofi_tipo,
                                     ofi_centro_estudio, 
-                                    ofi_herramienta, 
+                                    fk_ofimatica, 
                                     ofi_nivel,
                                     ofi_periodo_ini,
                                     ofi_periodo_fin,
@@ -536,7 +555,7 @@ namespace SistemaReclutamiento.Models
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(ofimatica.ofi_tipo));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(ofimatica.ofi_centro_estudio));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(ofi_herramienta));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(ofimatica.fk_ofimatica));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(ofimatica.ofi_nivel));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(ofimatica.ofi_periodo_ini));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullDate(ofimatica.ofi_periodo_fin));

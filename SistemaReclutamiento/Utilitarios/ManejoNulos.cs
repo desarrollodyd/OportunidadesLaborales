@@ -271,7 +271,7 @@ namespace SistemaReclutamiento.Utilitarios
 
         public static int ManageNullInteger(System.Object aValue)
         {
-            if (Convert.IsDBNull(aValue) || aValue == "")
+            if (Convert.IsDBNull(aValue) || aValue.ToString() == "")
             {
                 return short.Parse("0");
             }

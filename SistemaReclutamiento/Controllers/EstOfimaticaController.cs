@@ -8,22 +8,22 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
-    public class OfimaticaHerramientaController : Controller
+    public class EstOfimaticaController : Controller
     {
         // GET: OfimaticaHerramienta
-        ofimaticaHerramientaModel ofimaticaHerramientabl = new ofimaticaHerramientaModel();
+        estOfimaticaModel estofimaticabl = new estOfimaticaModel();
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult OfimaticaHerramientaListarJson()
+        public ActionResult EstOfimaticaListarJson()
         {
             var errormensaje = "";
-            var lista = new List<ofimaticaHerramientaEntidad>();
+            var lista = new List<estOfimaticaEntidad>();
             try
             {
-                lista = ofimaticaHerramientabl.OfimatiacaHerramientaListarJson();
+                lista = estofimaticabl.EstOfimaticaListarJson();
             }
             catch (Exception exp)
             {

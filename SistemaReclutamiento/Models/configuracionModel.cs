@@ -4,6 +4,7 @@ using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -49,6 +50,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return configuracion;
         }

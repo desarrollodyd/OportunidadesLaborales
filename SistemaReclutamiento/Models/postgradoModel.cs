@@ -128,6 +128,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return postgrado;
         }
@@ -167,7 +168,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return response;
         }
@@ -208,7 +209,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return response;
         }
@@ -231,7 +232,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
 
             return response;

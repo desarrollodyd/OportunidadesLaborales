@@ -25,7 +25,11 @@ namespace SistemaReclutamiento.Entidades
         public DateTime ola_fecha_act;
         public string ola_estado;
         public string ola_cod_empresa;
-        public string ola_cod_cargo;
+        public string ola_cod_unidad;
+        public string ola_cod_sede;
+        public string ola_cod_gerencia;
+        public string ola_cod_area;
+        public string ola_cod_puesto;
         public int fk_ubigeo;
         public int fk_usuario;
     }

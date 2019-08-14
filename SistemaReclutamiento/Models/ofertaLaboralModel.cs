@@ -22,29 +22,32 @@ namespace SistemaReclutamiento.Models
             List<ofertaLaboralEntidad> lista = new List<ofertaLaboralEntidad>();
             
             string consulta = @"SELECT 
-                                    ola_id, 
-                                    ola_nombre, 
-                                    ola_requisitos, 
-                                    ola_funciones,
-                                    ola_competencias, 
-                                    ola_condiciones_lab,
-                                    ola_vacantes,
-                                    ola_enviar,
-                                    ola_enviado, 
-                                    ola_publicado, 
-                                    ola_fecha_pub, 
-                                    ola_estado_oferta,
-                                    ola_duracion,
-                                    ola_fecha_fin, 
-                                    ola_fecha_reg, 
-                                    ola_fecha_act, 
-                                    ola_estado, 
-                                    ola_cod_empresa,
-                                    ola_cod_cargo, 
-                                    fk_ubigeo,
-                                    fk_usuario
-	                                FROM 
-                                    gestion_talento.gdt_ola_oferta_laboral where ";
+                                ola_id, 
+                                ola_nombre, 
+                                ola_requisitos, 
+                                ola_funciones, 
+                                ola_competencias,
+                                ola_condiciones_lab, 
+                                ola_vacantes,
+                                ola_enviar, 
+                                ola_enviado,
+                                ola_publicado,
+                                ola_fecha_pub, 
+                                ola_estado_oferta,
+                                ola_duracion, 
+                                ola_fecha_fin, 
+                                ola_fecha_reg, 
+                                ola_fecha_act,
+                                ola_estado, 
+                                ola_cod_empresa, 
+                                ola_cod_unidad,
+                                ola_cod_sede, 
+                                ola_cod_gerencia,
+                                ola_cod_area,
+                                ola_cod_puesto, 
+                                fk_ubigeo, 
+                                fk_usuario
+	                            FROM gestion_talento.gdt_ola_oferta_laboral where ";
            
                 
             if (filtros.ola_cod_empresa != "" && filtros.ola_cod_empresa != null)
@@ -106,8 +109,12 @@ namespace SistemaReclutamiento.Models
                                 ola_fecha_act=ManejoNulos.ManageNullDate(dr["ola_fecha_act"]),
                                 ola_estado=ManejoNulos.ManageNullStr(dr["ola_estado"]),
                                 ola_cod_empresa=ManejoNulos.ManageNullStr(dr["ola_cod_empresa"]),
-                                ola_cod_cargo=ManejoNulos.ManageNullStr(dr["ola_cod_cargo"]),
-                                fk_ubigeo=ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]),
+                                ola_cod_unidad = ManejoNulos.ManageNullStr(dr["ola_cod_unidad"]),
+                                ola_cod_sede=ManejoNulos.ManageNullStr(dr["ola_cod_sede"]),
+                                ola_cod_gerencia=ManejoNulos.ManageNullStr(dr["ola_cod_gerencia"]),
+                                ola_cod_area=ManejoNulos.ManageNullStr(dr["ola_cod_area"]),
+                                ola_cod_puesto=ManejoNulos.ManageNullStr(dr["ola_cod_puesto"]),
+                                fk_ubigeo =ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]),
                                 fk_usuario=ManejoNulos.ManageNullInteger(dr["fk_usuario"])
                             };
                             lista.Add(oferta);
@@ -124,26 +131,31 @@ namespace SistemaReclutamiento.Models
         public List<ofertaLaboralEntidad> PostulanteListarPostulacionesJson(int pos_id)
         {
             List<ofertaLaboralEntidad> postulaciones = new List<ofertaLaboralEntidad>();
-            string consulta = @"SELECT distinct
+            string consulta = @"SELECT 
+                                distinct
                                 ola_id, 
                                 ola_nombre, 
                                 ola_requisitos, 
                                 ola_funciones, 
-                                ola_competencias, 
+                                ola_competencias,
                                 ola_condiciones_lab, 
                                 ola_vacantes,
                                 ola_enviar, 
-                                ola_enviado, 
-                                ola_publicado, 
+                                ola_enviado,
+                                ola_publicado,
                                 ola_fecha_pub, 
-                                ola_estado_oferta, 
+                                ola_estado_oferta,
                                 ola_duracion, 
                                 ola_fecha_fin, 
                                 ola_fecha_reg, 
                                 ola_fecha_act,
                                 ola_estado, 
                                 ola_cod_empresa, 
-                                ola_cod_cargo, 
+                                ola_cod_unidad,
+                                ola_cod_sede, 
+                                ola_cod_gerencia,
+                                ola_cod_area,
+                                ola_cod_puesto, 
                                 fk_ubigeo, 
                                 fk_usuario
 	                            FROM gestion_talento.gdt_ola_oferta_laboral as oferta_laboral
@@ -185,7 +197,11 @@ namespace SistemaReclutamiento.Models
                                     ola_fecha_act = ManejoNulos.ManageNullDate(dr["ola_fecha_act"]),
                                     ola_estado = ManejoNulos.ManageNullStr(dr["ola_estado"]),
                                     ola_cod_empresa = ManejoNulos.ManageNullStr(dr["ola_cod_empresa"]),
-                                    ola_cod_cargo = ManejoNulos.ManageNullStr(dr["ola_cod_cargo"]),
+                                    ola_cod_unidad = ManejoNulos.ManageNullStr(dr["ola_cod_unidad"]),
+                                    ola_cod_sede = ManejoNulos.ManageNullStr(dr["ola_cod_sede"]),
+                                    ola_cod_gerencia = ManejoNulos.ManageNullStr(dr["ola_cod_gerencia"]),
+                                    ola_cod_area = ManejoNulos.ManageNullStr(dr["ola_cod_area"]),
+                                    ola_cod_puesto = ManejoNulos.ManageNullStr(dr["ola_cod_puesto"]),
                                     fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]),
                                     fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"])
                                 };
@@ -210,23 +226,27 @@ namespace SistemaReclutamiento.Models
                                     ola_id, 
                                     ola_nombre, 
                                     ola_requisitos, 
-                                    ola_funciones,
-                                    ola_competencias, 
-                                    ola_condiciones_lab,
+                                    ola_funciones, 
+                                    ola_competencias,
+                                    ola_condiciones_lab, 
                                     ola_vacantes,
-                                    ola_enviar,
-                                    ola_enviado, 
-                                    ola_publicado, 
+                                    ola_enviar, 
+                                    ola_enviado,
+                                    ola_publicado,
                                     ola_fecha_pub, 
                                     ola_estado_oferta,
-                                    ola_duracion,
+                                    ola_duracion, 
                                     ola_fecha_fin, 
                                     ola_fecha_reg, 
-                                    ola_fecha_act, 
+                                    ola_fecha_act,
                                     ola_estado, 
-                                    ola_cod_empresa,
-                                    ola_cod_cargo, 
-                                    fk_ubigeo,
+                                    ola_cod_empresa, 
+                                    ola_cod_unidad,
+                                    ola_cod_sede, 
+                                    ola_cod_gerencia,
+                                    ola_cod_area,
+                                    ola_cod_puesto, 
+                                    fk_ubigeo, 
                                     fk_usuario
 	                                FROM 
                                     gestion_talento.gdt_ola_oferta_laboral where ola_id=@p0";
@@ -261,7 +281,11 @@ namespace SistemaReclutamiento.Models
                                 ofertalaboral.ola_fecha_act = ManejoNulos.ManageNullDate(dr["ola_fecha_act"]);
                                 ofertalaboral.ola_estado = ManejoNulos.ManageNullStr(dr["ola_estado"]);
                                 ofertalaboral.ola_cod_empresa = ManejoNulos.ManageNullStr(dr["ola_cod_empresa"]);
-                                ofertalaboral.ola_cod_cargo = ManejoNulos.ManageNullStr(dr["ola_cod_cargo"]);
+                                ofertalaboral.ola_cod_unidad = ManejoNulos.ManageNullStr(dr["ola_cod_unidad"]);
+                                ofertalaboral.ola_cod_sede = ManejoNulos.ManageNullStr(dr["ola_cod_sede"]);
+                                ofertalaboral.ola_cod_gerencia = ManejoNulos.ManageNullStr(dr["ola_cod_gerencia"]);
+                                ofertalaboral.ola_cod_area = ManejoNulos.ManageNullStr(dr["ola_cod_area"]);
+                                ofertalaboral.ola_cod_puesto = ManejoNulos.ManageNullStr(dr["ola_cod_puesto"]);
                                 ofertalaboral.fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]);
                                 ofertalaboral.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
 
@@ -272,6 +296,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return ofertalaboral;
         }

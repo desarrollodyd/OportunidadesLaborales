@@ -120,7 +120,7 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return experiencia;
         }

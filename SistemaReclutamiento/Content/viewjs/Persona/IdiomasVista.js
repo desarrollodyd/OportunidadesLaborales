@@ -17,6 +17,15 @@
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
+        selectResponse({
+            url: "EstIdioma/EstIdiomaListarJson",
+            select: "cboestIdioma",
+            campoID: "eid_id",
+            CampoValor: "eid_nombre",
+            select2: true,
+            allOption: false
+        });
+
     };
     var _ListarIdiomas = function () {
 

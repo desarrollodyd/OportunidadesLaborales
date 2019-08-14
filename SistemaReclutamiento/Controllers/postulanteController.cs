@@ -20,7 +20,7 @@ namespace SistemaReclutamiento.Controllers
         idiomaModel idiomabl = new idiomaModel();
         ofimaticaModel ofimaticabl = new ofimaticaModel();
         postgradoModel postgradobl = new postgradoModel();
-        ofimaticaHerramientaModel ofimaticaHerramientabl = new ofimaticaHerramientaModel();
+        estOfimaticaModel ofimaticaHerramientabl = new estOfimaticaModel();
         static configuracionModel configuracionbl = new configuracionModel();
         //static string rutaPostulantePerfil = "RUTA_FOTO_POSTULANTE";
         //static string rutaPostulanteCv = "RUTA_CV_POSTULANTE";
@@ -111,7 +111,8 @@ namespace SistemaReclutamiento.Controllers
                 {
                     postulante.pos_cv = "";
                 }
-            }          
+            }
+            postulante.pos_url_perfil = persona.pos_url_perfil;
             postulante.pos_referido = persona.pos_referido;
             postulante.pos_nombre_referido = persona.pos_nombre_referido;
             postulante.pos_id = postulante.pos_id;
@@ -275,10 +276,10 @@ namespace SistemaReclutamiento.Controllers
             List<idiomaEntidad> listaidioma = new List<idiomaEntidad>();
             List<ofimaticaEntidad> listaofimatica = new List<ofimaticaEntidad>();
             List<postgradoEntidad> listapostgrado = new List<postgradoEntidad>();
-            string extension = "";
-            string nombreArchivo = "";
-            string rutaCopiar = "";
-            string rutaAnterior = "";
+            //string extension = "";
+            //string nombreArchivo = "";
+            //string rutaCopiar = "";
+            //string rutaAnterior = "";
             bool respuestaConsulta = false;
             int idPostulacion = 0;
             string errormensaje = "";            
@@ -288,42 +289,42 @@ namespace SistemaReclutamiento.Controllers
                 if (idPostulacion>0)
                 {
                     /*migrar foto de perfil*/
-                    if (postulante.pos_foto != "" || postulante.pos_foto != null)
-                    {
-                        string[] extesionFotoPostulante = postulante.pos_foto.Split('.');
-                        extension = extesionFotoPostulante[1];
-                        nombreArchivo = (fk_oferta_laboral + "_" + postulante.pos_id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + idPostulacion + "." + extension);
-                        rutaAnterior = Path.Combine("" + rutaPerfilPostulante.config_nombre, postulante.pos_foto);
-                        rutaCopiar = Path.Combine("" + rutaPerfilPostulacion.config_nombre, nombreArchivo);
-                        if (!Directory.Exists(rutaPerfilPostulacion.config_nombre))
-                        {
-                            Directory.CreateDirectory(rutaPerfilPostulacion.config_nombre);
-                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
-                        }
-                        else
-                        {
-                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
-                        }
-                        errormensaje = "Archivos Copiados Correctamente";
-                    }
+                    //if (postulante.pos_foto != "" || postulante.pos_foto != null)
+                    //{
+                    //    string[] extesionFotoPostulante = postulante.pos_foto.Split('.');
+                    //    extension = extesionFotoPostulante[1];
+                    //    nombreArchivo = (fk_oferta_laboral + "_" + postulante.pos_id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + idPostulacion + "." + extension);
+                    //    rutaAnterior = Path.Combine("" + rutaPerfilPostulante.config_nombre, postulante.pos_foto);
+                    //    rutaCopiar = Path.Combine("" + rutaPerfilPostulacion.config_nombre, nombreArchivo);
+                    //    if (!Directory.Exists(rutaPerfilPostulacion.config_nombre))
+                    //    {
+                    //        Directory.CreateDirectory(rutaPerfilPostulacion.config_nombre);
+                    //        System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                    //    }
+                    //    else
+                    //    {
+                    //        System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                    //    }
+                    //    errormensaje = "Archivos Copiados Correctamente";
+                    //}
                     /*Migrar Cv*/
-                    if (postulante.pos_cv != "" || postulante.pos_cv != null)
-                    {
-                        string[] extesionCvPostulante = postulante.pos_cv.Split('.');
-                        extension = extesionCvPostulante[1];
-                        nombreArchivo = (fk_oferta_laboral + "_" + postulante.pos_id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + idPostulacion + "." + extension);
-                        rutaAnterior = Path.Combine("" + rutaCvPostulante.config_nombre, postulante.pos_cv);
-                        rutaCopiar = Path.Combine("" + rutaCvPostulacion.config_nombre, nombreArchivo);
-                        if (!Directory.Exists(rutaCvPostulacion.config_nombre))
-                        {
-                            Directory.CreateDirectory(rutaCvPostulacion.config_nombre);
-                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
-                        }
-                        else
-                        {
-                            System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
-                        }
-                    }
+                    //if (postulante.pos_cv != "" || postulante.pos_cv != null)
+                    //{
+                    //    string[] extesionCvPostulante = postulante.pos_cv.Split('.');
+                    //    extension = extesionCvPostulante[1];
+                    //    nombreArchivo = (fk_oferta_laboral + "_" + postulante.pos_id + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + idPostulacion + "." + extension);
+                    //    rutaAnterior = Path.Combine("" + rutaCvPostulante.config_nombre, postulante.pos_cv);
+                    //    rutaCopiar = Path.Combine("" + rutaCvPostulacion.config_nombre, nombreArchivo);
+                    //    if (!Directory.Exists(rutaCvPostulacion.config_nombre))
+                    //    {
+                    //        Directory.CreateDirectory(rutaCvPostulacion.config_nombre);
+                    //        System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                    //    }
+                    //    else
+                    //    {
+                    //        System.IO.File.Copy(rutaAnterior, rutaCopiar, false);
+                    //    }
+                    //}
                     /*Migrar Data de Tablas*/
                     listaeducacionBasica = educacionbasicabl.EducacionBasicaListaporPostulanteJson(postulante.pos_id);
                     listaeducacionSuperior = educacionsuperiorbl.EducacionSuperiorListaporPostulanteJson(postulante.pos_id);
@@ -361,8 +362,8 @@ namespace SistemaReclutamiento.Controllers
                     {
                         foreach (ofimaticaEntidad item in listaofimatica)
                         {
-                            var ofimaticaHerramienta = ofimaticaHerramientabl.OfimaticaHerramientaIdObtenerJson(item.fk_herramienta);
-                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionOfimaticaInsertarJson(item,ofimaticaHerramienta.her_descripcion, fk_oferta_laboral);
+                            //var ofimaticaHerramienta = ofimaticaHerramientabl.EstOfimaticaIdObtenerJson(item.fk_ofimatica);
+                            respuestaConsulta = postulantebl.PostulanteTablaPostulacionOfimaticaInsertarJson(item, fk_oferta_laboral);
                         }
                     }
                     if (listapostgrado.Count > 0)
