@@ -135,8 +135,8 @@ namespace SistemaReclutamiento.Controllers
                         if (usuario.usu_contrasenia == password_encriptado)
                         {
                             Session["usu_full"] = usuario;
-                            Session["per_full"] = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);                         
+                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            Session["per_full"] = persona;
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                             postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
                             Session["postulante"] = postulante;

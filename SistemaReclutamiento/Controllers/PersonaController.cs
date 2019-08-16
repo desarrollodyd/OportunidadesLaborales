@@ -170,7 +170,6 @@ namespace SistemaReclutamiento.Controllers
                         contrasenia_envio = usuario.usu_contrasenia;
                         //Insercion de Postulante
                         postulante.fk_usuario = respuestaUsuarioInsertado;
-                        postulante.fk_persona = respuestaPersonaInsertada;
                         postulante.pos_fecha_reg = DateTime.Now;
                         postulante.pos_estado = "A";
                         respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
@@ -217,7 +216,6 @@ namespace SistemaReclutamiento.Controllers
                     contrasenia_envio = usuario.usu_contrasenia;
                     //Insercion de Postulante
                     postulante.fk_usuario = respuestaUsuarioInsertado;
-                    postulante.fk_persona = persona.per_id;
                     postulante.pos_fecha_reg = DateTime.Now;
                     postulante.pos_estado = "A";
                     respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
@@ -272,7 +270,6 @@ namespace SistemaReclutamiento.Controllers
                         contrasenia_envio = usuario.usu_contrasenia;
                         //Insercion de Postulante
                         postulante.fk_usuario = respuestaUsuarioInsertado;
-                        postulante.fk_persona = respuestaPersonaInsertada;
                         postulante.pos_fecha_reg = DateTime.Now;
                         postulante.pos_estado = "A";
                         respuestaConsulta = postulantebl.PostulanteInsertarJson(postulante);
@@ -398,7 +395,7 @@ namespace SistemaReclutamiento.Controllers
                 if (persona.per_id != 0)
                 {
                     _encontrado = "postgres";
-                    errormensaje = "Encontrado en POSGRES";
+                    errormensaje = "Encontrado en POSTGRES";
                 }
                 else
                 {

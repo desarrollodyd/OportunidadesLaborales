@@ -40,7 +40,6 @@ namespace SistemaReclutamiento.Models
                                         pos_estado,
                                         fk_nacionalidad,
                                         pos_url_perfil,
-                                        fk_persona,
                                         fk_usuario
 	                                        FROM gestion_talento.gdt_per_postulante
 	                                  
@@ -76,7 +75,6 @@ namespace SistemaReclutamiento.Models
                                 postulante.pos_fecha_reg = ManejoNulos.ManageNullDate(dr["pos_fecha_reg"]);
                                 postulante.pos_fecha_act = ManejoNulos.ManageNullDate(dr["pos_fecha_act"]);
                                 postulante.pos_estado = ManejoNulos.ManageNullStr(dr["pos_estado"]);
-                                postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
                                 postulante.fk_usuario=ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
                                 postulante.fk_nacionalidad = ManejoNulos.ManageNullInteger(dr["fk_nacionalidad"]);
@@ -114,8 +112,7 @@ namespace SistemaReclutamiento.Models
                                         pos_fecha_act, 
                                         pos_estado, 
                                         fk_nacionalidad,
-                                        pos_url_perfil,
-                                        fk_persona
+                                        pos_url_perfil
 	                                        FROM gestion_talento.gdt_per_postulante	                                  
                                             where pos_id=@p0;";
             try
@@ -149,7 +146,6 @@ namespace SistemaReclutamiento.Models
                                 postulante.pos_fecha_reg = ManejoNulos.ManageNullDate(dr["pos_fecha_reg"]);
                                 postulante.pos_fecha_act = ManejoNulos.ManageNullDate(dr["pos_fecha_act"]);
                                 postulante.pos_estado = ManejoNulos.ManageNullStr(dr["pos_estado"]);
-                                postulante.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 postulante.pos_id = ManejoNulos.ManageNullInteger(dr["pos_id"]);
                                 postulante.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
                                 postulante.fk_nacionalidad = ManejoNulos.ManageNullInteger(dr["fk_nacionalidad"]);
@@ -171,11 +167,10 @@ namespace SistemaReclutamiento.Models
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_postulante(
                                 pos_fecha_reg, 
-                                pos_estado, 
-                                fk_persona,
+                                pos_estado,                                
                                 pos_foto,
                                 fk_usuario)
-	                                VALUES (@p0, @p1, @p2,@p3,@p4); ";
+	                                VALUES (@p0, @p1, @p2,@p3); ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -184,9 +179,8 @@ namespace SistemaReclutamiento.Models
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullDate( postulante.pos_fecha_reg));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_estado));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(postulante.fk_persona));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(postulante.pos_foto));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(postulante.fk_usuario));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_foto));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(postulante.fk_usuario));
                     query.ExecuteNonQuery();
                     response = true;
                 }
