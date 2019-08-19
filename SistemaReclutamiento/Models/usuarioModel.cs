@@ -24,7 +24,7 @@ namespace SistemaReclutamiento.Models
         public usuarioEntidad UsuarioObtenerxID(int id)
         {
             usuarioEntidad usuario = new usuarioEntidad();
-            string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,usu_clave_temp,fk_persona 
+            string consulta = @"SELECT usu_id,usu_nombre,usu_estado,usu_clave_temp,fk_persona 
 	                            FROM seguridad.seg_usuario where usu_id=@p0;";
             try
             {
@@ -41,7 +41,7 @@ namespace SistemaReclutamiento.Models
                             {
                                 usuario.usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]);
                                 usuario.usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]);
-                                usuario.usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]);
+                                //usuario.usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]);
                                 usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
                                 usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
                                 usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);

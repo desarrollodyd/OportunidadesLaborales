@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models
         {
             postulanteEntidad postulante = new postulanteEntidad();
             string consulta = @"SELECT pos_id, 
-                                        pos_tipo_direccion, 
+                                        pos_condicion_viv, 
                                         pos_direccion, 
                                         pos_tipo_calle, 
                                         pos_numero_casa, 
@@ -58,7 +58,7 @@ namespace SistemaReclutamiento.Models
                             while (dr.Read())
                             {
                                 var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "user.png" : dr["pos_foto"];
-                                postulante.pos_tipo_direccion = ManejoNulos.ManageNullStr(dr["pos_tipo_direccion"]);
+                                postulante.pos_condicion_viv = ManejoNulos.ManageNullStr(dr["pos_condicion_viv"]);
                                 postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
                                 postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);
                                 postulante.pos_numero_casa = ManejoNulos.ManageNullStr(dr["pos_numero_casa"]);
@@ -94,7 +94,7 @@ namespace SistemaReclutamiento.Models
         {
             postulanteEntidad postulante = new postulanteEntidad();
             string consulta = @"SELECT pos_id, 
-                                        pos_tipo_direccion, 
+                                        pos_condicion_viv, 
                                         pos_direccion, 
                                         pos_tipo_calle, 
                                         pos_numero_casa, 
@@ -129,7 +129,7 @@ namespace SistemaReclutamiento.Models
                             while (dr.Read())
                             {
                                 var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "user.png" : dr["pos_foto"];
-                                postulante.pos_tipo_direccion = ManejoNulos.ManageNullStr(dr["pos_tipo_direccion"]);
+                                postulante.pos_condicion_viv = ManejoNulos.ManageNullStr(dr["pos_condicion_viv"]);
                                 postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
                                 postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);
                                 postulante.pos_numero_casa = ManejoNulos.ManageNullStr(dr["pos_numero_casa"]);
@@ -197,7 +197,7 @@ namespace SistemaReclutamiento.Models
             string consulta = @"
                 UPDATE gestion_talento.gdt_per_postulante
 	                    SET 
-                    pos_tipo_direccion=@p0, 
+                    pos_condicion_viv=@p0, 
                     pos_direccion=@p1, 
                     pos_tipo_calle=@p2, 
                     pos_numero_casa=@p3, 
@@ -207,15 +207,16 @@ namespace SistemaReclutamiento.Models
                     pos_brevete=@p7, 
                     pos_num_brevete=@p8,              
                     pos_fecha_act=@p9,
-                    fk_nacionalidad=@p10
- 	                WHERE pos_id=@p11;";
+                    fk_nacionalidad=@p10,
+                    pos_url_perfil=@p11
+ 	                WHERE pos_id=@p12;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_tipo_direccion));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_condicion_viv));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_direccion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_tipo_calle));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(postulante.pos_numero_casa));
@@ -226,7 +227,8 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(postulante.pos_num_brevete));
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
                     query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullInteger(postulante.fk_nacionalidad));
-                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullStr(postulante.pos_url_perfil));
+                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullInteger(postulante.pos_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -275,9 +277,8 @@ namespace SistemaReclutamiento.Models
                         pos_referido=@p0,                                
                         pos_nombre_referido=@p1,
                         pos_cv=@p2,
-                        pos_fecha_act=@p3,
-                        pos_url_perfil=@p4
- 	                    WHERE pos_id=@p5;";
+                        pos_fecha_act=@p3                 
+ 	                    WHERE pos_id=@p4;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -288,8 +289,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_cv));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(postulante.pos_url_perfil));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(postulante.pos_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -305,7 +305,7 @@ namespace SistemaReclutamiento.Models
             //bool response = false;
             int idPostulacionInsertada = 0;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_postulacion(                        
-                                ppo_tipo_direccion,
+                                ppo_condicion_viv,
                                 ppo_direccion,
                                 ppo_tipo_calle,
                                 ppo_numero_casa, 
@@ -334,7 +334,7 @@ namespace SistemaReclutamiento.Models
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_tipo_direccion));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(postulante.pos_condicion_viv));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_direccion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_tipo_calle));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(postulante.pos_numero_casa));

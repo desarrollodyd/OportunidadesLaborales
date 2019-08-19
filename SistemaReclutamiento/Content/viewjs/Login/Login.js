@@ -66,14 +66,19 @@
                     refresh: false,                 
                     callBackSuccess: function (response) {
                         var pendiente = response.estado;
-                        if (pendiente != "") {
-                            console.log(pendiente);
+                        if (pendiente != "") {                           
                               redirect({ site: "Login/Activacion?id=" + pendiente });
                         }
                         else {
-                            redirect({ site: "" });
+                            if (response.respuesta) {
+                                redirect({ site: "" });
+                            }
+                            else {
+                                $("#usu_password").val("");
+                            }
+                           
                         }
-                        console.warn(response);   
+                          
                     }
                 });
             } else {

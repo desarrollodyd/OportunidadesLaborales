@@ -26,7 +26,7 @@ namespace SistemaReclutamiento.Models
                                 eof_fecha_reg, 
                                 eof_fecha_act, 
                                 eof_estado
-	                            FROM gestion_talento.gdt_est_ofimatica;
+	                            FROM gestion_talento.gdt_est_ofimatica where eof_estado='A';
                                 ";
             try
             {

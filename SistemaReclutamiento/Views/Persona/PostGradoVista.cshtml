@@ -59,72 +59,82 @@
                                 <input type="hidden" name="per_id" id="per_id" />
                                 <input type="hidden" name="pos_id" id="pos_id" />
                                 <input type="hidden" name="fk_postulante" id="fk_postulante" />
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Tipo de Educacion</label>
-                                        <select class="form-control" name="pos_tipo" id="cbotipoPostgrado" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="INSTITUTO">Instituto</option>
-                                            <option value="UNIVERSIDAD">Universidad</option>
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Centro de Estudios</label>
-                                        <input type="text" name="pos_centro_estudio" id="pos_centro_estudio" class="form-control" placeholder="Centro de Estudios" />
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Agregar Postgrados
                                     </div>
-                                </div>
+                                    <div class="panel-body">
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Tipo de Educacion</label>
+                                                <select class="form-control" name="pos_tipo" id="cbotipoPostgrado" style="width:100%">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="INSTITUTO">Instituto</option>
+                                                    <option value="UNIVERSIDAD">Universidad</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Carrera</label>
-                                        <input type="text" name="pos_carrera" id="pos_carrera" class="form-control" placeholder="Nombre de Carrera" />
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Nombre</label>
-                                        <input type="text" name="pos_nombre" id="pos_nombre" class="form-control" placeholder="Nombre de Carrera" />
-                                    </div>
-                                </div>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Centro de Estudios</label>
+                                                <input type="text" name="pos_centro_estudio" id="pos_centro_estudio" class="form-control" placeholder="Centro de Estudios" />
+                                            </div>
+                                        </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Fecha Inicio</label>
-                                        <div class='input-group date' id='myDatepicker1'>
-                                            <input type='text' class="form-control" name="pos_periodo_ini" id="pos_periodo_ini" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Carrera</label>
+                                                <input type="text" name="pos_carrera" id="pos_carrera" class="form-control" placeholder="Nombre de Carrera" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" name="pos_nombre" id="pos_nombre" class="form-control" placeholder="Nombre de Curso de Postgrado" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Fecha Inicio</label>
+                                                <div class='input-group date' id='myDatepicker1'>
+                                                    <input type='text' class="form-control" name="pos_periodo_ini" id="pos_periodo_ini" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Fecha Fin</label>
+                                                <div class='input-group date' id='myDatepicker2'>
+                                                    <input type='text' class="form-control" name="pos_periodo_fin" id="pos_periodo_fin" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Fin" />
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Condicion</label>
+                                                <select class="form-control" name="pos_condicion" id="cbocondicionPostgrado" style="width:100%">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="TRUNCO">Trunco</option>
+                                                    <option value="ENCURSO">En Curso</option>
+                                                    <option value="CULMINADO">Culminado</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Fecha Fin</label>
-                                        <div class='input-group date' id='myDatepicker2'>
-                                            <input type='text' class="form-control" name="pos_periodo_fin" id="pos_periodo_fin" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Fin" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Condicion</label>
-                                        <select class="form-control" name="pos_condicion" id="cbocondicionPostgrado" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="TRUNCO">Trunco</option>
-                                            <option value="ENCURSO">En Curso</option>
-                                            <option value="CULMINADO">Culminado</option>
-                                        </select>
-                                    </div>
-                                </div>
+                                
 
                                 <div class="col-md-12 col-xs-12">
                                     <div class="ln_solid"></div>

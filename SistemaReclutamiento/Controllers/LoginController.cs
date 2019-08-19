@@ -134,7 +134,7 @@ namespace SistemaReclutamiento.Controllers
                         string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
                         if (usuario.usu_contrasenia == password_encriptado)
                         {
-                            Session["usu_full"] = usuario;
+                            Session["usu_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                             persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             Session["per_full"] = persona;
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);

@@ -341,7 +341,7 @@ namespace SistemaReclutamiento.Controllers
             //Seteando datos correspondiente a postulante
             var nacionalidad = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, "0", "0", "0");
             postulante.fk_nacionalidad = nacionalidad.ubi_id;
-            postulante.pos_tipo_direccion = data.pos_tipo_direccion;
+            postulante.pos_condicion_viv = data.pos_condicion_viv;
             postulante.pos_direccion = data.pos_direccion;
             postulante.pos_tipo_calle = data.pos_tipo_calle;
             postulante.pos_numero_casa = data.pos_numero_casa;
@@ -352,13 +352,14 @@ namespace SistemaReclutamiento.Controllers
             postulante.pos_num_brevete = data.pos_num_brevete;
             postulante.pos_id = data.pos_id;
             postulante.pos_fecha_act = DateTime.Now;
+            postulante.pos_url_perfil = data.pos_url_perfil;
             //persona.fk_ubigeo = ubigeo.ubi_id;           
             try
             {
                 respuestaConsulta = personabl.PersonaEditarJson(persona);
                 if (respuestaConsulta) {
                     respuestaConsulta = postulantebl.PostulanteEditarJson(postulante);
-                    errormensaje = "Se registro Correctamente";
+                    errormensaje = "Se editó Correctamente";
                 }
 
             }

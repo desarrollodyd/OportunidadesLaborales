@@ -26,7 +26,8 @@ namespace SistemaReclutamiento.Models
                                 eid_fecha_reg, 
                                 eid_fecha_act,
                                 eid_estado
-	                            FROM gestion_talento.gdt_est_idioma;
+	                            FROM gestion_talento.gdt_est_idioma
+                                where eid_estado='A';
                                 ";
             try
             {

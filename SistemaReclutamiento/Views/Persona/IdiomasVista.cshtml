@@ -46,7 +46,7 @@
                         </div>
 
                         <form id="frmIdiomas-form" class="" method="post">
-                            <div class="col-md-9 col-xs-12" style="padding-top:10px;">
+                            <div class="col-md-9 col-xs-12">
                                 <div class="col-md-12 col-sm-12 col-xs-12 visible-xs" style="margin-bottom:10px;">
                                     <div class="col-xs-6">
                                         <button type="button" class="btn btn-danger col-xs-12 btn_guardar"><i class="fa fa-save"></i> Guardar</button>
@@ -59,68 +59,78 @@
                                 <input type="hidden" name="per_id" id="per_id" />
                                 <input type="hidden" name="pos_id" id="pos_id" />
                                 <input type="hidden" name="fk_postulante" id="fk_postulante" />
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Tipo de Educacion</label>
-                                        <select class="form-control" name="idi_tipo" id="cbotipoCentroEstudioIdioma" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="INSTITUTO">Instituto</option>
-                                            <option value="UNIVERSIDAD">Universidad</option>
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Idioma</label>
-                                        <select class="form-control" name="fk_idioma" id="cboestIdioma" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                        </select>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Agregar Idiomas
                                     </div>
-                                </div>
+                                    <div class="panel-body">
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Tipo de Educacion</label>
+                                                <select class="form-control" name="idi_tipo" id="cbotipoCentroEstudioIdioma" style="width:100%">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="INSTITUTO">Instituto</option>
+                                                    <option value="UNIVERSIDAD">Universidad</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Centro de Estudios</label>
-                                        <input type="text" name="idi_centro_estudio" id="idi_centro_estudio" class="form-control" placeholder="Centro de Estudios" />
-                                    </div>
-                                </div>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Idioma</label>
+                                                <select class="form-control" name="fk_idioma" id="cboestIdioma" style="width:100%">
+                                                    <option value="">Seleccione</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Fecha Inicio</label>
-                                        <div class='input-group date' id='myDatepicker1'>
-                                            <input type='text' class="form-control" name="idi_periodo_ini" id="idi_periodo_ini" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Centro de Estudios</label>
+                                                <input type="text" name="idi_centro_estudio" id="idi_centro_estudio" class="form-control" placeholder="Centro de Estudios" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Fecha Inicio</label>
+                                                <div class='input-group date' id='myDatepicker1'>
+                                                    <input type='text' class="form-control" name="idi_periodo_ini" id="idi_periodo_ini" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Fecha Fin</label>
+                                                <div class='input-group date' id='myDatepicker2'>
+                                                    <input type='text' class="form-control" name="idi_periodo_fin" id="idi_periodo_fin" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Fin" />
+                                                    <span class="input-group-addon">
+                                                        <span class="glyphicon glyphicon-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4 col-xs-12">
+                                            <div class="form-group">
+                                                <label>Nivel </label>
+                                                <select class="form-control" name="idi_nivel" id="cbonivelIdioma" style="width:100%">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="BASICO">Basico</option>
+                                                    <option value="INTERMEDIO">Intermedio</option>
+                                                    <option value="AVANZADO">Avanzado</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Fecha Fin</label>
-                                        <div class='input-group date' id='myDatepicker2'>
-                                            <input type='text' class="form-control" name="idi_periodo_fin" id="idi_periodo_fin" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Fin" />
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 col-xs-12">
-                                    <div class="form-group">
-                                        <label>Nivel </label>
-                                        <select class="form-control" name="idi_nivel" id="cbonivelIdioma" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="BASICO">Basico</option>
-                                            <option value="INTERMEDIO">Intermedio</option>
-                                            <option value="AVANZADO">Avanzado</option>
-                                        </select>
-                                    </div>
-                                </div>
+                              
 
                                 <div class="col-md-12 col-xs-12">
                                     <div class="ln_solid"></div>

@@ -6,7 +6,6 @@
 
         $("#persona_nombre").text(persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat);
         //Datos de persona
-
         $("#per_correoelectronico").val(persona.per_correoelectronico);
         $("#per_nombre").val(persona.per_nombre);
         $("#per_apellido_pat").val(persona.per_apellido_pat);
@@ -41,8 +40,9 @@
         $("#cboSexo").val(persona.per_sexo);
         $("#cbotipoDocumento").val(persona.per_tipodoc);
         $("#pos_celular").val(postulante.pos_celular);
-        $("#cbotipoDireccion").val(postulante.pos_tipo_direccion);
+        $("#cbocondicionViv").val(postulante.pos_condicion_viv);
         $("#pos_direccion").val(postulante.pos_direccion);
+        $("#pos_url_perfil").val(postulante.pos_url_perfil);
         $("#cbotipoCalle").val(postulante.pos_tipo_calle);
         $("#pos_numero_casa").val(postulante.pos_numero_casa);
         $("#cbotipoCasa").val(postulante.pos_tipo_casa);
@@ -124,9 +124,7 @@
                 allOption: false
             });
         }
-
     };
-
     var _componentes = function () {
 
         $("#cboSexo").change(function () {
@@ -245,8 +243,25 @@
                 }
             });
         });
-    };
+        //Validaciones para numeros y letras
 
+        $("#per_numdoc,#pos_num_brevete,#pos_numero_casa,#pos_celular,#per_telefono").bind('keypress', function (event) {
+            var regex = new RegExp("^[0-9]+$");
+            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            if (!regex.test(key)) {
+                event.preventDefault();
+                return false;
+            }
+        });   
+        $("#per_nombre,#per_apellido_pat,#per_apellido_mat").bind('keypress', function (event) {
+            var regex = new RegExp("^[a-zA-Z ]+$");
+            var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+            if (!regex.test(key)) {
+                event.preventDefault();
+                return false;
+            }
+        });      
+    };
     var _metodos = function () {
         validar_Form({
             nameVariable: 'frmDatosPersonales',
@@ -364,7 +379,6 @@
             _inicio();
             _componentes();
             _metodos();
-
         },
     }
 }();

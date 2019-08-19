@@ -29,7 +29,7 @@ namespace SistemaReclutamiento.Entidades
         public string ubi_pais_id { get; set; }
         //Datos de Postulante
         public int pos_id { get; set; }
-        public string pos_tipo_direccion { get; set; }
+        public string pos_condicion_viv { get; set; }
         public string pos_direccion { get; set; }
         public string pos_tipo_calle { get; set; }
         public string pos_numero_casa { get; set; }

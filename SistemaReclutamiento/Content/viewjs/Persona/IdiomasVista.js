@@ -39,7 +39,7 @@
                 if (respuesta) {
                     $("#tbody_idioma").html("");
                     $.each(datos, function (index, value) {
-                        $("#tbody_idioma").append('<tr><td>' + value.idi_tipo + '</td><td>' + value.idi_idioma + '</td><td>' + value.idi_centro_estudio + '</td><td>' + moment(value.idi_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.idi_periodo_fin).format("DD/MM/YYYY") + '</td><td>' + value.idi_nivel + '</td><td><button type="button" data-id="' + value.idi_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
+                        $("#tbody_idioma").append('<tr><td>' + value.idi_tipo + '</td><td>' + value.eid_nombre + '</td><td>' + value.idi_centro_estudio + '</td><td>' + moment(value.idi_periodo_ini).format("DD/MM/YYYY") + '</td><td>' + moment(value.idi_periodo_fin).format("DD/MM/YYYY") + '</td><td>' + value.idi_nivel + '</td><td><button type="button" data-id="' + value.idi_id + '" class="btn btn-danger btn-xs btn_delete"><i class="fa fa-times"></i></button></td></tr>');
                     });
                    
                     if (datos.length == 0) {
