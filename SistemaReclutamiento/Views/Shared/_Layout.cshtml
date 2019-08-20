@@ -59,6 +59,7 @@
 </head>
 
 <body class="nav-md">
+    <div id="BasePath" class="hidden">http://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col menu_fixed">
@@ -196,7 +197,7 @@
                     var resp = response.respuesta;
                     var msj = response.mensaje;
                     if (resp) {
-                        window.location.replace("/");
+                        window.location.replace(basePath);
                     } else {
                         alert(msj);
                     }

@@ -294,6 +294,7 @@ namespace SistemaReclutamiento.Controllers
                 {
                     //string cuerpo_correo = "";
                     Correo correo_enviar = new Correo();
+                    string basepath = "http://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
                     correo_enviar.EnviarCorreo(
                         correo,
@@ -301,7 +302,7 @@ namespace SistemaReclutamiento.Controllers
                         "Hola! : " + nombre + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
-                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : http://localhost:63576/Login/Activacion?id=" + usuario.usu_clave_temp
+                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : "+basepath+"Login/Activacion?id=" + usuario.usu_clave_temp
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }

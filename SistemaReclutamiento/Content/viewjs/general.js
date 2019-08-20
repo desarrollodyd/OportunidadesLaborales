@@ -1,4 +1,4 @@
-﻿var basePath = document.location.origin + "/";
+﻿var basePath = $("#BasePath").text();
 
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {

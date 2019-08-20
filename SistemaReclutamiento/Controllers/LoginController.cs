@@ -230,6 +230,8 @@ namespace SistemaReclutamiento.Controllers
                 Session["per_full"] = null;
                 Session["ubigeo"] = null;
                 Session["postulante"] = null;
+                Session["rutaPerfil"] = null;
+                Session["rutaCv"] = null;
                 respuestaConsulta = true;
             }
             catch (Exception exp)

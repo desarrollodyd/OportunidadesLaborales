@@ -14,7 +14,7 @@ namespace SistemaReclutamiento.Utilitarios
         public void imagenPostulante_CV(string ruta,string name)
         {
             string postulante_image = @""+ruta+"/"+name;
-            if (postulante_image != null)
+            if (name != null||name!="")
             {
                 if (System.IO.File.Exists(postulante_image))
                 {
