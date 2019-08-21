@@ -194,8 +194,10 @@ namespace SistemaReclutamiento.Controllers
                 var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
-                    //Insercion de Usuario                   
-                    persona = personabl.PersonaDniObtenerJson(datos.per_numdoc);
+                    //Insercion de Usuario     
+                    var personatupla= personabl.PersonaDniObtenerJson(datos.per_numdoc);
+                    persona = personatupla.Item1;
+                    claseError error = personatupla.Item2;
                     contrasenia = GeneradorPassword.GenerarPassword(8);
                     usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
                     usuario.usu_nombre = correo;
@@ -237,7 +239,8 @@ namespace SistemaReclutamiento.Controllers
                 var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
-                    personasql = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);
+                    var personasqltupla = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);
+                    personasql = personasqltupla.Item1;
                     persona.per_numdoc = personasql.CO_TRAB;
                     persona.per_nombre = personasql.NO_TRAB;
                     persona.per_apellido_pat = personasql.NO_APEL_PATE;
@@ -391,33 +394,54 @@ namespace SistemaReclutamiento.Controllers
             string _encontrado = "";
             personaEntidad persona = new personaEntidad();
             personaSqlEntidad personasql = new personaSqlEntidad();
+            claseError error = new claseError();
             try
             {
-                persona = personabl.PersonaDniObtenerJson(per_numdoc);
-                if (persona.per_id != 0)
+                var personatupla = personabl.PersonaDniObtenerJson(per_numdoc);
+                persona = personatupla.Item1;
+                error = personatupla.Item2;
+                if (error.Key.Equals(string.Empty))
                 {
-                    _encontrado = "postgres";
-                    errormensaje = "Encontrado en POSTGRES";
-                }
-                else
-                {
-                    personasql = personasqlbl.PersonaDniObtenerJson(per_numdoc);
-                    if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
+                    if (persona.per_id != 0)
                     {
-                        persona.per_nombre = personasql.NO_TRAB;
-                        persona.per_apellido_pat = personasql.NO_APEL_PATE;
-                        persona.per_apellido_mat = personasql.NO_APEL_MATE;
-                        persona.per_correoelectronico = personasql.NO_DIRE_MAI1;
-                        _encontrado = "sql";
-                        errormensaje = "Encontrado en SQL SERVER";
-                        //  respuestaConsulta = true;
+                        _encontrado = "postgres";
+                        errormensaje = "Encontrado en POSTGRES";
                     }
                     else
                     {
-                        errormensaje = "Usuario Nuevo";
-                        _encontrado = "nuevo";
+                        var personasqltupla = personasqlbl.PersonaDniObtenerJson(per_numdoc);
+                        personasql = personasqltupla.Item1;
+                        error = personasqltupla.Item2;
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
+                            {
+                                persona.per_nombre = personasql.NO_TRAB;
+                                persona.per_apellido_pat = personasql.NO_APEL_PATE;
+                                persona.per_apellido_mat = personasql.NO_APEL_MATE;
+                                persona.per_correoelectronico = personasql.NO_DIRE_MAI1;
+                                _encontrado = "sql";
+                                errormensaje = "Encontrado en SQL SERVER";
+                                //  respuestaConsulta = true;
+                            }
+                            else
+                            {
+                                errormensaje = "Usuario Nuevo";
+                                _encontrado = "nuevo";
+                            }
+                        }
+                        else {
+                            errormensaje = error.Value;
+                            _encontrado = string.Empty;
+                        }
+                        
                     }
                 }
+                else {
+                    errormensaje = error.Value;
+                    _encontrado = string.Empty;
+                }
+                
             }
             catch (Exception exp)
             {

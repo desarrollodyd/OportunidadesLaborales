@@ -8,6 +8,7 @@ using SistemaReclutamiento.Utilitarios;
 //using System.Data.SqlClient;
 using Npgsql;
 using System.Diagnostics;
+using System.Collections;
 
 namespace SistemaReclutamiento.Models
 {
@@ -17,6 +18,7 @@ namespace SistemaReclutamiento.Models
         public personaModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
+     
         public personaEntidad PersonaIdObtenerJson(int per_id)
         {
             personaEntidad persona = new personaEntidad();
@@ -85,9 +87,12 @@ namespace SistemaReclutamiento.Models
             }
             return persona;
         }
-        public personaEntidad PersonaDniObtenerJson(string num_doc)
+        public (personaEntidad,claseError)PersonaDniObtenerJson(string num_doc)
         {
             personaEntidad persona = new personaEntidad();
+            claseError error = new claseError();
+            //List<claseError> listaerror = new List<claseError>();
+           
             string consulta = @"SELECT 
                                     per_nombre, 
                                     per_apellido_pat, 
@@ -149,9 +154,30 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                //error.code = ex.HResult.ToString();
+                //error.code = (string)ex.Data.Keys.ToString();
+                //if (ex.Data.Count > 0)
+                //{
+
+                //    foreach (DictionaryEntry de in ex.Data)
+                //    {
+                //        //a= @"    Key: {0,-20}      Value: {1}" + de.Key.ToString() + "'"+ de.Value;
+                //        //Console.WriteLine();
+                //        var error = new claseError
+                //        {
+                //            Key = de.Key.ToString(),
+                //            Value = de.Value.ToString()
+                //        };
+                //        listaerror.Add(error);
+                //    }
+                //}
+
+                error.Key = ex.Data.Values.Count.ToString();
+                error.Value = ex.Message;
                 Console.Write(ex.Message);
             }
-            return persona;
+            //return persona;
+            return (persona,error);
         }
         public int PersonaInsertarJson(personaEntidad persona)
         {

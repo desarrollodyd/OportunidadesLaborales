@@ -41,5 +41,13 @@ namespace SistemaReclutamiento.Models
         public int fk_postulante { get; set; }
         public int fk_oferta_laboral { get; set; }
     }
+    public class claseError{
+        public string Key { get; set; }
+        public string Value { get; set; }
+        public claseError() {
+            Key = string.Empty;
+            Value = string.Empty;
+        }
+    }
 
 }

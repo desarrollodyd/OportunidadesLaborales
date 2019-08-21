@@ -27,17 +27,13 @@
                                     $("#per_nombre").val(data.per_nombre);
                                     $("#per_apellido_pat").val(data.per_apellido_pat);
                                     $("#per_apellido_mat").val(data.per_apellido_mat);
-                                    //messageConfirmation({
-                                    //    callBackSAceptarComplete: function () {
-                                    //        //CloseMessages();
-                                    //        $("#busqueda").val(encontrado);
-                                    //        $("#per_nombre").val(data.per_nombre);
-                                    //        $("#per_apellido_pat").val(data.per_apellido_pat);
-                                    //        $("#per_apellido_mat").val(data.per_apellido_mat);
-                                    //        //$("#per_correoelectronico").val(data.per_correoelectronico);
-                                    //    },
-                                    //    content: "Usted forma o formó parte de nuestra empresa, se usaran sus datos para completar algunos campos. ¿Está de acuerdo?"
-                                    //});
+                                }
+                                else if (encontrado === "") {
+                                    messageResponse({
+                                        text: response.mensaje,
+                                        type:"error"
+                                    });
+                                    //redirect({ site: "" });
                                 }
                                 else {
                                     console.log(response);

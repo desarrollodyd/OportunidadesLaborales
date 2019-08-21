@@ -21,9 +21,11 @@
                     refresh: false,
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
+                        console.log(response);
                         if (respuesta) {
                             limpiar_form({ contenedor: "#frmCambiarPassword-form" });
                             _objetoForm_frmCambiarPassword.resetForm();
+                            redirect({ site: "" });
                         }
                     }
                 });

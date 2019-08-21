@@ -15,9 +15,10 @@ namespace SistemaReclutamiento.Models
         public personaSqlModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexionSQL"].ConnectionString;
         }
-        public personaSqlEntidad PersonaDniObtenerJson(string per_numdoc)
+        public  (personaSqlEntidad,claseError) PersonaDniObtenerJson(string per_numdoc)
         {
             personaSqlEntidad persona = new personaSqlEntidad();
+            claseError error = new claseError();
             //string consulta = @"Select top 1 emp.CO_TRAB, emp.NO_TRAB, emp.NO_APEL_PATE, emp.NO_APEL_MATE, emp.TI_SITU, empresa.CO_EMPR, empresa.DE_NOMB, unidad.CO_UNID, unidad.DE_UNID, 
             //            sede.CO_SEDE, sede.DE_SEDE, gerencia.CO_DEPA, gerencia.DE_DEPA, area.CO_AREA, area.DE_AREA, grupo.CO_GRUP_OCUP, grupo.DE_GRUP_OCUP, puesto.CO_PUES_TRAB, 
             //            puesto.DE_PUES_TRAB, emp.FE_INGR_CORP, emp.FE_NACI_TRAB, emp.NU_TLF1, emp.NU_TLF2, emp.NO_DIRE_MAI1    
@@ -83,9 +84,11 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
                 Console.WriteLine(ex.Message);
             }
-            return persona;
+            return (persona,error);
         }
     }
 }
