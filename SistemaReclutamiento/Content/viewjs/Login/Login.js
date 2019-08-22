@@ -1,9 +1,7 @@
 ﻿var LoginRegisterView = function () {
-
     //
     // Setup module components
     //
-
     var _componentes = function () {     
         $('#per_numdoc').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
@@ -51,7 +49,6 @@
             }
         });
 
-
         $(document).on("click", ".btn_ingresar", function (e) {
             $("#login-form").submit();
             if (_objetoForm_frmLogin.valid()) {
@@ -72,10 +69,9 @@
                             else {
                                 $("#usu_password").val("");
                             }
-                           
                         }
-                          
-                    }
+                    },
+                    time:500
                 });
             } else {
                 messageResponse({
