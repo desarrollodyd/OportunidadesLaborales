@@ -36,7 +36,7 @@
 </head>
 
 <body>
-    <div id="BasePath" class="hidden">http://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
+    <div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
     <div class="login">
         @RenderBody()
     </div>

@@ -297,7 +297,7 @@ namespace SistemaReclutamiento.Controllers
                 {
                     //string cuerpo_correo = "";
                     Correo correo_enviar = new Correo();
-                    string basepath = "http://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                    string basepath = Request.Url.Scheme+"://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
                     correo_enviar.EnviarCorreo(
                         correo,

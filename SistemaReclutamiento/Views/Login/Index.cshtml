@@ -120,12 +120,12 @@
                 </div>
                 <!-- TABS CONTENT SIGNUP -->
                 <div id="signup-tab-content">
-                    @{
+                    @*@{
                         var _with1 = System.Web.HttpContext.Current.Request;
                         string cadena = _with1.Url.Scheme + "://" + _with1.Url.Host + _with1.ApplicationPath;
                     }
                     <h1>@cadena</h1>
-                    <h1>@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</h1>
+                    <h1>@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</h1>*@
                     <form id="registro-form" class="signup-form" action="" method="post">
                         <input type="hidden" name="busqueda" id="busqueda" />
                         <select class="input" name="per_tipodoc" id="per_tipodoc">

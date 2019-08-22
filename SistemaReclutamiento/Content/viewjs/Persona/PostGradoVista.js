@@ -12,8 +12,10 @@
         $('#myDatepicker2').datetimepicker({
             format: 'DD/MM/YYYY',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            useCurrent: true
         });
+     
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
@@ -48,6 +50,15 @@
     };
 
     var _componentes = function () {
+
+    
+        $("#myDatepicker1").on("dp.change", function (e) {
+            $('#myDatepicker2').data("DateTimePicker").minDate(e.date);
+        });
+        $("#myDatepicker2").on("dp.change", function (e) {
+            $('#myDatepicker1').data("DateTimePicker").maxDate(e.date);
+        });
+       
 
         $(document).on("click", ".btn_guardar", function (e) {
             $("#frmPostGrado-form").submit();
