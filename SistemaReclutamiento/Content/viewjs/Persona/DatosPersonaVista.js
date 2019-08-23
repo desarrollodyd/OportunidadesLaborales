@@ -292,16 +292,11 @@
                     required: true,
 
                 },
-                per_celular:
+                pos_celular:
                 {
                     required: true,
 
-                },
-                per_telefono:
-                {
-                    required: true,
-
-                },
+                },            
                 per_sexo:
                 {
                     required: true,
@@ -342,14 +337,10 @@
                 {
                     required: 'Fecha Nacimiento Obligatorio',
                 },
-                per_celular:
+                pos_celular:
                 {
                     required: 'Nro. Celular Obligatorio',
-                },
-                per_telefono:
-                {
-                    required: 'Nro. Telefono Obligatorio',
-                },
+                },             
                 per_sexo:
                 {
                     required: '',

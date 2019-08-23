@@ -65,52 +65,62 @@ namespace SistemaReclutamiento.Controllers
             string rutaAnterior = "";
             string errormensaje = "";
             int tamanioMaximo = 4194304;
-            if (file.ContentLength > 0 && file != null)
+            try
             {
-                if (file.ContentLength <= tamanioMaximo)
+                if (file.ContentLength > 0 && file != null)
                 {
-                    extension = Path.GetExtension(file.FileName);
-                    if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
+                    if (file.ContentLength <= tamanioMaximo)
                     {
-                        var nombreArchivo = (persona.pos_id.ToString()+"_" + DateTime.Now.ToString("yyyyMMddHHmmss")+extension);
-                        rutaInsertar = Path.Combine("" + rutaCvPostulante.config_nombre, nombreArchivo);
-                        rutaAnterior = Path.Combine("" + rutaCvPostulante.config_nombre, postulante.pos_cv);
-
-                        if (!Directory.Exists(rutaCvPostulante.config_nombre))
+                        extension = Path.GetExtension(file.FileName);
+                        if (extension == ".pdf" || extension == ".doc" || extension == ".docx")
                         {
-                            System.IO.Directory.CreateDirectory(rutaCvPostulante.config_nombre);
-                        }
+                            var nombreArchivo = (persona.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
+                            rutaInsertar = Path.Combine("" + rutaCvPostulante.config_nombre, nombreArchivo);
+                            rutaAnterior = Path.Combine("" + rutaCvPostulante.config_nombre, postulante.pos_cv);
 
-                        if (System.IO.File.Exists(rutaAnterior))
+                            if (!Directory.Exists(rutaCvPostulante.config_nombre))
+                            {
+                                System.IO.Directory.CreateDirectory(rutaCvPostulante.config_nombre);
+                            }
+
+                            if (System.IO.File.Exists(rutaAnterior))
+                            {
+                                System.IO.File.Delete(rutaAnterior);
+                            }
+
+                            file.SaveAs(rutaInsertar);
+                            postulante.pos_cv = nombreArchivo;
+                            errormensaje = "CV Subido Correctamente";
+                            respuestaConsulta = true;
+                        }
+                        else
                         {
-                            System.IO.File.Delete(rutaAnterior);
+                            errormensaje = "Solo se admiten archivos word o pdf.";
+                            respuestaConsulta = false;
+                            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
                         }
-
-                        file.SaveAs(rutaInsertar);
-                        postulante.pos_cv = nombreArchivo;
-                        errormensaje = "CV Subido Correctamente";
-                        respuestaConsulta = true;
                     }
                     else
                     {
-                        errormensaje = "Solo se admiten archivos word o pdf.";
+                        errormensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
                         respuestaConsulta = false;
                         return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
                     }
+
                 }
                 else
                 {
-                    errormensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
-                    respuestaConsulta = false;
-                    return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+                    if (postulante.pos_cv == "")
+                    {
+                        postulante.pos_cv = "";
+                    }
                 }
-                
             }
-            else {
-                if (postulante.pos_cv == "")
-                {
-                    postulante.pos_cv = "";
-                }
+            catch (Exception ex)
+            {
+                respuestaConsulta = false;
+                errormensaje = ex.Message;
+                return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
             postulante.pos_url_perfil = persona.pos_url_perfil;
             postulante.pos_referido = persona.pos_referido;
@@ -137,7 +147,9 @@ namespace SistemaReclutamiento.Controllers
                              
             }
             catch (Exception ex) {
-                errormensaje = ex.Message + " ,Llame Administrador";
+                respuestaConsulta = false;
+                errormensaje = ex.Message;
+                return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
@@ -162,55 +174,64 @@ namespace SistemaReclutamiento.Controllers
             string rutaAnterior = "";
             string errormensaje = "";
             int tamanioMaximo = 4194304;
-            if (file.ContentLength > 0 || file != null)
+            try
             {
-                if (file.ContentLength <= tamanioMaximo)
+                if (file.ContentLength > 0 || file != null)
                 {
-                    extension = Path.GetExtension(file.FileName);
-                    if (extension == ".jpg" || extension == ".png" || extension == ".PNG" || extension == ".JPG" || extension == ".JPEG" || extension == ".jpeg")
+                    if (file.ContentLength <= tamanioMaximo)
                     {
-                        var nombreArchivo = (postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                        rutaInsertar = Path.Combine("" + rutaPerfilPostulante.config_nombre , nombreArchivo);
-                        rutaAnterior = Path.Combine("" + rutaPerfilPostulante.config_nombre , postulante.pos_foto);
-                        rutaPerfilDefault = Path.Combine("" + rutaPerfilPostulante.config_nombre, foto_default);
-
-                        if(!Directory.Exists(rutaPerfilPostulante.config_nombre))
+                        extension = Path.GetExtension(file.FileName);
+                        if (extension == ".jpg" || extension == ".png" || extension == ".PNG" || extension == ".JPG" || extension == ".JPEG" || extension == ".jpeg")
                         {
-                            System.IO.Directory.CreateDirectory(rutaPerfilPostulante.config_nombre);
-                        }
+                            var nombreArchivo = (postulante.pos_id.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
+                            rutaInsertar = Path.Combine("" + rutaPerfilPostulante.config_nombre, nombreArchivo);
+                            rutaAnterior = Path.Combine("" + rutaPerfilPostulante.config_nombre, postulante.pos_foto);
+                            rutaPerfilDefault = Path.Combine("" + rutaPerfilPostulante.config_nombre, foto_default);
 
-                        if (System.IO.File.Exists(rutaAnterior))
-                        {
-                            if (!rutaAnterior.Equals(rutaPerfilDefault))
+                            if (!Directory.Exists(rutaPerfilPostulante.config_nombre))
                             {
-                                System.IO.File.Delete(rutaAnterior);
+                                System.IO.Directory.CreateDirectory(rutaPerfilPostulante.config_nombre);
                             }
-                        }
 
-                        file.SaveAs(rutaInsertar);
-                        postulante.pos_foto = nombreArchivo;
-                        errormensaje = "Imagen Subida Correctamente";
-                        respuestaConsulta = true;
+                            if (System.IO.File.Exists(rutaAnterior))
+                            {
+                                if (!rutaAnterior.Equals(rutaPerfilDefault))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
+                                }
+                            }
+
+                            file.SaveAs(rutaInsertar);
+                            postulante.pos_foto = nombreArchivo;
+                            errormensaje = "Imagen Subida Correctamente";
+                            respuestaConsulta = true;
+                        }
+                        else
+                        {
+                            errormensaje = "Solo se admiten archivos jpg o png.";
+                            respuestaConsulta = false;
+                            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+                        }
                     }
                     else
                     {
-                        errormensaje = "Solo se admiten archivos jpg o png.";
+                        errormensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
                         respuestaConsulta = false;
                         return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
                     }
+
                 }
                 else
                 {
-                    errormensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
-                    respuestaConsulta = false;
-                    return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+                    postulante.pos_foto = "";
                 }
-
             }
-            else
-            {
-                postulante.pos_foto = "";
+            catch (Exception ex) {
+                respuestaConsulta = false;
+                errormensaje = ex.Message;
+                return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
+            
             postulante.pos_fecha_act = DateTime.Now;
             postulante.pos_id = postulante.pos_id;
             try
@@ -231,7 +252,9 @@ namespace SistemaReclutamiento.Controllers
             }
             catch (Exception ex)
             {
-                errormensaje = ex.Message + " ,Llame Administrador";
+                respuestaConsulta = false;
+                errormensaje = ex.Message;
+                return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
             Session.Remove("postulante");
             Session["postulante"]=postulantebl.PostulanteIdObtenerJson(postulante.pos_id);
