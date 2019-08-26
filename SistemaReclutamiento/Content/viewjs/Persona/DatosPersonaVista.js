@@ -71,6 +71,28 @@
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
+        if (postulante.fk_nacionalidad > 0) {
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboPais",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                selectVal: postulante.fk_nacionalidad,
+                select2: true,
+                allOption: false
+            });
+        }
+        else {
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboNacionalidad",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false
+            });
+        }
+
         if (ubigeo.ubi_id > 0) {
             selectResponse({
                 url: "Ubigeo/UbigeoListarPaisesJson",

@@ -149,7 +149,7 @@
                     required: true,
 
                 },
-                idi_idioma:
+                fk_idioma:
                 {
                     required: true,
 
@@ -181,7 +181,7 @@
                 {
                     required: 'Tipo Obligatorio',
                 },
-                idi_idioma:
+                fk_idioma:
                 {
                     required: 'Idioma Obligatorio',
                 },

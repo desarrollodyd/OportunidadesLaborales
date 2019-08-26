@@ -185,7 +185,7 @@
                 },
                 fk_ofimatica:
                 {
-                    required: 'Carrera Obligatorio',
+                    required: 'Herramienta Obligatoria',
                 },
                 ofi_nivel:
                 {
