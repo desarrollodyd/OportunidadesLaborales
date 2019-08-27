@@ -15,7 +15,7 @@ namespace SistemaReclutamiento.Models
         public personaSqlModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexionSQL"].ConnectionString;
         }
-        public  (personaSqlEntidad,claseError) PersonaDniObtenerJson(string per_numdoc)
+        public  (personaSqlEntidad persona,claseError error) PersonaDniObtenerJson(string per_numdoc)
         {
             personaSqlEntidad persona = new personaSqlEntidad();
             claseError error = new claseError();
@@ -88,7 +88,7 @@ namespace SistemaReclutamiento.Models
                 error.Value = ex.Message;
                 Console.WriteLine(ex.Message);
             }
-            return (persona,error);
+            return (persona:persona,error:error);
         }
     }
 }

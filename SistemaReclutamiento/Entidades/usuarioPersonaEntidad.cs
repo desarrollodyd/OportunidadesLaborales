@@ -47,6 +47,7 @@ namespace SistemaReclutamiento.Entidades
         public DateTime pos_fecha_act { get; set; }
         public string pos_estado { get; set; }
         public string pos_url_perfil { get; set; }
+        public string fk_nacionalidad { get; set; }
         //En que BD se encuentra el postulante en el formulario de Registro
         public string busqueda { get; set; }
     }

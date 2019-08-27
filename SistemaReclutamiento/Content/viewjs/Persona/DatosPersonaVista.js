@@ -72,15 +72,28 @@
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
         if (postulante.fk_nacionalidad > 0) {
-            selectResponse({
-                url: "Ubigeo/UbigeoListarPaisesJson",
-                select: "cboPais",
-                campoID: "ubi_pais_id",
-                CampoValor: "ubi_nombre",
-                selectVal: postulante.fk_nacionalidad,
-                select2: true,
-                allOption: false
+            var id = { ubi_id: postulante.fk_nacionalidad };
+            responseSimple({
+                url: "Ubigeo/UbigeoObtenerDatosporIdJson",
+                data: JSON.stringify(id),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                    var data = response.data;
+                    var mensaje = response.mensaje;
+                    selectResponse({
+                        url: "Ubigeo/UbigeoListarPaisesJson",
+                        select: "cboNacionalidad",
+                        campoID: "ubi_pais_id",
+                        CampoValor: "ubi_nombre",
+                        selectVal: data.ubi_pais_id,
+                        select2: true,
+                        allOption: false
+                    });
+                    CloseMessages(); 
+                }
             });
+         
         }
         else {
             selectResponse({

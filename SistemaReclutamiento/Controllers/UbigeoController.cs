@@ -77,20 +77,20 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje });
         }
-        //[HttpPost]
-        //public ActionResult UbigeoIdObtenerJson(string ubi_pais_id, string ubi_departamento_id, string ubi_provincia_id, string ubi_distrito_id)
-        //{
-        //    var errormensaje = "";
-        //    var lista = new List<ubigeoEntidad>();
-        //    try
-        //    {
-        //        lista = ubigeobl.UbigeoIdObtenerJson(ubi_pais_id, ubi_departamento_id, ubi_provincia_id,ubi_distrito_id);
-        //    }
-        //    catch (Exception exp)
-        //    {
-        //        errormensaje = exp.Message + ",Llame Administrador";
-        //    }
-        //    return Json(new { data = lista.ToList(), mensaje = errormensaje });
-        //}
+        [HttpPost]
+        public ActionResult UbigeoObtenerDatosporIdJson(int ubi_id)
+        {
+            var errormensaje = "";
+            var ubigeo = new ubigeoEntidad();
+            try
+            {
+                ubigeo = ubigeobl.UbigeoObtenerDatosporIdJson(ubi_id);
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = ubigeo, mensaje = errormensaje });
+        }
     }
 }

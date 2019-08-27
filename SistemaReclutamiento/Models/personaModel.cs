@@ -87,7 +87,7 @@ namespace SistemaReclutamiento.Models
             }
             return persona;
         }
-        public (personaEntidad,claseError)PersonaDniObtenerJson(string num_doc)
+        public (personaEntidad persona,claseError error)PersonaDniObtenerJson(string num_doc)
         {
             personaEntidad persona = new personaEntidad();
             claseError error = new claseError();
@@ -177,7 +177,7 @@ namespace SistemaReclutamiento.Models
                 Console.Write(ex.Message);
             }
             //return persona;
-            return (persona,error);
+            return (persona:persona,error:error);
         }
         public int PersonaInsertarJson(personaEntidad persona)
         {

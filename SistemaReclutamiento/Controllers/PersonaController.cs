@@ -196,8 +196,8 @@ namespace SistemaReclutamiento.Controllers
                 {
                     //Insercion de Usuario     
                     var personatupla= personabl.PersonaDniObtenerJson(datos.per_numdoc);
-                    persona = personatupla.Item1;
-                    claseError error = personatupla.Item2;
+                    persona = personatupla.persona;
+                    claseError error = personatupla.error;
                     contrasenia = GeneradorPassword.GenerarPassword(8);
                     usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
                     usuario.usu_nombre = correo;
@@ -240,7 +240,7 @@ namespace SistemaReclutamiento.Controllers
                 if (usuario_repetido.usu_id == 0)
                 {
                     var personasqltupla = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);
-                    personasql = personasqltupla.Item1;
+                    personasql = personasqltupla.persona;
                     persona.per_numdoc = personasql.CO_TRAB;
                     persona.per_nombre = personasql.NO_TRAB;
                     persona.per_apellido_pat = personasql.NO_APEL_PATE;
@@ -343,7 +343,7 @@ namespace SistemaReclutamiento.Controllers
             persona.per_id = data.per_id;
             persona.per_fecha_act = DateTime.Now;
             //Seteando datos correspondiente a postulante
-            var nacionalidad = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, "0", "0", "0");
+            var nacionalidad = ubigeobl.UbigeoIdObtenerJson(data.fk_nacionalidad.ToString(), "0", "0", "0");
             postulante.fk_nacionalidad = nacionalidad.ubi_id;
             postulante.pos_condicion_viv = data.pos_condicion_viv;
             postulante.pos_direccion = data.pos_direccion;
@@ -361,11 +361,22 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = personabl.PersonaEditarJson(persona);
-                if (respuestaConsulta) {
+                if (respuestaConsulta)
+                {
                     respuestaConsulta = postulantebl.PostulanteEditarJson(postulante);
-                    errormensaje = "Se editó Correctamente";
-                }
+                    if (respuestaConsulta)
+                    {
+                        errormensaje = "Se registro los datos";
+                    }
+                    else
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error Registrar Datos" });
+                    }
 
+                }
+                else {
+                    return Json(new { respuesta = respuestaConsulta, mensaje = "Error Registrar Datos" });
+                }
             }
             catch (Exception exp)
             {
@@ -398,8 +409,8 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 var personatupla = personabl.PersonaDniObtenerJson(per_numdoc);
-                persona = personatupla.Item1;
-                error = personatupla.Item2;
+                persona = personatupla.persona;
+                error = personatupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
                     if (persona.per_id != 0)
@@ -410,8 +421,8 @@ namespace SistemaReclutamiento.Controllers
                     else
                     {
                         var personasqltupla = personasqlbl.PersonaDniObtenerJson(per_numdoc);
-                        personasql = personasqltupla.Item1;
-                        error = personasqltupla.Item2;
+                        personasql = personasqltupla.persona;
+                        error = personasqltupla.error;
                         if (error.Key.Equals(string.Empty))
                         {
                             if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
