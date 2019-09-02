@@ -16,11 +16,8 @@ namespace SistemaReclutamiento.Models
         public usuarioModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        /// <summary>
-        /// Metodo para obtener un usuario por Id
-        /// </summary>
-        /// <param name="id"> (int) Id de Usuario</param>
-        /// <returns>(usuarioEntidad)retorna un Usuario</returns>
+        #region Usuario Postulante
+               
         public usuarioEntidad UsuarioObtenerxID(int id)
         {
             usuarioEntidad usuario = new usuarioEntidad();
@@ -57,12 +54,8 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
-        /// <summary>
-        /// Metodo para Validar Credenciales para Formulario de Login y otorgar Acceso al Sistema
-        /// </summary>
-        /// <param name="usu_login">(string) nombre de usuario obtenido de formulario de login</param>
-        /// <returns>(usuarioEntidad)retorna el usuario cuya columna usu_nombre coincida con el parametro usu_login (usu_nombre es una direccion email)</returns>
-        public usuarioEntidad ValidarCredenciales(string usu_login)
+       
+        public usuarioEntidad PostulanteValidarCredenciales(string usu_login)
         {
             usuarioEntidad usuario = new usuarioEntidad();
             string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
@@ -102,7 +95,7 @@ namespace SistemaReclutamiento.Models
         /// </summary>
         /// <param name="usuario">(usuarioEntidad) datos del usuario</param>
         /// <returns>true o false</returns>
-        public bool UsuarioValidarEmailJson(usuarioEntidad usuario)
+        public bool PostulanteUsuarioValidarEmailJson(usuarioEntidad usuario)
         {
             bool response = false;
             string consulta = @"UPDATE seguridad.seg_usuario
@@ -125,12 +118,8 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        /// <summary>
-        /// Metodo para Insertar un nuevo Usuario
-        /// </summary>
-        /// <param name="usuario"> (usuarioEntidad) datos del usuario a insertar</param>
-        /// <returns>retorna idUsuarioInsertado; que es id del usuario que se inserto</returns>
-        public int UsuarioInsertarJson(usuarioEntidad usuario)
+      
+        public int PostulanteUsuarioInsertarJson(usuarioEntidad usuario)
         {
             int idUsuarioInsertado = 0;
             string consulta = @"INSERT INTO seguridad.seg_usuario(
@@ -166,7 +155,7 @@ namespace SistemaReclutamiento.Models
         /// </summary>
         /// <param name="token">token obtenido desde URL</param>
         /// <returns>(usuarioEntidad) usuario al que le corresponde el token enviado</returns>
-        public usuarioEntidad UsuarioObtenerTokenJson(string token)
+        public usuarioEntidad PostulanteUsuarioObtenerTokenJson(string token)
         {
             usuarioEntidad usuario = new usuarioEntidad();
             string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,usu_clave_temp
@@ -201,7 +190,7 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
-        public bool UsuarioEditarEstadoJson(int id, string password)
+        public bool PostulanteUsuarioEditarEstadoJson(int id, string password)
         {
             bool response = false;
             string consulta = @"
@@ -232,7 +221,7 @@ namespace SistemaReclutamiento.Models
             return response;
         }
 
-        public bool UsuarioEditarContraseniaJson(int id, string password)
+        public bool PostulanteUsuarioEditarContraseniaJson(int id, string password)
         {
             bool response = false;
             string consulta = @"
@@ -263,7 +252,7 @@ namespace SistemaReclutamiento.Models
         /// </summary>
         /// <param name="direccion_correo">(string) direccion de correo obtenida de formulario de Registro</param>
         /// <returns>retorna la informacion del usuario buscado</returns>
-        public usuarioEntidad UsuarioObtenerxCorreo(string direccion_correo)
+        public usuarioEntidad PostulanteUsuarioObtenerxCorreo(string direccion_correo)
         {
             usuarioEntidad usuario = new usuarioEntidad();
             string consulta = @"SELECT usu_id,usu_nombre,usu_estado
@@ -295,5 +284,54 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
+        #endregion
+        #region Usuario Proveedor
+        public usuarioEntidad ProveedorValidarCredenciales(string usu_login)
+        {
+            usuarioEntidad usuario = new usuarioEntidad();
+            string consulta = @"SELECT u.usu_id as usu_id,
+                                lower(u.usu_nombre) as usu_nombre,
+                                u.usu_contraseña as usu_contraseña,
+                                u.usu_estado as usu_estado,
+                                u.fk_persona as fk_persona,
+                                u.usu_clave_temp as usu_clave_temp,
+                                per.per_tipo as per_tipo
+	                            FROM seguridad.seg_usuario as u
+								join marketing.cpj_persona as per
+								on u.fk_persona=per.per_id
+								where
+								lower(u.usu_nombre)=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", usu_login);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                usuario.usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]);
+                                usuario.usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]);
+                                usuario.usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]);
+                                usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
+                                usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
+                                usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
+                                usuario.per_tipo = ManejoNulos.ManageNullStr(dr["per_tipo"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return usuario;
+        }
+        #endregion
     }
 }

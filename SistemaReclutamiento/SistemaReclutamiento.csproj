@@ -3641,8 +3641,9 @@
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
-    <Content Include="Content\viewjs\Login\Login.js" />
+    <Content Include="Content\viewjs\Login\LoginPostulante.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
+    <Content Include="Content\viewjs\Login\LoginProveedor.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\CambiarPasswordVista.js" />
@@ -4554,7 +4555,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Login\PostulanteIndex.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -4572,14 +4573,17 @@
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\PostgradoController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
+    <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\configuracionEntidad.cs" />
     <Compile Include="Entidades\detalleRespuestaPostulanteEntidad.cs" />
     <Compile Include="Entidades\educacionBasicaEntidad.cs" />
     <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
+    <Compile Include="Entidades\ELog.cs" />
     <Compile Include="Entidades\estIdiomaEntidad.cs" />
     <Compile Include="Entidades\experienciaEntidad.cs" />
     <Compile Include="Entidades\idiomaEntidad.cs" />
+    <Compile Include="Entidades\menuEntidad.cs" />
     <Compile Include="Entidades\ofertaLaboralEntidad.cs" />
     <Compile Include="Entidades\ofimaticaEntidad.cs" />
     <Compile Include="Entidades\estOfimaticaEntidad.cs" />
@@ -4587,6 +4591,7 @@
     <Compile Include="Entidades\personaSqlEntidad.cs" />
     <Compile Include="Entidades\postgradoEntidad.cs" />
     <Compile Include="Entidades\postulanteEntidad.cs" />
+    <Compile Include="Entidades\submenuEntidad.cs" />
     <Compile Include="Entidades\ubigeoEntidad.cs" />
     <Compile Include="Entidades\usuarioEntidad.cs" />
     <Compile Include="Entidades\usuarioPersonaEntidad.cs" />
@@ -4600,6 +4605,7 @@
     <Compile Include="Models\estIdiomaModel.cs" />
     <Compile Include="Models\experienciaModel.cs" />
     <Compile Include="Models\idiomaModel.cs" />
+    <Compile Include="Models\menuModel.cs" />
     <Compile Include="Models\ofertaLaboralModel.cs" />
     <Compile Include="Models\estOfimaticaModel.cs" />
     <Compile Include="Models\ofimaticaModel.cs" />
@@ -4608,6 +4614,7 @@
     <Compile Include="Models\postgradoModel.cs" />
     <Compile Include="Models\postulanteModel.cs" />
     <Compile Include="Models\ClaseLibreModel.cs" />
+    <Compile Include="Models\submenuModel.cs" />
     <Compile Include="Models\ubigeoModel.cs" />
     <Compile Include="Models\usuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -4641,6 +4648,10 @@
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista.cshtml" />
     <Content Include="Views\Persona\CambiarPasswordVista.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.cshtml" />
+    <Content Include="Views\Shared\_LoginProveedor.cshtml" />
+    <Content Include="Views\Shared\_LayoutProveedor.cshtml" />
+    <Content Include="Views\Login\ProveedorIndex.cshtml" />
+    <Content Include="Views\Proveedor\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4653,6 +4664,7 @@
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="log\" />
     <Folder Include="Views\EstIdioma\" />
   </ItemGroup>
   <ItemGroup>

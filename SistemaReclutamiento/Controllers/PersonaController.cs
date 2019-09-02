@@ -134,7 +134,7 @@ namespace SistemaReclutamiento.Controllers
             string busqueda = datos.busqueda;
             if (busqueda == "nuevo")
             {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                var usuario_repetido = usuariobl.PostulanteUsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
                     //Seteando datos correspondiente a persona            
@@ -158,7 +158,7 @@ namespace SistemaReclutamiento.Controllers
                         usuario.usu_cambio_pass = true;
                         usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                         usuario.usu_fecha_reg = DateTime.Now;
-                        respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+                        respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                         if (respuestaUsuarioInsertado == 0)
                         {
@@ -191,7 +191,7 @@ namespace SistemaReclutamiento.Controllers
             }
             else if (busqueda == "postgres")
             {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                var usuario_repetido = usuariobl.PostulanteUsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
                     //Insercion de Usuario     
@@ -206,7 +206,7 @@ namespace SistemaReclutamiento.Controllers
                     usuario.usu_cambio_pass = true;
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     usuario.usu_fecha_reg = DateTime.Now;
-                    respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+                    respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                     if (respuestaUsuarioInsertado == 0)
                     {
@@ -236,7 +236,7 @@ namespace SistemaReclutamiento.Controllers
             }
             else if (busqueda == "sql")
             {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                var usuario_repetido = usuariobl.PostulanteUsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
                     var personasqltupla = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);
@@ -261,7 +261,7 @@ namespace SistemaReclutamiento.Controllers
                         usuario.usu_cambio_pass = true;
                         usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                         usuario.usu_fecha_reg = DateTime.Now;
-                        respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+                        respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                         if (respuestaUsuarioInsertado == 0)
                         {
@@ -470,7 +470,7 @@ namespace SistemaReclutamiento.Controllers
             string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
             try
             {
-                respuestaConsulta = usuariobl.UsuarioEditarContraseniaJson(usuario.usu_id, password_encriptado);
+                respuestaConsulta = usuariobl.PostulanteUsuarioEditarContraseniaJson(usuario.usu_id, password_encriptado);
                 errormensaje = "Contraseña actualizada correctamente";
             }
             catch (Exception ex)

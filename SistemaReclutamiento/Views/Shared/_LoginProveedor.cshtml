@@ -1,11 +1,11 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @{
-    usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+    usuarioEntidad usuario = (usuarioEntidad)Session["usu_proveedor"];
 
     if (usuario != null)
     {
-        Response.Redirect("~/Persona/DatosPersonaVista");
+        Response.Redirect("~/Proveedor/Index");
     }
 }
 <!DOCTYPE html>
@@ -131,3 +131,4 @@
 
 </body>
 </html>
+

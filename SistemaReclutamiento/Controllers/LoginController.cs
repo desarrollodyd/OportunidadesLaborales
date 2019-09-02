@@ -18,8 +18,8 @@ namespace SistemaReclutamiento.Controllers
         ubigeoModel ubigeobl = new ubigeoModel();
         postulanteModel postulantebl = new postulanteModel();
         configuracionModel configuracionbl = new configuracionModel();
-
-        public ActionResult Index()
+        #region Region Postulante
+        public ActionResult PostulanteIndex()
         {
             if (Session["usu_full"] != null)
             {
@@ -33,7 +33,7 @@ namespace SistemaReclutamiento.Controllers
             }        
         }
 
-        public ActionResult Activacion(string id) {
+        public ActionResult PostulanteActivacion(string id) {
             var usuario = new usuarioEntidad();
             var datoPendiente = new List<dynamic>();
             var errormensaje = "";
@@ -43,7 +43,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 try
                 {
-                    usuario = usuariobl.UsuarioObtenerTokenJson(id);
+                    usuario = usuariobl.PostulanteUsuarioObtenerTokenJson(id);
                     if (usuario.usu_id != 0)
                     {
                         datoPendiente.Add(new { usuarioID = Seguridad.Encriptar(usuario.usu_id.ToString()), contrasenia = Seguridad.Encriptar(usuario.usu_contrasenia) });
@@ -71,7 +71,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult CambiarPasswordUsuario(string usu_password, string usu_id) {
+        public ActionResult PostulanteCambiarPasswordUsuario(string usu_password, string usu_id) {
             //string ruta = "";
             string nemonic = "RUTA_FOTO_POSTULANTE";
             bool respuestaConsulta = false;
@@ -84,7 +84,7 @@ namespace SistemaReclutamiento.Controllers
             usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
             string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
             try {
-                respuestaConsulta = usuariobl.UsuarioEditarEstadoJson(usuario.usu_id, password_encriptado);
+                respuestaConsulta = usuariobl.PostulanteUsuarioEditarEstadoJson(usuario.usu_id, password_encriptado);
                 var usuarioData = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                 Session["usu_full"] = usuarioData;
                 Session["per_full"] = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
@@ -102,7 +102,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult ValidarLoginJson(string usu_login, string usu_password)
+        public ActionResult PostulanteValidarLoginJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
             string nemonic = "RUTA_FOTO_POSTULANTE";
@@ -112,10 +112,10 @@ namespace SistemaReclutamiento.Controllers
             var postulante = new postulanteEntidad();
             var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
-            String pendiente = "";
+            string pendiente = "";
             try
             {
-                usuario = usuariobl.ValidarCredenciales(usu_login.ToLower());
+                usuario = usuariobl.PostulanteValidarCredenciales(usu_login.ToLower());
                 if (usuario.usu_id > 0)
                 {
                     if (usuario.usu_estado=="P")
@@ -164,7 +164,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult RecuperarContrasenia(string correo_recuperacion)
+        public ActionResult PostulanteRecuperarContrasenia(string correo_recuperacion)
         {
             var errormensaje = "";          
             string usuario_envio = "";
@@ -178,14 +178,14 @@ namespace SistemaReclutamiento.Controllers
 
             try
             {
-                usuario = usuariobl.ValidarCredenciales(correo_recuperacion.ToLower());
+                usuario = usuariobl.PostulanteValidarCredenciales(correo_recuperacion.ToLower());
                 if (usuario.usu_id > 0)
                 {
                     usuario_envio = usuario.usu_nombre;
                     contrasenia_envio = GeneradorPassword.GenerarPassword(8);
                     contrasenia = Seguridad.EncriptarSHA512(contrasenia_envio);
 
-                    respuestaConsulta = usuariobl.UsuarioEditarContraseniaJson(usuario.usu_id, contrasenia);
+                    respuestaConsulta = usuariobl.PostulanteUsuarioEditarContraseniaJson(usuario.usu_id, contrasenia);
                     if (respuestaConsulta)
                     {
                         persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
@@ -219,7 +219,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult CerrarSesionLoginJson()
+        public ActionResult PostulanteCerrarSesionLoginJson()
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -240,5 +240,100 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        #endregion
+
+        #region Proveedor
+        public ActionResult ProveedorIndex()
+        {
+            //if (Session["usu_full"] != null)
+            //{
+            //    ViewBag.Message = "Bienvenido.";
+            //    return View("~/Views/Persona/DatosPersonaVista.cshtml");
+            //}
+            //else
+            //{
+            //    ViewBag.Message = "Login De Acceso";
+            //    return View();
+            //}
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ProveedorValidarLoginJson(string usu_login, string usu_password)
+        {
+            bool respuesta = false;
+            //string nemonic = "RUTA_FOTO_POSTULANTE";
+            string errormensaje = "";
+            var usuario = new usuarioEntidad();
+            var persona = new personaEntidad();
+            //var postulante = new postulanteEntidad();
+            //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
+            RutaImagenes rutaImagenes = new RutaImagenes();
+            //string pendiente = "";
+            try
+            {
+                usuario = usuariobl.ProveedorValidarCredenciales(usu_login.ToLower());
+                if (usuario.usu_id > 0)
+                {
+                    if (usuario.per_tipo.Equals("PROVEEDOR"))
+                    {
+                        string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
+                        if (usuario.usu_contrasenia == password_encriptado)
+                        {
+                            Session["usu_proveedor"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                            Session["per_proveedor"] = persona;
+                            Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                            //postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
+                            //Session["postulante"] = postulante;
+                            //rutaImagenes.imagenPostulante_CV(configuracion.config_nombre, postulante.pos_foto);
+                            respuesta = true;
+                            errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                        }
+                        else
+                        {
+                            errormensaje = "La contraseña ingresada es erronea";
+                        }
+                    }
+                    else {
+                        errormensaje = "Usted no tiene permiso para Acceder a Esta Seccion";
+                    }
+                    
+                    
+                }
+                else
+                {
+                    errormensaje = "No se ha encontrando el usuario ingresado";
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + "";
+            }
+
+            return Json(new { respuesta = respuesta, mensaje = errormensaje,/* estado = pendiente, usuario=usuario*/ });
+        }
+
+        [HttpPost]
+        public ActionResult ProveedorCerrarSesionLoginJson()
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            try
+            {
+
+                Session["usu_proveedor"] = null;
+                Session["per_proveedor"] = null;
+                Session["ubigeo"] = null;
+                Session["rutaPerfil"] = null;
+                Session["rutaCv"] = null;
+                respuestaConsulta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        #endregion
     }
 }

@@ -26,7 +26,7 @@
             if (_objetoForm_frmActivacion.valid()) {
                 var dataForm = $('#activacion-form').serializeFormJSON();
                 responseSimple({
-                    url: "Login/CambiarPasswordUsuario",
+                    url: "Login/PostulanteCambiarPasswordUsuario",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     redirect: true,

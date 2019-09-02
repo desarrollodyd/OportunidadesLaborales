@@ -7,13 +7,13 @@
     string usu_nombre = "";
     string encriptado = "";
 
-    if (Session["usu_full"]==null || Session["per_full"] ==null|| Session["postulante"]==null)
+    if (Session["usu_proveedor"] == null || Session["per_proveedor"] == null)
     {
-        Response.Redirect("~/");
+        Response.Redirect("~/Login/ProveedorIndex");
     }
     else
     {
-        usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+        usuarioEntidad usuario = (usuarioEntidad)Session["usu_proveedor"];
 
         usu_id = usuario.usu_id;
         usu_nombre = usuario.usu_nombre;
@@ -91,25 +91,7 @@
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
                             <ul class="nav side-menu" style="margin-left: -1px;">
-                                <li class="active">
-                                    <a><i class="fa fa-edit"></i> Perfil <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display:block;">
-                                        <li><a href="~/">Datos Personales</a></li>
-                                        <li><a href="~/Persona/EducacionBasicaVista">Educacion Basica</a></li>
-                                        <li><a href="~/Persona/EducacionSuperiorVista">Educacion Superior</a></li>
-                                        <li><a href="~/Persona/PostGradoVista">PostGrado</a></li>
-                                        <li><a href="~/Persona/OfimaticaVista">Ofimatica</a></li>
-                                        <li><a href="~/Persona/IdiomasVista">Idiomas</a></li>
-                                        <li><a href="~/Persona/ExperienciaVista">Experiencia</a></li>
-                                        <li><a href="~/Persona/InformacionAdicionalVista">Informacion Adicional</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="~/OfertaLaboral/OfertaLaboralListarVista"><i class="fa fa-search"></i> Ofertas Laborales </a>
-                                </li>
-                                <li>
-                                    <a href="~/OfertaLaboral/OfertaLaboralListarMisPostulacionesVista"><i class="fa fa-briefcase"></i> Mis Postulaciones </a>
-                                </li>
+                            
                             </ul>
                         </div>
                     </div>
@@ -192,12 +174,12 @@
         $("#btnCerrarSesion").click(function () {
             $.ajax({
                 type: 'POST',
-                url: basePath + "/Login/PostulanteCerrarSesionLoginJson",
+                url: basePath + "/Login/ProveedorCerrarSesionLoginJson",
                 success: function (response) {
                     var resp = response.respuesta;
                     var msj = response.mensaje;
                     if (resp) {
-                        window.location.replace(basePath);
+                        window.location.replace(basePath+"Login/ProveedorIndex");
                     } else {
                         alert(msj);
                     }

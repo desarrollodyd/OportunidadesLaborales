@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "ProveedorIndex";
+    Layout = "~/Views/Shared/_LoginProveedor.cshtml";
+}
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+
+<div class="wrap">
+    <!-- TOGGLE -->
+    <div id="toggle-wrap">
+        <div id="toggle-terms">
+            <div id="cross">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECOVERY -->
+    <div class="recovery">
+        <h2>Recuperar Contraseña</h2>
+        <p>Ingrese el <strong>Correo</strong> registrado y presione<strong> Enviar</strong>.</p>
+        <p>Una notificacion le llegara a su correo.</p>
+        <form class="recovery-form" id="recovery-form" action="" method="post">
+            <input type="text" class="input" id="correo_recuperacion" name="correo_recuperacion" placeholder="Ingrese Correo">
+            <button type="button" class="button btn_recuperar">Enviar</button>
+        </form>
+        <p class="mssg">Un Correo le ha sido Enviado.</p>
+    </div>
+
+    <!-- SLIDER -->
+    <div class="content" style="text-align: center;">
+        <!-- LOGO -->
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/LOGOPJ.png" alt=""></a>
+        </div>
+    </div>
+    <!-- LOGIN FORM -->
+    <div class="user">
+        <!-- ACTIONS
+        <div class="actions">
+            <a class="help" href="#signup-tab-content">Sign Up</a><a class="faq" href="#login-tab-content">Login</a>
+        </div>
+        -->
+        <div class="form-wrap">
+            <!-- TABS -->
+            <div class="tabs">
+                <h3 class="login-tab"><a class="log-in active" href="#login-tab-content"><span>Login</span></a></h3>
+                <h3 class="signup-tab"><a class="sign-up" href="#signup-tab-content"><span>Registro</span></a></h3>
+            </div>
+            <!-- TABS CONTENT -->
+            <div class="tabs-content">
+                <!-- TABS CONTENT LOGIN -->
+                <div id="login-tab-content" style="margin-top: 3em;" class="active">
+                    <form id="login-form" class="login-form" action="" method="post">
+                        <input type="text" class="input" id="usu_login" name="usu_login" autocomplete="off" placeholder="Correo">
+                        <input type="password" class="input" id="usu_password" name="usu_password" autocomplete="off" placeholder="Contraseña">
+                        <button type="button" class="button btn_ingresar">Ingresar</button>
+                    </form>
+                    <div class="help-action">
+                        <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="forgot" href="#">Olvidaste tu Contraseña?</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section js
+{
+    <script src="~/Content/viewjs/Login/LoginProveedor.js"></script>
+}

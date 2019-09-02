@@ -18,6 +18,7 @@ namespace SistemaReclutamiento.Entidades
         public int fk_template { get; set; }
         public bool usu_enviar_mail { get; set; }
         public bool usu_enviado { get; set; }
-        public string usu_clave_temp { get; set; }     
+        public string usu_clave_temp { get; set; }  
+        public string per_tipo { get; set; }
     }
 }

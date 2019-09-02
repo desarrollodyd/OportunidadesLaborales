@@ -175,6 +175,7 @@ namespace SistemaReclutamiento.Models
                 error.Key = ex.Data.Values.Count.ToString();
                 error.Value = ex.Message;
                 Console.Write(ex.Message);
+                //ELog.save(this, ex);
             }
             //return persona;
             return (persona:persona,error:error);
