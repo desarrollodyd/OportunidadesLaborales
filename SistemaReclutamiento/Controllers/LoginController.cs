@@ -10,14 +10,14 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+  
     public class LoginController : Controller
     {
-        usuarioModel usuariobl = new usuarioModel();
-        personaModel personabl = new personaModel();
-        ubigeoModel ubigeobl = new ubigeoModel();
-        postulanteModel postulantebl = new postulanteModel();
-        configuracionModel configuracionbl = new configuracionModel();
+        UsuarioModel usuariobl = new UsuarioModel();
+        PersonaModel personabl = new PersonaModel();
+        UbigeoModel ubigeobl = new UbigeoModel();
+        PostulanteModel postulantebl = new PostulanteModel();
+        ConfiguracionModel configuracionbl = new ConfiguracionModel();
         #region Region Postulante
         public ActionResult PostulanteIndex()
         {
@@ -34,7 +34,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         public ActionResult PostulanteActivacion(string id) {
-            var usuario = new usuarioEntidad();
+            var usuario = new UsuarioEntidad();
             var datoPendiente = new List<dynamic>();
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -69,16 +69,16 @@ namespace SistemaReclutamiento.Controllers
             ViewBag.Usuario = "usuario";
             return View("~/Views/Login/ValidarUsuarioIndex.cshtml");
         }
-
+   
         [HttpPost]
         public ActionResult PostulanteCambiarPasswordUsuario(string usu_password, string usu_id) {
             //string ruta = "";
             string nemonic = "RUTA_FOTO_POSTULANTE";
             bool respuestaConsulta = false;
             string errormensaje = "";
-            var usuario = new usuarioEntidad();
-            var persona = new personaEntidad();
-            var postulante = new postulanteEntidad();
+            var usuario = new UsuarioEntidad();
+            var persona = new PersonaEntidad();
+            var postulante = new PostulanteEntidad();
             var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
             usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
@@ -100,16 +100,16 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta= respuestaConsulta, mensaje= errormensaje });
         }
-
+      
         [HttpPost]
         public ActionResult PostulanteValidarLoginJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
             string nemonic = "RUTA_FOTO_POSTULANTE";
             string errormensaje = "";
-            var usuario = new usuarioEntidad();        
-            var persona = new personaEntidad();
-            var postulante = new postulanteEntidad();
+            var usuario = new UsuarioEntidad();        
+            var persona = new PersonaEntidad();
+            var postulante = new PostulanteEntidad();
             var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
             string pendiente = "";
@@ -162,7 +162,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuesta, mensaje = errormensaje,estado=pendiente/*, usuario=usuario*/ });
         }
-
+    
         [HttpPost]
         public ActionResult PostulanteRecuperarContrasenia(string correo_recuperacion)
         {
@@ -171,8 +171,8 @@ namespace SistemaReclutamiento.Controllers
             string contrasenia_envio = "";
             string nombre = "";
             string contrasenia = "";
-            usuarioEntidad usuario = new usuarioEntidad();
-            personaEntidad persona = new personaEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
             bool respuestaConsulta = false;
             
 
@@ -217,7 +217,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-
+     
         [HttpPost]
         public ActionResult PostulanteCerrarSesionLoginJson()
         {
@@ -257,14 +257,16 @@ namespace SistemaReclutamiento.Controllers
             //}
             return View();
         }
+     
         [HttpPost]
+     
         public ActionResult ProveedorValidarLoginJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
             //string nemonic = "RUTA_FOTO_POSTULANTE";
             string errormensaje = "";
-            var usuario = new usuarioEntidad();
-            var persona = new personaEntidad();
+            var usuario = new UsuarioEntidad();
+            var persona = new PersonaEntidad();
             //var postulante = new postulanteEntidad();
             //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();

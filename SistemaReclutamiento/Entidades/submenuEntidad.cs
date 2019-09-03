@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class submenuEntidad
+    public class SubmenuEntidad
     {
         private string snu_descripcion { get; set; }
         private string snu_url { get; set; }

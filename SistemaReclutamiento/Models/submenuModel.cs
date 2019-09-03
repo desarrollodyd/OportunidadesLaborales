@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class submenuModel
+    public class SubmenuModel
     {
     }
 }

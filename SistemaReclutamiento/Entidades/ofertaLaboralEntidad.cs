@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class ofertaLaboralEntidad
+    public class OfertaLaboralEntidad
     {
         public int ola_id;
         public string ola_nombre;

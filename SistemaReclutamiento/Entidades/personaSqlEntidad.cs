@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class personaSqlEntidad
+    public class PersonaSqlEntidad
     {
         public string CO_TRAB;
         public string NO_TRAB;

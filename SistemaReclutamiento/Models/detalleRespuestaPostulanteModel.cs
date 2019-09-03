@@ -10,13 +10,13 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class detalleRespuestaPostulanteModel
+    public class DetalleRespuestaPostulanteModel
     {
         string _conexion;
-        public detalleRespuestaPostulanteModel() {
+        public DetalleRespuestaPostulanteModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public bool DetalleRespuestaPostulanteInsertarJson(detalleRespuestaPostulanteEntidad detalle)
+        public bool DetalleRespuestaPostulanteInsertarJson(DetalleRespuestaPostulanteEntidad detalle)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_det_respuestas(

@@ -5,12 +5,14 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class OfertaLaboralController : Controller
     {
-        ofertaLaboralModel ofertaLaboralbl = new ofertaLaboralModel();
+        OfertaLaboralModel ofertaLaboralbl = new OfertaLaboralModel();
         // GET: OfertaLaboral
         public ActionResult OfertaLaboralListarVista()
         {
@@ -20,17 +22,18 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult OfertaLaboralListarJson(ReporteOfertaLaboral reporte)
         {
 
             // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
-            postulanteEntidad postulante = (postulanteEntidad)Session["postulante"];
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
             DateTime fecha_fin = DateTime.Now;
             DateTime fecha_ayuda;
             bool respuestaConsulta = false;
             string errormensaje = "";
-            var lista = new List<ofertaLaboralEntidad>();
+            var lista = new List<OfertaLaboralEntidad>();
             if (reporte.ola_rango_fecha == "hoy")
             {
                 reporte.ola_fecha_ini = DateTime.Parse(fecha_fin.ToShortDateString());
@@ -60,13 +63,14 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje, respuesta=respuestaConsulta });
         }
+
         [HttpPost]
         public ActionResult OfertaLaboralListarMisPostulacionesJson()
         {
-            var postulante = (postulanteEntidad)Session["postulante"];           
+            var postulante = (PostulanteEntidad)Session["postulante"];           
             bool respuestaConsulta = false;
             string errormensaje = "";
-            var lista = new List<ofertaLaboralEntidad>();
+            var lista = new List<OfertaLaboralEntidad>();
             try
             {
                 lista = ofertaLaboralbl.PostulanteListarPostulacionesJson(postulante.pos_id);

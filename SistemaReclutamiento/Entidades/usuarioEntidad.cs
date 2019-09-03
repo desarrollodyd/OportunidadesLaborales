@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class usuarioEntidad
+    public class UsuarioEntidad
     {
         public string usu_nombre { get; set; }
         public string usu_contrasenia { get; set; }

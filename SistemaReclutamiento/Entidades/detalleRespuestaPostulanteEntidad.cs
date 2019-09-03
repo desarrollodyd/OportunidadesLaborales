@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class detalleRespuestaPostulanteEntidad
+    public class DetalleRespuestaPostulanteEntidad
     {
         public int dre_id { get; set; }
         public string dre_pregunta { get; set; }

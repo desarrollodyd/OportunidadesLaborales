@@ -10,16 +10,16 @@ using System.Diagnostics;
 
 namespace SistemaReclutamiento.Models
 {
-    public class educacionSuperiorModel
+    public class EducacionSuperiorModel
     {
         string _conexion;
-        public educacionSuperiorModel()
+        public EducacionSuperiorModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<educacionSuperiorEntidad> EducacionSuperiorListaporPostulanteJson(int fk_postulante)
+        public List<EducacionSuperiorEntidad> EducacionSuperiorListaporPostulanteJson(int fk_postulante)
         {
-            List<educacionSuperiorEntidad> lista = new List<educacionSuperiorEntidad>();
+            List<EducacionSuperiorEntidad> lista = new List<EducacionSuperiorEntidad>();
             string consulta = @"SELECT 
                                 esu_id,     
                                 esu_tipo, 
@@ -48,7 +48,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var educacionbasica = new educacionSuperiorEntidad
+                                var educacionbasica = new EducacionSuperiorEntidad
                                 {
                                     esu_id = ManejoNulos.ManageNullInteger(dr["esu_id"]),
                                     esu_tipo = ManejoNulos.ManageNullStr(dr["esu_tipo"]),
@@ -77,9 +77,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public educacionSuperiorEntidad EducacionSuperiorIdObtenerJson(int esu_id)
+        public EducacionSuperiorEntidad EducacionSuperiorIdObtenerJson(int esu_id)
         {
-            educacionSuperiorEntidad educacionSuperior = new educacionSuperiorEntidad();
+            EducacionSuperiorEntidad educacionSuperior = new EducacionSuperiorEntidad();
             string consulta = @"SELECT 
                                     esu_id, 
                                     esu_tipo, 
@@ -128,7 +128,7 @@ namespace SistemaReclutamiento.Models
             }
             return educacionSuperior;
         }
-        public bool EducacionSuperiorInsertarJson(educacionSuperiorEntidad educacionSuperior)
+        public bool EducacionSuperiorInsertarJson(EducacionSuperiorEntidad educacionSuperior)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_educacion_sup(
@@ -166,7 +166,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool EducacionSuperiorEditarJson(educacionSuperiorEntidad educacionSuperior)
+        public bool EducacionSuperiorEditarJson(EducacionSuperiorEntidad educacionSuperior)
         {
             bool response = false;
             string consulta = @"

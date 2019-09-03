@@ -6,21 +6,24 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace SistemaReclutamiento.Controllers
 {
+   
     public class EducacionBasicaController : Controller
     {
-        educacionBasicaModel educacionBasicabl = new educacionBasicaModel();
+        EducacionBasicaModel educacionBasicabl = new EducacionBasicaModel();
         // GET: educacionBasica
         public ActionResult Index()
         {
             return View();
         }
+     
         [HttpPost]
         public ActionResult EducacionBasicaListarJson(int fkPosID)
         {
             var errormensaje = "";
-            var lista = new List<educacionBasicaEntidad>();
+            var lista = new List<EducacionBasicaEntidad>();
             try
             {
                 lista = educacionBasicabl.EducacionBasicaListaporPostulanteJson(fkPosID);
@@ -32,9 +35,8 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta=true, mensaje = errormensaje });
         }
-
         [HttpPost]
-        public ActionResult EducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica)
+        public ActionResult EducacionBasicaInsertarJson(EducacionBasicaEntidad educacionBasica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -58,9 +60,9 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-
+       
         [HttpPost]
-        public ActionResult EducacionBasicaEditarJson(educacionBasicaEntidad educacionBasica)
+        public ActionResult EducacionBasicaEditarJson(EducacionBasicaEntidad educacionBasica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -83,6 +85,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult EducacionBasicaEliminarJson(int id)
         {

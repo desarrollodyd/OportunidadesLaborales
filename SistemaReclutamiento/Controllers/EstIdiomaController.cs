@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,18 +9,21 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class EstIdiomaController : Controller
     {
-        estIdiomaModel estidiomabl = new estIdiomaModel();
+        EstIdiomaModel estidiomabl = new EstIdiomaModel();
+
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult EstIdiomaListarJson()
         {
             var errormensaje = "";
-            var lista = new List<estIdiomaEntidad>();
+            var lista = new List<EstIdiomaEntidad>();
             try
             {
                 lista = estidiomabl.EstOfimaticaListarJson();

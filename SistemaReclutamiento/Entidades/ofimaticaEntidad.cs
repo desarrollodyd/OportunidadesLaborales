@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class ofimaticaEntidad
+    public class OfimaticaEntidad
     {
         public int ofi_id { get; set; }
         public string ofi_tipo { get; set; }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class estIdiomaEntidad
+    public class EstIdiomaEntidad
     {
         public int eid_id { get; set; }
         public string eid_nombre { get; set; }

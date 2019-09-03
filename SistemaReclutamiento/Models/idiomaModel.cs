@@ -10,16 +10,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class idiomaModel
+    public class IdiomaModel
     {
         string _conexion;
-        public idiomaModel()
+        public IdiomaModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<idiomaEntidad> IdiomaListaporPostulanteJson(int fk_postulante)
+        public List<IdiomaEntidad> IdiomaListaporPostulanteJson(int fk_postulante)
         {
-            List<idiomaEntidad> lista = new List<idiomaEntidad>();
+            List<IdiomaEntidad> lista = new List<IdiomaEntidad>();
             string consulta = @"SELECT 
                                     idi_id, 
                                     idi_tipo, 
@@ -51,7 +51,7 @@ namespace SistemaReclutamiento.Models
                         { 
                             while (dr.Read())
                             {
-                                var idioma = new idiomaEntidad
+                                var idioma = new IdiomaEntidad
                                 {
                                     idi_id = ManejoNulos.ManageNullInteger(dr["idi_id"]),
                                     idi_tipo = ManejoNulos.ManageNullStr(dr["idi_tipo"]),
@@ -81,9 +81,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public idiomaEntidad IdiomaIdObtenerJson(int idi_id)
+        public IdiomaEntidad IdiomaIdObtenerJson(int idi_id)
         {
-            idiomaEntidad idioma = new idiomaEntidad();
+            IdiomaEntidad idioma = new IdiomaEntidad();
             string consulta = @"SELECT 
                                 idi_id, 
                                 idi_tipo, 
@@ -132,7 +132,7 @@ namespace SistemaReclutamiento.Models
             }
             return idioma;
         }
-        public bool IdiomaInsertarJson(idiomaEntidad idioma)
+        public bool IdiomaInsertarJson(IdiomaEntidad idioma)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_idioma(
@@ -170,7 +170,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool IdiomaEditarJson(idiomaEntidad idioma)
+        public bool IdiomaEditarJson(IdiomaEntidad idioma)
         {
             bool response = false;
             string consulta = @"

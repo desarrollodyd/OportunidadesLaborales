@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class postgradoEntidad
+    public class PostgradoEntidad
     {
         public int pos_id { get; set; }
         public string pos_tipo { get; set; }

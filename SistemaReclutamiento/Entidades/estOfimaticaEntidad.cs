@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class estOfimaticaEntidad
+    public class EstOfimaticaEntidad
     {
         public int eof_id { get; set; }
         public string eof_nombre { get; set; }

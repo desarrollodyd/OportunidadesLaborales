@@ -10,16 +10,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class ofimaticaModel
+    public class OfimaticaModel
     {
         string _conexion;
-        public ofimaticaModel()
+        public OfimaticaModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<ofimaticaEntidad> OfimaticaListaporPostulanteJson(int fk_postulante)
+        public List<OfimaticaEntidad> OfimaticaListaporPostulanteJson(int fk_postulante)
         {
-            List<ofimaticaEntidad> lista = new List<ofimaticaEntidad>();
+            List<OfimaticaEntidad> lista = new List<OfimaticaEntidad>();
             string consulta = @"SELECT 
                                 ofi_id, 
                                 ofi_tipo, 
@@ -51,7 +51,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var ofimatica = new ofimaticaEntidad
+                                var ofimatica = new OfimaticaEntidad
                                 {
                                     ofi_id = ManejoNulos.ManageNullInteger(dr["ofi_id"]),
                                     ofi_tipo = ManejoNulos.ManageNullStr(dr["ofi_tipo"]),
@@ -81,9 +81,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public ofimaticaEntidad OfimaticaIdObtenerJson(int ofi_id)
+        public OfimaticaEntidad OfimaticaIdObtenerJson(int ofi_id)
         {
-            ofimaticaEntidad ofimatica = new ofimaticaEntidad();
+            OfimaticaEntidad ofimatica = new OfimaticaEntidad();
             string consulta = @"SELECT 
                                 ofi_id, 
                                 ofi_tipo, 
@@ -132,7 +132,7 @@ namespace SistemaReclutamiento.Models
             }
             return ofimatica;
         }
-        public bool OfimaticaInsertarJson(ofimaticaEntidad ofimatica)
+        public bool OfimaticaInsertarJson(OfimaticaEntidad ofimatica)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_ofimatica(                                     
@@ -169,7 +169,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool OfimaticaEditarJson(ofimaticaEntidad ofimatica)
+        public bool OfimaticaEditarJson(OfimaticaEntidad ofimatica)
         {
             bool response = false;
             string consulta = @"

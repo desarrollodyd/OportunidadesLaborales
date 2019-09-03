@@ -10,16 +10,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class postulanteModel
+    public class PostulanteModel
     {
         string _conexion;
-        public postulanteModel()
+        public PostulanteModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public postulanteEntidad PostulanteIdObtenerporUsuarioJson(int fk_usuario)
+        public PostulanteEntidad PostulanteIdObtenerporUsuarioJson(int fk_usuario)
         {
-            postulanteEntidad postulante = new postulanteEntidad();
+            PostulanteEntidad postulante = new PostulanteEntidad();
             string consulta = @"SELECT pos_id, 
                                         pos_condicion_viv, 
                                         pos_direccion, 
@@ -90,9 +90,9 @@ namespace SistemaReclutamiento.Models
             }
             return postulante;
         }
-        public postulanteEntidad PostulanteIdObtenerJson(int pos_id)
+        public PostulanteEntidad PostulanteIdObtenerJson(int pos_id)
         {
-            postulanteEntidad postulante = new postulanteEntidad();
+            PostulanteEntidad postulante = new PostulanteEntidad();
             string consulta = @"SELECT pos_id, 
                                         pos_condicion_viv, 
                                         pos_direccion, 
@@ -162,7 +162,7 @@ namespace SistemaReclutamiento.Models
             return postulante;
         }
        
-        public bool PostulanteInsertarJson(postulanteEntidad postulante)
+        public bool PostulanteInsertarJson(PostulanteEntidad postulante)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_postulante(
@@ -191,7 +191,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteEditarJson(postulanteEntidad postulante)
+        public bool PostulanteEditarJson(PostulanteEntidad postulante)
         {
             bool response = false;
             string consulta = @"
@@ -239,7 +239,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteSubirFotoJson(postulanteEntidad postulante)
+        public bool PostulanteSubirFotoJson(PostulanteEntidad postulante)
         {
             bool response = false;
             string consulta = @"
@@ -268,7 +268,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteInsertarInformacionAdicionalJson(postulanteEntidad postulante)
+        public bool PostulanteInsertarInformacionAdicionalJson(PostulanteEntidad postulante)
         {
             bool response = false;
             string consulta = @"
@@ -300,7 +300,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public int PostulanteTablaPostulacionInsertarJson(postulanteEntidad postulante, int fk_oferta_laboral)
+        public int PostulanteTablaPostulacionInsertarJson(PostulanteEntidad postulante, int fk_oferta_laboral)
         {
             //bool response = false;
             int idPostulacionInsertada = 0;
@@ -366,7 +366,7 @@ namespace SistemaReclutamiento.Models
             }
             return idPostulacionInsertada;
         }
-        public bool PostulanteTablaPostulacionEducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionEducacionBasicaInsertarJson(EducacionBasicaEntidad educacionBasica, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO 
@@ -402,7 +402,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionEducacionSuperiorInsertarJson(educacionSuperiorEntidad educacionSuperior, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionEducacionSuperiorInsertarJson(EducacionSuperiorEntidad educacionSuperior, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_educacion_sup(                    
@@ -444,7 +444,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionExperienciaInsertarJson(experienciaEntidad experiencia, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionExperienciaInsertarJson(ExperienciaEntidad experiencia, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_experiencia(
@@ -485,7 +485,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionIdiomaInsertarJson(idiomaEntidad idioma, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionIdiomaInsertarJson(IdiomaEntidad idioma, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_idioma(
@@ -526,7 +526,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionOfimaticaInsertarJson(ofimaticaEntidad ofimatica, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionOfimaticaInsertarJson(OfimaticaEntidad ofimatica, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_ofimatica(
@@ -567,7 +567,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostulanteTablaPostulacionPostgradoInsertarJson(postgradoEntidad postgrado, int fk_oferta_laboral)
+        public bool PostulanteTablaPostulacionPostgradoInsertarJson(PostgradoEntidad postgrado, int fk_oferta_laboral)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_pos_postgrado(

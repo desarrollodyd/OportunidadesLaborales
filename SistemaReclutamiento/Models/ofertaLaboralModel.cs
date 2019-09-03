@@ -10,16 +10,16 @@ using System.Diagnostics;
 
 namespace SistemaReclutamiento.Models
 {
-    public class ofertaLaboralModel
+    public class OfertaLaboralModel
     {
         string _conexion;
-        public ofertaLaboralModel()
+        public OfertaLaboralModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<ofertaLaboralEntidad> OfertaLaboralListarJson(ReporteOfertaLaboral filtros)
+        public List<OfertaLaboralEntidad> OfertaLaboralListarJson(ReporteOfertaLaboral filtros)
         {
-            List<ofertaLaboralEntidad> lista = new List<ofertaLaboralEntidad>();
+            List<OfertaLaboralEntidad> lista = new List<OfertaLaboralEntidad>();
             
             string consulta = @"SELECT 
                                 ola_id, 
@@ -89,7 +89,7 @@ namespace SistemaReclutamiento.Models
                     {
                         while (dr.Read())
                         {
-                            var oferta = new ofertaLaboralEntidad
+                            var oferta = new OfertaLaboralEntidad
                             {
                                 ola_id = ManejoNulos.ManageNullInteger(dr["ola_id"]),
                                 ola_nombre = ManejoNulos.ManageNullStr(dr["ola_nombre"]),
@@ -128,9 +128,9 @@ namespace SistemaReclutamiento.Models
             }
             return lista;
         }
-        public List<ofertaLaboralEntidad> PostulanteListarPostulacionesJson(int pos_id)
+        public List<OfertaLaboralEntidad> PostulanteListarPostulacionesJson(int pos_id)
         {
-            List<ofertaLaboralEntidad> postulaciones = new List<ofertaLaboralEntidad>();
+            List<OfertaLaboralEntidad> postulaciones = new List<OfertaLaboralEntidad>();
             string consulta = @"SELECT 
                                 distinct
                                 ola_id, 
@@ -177,7 +177,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var postulacion = new ofertaLaboralEntidad
+                                var postulacion = new OfertaLaboralEntidad
                                 {
                                     ola_id = ManejoNulos.ManageNullInteger(dr["ola_id"]),
                                     ola_nombre = ManejoNulos.ManageNullStr(dr["ola_nombre"]),
@@ -219,9 +219,9 @@ namespace SistemaReclutamiento.Models
             }
             return postulaciones;
         }
-        public ofertaLaboralEntidad OfertaLaboralIdObtenerJson(int ola_id)
+        public OfertaLaboralEntidad OfertaLaboralIdObtenerJson(int ola_id)
         {
-            ofertaLaboralEntidad ofertalaboral = new ofertaLaboralEntidad();
+            OfertaLaboralEntidad ofertalaboral = new OfertaLaboralEntidad();
             string consulta = @"SELECT 
                                     ola_id, 
                                     ola_nombre, 

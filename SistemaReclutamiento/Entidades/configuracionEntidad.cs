@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class configuracionEntidad
+    public class ConfiguracionEntidad
     {
         public int config_id;
         public string config_nemonic;

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class usuarioPersonaEntidad
+    public class UsuarioPersonaEntidad
     {
         public int usu_id { get; set; }
         public int per_id { get; set; }

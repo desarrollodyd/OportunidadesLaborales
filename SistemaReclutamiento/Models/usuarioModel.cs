@@ -10,17 +10,17 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Models
 {
-    public class usuarioModel
+    public class UsuarioModel
     {
         string _conexion = string.Empty;
-        public usuarioModel() {
+        public UsuarioModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
         #region Usuario Postulante
                
-        public usuarioEntidad UsuarioObtenerxID(int id)
+        public UsuarioEntidad UsuarioObtenerxID(int id)
         {
-            usuarioEntidad usuario = new usuarioEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT usu_id,usu_nombre,usu_estado,usu_clave_temp,fk_persona 
 	                            FROM seguridad.seg_usuario where usu_id=@p0;";
             try
@@ -55,9 +55,9 @@ namespace SistemaReclutamiento.Models
             return usuario;
         }
        
-        public usuarioEntidad PostulanteValidarCredenciales(string usu_login)
+        public UsuarioEntidad PostulanteValidarCredenciales(string usu_login)
         {
-            usuarioEntidad usuario = new usuarioEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
 	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0";
             try
@@ -95,7 +95,7 @@ namespace SistemaReclutamiento.Models
         /// </summary>
         /// <param name="usuario">(usuarioEntidad) datos del usuario</param>
         /// <returns>true o false</returns>
-        public bool PostulanteUsuarioValidarEmailJson(usuarioEntidad usuario)
+        public bool PostulanteUsuarioValidarEmailJson(UsuarioEntidad usuario)
         {
             bool response = false;
             string consulta = @"UPDATE seguridad.seg_usuario
@@ -119,7 +119,7 @@ namespace SistemaReclutamiento.Models
             return response;
         }
       
-        public int PostulanteUsuarioInsertarJson(usuarioEntidad usuario)
+        public int PostulanteUsuarioInsertarJson(UsuarioEntidad usuario)
         {
             int idUsuarioInsertado = 0;
             string consulta = @"INSERT INTO seguridad.seg_usuario(
@@ -155,9 +155,9 @@ namespace SistemaReclutamiento.Models
         /// </summary>
         /// <param name="token">token obtenido desde URL</param>
         /// <returns>(usuarioEntidad) usuario al que le corresponde el token enviado</returns>
-        public usuarioEntidad PostulanteUsuarioObtenerTokenJson(string token)
+        public UsuarioEntidad PostulanteUsuarioObtenerTokenJson(string token)
         {
-            usuarioEntidad usuario = new usuarioEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,usu_clave_temp
 	                            FROM seguridad.seg_usuario where usu_clave_temp=@p0;";
             try
@@ -252,9 +252,9 @@ namespace SistemaReclutamiento.Models
         /// </summary>
         /// <param name="direccion_correo">(string) direccion de correo obtenida de formulario de Registro</param>
         /// <returns>retorna la informacion del usuario buscado</returns>
-        public usuarioEntidad PostulanteUsuarioObtenerxCorreo(string direccion_correo)
+        public UsuarioEntidad PostulanteUsuarioObtenerxCorreo(string direccion_correo)
         {
-            usuarioEntidad usuario = new usuarioEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT usu_id,usu_nombre,usu_estado
 	                            FROM seguridad.seg_usuario where usu_nombre=@p0;";
             try
@@ -286,9 +286,9 @@ namespace SistemaReclutamiento.Models
         }
         #endregion
         #region Usuario Proveedor
-        public usuarioEntidad ProveedorValidarCredenciales(string usu_login)
+        public UsuarioEntidad ProveedorValidarCredenciales(string usu_login)
         {
-            usuarioEntidad usuario = new usuarioEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT u.usu_id as usu_id,
                                 lower(u.usu_nombre) as usu_nombre,
                                 u.usu_contraseña as usu_contraseña,

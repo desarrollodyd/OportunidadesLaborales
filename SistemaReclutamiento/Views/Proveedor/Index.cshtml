@@ -3,6 +3,13 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutProveedor.cshtml";
 }
+@{ 
+    foreach (var m in ViewBag.controlleractionlist) {
+        <p>
+            @m
+        </p>
+    }
+}
 
 <h2>Index</h2>
 

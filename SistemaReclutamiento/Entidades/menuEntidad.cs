@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class menuEntidad
+    public class MenuEntidad
     {
         public string men_descripcion { get; set; }
         public int men_orden { get; set; }

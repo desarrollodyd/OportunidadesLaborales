@@ -5,22 +5,25 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class UbigeoController : Controller
     {
-        ubigeoModel ubigeobl = new ubigeoModel();
+        UbigeoModel ubigeobl = new UbigeoModel();
         // GET: Ubigeo
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult UbigeoListarPaisesJson()
         {
             var errormensaje = "";
-            var lista = new List<ubigeoEntidad>();
+            var lista = new List<UbigeoEntidad>();
             try
             {
                 lista = ubigeobl.UbigeoListarPaisesJson();
@@ -31,11 +34,12 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult UbigeoListarDepartamentosporPaisJson(string ubi_pais_id)
         {
             var errormensaje = "";
-            var lista = new List<ubigeoEntidad>();
+            var lista = new List<UbigeoEntidad>();
             try
             {
                 lista = ubigeobl.UbigeoListarDepartamentosporPaisJson(ubi_pais_id);
@@ -51,7 +55,7 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult UbigeoListarProvinciasporDepartamentoJson(string ubi_pais_id, string ubi_departamento_id)
         {
             var errormensaje = "";
-            var lista = new List<ubigeoEntidad>();
+            var lista = new List<UbigeoEntidad>();
             try
             {
                 lista = ubigeobl.UbigeoListarProvinciasporDepartamentoJson(ubi_pais_id,ubi_departamento_id);
@@ -62,11 +66,12 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult UbigeoListarDistritosporProvinciaJson(string ubi_pais_id, string ubi_departamento_id,string ubi_provincia_id)
         {
             var errormensaje = "";
-            var lista = new List<ubigeoEntidad>();
+            var lista = new List<UbigeoEntidad>();
             try
             {
                 lista = ubigeobl.UbigeoListarDistritosporProvinciaJson(ubi_pais_id, ubi_departamento_id,ubi_provincia_id);
@@ -77,11 +82,12 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult UbigeoObtenerDatosporIdJson(int ubi_id)
         {
             var errormensaje = "";
-            var ubigeo = new ubigeoEntidad();
+            var ubigeo = new UbigeoEntidad();
             try
             {
                 ubigeo = ubigeobl.UbigeoObtenerDatosporIdJson(ubi_id);
