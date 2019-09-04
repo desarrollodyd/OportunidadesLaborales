@@ -18,7 +18,7 @@ namespace SistemaReclutamiento.Models
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
 
-        public List<ModuloEntidad> EducacionBasicaListarJson()
+        public List<ModuloEntidad> ModuloListarJson()
         {
             List<ModuloEntidad> lista = new List<ModuloEntidad>();
             string consulta = @"SELECT 
@@ -29,7 +29,9 @@ namespace SistemaReclutamiento.Models
                                 mod_orden,
                                 mod_icono,
                                 mod_estado
-	                                FROM seguridad.seg_modulo;";
+	                                FROM seguridad.seg_modulo
+                                WHERE mod_tipo='Extranet'
+                                and mod_estado='A';";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

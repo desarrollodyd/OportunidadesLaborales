@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace SistemaReclutamiento.Controllers
 {
 
-    public class postulanteController : Controller
+    public class PostulanteController : Controller
     {
         PostulanteModel postulantebl = new PostulanteModel();
         EducacionBasicaModel educacionbasicabl = new EducacionBasicaModel();
@@ -23,10 +23,6 @@ namespace SistemaReclutamiento.Controllers
         PostgradoModel postgradobl = new PostgradoModel();
         EstOfimaticaModel ofimaticaHerramientabl = new EstOfimaticaModel();
         static ConfiguracionModel configuracionbl = new ConfiguracionModel();
-        //static string rutaPostulantePerfil = "RUTA_FOTO_POSTULANTE";
-        //static string rutaPostulanteCv = "RUTA_CV_POSTULANTE";
-        //static string rutaPostulacionPerfil = "RUTA_FOTO_POSTULACION";
-        //static string rutaPostulacionCv = "RUTA_CV_POSTULACION";
         static ConfiguracionEntidad rutaPerfilPostulante = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_FOTO_POSTULANTE");
         static ConfiguracionEntidad rutaCvPostulante = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_CV_POSTULANTE");
         static ConfiguracionEntidad rutaPerfilPostulacion = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_FOTO_POSTULACION");
@@ -156,7 +152,7 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
+      
         [HttpPost]
         public ActionResult PostulanteSubirFotoJson()
         {

@@ -3,13 +3,30 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutProveedor.cshtml";
 }
-@{ 
-    foreach (var m in ViewBag.controlleractionlist) {
-        <p>
-            @m
-        </p>
-    }
-}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-offset-8 col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Rol
+                            </span>
+                            <select class="form-control input-sm" id="cboRol_" name="cboRol_">
+                                <option value="">--Seleccione--</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="posicionMenu" />
+            <ul class="c_tmtimeline" id="libody" style="margin-top: 6px;">
+                <li class="alert alert-danger" style="padding: 5px;">Espere mientras Cargan los Modulos</li>
+            </ul>
 
-<h2>Index</h2>
+        </div>
+    </div>
+</div>
+<script src="~/Content/viewjs/Proveedor/Proveedor.js"></script>
 

@@ -47,7 +47,7 @@
     <link href="~/Content/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.css" rel="stylesheet">
-    <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
+  //¡  <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -89,9 +89,41 @@
                     <!-- /menu profile quick info -->
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                        <div class="menu_section">
+                        <div class="menu_section" >
                             <ul class="nav side-menu" style="margin-left: -1px;">
-                            
+                                <li class="active">
+                                    <a><i class="fa fa-edit"></i> Modulo Extranet <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display:block;">
+                                        <li><a href="#">Menu 1</a></li>
+                                        <li><a href="#">Menu 2 <span class="fa fa-chevron-down"></span> </a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="#">Submenu 1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Submenu 2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Submenu 3</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#">Menu 3 <span class="fa fa-chevron-down"></span> </a>
+                                            <ul class="nav child_menu">
+                                                <li class="sub_menu">
+                                                    <a href="#">Submenu 1</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Submenu 2</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">Submenu 3</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -169,6 +201,7 @@
     <script src="~/Content/vendors/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
     <script src="~/Content/build/js/custom.js"></script>
     <script src="~/Content/viewjs/general.js"></script>
+
 
     <script>
         $("#btnCerrarSesion").click(function () {

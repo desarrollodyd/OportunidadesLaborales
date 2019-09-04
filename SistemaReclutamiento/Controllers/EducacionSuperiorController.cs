@@ -5,19 +5,20 @@ using System.Web;
 using System.Web.Mvc;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
-
+using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
     public class EducacionSuperiorController : Controller
     {
         EducacionSuperiorModel educacionsuperiorbl = new EducacionSuperiorModel();
+      
         // GET: EducacionSuperior
         public ActionResult Index()
         {
             return View();
         }
-
+        [SeguridadMenu(false)]
         [HttpPost]
     
         public ActionResult EducacionSuperiorListarJson(int fkPosID)
@@ -35,7 +36,7 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
         }
-
+        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionSuperiorInsertarJson(EducacionSuperiorEntidad educacionSuperior)
         {
@@ -62,7 +63,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-
+        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionSuperiorEditarJson(EducacionSuperiorEntidad educacionSuperior)
         {
@@ -87,7 +88,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-
+        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionSuperiorEliminarJson(int id)
         {

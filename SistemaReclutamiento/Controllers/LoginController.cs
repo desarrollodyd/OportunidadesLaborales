@@ -284,7 +284,7 @@ namespace SistemaReclutamiento.Controllers
                             Session["usu_proveedor"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                             persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                             Session["per_proveedor"] = persona;
-                            Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                            //Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                             //postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
                             //Session["postulante"] = postulante;
                             //rutaImagenes.imagenPostulante_CV(configuracion.config_nombre, postulante.pos_foto);
@@ -325,9 +325,9 @@ namespace SistemaReclutamiento.Controllers
 
                 Session["usu_proveedor"] = null;
                 Session["per_proveedor"] = null;
-                Session["ubigeo"] = null;
-                Session["rutaPerfil"] = null;
-                Session["rutaCv"] = null;
+                //Session["ubigeo"] = null;
+                //Session["rutaPerfil"] = null;
+               // Session["rutaCv"] = null;
                 respuestaConsulta = true;
             }
             catch (Exception exp)
