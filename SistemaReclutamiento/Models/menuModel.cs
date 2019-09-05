@@ -17,7 +17,7 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<MenuEntidad> EducacionBasicaListarJson()
+        public List<MenuEntidad> MenuListarJson(int fk_modulo)
         {
             List<MenuEntidad> lista = new List<MenuEntidad>();
             string consulta = @"SELECT 
@@ -29,13 +29,15 @@ namespace SistemaReclutamiento.Models
                                 men_descripcion_eng, 
                                 men_tipo, 
                                 fk_modulo
-	                                FROM seguridad.seg_menu;";
+	                                FROM seguridad.seg_menu
+                                    WHERE fk_modulo=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", fk_modulo);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

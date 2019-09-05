@@ -47,7 +47,7 @@
     <link href="~/Content/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.css" rel="stylesheet">
-  //¡  <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
+    @*<link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />*@
     <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -93,32 +93,34 @@
                             <ul class="nav side-menu" style="margin-left: -1px;">
                                 <li class="active">
                                     <a><i class="fa fa-edit"></i> Modulo Extranet <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display:block;">
-                                        <li><a href="#">Menu 1</a></li>
-                                        <li><a href="#">Menu 2 <span class="fa fa-chevron-down"></span> </a>
+                                    <ul class="nav child_menu" id="moduloPrincipal" style="display:block;">
+                                        <li  class="modulo ocult" data-menu1="Menu1" data-modulo="Menu1" data-titulo="Menu1"><a href="#">Menu 1</a></li>
+                                        <li class="modulo ocult" data-menu1="Menu2" data-modulo="Menu2" data-titulo="Menu2">
+                                            <a href="#">Menu 2 <span class="fa fa-chevron-down"></span> 
+                                            </a>
                                             <ul class="nav child_menu">
-                                                <li class="sub_menu">
-                                                    <a href="#">Submenu 1</a>
+                                                <li class="Menu2 ocult sub_menu" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
+                                                    <a href="#" >Submenu 1</a>
                                                 </li>
-                                                <li>
-                                                    <a href="#">Submenu 2</a>
+                                                <li class="Menu2 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2" >
+                                                    <a href="#" >Submenu 2</a>
                                                 </li>
-                                                <li>
-                                                    <a href="#">Submenu 3</a>
+                                                <li class="Menu2 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
+                                                    <a href="#" >Submenu 3</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                        <li>
-                                            <a href="#">Menu 3 <span class="fa fa-chevron-down"></span> </a>
+                                        <li class="modulo ocult" data-menu1="Menu3" data-modulo="Menu3" data-titulo="Menu3">
+                                            <a href="#" >Menu 3 <span class="fa fa-chevron-down"></span> </a>
                                             <ul class="nav child_menu">
-                                                <li class="sub_menu">
-                                                    <a href="#">Submenu 1</a>
+                                                <li class="Menu3 modulo ocult" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
+                                                    <a href="#" >Submenu 1</a>
                                                 </li>
-                                                <li>
-                                                    <a href="#">Submenu 2</a>
+                                                <li class="Menu3 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2">
+                                                    <a href="#" >Submenu 2</a>
                                                 </li>
-                                                <li>
-                                                    <a href="#">Submenu 3</a>
+                                                <li class="Menu3 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
+                                                    <a href="#" >Submenu 3</a>
                                                 </li>
                                             </ul>
                                         </li>

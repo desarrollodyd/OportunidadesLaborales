@@ -5,16 +5,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class SubmenuEntidad
+    public class SubMenuEntidad
     {
-        private string snu_descripcion { get; set; }
-        private string snu_url { get; set; }
-        private int snu_orden { get; set; }
-        private string snu_icono { get; set; }
-        private string snu_estado { get; set; }
-        private int fk_menu { get; set; }
-        private int snu_id { get; set; }
-        private string snu_descripcion_eng { get; set; }
-        private string snu_template { get; set; }
+        public string snu_descripcion { get; set; }
+        public string snu_url { get; set; }
+        public int snu_orden { get; set; }
+        public string snu_icono { get; set; }
+        public string snu_estado { get; set; }
+        public int fk_menu { get; set; }
+        public int snu_id { get; set; }
+        public string snu_descripcion_eng { get; set; }
+        public string snu_template { get; set; }
     }
 }

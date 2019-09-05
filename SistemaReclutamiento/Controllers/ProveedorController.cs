@@ -27,6 +27,33 @@ namespace SistemaReclutamiento.Controllers
             return View();
         }
         [HttpPost]
+        public ActionResult SubMenuListarJson()
+        {
+            var errormensaje = "";
+            SubMenuModel submenubl = new SubMenuModel();
+            MenuModel menubl = new MenuModel();
+            var listaSubMenu = new List<SubMenuEntidad>();
+            var listaMenu = new List<MenuEntidad>();
+            try
+            {
+                listaMenu = menubl.MenuListarJson(6);
+                foreach(var m in listaMenu)
+                {
+                    var lista = submenubl.SubMenuListarJson(m.men_id);
+                    foreach (var n in lista) {
+                        listaSubMenu.Add(n);
+                    }
+                    //listaSubMenu = submenubl.SubMenuListarJson(m.men_id);
+                }
+                errormensaje = "Cargando Data...";
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaSubMenu.ToList(), dataMenu=listaMenu.ToList() , respuesta = true, mensaje = errormensaje });
+        }
+        [HttpPost]
         public ActionResult ModuloListarJson() {
             var errormensaje = "";
             ModuloModel modulobl = new ModuloModel();
