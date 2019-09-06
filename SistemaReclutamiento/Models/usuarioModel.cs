@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Models
     public class UsuarioModel
     {
         string _conexion = string.Empty;
+        string busquedaProveedor = "PROVEEDOR";
         public UsuarioModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
@@ -59,7 +60,7 @@ namespace SistemaReclutamiento.Models
         {
             UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
-	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0";
+	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0 and usu_estado='A'";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -289,18 +290,30 @@ namespace SistemaReclutamiento.Models
         public UsuarioEntidad ProveedorValidarCredenciales(string usu_login)
         {
             UsuarioEntidad usuario = new UsuarioEntidad();
-            string consulta = @"SELECT u.usu_id as usu_id,
-                                lower(u.usu_nombre) as usu_nombre,
-                                u.usu_contraseña as usu_contraseña,
-                                u.usu_estado as usu_estado,
-                                u.fk_persona as fk_persona,
-                                u.usu_clave_temp as usu_clave_temp,
-                                per.per_tipo as per_tipo
-	                            FROM seguridad.seg_usuario as u
-								join marketing.cpj_persona as per
-								on u.fk_persona=per.per_id
-								where
-								lower(u.usu_nombre)=@p0;";
+            //    string consulta = @"SELECT u.usu_id as usu_id,
+            //                        lower(u.usu_nombre) as usu_nombre,
+            //                        u.usu_contraseña as usu_contraseña,
+            //                        u.usu_estado as usu_estado,
+            //                        u.fk_persona as fk_persona,
+            //                        u.usu_clave_temp as usu_clave_temp,
+            //                        per.per_tipo as per_tipo
+            //                     FROM seguridad.seg_usuario as u
+            //join marketing.cpj_persona as per
+            //on u.fk_persona=per.per_id
+            //where
+            //lower(u.usu_nombre)=@p0;";
+            string consulta = @"SELECT lower(usu_nombre) as usu_nombre, 
+                                usu_contraseña, 
+                                usu_estado,
+                                fk_persona,
+                                usu_id, 
+                                usu_fecha_reg,
+                                usu_fecha_act, 
+                                usu_clave_temp, 
+                                usu_tipo
+                                FROM seguridad.seg_usuario
+                                where usu_nombre = @p0 and
+                                usu_tipo = @p1 and usu_estado='A'; ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -308,6 +321,7 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", usu_login);
+                    query.Parameters.AddWithValue("@p1", busquedaProveedor);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -320,7 +334,7 @@ namespace SistemaReclutamiento.Models
                                 usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
                                 usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
-                                usuario.per_tipo = ManejoNulos.ManageNullStr(dr["per_tipo"]);
+                                usuario.usu_tipo = ManejoNulos.ManageNullStr(dr["usu_tipo"]);
                             }
                         }
                     }

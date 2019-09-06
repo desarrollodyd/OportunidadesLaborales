@@ -267,6 +267,7 @@ namespace SistemaReclutamiento.Controllers
             string errormensaje = "";
             var usuario = new UsuarioEntidad();
             var persona = new PersonaEntidad();
+            string proveedor = "PROVEEDOR";
             //var postulante = new postulanteEntidad();
             //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
@@ -276,7 +277,7 @@ namespace SistemaReclutamiento.Controllers
                 usuario = usuariobl.ProveedorValidarCredenciales(usu_login.ToLower());
                 if (usuario.usu_id > 0)
                 {
-                    if (usuario.per_tipo.Equals("PROVEEDOR"))
+                    if (usuario.usu_tipo.Equals(proveedor))
                     {
                         string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
                         if (usuario.usu_contrasenia == password_encriptado)

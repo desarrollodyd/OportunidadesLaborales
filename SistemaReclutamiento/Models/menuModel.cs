@@ -13,31 +13,26 @@ namespace SistemaReclutamiento.Models
     public class MenuModel
     {
         string _conexion;
+        string moduloBusqueda = "Compartido";
         public MenuModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<MenuEntidad> MenuListarJson(int fk_modulo)
+        public List<MenuEntidad> MenuListarJson()
         {
             List<MenuEntidad> lista = new List<MenuEntidad>();
-            string consulta = @"SELECT 
-                                men_descripcion, 
-                                men_orden, 
-                                men_icono,
-                                men_estado,
-                                men_id, 
-                                men_descripcion_eng, 
-                                men_tipo, 
-                                fk_modulo
-	                                FROM seguridad.seg_menu
-                                    WHERE fk_modulo=@p0;";
+            string consulta = @"SELECT men_descripcion, men_orden, men_icono, men_estado, men_id, men_descripcion_eng, men_tipo, fk_modulo
+	FROM seguridad.seg_menu
+	join seguridad.seg_modulo
+	on seguridad.seg_menu.fk_modulo=seguridad.seg_modulo.mod_id
+	where seguridad.seg_modulo.mod_tipo=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_modulo);
+                    query.Parameters.AddWithValue("@p0", moduloBusqueda);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

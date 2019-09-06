@@ -36,7 +36,7 @@ namespace SistemaReclutamiento.Controllers
             var listaMenu = new List<MenuEntidad>();
             try
             {
-                listaMenu = menubl.MenuListarJson(6);
+                listaMenu = menubl.MenuListarJson();
                 foreach(var m in listaMenu)
                 {
                     var lista = submenubl.SubMenuListarJson(m.men_id);

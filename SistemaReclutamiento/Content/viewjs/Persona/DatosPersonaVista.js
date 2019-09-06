@@ -315,7 +315,6 @@
                 per_apellido_mat:
                 {
                     required: true,
-
                 },
                 per_numdoc:
                 {
@@ -330,7 +329,6 @@
                 pos_celular:
                 {
                     required: true,
-
                 },            
                 per_sexo:
                 {
@@ -346,6 +344,9 @@
                     required: true
                 },
                 ubi_distrito_id: {
+                    required: true
+                },
+                fk_nacionalidad:{
                     required: true
                 }
 
@@ -378,7 +379,7 @@
                 },             
                 per_sexo:
                 {
-                    required: '',
+                    required: 'Sexo Obligatorio',
                 },
                 ubi_pais_id: {
                     required: 'Pais Obligatorio'
@@ -391,6 +392,9 @@
                 },
                 ubi_distrito_id: {
                     required: 'Distrito Obligatorio'
+                },
+                fk_nacionalidad: {
+                    required:'Pais de Nacimiento Obligatorio'
                 }
             }
         });
