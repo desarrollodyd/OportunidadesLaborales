@@ -4577,7 +4577,8 @@
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
-    <Compile Include="Entidades\DetalleRespuestaPostulanteEntidad.cs" />
+    <Compile Include="Entidades\DetPreguntaOLAEntidad.cs" />
+    <Compile Include="Entidades\DetRespuestaOLAEntidad.cs" />
     <Compile Include="Entidades\EducacionBasicaEntidad.cs" />
     <Compile Include="Entidades\EducacionSuperiorEntidad.cs" />
     <Compile Include="Entidades\ELog.cs" />
@@ -4593,6 +4594,8 @@
     <Compile Include="Entidades\PersonaSqlEntidad.cs" />
     <Compile Include="Entidades\PostgradoEntidad.cs" />
     <Compile Include="Entidades\PostulanteEntidad.cs" />
+    <Compile Include="Entidades\PreguntaPreFiltro.cs" />
+    <Compile Include="Entidades\RespuestaPreFiltro.cs" />
     <Compile Include="Entidades\RolEntidad.cs" />
     <Compile Include="Entidades\SubMenuEntidad.cs" />
     <Compile Include="Entidades\UbigeoEntidad.cs" />
@@ -4602,7 +4605,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ConfiguracionModel.cs" />
-    <Compile Include="Models\DetalleRespuestaPostulanteModel.cs" />
+    <Compile Include="Models\DetPreguntaOLAModel.cs" />
+    <Compile Include="Models\DetRespuestaOLAModel.cs" />
     <Compile Include="Models\EducacionBasicaModel.cs" />
     <Compile Include="Models\EducacionSuperiorModel.cs" />
     <Compile Include="Models\EstIdiomaModel.cs" />
@@ -4671,7 +4675,6 @@
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
-    <Folder Include="Views\EstIdioma\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

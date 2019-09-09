@@ -124,8 +124,8 @@ namespace SistemaReclutamiento.Models
         {
             int idUsuarioInsertado = 0;
             string consulta = @"INSERT INTO seguridad.seg_usuario(
-	                            fk_persona, usu_nombre, usu_contraseña, usu_estado, usu_clave_temp, usu_cambio_pass,usu_fecha_reg)
-                                VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6)
+	                            fk_persona, usu_nombre, usu_contraseña, usu_estado, usu_clave_temp, usu_cambio_pass,usu_fecha_reg,usu_tipo)
+                                VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)
                                 returning usu_id; ";
             try
             {
@@ -140,6 +140,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p4", usuario.usu_clave_temp);
                     query.Parameters.AddWithValue("@p5", usuario.usu_cambio_pass);
                     query.Parameters.AddWithValue("@p6", usuario.usu_fecha_reg);
+                    query.Parameters.AddWithValue("@p7", usuario.usu_tipo);
                     //query.ExecuteNonQuery();
                     //response = true;
                     idUsuarioInsertado = Int32.Parse(query.ExecuteScalar().ToString());

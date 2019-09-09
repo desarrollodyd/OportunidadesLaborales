@@ -5,7 +5,7 @@
         var validar = $("#frmCambio");
         if (validar.valid()) {
             var dataForm = $("#frmCambio").serializeFormJSON();
-            var url = basePath + "Login/CambiarPasswordUsuario";
+            var url = basePath + "Login/PostulanteCambiarPasswordUsuario";
             cambiarPassword(url, dataForm);
         }
     });

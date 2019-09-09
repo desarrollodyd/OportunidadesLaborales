@@ -5,7 +5,7 @@
         var validar = $("#frmLogin");
         if (validar.valid()) {
             var dataForm = $("#frmLogin").serializeFormJSON();
-            var url = basePath + "Login/ValidarLoginJson";
+            var url = basePath + "Login/PostulanteValidarLoginJson";
             ValidarLogin(url, dataForm);
         }
     });

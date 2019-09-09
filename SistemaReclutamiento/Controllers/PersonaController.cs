@@ -160,6 +160,7 @@ namespace SistemaReclutamiento.Controllers
                         usuario.usu_cambio_pass = true;
                         usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                         usuario.usu_fecha_reg = DateTime.Now;
+                        usuario.usu_tipo = "POSTULANTE";
                         respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                         if (respuestaUsuarioInsertado == 0)
@@ -208,6 +209,7 @@ namespace SistemaReclutamiento.Controllers
                     usuario.usu_cambio_pass = true;
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     usuario.usu_fecha_reg = DateTime.Now;
+                    usuario.usu_tipo = "POSTULANTE";
                     respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                     if (respuestaUsuarioInsertado == 0)
@@ -263,6 +265,7 @@ namespace SistemaReclutamiento.Controllers
                         usuario.usu_cambio_pass = true;
                         usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                         usuario.usu_fecha_reg = DateTime.Now;
+                        usuario.usu_tipo = "POSTULANTE";
                         respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                         if (respuestaUsuarioInsertado == 0)
@@ -307,7 +310,7 @@ namespace SistemaReclutamiento.Controllers
                         "Hola! : " + nombre + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
-                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : "+basepath+"Login/Activacion?id=" + usuario.usu_clave_temp
+                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : "+basepath+"Login/PostulanteActivacion?id=" + usuario.usu_clave_temp
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }

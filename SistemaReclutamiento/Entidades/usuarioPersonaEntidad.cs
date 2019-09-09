@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Entidades
         public string usu_contrasenia { get; set; }
         public string usu_estado { get; set; }
         public string per_tipodoc { get; set; }
+        public string usu_tipo { get; set; }
         public string per_numdoc { get; set; }
         public string per_nombre { get; set; }
         public string per_apellido_pat { get; set; }

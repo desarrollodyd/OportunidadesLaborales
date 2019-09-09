@@ -12,7 +12,6 @@
             placeholder: "PAIS"
         });
     };
-
     var _ListarOfertas = function () {
         var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
         responseSimple({
@@ -24,7 +23,7 @@
                 var respuesta = response.respuesta;
                 $("#ofertasContenido").html("");
                 if (respuesta) {
-                    console.log(data);
+                   
                     $.each(data, function (index, value) {
                         $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12 profile_details">'+
                                                             '<div class="well profile_view">'+
@@ -32,9 +31,9 @@
                                                                     '<h3 class="brief" style="margin: 0px !important;"><i>'+value.ola_nombre+'</i></h3>'+
                                                                     '<h6 style="margin: 0px !important;">direccion</h6>'+
                                                                     '<div class=" col-xs-12" style="padding-bottom: 10px;">'+
-                                                                        '<div class="ln_solid" style="margin-top: 10px !important;"></div>'+
-                            '<button type="button" class="btn btn-primary btn-sm" style="font-size: 15px !important;">  Detalle </button>' +
-                            '<button type="button" id=postular' + value.ola_id + ' data-id=' + value.ola_id + ' class="btn btn-success btn-sm btn_postular" style="font-size: 15px !important;"> Postula</button>' +
+                            '<div class="ln_solid" style="margin-top: 10px !important;"></div>'
+                            + '<button type="button" class="btn btn-primary btn_detalle" style="font-size:15px !important" data-toggle="modal" data-target=".bs-example-modal-detalle" data-id=' + value.ola_id + '>Detalle</button>' +
+                            '<button type="button" id=postular' + value.ola_id + ' data-id=' + value.ola_id + ' class="btn btn-success btn-sm btn_postular" style="font-size: 15px !important;" data-toggle="modal" data-target=".bs-example-modal-postular"> Postula</button>' +
                                                                     '</div>'+
                                                                 '</div>'+
                                                                 '<div class="col-xs-12 bottom text-center">'+
@@ -61,17 +60,76 @@
         });
         /*Postular a ofertas laborales*/
         $(document).on("click", ".btn_postular", function (e) {
-           var data = { fk_oferta_laboral:$(this).data("id") };
+            var data = { ola_id: $(this).data("id") };
             responseSimple({
-                url: "Postulante/PostulanteMigrarDataJson",
+                url: "OfertaLaboral/DetPreguntaOLAListarJson",
                 data: JSON.stringify(data),
-                refresh: true,
+                refresh: false,
                 callBackSuccess: function (response) {
-                    console.log(response);
+                    CloseMessages();
+                    var oferta = response.oferta;
+                    $("#postularModalBody>.panel-default>.panel-body").html("");
+                    $("#postularModalBody>.panel-default>.requisitos").append("<p>" + oferta.ola_requisitos + "</p>");
+                    $("#postularModalBody>.panel-default>.funciones").append("<p>" + oferta.ola_funciones + "</p>");
+                    $("#postularModalBody>.panel-default>.competencias").append("<p>" + oferta.ola_competencias + "</p>");
+                    $("#postularModalBody>.panel-default>.condiciones_lab").append("<p>" + oferta.ola_condiciones_lab + "</p>");
+                    var listaPreguntas = response.data;
+                    var anexar = $("#postularModalBody>.x_panel>.x_content>form");
+                    $(anexar).html("");
+                    $.each(listaPreguntas, function (index, pregunta) {
+                        var listaRespuestas = pregunta.DetalleRespuesta;
+                        var tituloPregunta = "";
+                        tituloPregunta += '<div class="form-group"><label>' + pregunta.dop_pregunta + '</label><div class="pregunta' + pregunta.dop_id + '"></div></div>';
+                        $(anexar).append(tituloPregunta);
+                        $.each(listaRespuestas, function (i, respuesta) {
+                            var tituloRespuesta = "";
+                            if (respuesta.dro_respuesta == "") {
+                                tituloRespuesta += '<div class="radio"><label><input class="texto" type="radio" value="" name="opt_respuesta' + pregunta.dop_id + '"/> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta"/></div>';
+                            }
+                            else {
+                                tituloRespuesta += '<div class="radio"><label><input value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
+                            }
+                            $(".pregunta" + respuesta.fk_det_pregunta_of).append(tituloRespuesta);
+                        });
+                    });
+             
                 }
-                });
+            });
+            $('input[type=radio]').on('change',function () {
+                console.log('asasfsaf');
+                if ($(this).prop('checked') == true) {
+                    console.log('ckecked');
+                }
+                else {
+                    console.log('unckeched');
+                }
+            });
+           
         });
+        
         /*Fin de Postulacion*/
+        $(document).on("click", ".btn_detalle", function (e) {
+            var data = { ola_id: $(this).data("id") };
+            console.log(data);
+            responseSimple({
+                url: "OfertaLaboral/OfertaLaboralIdObtenerJson",
+                data: JSON.stringify(data),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    CloseMessages();
+                    if (response.respuesta) {
+                        var oferta = response.data;
+                        $("#detalleModalBody>.panel-default>.panel-body").html("");
+                        $("#detalleModalLabel").text(oferta.ola_nombre);
+                        $("#detalleModalBody>.panel-default>.requisitos").append("<p>" + oferta.ola_requisitos + "</p>");
+                        $("#detalleModalBody>.panel-default>.funciones").append("<p>" + oferta.ola_funciones + "</p>");
+                        $("#detalleModalBody>.panel-default>.competencias").append("<p>" + oferta.ola_competencias + "</p>");
+                        $("#detalleModalBody>.panel-default>.condiciones_lab").append("<p>" + oferta.ola_condiciones_lab + "</p>");
+                    }
+                }
+            });
+        });
+        
 
     };
     var _componentes = function () {

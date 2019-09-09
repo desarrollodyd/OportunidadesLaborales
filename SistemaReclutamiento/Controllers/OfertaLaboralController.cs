@@ -13,6 +13,8 @@ namespace SistemaReclutamiento.Controllers
     public class OfertaLaboralController : Controller
     {
         OfertaLaboralModel ofertaLaboralbl = new OfertaLaboralModel();
+        DetPreguntaOLAModel detpreguntabl = new DetPreguntaOLAModel();
+        DetRespuestaOLAModel detrespuestabl = new DetRespuestaOLAModel();
         // GET: OfertaLaboral
         public ActionResult OfertaLaboralListarVista()
         {
@@ -82,6 +84,48 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje, respuesta = respuestaConsulta });
+        }
+        [HttpPost]
+        public ActionResult OfertaLaboralIdObtenerJson(int ola_id)
+        {
+            var errormensaje = "";
+            var ofertaLaboral = new OfertaLaboralEntidad();
+            bool response = false;
+            try
+            {
+                ofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
+                response = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = ofertaLaboral, mensaje = errormensaje, respuesta = response });
+        }
+        public ActionResult DetPreguntaOLAListarJson(int ola_id)
+        {
+            var errormensaje = "";
+            var response=false;
+            var detallepregunta = new List<DetPreguntaOLAEntidad>();
+            var detallerespuesta = new List<DetRespuestaOLAEntidad>();
+            var ofertaLaboral = new OfertaLaboralEntidad();
+            try
+            {
+                ofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
+                detallepregunta = detpreguntabl.DetPreguntaListarporPreguntaJson(ola_id);
+                if (detallepregunta.Count > 0) {
+                    foreach (var m in detallepregunta) {
+                        detallerespuesta = detrespuestabl.DetRespuestaListarporPreguntaJson(m.dop_id);
+                        m.DetalleRespuesta = detallerespuesta;
+                    }
+                }
+                response = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = detallepregunta,oferta=ofertaLaboral, mensaje = errormensaje, respuesta = response });
         }
     }
 }
