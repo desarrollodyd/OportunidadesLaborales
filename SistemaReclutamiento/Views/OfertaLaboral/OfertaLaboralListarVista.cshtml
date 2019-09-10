@@ -58,9 +58,6 @@
                                     <div class="form-group">
                                         <label>Empresa</label>
                                         <select class="form-control" name="ola_cod_empresa" id="cbocodEmpresa" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="22">Wild Gaming</option>
-                                            <option value="04">Software 3000</option>
                                         </select>
                                     </div>
                                 </div>
@@ -68,9 +65,7 @@
                                     <div class="form-group">
                                         <label>Cargo</label>
                                         <select class="form-control" name="ola_cod_cargo" id="cbocodCargo" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="001">Anfitrion(A)</option>
-                                            <option value="004">Cajero(A)</option>
+                                            <option value="">Seleccione Cargo</option>
                                         </select>
                                     </div>
                                 </div>
@@ -119,14 +114,11 @@
 
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12" id="ofertasContenido">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                    <div class="col-md-4 col-xs-12" id="printcard">
-                                    </div>
-                                </div>
+                            <div class="row">
+
+
                             </div>
                         </div>
-
                         <!-- modal detalle de oferta -->
                         <div class="modal fade bs-example-modal-detalle" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
@@ -180,7 +172,7 @@
                                         <h4 class="modal-title" id="postularModalLabel">Postular a Oferta: Responda las Siguientes Preguntas</h4>
                                     </div>
                                     <div class="modal-body" id="postularModalBody">
-                                        <div class="panel-default">
+                                        @*<div class="panel-default">
                                             <div class="panel-heading">
                                                 Requisitos
                                             </div>
@@ -197,14 +189,14 @@
                                                 Condiciones Laborales
                                             </div>
                                             <div class="panel-body condiciones_lab"></div>
-                                        </div>
+                                        </div>*@
                                         <div class="x_panel">
                                             <div class="x_title">Responda : </div>
                                             <div class="x_content">
                                                 <form class="form" id="frm-Postular"></form>
                                             </div>
                                         </div>
-                                       
+
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

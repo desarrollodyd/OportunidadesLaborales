@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models
         {
             List<DetRespuestaOLAEntidad> lista = new List<DetRespuestaOLAEntidad>();
             string consulta = @"SELECT dro_id, dro_respuesta, dro_tipo, dro_orden, dro_estado, fk_det_pregunta_of
-	FROM gestion_talento.gdt_ola_det_respuesta_of where fk_det_pregunta_of=@p0
+	FROM gestion_talento.gdt_ola_det_respuesta_of where fk_det_pregunta_of=@p0 and dro_estado='A'
                                 order by dro_orden asc;";
             try
             {

@@ -9,6 +9,10 @@
             allOption: false,
             placeholder: "Seleccione Rol"
         });
+        $("#selectall").on("click", function () {
+            console.log("asdd");
+            $(".to_do>li>p>input").prop("checked", this.checked);
+        }); 
     };
     var _claseActiva = function () {
         $SIDEBAR_MENU = $("#moduloPrincipal");

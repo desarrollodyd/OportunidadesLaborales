@@ -11,6 +11,26 @@
             allOption: false,
             placeholder: "PAIS"
         });
+        selectResponse({
+            url: "SQL/TMEMPRListarJson",
+            select: "cbocodEmpresa",
+            campoID: "CO_EMPR",
+            CampoValor: "DE_NOMB",
+            select2: true,
+            allOption: false,
+            placeholder: "Seleccione Empresa"
+        });
+    };
+    var _ActivarTextBox = function () {
+        $('#frm-Postular input').on('change', function () {
+            if ($('input.texto:radio').is(':checked')) {
+                $('.radio>input[type=text]').attr('disabled', false);
+            }
+            else {
+                $('.radio>input[type=text]').attr('disabled', true);
+            }
+        });
+      
     };
     var _ListarOfertas = function () {
         var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
@@ -21,11 +41,10 @@
             callBackSuccess: function (response) {
                 var data = response.data;
                 var respuesta = response.respuesta;
-                $("#ofertasContenido").html("");
+                $("#ofertasContenido>.row").html("");
                 if (respuesta) {
-                   
                     $.each(data, function (index, value) {
-                        $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12 profile_details">'+
+                        $("#ofertasContenido>.row").append('<div class=col-md-4 col-sm-4 col-xs-12"><div class="profile_details">'+
                                                             '<div class="well profile_view">'+
                                                                '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">'+
                                                                     '<h3 class="brief" style="margin: 0px !important;"><i>'+value.ola_nombre+'</i></h3>'+
@@ -45,9 +64,8 @@
                                                                      '</div>'+
                                                                 '</div>'+
                                                             '</div>'+
-                                                      '</div >');
+                                                      '</div></div>');
                     });
-
                     if (data.length == 0) {
                         CloseMessages();
                         messageResponse({
@@ -68,11 +86,11 @@
                 callBackSuccess: function (response) {
                     CloseMessages();
                     var oferta = response.oferta;
-                    $("#postularModalBody>.panel-default>.panel-body").html("");
-                    $("#postularModalBody>.panel-default>.requisitos").append("<p>" + oferta.ola_requisitos + "</p>");
-                    $("#postularModalBody>.panel-default>.funciones").append("<p>" + oferta.ola_funciones + "</p>");
-                    $("#postularModalBody>.panel-default>.competencias").append("<p>" + oferta.ola_competencias + "</p>");
-                    $("#postularModalBody>.panel-default>.condiciones_lab").append("<p>" + oferta.ola_condiciones_lab + "</p>");
+                    //$("#postularModalBody>.panel-default>.panel-body").html("");
+                    //$("#postularModalBody>.panel-default>.requisitos").append("<p>" + oferta.ola_requisitos + "</p>");
+                    //$("#postularModalBody>.panel-default>.funciones").append("<p>" + oferta.ola_funciones + "</p>");
+                    //$("#postularModalBody>.panel-default>.competencias").append("<p>" + oferta.ola_competencias + "</p>");
+                    //$("#postularModalBody>.panel-default>.condiciones_lab").append("<p>" + oferta.ola_condiciones_lab + "</p>");
                     var listaPreguntas = response.data;
                     var anexar = $("#postularModalBody>.x_panel>.x_content>form");
                     $(anexar).html("");
@@ -84,7 +102,7 @@
                         $.each(listaRespuestas, function (i, respuesta) {
                             var tituloRespuesta = "";
                             if (respuesta.dro_respuesta == "") {
-                                tituloRespuesta += '<div class="radio"><label><input class="texto" type="radio" value="" name="opt_respuesta' + pregunta.dop_id + '"/> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta"/></div>';
+                                tituloRespuesta += '<div class="radio"><label><input class="texto" type="radio" value="" name="opt_respuesta' + pregunta.dop_id + '"/> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" /></div>';
                             }
                             else {
                                 tituloRespuesta += '<div class="radio"><label><input value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
@@ -92,21 +110,10 @@
                             $(".pregunta" + respuesta.fk_det_pregunta_of).append(tituloRespuesta);
                         });
                     });
-             
+                    _ActivarTextBox();
                 }
             });
-            $('input[type=radio]').on('change',function () {
-                console.log('asasfsaf');
-                if ($(this).prop('checked') == true) {
-                    console.log('ckecked');
-                }
-                else {
-                    console.log('unckeched');
-                }
-            });
-           
         });
-        
         /*Fin de Postulacion*/
         $(document).on("click", ".btn_detalle", function (e) {
             var data = { ola_id: $(this).data("id") };
@@ -263,6 +270,19 @@
                 });
                 $("#cboDistrito").rules('remove', 'required');
             }
+        });
+        $("#cbocodEmpresa").change(function () {
+            var CO_EMPR = $("#cbocodEmpresa option:selected").val();
+            selectResponse({
+                url: "SQL/TTPUES_TRABListarJson",
+                select: "cbocodCargo",
+                data: { CO_EMPR: CO_EMPR},
+                campoID: "CO_PUES_TRAB",
+                CampoValor: "DE_PUES_TRAB",
+                select2: true,
+                allOption: false,
+                placeholder: "Seleccione Puesto"
+            });
         });
     };
 

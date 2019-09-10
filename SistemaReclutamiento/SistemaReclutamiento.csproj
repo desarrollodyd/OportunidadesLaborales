@@ -4575,6 +4575,7 @@
     <Compile Include="Controllers\PostgradoController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\DetPreguntaOLAEntidad.cs" />
@@ -4623,6 +4624,7 @@
     <Compile Include="Models\PostulanteModel.cs" />
     <Compile Include="Models\ClaseLibreModel.cs" />
     <Compile Include="Models\RolModel.cs" />
+    <Compile Include="Models\SQLModel.cs" />
     <Compile Include="Models\SubMenuModel.cs" />
     <Compile Include="Models\UbigeoModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
@@ -4675,6 +4677,7 @@
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
+    <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

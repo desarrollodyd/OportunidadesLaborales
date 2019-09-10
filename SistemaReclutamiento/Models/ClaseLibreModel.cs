@@ -49,5 +49,15 @@ namespace SistemaReclutamiento.Models
             Value = string.Empty;
         }
     }
+    public class TMEMPR {
+        public string CO_EMPR { get; set; }
+        public string DE_NOMB { get; set; }
+        public string DE_NOMB_CORT { get; set; }
+    }
+    public class TTPUES_TRAB {
+        public string CO_EMPR { get; set; }
+        public string CO_PUES_TRAB { get; set; }
+        public string DE_PUES_TRAB { get; set; }
+    }
 
 }

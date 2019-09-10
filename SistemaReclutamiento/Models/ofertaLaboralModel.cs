@@ -17,6 +17,30 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
+        public int ObtenerCantidadOfertas() {
+            int cantidad = 0;
+            string consulta = @"select Count(*) as total from gestion_talento.gdt_ola_oferta_laboral where ola_estado='A'";
+            try
+            {
+                using (var con = new NpgsqlConnection())
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            cantidad = ManejoNulos.ManageNullInteger(dr["total"]);
+                        }
+                    }
+                }
+            }
+            catch (Exception  ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return cantidad;
+        }
         public List<OfertaLaboralEntidad> OfertaLaboralListarJson(ReporteOfertaLaboral filtros)
         {
             List<OfertaLaboralEntidad> lista = new List<OfertaLaboralEntidad>();
