@@ -76,7 +76,22 @@
                 }
             }
         });
-        /*Postular a ofertas laborales*/
+        /*Boton Postularme de Modal Postular*/
+        $(document).on("click", ".btn_postularme", function (e) {
+            var elementoPregunta = $("#frm-Postular>.form-group>label");
+            var elementoRespuesta = $("#frm-Postular>.form-group>div");
+            preguntas = [];
+            respuestas = [];
+            $(elementoPregunta).each(function () {
+                preguntas.push($(this).text());
+                respuestas.push($("input[name='opt_respuesta" + $(this).data("id") + "']:checked").val())
+            });
+            _ActivarTextBox();
+            console.log(preguntas);
+            console.log(respuestas);
+        });
+        /*Fin de Evento de Boton*/
+        /*Modal Preguntas Prefitro*/
         $(document).on("click", ".btn_postular", function (e) {
             var data = { ola_id: $(this).data("id") };
             responseSimple({
@@ -97,15 +112,15 @@
                     $.each(listaPreguntas, function (index, pregunta) {
                         var listaRespuestas = pregunta.DetalleRespuesta;
                         var tituloPregunta = "";
-                        tituloPregunta += '<div class="form-group"><label>' + pregunta.dop_pregunta + '</label><div class="pregunta' + pregunta.dop_id + '"></div></div>';
+                        tituloPregunta += '<div class="form-group"><label data-id=' + pregunta.dop_id + '>' + pregunta.dop_pregunta + '</label><div class="pregunta' + pregunta.dop_id + '"></div></div>';
                         $(anexar).append(tituloPregunta);
                         $.each(listaRespuestas, function (i, respuesta) {
                             var tituloRespuesta = "";
                             if (respuesta.dro_respuesta == "") {
-                                tituloRespuesta += '<div class="radio"><label><input class="texto" type="radio" value="" name="opt_respuesta' + pregunta.dop_id + '"/> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" /></div>';
+                                tituloRespuesta += '<div class="radio"><label><input data-id="' + respuesta.dro_id + '" class="texto" type="radio" value="" name="opt_respuesta' + pregunta.dop_id + '"/> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" /></div>';
                             }
                             else {
-                                tituloRespuesta += '<div class="radio"><label><input value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
+                                tituloRespuesta += '<div class="radio"><label><input data-id="' + respuesta.dro_id + '" value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
                             }
                             $(".pregunta" + respuesta.fk_det_pregunta_of).append(tituloRespuesta);
                         });
@@ -114,7 +129,7 @@
                 }
             });
         });
-        /*Fin de Postulacion*/
+        /*Fin de Modal*/
         $(document).on("click", ".btn_detalle", function (e) {
             var data = { ola_id: $(this).data("id") };
             console.log(data);

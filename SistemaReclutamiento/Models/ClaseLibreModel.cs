@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SistemaReclutamiento.Entidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,10 +14,20 @@ namespace SistemaReclutamiento.Models
         public string ola_nombre { get; set; }
         public string ola_cod_empresa { get; set; }
         public string ola_cod_cargo { get; set; }
-        public int ubi_distrito_id { get; set; }
+        public int fk_ubigeo { get; set; }
+        public string busqueda { get; set; }
+        public string ubi_pais_id { get; set; }
+        public string ubi_departamento_id { get; set; }
+        public string ubi_provincia_id { get; set; }
+        public string ubi_distrito_id { get; set; }
         public string ola_rango_fecha { get; set; }
         public DateTime ola_fecha_ini { get; set; }
         public int pos_id { get; set; }
+        public UbigeoEntidad ubigeo { get; set; }
+        public ReporteOfertaLaboral()
+        {
+            this.ubigeo = new UbigeoEntidad();
+        }
     }
     public class postulacionEntidad
     {

@@ -71,26 +71,37 @@ namespace SistemaReclutamiento.Models
                                 ola_cod_puesto, 
                                 fk_ubigeo, 
                                 fk_usuario
-	                            FROM gestion_talento.gdt_ola_oferta_laboral where ";
-           
-                
+	                            FROM gestion_talento.gdt_ola_oferta_laboral join marketing.cpj_ubigeo
+                                on (fk_ubigeo=marketing.cpj_ubigeo.ubi_id)
+                                where ";
+
+            if (filtros.busqueda.Equals("PAIS")) {
+                consulta+= "(ubi_pais_id in (select ubi_pais_id from marketing.cpj_ubigeo where ubi_pais_id = '"+filtros.ubi_pais_id+"' and ubi_departamento_id = '0'and ubi_provincia_id = '0' and ubi_distrito_id = '0')) and ";
+            }
+            if (filtros.busqueda.Equals("DEPARTAMENTO"))
+            {
+                consulta += "(ubi_departamento_id in (select ubi_departamento_id from marketing.cpj_ubigeo where ubi_pais_id = '" + filtros.ubi_pais_id + "' and ubi_departamento_id = '"+filtros.ubi_departamento_id+"'and ubi_provincia_id = '0' and ubi_distrito_id = '0')) and ";
+            }
+            if (filtros.busqueda.Equals("PROVINCIA"))
+            {
+                consulta += "(ubi_provincia_id in (select ubi_provincia_id from marketing.cpj_ubigeo where ubi_pais_id = '" + filtros.ubi_pais_id + "' and ubi_departamento_id = '" + filtros.ubi_departamento_id + "'and ubi_provincia_id = '"+filtros.ubi_provincia_id+"' and ubi_distrito_id = '0')) and ";
+            }
+            if (filtros.busqueda.Equals("DISTRITO"))
+            {
+                consulta += "(ubi_distrito_id in (select ubi_distrito_id from marketing.cpj_ubigeo where ubi_pais_id = '" + filtros.ubi_pais_id + "' and ubi_departamento_id = '" + filtros.ubi_departamento_id + "'and ubi_provincia_id = '" + filtros.ubi_provincia_id + "' and ubi_distrito_id = '"+filtros.ubi_distrito_id+"')) and ";
+            }
             if (filtros.ola_cod_empresa != "" && filtros.ola_cod_empresa != null)
             {
                 consulta += "ola_cod_empresa='"+ManejoNulos.ManageNullStr(filtros.ola_cod_empresa) +"' and ";
             }
             if (filtros.ola_cod_cargo != "" && filtros.ola_cod_cargo != null)
             {
-                consulta += "ola_cod_cargo='" + ManejoNulos.ManageNullStr(filtros.ola_cod_cargo) + "' and ";
+                consulta += "ola_cod_puesto='" + ManejoNulos.ManageNullStr(filtros.ola_cod_cargo) + "' and ";
             }
             if (filtros.ola_fecha_ini!=null)
             {
                 consulta += "ola_fecha_pub between '" + ManejoNulos.ManageNullDate(filtros.ola_fecha_ini) + "' and '" + DateTime.Now + "' and ";
             }
-            if (filtros.ubi_distrito_id != 0)
-            {
-                consulta += "fk_ubigeo=" + ManejoNulos.ManageNullInteger(filtros.ubi_distrito_id) + " and ";
-            }
-
             if (filtros.ola_nombre != "" && filtros.ola_nombre != null)
             {
                 consulta += "lower(ola_nombre) Like '%" + ManejoNulos.ManageNullStr(filtros.ola_nombre.ToLower()) + "%' and ";

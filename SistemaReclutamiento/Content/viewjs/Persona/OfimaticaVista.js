@@ -111,7 +111,7 @@
             }
             else {
                 messageResponse({
-                    text: "Error no se encontro ID",
+                    text: "Error, no se encontro ID",
                     type: "error"
                 })
             }

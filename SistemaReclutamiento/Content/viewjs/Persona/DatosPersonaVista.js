@@ -367,7 +367,7 @@
                 per_numdoc:
                 {
                     required: 'Nro. Documento Obligatorio',
-                    digits: 'Solo Numeros',
+                    digits: 'Solo Números',
                 },
                 per_fechanacimiento:
                 {
@@ -375,14 +375,14 @@
                 },
                 pos_celular:
                 {
-                    required: 'Nro. Celular Obligatorio',
+                    required: 'Nro. de Celular Obligatorio',
                 },             
                 per_sexo:
                 {
                     required: 'Sexo Obligatorio',
                 },
                 ubi_pais_id: {
-                    required: 'Pais Obligatorio'
+                    required: 'País Obligatorio'
                 },
                 ubi_departamento_id: {
                     required: 'Departamento Obligatorio'
@@ -394,7 +394,7 @@
                     required: 'Distrito Obligatorio'
                 },
                 fk_nacionalidad: {
-                    required:'Pais de Nacimiento Obligatorio'
+                    required:'Nacionalidad Obligatoria'
                 }
             }
         });

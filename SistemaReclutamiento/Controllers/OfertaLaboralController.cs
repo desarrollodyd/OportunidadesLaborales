@@ -31,11 +31,39 @@ namespace SistemaReclutamiento.Controllers
 
             // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            UbigeoModel ubigeobl = new UbigeoModel();
+            UbigeoEntidad ubigeo = new UbigeoEntidad();
             DateTime fecha_fin = DateTime.Now;
             DateTime fecha_ayuda;
             bool respuestaConsulta = false;
             string errormensaje = "";
+            reporte.busqueda = string.Empty;
             var lista = new List<OfertaLaboralEntidad>();
+            if (reporte.ubi_pais_id != string.Empty && reporte.ubi_pais_id != null)
+            {
+                if (reporte.ubi_departamento_id != string.Empty && reporte.ubi_departamento_id != null)
+                {
+                    if (reporte.ubi_provincia_id != string.Empty && reporte.ubi_provincia_id != null)
+                    {
+                        if (reporte.ubi_distrito_id != string.Empty && reporte.ubi_distrito_id != null)
+                        {
+                            reporte.busqueda = "DISTRITO";
+                        }
+                        else
+                        {
+                            reporte.busqueda = "PROVINCIA";
+                        }
+                    }
+                    else
+                    {
+                        reporte.busqueda = "DEPARTAMENTO";
+                    }
+                }
+                else
+                {
+                    reporte.busqueda = "PAIS";
+                }
+            }
             if (reporte.ola_rango_fecha == "hoy")
             {
                 reporte.ola_fecha_ini = DateTime.Parse(fecha_fin.ToShortDateString());

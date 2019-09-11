@@ -116,7 +116,7 @@
                 //console.log(extension);
                 if (extension != "pdf" && extension != "doc" && extension != "docx") {
                     messageResponse({
-                        text: 'Solo Se Permite formato word o pdf',
+                        text: 'Sólo Se Permite formato word o pdf',
                         type: "warning"
                     });
                 }

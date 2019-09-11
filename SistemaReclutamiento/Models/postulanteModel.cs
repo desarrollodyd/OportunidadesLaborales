@@ -348,7 +348,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullStr(postulante.pos_cv));
                     query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullStr(postulante.pos_foto));
                     query.Parameters.AddWithValue("@p13", ManejoNulos.ManageNullStr(postulante.pos_situacion));
-                    query.Parameters.AddWithValue("@p14", ManejoNulos.ManageNullDate(postulante.pos_fecha_reg));
+                    query.Parameters.AddWithValue("@p14", ManejoNulos.ManageNullDate(DateTime.Now));
                     query.Parameters.AddWithValue("@p15", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
                     query.Parameters.AddWithValue("@p16", ManejoNulos.ManageNullStr(postulante.pos_estado));
                     query.Parameters.AddWithValue("@p17", ManejoNulos.ManageNullInteger(postulante.pos_id));
