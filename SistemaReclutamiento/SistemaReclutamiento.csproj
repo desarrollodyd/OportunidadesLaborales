@@ -3641,8 +3641,9 @@
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
-    <Content Include="Content\viewjs\Login\Login.js" />
+    <Content Include="Content\viewjs\Login\LoginPostulante.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
+    <Content Include="Content\viewjs\Login\LoginProveedor.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\CambiarPasswordVista.js" />
@@ -3656,6 +3657,7 @@
     <Content Include="Content\viewjs\Persona\PersonaEditarVista.js" />
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
     <Content Include="Content\viewjs\Persona\PostGradoVista.js" />
+    <Content Include="Content\viewjs\Proveedor\Proveedor.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\icon.png" />
@@ -4554,8 +4556,8 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
-    <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Login\PostulanteIndex.cshtml" />
+    <Content Include="Views\Shared\_LoginPostulante.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -4572,44 +4574,60 @@
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\PostgradoController.cs" />
     <Compile Include="Controllers\PostulanteController.cs" />
+    <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
-    <Compile Include="Entidades\configuracionEntidad.cs" />
-    <Compile Include="Entidades\detalleRespuestaPostulanteEntidad.cs" />
-    <Compile Include="Entidades\educacionBasicaEntidad.cs" />
-    <Compile Include="Entidades\educacionSuperiorEntidad.cs" />
-    <Compile Include="Entidades\estIdiomaEntidad.cs" />
-    <Compile Include="Entidades\experienciaEntidad.cs" />
-    <Compile Include="Entidades\idiomaEntidad.cs" />
-    <Compile Include="Entidades\ofertaLaboralEntidad.cs" />
-    <Compile Include="Entidades\ofimaticaEntidad.cs" />
-    <Compile Include="Entidades\estOfimaticaEntidad.cs" />
-    <Compile Include="Entidades\personaEntidad.cs" />
-    <Compile Include="Entidades\personaSqlEntidad.cs" />
-    <Compile Include="Entidades\postgradoEntidad.cs" />
-    <Compile Include="Entidades\postulanteEntidad.cs" />
-    <Compile Include="Entidades\ubigeoEntidad.cs" />
-    <Compile Include="Entidades\usuarioEntidad.cs" />
-    <Compile Include="Entidades\usuarioPersonaEntidad.cs" />
+    <Compile Include="Entidades\ConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\DetPreguntaOLAEntidad.cs" />
+    <Compile Include="Entidades\DetRespuestaOLAEntidad.cs" />
+    <Compile Include="Entidades\EducacionBasicaEntidad.cs" />
+    <Compile Include="Entidades\EducacionSuperiorEntidad.cs" />
+    <Compile Include="Entidades\ELog.cs" />
+    <Compile Include="Entidades\EstIdiomaEntidad.cs" />
+    <Compile Include="Entidades\ExperienciaEntidad.cs" />
+    <Compile Include="Entidades\IdiomaEntidad.cs" />
+    <Compile Include="Entidades\MenuEntidad.cs" />
+    <Compile Include="Entidades\ModuloEntidad.cs" />
+    <Compile Include="Entidades\OfertaLaboralEntidad.cs" />
+    <Compile Include="Entidades\OfimaticaEntidad.cs" />
+    <Compile Include="Entidades\EstOfimaticaEntidad.cs" />
+    <Compile Include="Entidades\PersonaEntidad.cs" />
+    <Compile Include="Entidades\PersonaSqlEntidad.cs" />
+    <Compile Include="Entidades\PostgradoEntidad.cs" />
+    <Compile Include="Entidades\PostulanteEntidad.cs" />
+    <Compile Include="Entidades\PreguntaPreFiltro.cs" />
+    <Compile Include="Entidades\RespuestaPreFiltro.cs" />
+    <Compile Include="Entidades\RolEntidad.cs" />
+    <Compile Include="Entidades\SubMenuEntidad.cs" />
+    <Compile Include="Entidades\UbigeoEntidad.cs" />
+    <Compile Include="Entidades\UsuarioEntidad.cs" />
+    <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\configuracionModel.cs" />
-    <Compile Include="Models\detalleRespuestaPostulanteModel.cs" />
-    <Compile Include="Models\educacionBasicaModel.cs" />
-    <Compile Include="Models\educacionSuperiorModel.cs" />
-    <Compile Include="Models\estIdiomaModel.cs" />
-    <Compile Include="Models\experienciaModel.cs" />
-    <Compile Include="Models\idiomaModel.cs" />
-    <Compile Include="Models\ofertaLaboralModel.cs" />
-    <Compile Include="Models\estOfimaticaModel.cs" />
-    <Compile Include="Models\ofimaticaModel.cs" />
-    <Compile Include="Models\personaModel.cs" />
-    <Compile Include="Models\personaSqlModel.cs" />
-    <Compile Include="Models\postgradoModel.cs" />
-    <Compile Include="Models\postulanteModel.cs" />
+    <Compile Include="Models\ConfiguracionModel.cs" />
+    <Compile Include="Models\DetPreguntaOLAModel.cs" />
+    <Compile Include="Models\DetRespuestaOLAModel.cs" />
+    <Compile Include="Models\EducacionBasicaModel.cs" />
+    <Compile Include="Models\EducacionSuperiorModel.cs" />
+    <Compile Include="Models\EstIdiomaModel.cs" />
+    <Compile Include="Models\ExperienciaModel.cs" />
+    <Compile Include="Models\IdiomaModel.cs" />
+    <Compile Include="Models\MenuModel.cs" />
+    <Compile Include="Models\ModuloModel.cs" />
+    <Compile Include="Models\OfertaLaboralModel.cs" />
+    <Compile Include="Models\EstOfimaticaModel.cs" />
+    <Compile Include="Models\OfimaticaModel.cs" />
+    <Compile Include="Models\PersonaModel.cs" />
+    <Compile Include="Models\PersonaSqlModel.cs" />
+    <Compile Include="Models\PostgradoModel.cs" />
+    <Compile Include="Models\PostulanteModel.cs" />
     <Compile Include="Models\ClaseLibreModel.cs" />
-    <Compile Include="Models\ubigeoModel.cs" />
-    <Compile Include="Models\usuarioModel.cs" />
+    <Compile Include="Models\RolModel.cs" />
+    <Compile Include="Models\SQLModel.cs" />
+    <Compile Include="Models\SubMenuModel.cs" />
+    <Compile Include="Models\UbigeoModel.cs" />
+    <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
@@ -4617,6 +4635,7 @@
     <Compile Include="Utilitarios\ManejoNulos.cs" />
     <Compile Include="Utilitarios\RutaImagenes.cs" />
     <Compile Include="Utilitarios\Seguridad.cs" />
+    <Compile Include="Utilitarios\SeguridadMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -4625,7 +4644,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LayoutPostulante.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Persona\PersonaIndexVista.cshtml" />
     <Content Include="Views\Persona\PersonaEditarVista.cshtml" />
@@ -4641,6 +4660,10 @@
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista.cshtml" />
     <Content Include="Views\Persona\CambiarPasswordVista.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.cshtml" />
+    <Content Include="Views\Shared\_LoginProveedor.cshtml" />
+    <Content Include="Views\Shared\_LayoutProveedor.cshtml" />
+    <Content Include="Views\Login\ProveedorIndex.cshtml" />
+    <Content Include="Views\Proveedor\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4653,7 +4676,8 @@
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
-    <Folder Include="Views\EstIdioma\" />
+    <Folder Include="log\" />
+    <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

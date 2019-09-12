@@ -10,16 +10,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class estIdiomaModel
+    public class EstIdiomaModel
     {
         string _conexion;
-        public estIdiomaModel()
+        public EstIdiomaModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<estIdiomaEntidad> EstOfimaticaListarJson()
+        public List<EstIdiomaEntidad> EstOfimaticaListarJson()
         {
-            List<estIdiomaEntidad> lista = new List<estIdiomaEntidad>();
+            List<EstIdiomaEntidad> lista = new List<EstIdiomaEntidad>();
             string consulta = @"SELECT 
                                 eid_id, 
                                 eid_nombre,
@@ -41,7 +41,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var estIdioma = new estIdiomaEntidad
+                                var estIdioma = new EstIdiomaEntidad
                                 {
 
                                     eid_id = ManejoNulos.ManageNullInteger(dr["eid_id"]),
@@ -65,9 +65,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public estIdiomaEntidad EstOfimaticaIdObtenerJson(int her_id)
+        public EstIdiomaEntidad EstOfimaticaIdObtenerJson(int her_id)
         {
-            estIdiomaEntidad estIdioma = new estIdiomaEntidad();
+            EstIdiomaEntidad estIdioma = new EstIdiomaEntidad();
             string consulta = @"SELECT 
                                 eid_id, 
                                 eid_nombre,

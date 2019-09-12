@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class ubigeoEntidad
+    public class UbigeoEntidad
     {
         public int ubi_id { get; set; }
         public string ubi_pais_id { get; set; }

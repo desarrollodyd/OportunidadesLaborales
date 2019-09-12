@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +9,22 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class EstOfimaticaController : Controller
     {
         // GET: OfimaticaHerramienta
-        estOfimaticaModel estofimaticabl = new estOfimaticaModel();
+        EstOfimaticaModel estofimaticabl = new EstOfimaticaModel();
+
         public ActionResult Index()
         {
             return View();
         }
+   
         [HttpPost]
         public ActionResult EstOfimaticaListarJson()
         {
             var errormensaje = "";
-            var lista = new List<estOfimaticaEntidad>();
+            var lista = new List<EstOfimaticaEntidad>();
             try
             {
                 lista = estofimaticabl.EstOfimaticaListarJson();

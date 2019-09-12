@@ -71,6 +71,41 @@
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
 
+        if (postulante.fk_nacionalidad > 0) {
+            var id = { ubi_id: postulante.fk_nacionalidad };
+            responseSimple({
+                url: "Ubigeo/UbigeoObtenerDatosporIdJson",
+                data: JSON.stringify(id),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                    var data = response.data;
+                    var mensaje = response.mensaje;
+                    selectResponse({
+                        url: "Ubigeo/UbigeoListarPaisesJson",
+                        select: "cboNacionalidad",
+                        campoID: "ubi_pais_id",
+                        CampoValor: "ubi_nombre",
+                        selectVal: data.ubi_pais_id,
+                        select2: true,
+                        allOption: false
+                    });
+                    CloseMessages(); 
+                }
+            });
+         
+        }
+        else {
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboNacionalidad",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false
+            });
+        }
+
         if (ubigeo.ubi_id > 0) {
             selectResponse({
                 url: "Ubigeo/UbigeoListarPaisesJson",
@@ -280,7 +315,6 @@
                 per_apellido_mat:
                 {
                     required: true,
-
                 },
                 per_numdoc:
                 {
@@ -292,16 +326,10 @@
                     required: true,
 
                 },
-                per_celular:
+                pos_celular:
                 {
                     required: true,
-
-                },
-                per_telefono:
-                {
-                    required: true,
-
-                },
+                },            
                 per_sexo:
                 {
                     required: true,
@@ -316,6 +344,9 @@
                     required: true
                 },
                 ubi_distrito_id: {
+                    required: true
+                },
+                fk_nacionalidad:{
                     required: true
                 }
 
@@ -336,26 +367,22 @@
                 per_numdoc:
                 {
                     required: 'Nro. Documento Obligatorio',
-                    digits: 'Solo Numeros',
+                    digits: 'Solo Números',
                 },
                 per_fechanacimiento:
                 {
                     required: 'Fecha Nacimiento Obligatorio',
                 },
-                per_celular:
+                pos_celular:
                 {
-                    required: 'Nro. Celular Obligatorio',
-                },
-                per_telefono:
-                {
-                    required: 'Nro. Telefono Obligatorio',
-                },
+                    required: 'Nro. de Celular Obligatorio',
+                },             
                 per_sexo:
                 {
-                    required: '',
+                    required: 'Sexo Obligatorio',
                 },
                 ubi_pais_id: {
-                    required: 'Pais Obligatorio'
+                    required: 'País Obligatorio'
                 },
                 ubi_departamento_id: {
                     required: 'Departamento Obligatorio'
@@ -365,6 +392,9 @@
                 },
                 ubi_distrito_id: {
                     required: 'Distrito Obligatorio'
+                },
+                fk_nacionalidad: {
+                    required:'Nacionalidad Obligatoria'
                 }
             }
         });

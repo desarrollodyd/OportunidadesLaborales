@@ -1,9 +1,7 @@
 ﻿var LoginRegisterView = function () {
-
     //
     // Setup module components
     //
-
     var _componentes = function () {     
         $('#per_numdoc').on('keydown keypress', function (e) {
             if (e.key.length === 1) {
@@ -51,19 +49,18 @@
             }
         });
 
-
         $(document).on("click", ".btn_ingresar", function (e) {
             $("#login-form").submit();
             if (_objetoForm_frmLogin.valid()) {
                 var dataForm = $('#login-form').serializeFormJSON();
                 responseSimple({
-                    url: "Login/ValidarLoginJson",
+                    url: "Login/PostulanteValidarLoginJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,                 
                     callBackSuccess: function (response) {
                         var pendiente = response.estado;
                         if (pendiente != "") {                           
-                              redirect({ site: "Login/Activacion?id=" + pendiente });
+                              redirect({ site: "Login/PostulanteActivacion?id=" + pendiente });
                         }
                         else {
                             if (response.respuesta) {
@@ -72,10 +69,9 @@
                             else {
                                 $("#usu_password").val("");
                             }
-                           
                         }
-                          
-                    }
+                    },
+                    time:500
                 });
             } else {
                 messageResponse({
@@ -114,7 +110,7 @@
             if (_objetoForm_frmRecovery.valid()) {
                 var dataForm = $('#recovery-form').serializeFormJSON();
                 responseSimple({
-                    url: "Login/RecuperarContrasenia",
+                    url: "Login/PostulanteRecuperarContrasenia",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {

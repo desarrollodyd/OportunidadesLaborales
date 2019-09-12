@@ -22,6 +22,12 @@ namespace SistemaReclutamiento.Utilitarios
                     string base64String = Convert.ToBase64String(imagebytes);
                     HttpContext.Current.Session["rutaPerfil"] = base64String;
                 }
+                else {
+                    postulante_image = HttpContext.Current.Server.MapPath("~/images/user.png");
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(postulante_image);
+                    string base64String = Convert.ToBase64String(imagebytes);
+                    HttpContext.Current.Session["rutaPerfil"] = base64String;
+                }
             }
             else
             {

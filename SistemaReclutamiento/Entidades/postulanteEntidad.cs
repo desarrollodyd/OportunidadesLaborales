@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class postulanteEntidad
+    public class PostulanteEntidad
     {
         public int pos_id { get; set; }
         public string pos_condicion_viv { get; set; }

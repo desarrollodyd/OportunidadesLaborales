@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class experienciaEntidad
+    public class ExperienciaEntidad
     {
         public int exp_id { get; set; }
         public string exp_empresa { get; set; }

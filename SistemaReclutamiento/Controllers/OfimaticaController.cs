@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +9,21 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class OfimaticaController : Controller
     {
-        ofimaticaModel ofimaticabl = new ofimaticaModel();
+        OfimaticaModel ofimaticabl = new OfimaticaModel();
         // GET: Ofimatica
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult OfimaticaListarJson(int fkPosID)
         {
             var errormensaje = "";
-            var lista = new List<ofimaticaEntidad>();
+            var lista = new List<OfimaticaEntidad>();
             try
             {
                 lista = ofimaticabl.OfimaticaListaporPostulanteJson(fkPosID);
@@ -34,7 +37,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult OfimaticaInsertarJson(ofimaticaEntidad ofimatica)
+        public ActionResult OfimaticaInsertarJson(OfimaticaEntidad ofimatica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -60,7 +63,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult OfimaticaEditarJson(ofimaticaEntidad ofimatica)
+        public ActionResult OfimaticaEditarJson(OfimaticaEntidad ofimatica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -83,6 +86,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult OfimaticaEliminarJson(int id)
         {

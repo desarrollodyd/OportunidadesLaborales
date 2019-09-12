@@ -10,13 +10,14 @@ using System.Net.Mail;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class PersonaController : Controller
     {
-        personaModel personabl = new personaModel();
-        usuarioModel usuariobl = new usuarioModel();
-        ubigeoModel ubigeobl = new ubigeoModel();
-        postulanteModel postulantebl = new postulanteModel();
-        personaSqlModel personasqlbl = new personaSqlModel();
+        PersonaModel personabl = new PersonaModel();
+        UsuarioModel usuariobl = new UsuarioModel();
+        UbigeoModel ubigeobl = new UbigeoModel();
+        PostulanteModel postulantebl = new PostulanteModel();
+        PersonaSqlModel personasqlbl = new PersonaSqlModel();
 
         // GET: Vista Datos Personales
         public ActionResult DatosPersonalesVista()
@@ -95,8 +96,8 @@ namespace SistemaReclutamiento.Controllers
         {
             var errormensaje = "";
             int idPersona = Convert.ToInt32(Seguridad.Desencriptar(id));
-            var persona = new personaEntidad();
-            var ubigeo = new ubigeoEntidad();
+            var persona = new PersonaEntidad();
+            var ubigeo = new UbigeoEntidad();
             try
             {
 
@@ -114,17 +115,18 @@ namespace SistemaReclutamiento.Controllers
             ViewBag.errormensaje = errormensaje;
             return View();
         }
+      
         [HttpPost]
-        public ActionResult PersonaInsertarJson(usuarioPersonaEntidad datos)
+        public ActionResult PersonaInsertarJson(UsuarioPersonaEntidad datos)
         {
             var errormensaje = "";
             string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
             string usuario_envio = "";
             string contrasenia_envio = "";
-            postulanteEntidad postulante = new postulanteEntidad();
-            usuarioEntidad usuario = new usuarioEntidad();
-            personaEntidad persona = new personaEntidad();
-            personaSqlEntidad personasql = new personaSqlEntidad();
+            PostulanteEntidad postulante = new PostulanteEntidad();
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
+            PersonaSqlEntidad personasql = new PersonaSqlEntidad();
             int respuestaPersonaInsertada = 0;
             int respuestaUsuarioInsertado = 0;
             bool respuestaConsulta = false;
@@ -134,7 +136,7 @@ namespace SistemaReclutamiento.Controllers
             string busqueda = datos.busqueda;
             if (busqueda == "nuevo")
             {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                var usuario_repetido = usuariobl.PostulanteUsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
                     //Seteando datos correspondiente a persona            
@@ -158,7 +160,8 @@ namespace SistemaReclutamiento.Controllers
                         usuario.usu_cambio_pass = true;
                         usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                         usuario.usu_fecha_reg = DateTime.Now;
-                        respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+                        usuario.usu_tipo = "POSTULANTE";
+                        respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                         if (respuestaUsuarioInsertado == 0)
                         {
@@ -191,13 +194,13 @@ namespace SistemaReclutamiento.Controllers
             }
             else if (busqueda == "postgres")
             {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                var usuario_repetido = usuariobl.PostulanteUsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
                     //Insercion de Usuario     
                     var personatupla= personabl.PersonaDniObtenerJson(datos.per_numdoc);
-                    persona = personatupla.Item1;
-                    claseError error = personatupla.Item2;
+                    persona = personatupla.persona;
+                    claseError error = personatupla.error;
                     contrasenia = GeneradorPassword.GenerarPassword(8);
                     usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
                     usuario.usu_nombre = correo;
@@ -206,7 +209,8 @@ namespace SistemaReclutamiento.Controllers
                     usuario.usu_cambio_pass = true;
                     usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                     usuario.usu_fecha_reg = DateTime.Now;
-                    respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+                    usuario.usu_tipo = "POSTULANTE";
+                    respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                     if (respuestaUsuarioInsertado == 0)
                     {
@@ -236,11 +240,11 @@ namespace SistemaReclutamiento.Controllers
             }
             else if (busqueda == "sql")
             {
-                var usuario_repetido = usuariobl.UsuarioObtenerxCorreo(correo);
+                var usuario_repetido = usuariobl.PostulanteUsuarioObtenerxCorreo(correo);
                 if (usuario_repetido.usu_id == 0)
                 {
                     var personasqltupla = personasqlbl.PersonaDniObtenerJson(datos.per_numdoc);
-                    personasql = personasqltupla.Item1;
+                    personasql = personasqltupla.persona;
                     persona.per_numdoc = personasql.CO_TRAB;
                     persona.per_nombre = personasql.NO_TRAB;
                     persona.per_apellido_pat = personasql.NO_APEL_PATE;
@@ -261,7 +265,8 @@ namespace SistemaReclutamiento.Controllers
                         usuario.usu_cambio_pass = true;
                         usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
                         usuario.usu_fecha_reg = DateTime.Now;
-                        respuestaUsuarioInsertado = usuariobl.UsuarioInsertarJson(usuario);
+                        usuario.usu_tipo = "POSTULANTE";
+                        respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
 
                         if (respuestaUsuarioInsertado == 0)
                         {
@@ -305,7 +310,7 @@ namespace SistemaReclutamiento.Controllers
                         "Hola! : " + nombre + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
-                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : "+basepath+"Login/Activacion?id=" + usuario.usu_clave_temp
+                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : "+basepath+"Login/PostulanteActivacion?id=" + usuario.usu_clave_temp
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }
@@ -318,14 +323,14 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult PersonaEditarJson(usuarioPersonaEntidad data)
+        public ActionResult PersonaEditarJson(UsuarioPersonaEntidad data)
         {
             var errormensaje = "";
             bool respuestaConsulta = true;
-            ubigeoEntidad ubigeo = new ubigeoEntidad();
-            personaEntidad persona = new personaEntidad();
-            postulanteEntidad postulante = new postulanteEntidad();
-            usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+            UbigeoEntidad ubigeo = new UbigeoEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
+            PostulanteEntidad postulante = new PostulanteEntidad();
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
             ubigeo = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, data.ubi_departamento_id, data.ubi_provincia_id, data.ubi_distrito_id);
             
             //Seteando datos correspondiente a persona            
@@ -343,7 +348,7 @@ namespace SistemaReclutamiento.Controllers
             persona.per_id = data.per_id;
             persona.per_fecha_act = DateTime.Now;
             //Seteando datos correspondiente a postulante
-            var nacionalidad = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, "0", "0", "0");
+            var nacionalidad = ubigeobl.UbigeoIdObtenerJson(data.fk_nacionalidad.ToString(), "0", "0", "0");
             postulante.fk_nacionalidad = nacionalidad.ubi_id;
             postulante.pos_condicion_viv = data.pos_condicion_viv;
             postulante.pos_direccion = data.pos_direccion;
@@ -361,11 +366,22 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 respuestaConsulta = personabl.PersonaEditarJson(persona);
-                if (respuestaConsulta) {
+                if (respuestaConsulta)
+                {
                     respuestaConsulta = postulantebl.PostulanteEditarJson(postulante);
-                    errormensaje = "Se editó Correctamente";
-                }
+                    if (respuestaConsulta)
+                    {
+                        errormensaje = "Se registro los datos";
+                    }
+                    else
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error Registrar Datos" });
+                    }
 
+                }
+                else {
+                    return Json(new { respuesta = respuestaConsulta, mensaje = "Error Registrar Datos" });
+                }
             }
             catch (Exception exp)
             {
@@ -385,6 +401,7 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult PersonaDniObtenerJson(string per_numdoc)
         {
@@ -392,14 +409,14 @@ namespace SistemaReclutamiento.Controllers
             var errormensaje = "";
             bool respuestaConsulta = true;
             string _encontrado = "";
-            personaEntidad persona = new personaEntidad();
-            personaSqlEntidad personasql = new personaSqlEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
+            PersonaSqlEntidad personasql = new PersonaSqlEntidad();
             claseError error = new claseError();
             try
             {
                 var personatupla = personabl.PersonaDniObtenerJson(per_numdoc);
-                persona = personatupla.Item1;
-                error = personatupla.Item2;
+                persona = personatupla.persona;
+                error = personatupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
                     if (persona.per_id != 0)
@@ -410,8 +427,8 @@ namespace SistemaReclutamiento.Controllers
                     else
                     {
                         var personasqltupla = personasqlbl.PersonaDniObtenerJson(per_numdoc);
-                        personasql = personasqltupla.Item1;
-                        error = personasqltupla.Item2;
+                        personasql = personasqltupla.persona;
+                        error = personasqltupla.error;
                         if (error.Key.Equals(string.Empty))
                         {
                             if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
@@ -450,16 +467,17 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { data = persona, respuesta = respuestaConsulta, mensaje = errormensaje, encontrado = _encontrado });
         }
+
         [HttpPost]
         public ActionResult CambiarPasswordVistaJson(string usu_password)
         {
-            usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
             bool respuestaConsulta = false;
             string errormensaje = "";
             string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
             try
             {
-                respuestaConsulta = usuariobl.UsuarioEditarContraseniaJson(usuario.usu_id, password_encriptado);
+                respuestaConsulta = usuariobl.PostulanteUsuarioEditarContraseniaJson(usuario.usu_id, password_encriptado);
                 errormensaje = "Contraseña actualizada correctamente";
             }
             catch (Exception ex)

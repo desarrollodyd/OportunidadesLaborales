@@ -10,16 +10,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class postgradoModel
+    public class PostgradoModel
     {
         string _conexion;
-        public postgradoModel()
+        public PostgradoModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<postgradoEntidad> PostgradoListaporPostulanteJson(int fk_postulante)
+        public List<PostgradoEntidad> PostgradoListaporPostulanteJson(int fk_postulante)
         {
-            List<postgradoEntidad> lista = new List<postgradoEntidad>();
+            List<PostgradoEntidad> lista = new List<PostgradoEntidad>();
             string consulta = @"SELECT 
                                 pos_id, 
                                 pos_tipo, 
@@ -49,7 +49,7 @@ namespace SistemaReclutamiento.Models
                         {
                             while (dr.Read())
                             {
-                                var postgrado = new postgradoEntidad
+                                var postgrado = new PostgradoEntidad
                                 {
                                      pos_id= ManejoNulos.ManageNullInteger(dr["pos_id"]),
                                     pos_tipo = ManejoNulos.ManageNullStr(dr["pos_tipo"]),
@@ -79,9 +79,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public postgradoEntidad PostgradoIdObtenerJson(int pos_id)
+        public PostgradoEntidad PostgradoIdObtenerJson(int pos_id)
         {
-            postgradoEntidad postgrado = new postgradoEntidad();
+            PostgradoEntidad postgrado = new PostgradoEntidad();
             string consulta = @"SELECT 
                                 pos_id, 
                                 pos_tipo, 
@@ -132,7 +132,7 @@ namespace SistemaReclutamiento.Models
             }
             return postgrado;
         }
-        public bool PostgradoInsertarJson(postgradoEntidad postgrado)
+        public bool PostgradoInsertarJson(PostgradoEntidad postgrado)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_postgrado(
@@ -172,7 +172,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool PostgradoEditarJson(postgradoEntidad postgrado)
+        public bool PostgradoEditarJson(PostgradoEntidad postgrado)
         {
             bool response = false;
             string consulta = @"

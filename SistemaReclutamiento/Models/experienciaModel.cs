@@ -11,15 +11,15 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class experienciaModel
+    public class ExperienciaModel
     {
         string _conexion;
-        public experienciaModel() {
+        public ExperienciaModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<experienciaEntidad> ExperienciaListaporPostulanteJson(int fk_postulante)
+        public List<ExperienciaEntidad> ExperienciaListaporPostulanteJson(int fk_postulante)
         {
-            List<experienciaEntidad> lista = new List<experienciaEntidad>();
+            List<ExperienciaEntidad> lista = new List<ExperienciaEntidad>();
             string consulta = @"SELECT 
                                 exp_id,
                                 exp_empresa, 
@@ -48,7 +48,7 @@ namespace SistemaReclutamiento.Models
                         { 
                             while (dr.Read())
                             {
-                                var experiencia = new experienciaEntidad
+                                var experiencia = new ExperienciaEntidad
                                 {
                                     exp_id = ManejoNulos.ManageNullInteger(dr["exp_id"]),
                                     exp_empresa = ManejoNulos.ManageNullStr(dr["exp_empresa"]),
@@ -77,8 +77,8 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public experienciaEntidad ExperienciaOnbtenerIdJson(int exp_id) {
-            experienciaEntidad experiencia = new experienciaEntidad();
+        public ExperienciaEntidad ExperienciaOnbtenerIdJson(int exp_id) {
+            ExperienciaEntidad experiencia = new ExperienciaEntidad();
             string consulta = @"SELECT 
                             exp_id, 
                             exp_empresa, 
@@ -124,7 +124,7 @@ namespace SistemaReclutamiento.Models
             }
             return experiencia;
         }
-        public bool ExperienciaInsertarJson(experienciaEntidad experiencia)
+        public bool ExperienciaInsertarJson(ExperienciaEntidad experiencia)
         {
             bool response = false;
             string consulta = @"INSERT INTO gestion_talento.gdt_per_experiencia(                                   
@@ -161,7 +161,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool ExperienciaEditarJson(experienciaEntidad experiencia)
+        public bool ExperienciaEditarJson(ExperienciaEntidad experiencia)
         {
             bool response = false;
             string consulta = @"

@@ -11,16 +11,16 @@ using System.Diagnostics;
 namespace SistemaReclutamiento.Models
 
 {
-    public class educacionBasicaModel
+    public class EducacionBasicaModel
     {
         string _conexion;
-        public educacionBasicaModel()
+        public EducacionBasicaModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<educacionBasicaEntidad> EducacionBasicaListaporPostulanteJson(int fk_postulante)
+        public List<EducacionBasicaEntidad> EducacionBasicaListaporPostulanteJson(int fk_postulante)
         {
-            List<educacionBasicaEntidad> lista = new List<educacionBasicaEntidad>();
+            List<EducacionBasicaEntidad> lista = new List<EducacionBasicaEntidad>();
             string consulta = @"SELECT 
                                 eba_id, 
                                 eba_tipo, 
@@ -45,7 +45,7 @@ namespace SistemaReclutamiento.Models
                         if (dr.HasRows) { 
                             while (dr.Read())
                             {
-                                var educacionbasica = new educacionBasicaEntidad
+                                var educacionbasica = new EducacionBasicaEntidad
                                 {
                                                              
                                     eba_id = ManejoNulos.ManageNullInteger(dr["eba_id"]),
@@ -72,9 +72,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public educacionBasicaEntidad EducacionBasicaIdObtenerJson(int eba_id)
+        public EducacionBasicaEntidad EducacionBasicaIdObtenerJson(int eba_id)
         {
-            educacionBasicaEntidad educacionBasica = new educacionBasicaEntidad();
+            EducacionBasicaEntidad educacionBasica = new EducacionBasicaEntidad();
             string consulta = @"SELECT eba_id, 
                                     eba_tipo, 
                                     eba_nombre, 
@@ -116,7 +116,7 @@ namespace SistemaReclutamiento.Models
             }
             return educacionBasica;
         }
-        public bool EducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica)
+        public bool EducacionBasicaInsertarJson(EducacionBasicaEntidad educacionBasica)
         {
             bool response = false;
             string consulta = @"INSERT INTO 
@@ -150,7 +150,7 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        public bool EducacionBasicaEditarJson(educacionBasicaEntidad educacionBasica)
+        public bool EducacionBasicaEditarJson(EducacionBasicaEntidad educacionBasica)
         {
             bool response = false;
             string consulta = @"

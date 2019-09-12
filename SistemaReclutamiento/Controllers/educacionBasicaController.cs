@@ -5,22 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
+    [SeguridadMenu]
     public class EducacionBasicaController : Controller
     {
-        educacionBasicaModel educacionBasicabl = new educacionBasicaModel();
+        EducacionBasicaModel educacionBasicabl = new EducacionBasicaModel();
         // GET: educacionBasica
+        [SeguridadMenu(false)]
         public ActionResult Index()
         {
             return View();
         }
+        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionBasicaListarJson(int fkPosID)
         {
             var errormensaje = "";
-            var lista = new List<educacionBasicaEntidad>();
+            var lista = new List<EducacionBasicaEntidad>();
             try
             {
                 lista = educacionBasicabl.EducacionBasicaListaporPostulanteJson(fkPosID);
@@ -32,9 +36,9 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta=true, mensaje = errormensaje });
         }
-
+        [SeguridadMenu(false)]
         [HttpPost]
-        public ActionResult EducacionBasicaInsertarJson(educacionBasicaEntidad educacionBasica)
+        public ActionResult EducacionBasicaInsertarJson(EducacionBasicaEntidad educacionBasica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -58,9 +62,9 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-
+        [SeguridadMenu(false)]
         [HttpPost]
-        public ActionResult EducacionBasicaEditarJson(educacionBasicaEntidad educacionBasica)
+        public ActionResult EducacionBasicaEditarJson(EducacionBasicaEntidad educacionBasica)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -83,6 +87,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionBasicaEliminarJson(int id)
         {

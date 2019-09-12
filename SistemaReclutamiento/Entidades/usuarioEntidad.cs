@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class usuarioEntidad
+    public class UsuarioEntidad
     {
         public string usu_nombre { get; set; }
         public string usu_contrasenia { get; set; }
@@ -18,6 +18,7 @@ namespace SistemaReclutamiento.Entidades
         public int fk_template { get; set; }
         public bool usu_enviar_mail { get; set; }
         public bool usu_enviado { get; set; }
-        public string usu_clave_temp { get; set; }     
+        public string usu_clave_temp { get; set; }  
+        public string usu_tipo { get; set; }
     }
 }

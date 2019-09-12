@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,19 +9,21 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+
     public class IdiomaController : Controller
     {
         // GET: Idiom
-        idiomaModel idiomabl = new idiomaModel();
+        IdiomaModel idiomabl = new IdiomaModel();
         public ActionResult Index()
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult IdiomaListarJson(int fkPosID)
         {
             var errormensaje = "";
-            var lista = new List<idiomaEntidad>();
+            var lista = new List<IdiomaEntidad>();
             try
             {
                 lista = idiomabl.IdiomaListaporPostulanteJson(fkPosID);
@@ -34,7 +37,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult IdiomaInsertarJson(idiomaEntidad idioma)
+        public ActionResult IdiomaInsertarJson(IdiomaEntidad idioma)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -61,7 +64,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult IdiomaEditarJson(idiomaEntidad idioma)
+        public ActionResult IdiomaEditarJson(IdiomaEntidad idioma)
         {
             var errormensaje = "";
             bool respuestaConsulta = false;
@@ -85,6 +88,7 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+
         [HttpPost]
         public ActionResult IdiomaEliminarJson(int id)
         {

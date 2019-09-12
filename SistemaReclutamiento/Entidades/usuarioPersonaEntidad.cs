@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades
 {
-    public class usuarioPersonaEntidad
+    public class UsuarioPersonaEntidad
     {
         public int usu_id { get; set; }
         public int per_id { get; set; }
@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Entidades
         public string usu_contrasenia { get; set; }
         public string usu_estado { get; set; }
         public string per_tipodoc { get; set; }
+        public string usu_tipo { get; set; }
         public string per_numdoc { get; set; }
         public string per_nombre { get; set; }
         public string per_apellido_pat { get; set; }
@@ -47,6 +48,7 @@ namespace SistemaReclutamiento.Entidades
         public DateTime pos_fecha_act { get; set; }
         public string pos_estado { get; set; }
         public string pos_url_perfil { get; set; }
+        public string fk_nacionalidad { get; set; }
         //En que BD se encuentra el postulante en el formulario de Registro
         public string busqueda { get; set; }
     }

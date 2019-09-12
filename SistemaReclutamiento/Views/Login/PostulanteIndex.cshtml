@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Login.cshtml";
+    Layout = "~/Views/Shared/_LoginPostulante.cshtml";
 }
 @using System.Activities.Expressions
 @using System.Web.Script.Serialization
@@ -115,7 +115,7 @@
                         <button type="button" class="button btn_ingresar">Ingresar</button>
                     </form>
                     <div class="help-action">
-                        <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="forgot" href="#">Olvidaste tu Contraseña?</a></p>
+                        <p><i class="fa fa-arrow-left" aria-hidden="true"></i><a class="forgot" href="#"><h5>Olvidaste tu Contraseña?</h5></a></p>
                     </div>
                 </div>
                 <!-- TABS CONTENT SIGNUP -->
@@ -142,7 +142,7 @@
                         <button type="button" class="button btn_registrar">Registrar</button>
                     </form>
                     <div class="help-action">
-                        <p>Al hacer clic en REGISTRAR, aceptas las <a class="agree" href="#">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</p>
+                        <h5>Al hacer clic en REGISTRAR, aceptas las <a class="agree" href="#">Condiciones de uso y la Política de privacidad</a> de Corporacion PJ.</h5>
                     </div>
                 </div>
             </div>
@@ -152,5 +152,5 @@
 
 @section js
 {
-    <script src="~/Content/viewjs/Login/Login.js"></script>
+    <script src="~/Content/viewjs/Login/LoginPostulante.js"></script>
 }

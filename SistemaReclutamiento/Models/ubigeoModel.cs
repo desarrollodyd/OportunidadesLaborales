@@ -10,14 +10,14 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Models
 {
-    public class ubigeoModel
+    public class UbigeoModel
     {
         string _conexion;
-        public ubigeoModel() {
+        public UbigeoModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<ubigeoEntidad> UbigeoListarPaisesJson() {
-            List<ubigeoEntidad> lista = new List<ubigeoEntidad>();
+        public List<UbigeoEntidad> UbigeoListarPaisesJson() {
+            List<UbigeoEntidad> lista = new List<UbigeoEntidad>();
             string consulta = @"SELECT 
                                 ubi_id, 
                                 ubi_pais_id, 
@@ -39,7 +39,7 @@ namespace SistemaReclutamiento.Models
                     {
                         while (dr.Read())
                         {
-                            var ubigeo = new ubigeoEntidad
+                            var ubigeo = new UbigeoEntidad
                             {
                                 ubi_id = ManejoNulos.ManageNullInteger(dr["ubi_id"]),
                                 ubi_departamento_id = ManejoNulos.ManageNullStr(dr["ubi_departamento_id"]),
@@ -61,8 +61,8 @@ namespace SistemaReclutamiento.Models
             }
             return lista;
         }
-        public List<ubigeoEntidad> UbigeoListarDepartamentosporPaisJson(string id_pais) {
-            List<ubigeoEntidad> lista = new List<ubigeoEntidad>();
+        public List<UbigeoEntidad> UbigeoListarDepartamentosporPaisJson(string id_pais) {
+            List<UbigeoEntidad> lista = new List<UbigeoEntidad>();
             string consulta = @"SELECT 
                                 ubi_id, 
                                 ubi_pais_id, 
@@ -87,7 +87,7 @@ namespace SistemaReclutamiento.Models
                     {
                         while (dr.Read())
                         {
-                            var ubigeo = new ubigeoEntidad
+                            var ubigeo = new UbigeoEntidad
                             {
                                 ubi_id = ManejoNulos.ManageNullInteger(dr["ubi_id"]),
                                 ubi_departamento_id = ManejoNulos.ManageNullStr(dr["ubi_departamento_id"]),
@@ -110,9 +110,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public List<ubigeoEntidad> UbigeoListarProvinciasporDepartamentoJson(string id_pais, string id_departamento)
+        public List<UbigeoEntidad> UbigeoListarProvinciasporDepartamentoJson(string id_pais, string id_departamento)
         {
-            List<ubigeoEntidad> lista = new List<ubigeoEntidad>();
+            List<UbigeoEntidad> lista = new List<UbigeoEntidad>();
             string consulta = @"SELECT 
                                 ubi_id, 
                                 ubi_pais_id, 
@@ -138,7 +138,7 @@ namespace SistemaReclutamiento.Models
                     {
                         while (dr.Read())
                         {
-                            var ubigeo = new ubigeoEntidad
+                            var ubigeo = new UbigeoEntidad
                             {
                                 ubi_id = ManejoNulos.ManageNullInteger(dr["ubi_id"]),
                                 ubi_departamento_id = ManejoNulos.ManageNullStr(dr["ubi_departamento_id"]),
@@ -161,9 +161,9 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public List<ubigeoEntidad> UbigeoListarDistritosporProvinciaJson(string ubi_pais_id, string ubi_departamento_id,string ubi_provincia_id)
+        public List<UbigeoEntidad> UbigeoListarDistritosporProvinciaJson(string ubi_pais_id, string ubi_departamento_id,string ubi_provincia_id)
         {
-            List<ubigeoEntidad> lista = new List<ubigeoEntidad>();
+            List<UbigeoEntidad> lista = new List<UbigeoEntidad>();
             string consulta = @"SELECT 
                                 ubi_id, 
                                 ubi_pais_id, 
@@ -190,7 +190,7 @@ namespace SistemaReclutamiento.Models
                     {
                         while (dr.Read())
                         {
-                            var ubigeo = new ubigeoEntidad
+                            var ubigeo = new UbigeoEntidad
                             {
                                 ubi_id = ManejoNulos.ManageNullInteger(dr["ubi_id"]),
                                 ubi_departamento_id = ManejoNulos.ManageNullStr(dr["ubi_departamento_id"]),
@@ -212,9 +212,9 @@ namespace SistemaReclutamiento.Models
             }
             return lista;
         }
-        public ubigeoEntidad UbigeoIdObtenerJson(string ubi_pais_id, string ubi_departamento_id, string ubi_provincia_id, string ubi_distrito_id)
+        public UbigeoEntidad UbigeoIdObtenerJson(string ubi_pais_id, string ubi_departamento_id, string ubi_provincia_id, string ubi_distrito_id)
         {
-            ubigeoEntidad ubigeo = new ubigeoEntidad();
+            UbigeoEntidad ubigeo = new UbigeoEntidad();
             string consulta = @"SELECT 
                                 ubi_id, 
                                 ubi_pais_id, 
@@ -264,9 +264,9 @@ namespace SistemaReclutamiento.Models
             return ubigeo;
         }
 
-        public ubigeoEntidad UbigeoObtenerDatosporIdJson(int ubi_id)
+        public UbigeoEntidad UbigeoObtenerDatosporIdJson(int ubi_id)
         {
-            ubigeoEntidad ubigeo = new ubigeoEntidad();
+            UbigeoEntidad ubigeo = new UbigeoEntidad();
             string consulta = @"SELECT 
                                 ubi_id, 
                                 ubi_pais_id, 

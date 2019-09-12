@@ -58,9 +58,6 @@
                                     <div class="form-group">
                                         <label>Empresa</label>
                                         <select class="form-control" name="ola_cod_empresa" id="cbocodEmpresa" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="22">Wild Gaming</option>
-                                            <option value="04">Software 3000</option>
                                         </select>
                                     </div>
                                 </div>
@@ -68,9 +65,7 @@
                                     <div class="form-group">
                                         <label>Cargo</label>
                                         <select class="form-control" name="ola_cod_cargo" id="cbocodCargo" style="width:100%">
-                                            <option value="">Seleccione</option>
-                                            <option value="001">Anfitrion(A)</option>
-                                            <option value="004">Cajero(A)</option>
+                                            <option value="">Seleccione Cargo</option>
                                         </select>
                                     </div>
                                 </div>
@@ -110,7 +105,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </form>
                         <div class="col-md-12 col-xs-12">
                             <div class="ln_solid">
@@ -119,17 +114,103 @@
 
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12" id="ofertasContenido">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                    <div class="col-md-4 col-xs-12" id="printcard">
+                            <div class="row">
+
+
+                            </div>
+                        </div>
+                        <!-- modal detalle de oferta -->
+                        <div class="modal fade bs-example-modal-detalle" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="detalleModalLabel"></h4>
                                     </div>
+                                    <div class="modal-body" id="detalleModalBody">
+                                        <div class="panel-default">
+                                            <div class="panel-heading">
+                                                Requisitos
+                                            </div>
+                                            <div class="panel-body requisitos"></div>
+                                            <div class="panel-heading">
+                                                Funciones
+                                            </div>
+                                            <div class="panel-body funciones"></div>
+                                            <div class="panel-heading">
+                                                Competencias
+                                            </div>
+                                            <div class="panel-body competencias"></div>
+                                            <div class="panel-heading">
+                                                Condiciones Laborales
+                                            </div>
+                                            <div class="panel-body condiciones_lab"></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
+
+                        <!-- modal postular -->
+                        <div class="modal fade bs-example-modal-postular" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="postularModalLabel">Postular a Oferta: Responda las Siguientes Preguntas</h4>
+                                    </div>
+                                    <div class="modal-body" id="postularModalBody">
+                                        @*<div class="panel-default">
+                                            <div class="panel-heading">
+                                                Requisitos
+                                            </div>
+                                            <div class="panel-body requisitos"></div>
+                                            <div class="panel-heading">
+                                                Funciones
+                                            </div>
+                                            <div class="panel-body funciones"></div>
+                                            <div class="panel-heading">
+                                                Competencias
+                                            </div>
+                                            <div class="panel-body competencias"></div>
+                                            <div class="panel-heading">
+                                                Condiciones Laborales
+                                            </div>
+                                            <div class="panel-body condiciones_lab"></div>
+                                        </div>*@
+                                        <div class="x_panel">
+                                            <div class="x_title">Responda : </div>
+                                            <div class="x_content">
+                                                <form class="form" id="frm-Postular"></form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary btn_postularme">Postularme</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
                         @*<form id="frm-postular">
-                            <input type="hidden" name="fk_oferta_laboral" id="fk_oferta_laboral" value="2" />
-                            <button type="button" class="btn btn-danger col-xs-12 btn_postular"><i class="fa fa-save"></i> Postular</button>
-                        </form>*@
+            <input type="hidden" name="fk_oferta_laboral" id="fk_oferta_laboral" value="2" />
+            <button type="button" class="btn btn-danger col-xs-12 btn_postular"><i class="fa fa-save"></i> Postular</button>
+        </form>*@
                     </div>
                 </div>
             </div>

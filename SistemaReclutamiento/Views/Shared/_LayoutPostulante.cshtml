@@ -13,7 +13,7 @@
     }
     else
     {
-        usuarioEntidad usuario = (usuarioEntidad)Session["usu_full"];
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
 
         usu_id = usuario.usu_id;
         usu_nombre = usuario.usu_nombre;
@@ -190,7 +190,7 @@
         $("#btnCerrarSesion").click(function () {
             $.ajax({
                 type: 'POST',
-                url: basePath + "/Login/CerrarSesionLoginJson",
+                url: basePath + "/Login/PostulanteCerrarSesionLoginJson",
                 success: function (response) {
                     var resp = response.respuesta;
                     var msj = response.mensaje;

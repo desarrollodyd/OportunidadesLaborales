@@ -187,7 +187,7 @@
                 },
                 esu_condicion:
                 {
-                    required: 'Condicion Obligatorio',
+                    required: 'Condición Obligatorio',
                 },
             }
         });

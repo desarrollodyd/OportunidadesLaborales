@@ -1,0 +1,225 @@
+﻿@using SistemaReclutamiento.Models;
+@using SistemaReclutamiento.Entidades;
+@using SistemaReclutamiento.Utilitarios;
+@{
+    int usu_id = 0;
+    int fk_persona = 0;
+    string usu_nombre = "";
+    string encriptado = "";
+
+    if (Session["usu_proveedor"] == null || Session["per_proveedor"] == null)
+    {
+        Response.Redirect("~/Login/ProveedorIndex");
+    }
+    else
+    {
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+
+        usu_id = usuario.usu_id;
+        usu_nombre = usuario.usu_nombre;
+        fk_persona = usuario.fk_persona;
+        encriptado = Seguridad.Encriptar(fk_persona.ToString());
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="~/Content/images/icon.png">
+    <title>CORPORACION PJ</title>
+
+    <!-- Bootstrap -->
+    <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/icomoon/styles.min.css" rel="stylesheet" />
+    <!-- NProgress -->
+    <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- jQuery custom content scroller -->
+    <link href="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <!-- iCheck -->
+    <link href="~/Content/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="~/Content/build/css/custom.css" rel="stylesheet">
+    @*<link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />*@
+    <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
+</head>
+
+<body class="nav-md">
+    <div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col menu_fixed">
+                <div class="left_col scroll-view">
+                    <div class="navbar nav_title" style="border: 0;">
+                        <a href="~/" class="site_title">
+                            <i class="fa fa-newspaper-o" style="display:none;"></i>
+                            <div style="width: 44px;height: 35px;border: 1px solid #fff;float: left;margin-top: 13px;line-height: 0;padding: 4px;margin-right: 6px;
+">
+                                <img src="~/images/icon.png" alt="~/Content." class="profile_img" style="width: 34px;height: 25px;background: #fff;">
+                            </div>
+
+                            <span>Portal Laboral</span>
+                        </a>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix" style="display:none;">
+                        <div class="profile_pic">
+                            <img src="~/images/icon.png" alt="~/Content." class="img-circle profile_img" style="border-radius:3%;">
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <!-- /menu profile quick info -->
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section" >
+                            <ul class="nav side-menu" style="margin-left: -1px;">
+                                <li class="active">
+                                    <a><i class="fa fa-edit"></i> Modulo Extranet <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" id="moduloPrincipal" style="display:block;">
+                                        @*<li  class="modulo ocult" data-menu1="Menu1" data-modulo="Menu1" data-titulo="Menu1"><a href="#">Menu 1</a></li>
+                                        <li class="modulo ocult" data-menu1="Menu2" data-modulo="Menu2" data-titulo="Menu2">
+                                            <a href="#">Menu 2 <span class="fa fa-chevron-down"></span> 
+                                            </a>
+                                            <ul class="nav child_menu">
+                                                <li class="Menu2 ocult sub_menu" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
+                                                    <a href="#" >Submenu 1</a>
+                                                </li>
+                                                <li class="Menu2 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2" >
+                                                    <a href="#" >Submenu 2</a>
+                                                </li>
+                                                <li class="Menu2 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
+                                                    <a href="#" >Submenu 3</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="modulo ocult" data-menu1="Menu3" data-modulo="Menu3" data-titulo="Menu3">
+                                            <a href="#" >Menu 3 <span class="fa fa-chevron-down"></span> </a>
+                                            <ul class="nav child_menu">
+                                                <li class="Menu3 modulo ocult" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
+                                                    <a href="#" >Submenu 1</a>
+                                                </li>
+                                                <li class="Menu3 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2">
+                                                    <a href="#" >Submenu 2</a>
+                                                </li>
+                                                <li class="Menu3 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
+                                                    <a href="#" >Submenu 3</a>
+                                                </li>
+                                            </ul>
+                                        </li>*@
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <img id="img_layout_post" src="~/images/user.png" alt="">@usu_nombre
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="~/Persona/CambiarPasswordVista" id="btnCambiarPassword"><i class="fa fa-lock pull-right"></i> Cambiar Contraseña</a></li>
+                                    <li><a href="#" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i> Salir</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <div class="">
+                    <div class="row">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right foot">
+                    ©@DateTime.Now.Year Corporacion PJ
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/Content/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="~/Content/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="~/Content/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="~/Content/vendors/nprogress/nprogress.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
+    <!-- Custom Theme Scripts -->
+
+    <script src="~/Content/vendors/toastr/toastr.min.js"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
+    <script src="~/Content/vendors/moment/moment.js"></script>
+    <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.js"></script>
+    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
+    <script src="~/Content/vendors/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
+    <script src="~/Content/build/js/custom.js"></script>
+    <script src="~/Content/viewjs/general.js"></script>
+    <script>
+        $("#btnCerrarSesion").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: basePath + "/Login/ProveedorCerrarSesionLoginJson",
+                success: function (response) {
+                    var resp = response.respuesta;
+                    var msj = response.mensaje;
+                    if (resp) {
+                        window.location.replace(basePath+"Login/ProveedorIndex");
+                    } else {
+                        alert(msj);
+                    }
+                }
+            });
+        });
+    </script>
+    @RenderSection("js", required: false)
+</body>
+</html>

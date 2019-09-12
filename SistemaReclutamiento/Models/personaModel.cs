@@ -12,16 +12,16 @@ using System.Collections;
 
 namespace SistemaReclutamiento.Models
 {
-    public class personaModel
+    public class PersonaModel
     {
         string _conexion;
-        public personaModel() {
+        public PersonaModel() {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
      
-        public personaEntidad PersonaIdObtenerJson(int per_id)
+        public PersonaEntidad PersonaIdObtenerJson(int per_id)
         {
-            personaEntidad persona = new personaEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
             string consulta = @"SELECT 
                                     per_nombre, 
                                     per_apellido_pat, 
@@ -87,9 +87,9 @@ namespace SistemaReclutamiento.Models
             }
             return persona;
         }
-        public (personaEntidad,claseError)PersonaDniObtenerJson(string num_doc)
+        public (PersonaEntidad persona,claseError error)PersonaDniObtenerJson(string num_doc)
         {
-            personaEntidad persona = new personaEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
             claseError error = new claseError();
             //List<claseError> listaerror = new List<claseError>();
            
@@ -175,11 +175,12 @@ namespace SistemaReclutamiento.Models
                 error.Key = ex.Data.Values.Count.ToString();
                 error.Value = ex.Message;
                 Console.Write(ex.Message);
+                //ELog.save(this, ex);
             }
             //return persona;
-            return (persona,error);
+            return (persona:persona,error:error);
         }
-        public int PersonaInsertarJson(personaEntidad persona)
+        public int PersonaInsertarJson(PersonaEntidad persona)
         {
             int idPersonaInsertada=0;
             //bool response = false;
@@ -221,7 +222,7 @@ namespace SistemaReclutamiento.Models
             }
             return idPersonaInsertada;
         }
-        public bool PersonaEditarJson(personaEntidad persona)
+        public bool PersonaEditarJson(PersonaEntidad persona)
         {
             bool response = false;
             string consulta = @"
@@ -269,9 +270,9 @@ namespace SistemaReclutamiento.Models
             }
             return response;
         }
-        internal personaEntidad PersonaEmailDniObtenerJson(string per_correoelectronico,string per_numdoc)
+        internal PersonaEntidad PersonaEmailDniObtenerJson(string per_correoelectronico,string per_numdoc)
         {
-            personaEntidad persona = new personaEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
             string consulta = @"SELECT                                                                  
                                     per_id,                          
                                     per_numdoc,

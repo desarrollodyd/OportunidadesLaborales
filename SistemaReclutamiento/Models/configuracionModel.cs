@@ -10,16 +10,16 @@ using System.Web;
 
 namespace SistemaReclutamiento.Models
 {
-    public class configuracionModel
+    public class ConfiguracionModel
     {
         string _conexion;
-        public configuracionModel()
+        public ConfiguracionModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public configuracionEntidad ConfiguracionObtenerporNemonicJson(string nemotecnico)
+        public ConfiguracionEntidad ConfiguracionObtenerporNemonicJson(string nemotecnico)
         {
-            configuracionEntidad configuracion = new configuracionEntidad();
+            ConfiguracionEntidad configuracion = new ConfiguracionEntidad();
             string consulta = @"SELECT 
                                 config_nombre,                           
                                 config_estado, 
