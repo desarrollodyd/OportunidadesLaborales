@@ -14,6 +14,8 @@ namespace SistemaReclutamiento.Controllers
 
     public class PostulanteController : Controller
     {
+        PosPreguntaOLAModel preguntabl = new PosPreguntaOLAModel();
+        PosRespuestaOLAModel respuestabl = new PosRespuestaOLAModel();
         PostulanteModel postulantebl = new PostulanteModel();
         EducacionBasicaModel educacionbasicabl = new EducacionBasicaModel();
         EducacionSuperiorModel educacionsuperiorbl = new EducacionSuperiorModel();
@@ -37,7 +39,7 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult PostulanteEditarJson(PostulanteEntidad postulante)
         {
             var errormensaje = "";
-            bool respuestaConsulta = true;         
+            bool respuestaConsulta = true;
             try
             {
                 respuestaConsulta = postulantebl.PostulanteEditarJson(postulante);
@@ -58,7 +60,7 @@ namespace SistemaReclutamiento.Controllers
             //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(rutaPostulanteCv);
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"]; ;
 
-            bool respuestaConsulta = true ;
+            bool respuestaConsulta = true;
             string extension = "";
             string rutaInsertar = "";
             string rutaAnterior = "";
@@ -143,7 +145,7 @@ namespace SistemaReclutamiento.Controllers
                         errormensaje = "Error al registrar ";
                     }
                 }
-                             
+
             }
             catch (Exception ex) {
                 respuestaConsulta = false;
@@ -152,7 +154,7 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-      
+
         [HttpPost]
         public ActionResult PostulanteSubirFotoJson()
         {
@@ -168,7 +170,7 @@ namespace SistemaReclutamiento.Controllers
 
             bool respuestaConsulta = true;
             string extension = "";
-            string rutaPerfilDefault="";
+            string rutaPerfilDefault = "";
             string rutaInsertar = "";
             string rutaAnterior = "";
             string errormensaje = "";
@@ -230,12 +232,12 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = ex.Message;
                 return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
-            
+
             postulante.pos_fecha_act = DateTime.Now;
             postulante.pos_id = postulante.pos_id;
             try
             {
-                
+
                 if (respuestaConsulta)
                 {
                     respuestaConsulta = postulantebl.PostulanteSubirFotoJson(postulante);
@@ -256,11 +258,11 @@ namespace SistemaReclutamiento.Controllers
                 return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
             Session.Remove("postulante");
-            Session["postulante"]=postulantebl.PostulanteIdObtenerJson(postulante.pos_id);
+            Session["postulante"] = postulantebl.PostulanteIdObtenerJson(postulante.pos_id);
             RutaImagenes rutaImagenes = new RutaImagenes();
-            rutaImagenes.imagenPostulante_CV(rutaPerfilPostulante.config_nombre,postulante.pos_foto);
+            rutaImagenes.imagenPostulante_CV(rutaPerfilPostulante.config_nombre, postulante.pos_foto);
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
-        
+
         }
 
         public void DescargarArchivo()
@@ -283,6 +285,86 @@ namespace SistemaReclutamiento.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public ActionResult PostulantePostularJson(string[] preguntas, string form, int fk_oferta_laboral) {
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            int fk_postulacion = 0;
+            if (preguntas == null) {
+                return Json(new { respuesta = false, mensaje = "No hay Preguntas" });
+            }
+            if (form.Equals(string.Empty))
+            {
+                return Json(new { respuesta = false, mensaje = "No ha respondido ninguna Pregunta" });
+            }
+            if (postulante.fk_nacionalidad == 0)
+            {
+                return Json(new { respuesta = false, mensaje = "Debe Completar sus Datos Personales para Postular a una Oferta" });
+            }
+            fk_postulacion = PostulanteMigrarDataJson(fk_oferta_laboral);
+            if (fk_postulacion == 0)
+            {
+                return Json(new { respuesta = false, mensaje = "Error al Migrar Data de Postulante" });
+            }
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+            PosPreguntaOLAEntidad pregunta = new PosPreguntaOLAEntidad();
+            PosRespuestaOLAEntidad respuesta = new PosRespuestaOLAEntidad();
+            int id = 0, idPreguntaInsertada = 0, contador = 0, contadorRespuestas=0;
+
+            string[] respuestas = form.Split('&');
+            pregunta.fk_postulacion = fk_postulacion;
+
+            if (preguntas.Length > 0)
+            {
+                foreach (var m in preguntas)
+                {
+                    string[] split = m.Split('~');
+                    pregunta.pol_pregunta = split[0];
+                    id = Convert.ToInt32(split[1]);
+                    //respuesta.fk_pos_pregunta_ol = id;
+                    string[] splitRespuesta = Convert.ToString(respuestas[contadorRespuestas]).Split('=');
+                    if (splitRespuesta[1].ToString() != "")
+                    {
+                        respuesta.rol_respuesta = Convert.ToString(splitRespuesta[1]);
+                    }
+                    else
+                    {
+                        contadorRespuestas++;
+                        splitRespuesta = Convert.ToString(respuestas[contadorRespuestas]).Split('=');
+                        respuesta.rol_respuesta = Convert.ToString(splitRespuesta[1]);
+
+                    }
+                    try
+                    {
+                        var preguntaInsertada = preguntabl.PosPreguntaOLAInsertarJson(pregunta);
+                        idPreguntaInsertada = preguntaInsertada.idPreguntaInsertada;
+                        errormensaje = preguntaInsertada.error.Value;
+                        if (idPreguntaInsertada > 0)
+                        {
+                            respuesta.fk_pos_pregunta_ol = idPreguntaInsertada;
+                            var respuestaPreguntaInsertada = respuestabl.PosRespuestaOLAInsertarJson(respuesta);
+                            respuestaConsulta = respuestaPreguntaInsertada.response;
+                            errormensaje = respuestaPreguntaInsertada.error.Value;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return Json(new { respuesta = false, mensaje = ex.Message });
+                    }
+                    contador++;
+                    contadorRespuestas++;
+                }
+            }
+            else {
+                return Json(new { respuesta = false, mensaje = "No hay Preguntas" });
+            }
+            if (errormensaje.Equals(string.Empty)) {
+                errormensaje = "Postulacion Realizada.";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+
         /// <summary>
         /// Metodo para Migrar Datos de Tablas gdt_per... a tablas gdt_pos... de Postgres
         /// </summary>
@@ -290,8 +372,8 @@ namespace SistemaReclutamiento.Controllers
         /// 
         /// <returns>Devuelve un Json de respuesta</returns>
 
-        [HttpPost]
-        public ActionResult PostulanteMigrarDataJson(int fk_oferta_laboral)
+ 
+        public int PostulanteMigrarDataJson(int fk_oferta_laboral)
         {
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];           
             List<EducacionBasicaEntidad> listaeducacionBasica = new List<EducacionBasicaEntidad>();
@@ -408,7 +490,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 errormensaje = ex.Message + ", Llame Administrador";
             }
-            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+            return idPostulacion;
         }
 
     }

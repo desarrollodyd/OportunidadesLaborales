@@ -23,11 +23,137 @@
                         <button class="btn btn-primary btn_cancelar" type="button"><i class="fa fa-ban"></i> Cancelar</button>
                     </li>
                 </ul>
+
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="datosPersonales_tab" aria-labelledby="datosPersonales_tab">
+
+                        <form id="frmOfertaLaboral-form" class="" method="post">
+                            <div class="col-md-12 col-xs-12" style="padding-top:10px;">
+                                <div class="col-md-12 col-sm-12 col-xs-12 visible-xs" style="margin-bottom:10px;">
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-danger col-xs-12 btn_filtrar"><i class="fa fa-save"></i> Filtrar</button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <button type="button" class="btn btn-primary col-xs-12 btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Nombre del Puesto</label>
+                                        <input type="text" name="ola_nombre" id="ola_nombre" class="form-control" placeholder="Nombre " />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Fecha de Publicacion</label>
+                                        <select class="form-control" name="ola_rango_fecha" id="cborangoFecha" style="width:100%">
+                                            <option value="">Seleccione</option>
+                                            <option value="hoy">Hoy</option>
+                                            <option value="semana">Hace una Semana</option>
+                                            <option value="mes">Hace un Mes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Empresa</label>
+                                        <select class="form-control" name="ola_cod_empresa" id="cbocodEmpresa" style="width:100%"></select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Cargo</label>
+                                        <select class="form-control" name="ola_cod_cargo" id="cbocodCargo" style="width:100%">
+                                            <option value="">Seleccione Cargo</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Pais</label>
+                                        <select class="form-control" name="ubi_pais_id" id="cboPais" style="width:100%">
+                                            <option value="">PAIS</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Departamento</label>
+                                        <select class="form-control" name="ubi_departamento_id" id="cboDepartamento" style="width:100%">
+                                            <option value="">DEPARTAMENTO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Provincia</label>
+                                        <select class="form-control" name="ubi_provincia_id" id="cboProvincia" style="width:100%">
+                                            <option value="">PROVINCIA</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Distrito</label>
+                                        <select class="form-control" name="ubi_distrito_id" id="cboDistrito" style="width:100%">
+                                            <option value="">DISTRITO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
+
+
                         <div class="x_panel">
                             <div class="x_content">
                                 <div class="col-md-12 col-sm-12 col-xs-12" id="ofertasContenido">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- modal detalle de oferta -->
+                        <div class="modal fade bs-example-modal-detalle" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                        <h4 class="modal-title" id="detalleModalLabel"></h4>
+                                    </div>
+                                    <div class="modal-body" id="detalleModalBody">
+                                        <div class="panel-default">
+                                            <div class="panel-heading">
+                                                Requisitos
+                                            </div>
+                                            <div class="panel-body requisitos"></div>
+                                            <div class="panel-heading">
+                                                Funciones
+                                            </div>
+                                            <div class="panel-body funciones"></div>
+                                            <div class="panel-heading">
+                                                Competencias
+                                            </div>
+                                            <div class="panel-body competencias"></div>
+                                            <div class="panel-heading">
+                                                Condiciones Laborales
+                                            </div>
+                                            <div class="panel-body condiciones_lab"></div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                        @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

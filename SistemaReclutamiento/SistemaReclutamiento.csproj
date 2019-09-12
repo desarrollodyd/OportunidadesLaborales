@@ -4593,6 +4593,8 @@
     <Compile Include="Entidades\EstOfimaticaEntidad.cs" />
     <Compile Include="Entidades\PersonaEntidad.cs" />
     <Compile Include="Entidades\PersonaSqlEntidad.cs" />
+    <Compile Include="Entidades\PosPreguntaOLAEntidad.cs" />
+    <Compile Include="Entidades\PosRespuestaOLAEntidad.cs" />
     <Compile Include="Entidades\PostgradoEntidad.cs" />
     <Compile Include="Entidades\PostulanteEntidad.cs" />
     <Compile Include="Entidades\PreguntaPreFiltro.cs" />
@@ -4620,6 +4622,8 @@
     <Compile Include="Models\OfimaticaModel.cs" />
     <Compile Include="Models\PersonaModel.cs" />
     <Compile Include="Models\PersonaSqlModel.cs" />
+    <Compile Include="Models\PosPreguntaOLAModel.cs" />
+    <Compile Include="Models\PosRespuestaOLAModel.cs" />
     <Compile Include="Models\PostgradoModel.cs" />
     <Compile Include="Models\PostulanteModel.cs" />
     <Compile Include="Models\ClaseLibreModel.cs" />

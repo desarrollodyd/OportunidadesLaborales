@@ -58,7 +58,7 @@
                                                                 '<div class="col-xs-12 bottom text-center">'+
                                                                      '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">'+
                                                                           '<p class="ratings" style="text-align: center;">'+
-                                                                              '<a>Publicado hace 4 dias</a>'+
+                            '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY')+'</a>'+
                                                                               '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>'+
                                                                           '</p>'+
                                                                      '</div>'+
@@ -78,21 +78,33 @@
         });
         /*Boton Postularme de Modal Postular*/
         $(document).on("click", ".btn_postularme", function (e) {
+            var id_oferta_laboral = $(this).data("id");
+            var form = $("#frm-Postular").serialize();
+            console.log(form);
             var elementoPregunta = $("#frm-Postular>.form-group>label");
             var elementoRespuesta = $("#frm-Postular>.form-group>div");
             preguntas = [];
             respuestas = [];
             $(elementoPregunta).each(function () {
-                preguntas.push($(this).text());
-                respuestas.push($("input[name='opt_respuesta" + $(this).data("id") + "']:checked").val())
+                preguntas.push($(this).text() + "~" + $(this).data("id"));
+                //respuestas.push($("input[name='opt_respuesta" + $(this).data("id") + "']:checked").val())
             });
-            _ActivarTextBox();
-            console.log(preguntas);
-            console.log(respuestas);
+            var data = { preguntas: preguntas, form: form, fk_oferta_laboral: id_oferta_laboral };
+                responseSimple({
+                    url: "Postulante/PostulantePostularJson",
+                    data: JSON.stringify(data),
+                    callBackSuccess: function (response) {
+                        console.log(response.data);
+                    }
+            });
+            
+            //console.log(preguntas);
+            //console.log(respuestas);
         });
         /*Fin de Evento de Boton*/
         /*Modal Preguntas Prefitro*/
         $(document).on("click", ".btn_postular", function (e) {
+            $(".btn_postularme").attr('data-id', $(this).data("id"));
             var data = { ola_id: $(this).data("id") };
             responseSimple({
                 url: "OfertaLaboral/DetPreguntaOLAListarJson",
@@ -117,7 +129,7 @@
                         $.each(listaRespuestas, function (i, respuesta) {
                             var tituloRespuesta = "";
                             if (respuesta.dro_respuesta == "") {
-                                tituloRespuesta += '<div class="radio"><label><input data-id="' + respuesta.dro_id + '" class="texto" type="radio" value="" name="opt_respuesta' + pregunta.dop_id + '"/> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" /></div>';
+                                tituloRespuesta += '<div class="radio"><label><input name="opt_respuesta' + pregunta.dop_id + '" data-id="' + respuesta.dro_id + '" class="texto" type="radio" value="" /> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" name="opt_respuestalabel' + pregunta.dop_id + '" /></div>';
                             }
                             else {
                                 tituloRespuesta += '<div class="radio"><label><input data-id="' + respuesta.dro_id + '" value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';

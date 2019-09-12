@@ -78,7 +78,6 @@
                 data: JSON.stringify(id),
                 refresh: false,
                 callBackSuccess: function (response) {
-                    console.log(response);
                     var data = response.data;
                     var mensaje = response.mensaje;
                     selectResponse({

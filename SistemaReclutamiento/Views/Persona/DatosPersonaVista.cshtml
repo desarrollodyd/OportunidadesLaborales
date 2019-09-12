@@ -44,7 +44,59 @@
                                     </div>
                                 </div>
                             </div>
-                            <h3 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre"></h3>
+                            <h4 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre"></h4>
+                            <br />
+                            <h4>Perfil Profesional</h4>
+                            <ul class="list-unstyled user_data">
+                                <li>
+                                    <p>Porcentaje Perfil</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Educación Básica</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Educación Superior</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="900"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Postgrado</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Ofimatica</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Idiomas</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="10"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Experiencia</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="20"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p>Porcentaje Informacion Adicional</p>
+                                    <div class="progress progress_sm">
+                                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
 
                         <form id="frmDatosPersonales-form" class="" method="post">
@@ -189,104 +241,106 @@
                                             </div>
                                         </div>
                                     </div>
-                              
+
+                                </div>
+                                @* Seccion Direccion *@
+                                <div class="clearfix"></div>
+                                <div class="">
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Seccion Datos de Ubicación
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="col-md-12 col-xs-12">
+
+                                                <div class="col-md-4 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Tipo de Vivienda</label>
+                                                        <select class="form-control" name="pos_tipo_casa" id="cbotipoCasa" style="width:100%">
+                                                            <option value="">Seleccione</option>
+                                                            <option value="CASA">Casa</option>
+                                                            <option value="DEPARTAMENTO">Departamento</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Tipo de Vía</label>
+                                                        <select class="form-control" name="pos_tipo_calle" id="cbotipoCalle" style="width:100%">
+                                                            <option value="">Seleccione</option>
+                                                            <option value="CALLE">Calle</option>
+                                                            <option value="JIRÓN">Jirón</option>
+                                                            <option value="AVENIDA">Avenida</option>
+                                                            <option value="PASAJE">Pasaje</option>
+                                                            <option value="ASENTAMIENTO HUMANO">Asentamiento Humano</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-4 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Condición de Viv.</label>
+                                                        <select class="form-control" name="pos_condicion_viv" id="cbocondicionViv" style="width:100%">
+                                                            <option value="">Seleccione</option>
+                                                            <option value="PROPIA">Propia</option>
+                                                            <option value="ALQUILADA">Alquilada</option>
+                                                            <option value="FAMILIAR">Familiar</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-12 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Dirección</label>
+                                                        <input type="text" name="pos_direccion" id="pos_direccion" class="form-control" placeholder="Dirección" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-xs-12">
+                                                <div class="col-md-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>País</label>
+                                                        <select class="form-control" name="ubi_pais_id" id="cboPais" style="width:100%">
+                                                            <option value="">PAÍS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Departamento</label>
+                                                        <select class="form-control" name="ubi_departamento_id" id="cboDepartamento" style="width:100%">
+                                                            <option value="">DEPARTAMENTO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Provincia</label>
+                                                        <select class="form-control" name="ubi_provincia_id" id="cboProvincia" style="width:100%">
+                                                            <option value="">PROVINCIA</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-3 col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>Distrito</label>
+                                                        <select class="form-control" name="ubi_distrito_id" id="cboDistrito" style="width:100%">
+                                                            <option value="">DISTRITO</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @* Fin de Direccion *@
                                 </div>
                                 @* Fin Datos Personales *@
                             </div>
-                            <div class="clearfix"></div>
-                            <div class="">
-                                @* Seccion Direccion *@
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                       Seccion Datos de Ubicación
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="col-md-12 col-xs-12">
-
-                                            <div class="col-md-2 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Tipo de Vivienda</label>
-                                                    <select class="form-control" name="pos_tipo_casa" id="cbotipoCasa" style="width:100%">
-                                                        <option value="">Seleccione</option>
-                                                        <option value="CASA">Casa</option>
-                                                        <option value="DEPARTAMENTO">Departamento</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Tipo de Vía</label>
-                                                    <select class="form-control" name="pos_tipo_calle" id="cbotipoCalle" style="width:100%">
-                                                        <option value="">Seleccione</option>
-                                                        <option value="CALLE">Calle</option>
-                                                        <option value="JIRÓN">Jirón</option>
-                                                        <option value="AVENIDA">Avenida</option>
-                                                        <option value="PASAJE">Pasaje</option>
-                                                        <option value="ASENTAMIENTO HUMANO">Asentamiento Humano</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-2 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Condición de Viv.</label>
-                                                    <select class="form-control" name="pos_condicion_viv" id="cbocondicionViv" style="width:100%">
-                                                        <option value="">Seleccione</option>
-                                                        <option value="PROPIA">Propia</option>
-                                                        <option value="ALQUILADA">Alquilada</option>
-                                                        <option value="FAMILIAR">Familiar</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Dirección</label>
-                                                    <input type="text" name="pos_direccion" id="pos_direccion" class="form-control" placeholder="Dirección" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 col-xs-12">
-                                            <div class="col-md-3 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>País</label>
-                                                    <select class="form-control" name="ubi_pais_id" id="cboPais" style="width:100%">
-                                                        <option value="">PAÍS</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Departamento</label>
-                                                    <select class="form-control" name="ubi_departamento_id" id="cboDepartamento" style="width:100%">
-                                                        <option value="">DEPARTAMENTO</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Provincia</label>
-                                                    <select class="form-control" name="ubi_provincia_id" id="cboProvincia" style="width:100%">
-                                                        <option value="">PROVINCIA</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-3 col-xs-12">
-                                                <div class="form-group">
-                                                    <label>Distrito</label>
-                                                    <select class="form-control" name="ubi_distrito_id" id="cboDistrito" style="width:100%">
-                                                        <option value="">DISTRITO</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                @* Fin de Direccion *@
-                            </div>
+                           
                         </form>
                     </div>
                 </div>
