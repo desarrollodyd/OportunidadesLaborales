@@ -49,6 +49,10 @@ namespace SistemaReclutamiento.Entidades
         public string pos_estado { get; set; }
         public string pos_url_perfil { get; set; }
         public string fk_nacionalidad { get; set; }
+        public bool pos_familia_amigos { get; set; }
+        public string pos_fam_ami_desc { get; set; }
+        public bool pos_trabajo_pj { get; set; }
+        public string pos_trab_pj_desc { get; set; }
         //En que BD se encuentra el postulante en el formulario de Registro
         public string busqueda { get; set; }
     }

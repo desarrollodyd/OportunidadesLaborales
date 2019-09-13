@@ -7,6 +7,8 @@
         $("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
         $("#pos_nombre_referido").val(postulante.pos_nombre_referido);
+        $("#pos_fam_ami_desc").val(postulante.pos_fam_ami_desc);
+        $("#pos_trab_pj_desc").val(postulante.pos_trab_pj_desc);
         $("#pos_url_perfil").val(postulante.pos_url_perfil);
 
         if (postulante.pos_cv != "") {
@@ -30,6 +32,39 @@
                 $("#pos_referido").val(false);
             }
         }
+        /**/
+        if (postulante.pos_fam_ami_desc == "") {
+            $('#cboFamiliaraAmigos').bootstrapToggle('off');
+            $("#pos_familia_amigos").val(false);
+        }
+        else {
+            if (postulante.pos_familia_amigos == true) {
+                $('#cboFamiliaraAmigos').bootstrapToggle('on');
+                $("#pos_familia_amigos").val(true);
+            }
+            else {
+                $('#cboFamiliaraAmigos').bootstrapToggle('off');
+                $("#pos_familia_amigos").val(false);
+            }
+        }
+        /**/
+        
+        /**/
+        if (postulante.pos_trab_pj_desc == "") {
+            $('#cboTrabajoPJ').bootstrapToggle('off');
+            $("#pos_trabajo_pj").val(false);
+        }
+        else {
+            if (postulante.pos_trabajo_pj == true) {
+                $('#cboTrabajoPJ').bootstrapToggle('on');
+                $("#pos_trabajo_pj").val(true);
+            }
+            else {
+                $('#cboTrabajoPJ').bootstrapToggle('off');
+                $("#pos_trabajo_pj").val(false);
+            }
+        }
+        /**/
 
     };
 
@@ -169,6 +204,53 @@
                 //});
             }
         });
+        /*Familiares*/
+        $("#cboFamiliaraAmigos").change(function () {
+            var check = $(this).prop('checked');
+            if (check) {
+                $("#pos_familia_amigos").val(true);
+                _objetoForm_frmInformacionAdicional.valid();
+                $("#pos_fam_ami_desc").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Referido Obligatorio"
+                    }
+                });
+                $("#pos_fam_ami_desc").prop("disabled", false);
+                $("#pos_fam_ami_desc").val(postulante.pos_fam_ami_desc);
+                $("#pos_cv").rules('remove', 'required');
+            }
+            else {
+                $("#pos_familia_amigos").val(false);
+                $("#pos_fam_ami_desc").prop("disabled", true);
+                $("#pos_fam_ami_desc").rules('remove', 'required');
+                $("#pos_fam_ami_desc").val("");
+            }
+        });
+        /*Ex Trabajador*/
+        $("#cboTrabajoPJ").change(function () {
+            var check = $(this).prop('checked');
+            if (check) {
+                $("#pos_trabajo_pj").val(true);
+                _objetoForm_frmInformacionAdicional.valid();
+                $("#pos_trab_pj_desc").rules('add', {
+                    required: true,
+                    messages: {
+                        required: "Referido Obligatorio"
+                    }
+                });
+                $("#pos_trab_pj_desc").prop("disabled", false);
+                $("#pos_trab_pj_desc").val(postulante.pos_trab_pj_desc);
+                $("#pos_cv").rules('remove', 'required');
+            }
+            else {
+                $("#pos_trabajo_pj").val(false);
+                $("#pos_trab_pj_desc").prop("disabled", true);
+                $("#pos_trab_pj_desc").rules('remove', 'required');
+                $("#pos_trab_pj_desc").val("");
+            }
+        });
+        /*Familiares*/
 
         $(document).on("click", ".btn_guardar", function (e) {
             $("#frmInformacionAdicional-form").submit();
@@ -255,6 +337,32 @@
         }
         else {
             $("#pos_nombre_referido").prop("disabled", true);
+            //$("#pos_cv").rules('add', {
+            //    required: true,
+            //    messages: {
+            //        required: "Subir CV Obligatorio"
+            //    }
+            //});
+        }
+        if (postulante.pos_familia_amigos) {
+            $("#pos_cv").rules('remove', 'required');
+            $("#pos_fam_ami_desc").prop("disabled", false);
+        }
+        else {
+            $("#pos_fam_ami_desc").prop("disabled", true);
+            //$("#pos_cv").rules('add', {
+            //    required: true,
+            //    messages: {
+            //        required: "Subir CV Obligatorio"
+            //    }
+            //});
+        }
+        if (postulante.pos_trabajo_pj) {
+            $("#pos_cv").rules('remove', 'required');
+            $("#pos_trab_pj_desc").prop("disabled", false);
+        }
+        else {
+            $("#pos_trab_pj_desc").prop("disabled", true);
             //$("#pos_cv").rules('add', {
             //    required: true,
             //    messages: {

@@ -127,6 +127,10 @@ namespace SistemaReclutamiento.Controllers
             postulante.pos_referido = persona.pos_referido;
             postulante.pos_nombre_referido = persona.pos_nombre_referido;
             postulante.pos_id = postulante.pos_id;
+            postulante.pos_familia_amigos = persona.pos_familia_amigos;
+            postulante.pos_fam_ami_desc = ManejoNulos.ManageNullStr( persona.pos_fam_ami_desc);
+            postulante.pos_trabajo_pj = persona.pos_trabajo_pj;
+            postulante.pos_trab_pj_desc = ManejoNulos.ManageNullStr(persona.pos_trab_pj_desc);
             try
             {
                 if (respuestaConsulta)
@@ -135,7 +139,7 @@ namespace SistemaReclutamiento.Controllers
                     if (respuestaConsulta)
                     {
                         Session.Remove("postulante");
-                        Session["postulante"] = postulante;
+                        Session["postulante"] = postulantebl.PostulanteIdObtenerJson(postulante.pos_id);
                         RutaImagenes rutaImagenes = new RutaImagenes();
                         rutaImagenes.Postulante_CV(rutaCvPostulante.config_nombre, postulante.pos_cv);
                         errormensaje = "Se Registro Correctamente";

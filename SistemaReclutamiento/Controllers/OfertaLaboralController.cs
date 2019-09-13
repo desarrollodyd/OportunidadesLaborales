@@ -26,9 +26,36 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
+        public ActionResult OfertaLaboralIndexListarJson()
+        {
+            claseError error = new claseError();
+            // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+            var lista = new List<OfertaLaboralEntidad>();
+            try
+            {
+                var tuplalista = ofertaLaboralbl.OfertaLaboralListarVistaIndexJson(postulante.pos_id);
+                lista = tuplalista.lista;
+                error = tuplalista.error;
+                if (!error.Key.Equals(string.Empty)) {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                errormensaje = "Listando Ofertas";
+                respuestaConsulta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), mensaje = errormensaje, respuesta = respuestaConsulta });
+        }
+
+        [HttpPost]
         public ActionResult OfertaLaboralListarJson(ReporteOfertaLaboral reporte)
         {
-
+            claseError error = new claseError();
             // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
             UbigeoModel ubigeobl = new UbigeoModel();
@@ -83,7 +110,13 @@ namespace SistemaReclutamiento.Controllers
             reporte.pos_id = postulante.pos_id;
             try
             {
-                lista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
+                var tuplalista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
+                lista = tuplalista.lista;
+                error = tuplalista.error;
+                if (!error.Key.Equals(string.Empty))
+                {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
                 errormensaje = "Listando Ofertas";
                 respuestaConsulta = true;
             }
@@ -97,6 +130,7 @@ namespace SistemaReclutamiento.Controllers
         [HttpPost]
         public ActionResult OfertaLaboralListarMisPostulacionesJson(ReporteOfertaLaboral reporte)
         {
+            claseError error = new claseError();
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
             UbigeoModel ubigeobl = new UbigeoModel();
             UbigeoEntidad ubigeo = new UbigeoEntidad();
@@ -150,8 +184,14 @@ namespace SistemaReclutamiento.Controllers
             reporte.pos_id = postulante.pos_id;
             try
             {
-                lista = ofertaLaboralbl.PostulanteListarMisOfertasPostuladasJson(reporte);
-                errormensaje = "Listando Ofertas";
+                var tuplalista = ofertaLaboralbl.PostulanteListarMisOfertasPostuladasJson(reporte);
+                lista = tuplalista.lista;
+                error = tuplalista.error;
+                if (!error.Key.Equals(string.Empty))
+                {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                errormensaje = "Listando Postulaciones";
                 respuestaConsulta = true;
             }
             catch (Exception exp)
@@ -179,12 +219,20 @@ namespace SistemaReclutamiento.Controllers
         [HttpPost]
         public ActionResult OfertaLaboralIdObtenerJson(int ola_id)
         {
+            claseError error = new claseError();
             var errormensaje = "";
             var ofertaLaboral = new OfertaLaboralEntidad();
             bool response = false;
             try
             {
-                ofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
+                var tuplaofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
+                ofertaLaboral = tuplaofertaLaboral.ofertalaboral;
+                error = tuplaofertaLaboral.error;
+                if (!error.Key.Equals(string.Empty))
+                {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
+
                 response = true;
             }
             catch (Exception exp)
@@ -195,6 +243,7 @@ namespace SistemaReclutamiento.Controllers
         }
         public ActionResult DetPreguntaOLAListarJson(int ola_id)
         {
+            claseError error = new claseError();
             var errormensaje = "";
             var response=false;
             var detallepregunta = new List<DetPreguntaOLAEntidad>();
@@ -202,7 +251,13 @@ namespace SistemaReclutamiento.Controllers
             var ofertaLaboral = new OfertaLaboralEntidad();
             try
             {
-                ofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
+                var tuplaofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
+                ofertaLaboral = tuplaofertaLaboral.ofertalaboral;
+                error = tuplaofertaLaboral.error;
+                if (!error.Key.Equals(string.Empty))
+                {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
                 detallepregunta = detpreguntabl.DetPreguntaListarporPreguntaJson(ola_id);
                 if (detallepregunta.Count > 0) {
                     foreach (var m in detallepregunta) {

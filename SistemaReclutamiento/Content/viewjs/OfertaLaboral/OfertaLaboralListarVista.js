@@ -23,11 +23,14 @@
     };
     var _ActivarTextBox = function () {
         $('#frm-Postular input').on('change', function () {
-            if ($('input.texto:radio').is(':checked')) {
-                $('.radio>input[type=text]').attr('disabled', false);
+            var dato = $(this).data("id");
+            if ($("input.texto"+dato+":radio").is(':checked')) {
+                $("input[name=opt_respuestalabel" + dato + "]").attr('disabled', false);
+                //$('input[name=text]').attr('disabled', false);
             }
             else {
-                $('.radio>input[type=text]').attr('disabled', true);
+                $("input[name=opt_respuestalabel" + dato + "]").attr('disabled', true);
+                //$('.radio>input[type=text]').attr('disabled', true);
             }
         });
       
@@ -35,10 +38,12 @@
     var _ListarOfertas = function () {
         var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
         responseSimple({
-            url: "OfertaLaboral/OfertaLaboralListarJson",
+            url: "OfertaLaboral/OfertaLaboralIndexListarJson",
             data: JSON.stringify(dataForm),
             refresh: false,
             callBackSuccess: function (response) {
+                CloseMessages();
+                console.log(response);
                 var data = response.data;
                 var respuesta = response.respuesta;
                 $("#ofertasContenido>.row").html("");
@@ -48,7 +53,7 @@
                                                             '<div class="well profile_view">'+
                                                                '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">'+
                                                                     '<h3 class="brief" style="margin: 0px !important;"><i>'+value.ola_nombre+'</i></h3>'+
-                                                                    '<h6 style="margin: 0px !important;">direccion</h6>'+
+                                                                    '<h6 style="margin: 0px !important;">dirección</h6>'+
                                                                     '<div class=" col-xs-12" style="padding-bottom: 10px;">'+
                             '<div class="ln_solid" style="margin-top: 10px !important;"></div>'
                             + '<button type="button" class="btn btn-primary btn_detalle" style="font-size:15px !important" data-toggle="modal" data-target=".bs-example-modal-detalle" data-id=' + value.ola_id + '>Detalle</button>' +
@@ -80,7 +85,7 @@
         $(document).on("click", ".btn_postularme", function (e) {
             var id_oferta_laboral = $(this).data("id");
             var form = $("#frm-Postular").serialize();
-            console.log(form);
+           
             var elementoPregunta = $("#frm-Postular>.form-group>label");
             var elementoRespuesta = $("#frm-Postular>.form-group>div");
             preguntas = [];
@@ -129,10 +134,10 @@
                         $.each(listaRespuestas, function (i, respuesta) {
                             var tituloRespuesta = "";
                             if (respuesta.dro_respuesta == "") {
-                                tituloRespuesta += '<div class="radio"><label><input name="opt_respuesta' + pregunta.dop_id + '" data-id="' + respuesta.dro_id + '" class="texto" type="radio" value="" /> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" name="opt_respuestalabel' + pregunta.dop_id + '" /></div>';
+                                tituloRespuesta += '<div class="radio"><label><input name="opt_respuesta' + pregunta.dop_id + '" data-id="' + pregunta.dop_id + '" class="texto' + pregunta.dop_id + '" type="radio" value="" /> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" name="opt_respuestalabel' + pregunta.dop_id + '" /></div>';
                             }
                             else {
-                                tituloRespuesta += '<div class="radio"><label><input data-id="' + respuesta.dro_id + '" value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
+                                tituloRespuesta += '<div class="radio"><label><input data-id="' + pregunta.dop_id + '" value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
                             }
                             $(".pregunta" + respuesta.fk_det_pregunta_of).append(tituloRespuesta);
                         });
@@ -144,7 +149,7 @@
         /*Fin de Modal*/
         $(document).on("click", ".btn_detalle", function (e) {
             var data = { ola_id: $(this).data("id") };
-            console.log(data);
+        
             responseSimple({
                 url: "OfertaLaboral/OfertaLaboralIdObtenerJson",
                 data: JSON.stringify(data),
@@ -169,15 +174,51 @@
     var _componentes = function () {
 
         $(document).on("click", ".btn_filtrar", function (e) {
-            $("#frmOfertaLaboral-form").submit();
-            if (_objetoForm_frmOfertaLaboral.valid()) {
-                OfertaLaboralVista.__ListarOfertas();
-            } else {
-                messageResponse({
-                    text: "Complete los campos Obligatorios",
-                    type: "error"
-                })
-            }
+            var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
+            responseSimple({
+                url: "OfertaLaboral/OfertaLaboralListarJson",
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                    CloseMessages();
+                    var data = response.data;
+                    var respuesta = response.respuesta;
+                    $("#ofertasContenido>.row").html("");
+                    if (respuesta) {
+                        $.each(data, function (index, value) {
+                            $("#ofertasContenido>.row").append('<div class=col-md-4 col-sm-4 col-xs-12"><div class="profile_details">' +
+                                '<div class="well profile_view">' +
+                                '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">' +
+                                '<h3 class="brief" style="margin: 0px !important;"><i>' + value.ola_nombre + '</i></h3>' +
+                                '<h6 style="margin: 0px !important;">dirección</h6>' +
+                                '<div class=" col-xs-12" style="padding-bottom: 10px;">' +
+                                '<div class="ln_solid" style="margin-top: 10px !important;"></div>'
+                                + '<button type="button" class="btn btn-primary btn_detalle" style="font-size:15px !important" data-toggle="modal" data-target=".bs-example-modal-detalle" data-id=' + value.ola_id + '>Detalle</button>' +
+                                '<button type="button" id=postular' + value.ola_id + ' data-id=' + value.ola_id + ' class="btn btn-success btn-sm btn_postular" style="font-size: 15px !important;" data-toggle="modal" data-target=".bs-example-modal-postular"> Postula</button>' +
+                                '</div>' +
+                                '</div>' +
+                                '<div class="col-xs-12 bottom text-center">' +
+                                '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">' +
+                                '<p class="ratings" style="text-align: center;">' +
+                                '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
+                                '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
+                                '</p>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div></div>');
+                        });
+                        if (data.length == 0) {
+                            CloseMessages();
+                            messageResponse({
+                                text: "No se Encontraron Ofertas",
+                                type: "warning"
+                            });
+                        }
+                    }
+                }
+            });
         });
 
         $("#cboPais").change(function () {
@@ -310,6 +351,47 @@
                 allOption: false,
                 placeholder: "Seleccione Puesto"
             });
+        });
+
+        $(document).on("click", ".btn_cancelar", function (e) {
+            $("#ola_nombre").val("");
+            $("#cborangoFecha").val("");
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboPais",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false,
+                placeholder: "PAIS"
+            });
+            $("#cboDepartamento").html('<option value="">DEPARTAMENTO</option>');
+            if ($('#cboDepartamento').hasClass('select2-hidden-accessible')) {
+                $('#cboDepartamento').select2('destroy');
+            }
+            $("#cboProvincia").html('<option value="">PROVINCIA</option>');
+            if ($('#cboProvincia').hasClass('select2-hidden-accessible')) {
+                $('#cboProvincia').select2('destroy');
+            }
+            $("#cboDistrito").html('<option value="">DISTRITO</option>');
+            if ($('#cboDistrito').hasClass('select2-hidden-accessible')) {
+                $('#cboDistrito').select2('destroy');
+            }
+
+            selectResponse({
+                url: "SQL/TMEMPRListarJson",
+                select: "cbocodEmpresa",
+                campoID: "CO_EMPR",
+                CampoValor: "DE_NOMB",
+                select2: true,
+                allOption: false,
+                placeholder: "Seleccione Empresa"
+            });
+
+            $("#cbocodCargo").html('<option value="">Seleccione Cargo</option>');
+            if ($('#cbocodCargo').hasClass('select2-hidden-accessible')) {
+                $('#cbocodCargo').select2('destroy');
+            }
         });
     };
 

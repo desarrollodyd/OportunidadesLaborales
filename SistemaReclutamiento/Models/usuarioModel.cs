@@ -60,7 +60,7 @@ namespace SistemaReclutamiento.Models
         {
             UsuarioEntidad usuario = new UsuarioEntidad();
             string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
-	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0 and usu_estado='A'";
+	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

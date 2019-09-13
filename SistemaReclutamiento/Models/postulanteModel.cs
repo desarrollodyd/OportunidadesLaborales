@@ -20,7 +20,8 @@ namespace SistemaReclutamiento.Models
         public PostulanteEntidad PostulanteIdObtenerporUsuarioJson(int fk_usuario)
         {
             PostulanteEntidad postulante = new PostulanteEntidad();
-            string consulta = @"SELECT pos_id, 
+       
+        string consulta = @"SELECT pos_id, 
                                         pos_condicion_viv, 
                                         pos_direccion, 
                                         pos_tipo_calle, 
@@ -40,7 +41,11 @@ namespace SistemaReclutamiento.Models
                                         pos_estado,
                                         fk_nacionalidad,
                                         pos_url_perfil,
-                                        fk_usuario
+                                        fk_usuario,
+                                        pos_familia_amigos,
+                                        pos_fam_ami_desc,
+                                        pos_trabajo_pj,
+                                        pos_trab_pj_desc
 	                                        FROM gestion_talento.gdt_per_postulante
 	                                  
                                             where fk_usuario=@p0;";
@@ -79,6 +84,11 @@ namespace SistemaReclutamiento.Models
                                 postulante.fk_usuario=ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
                                 postulante.fk_nacionalidad = ManejoNulos.ManageNullInteger(dr["fk_nacionalidad"]);
                                 postulante.pos_url_perfil = ManejoNulos.ManageNullStr(dr["pos_url_perfil"]);
+                                postulante.pos_familia_amigos = ManejoNulos.ManegeNullBool(dr["pos_familia_amigos"]);
+                                postulante.pos_fam_ami_desc = ManejoNulos.ManageNullStr(dr["pos_fam_ami_desc"]);
+                                postulante.pos_trabajo_pj = ManejoNulos.ManegeNullBool(dr["pos_trabajo_pj"]);
+                                postulante.pos_trab_pj_desc = ManejoNulos.ManageNullStr(dr["pos_trab_pj_desc"]);
+
                             }
                         }
                     }
@@ -112,7 +122,12 @@ namespace SistemaReclutamiento.Models
                                         pos_fecha_act, 
                                         pos_estado, 
                                         fk_nacionalidad,
-                                        pos_url_perfil
+                                        pos_url_perfil,
+                                        fk_usuario,
+                                        pos_familia_amigos,
+                                        pos_fam_ami_desc,
+                                        pos_trabajo_pj,
+                                        pos_trab_pj_desc
 	                                        FROM gestion_talento.gdt_per_postulante	                                  
                                             where pos_id=@p0;";
             try
@@ -150,6 +165,10 @@ namespace SistemaReclutamiento.Models
                                 postulante.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
                                 postulante.fk_nacionalidad = ManejoNulos.ManageNullInteger(dr["fk_nacionalidad"]);
                                 postulante.pos_url_perfil = ManejoNulos.ManageNullStr(dr["pos_url_perfil"]);
+                                postulante.pos_familia_amigos = ManejoNulos.ManegeNullBool(dr["pos_familia_amigos"]);
+                                postulante.pos_fam_ami_desc = ManejoNulos.ManageNullStr(dr["pos_fam_ami_desc"]);
+                                postulante.pos_trabajo_pj = ManejoNulos.ManegeNullBool(dr["pos_trabajo_pj"]);
+                                postulante.pos_trab_pj_desc = ManejoNulos.ManageNullStr(dr["pos_trab_pj_desc"]);
                             }
                         }
                     }
@@ -277,8 +296,12 @@ namespace SistemaReclutamiento.Models
                         pos_referido=@p0,                                
                         pos_nombre_referido=@p1,
                         pos_cv=@p2,
-                        pos_fecha_act=@p3                 
- 	                    WHERE pos_id=@p4;";
+                        pos_fecha_act=@p3,
+                        pos_familia_amigos=@p4,
+                        pos_fam_ami_desc=@p5,
+                        pos_trabajo_pj=@p6,
+                        pos_trab_pj_desc=@p7
+ 	                    WHERE pos_id=@p8;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -289,7 +312,11 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(postulante.pos_nombre_referido));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulante.pos_cv));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(postulante.pos_fecha_act));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManegeNullBool(postulante.pos_familia_amigos));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(postulante.pos_fam_ami_desc));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManegeNullBool(postulante.pos_trabajo_pj));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(postulante.pos_trab_pj_desc));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(postulante.pos_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

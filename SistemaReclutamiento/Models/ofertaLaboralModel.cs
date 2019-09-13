@@ -41,8 +41,9 @@ namespace SistemaReclutamiento.Models
             }
             return cantidad;
         }
-        public List<OfertaLaboralEntidad> OfertaLaboralListarJson(ReporteOfertaLaboral filtros)
+        public (List<OfertaLaboralEntidad> lista,claseError error) OfertaLaboralListarJson(ReporteOfertaLaboral filtros)
         {
+            claseError error = new claseError();
             List<OfertaLaboralEntidad> lista = new List<OfertaLaboralEntidad>();
             
             string consulta = @"SELECT 
@@ -100,14 +101,14 @@ namespace SistemaReclutamiento.Models
             }
             if (filtros.ola_fecha_ini!=null)
             {
-                consulta += "ola_fecha_pub between '" + ManejoNulos.ManageNullDate(filtros.ola_fecha_ini) + "' and '" + DateTime.Now + "' and ";
+                consulta += "ola_fecha_pub between '" + ManejoNulos.ManageNullDate(filtros.ola_fecha_ini).ToString("yyyy-MM-dd HH':'mm':'ss") + "' and '" + DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss") + "' and ";
             }
             if (filtros.ola_nombre != "" && filtros.ola_nombre != null)
             {
                 consulta += "lower(ola_nombre) Like '%" + ManejoNulos.ManageNullStr(filtros.ola_nombre.ToLower()) + "%' and ";
             }
 
-            consulta += "ola_estado='A' and";
+            consulta += "ola_estado='A' and ola_publicado='true' and ola_estado_oferta='ACTIVO' and  ";
             consulta += @" ola_id not in
                                 (select fk_oferta_laboral
                                     FROM gestion_talento.gdt_ola_oferta_laboral as oferta_laboral
@@ -159,12 +160,15 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                //Console.Write(ex.Message);
             }
-            return lista;
+            return (lista:lista,error:error);
         }
-        public List<OfertaLaboralEntidad> PostulanteListarMisOfertasPostuladasJson(ReporteOfertaLaboral filtros)
+        public (List<OfertaLaboralEntidad> lista,claseError error) PostulanteListarMisOfertasPostuladasJson(ReporteOfertaLaboral filtros)
         {
+            claseError error = new claseError();
             List<OfertaLaboralEntidad> lista = new List<OfertaLaboralEntidad>();
             string consulta = @"SELECT 
                                 distinct
@@ -225,7 +229,7 @@ namespace SistemaReclutamiento.Models
             }
             if (filtros.ola_fecha_ini != null)
             {
-                consulta += "ola_fecha_pub between '" + ManejoNulos.ManageNullDate(filtros.ola_fecha_ini) + "' and '" + DateTime.Now + "' and ";
+                consulta += "ola_fecha_pub between '" + ManejoNulos.ManageNullDate(filtros.ola_fecha_ini).ToString("yyyy-MM-dd HH':'mm':'ss") + "' and '" + DateTime.Now.ToString("yyyy-MM-dd HH':'mm':'ss") + "' and ";
             }
             if (filtros.ola_nombre != "" && filtros.ola_nombre != null)
             {
@@ -278,9 +282,11 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+               // Console.Write(ex.Message);
             }
-            return lista;
+            return (lista:lista,error:error);
 
         }
         public List<OfertaLaboralEntidad> PostulanteListarPostulacionesJson(int pos_id)
@@ -374,8 +380,9 @@ namespace SistemaReclutamiento.Models
             }
             return postulaciones;
         }
-        public OfertaLaboralEntidad OfertaLaboralIdObtenerJson(int ola_id)
+        public (OfertaLaboralEntidad ofertalaboral, claseError error) OfertaLaboralIdObtenerJson(int ola_id)
         {
+            claseError error = new claseError();
             OfertaLaboralEntidad ofertalaboral = new OfertaLaboralEntidad();
             string consulta = @"SELECT 
                                     ola_id, 
@@ -451,9 +458,104 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                //Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
-            return ofertalaboral;
+            return (ofertalaboral:ofertalaboral,error:error);
+        }
+        public (List<OfertaLaboralEntidad> lista, claseError error ) OfertaLaboralListarVistaIndexJson(int pos_id)
+        {
+            claseError error = new claseError();
+            List<OfertaLaboralEntidad> lista = new List<OfertaLaboralEntidad>();
+            var fechaHoy = DateTime.Now;
+            string consulta = @"SELECT 
+                                ola_id, 
+                                ola_nombre, 
+                                ola_requisitos, 
+                                ola_funciones, 
+                                ola_competencias,
+                                ola_condiciones_lab, 
+                                ola_vacantes,
+                                ola_enviar, 
+                                ola_enviado,
+                                ola_publicado,
+                                ola_fecha_pub, 
+                                ola_estado_oferta,
+                                ola_duracion, 
+                                ola_fecha_fin, 
+                                ola_fecha_reg, 
+                                ola_fecha_act,
+                                ola_estado, 
+                                ola_cod_empresa, 
+                                ola_cod_unidad,
+                                ola_cod_sede, 
+                                ola_cod_gerencia,
+                                ola_cod_area,
+                                ola_cod_puesto, 
+                                fk_ubigeo, 
+                                fk_usuario
+	                            FROM gestion_talento.gdt_ola_oferta_laboral 
+                                join marketing.cpj_ubigeo
+                                on fk_ubigeo=marketing.cpj_ubigeo.ubi_id where ";
+
+            consulta += "ola_estado='A' and ola_publicado='true' and ola_estado_oferta='ACTIVO' and ola_fecha_pub<='" + fechaHoy.ToString("yyyy-MM-dd HH':'mm':'ss") + "' and ola_fecha_fin>='" + fechaHoy.ToString("yyyy-MM-dd HH':'mm':'ss") + "' and ";
+            consulta += @" ola_id not in
+                                (select fk_oferta_laboral
+                                    FROM gestion_talento.gdt_ola_oferta_laboral as oferta_laboral
+                                    INNER JOIN gestion_talento.gdt_pos_postulacion as postulacion
+                                    on oferta_laboral.ola_id = postulacion.fk_oferta_laboral
+                                    where postulacion.fk_postulante = " + pos_id + ")";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var oferta = new OfertaLaboralEntidad
+                            {
+                                ola_id = ManejoNulos.ManageNullInteger(dr["ola_id"]),
+                                ola_nombre = ManejoNulos.ManageNullStr(dr["ola_nombre"]),
+                                ola_requisitos = ManejoNulos.ManageNullStr(dr["ola_requisitos"]),
+                                ola_funciones = ManejoNulos.ManageNullStr(dr["ola_funciones"]),
+                                ola_competencias = ManejoNulos.ManageNullStr(dr["ola_competencias"]),
+                                ola_condiciones_lab = ManejoNulos.ManageNullStr(dr["ola_condiciones_lab"]),
+                                ola_vacantes = ManejoNulos.ManageNullInteger(dr["ola_vacantes"]),
+                                ola_enviar = ManejoNulos.ManegeNullBool(dr["ola_enviar"]),
+                                ola_enviado = ManejoNulos.ManegeNullBool(dr["ola_enviado"]),
+                                ola_publicado = ManejoNulos.ManegeNullBool(dr["ola_publicado"]),
+                                ola_fecha_pub = ManejoNulos.ManageNullDate(dr["ola_fecha_pub"]),
+                                ola_estado_oferta = ManejoNulos.ManageNullStr(dr["ola_estado_oferta"]),
+                                ola_duracion = ManejoNulos.ManageNullInteger(dr["ola_duracion"]),
+                                ola_fecha_fin = ManejoNulos.ManageNullDate(dr["ola_fecha_fin"]),
+                                ola_fecha_reg = ManejoNulos.ManageNullDate(dr["ola_fecha_reg"]),
+                                ola_fecha_act = ManejoNulos.ManageNullDate(dr["ola_fecha_act"]),
+                                ola_estado = ManejoNulos.ManageNullStr(dr["ola_estado"]),
+                                ola_cod_empresa = ManejoNulos.ManageNullStr(dr["ola_cod_empresa"]),
+                                ola_cod_unidad = ManejoNulos.ManageNullStr(dr["ola_cod_unidad"]),
+                                ola_cod_sede = ManejoNulos.ManageNullStr(dr["ola_cod_sede"]),
+                                ola_cod_gerencia = ManejoNulos.ManageNullStr(dr["ola_cod_gerencia"]),
+                                ola_cod_area = ManejoNulos.ManageNullStr(dr["ola_cod_area"]),
+                                ola_cod_puesto = ManejoNulos.ManageNullStr(dr["ola_cod_puesto"]),
+                                fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]),
+                                fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"])
+                            };
+                            lista.Add(oferta);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                //Console.Write(ex.Message);
+            }
+            return (lista:lista, error:error);
         }
     }
 }

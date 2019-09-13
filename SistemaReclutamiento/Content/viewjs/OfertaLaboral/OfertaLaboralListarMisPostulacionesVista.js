@@ -29,17 +29,19 @@
             data: JSON.stringify(dataForm),
             refresh: false,
             callBackSuccess: function (response) {
+                CloseMessages();
+                console.log(response);
                 var data = response.data;
                 var respuesta = response.respuesta;
                 $("#ofertasContenido").html("");
                 if (respuesta) {
-                    console.log(data);
+                    
                     $.each(data, function (index, value) {
-                        $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12 profile_details">' +
+                        $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12"><div class="profile_details">' +
                             '<div class="well profile_view">' +
                             '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">' +
                             '<h3 class="brief" style="margin: 0px !important;"><i>' + value.ola_nombre + '</i></h3>' +
-                            '<h6 style="margin: 0px !important;">direccion</h6>' +
+                            '<h6 style="margin: 0px !important;">dirección</h6>' +
                             '<div class=" col-xs-12" style="padding-bottom: 10px;">' +
                             '<div class="ln_solid" style="margin-top: 10px !important;"></div>' +
                             '<button type="button" class="btn btn-primary btn-sm btn_detalle" style="font-size: 15px !important;" data-toggle="modal" data-target=".bs-example-modal-detalle" data-id="' + value.ola_id + '">  Detalle </button>' +                          
@@ -54,13 +56,13 @@
                             '</div>' +
                             '</div>' +
                             '</div>' +
-                            '</div >');
+                            '</div ></div>');
                     });
 
                     if (data.length == 0) {
                         CloseMessages();
                         messageResponse({
-                            text: "No se Encontraron Ofertas",
+                            text: "No se Encontraron Postulaciones",
                             type: "warning"
                         });
                     }
@@ -70,7 +72,7 @@
         /*Detalle Postulacion*/
         $(document).on("click", ".btn_detalle", function (e) {
             var data = { ola_id: $(this).data("id") };
-            console.log(data);
+            
             responseSimple({
                 url: "OfertaLaboral/OfertaLaboralIdObtenerJson",
                 data: JSON.stringify(data),
@@ -234,6 +236,46 @@
                 allOption: false,
                 placeholder: "Seleccione Puesto"
             });
+        });
+        $(document).on("click", ".btn_cancelar", function (e) {
+            $("#ola_nombre").val("");
+            $("#cborangoFecha").val("");
+            selectResponse({
+                url: "Ubigeo/UbigeoListarPaisesJson",
+                select: "cboPais",
+                campoID: "ubi_pais_id",
+                CampoValor: "ubi_nombre",
+                select2: true,
+                allOption: false,
+                placeholder: "PAIS"
+            });
+            $("#cboDepartamento").html('<option value="">DEPARTAMENTO</option>');
+            if ($('#cboDepartamento').hasClass('select2-hidden-accessible')) {
+                $('#cboDepartamento').select2('destroy');
+            }
+            $("#cboProvincia").html('<option value="">PROVINCIA</option>');
+            if ($('#cboProvincia').hasClass('select2-hidden-accessible')) {
+                $('#cboProvincia').select2('destroy');
+            }
+            $("#cboDistrito").html('<option value="">DISTRITO</option>');
+            if ($('#cboDistrito').hasClass('select2-hidden-accessible')) {
+                $('#cboDistrito').select2('destroy');
+            }
+
+            selectResponse({
+                url: "SQL/TMEMPRListarJson",
+                select: "cbocodEmpresa",
+                campoID: "CO_EMPR",
+                CampoValor: "DE_NOMB",
+                select2: true,
+                allOption: false,
+                placeholder: "Seleccione Empresa"
+            });
+
+            $("#cbocodCargo").html('<option value="">Seleccione Cargo</option>');
+            if ($('#cbocodCargo').hasClass('select2-hidden-accessible')) {
+                $('#cbocodCargo').select2('destroy');
+            }
         });
     };
 

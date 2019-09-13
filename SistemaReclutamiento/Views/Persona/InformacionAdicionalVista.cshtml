@@ -45,8 +45,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <h4 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre"></h4>
                             <br />
+                            <h4 style="margin-top: 2px;margin-bottom: 2px;" id="persona_nombre"></h4>
+
                             <h4>Perfil Profesional</h4>
                             <ul class="list-unstyled user_data">
                                 <li>
@@ -74,7 +75,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <p>Porcentaje Ofimatica</p>
+                                    <p>Porcentaje Ofimática</p>
                                     <div class="progress progress_sm">
                                         <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30"></div>
                                     </div>
@@ -92,7 +93,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <p>Porcentaje Informacion Adicional</p>
+                                    <p>Porcentaje Información Adicional</p>
                                     <div class="progress progress_sm">
                                         <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="60"></div>
                                     </div>
@@ -122,7 +123,7 @@
                                     <div class="panel-body">
                                         <div class="col-md-2 col-xs-12">
                                             <div class="form-group">
-                                                <label>Es Referido?</label>
+                                                <label>¿Es Referido?</label>
                                                 <div class="form-check pl-0">
                                                     <input type="checkbox" name="cboReferido" id="cboReferido" checked data-height="30" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger">
                                                 </div>
@@ -145,6 +146,36 @@
                                                     <input id="pos_cv" name="pos_cv" type="file" class="form-control" style="display:none;" />
                                                 </label>
 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12"></div>
+                                        <div class="col-md-7 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-9 col-xs-12">¿Tiene amigos/Familiares en la Empresa?</label>
+                                                <div class="form-check pl-0 col-md-3 col-xs-12">
+                                                    <input type="checkbox" name="cboFamiliaraAmigos" id="cboFamiliaraAmigos" checked data-height="30" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger">
+                                                </div>
+                                                <input type="hidden" name="pos_familia_amigos" id="pos_familia_amigos" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" name="pos_fam_ami_desc" id="pos_fam_ami_desc" class="form-control" placeholder="Nombre de Familiar" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12"></div>
+                                        <div class="col-md-7 col-xs-12">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-9 col-xs-12">¿Ha trabajado en alguna de las empresas de la Corporación?</label>
+                                                <div class="form-check pl-0 col-md-3 col-xs-12">
+                                                    <input type="checkbox" name="cboTrabajoPJ" id="cboTrabajoPJ" checked data-height="30" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger">
+                                                </div>
+                                                <input type="hidden" name="pos_trabajo_pj" id="pos_trabajo_pj" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 col-xs-12">
+                                            <div class="form-group">
+                                                <input type="text" name="pos_trab_pj_desc" id="pos_trab_pj_desc" class="form-control" placeholder="Nombre de Empresa" />
                                             </div>
                                         </div>
                                     </div>
