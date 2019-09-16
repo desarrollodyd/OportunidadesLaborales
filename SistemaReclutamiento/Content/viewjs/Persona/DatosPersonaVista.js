@@ -1,5 +1,22 @@
 ﻿var DatosPersonaVista = function () {
+    var _llenarPorcentaje = function () {
+        responseSimple({
+            url: "Postulante/PostulanteObtenerPorcentajeAvanceJson",
+            refresh: false,
+            callBackSuccess: function (response) {
+                CloseMessages();
+                console.log(response);
+                $('#porcentajeProgreso').css({ 'width': response.data + '%' });
+                $('.progress_wide>span>i').html("")
+                $('.progress_wide>span>i').append(response.data + "%")
+            }
+        });
+    }
     var _inicio = function () {
+        //$('#porcentajeProgreso').css('width', 80 + '%');
+        /*Selects*/
+      
+        /*Selects*/
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
@@ -48,7 +65,12 @@
         $("#cbotipoCasa").val(postulante.pos_tipo_casa);
         $("#cboestadoCivil").val(postulante.pos_estado_civil);
         $("#cboBrevete").val(String(postulante.pos_brevete));
-
+        $('#cbotipoDocumento').select2();
+        $('#cboNacionalidad').select2();
+        $('#cboestadoCivil').select2();
+        $('#cbotipoCalle').select2();
+        $('#cbocondicionViv').select2();
+        $('#cbotipoCasa').select2();
         if (postulante.pos_brevete == "") {
             $('#cboBrevete').bootstrapToggle('off');
             $("#pos_brevete").val("false");
@@ -147,6 +169,8 @@
                 select2: true,
                 allOption: false
             });
+
+          
         }
         else {
             selectResponse({
@@ -245,6 +269,10 @@
                     url: "Persona/PersonaEditarJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,
+                    callBackSuccess: function () {
+                        CloseMessages();
+                        _llenarPorcentaje();
+                    }
                 });
             } else {
                 messageResponse({
@@ -269,8 +297,10 @@
                 data: dataForm,
                 refresh: false,
                 callBackSuccess: function (response) {
+                    _llenarPorcentaje();
                     var respuesta = response.respuesta;
                     if (respuesta) {
+                        _llenarPorcentaje();
                         readImage(_image, "#perfil_principal");
                         readImage(_image, "#img_layout_post");
                     }
@@ -400,6 +430,8 @@
 
     };
 
+      
+
     //
     // Return objects assigned to module
     //
@@ -408,6 +440,7 @@
             _inicio();
             _componentes();
             _metodos();
+            _llenarPorcentaje();
         },
     }
 }();

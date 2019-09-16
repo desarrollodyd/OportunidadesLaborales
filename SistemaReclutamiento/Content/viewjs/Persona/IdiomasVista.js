@@ -1,5 +1,19 @@
 ﻿var IdiomasVista = function () {
+    var _llenarPorcentaje = function () {
+        responseSimple({
+            url: "Postulante/PostulanteObtenerPorcentajeAvanceJson",
+            refresh: false,
+            callBackSuccess: function (response) {
+                CloseMessages();
+                $('#porcentajeProgreso').css({ 'width': response.data + '%' });
+                $('.progress_wide>span>i').html("")
+                $('.progress_wide>span>i').append(response.data + "%")
+            }
+        });
+    }
     var _inicio = function () {
+        $('#cbotipoCentroEstudioIdioma').select2();
+        $('#cbonivelIdioma').select2();
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
@@ -77,6 +91,7 @@
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
+                            _llenarPorcentaje();
                             limpiar_form({ contenedor: "#frmIdiomas-form" });
                             _objetoForm_frmIdiomas.resetForm();
                             IdiomasVista.init__ListarIdiomas();
@@ -105,6 +120,7 @@
                             data: JSON.stringify({ id: id }),
                             refresh: false,
                             callBackSuccess: function (response) {
+                                _llenarPorcentaje();
                                 IdiomasVista.init__ListarIdiomas();
                             }
                         });
@@ -131,6 +147,7 @@
                 callBackSuccess: function (response) {
                     var respuesta = response.respuesta;
                     if (respuesta) {
+                        _llenarPorcentaje();
                         readImage(_image, "#perfil_principal");
                         readImage(_image, "#img_layout_post");
                     }
@@ -215,7 +232,7 @@
             _ListarIdiomas();
             _componentes();
             _metodos();
-
+            _llenarPorcentaje();
         },
         init__ListarIdiomas: function () {
             _ListarIdiomas();

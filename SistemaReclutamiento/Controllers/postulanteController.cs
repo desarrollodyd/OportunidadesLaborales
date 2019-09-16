@@ -496,6 +496,108 @@ namespace SistemaReclutamiento.Controllers
             }
             return idPostulacion;
         }
+        [HttpPost]
+        public ActionResult PostulanteObtenerPorcentajeAvanceJson()
+        {
+            Decimal porcentaje = 0;
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            PersonaEntidad persona = (PersonaEntidad)Session["per_full"];
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
+            var educacionBasica = educacionbasicabl.EducacionBasicaListaporPostulanteJson(postulante.pos_id);
+            var educacionSuperior = educacionsuperiorbl.EducacionSuperiorListaporPostulanteJson(postulante.pos_id);
+            var idioma = idiomabl.IdiomaListaporPostulanteJson(postulante.pos_id);
+            var ofimatica = ofimaticabl.OfimaticaListaporPostulanteJson(postulante.pos_id);
+            var experienca = experienciabl.ExperienciaListaporPostulanteJson(postulante.pos_id);
+            var postgrado = postgradobl.PostgradoListaporPostulanteJson(postulante.pos_id);
+            if (educacionBasica.Count > 0) {
+                porcentaje += 20;
+            }
+            if (educacionSuperior.Count > 0) {
+                porcentaje += 10;
+            }
+            if (idioma.Count > 0) {
+                porcentaje += 10;
+            }
+            if (ofimatica.Count > 0) {
+                porcentaje += 10;
+            }
+            if (experienca.Count > 0) {
+                porcentaje += 10;
+            }
+            if (postgrado.Count > 0) {
+                porcentaje += 10;
+            }
+            if (!postulante.pos_cv.Equals(string.Empty))
+            {
+                porcentaje += (decimal)2.5;
+            }
+            if (postulante.pos_referido.Equals(true)) {
+                porcentaje += (decimal)2.5;
+            }
+            if (postulante.pos_familia_amigos.Equals(true)) {
+                porcentaje += (decimal)2.5;
+            }
+            if (postulante.pos_trabajo_pj.Equals(true)) {
+                porcentaje += (decimal)2.5;
+            }
+            if (!persona.per_numdoc.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_apellido_pat.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_apellido_mat.Equals(string.Empty))
+            {
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_nombre.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (postulante.fk_nacionalidad > 0) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_sexo.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_estado_civil.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_url_perfil.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_telefono.Equals(string.Empty)){
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_celular.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_brevete.Equals(false)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!persona.per_fechanacimiento.Equals(string.Empty))
+            {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_tipo_casa.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_tipo_calle.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_condicion_viv.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_direccion.Equals(string.Empty)) {
+                porcentaje += (decimal)1.1;
+            }
+            if (persona.fk_ubigeo > 0) {
+                porcentaje += (decimal)1.1;
+            }
+            if (!postulante.pos_foto.Equals(string.Empty)) {
+                porcentaje += (decimal)1.3;
+            }
+            return Json(new { respuesta =true, mensaje="Porcentaje de Avance Perfil", data=porcentaje });
+        }
 
     }
 }

@@ -59,7 +59,7 @@ namespace SistemaReclutamiento.Models
         public UsuarioEntidad PostulanteValidarCredenciales(string usu_login)
         {
             UsuarioEntidad usuario = new UsuarioEntidad();
-            string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp
+            string consulta = @"SELECT usu_id,lower(usu_nombre) as usu_nombre,usu_contraseña,usu_estado,fk_persona,usu_clave_temp,usu_tipo
 	                            FROM seguridad.seg_usuario where lower(usu_nombre)=@p0";
             try
             {
@@ -80,6 +80,7 @@ namespace SistemaReclutamiento.Models
                                 usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
                                 usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
                                 usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
+                                usuario.usu_tipo = ManejoNulos.ManageNullStr(dr["usu_tipo"]);
                             }
                         }
                     }

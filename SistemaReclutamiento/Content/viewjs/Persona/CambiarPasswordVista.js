@@ -1,4 +1,17 @@
 ﻿var CambiarPasswordVista = function () {
+    var _llenarPorcentaje = function () {
+        responseSimple({
+            url: "Postulante/PostulanteObtenerPorcentajeAvanceJson",
+            refresh: false,
+            callBackSuccess: function (response) {
+                CloseMessages();
+                console.log(response);
+                $('#porcentajeProgreso').css({ 'width': response.data + '%' });
+                $('.progress_wide>span>i').html("")
+                $('.progress_wide>span>i').append(response.data + "%")
+            }
+        });
+    }
     var _inicio = function () {
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
@@ -53,6 +66,7 @@
                 callBackSuccess: function (response) {
                     var respuesta = response.respuesta;
                     if (respuesta) {
+                        _llenarPorcentaje();
                         readImage(_image, "#perfil_principal");
                         readImage(_image, "#img_layout_post");
                     }
@@ -107,6 +121,7 @@
             _inicio();
             _componentes();
             _metodos();
+            _llenarPorcentaje();
         },
     }
 }();

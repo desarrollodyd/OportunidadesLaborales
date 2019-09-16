@@ -1,5 +1,19 @@
 ﻿var PostGradoVista = function () {
+    var _llenarPorcentaje = function () {
+        responseSimple({
+            url: "Postulante/PostulanteObtenerPorcentajeAvanceJson",
+            refresh: false,
+            callBackSuccess: function (response) {
+                CloseMessages();
+                $('#porcentajeProgreso').css({ 'width': response.data + '%' });
+                $('.progress_wide>span>i').html("")
+                $('.progress_wide>span>i').append(response.data + "%")
+            }
+        });
+    }
     var _inicio = function () {
+        $('#cbocondicionPostgrado').select2();
+        $('#cbotipoPostgrado').select2();
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
@@ -71,6 +85,7 @@
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
+                            _llenarPorcentaje();
                             limpiar_form({ contenedor: "#frmPostGrado-form" });
                             _objetoForm_frmPostGrado.resetForm();
                             PostGradoVista.init__ListarPostGrado();
@@ -99,6 +114,7 @@
                             data: JSON.stringify({ id: id }),
                             refresh: false,
                             callBackSuccess: function (response) {
+                                _llenarPorcentaje();
                                 PostGradoVista.init__ListarPostGrado();
                             }
                         });
@@ -125,6 +141,7 @@
                 callBackSuccess: function (response) {
                     var respuesta = response.respuesta;
                     if (respuesta) {
+                        _llenarPorcentaje();
                         readImage(_image, "#perfil_principal");
                         readImage(_image, "#img_layout_post");
                     }
@@ -218,6 +235,7 @@
             _ListarPostGrado();
             _componentes();
             _metodos();
+            _llenarPorcentaje();
 
         },
         init__ListarPostGrado: function () {

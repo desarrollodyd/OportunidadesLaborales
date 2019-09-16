@@ -91,6 +91,7 @@
                             url: "Persona/PersonaInsertarJson",
                             data: JSON.stringify(dataForm),
                             refresh: true,
+                            time:2000,
                             //callBackSuccess: function (response) {
                             //    console.warn(response);
                             //}

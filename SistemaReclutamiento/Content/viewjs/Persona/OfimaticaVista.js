@@ -1,5 +1,19 @@
 ﻿var OfimaticaVista = function () {
+    var _llenarPorcentaje = function () {
+        responseSimple({
+            url: "Postulante/PostulanteObtenerPorcentajeAvanceJson",
+            refresh: false,
+            callBackSuccess: function (response) {
+                CloseMessages();
+                $('#porcentajeProgreso').css({ 'width': response.data + '%' });
+                $('.progress_wide>span>i').html("")
+                $('.progress_wide>span>i').append(response.data + "%")
+            }
+        });
+    }
     var _inicio = function () {
+        $('#cbotipoOfimatica').select2();
+        $('#cboofimaticaNivel').select2();
         $("[name='per_id']").val(persona.per_id);
         $("[name='pos_id']").val(postulante.pos_id);
         $("[name='fk_postulante']").val(postulante.pos_id);
@@ -75,6 +89,7 @@
                     callBackSuccess: function (response) {
                         var respuesta = response.respuesta;
                         if (respuesta) {
+                            _llenarPorcentaje();
                             limpiar_form({ contenedor: "#frmOfimatica-form" });
                             _objetoForm_frmOfimatica.resetForm();
                             OfimaticaVista.init__ListarOfimatica();
@@ -103,6 +118,7 @@
                             data: JSON.stringify({ id: id }),
                             refresh: false,
                             callBackSuccess: function (response) {
+                                _llenarPorcentaje();
                                 OfimaticaVista.init__ListarOfimatica();
                             }
                         });
@@ -129,6 +145,7 @@
                 callBackSuccess: function (response) {
                     var respuesta = response.respuesta;
                     if (respuesta) {
+                        _llenarPorcentaje();
                         readImage(_image, "#perfil_principal");
                         readImage(_image, "#img_layout_post");
                     }
@@ -213,7 +230,7 @@
             _ListarOfimatica();
             _componentes();
             _metodos();
-
+            _llenarPorcentaje();
         },
         init__ListarOfimatica: function () {
             _ListarOfimatica();

@@ -1,6 +1,11 @@
 ﻿var OfertaLaboralMisPostulacionesVista = function () {
 
     var _inicio = function () {
+        $('#cbocodCargo').select2();
+        $('#cboDepartamento').select2();
+        $('#cboProvincia').select2();
+        $('#cboDistrito').select2();
+        $('#cborangoFecha').select2();
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
         selectResponse({
             url: "Ubigeo/UbigeoListarPaisesJson",
