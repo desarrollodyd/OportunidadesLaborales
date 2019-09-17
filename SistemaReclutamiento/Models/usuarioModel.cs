@@ -314,8 +314,8 @@ namespace SistemaReclutamiento.Models
                                 usu_clave_temp, 
                                 usu_tipo
                                 FROM seguridad.seg_usuario
-                                where usu_nombre = @p0 and
-                                usu_tipo = @p1 and usu_estado='A'; ";
+                                where usu_nombre = @p0
+                                and usu_estado='A'; ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -323,7 +323,7 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", usu_login);
-                    query.Parameters.AddWithValue("@p1", busquedaProveedor);
+                  
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

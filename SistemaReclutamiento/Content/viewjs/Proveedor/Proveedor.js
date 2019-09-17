@@ -42,6 +42,27 @@
             }
         });
     };
+
+    var _CrearMenu = function () {
+        responseSimple({
+            url: "Proveedor/ListarDataMenuJson",
+            refresh: false,
+            callBackSuccess: function (response) {
+                console.log(response);
+                var data = response.data;
+                var menu = "";
+                var submenu = "";
+                $("#moduloPrincipal").html("");
+                if (response.respuesta) {
+                    $.each(data, function (index, value) {
+                        //$("#moduloPrincipal").append('<li class="modulo"' + value. + '>')
+                        console.log(value);
+                    });
+                }
+            }
+        });
+    };
+
     var _ListarModulos = function () {
         responseSimple({
             url: "Proveedor/SubMenuListarJson",
@@ -152,11 +173,8 @@
         init: function () {
             _inicio();
             _ListarModulos();
-        },
-        __ListarModulos: function () {
-            _ListarModulos();
-           
-        },
+            //_CrearMenu();
+        }
     }
 }();
 // Initialize module

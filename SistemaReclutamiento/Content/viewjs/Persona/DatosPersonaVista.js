@@ -377,6 +377,24 @@
                 },
                 fk_nacionalidad:{
                     required: true
+                },
+                pos_estado_civil: {
+                    required: true
+                },
+                pos_tipo_casa: {
+                    required: true
+                },
+                pos_tipo_calle: {
+                    required: true
+                },
+                pos_condicion_viv: {
+                    required: true
+                },
+                pos_direccion: {
+                    required:true
+                },
+                per_tipodoc: {
+                    required: true
                 }
 
             },
@@ -424,6 +442,24 @@
                 },
                 fk_nacionalidad: {
                     required:'Nacionalidad Obligatoria'
+                },
+                pos_estado_civil: {
+                    required: 'Estado Civil Obligatorio'
+                },
+                pos_tipo_casa: {
+                    required: 'Tipo de Vivienda Obligatorio'
+                },
+                pos_tipo_calle: {
+                    required: 'Tipo de Vía Obligatorio'
+                },
+                pos_condicion_viv: {
+                    required: 'Condicion de Vivienda Obligatorio'
+                },
+                pos_direccion: {
+                    required: 'Direccion Obligatoria'
+                },
+                per_tipodoc: {
+                    required:'Tipo de Documento Obligatorio'
                 }
             }
         });

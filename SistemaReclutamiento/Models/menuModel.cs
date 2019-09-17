@@ -18,14 +18,15 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public List<MenuEntidad> MenuListarJson()
+        public (List<MenuEntidad> lista,claseError error) MenuListarJson()
         {
             List<MenuEntidad> lista = new List<MenuEntidad>();
-            string consulta = @"SELECT men_descripcion, men_orden, men_icono, men_estado, men_id, men_descripcion_eng, men_tipo, fk_modulo
-	FROM seguridad.seg_menu
-	join seguridad.seg_modulo
-	on seguridad.seg_menu.fk_modulo=seguridad.seg_modulo.mod_id
-	where seguridad.seg_modulo.mod_tipo=@p0;";
+            claseError error = new claseError();
+            string consulta = @"SELECT men_descripcion, men_orden, men_icono, men_estado, men_id, men_descripcion_eng, men_tipo,                        fk_modulo
+	                            FROM seguridad.seg_menu
+	                            join seguridad.seg_modulo
+	                            on seguridad.seg_menu.fk_modulo=seguridad.seg_modulo.mod_id
+	                            where seguridad.seg_modulo.mod_tipo=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -62,10 +63,10 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
             }
-
-            return lista;
+            return (lista:lista,error:error);
         }
         public MenuEntidad MenuIdObtenerJson(int men_id)
         {

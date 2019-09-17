@@ -27,6 +27,41 @@ namespace SistemaReclutamiento.Controllers
             return View();
         }
         [HttpPost]
+        public ActionResult ListarDataMenuJson() {
+            var errormensaje = "";
+            bool response = false;
+            MenuModel menubl = new MenuModel();
+            SubMenuModel submenubl = new SubMenuModel();
+            List<MenuEntidad> listamenu = new List<MenuEntidad>();
+            List<SubMenuEntidad> listasubmenu = new List<SubMenuEntidad>();
+            claseError error = new claseError();
+            try
+            {
+                var tuplalistamenu = menubl.MenuListarJson();
+                listamenu = tuplalistamenu.lista;
+                error = tuplalistamenu.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    if (listamenu.Count > 0) {
+                        foreach (var m in listamenu) {
+                            listasubmenu = submenubl.SubMenuListarJson(m.men_id);
+                            m.SubMenu = listasubmenu;
+                        }
+                    }
+                    response = true;
+                }
+                else {
+                    return Json(new { respuesta = false, mensaje = error.Value });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { respuesta = false, mensaje = ex.Message });
+            }
+
+            return Json(new { data = listamenu.ToList(), respuesta = response, mensaje = errormensaje });
+        }
+        [HttpPost]
         public ActionResult SubMenuListarJson()
         {
             var errormensaje = "";
@@ -36,7 +71,8 @@ namespace SistemaReclutamiento.Controllers
             var listaMenu = new List<MenuEntidad>();
             try
             {
-                listaMenu = menubl.MenuListarJson();
+                var tuplalistaMenu = menubl.MenuListarJson();
+                listaMenu = tuplalistaMenu.lista;
                 foreach(var m in listaMenu)
                 {
                     var lista = submenubl.SubMenuListarJson(m.men_id);

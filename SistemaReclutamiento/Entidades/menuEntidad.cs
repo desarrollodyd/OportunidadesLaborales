@@ -15,5 +15,10 @@ namespace SistemaReclutamiento.Entidades
         public string men_descripcion_eng { get; set; }
         public string men_tipo { get; set; }
         public int fk_modulo { get; set; }
+        public ICollection<SubMenuEntidad> SubMenu { get; set; }
+        public MenuEntidad()
+        {
+            this.SubMenu = new HashSet<SubMenuEntidad>();
+        }
     }
 }
