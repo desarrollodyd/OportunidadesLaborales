@@ -17,9 +17,14 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public int ObtenerCantidadOfertas() {
+        public int ObtenerCantidadOfertas(int pos_id) {
             int cantidad = 0;
-            string consulta = @"select Count(*) as total from gestion_talento.gdt_ola_oferta_laboral where ola_estado='A'";
+            string consulta = @"select Count(*) as total from gestion_talento.gdt_ola_oferta_laboral where ola_estado='A' and ola_publicado='true' and ola_estado_oferta='ACTIVO' ola_id not in
+                                (select fk_oferta_laboral
+                                    FROM gestion_talento.gdt_ola_oferta_laboral as oferta_laboral
+                                    INNER JOIN gestion_talento.gdt_pos_postulacion as postulacion
+                                    on oferta_laboral.ola_id = postulacion.fk_oferta_laboral
+                                    where postulacion.fk_postulante = " + pos_id + ")";
             try
             {
                 using (var con = new NpgsqlConnection())
