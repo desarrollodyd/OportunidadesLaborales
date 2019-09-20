@@ -306,6 +306,43 @@ namespace SistemaReclutamiento.Models
                 Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return persona;
-        }        
+        }
+        internal (PersonaEntidad persona, claseError error) PersonaEmailObtenerJson(string per_correoelectronico)
+        {
+            claseError error = new claseError();
+            PersonaEntidad persona = new PersonaEntidad();
+            string consulta = @"SELECT                                                                  
+                                    per_id,                          
+                                    lower(per_correoelectronico) as per_correoelectronico
+	                                FROM marketing.cpj_persona
+                                    where per_correoelectronico=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", per_correoelectronico);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                persona.per_id = ManejoNulos.ManageNullInteger(dr["per_id"]);
+                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+               // Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return (persona:persona, error:error);
+        }
     }
 }

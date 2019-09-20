@@ -348,6 +348,140 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
+        public bool ProveedorUsuarioEditarContraseniaJson(int id, string password)
+        {
+            bool response = false;
+            string consulta = @"
+                UPDATE seguridad.seg_usuario
+                SET 
+                usu_contraseña=@p0
+	            WHERE usu_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", password);
+                    query.Parameters.AddWithValue("@p1", id);
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return response;
+        }
+        public List<UsuarioEntidad> ProveedorListarUsuariosPorPersonaJson(int fk_persona)
+        {
+            List<UsuarioEntidad> lista = new List<UsuarioEntidad>();
+            string consulta = @"SELECT lower(usu_nombre) as usu_nombre, 
+                                usu_contraseña, 
+                                usu_estado,
+                                fk_persona,
+                                usu_id, 
+                                usu_fecha_reg,
+                                usu_fecha_act, 
+                                usu_clave_temp, 
+                                usu_tipo
+                                FROM seguridad.seg_usuario
+                                where fk_persona = @p0
+                                and usu_estado='A';";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", fk_persona);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var usuario = new UsuarioEntidad
+                                {
+                                    usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]),
+                                    usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]),
+                                    fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]),
+                                    usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]),
+                                    usu_fecha_reg = ManejoNulos.ManageNullDate(dr["usu_fecha_reg"]),
+                                    usu_fecha_act = ManejoNulos.ManageNullDate(dr["usu_fecha_act"]),
+                                    usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]),
+                                    usu_tipo = ManejoNulos.ManageNullStr(dr["usu_tipo"]),
+                                };
+                                lista.Add(usuario);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return lista;
+        }
+
+        public List<UsuarioEntidad> ProveedorListarUsuariosPorTipoJson()
+        {
+            List<UsuarioEntidad> lista = new List<UsuarioEntidad>();
+            string consulta = @"SELECT usu_nombre, 
+                                usu_contraseña, 
+                                usu_estado,
+                                fk_persona,
+                                usu_id, 
+                                usu_fecha_reg,
+                                usu_fecha_act, 
+                                usu_clave_temp, 
+                                usu_tipo
+                                FROM seguridad.seg_usuario
+                                where usu_tipo='PROVEEDOR'
+                                and usu_estado='A';";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    //query.Parameters.AddWithValue("@p0", fk_persona);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var usuario = new UsuarioEntidad
+                                {
+                                    usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]),
+                                    usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]),
+                                    fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]),
+                                    usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]),
+                                    usu_fecha_reg = ManejoNulos.ManageNullDate(dr["usu_fecha_reg"]),
+                                    usu_fecha_act = ManejoNulos.ManageNullDate(dr["usu_fecha_act"]),
+                                    usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]),
+                                    usu_tipo = ManejoNulos.ManageNullStr(dr["usu_tipo"]),
+                                    usu_nombre=ManejoNulos.ManageNullStr(dr["usu_nombre"])
+                                };
+                                lista.Add(usuario);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return lista;
+        }
         #endregion
     }
 }

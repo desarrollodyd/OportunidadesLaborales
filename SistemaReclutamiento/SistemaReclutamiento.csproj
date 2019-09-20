@@ -3638,6 +3638,7 @@
     <Content Include="Content\vendors\validator\index.html" />
     <Content Include="Content\vendors\validator\multifield.js" />
     <Content Include="Content\vendors\validator\validator.js" />
+    <Content Include="Content\viewjs\Desarrollo\PanelPrincipal.js" />
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
@@ -3658,6 +3659,7 @@
     <Content Include="Content\viewjs\Persona\PersonaIndexVista.js" />
     <Content Include="Content\viewjs\Persona\PostGradoVista.js" />
     <Content Include="Content\viewjs\Proveedor\Proveedor.js" />
+    <Content Include="Content\viewjs\Proveedor\ProveedorCambiarPasswordVista.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\icon.png" />
@@ -4576,6 +4578,7 @@
     <Compile Include="Controllers\PostulanteController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
+    <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\DetPreguntaOLAEntidad.cs" />
@@ -4628,6 +4631,7 @@
     <Compile Include="Models\PostgradoModel.cs" />
     <Compile Include="Models\PostulanteModel.cs" />
     <Compile Include="Models\ClaseLibreModel.cs" />
+    <Compile Include="Models\ProveedorModel.cs" />
     <Compile Include="Models\RolModel.cs" />
     <Compile Include="Models\SQLModel.cs" />
     <Compile Include="Models\SubMenuModel.cs" />
@@ -4669,6 +4673,9 @@
     <Content Include="Views\Shared\_LayoutProveedor.cshtml" />
     <Content Include="Views\Login\ProveedorIndex.cshtml" />
     <Content Include="Views\Proveedor\Index.cshtml" />
+    <Content Include="Views\Proveedor\ProveedorCambiarPasswordVista.cshtml" />
+    <Content Include="Views\Shared\_LayoutSuper.cshtml" />
+    <Content Include="Views\Desarrollo\PanelPrincipal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4683,6 +4690,7 @@
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
     <Folder Include="Views\SQL\" />
+    <Folder Include="Views\Super\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

@@ -13,7 +13,7 @@ namespace SistemaReclutamiento.Controllers
     public class ProveedorController : Controller
     {
         // GET: Proveedor
-
+        UsuarioModel usuariobl = new UsuarioModel();
         public ActionResult Index()
         {
             //string replace = "";
@@ -26,6 +26,28 @@ namespace SistemaReclutamiento.Controllers
             //ViewBag.controllersnames = lista;
             return View();
         }
+        public ActionResult ProveedorCambiarPasswordVista() {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult CambiarPasswordVistaJson(string usu_password)
+        {
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+            string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
+            try
+            {
+                respuestaConsulta = usuariobl.ProveedorUsuarioEditarContraseniaJson(usuario.usu_id, password_encriptado);
+                errormensaje = "Contraseña actualizada correctamente";
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message + "";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+
         [HttpPost]
         public ActionResult ListarDataMenuJson() {
             var errormensaje = "";
@@ -70,6 +92,23 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = rolbl.RolListarJson();
+                errormensaje = "Cargando Data...";
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult UsuarioProveedorListarJson()
+        {
+            var errormensaje = "";
+            UsuarioModel usuariobl = new UsuarioModel();
+            var lista = new List<UsuarioEntidad>();
+            try
+            {
+                lista = usuariobl.ProveedorListarUsuariosPorTipoJson();
                 errormensaje = "Cargando Data...";
             }
             catch (Exception exp)

@@ -1,111 +1,5 @@
 ﻿var basePath = $("#BasePath").text();
 
-///*SIDEBAR*/
-
-//var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],
-//    $BODY = $('body'),
-//    $MENU_TOGGLE = $('#menu_toggle'),
-//    $SIDEBAR_MENU = $('#sidebar-menu'),
-//    $SIDEBAR_FOOTER = $('.sidebar-footer'),
-//    $LEFT_COL = $('.left_col'),
-//    $RIGHT_COL = $('.right_col'),
-//    $NAV_MENU = $('.nav_menu'),
-//    $FOOTER = $('footer');
-//function init_sidebar() {
-//    // TODO: This is some kind of easy fix, maybe we can improve this
-//    var setContentHeight = function () {
-//        // reset height
-//        $RIGHT_COL.css('min-height', $(window).height());
-
-//        var bodyHeight = $BODY.outerHeight(),
-//            footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
-//            leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
-//            contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
-
-//        // normalize content
-//        contentHeight -= $NAV_MENU.height() + footerHeight;
-
-//        $RIGHT_COL.css('min-height', contentHeight);
-//    };
-
-//    $SIDEBAR_MENU.find('a').on('click', function (ev) {
-//        console.log('clicked - sidebar_menu');
-//        var $li = $(this).parent();
-
-//        if ($li.is('.active')) {
-//            $li.removeClass('active active-sm');
-//            $('ul:first', $li).slideUp(function () {
-//                setContentHeight();
-//            });
-//        } else {
-//            // prevent closing menu if we are on child menu
-//            if (!$li.parent().is('.child_menu')) {
-//                $SIDEBAR_MENU.find('li').removeClass('active active-sm');
-//                $SIDEBAR_MENU.find('li ul').slideUp();
-//            } else {
-//                if ($BODY.is(".nav-sm")) {
-//                    $li.parent().find("li").removeClass("active active-sm");
-//                    $li.parent().find("li ul").slideUp();
-//                }
-//            }
-//            $li.addClass('active');
-
-//            $('ul:first', $li).slideDown(function () {
-//                setContentHeight();
-//            });
-//        }
-//    });
-
-//    // toggle small or large menu 
-//    $MENU_TOGGLE.on('click', function () {
-//        console.log('clicked - menu toggle');
-
-//        if ($BODY.hasClass('nav-md')) {
-//            $SIDEBAR_MENU.find('li.active ul').hide();
-//            $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
-//        } else {
-//            $SIDEBAR_MENU.find('li.active-sm ul').show();
-//            $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
-//        }
-
-//        $BODY.toggleClass('nav-md nav-sm');
-
-//        setContentHeight();
-
-//        $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
-//    });
-
-//    // check active menu
-//    $SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]').parent('li').addClass('current-page');
-
-//    $SIDEBAR_MENU.find('a').filter(function () {
-//        return this.href == CURRENT_URL;
-//    }).parent('li').addClass('current-page').parents('ul').slideDown(function () {
-//        setContentHeight();
-//    }).parent().addClass('active');
-
-//    // recompute content when resizing
-//    $(window).smartresize(function () {
-//        setContentHeight();
-//    });
-
-//    setContentHeight();
-
-//    // fixed sidebar
-//    if ($.fn.mCustomScrollbar) {
-//        $('.menu_fixed').mCustomScrollbar({
-//            autoHideScrollbar: true,
-//            theme: 'minimal',
-//            mouseWheel: { preventDefault: true }
-//        });
-//    }
-//};
-//$(document).ready(function () {
-//    init_sidebar();
-//});
-///*END SIDEBAR*/
-
-
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {
         messageResponse({
@@ -734,3 +628,112 @@ function llenarSelect(url, data, select, dataId, dataValor, selectVal) {
     });
     return mensaje;
 }
+
+
+
+/*Datatables*/
+/////////////////////////////////////////
+
+function simpleDataTable(obj) {
+
+    var defaults = {
+        uniform: false,
+        tableNameVariable: "",
+        table: "table",
+        tableColumnsData: [],
+        tableColumns: [],
+        tablePaging: true,
+        tableOrdering: true,
+        tableInfo: true,
+        tableLengthChange: true,
+        tableHeaderCheck: false
+    }
+
+    var opciones = $.extend({}, defaults, obj);
+    var objt = "_objetoDatatable";
+    this[objt + '_' + opciones.tableNameVariable] = $(opciones.table).DataTable({
+        "bDestroy": true,
+        "scrollCollapse": true,
+        "scrollX": false,
+        "autoWidth": false,
+        "bProcessing": true,
+        "bDeferRender": true,
+        "paging": opciones.tablePaging,
+        "ordering": opciones.tableOrdering,
+        "info": opciones.tableInfo,
+        "lengthChange": opciones.tableLengthChange,
+        data: opciones.tableColumnsData,
+        columns: opciones.tableColumns,
+        "initComplete": function () {
+            var api = this.api();
+            if (opciones.tableHeaderCheck) {
+                $(api.column(0).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all">');
+            }
+            if (opciones.uniform) {
+                // Info
+                if ($('input[type=checkbox]').length > 0) {
+                    $('input[type=checkbox]').uniform({
+                        wrapperClass: 'border-info-600 text-info-800'
+                    });
+                }
+            }
+        }
+    });
+}
+
+function simpleAjaxDataTable(obj) {
+
+    var defaults = {
+        ajaxUrl: null,
+        ajaxDataSend: {},
+        tableColumnsData: [],
+        tableColumns: [],
+        tableHeaderCheck: false
+    }
+    var opciones = $.extend({}, defaults, obj);
+    if (opciones.ajaxUrl == null) {
+        console.warn('Advertencia - url no fue declarado.');
+        return;
+    };
+
+    var url = basePath + opciones.ajaxUrl;
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(opciones.ajaxDataSend),
+        beforeSend: function () {
+            block_general("body");
+        },
+        complete: function () {
+            unblock("body");
+        },
+        success: function (response) {
+            opciones.tableColumnsData = response.data;
+            simpleDataTable(opciones);
+        },
+        error: function (xmlHttpRequest, textStatus, errorThrow) {
+            console.warn('Message :', xmlHttpRequest.responseJSON.message);
+        }
+    });
+}
+
+//////////////////////////////////////////////////
+$(document).on("click", ".chk_all", function () {
+    var children = ($(this).data("children")).substring(1);
+    var checkboxsNotCheck = $("input:checkbox." + children + ":not(checked)");
+    var checkboxCheck = $("input:checkbox." + children + ":checked");
+    var elementos = [];
+
+    if (checkboxsNotCheck.length == 0) {
+        return false;
+    };
+
+    $.each(checkboxsNotCheck, function (index, value) {
+        elementos.push($(this).data("id"));
+    });
+
+    console.info(elementos);
+});
+
+/*End Datatables*/

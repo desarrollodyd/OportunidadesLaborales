@@ -321,6 +321,83 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
+        public ActionResult ProveedorRecuperarContrasenia(string correo_recuperacion)
+        {
+            var errormensaje = "";
+            string usuario_envio = "";
+            string contrasenia_envio = "";
+            string nombre = "";
+            string contrasenia = "";
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
+            bool respuestaConsulta = false;
+
+
+            try
+            {
+                var personatupla = personabl.PersonaEmailObtenerJson(correo_recuperacion.ToLower());
+                if (!personatupla.error.Key.Equals(string.Empty))
+                {
+                    return Json(new { respuesta = false, mensaje = personatupla.error.Value });
+                }
+                else
+                {
+                    persona = personatupla.persona;
+                }
+
+                var usuariolista = usuariobl.ProveedorListarUsuariosPorPersonaJson(persona.per_id);
+                if (usuariolista.Count > 0){
+                    foreach (var m in usuariolista) {
+                        if (m.usu_tipo.Equals("PROVEEDOR")) {
+                            usuario = m;
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { respuesta = false, mensaje = "El correo ingresado no existe" });
+                }
+                //usuario = usuariobl.ProveedorValidarCredenciales(persona.per_correoelectronico);
+                if (usuario.usu_id > 0)
+                {
+                    usuario_envio = usuario.usu_nombre;
+                    contrasenia_envio = GeneradorPassword.GenerarPassword(8);
+                    contrasenia = Seguridad.EncriptarSHA512(contrasenia_envio);
+
+                    respuestaConsulta = usuariobl.ProveedorUsuarioEditarContraseniaJson(usuario.usu_id, contrasenia);
+                    if (respuestaConsulta)
+                    {
+                        persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                        nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
+                        //string cuerpo_correo = "";
+                        Correo correo = new Correo();
+                        //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
+                        correo.EnviarCorreo(
+                        persona.per_correoelectronico,
+                                    "Correo de Confirmacion",
+                                    "Hola! : " + nombre + " \n " +
+                                    "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia_envio);
+                        errormensaje = "Verifique su Correo ,Se le ha enviado su Contraseña nueva , Gracias.";
+                    }
+                    else
+                    {
+                        errormensaje = "No se pudo editar la contraseña";
+                    }
+                }
+                else
+                {
+                    errormensaje = "Usted no es Proveedor";
+                }
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+
+        [HttpPost]
         public ActionResult ProveedorCerrarSesionLoginJson()
         {
             var errormensaje = "";
@@ -341,6 +418,8 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+
+
         #endregion
     }
 }
