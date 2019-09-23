@@ -66,7 +66,7 @@ namespace SistemaReclutamiento.Controllers
                 {
                     if (listamenu.Count > 0) {
                         foreach (var m in listamenu) {
-                            listasubmenu = submenubl.SubMenuListarJson(m.men_id);
+                            listasubmenu = submenubl.SubMenuListarPorMenuJson(m.men_id);
                             m.SubMenu = listasubmenu;
                         }
                     }
@@ -118,7 +118,7 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
         }
         //[HttpPost]
-        //public ActionResult SubMenuListarJson()
+        //public ActionResult SubMenuListarPorMenuJson()
         //{
         //    var errormensaje = "";
         //    SubMenuModel submenubl = new SubMenuModel();
@@ -131,11 +131,11 @@ namespace SistemaReclutamiento.Controllers
         //        listaMenu = tuplalistaMenu.lista;
         //        foreach(var m in listaMenu)
         //        {
-        //            var lista = submenubl.SubMenuListarJson(m.men_id);
+        //            var lista = submenubl.SubMenuListarPorMenuJson(m.men_id);
         //            foreach (var n in lista) {
         //                listaSubMenu.Add(n);
         //            }
-        //            //listaSubMenu = submenubl.SubMenuListarJson(m.men_id);
+        //            //listaSubMenu = submenubl.SubMenuListarPorMenuJson(m.men_id);
         //        }
         //        errormensaje = "Cargando Data...";
         //    }

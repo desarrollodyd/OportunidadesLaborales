@@ -34,7 +34,7 @@
                                                 <span class="input-group-addon">
                                                     Rol
                                                 </span>
-                                                <select class="form-control input-sm" id="cboRol_" name="cboRol_">
+                                                <select class="form-control input-sm" id="cboUsuario" name="cboUsuario">
                                                     <option value="">--Seleccione--</option>
                                                 </select>
                                             </div>
@@ -44,6 +44,17 @@
                             </div>
                         </div>
                         <div id="menu"></div>
+                        <div class="content">
+                            <!-- Basic datatable -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <table class="table datatable-menus table-hover">
+                                        <tbody><tr><td colspan="6"><span class="alert alert-warning alert-dismissible text-center">Cargando...</span></td></tr></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- /basic datatable -->
+                        </div>
                     </div>
                     <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                         <div id="permisos"></div>

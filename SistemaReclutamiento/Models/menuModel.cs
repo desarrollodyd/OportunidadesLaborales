@@ -13,7 +13,7 @@ namespace SistemaReclutamiento.Models
     public class MenuModel
     {
         string _conexion;
-        string moduloBusqueda = "Compartido";
+        string moduloBusqueda = "Proveedor";
         public MenuModel()
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;

@@ -1,13 +1,13 @@
 ﻿var PanelPrincipal = function () {
     var _inicio = function () {
         selectResponse({
-            url: "Proveedor/RolListarJson",
-            select: "cboRol_",
-            campoID: "rol_id",
-            CampoValor: "rol_nombre",
+            url: "Proveedor/UsuarioProveedorListarJson",
+            select: "cboUsuario",
+            campoID: "usu_id",
+            CampoValor: "usu_nombre",
             select2: true,
             allOption: false,
-            placeholder: "Seleccione Rol"
+            placeholder: "Seleccione Usuario"
         });
         mostrarFechayHora();
     };
@@ -58,7 +58,7 @@
                     "render": function (value) {
                         var estado = value;
                         var mensaje_estado = "";
-                        if (estado == true) {
+                        if (estado == 'A') {
                             estado = "success";
                             mensaje_estado = "Activo";
                         } else {
