@@ -4594,6 +4594,7 @@
     <Compile Include="Entidades\OfertaLaboralEntidad.cs" />
     <Compile Include="Entidades\OfimaticaEntidad.cs" />
     <Compile Include="Entidades\EstOfimaticaEntidad.cs" />
+    <Compile Include="Entidades\PermisoEntidad.cs" />
     <Compile Include="Entidades\PersonaEntidad.cs" />
     <Compile Include="Entidades\PersonaSqlEntidad.cs" />
     <Compile Include="Entidades\PorcentajePosulanteEntidad.cs" />
@@ -4624,6 +4625,7 @@
     <Compile Include="Models\OfertaLaboralModel.cs" />
     <Compile Include="Models\EstOfimaticaModel.cs" />
     <Compile Include="Models\OfimaticaModel.cs" />
+    <Compile Include="Models\PermisoModel.cs" />
     <Compile Include="Models\PersonaModel.cs" />
     <Compile Include="Models\PersonaSqlModel.cs" />
     <Compile Include="Models\PosPreguntaOLAModel.cs" />

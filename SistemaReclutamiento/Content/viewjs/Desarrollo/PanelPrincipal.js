@@ -9,6 +9,7 @@
             allOption: false,
             placeholder: "Seleccione Usuario"
         });
+
         mostrarFechayHora();
     };
     var mostrarFechayHora = function () {
@@ -19,6 +20,12 @@
         };
     };
     var _componentes = function () {
+        $('#cboUsuario').change(function () {
+            usu_id = $(this).val();
+            lista_checked = [];
+            ListarMenus(usu_id);
+        });
+
         $("#profile-tab2").click(function () {
             if (!$().DataTable) {
                 console.warn('Advertencia - datatables.min.js no esta declarado.');
@@ -111,6 +118,16 @@
         }
     }
 }();
+function activarCheckBox() {
+    if ($("input.flat")[0]) {
+        $(document).ready(function () {
+            $('input.flat').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-green'
+            });
+        });
+    }
+}
 function show5() {
     if (!document.layers && !document.all && !document.getElementById)
         return;
@@ -145,8 +162,105 @@ function show5() {
         document.getElementById("liveclock").innerHTML = myclock;
     setTimeout("show5()", 1000);
 };
+function ListarMenus(usu_id) {
+    var dataForm = {
+        usu_id: usu_id
+    };
+    var url = basePath + "Super/PermisosListarJson";
+    $.ajax({
+        url: url,
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(dataForm),
+        beforeSend: function () {
+            $.LoadingOverlay("show");
+        },
+        complete: function () {
+            $.LoadingOverlay("hide");
+            CheckTodosMenus();
+        },
+        success: function (response) {
+            total_menus = response.data;
+            var data_lista_menu = response.data_lista_menu;
+            lista_checked = [];
+            $.each(data_lista_menu, function (key, value) {
+                lista_checked.push(value.fk_submenu);
+            });
+            objetodatatable = $("#table").DataTable({
+                "bDestroy": true,
+                "bSort": true,
+                "scrollCollapse": true,
+                "scrollX": false,
+                "paging": true,
+                "autoWidth": false,
+                "bProcessing": true,
+                "bDeferRender": true,
+                "initComplete": function (settings, json) {
+                    //   afterTableInitialization(settings,json)
+                    $('button#excel,a#pdf,a#imprimir').off("click").on('click', function () {
+                        ocultar = ["Accion"];//array de columnas para ocultar , usar titulo de columna
+                        columna_cambio = [{
+                            nombre: "Estado",
+                            render: function (o) {
+                                valor = "";
+                                if (o == 1) {
+                                    valor = "Habilitado";
+                                }
+                                else { valor = "Deshabilitado"; }
+                                return valor;
+                            }
+                        }]
+                        cabecerasnuevas = [];
+                        //cabecerasnuevas.push({ nombre: "cabecera", valor: "vdfcs" });
+                        //tituloreporte = "Reporte Empleados";
+                        funcionbotonesnuevo({
+                            botonobjeto: this, tablaobj: objetodatatable, ocultar: ocultar/*, tituloreporte: tituloreporte*/, cabecerasnuevas: cabecerasnuevas, columna_cambio: columna_cambio
+                        });
+                    });
+                },
+                data: response.data,
+                columns: [
+                    { data: "snu_id", title: "Id" },
+                    { data: "snu_descripcion", title: "Menu" },
+                    {
+                        data: "snu_id", title: "Permiso",
+                        "bSortable": false,
+                        "render": function (o) {
+                            var checked = "";
+                            var validar = lista_checked.includes(o);
+                            checked = validar == true ? 'checked' : '';
+                            return '<div class="icheck-inline"><input type="checkbox" data-id="' + o + '" ' + checked + ' checkbox="icheckbox_square-blue"/></div>';
+                        }, class: "text-center"
+                    }
+                ],
+                "drawCallback": function (settings) {
+                    $('.btnEditar').tooltip({
+                        title: "Editar"
+                    });
+                    $(".icheck-inline").iCheck({
+                        checkboxClass: 'icheckbox_square-blue',
+                        radioClass: 'iradio_square-red',
+                        increaseArea: '25%'
+                    });
+                },
+            });
+        }
+    });
+};
+function CheckTodosMenus() {
+    $(".icheck_total").iCheck("destroy");
 
-
+    if (total_menus.length == lista_checked.length) {
+        document.getElementById("CheckTodosMenus").checked = true;
+    } else {
+        document.getElementById("CheckTodosMenus").checked = false;
+    }
+    $(".icheck_total").iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-red',
+        increaseArea: '25%'
+    });
+}
 document.addEventListener('DOMContentLoaded', function () {
     PanelPrincipal.init();
 });

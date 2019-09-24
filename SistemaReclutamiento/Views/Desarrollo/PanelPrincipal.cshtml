@@ -28,11 +28,19 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
+                                    <div class="col-md-pull-8">
+                                        <div class="form-group div_check_total">
+                                            <label>Seleccionar Todo</label>
+                                            <div class="icheck_total" style="margin-top:3px;"><input type="checkbox" id="CheckTodosMenus" checkbox="icheckbox_square-blue"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="form-group">
                                         <div class="col-md-offset-8 col-md-4">
                                             <div class="input-group">
                                                 <span class="input-group-addon">
-                                                    Rol
+                                                    Usuario
                                                 </span>
                                                 <select class="form-control input-sm" id="cboUsuario" name="cboUsuario">
                                                     <option value="">--Seleccione--</option>
@@ -48,8 +56,8 @@
                             <!-- Basic datatable -->
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table datatable-menus table-hover">
-                                        <tbody><tr><td colspan="6"><span class="alert alert-warning alert-dismissible text-center">Cargando...</span></td></tr></tbody>
+                                    <table class="table table-xs table-bordered" id="table">
+                                   
                                     </table>
                                 </div>
                             </div>
