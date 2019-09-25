@@ -109,7 +109,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = usuariobl.ProveedorListarUsuariosPorTipoJson();
-                errormensaje = "Cargando Data...";
+                errormensaje = "Cargando Usuarios ...";
             }
             catch (Exception exp)
             {

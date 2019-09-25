@@ -1,4 +1,6 @@
 ﻿var PanelPrincipal = function () {
+    var total_menus = 0;
+    //var lista_unchecked_menus = [];
     var _inicio = function () {
         selectResponse({
             url: "Proveedor/UsuarioProveedorListarJson",
@@ -19,97 +21,162 @@
             window.onload = show5();
         };
     };
-    var _componentes = function () {
-        $('#cboUsuario').change(function () {
-            usu_id = $(this).val();
-            lista_checked = [];
-            ListarMenus(usu_id);
-        });
-
-        $("#profile-tab2").click(function () {
-            if (!$().DataTable) {
-                console.warn('Advertencia - datatables.min.js no esta declarado.');
-                return;
-            }
-
-            simpleAjaxDataTable({
-                uniform: true,
-                ajaxUrl: "Proveedor/UsuarioProveedorListarJson",
-                tableNameVariable: "roles",
-                tableHeaderCheck: true,
-                table: ".datatable-roles",
-                tableColumns: [{
-                    data: "usu_id",
-                    title: "",
-                    "bSortable": false,
-                    "render": function (value) {
-                        var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="">';
-                        return check;
-                    }
-                },
-                {
-                    data: "usu_id",
-                    title: "ID",
-                },
-                {
-                    data: "usu_nombre",
-                    title: "Nombre"
-                },
-                {
-                    data: "usu_tipo",
-                    title: "Descripcion"
-                },
-                {
-                    data: "usu_estado",
-                    title: "Estado",
-                    "render": function (value) {
-                        var estado = value;
-                        var mensaje_estado = "";
-                        if (estado == 'A') {
-                            estado = "success";
-                            mensaje_estado = "Activo";
-                        } else {
-                            estado = "danger";
-                            mensaje_estado = "InActivo";
+    var ListarMenus = function () {
+        var data = { usu_id: usu_id }
+        lista_checked = [];
+        responseSimple({
+            url: "Super/PermisosListarJson",
+            data: JSON.stringify(data),
+            refresh: false,
+            callBackSuccess: function (response) {
+                CloseMessages();
+                total_menus = response.data;
+                var data_lista_menu = response.data_lista_menu;
+                lista_checked = [];
+                $.each(data_lista_menu, function (key, value) {
+                    lista_checked.push(value.fk_submenu);
+                });
+                CheckTodosMenus();
+                simpleDataTable({
+                    table: "#tablepermiso",
+                    tableLengthChange: false,
+                    tableColumnsData: response.data,
+                    tableColumns: [
+                        { data: "snu_id", title: "Id" },
+                        { data: "snu_descripcion", title: "Menu" },
+                        { data: "snu_url", title: "URI" },
+                        { data: "snu_orden", title: "Orden" },
+                        {
+                            data: "snu_id", title: "Permiso",
+                            "bsortable": false,
+                            "render": function (o) {
+                                var checked = "";
+                                var validar = lista_checked.includes(o);
+                                checked = validar == true ? 'checked' : '';
+                                return '<div class=""><input type="checkbox" data-id="' + o + '" ' + checked + ' checkbox="icheckbox_square-blue" class="flat"/></div>';
+                            }, class: "text-center"
                         }
-                        var span = '<span class="badge badge-' + estado + '">' + mensaje_estado + '</span>';
-                        return span;
-                    }
-
-                },
-                {
-                    data: 'usu_id',
-                    title: "Acciones",
-                    width: 100,
-                    className: 'text-center',
-                    "bSortable": false,
-                    "render": function (value, type, oData, meta) {
-                        var botones = '<div class="list-icons">' +
-                            '<div class="dropdown">' +
-                            '<a href="#" class="list-icons-item" data-toggle="dropdown">' +
-                            '<i class="icon-menu9"></i>' +
-                            '</a>' +
-                            '<div class="dropdown-menu dropdown-menu-right">' +
-                            '<a href="#" class="dropdown-item btn_editar" data-id="' + value + '"><i class="icon-hammer"></i> Editar</a>' +
-                            '<a href="#" class="dropdown-item btn_estado" data-id="' + value + '" data-estado="' + oData.usu_estado + '"><i class="icon-circles"></i> Cambiar Estado</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</div>';
-                        return botones;
-                    }
-                }
-                ]
-            })
-            //responseSimple({
-            //    url: "Proveedor/UsuarioProveedorListarJson",
-            //    refresh: false,
-            //    callBackSuccess: function (response) {
-            //        console.log(response);
-            //    }
-            //});
-
+                    ]
+                });
+                checkUno();
+            }
         });
     };
+    var CheckTodosMenus = function () {
+        var contador = 0;
+        $.each(total_menus, function (key, value) {
+            if (lista_checked.includes(value.snu_id)) {
+                contador++;
+            }
+        });
+        if (total_menus.length == contador) {
+            $('.div_check_total input:checkbox').prop('checked', true);
+        } else {
+            $('.div_check_total input:checkbox').prop('checked', false);
+        }
+    };
+    var _componentes = function () {
+        $('.div_check_total input:checkbox').on('change', function () {
+            if ($(this).is(':checked')) {
+                messageConfirmation({
+                    content: "Se dara permiso a todos los menus a este usuario, ¿Desea Continuar?",
+                    callBackSAceptarComplete: function () {
+                        //Guardar Acceso a todos los menus
+                        var lista_menus = [];
+                        lista_unchecked_menus = [];
+                        var usu_id = $("#cboUsuario").val();
+                        $.each(total_menus, function (key, value) {
+                            lista_menus.push(value.snu_id);
+                        });
+                        lista_unchecked_menus = lista_menus.filter(x => !lista_checked.includes(x));
+                        var dataForm = {
+                            submenus: lista_unchecked_menus,
+                            fk_usuario: usu_id
+                        };
+                        responseSimple({
+                            url: "Super/SubMenuPermisoTodoInsertar",
+                            data: JSON.stringify(dataForm),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                var respuesta = response.respuesta;
+                                if (respuesta) {
+                                    setTimeout(function () {
+                                        ListarMenus(usu_id);
+                                    }, 500);
+                                   // ListarMenus(usu_id);
+                                }
+                                else {
+                                    messageResponse({
+                                        text: response.mensaje,
+                                        type: "error"
+                                    });
+                                }
+                            }
+                        });
+                    }
+                })
+                
+            }
+            else {
+                messageConfirmation({
+                    content:"Se eliminaran todos los permisos a este usuario, ¿Desea Continuar?",
+                    callBackSAceptarComplete: function () {
+                        //Quitar Acceso a Menus
+                        var lista_menus = [];
+                        lista_unchecked_menus = [];
+                        var usu_id = $("#cboUsuario").val();
+                        $.each(total_menus, function (key, value) {
+                            lista_menus.push(value.snu_id);
+                        });
+                        lista_unchecked_menus = lista_menus.filter(x => lista_checked.includes(x));
+                        var dataForm = {
+                            fk_usuario: usu_id,
+                            submenus: lista_unchecked_menus
+                        };
+                        responseSimple({
+                            url: "Super/SubMenuPermisoTodoEliminar",
+                            data: JSON.stringify(dataForm),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                var respuesta = response.respuesta;
+                                if (respuesta) {
+                                    setTimeout(function () {
+                                        ListarMenus(usu_id);
+                                    }, 500);
+                                }
+                                else {
+                                    messageResponse({
+                                        text: response.mensaje,
+                                        type: "error"
+                                    });
+                                }
+                            }
+                        });
+                    }
+                })
+               
+            }
+
+        });
+        $('#cboUsuario').change(function () {
+            usu_id = $(this).val();
+            if (usu_id == "") {
+                messageResponse({
+                    text: "Debe seleccionar un Usuario",
+                    type: "error"
+                });
+            }
+            else {
+                $(".div_check_total input:checkbox").attr("disabled", false);
+                ListarMenus(usu_id);
+            }
+        });
+    };
+    var checkUno = function () {
+        $('#tablepermiso input:checkbox').on('change', function () {
+            console.log("asdadasd");
+        });
+    }
     return {
         init: function () {
             _inicio();
@@ -118,25 +185,13 @@
         }
     }
 }();
-function activarCheckBox() {
-    if ($("input.flat")[0]) {
-        $(document).ready(function () {
-            $('input.flat').iCheck({
-                checkboxClass: 'icheckbox_flat-green',
-                radioClass: 'iradio_flat-green'
-            });
-        });
-    }
-}
 function show5() {
     if (!document.layers && !document.all && !document.getElementById)
         return;
-
     var Digital = new Date();
     var hours = Digital.getHours();
     var minutes = Digital.getMinutes();
     var seconds = Digital.getSeconds();
-
     var dn = "PM";
     if (hours < 12)
         dn = "AM";
@@ -162,105 +217,11 @@ function show5() {
         document.getElementById("liveclock").innerHTML = myclock;
     setTimeout("show5()", 1000);
 };
-function ListarMenus(usu_id) {
-    var dataForm = {
-        usu_id: usu_id
-    };
-    var url = basePath + "Super/PermisosListarJson";
-    $.ajax({
-        url: url,
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(dataForm),
-        beforeSend: function () {
-            $.LoadingOverlay("show");
-        },
-        complete: function () {
-            $.LoadingOverlay("hide");
-            CheckTodosMenus();
-        },
-        success: function (response) {
-            total_menus = response.data;
-            var data_lista_menu = response.data_lista_menu;
-            lista_checked = [];
-            $.each(data_lista_menu, function (key, value) {
-                lista_checked.push(value.fk_submenu);
-            });
-            objetodatatable = $("#table").DataTable({
-                "bDestroy": true,
-                "bSort": true,
-                "scrollCollapse": true,
-                "scrollX": false,
-                "paging": true,
-                "autoWidth": false,
-                "bProcessing": true,
-                "bDeferRender": true,
-                "initComplete": function (settings, json) {
-                    //   afterTableInitialization(settings,json)
-                    $('button#excel,a#pdf,a#imprimir').off("click").on('click', function () {
-                        ocultar = ["Accion"];//array de columnas para ocultar , usar titulo de columna
-                        columna_cambio = [{
-                            nombre: "Estado",
-                            render: function (o) {
-                                valor = "";
-                                if (o == 1) {
-                                    valor = "Habilitado";
-                                }
-                                else { valor = "Deshabilitado"; }
-                                return valor;
-                            }
-                        }]
-                        cabecerasnuevas = [];
-                        //cabecerasnuevas.push({ nombre: "cabecera", valor: "vdfcs" });
-                        //tituloreporte = "Reporte Empleados";
-                        funcionbotonesnuevo({
-                            botonobjeto: this, tablaobj: objetodatatable, ocultar: ocultar/*, tituloreporte: tituloreporte*/, cabecerasnuevas: cabecerasnuevas, columna_cambio: columna_cambio
-                        });
-                    });
-                },
-                data: response.data,
-                columns: [
-                    { data: "snu_id", title: "Id" },
-                    { data: "snu_descripcion", title: "Menu" },
-                    {
-                        data: "snu_id", title: "Permiso",
-                        "bSortable": false,
-                        "render": function (o) {
-                            var checked = "";
-                            var validar = lista_checked.includes(o);
-                            checked = validar == true ? 'checked' : '';
-                            return '<div class="icheck-inline"><input type="checkbox" data-id="' + o + '" ' + checked + ' checkbox="icheckbox_square-blue"/></div>';
-                        }, class: "text-center"
-                    }
-                ],
-                "drawCallback": function (settings) {
-                    $('.btnEditar').tooltip({
-                        title: "Editar"
-                    });
-                    $(".icheck-inline").iCheck({
-                        checkboxClass: 'icheckbox_square-blue',
-                        radioClass: 'iradio_square-red',
-                        increaseArea: '25%'
-                    });
-                },
-            });
-        }
-    });
-};
-function CheckTodosMenus() {
-    $(".icheck_total").iCheck("destroy");
-
-    if (total_menus.length == lista_checked.length) {
-        document.getElementById("CheckTodosMenus").checked = true;
-    } else {
-        document.getElementById("CheckTodosMenus").checked = false;
-    }
-    $(".icheck_total").iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-red',
-        increaseArea: '25%'
-    });
-}
 document.addEventListener('DOMContentLoaded', function () {
     PanelPrincipal.init();
 });
+//function checkTable(){
+//    $('#table input:checkbox').on('ifChecked', function (event) {
+//        console.log(numero);
+//    });
+//}

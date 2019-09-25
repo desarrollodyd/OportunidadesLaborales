@@ -36,12 +36,12 @@ namespace SistemaReclutamiento.Models
                         {
                             var Permiso = new PermisoEntidad
                             {
-                                pem_estado = ManejoNulos.ManageNullStr(dr["codPermisoUsuario"]),
-                                fk_usuario = ManejoNulos.ManageNullInteger(dr["codUMenu"]),
-                                fk_boton = ManejoNulos.ManageNullInteger(dr["codUMenu"]),
-                                fk_submenu = ManejoNulos.ManageNullInteger(dr["codUMenu"]),
-                                pem_fecha_reg = ManejoNulos.ManageNullDate(dr["codUMenu"]),
-                                pem_usu_reg = ManejoNulos.ManageNullInteger(dr["codUMenu"]),
+                                pem_estado = ManejoNulos.ManageNullStr(dr["pem_estado"]),
+                                fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]),
+                                fk_boton = ManejoNulos.ManageNullInteger(dr["fk_boton"]),
+                                fk_submenu = ManejoNulos.ManageNullInteger(dr["fk_submenu"]),
+                                pem_fecha_reg = ManejoNulos.ManageNullDate(dr["pem_fecha_reg"]),
+                                pem_usu_reg = ManejoNulos.ManageNullInteger(dr["pem_usu_reg"]),
                             };
                             lista.Add(Permiso);
                         }
@@ -114,7 +114,7 @@ namespace SistemaReclutamiento.Models
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p1", fk_usuario);
+                    query.Parameters.AddWithValue("@p0", fk_usuario);
                     query.ExecuteNonQuery();
                     response = true;
                 }

@@ -14,30 +14,16 @@
             <div class="" role="tabpanel" data-example-id="togglable-tabs">
                 <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Menu</a>
-                    </li>
-                    <li role="presentation" class="">
-                        <a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Permisos</a>
-                    </li>
-                    <li role="presentation" class="">
-                        <a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Roles</a>
+                        <a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Permisos</a>
                     </li>
                 </ul>
                 <div id="myTabContent" class="tab-content">
                     <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col-md-pull-8">
-                                        <div class="form-group div_check_total">
-                                            <label>Seleccionar Todo</label>
-                                            <div class="icheck_total" style="margin-top:3px;"><input type="checkbox" id="CheckTodosMenus" checkbox="icheckbox_square-blue"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
+                                <div class="">
                                     <div class="form-group">
-                                        <div class="col-md-offset-8 col-md-4">
+                                        <div class="col-md-4">
                                             <div class="input-group">
                                                 <span class="input-group-addon">
                                                     Usuario
@@ -49,32 +35,24 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div id="menu"></div>
-                        <div class="content">
-                            <!-- Basic datatable -->
-                            <div class="card">
-                                <div class="card-body">
-                                    <table class="table table-xs table-bordered" id="table">
-                                   
-                                    </table>
+                                <div class="">
+                                    <div class="col-md-8">
+                                        <div class="form-group pull-right div_check_total">
+                                            <div class="icheck_total"><input type="checkbox" id="CheckTodosMenus" checkbox="icheckbox_square-blue" disabled> Seleccionar Todo</div>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
-                            <!-- /basic datatable -->
                         </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                        <div id="permisos"></div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                        <div id="roles"></div>
+                        <div id="menu">
+                        </div>
                         <div class="content">
                             <!-- Basic datatable -->
                             <div class="card">
                                 <div class="card-body">
-                                    <table class="table datatable-roles table-hover">
-                                        <tbody><tr><td colspan="6"><span class="alert alert-warning alert-dismissible text-center">Cargando...</span></td></tr></tbody>
+                                    <table class="table table-xs table-bordered" id="tablepermiso">
+                                   
                                     </table>
                                 </div>
                             </div>
