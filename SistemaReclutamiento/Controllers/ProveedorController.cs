@@ -50,6 +50,7 @@ namespace SistemaReclutamiento.Controllers
 
         [HttpPost]
         public ActionResult ListarDataMenuJson() {
+            var usuario = (UsuarioEntidad)Session["usu_proveedor"];
             var errormensaje = "";
             bool response = false;
             MenuModel menubl = new MenuModel();
