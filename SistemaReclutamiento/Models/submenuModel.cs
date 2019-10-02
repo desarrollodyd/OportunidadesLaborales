@@ -67,28 +67,31 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public List<SubMenuEntidad> SubMenuListarPorMenuJson(int fk_menu)
+        public List<SubMenuEntidad> SubMenuListarPorMenuJson(int fk_menu,int fk_usuario)
         {
             List<SubMenuEntidad> lista = new List<SubMenuEntidad>();
-            string consulta = @"SELECT 
-                                snu_descripcion, 
-                                snu_url, 
-                                snu_orden,
-                                snu_icono, 
-                                snu_estado,
-                                fk_menu, 
-                                snu_id,
-                                snu_descripcion_eng,
-                                snu_template
-	                            FROM seguridad.seg_submenu
-                                where fk_menu=@p0;";
+            string consulta = @"SELECT  submenu.snu_descripcion, 
+		                    submenu.snu_url, 
+		                    submenu.snu_orden,
+		                    submenu.snu_icono, 
+		                    submenu.snu_estado,
+		                    submenu.fk_menu, 
+		                    submenu.snu_id,
+		                    submenu.snu_descripcion_eng,
+		                    submenu.snu_template
+		                    FROM seguridad.seg_submenu as submenu
+		                    join seguridad.seg_permiso as permiso
+		                    on submenu.snu_id=permiso.fk_submenu
+		                    where permiso.fk_usuario=@p0
+                               and submenu.fk_menu=@p1;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_menu);
+                    query.Parameters.AddWithValue("@p0", fk_usuario);
+                    query.Parameters.AddWithValue("@p1", fk_menu);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

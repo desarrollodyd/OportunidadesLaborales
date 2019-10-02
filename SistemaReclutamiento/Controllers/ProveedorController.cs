@@ -60,14 +60,14 @@ namespace SistemaReclutamiento.Controllers
             claseError error = new claseError();
             try
             {
-                var tuplalistamenu = menubl.MenuListarJson();
+                var tuplalistamenu = menubl.MenuListarJson(usuario.usu_id);
                 listamenu = tuplalistamenu.lista;
                 error = tuplalistamenu.error;
                 if (error.Key.Equals(string.Empty))
                 {
                     if (listamenu.Count > 0) {
                         foreach (var m in listamenu) {
-                            listasubmenu = submenubl.SubMenuListarPorMenuJson(m.men_id);
+                            listasubmenu = submenubl.SubMenuListarPorMenuJson(m.men_id,usuario.usu_id);
                             m.SubMenu = listasubmenu;
                         }
                     }
