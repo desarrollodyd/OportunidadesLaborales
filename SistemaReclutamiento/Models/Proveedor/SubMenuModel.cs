@@ -20,7 +20,17 @@ namespace SistemaReclutamiento.Models
         public List<SubMenuEntidad> SubMenuListarJson()
         {
             List<SubMenuEntidad> lista = new List<SubMenuEntidad>();
-                string consulta = @"SELECT snu_descripcion, snu_url, snu_orden, snu_icono, snu_estado, fk_menu, snu_id,                                 snu_descripcion_eng, snu_template
+                string consulta = @"SELECT submenu.snu_descripcion, 
+                                            submenu.snu_url, 
+                                            submenu.snu_orden, 
+                                            submenu.snu_icono, 
+                                            submenu.snu_estado, 
+                                            submenu.fk_menu, 
+                                            submenu.snu_id,                                 
+                                            submenu.snu_descripcion_eng, 
+                                            submenu.snu_template,
+                                            menu.men_descripcion,
+                                            modulo.mod_descripcion
 	                                FROM seguridad.seg_submenu as submenu 
 	                                inner join seguridad.seg_menu as menu
 	                                on menu.men_id=submenu.fk_menu
@@ -52,6 +62,8 @@ namespace SistemaReclutamiento.Models
                                     snu_id = ManejoNulos.ManageNullInteger(dr["snu_id"]),
                                     snu_descripcion_eng = ManejoNulos.ManageNullStr(dr["snu_descripcion_eng"]),
                                     snu_template = ManejoNulos.ManageNullStr(dr["snu_template"]),
+                                    men_descripcion=ManejoNulos.ManageNullStr(dr["men_descripcion"]),
+                                    mod_descripcion=ManejoNulos.ManageNullStr(dr["mod_descripcion"])
                                 };
                                 lista.Add(menu);
                             }

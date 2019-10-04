@@ -43,7 +43,9 @@
                     tableColumnsData: response.data,
                     tableColumns: [
                         { data: "snu_id", title: "Id" },
-                        { data: "snu_descripcion", title: "Menu" },
+                        { data: "mod_descripcion", title: "Modulo" },
+                        { data: "men_descripcion", title: "Menu" },
+                        { data: "snu_descripcion", title: "SubMenu" },
                         { data: "snu_url", title: "URI" },
                         { data: "snu_orden", title: "Orden" },
                         {
