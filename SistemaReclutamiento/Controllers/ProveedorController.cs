@@ -1,5 +1,7 @@
 ﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.Proveedor;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Models.Proveedor;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
@@ -18,15 +20,7 @@ namespace SistemaReclutamiento.Controllers
         UbigeoModel ubigeobl = new UbigeoModel();
         public ActionResult Index()
         {
-            //string replace = "";
-            //ViewBag.controlleractionlist = ListarMetodosPorControlador("EducacionSuperior");
-            ////ViewBag.controllersnames = GetControllerNames();
-            //List<dynamic> lista = new List<dynamic>();
-            //foreach (var m in GetControllerNames()) {
-            //    lista.Add(m.Replace("Controller", replace));
-            //}
-            //ViewBag.controllersnames = lista;
-            return View();
+           return View();
         }
         public ActionResult ReportePagosVista()
         {
@@ -35,25 +29,26 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult ProveedorCambiarPasswordVista() {
             return View();
         }
+        #region Seccion de Acceso
         [HttpPost]
-        public ActionResult PostulanteInsertarJson(UsuarioPersonaEntidad datos)
+        public ActionResult ProveedorInsertarJson(UsuarioPersonaEntidad datos)
         {
             var errormensaje = "";
             //string nombre = datos.per_nombre + " " + datos.per_apellido_pat + " " + datos.per_apellido_mat;
             string usuario_envio = "";
             string contrasenia_envio = "";
-      
+
             UsuarioEntidad usuario = new UsuarioEntidad();
             PersonaEntidad persona = new PersonaEntidad();
-    
+
             int respuestaPersonaInsertada = 0;
             int respuestaUsuarioInsertado = 0;
             bool respuestaConsulta = false;
 
             string contrasenia = "";
             string correo = datos.per_correoelectronico;
-          
-            var persona_repetida = personabl.PersonaEmailDniObtenerJson(datos.per_correoelectronico,datos.per_numdoc);
+
+            var persona_repetida = personabl.PersonaEmailDniObtenerJson(datos.per_correoelectronico, datos.per_numdoc);
             if (persona_repetida.per_id == 0)
             {
                 //Seteando datos correspondiente a persona            
@@ -65,7 +60,7 @@ namespace SistemaReclutamiento.Controllers
                 persona.per_estado = "A";
                 //persona.per_tipodoc = datos.per_tipodoc;
                 persona.per_fecha_reg = DateTime.Now;
-                respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
+                respuestaPersonaInsertada = personabl.PersonaProveedorInsertarJson(persona);
                 if (respuestaPersonaInsertada != 0)
                 {
                     //Insercion de Usuario
@@ -98,7 +93,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
             }
-            
+
             if (respuestaConsulta)
             {
                 /*LOGICA PARA ENVIO DE CORREO DE CONFIRMACION*/
@@ -114,7 +109,7 @@ namespace SistemaReclutamiento.Controllers
                         "Hola! : " + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
-                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : " + basepath + "Login/PostulanteActivacion?id=" + usuario.usu_clave_temp
+                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : " + basepath + "Login/ProveedorActivacion?id=" + usuario.usu_clave_temp
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }
@@ -144,8 +139,13 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
 
+
+        #endregion
+
+        #region Seccion Permisos
         [HttpPost]
-        public ActionResult ListarDataMenuJson() {
+        public ActionResult ListarDataMenuJson()
+        {
             var usuario = (UsuarioEntidad)Session["usu_proveedor"];
             var errormensaje = "";
             bool response = false;
@@ -161,15 +161,18 @@ namespace SistemaReclutamiento.Controllers
                 error = tuplalistamenu.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    if (listamenu.Count > 0) {
-                        foreach (var m in listamenu) {
-                            listasubmenu = submenubl.SubMenuListarPorMenuJson(m.men_id,usuario.usu_id);
+                    if (listamenu.Count > 0)
+                    {
+                        foreach (var m in listamenu)
+                        {
+                            listasubmenu = submenubl.SubMenuListarPorMenuJson(m.men_id, usuario.usu_id);
                             m.SubMenu = listasubmenu;
                         }
                     }
                     response = true;
                 }
-                else {
+                else
+                {
                     return Json(new { respuesta = false, mensaje = error.Value });
                 }
             }
@@ -196,6 +199,90 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
         }
+        #endregion
+
+        #region Seccion Reportes
+        [HttpPost]
+        public ActionResult MesaPartesListarCompaniasJson()
+        {
+            var errormensaje = "";
+            MesaPartesCIAModel mesapartesbl = new MesaPartesCIAModel();
+            var lista = new List<MesaPartesCIAEntidad>();
+            try
+            {
+                lista = mesapartesbl.MesaPartesListarCompanias();
+                errormensaje = "Cargando compañias ...";
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
+        }
+        public ActionResult ListarPagosporCompaniaJson(string cboCompania, string fecha_inicio, string fecha_final)
+        {
+            //yyyy - MM - dd HH':'mm':'ss
+            bool respuesta = false;
+            var errormensaje = "";
+            string nombretabla = "CP" + cboCompania + "CART";
+            string nombretablapago = "CP" + cboCompania + "PAGO";
+            string tipo_doc = "FT";
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+            SQLModel sql = new SQLModel();
+            var lista = new List<CPCARTEntidad>();
+            try
+            {
+                lista = sql.CPCARTListarPagosPorCompania(nombretabla,usuario.usu_nombre,tipo_doc,fecha_inicio,fecha_final);
+                if (lista.Count > 0) {
+                    foreach (var m in lista) {
+                        m.subtotal = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC);
+                    }
+                }
+                errormensaje = "Cargando Data ...";
+                respuesta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
+        }
+        public ActionResult ListarPagosporNumeroDocumentoJson(string num_doc, string nombre_tabla)
+        {
+            //yyyy - MM - dd HH':'mm':'ss
+            bool respuesta = false;
+            var errormensaje = "";
+            string nombretabla = "CP" + nombre_tabla.Trim() + "PAGO";
+            string tipo_doc = "FT";
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+            SQLModel sql = new SQLModel();
+            var lista = new List<CPPAGOEntidad>();
+            try
+            {
+                lista = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla,usuario.usu_nombre,tipo_doc,num_doc.Trim());
+                errormensaje = "Cargando Data ...";
+                respuesta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
+        }
+        #endregion
+        //public ActionResult Index()
+        //{
+        //    string replace = "";
+        //    ViewBag.controlleractionlist = ListarMetodosPorControlador("EducacionSuperior");
+        //    //ViewBag.controllersnames = GetControllerNames();
+        //    List<dynamic> lista = new List<dynamic>();
+        //    foreach (var m in GetControllerNames())
+        //    {
+        //        lista.Add(m.Replace("Controller", replace));
+        //    }
+        //    ViewBag.controllersnames = lista;
+        //    return View();
+        //}
         //[HttpPost]
         //public ActionResult SubMenuListarPorMenuJson()
         //{

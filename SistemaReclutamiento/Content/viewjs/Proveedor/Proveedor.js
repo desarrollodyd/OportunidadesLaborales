@@ -1,18 +1,5 @@
 ﻿var ProveedorVista = function () {
     var _inicio = function () {            
-        //selectResponse({
-        //    url: "Proveedor/RolListarJson",
-        //    select: "cboRol_",
-        //    campoID: "rol_id",
-        //    CampoValor: "rol_nombre",
-        //    select2: true,
-        //    allOption: false,
-        //    placeholder: "Seleccione Rol"
-        //});
-        //$("#selectall").on("click", function () {
-        //    console.log("asdd");
-        //    $(".to_do>li>p>input").prop("checked", this.checked);
-        //}); 
     };
     var _claseActiva = function () {
         $SIDEBAR_MENU = $("#moduloPrincipal");

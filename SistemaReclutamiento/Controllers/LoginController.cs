@@ -418,8 +418,67 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        public ActionResult ProveedorCambiarPasswordUsuario(string usu_password, string usu_id)
+        {
+            //string ruta = "";
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+            var usuario = new UsuarioEntidad();
+            var persona = new PersonaEntidad();
+            usuario.usu_id = Convert.ToInt32(Seguridad.Desencriptar(usu_id));
+            string password_encriptado = Seguridad.EncriptarSHA512(usu_password);
+            try
+            {
+                respuestaConsulta = usuariobl.PostulanteUsuarioEditarEstadoJson(usuario.usu_id, password_encriptado);
+                var usuarioData = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                Session["usu_proveedor"] = usuarioData;
+                Session["per_proveedor"] = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
+                persona = personabl.PersonaIdObtenerJson(usuarioData.fk_persona);
+                errormensaje = "Contraseña actualizada correctamente";
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message + "";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        public ActionResult ProveedorActivacion(string id)
+        {
+            var usuario = new UsuarioEntidad();
+            var datoPendiente = new List<dynamic>();
+            var errormensaje = "";
+            bool respuestaConsulta = false;
 
-
+            if (id != "" || id != null)
+            {
+                try
+                {
+                    usuario = usuariobl.ProveedorUsuarioObtenerTokenJson(id);
+                    if (usuario.usu_id != 0)
+                    {
+                        datoPendiente.Add(new { usuarioID = Seguridad.Encriptar(usuario.usu_id.ToString()), contrasenia = Seguridad.Encriptar(usuario.usu_contrasenia) });
+                        respuestaConsulta = true;
+                    }
+                    else
+                    {
+                        errormensaje = "Ya completo su Registro";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errormensaje = ex.Message + "token invalido";
+                }
+                ViewBag.respuesta = respuestaConsulta;
+                ViewBag.data = datoPendiente;
+                ViewBag.mensaje = errormensaje;
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "No se envio la Clave";
+            }
+            ViewBag.Usuario = "usuario";
+            return View("~/Views/Login/ValidarProveedorIndex.cshtml");
+        }
         #endregion
     }
 }

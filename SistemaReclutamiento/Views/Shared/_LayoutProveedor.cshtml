@@ -56,6 +56,12 @@
     <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
+    <!--DATATABLES-->
+    <link href="~/Content/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    @*<link href="~/Content/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+        <link href="~/Content/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+        <link href="~/Content/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+        <link href="~/Content/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">*@
 </head>
 
 <body class="nav-md">
@@ -89,41 +95,41 @@
                     <!-- /menu profile quick info -->
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                        <div class="menu_section" >
+                        <div class="menu_section">
                             <ul class="nav side-menu" style="margin-left: -1px;">
                                 <li class="active">
                                     <a><i class="fa fa-edit"></i> Modulo Extranet <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" id="moduloPrincipal" style="display:block;">
                                         @*<li  class="modulo ocult" data-menu1="Menu1" data-modulo="Menu1" data-titulo="Menu1"><a href="#">Menu 1</a></li>
-                                        <li class="modulo ocult" data-menu1="Menu2" data-modulo="Menu2" data-titulo="Menu2">
-                                            <a href="#">Menu 2 <span class="fa fa-chevron-down"></span> 
-                                            </a>
-                                            <ul class="nav child_menu">
-                                                <li class="Menu2 ocult sub_menu" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
-                                                    <a href="#" >Submenu 1</a>
-                                                </li>
-                                                <li class="Menu2 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2" >
-                                                    <a href="#" >Submenu 2</a>
-                                                </li>
-                                                <li class="Menu2 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
-                                                    <a href="#" >Submenu 3</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="modulo ocult" data-menu1="Menu3" data-modulo="Menu3" data-titulo="Menu3">
-                                            <a href="#" >Menu 3 <span class="fa fa-chevron-down"></span> </a>
-                                            <ul class="nav child_menu">
-                                                <li class="Menu3 modulo ocult" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
-                                                    <a href="#" >Submenu 1</a>
-                                                </li>
-                                                <li class="Menu3 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2">
-                                                    <a href="#" >Submenu 2</a>
-                                                </li>
-                                                <li class="Menu3 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
-                                                    <a href="#" >Submenu 3</a>
-                                                </li>
-                                            </ul>
-                                        </li>*@
+                                            <li class="modulo ocult" data-menu1="Menu2" data-modulo="Menu2" data-titulo="Menu2">
+                                                <a href="#">Menu 2 <span class="fa fa-chevron-down"></span>
+                                                </a>
+                                                <ul class="nav child_menu">
+                                                    <li class="Menu2 ocult sub_menu" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
+                                                        <a href="#" >Submenu 1</a>
+                                                    </li>
+                                                    <li class="Menu2 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2" >
+                                                        <a href="#" >Submenu 2</a>
+                                                    </li>
+                                                    <li class="Menu2 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
+                                                        <a href="#" >Submenu 3</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="modulo ocult" data-menu1="Menu3" data-modulo="Menu3" data-titulo="Menu3">
+                                                <a href="#" >Menu 3 <span class="fa fa-chevron-down"></span> </a>
+                                                <ul class="nav child_menu">
+                                                    <li class="Menu3 modulo ocult" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
+                                                        <a href="#" >Submenu 1</a>
+                                                    </li>
+                                                    <li class="Menu3 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2">
+                                                        <a href="#" >Submenu 2</a>
+                                                    </li>
+                                                    <li class="Menu3 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
+                                                        <a href="#" >Submenu 3</a>
+                                                    </li>
+                                                </ul>
+                                            </li>*@
                                     </ul>
                                 </li>
                             </ul>
@@ -191,6 +197,22 @@
     <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
     <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
+    <!-- Datatables -->
+    <script src="~/Content/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    @*<script src="~/Content/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="~/Content/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+        <script src="~/Content/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+        <script src="~/Content/vendors/jszip/dist/jszip.min.js"></script>
+        <script src="~/Content/vendors/pdfmake/build/pdfmake.min.js"></script>
+        <script src="~/Content/vendors/pdfmake/build/vfs_fonts.js"></script>*@
     <!-- Custom Theme Scripts -->
 
     <script src="~/Content/vendors/toastr/toastr.min.js"></script>
@@ -213,7 +235,7 @@
                     var resp = response.respuesta;
                     var msj = response.mensaje;
                     if (resp) {
-                        window.location.replace(basePath+"Login/ProveedorIndex");
+                        window.location.replace(basePath + "Login/ProveedorIndex");
                     } else {
                         alert(msj);
                     }

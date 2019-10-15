@@ -3641,6 +3641,7 @@
     <Content Include="Content\viewjs\Desarrollo\PanelPrincipal.js" />
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
+    <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
     <Content Include="Content\viewjs\Login\LoginPostulante.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
@@ -4590,7 +4591,10 @@
     <Compile Include="Entidades\Postulante\EstIdiomaEntidad.cs" />
     <Compile Include="Entidades\Postulante\ExperienciaEntidad.cs" />
     <Compile Include="Entidades\Postulante\IdiomaEntidad.cs" />
+    <Compile Include="Entidades\Proveedor\CPCARTEntidad.cs" />
+    <Compile Include="Entidades\Proveedor\CPPAGOEntidad.cs" />
     <Compile Include="Entidades\Proveedor\MenuEntidad.cs" />
+    <Compile Include="Entidades\Proveedor\MesaPartesCIAEntidad.cs" />
     <Compile Include="Entidades\Proveedor\ModuloEntidad.cs" />
     <Compile Include="Entidades\Postulante\OfertaLaboralEntidad.cs" />
     <Compile Include="Entidades\Postulante\OfimaticaEntidad.cs" />
@@ -4623,6 +4627,7 @@
     <Compile Include="Models\Postulante\ExperienciaModel.cs" />
     <Compile Include="Models\Postulante\IdiomaModel.cs" />
     <Compile Include="Models\Proveedor\MenuModel.cs" />
+    <Compile Include="Models\Proveedor\MesaPartesCIAModel.cs" />
     <Compile Include="Models\Proveedor\ModuloModel.cs" />
     <Compile Include="Models\Postulante\OfertaLaboralModel.cs" />
     <Compile Include="Models\Postulante\EstOfimaticaModel.cs" />

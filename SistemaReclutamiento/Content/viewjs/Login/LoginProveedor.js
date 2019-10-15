@@ -11,7 +11,7 @@
                 messageConfirmation({
                     callBackSAceptarComplete: function () {
                         responseSimple({
-                            url: "Proveedor/PostulanteInsertarJson",
+                            url: "Proveedor/ProveedorInsertarJson",
                             data: JSON.stringify(dataForm),
                             refresh: true,
                             time: 2000,

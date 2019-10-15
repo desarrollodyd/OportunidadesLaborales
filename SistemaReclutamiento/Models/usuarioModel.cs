@@ -514,6 +514,46 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
+        /// <summary>
+        /// Metodo para Obtener un token de acceso que se crea para activaciones o cambios de contraseña, encriptado con SHA512
+        /// </summary>
+        /// <param name="token">token obtenido desde URL</param>
+        /// <returns>(usuarioEntidad) usuario al que le corresponde el token enviado</returns>
+        public UsuarioEntidad ProveedorUsuarioObtenerTokenJson(string token)
+        {
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            string consulta = @"SELECT usu_id,usu_nombre,usu_contraseña,usu_estado,usu_clave_temp
+	                            FROM seguridad.seg_usuario where usu_clave_temp=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", token);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                usuario.usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]);
+                                usuario.usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]);
+                                usuario.usu_contrasenia = ManejoNulos.ManageNullStr(dr["usu_contraseña"]);
+                                usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
+                                usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return usuario;
+        }
         #endregion
     }
 }
