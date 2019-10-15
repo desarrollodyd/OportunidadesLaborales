@@ -16,5 +16,7 @@ namespace SistemaReclutamiento.Entidades
         public int snu_id { get; set; }
         public string snu_descripcion_eng { get; set; }
         public string snu_template { get; set; }
+        public string men_descripcion { get; set; }
+        public string mod_descripcion { get; set; }
     }
 }

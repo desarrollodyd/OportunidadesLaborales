@@ -3,6 +3,31 @@
     // Setup module components
     //
     var _componentes = function () {
+        $(document).on("click", ".btn_registrar", function (e) {
+            console.log("adasd");
+            $("#registro-form").submit();
+            if (_objetoForm_frmRegistro.valid()) {
+                var dataForm = $('#registro-form').serializeFormJSON();
+                messageConfirmation({
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: "Proveedor/PostulanteInsertarJson",
+                            data: JSON.stringify(dataForm),
+                            refresh: true,
+                            time: 2000,
+                            //callBackSuccess: function (response) {
+                            //    console.warn(response);
+                            //}
+                        });
+                    }
+                })
+            } else {
+                messageResponse({
+                    text: "Complete los campos Obligatorios",
+                    type: "error"
+                })
+            }
+        });
 
         $(document).on("click", ".btn_ingresar", function (e) {
             $("#login-form").submit();
@@ -113,6 +138,39 @@
                     required: 'Campo Obligatorio',
                     email: 'Formato Correo Incorrecto'
                 },
+            }
+        });
+        validar_Form({
+            nameVariable: 'frmRegistro',
+            contenedor: '#registro-form',
+            rules: {
+                per_numdoc:
+                {
+                    required: true,
+                    minlength: 11,
+                    maxlength: 11,
+                    digits: true
+                },
+                per_correoelectronico:
+                {
+                    required: true,
+                    email: true
+                }
+            },
+            messages: {
+               
+                per_numdoc:
+                {
+                    required: 'Nro de RUC Obligatorio',
+                    minlength: 'Minimo 8 Caracteres',
+                    maxlength: 'Maximo 8 caracteres',
+                    digits: 'Solo Numeros'
+                },
+                per_correoelectronico:
+                {
+                    required: 'Email Obligatorio',
+                    email: 'Formato Correo Incorrecto'
+                }
             }
         });
 

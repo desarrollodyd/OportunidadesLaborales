@@ -43,7 +43,9 @@
                     tableColumnsData: response.data,
                     tableColumns: [
                         { data: "snu_id", title: "Id" },
-                        { data: "snu_descripcion", title: "Menu" },
+                        { data: "mod_descripcion", title: "Modulo" },
+                        { data: "men_descripcion", title: "Menu" },
+                        { data: "snu_descripcion", title: "SubMenu" },
                         { data: "snu_url", title: "URI" },
                         { data: "snu_orden", title: "Orden" },
                         {
@@ -113,8 +115,12 @@
                                 }
                             }
                         });
+                    },
+                    callBackSCCerraromplete: function () {
+                        CheckTodosMenus();
                     }
                 })
+               
                 
             }
             else {
@@ -152,8 +158,13 @@
                                 }
                             }
                         });
+                    },
+                    callBackSCCerraromplete: function () {
+                        CheckTodosMenus();
                     }
+                    
                 })
+                
                
             }
 
@@ -174,7 +185,63 @@
     };
     var checkUno = function () {
         $('#tablepermiso input:checkbox').on('change', function () {
-            console.log("asdadasd");
+            if ($(this).is(':checked')) {
+                var submenu = $(this).data("id");
+                var dataForm = {
+                    fk_submenu: submenu,
+                    fk_usuario: usu_id
+                };
+                responseSimple({
+                    url: "Super/SubMenuPermisoInsertar",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response) {
+                            lista_checked = [];
+                            var lista_menu_usuario = response.lista_menu_usuario;
+                            $.each(lista_menu_usuario, function (key, value) {
+                                lista_checked.push(value.fk_submenu);
+                            });
+                            CheckTodosMenus();
+                        }
+                        else {
+                            messageResponse({
+                                text: response.mensaje,
+                                type: "error"
+                            });
+                        }
+                    }
+                });
+            }
+            else {
+                var submenu = $(this).data("id");
+                var dataForm = {
+                    fk_submenu: submenu,
+                    fk_usuario: usu_id
+                };
+                responseSimple({
+                    url: "Super/SubMenuPermisoQuitar",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response) {
+                            lista_checked = [];
+                            var lista_menu_usuario = response.lista_menu_usuario;
+                            $.each(lista_menu_usuario, function (key, value) {
+                                lista_checked.push(value.fk_submenu);
+                            });
+                            CheckTodosMenus();
+                        }
+                        else {
+                            messageResponse({
+                                text: response.mensaje,
+                                type: "error"
+                            });
+                        }
+                    }
+                });
+            }
+           
         });
     }
     return {

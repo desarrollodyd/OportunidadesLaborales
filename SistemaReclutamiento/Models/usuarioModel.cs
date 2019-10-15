@@ -348,6 +348,38 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
+        public int ProveedorUsuarioInsertarJson(UsuarioEntidad usuario)
+        {
+            int idUsuarioInsertado = 0;
+            string consulta = @"INSERT INTO seguridad.seg_usuario(
+	                            fk_persona, usu_nombre, usu_contraseña, usu_estado, usu_clave_temp, usu_cambio_pass,usu_fecha_reg,usu_tipo)
+                                VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)
+                                returning usu_id; ";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", usuario.fk_persona);
+                    query.Parameters.AddWithValue("@p1", usuario.usu_nombre);
+                    query.Parameters.AddWithValue("@p2", usuario.usu_contrasenia);
+                    query.Parameters.AddWithValue("@p3", usuario.usu_estado);
+                    query.Parameters.AddWithValue("@p4", usuario.usu_clave_temp);
+                    query.Parameters.AddWithValue("@p5", usuario.usu_cambio_pass);
+                    query.Parameters.AddWithValue("@p6", usuario.usu_fecha_reg);
+                    query.Parameters.AddWithValue("@p7", usuario.usu_tipo);
+                    //query.ExecuteNonQuery();
+                    //response = true;
+                    idUsuarioInsertado = Int32.Parse(query.ExecuteScalar().ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return idUsuarioInsertado;
+        }
         public bool ProveedorUsuarioEditarContraseniaJson(int id, string password)
         {
             bool response = false;

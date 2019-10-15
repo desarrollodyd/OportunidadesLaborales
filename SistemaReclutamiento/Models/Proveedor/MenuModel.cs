@@ -18,15 +18,20 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<MenuEntidad> lista,claseError error) MenuListarJson()
+        public (List<MenuEntidad> lista,claseError error) MenuListarJson(int fk_usuario)
         {
             List<MenuEntidad> lista = new List<MenuEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT men_descripcion, men_orden, men_icono, men_estado, men_id, men_descripcion_eng, men_tipo,                        fk_modulo
+            string consulta = @"SELECT distinct men_descripcion, men_orden, men_icono, men_estado, men_id, men_descripcion_eng, men_tipo,                        fk_modulo
 	                            FROM seguridad.seg_menu
 	                            join seguridad.seg_modulo
 	                            on seguridad.seg_menu.fk_modulo=seguridad.seg_modulo.mod_id
-	                            where seguridad.seg_modulo.mod_tipo=@p0;";
+								join seguridad.seg_submenu
+								on seguridad.seg_submenu.fk_menu=seguridad.seg_menu.men_id
+								join seguridad.seg_permiso
+								on seguridad.seg_permiso.fk_submenu=seguridad.seg_submenu.snu_id
+	                            where seguridad.seg_modulo.mod_tipo=@p0
+								and seguridad.seg_permiso.fk_usuario=@p1;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -34,6 +39,7 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", moduloBusqueda);
+                    query.Parameters.AddWithValue("@p1", fk_usuario);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

@@ -344,5 +344,47 @@ namespace SistemaReclutamiento.Models
             }
             return (persona:persona, error:error);
         }
+        #region Region Proveedor
+        public int PersonaProveedorInsertarJson(PersonaEntidad persona)
+        {
+            int idPersonaInsertada = 0;
+            //bool response = false;
+            string consulta = @"
+                            INSERT INTO marketing.cpj_persona(
+                                per_numdoc, 
+                                per_nombre, 
+                                per_apellido_pat, 
+                                per_apellido_mat,  
+                                per_correoelectronico,  
+                                per_estado,   
+                                per_fecha_reg                              
+                                )
+	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6)                                    
+                                returning per_id;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", persona.per_numdoc);
+                    query.Parameters.AddWithValue("@p1", persona.per_nombre);
+                    query.Parameters.AddWithValue("@p2", persona.per_apellido_pat);
+                    query.Parameters.AddWithValue("@p3", persona.per_apellido_mat);
+                    query.Parameters.AddWithValue("@p4", persona.per_correoelectronico);
+                    query.Parameters.AddWithValue("@p5", persona.per_estado);
+                    query.Parameters.AddWithValue("@p6", persona.per_fecha_reg);
+                    idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
+
+                    //response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return idPersonaInsertada;
+        }
+        #endregion
     }
 }

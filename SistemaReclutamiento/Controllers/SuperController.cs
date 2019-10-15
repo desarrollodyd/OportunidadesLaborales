@@ -96,7 +96,6 @@ namespace SistemaReclutamiento.Controllers
             var lista_menu_usuario = new List<PermisoEntidad>();
             try
             {
-                respuestaConsulta = true;
                 foreach (var permisos in submenus)
                 {
                     respuestaConsulta = permisobl.PermisoQuitar(permisos, fk_usuario);
@@ -111,6 +110,55 @@ namespace SistemaReclutamiento.Controllers
             }
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        public ActionResult SubMenuPermisoInsertar(int fk_submenu, int fk_usuario)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            var lista_menu_usuario = new List<PermisoEntidad>();
+            try
+            {
+                respuestaConsulta = permisobl.PermisoInsertar(fk_submenu,fk_usuario);
+                lista_menu_usuario = permisobl.PermisoListarUsuarioJson(fk_usuario);
+                if (respuestaConsulta) {
+                    errormensaje = "Permiso Guardado";
+                }
+                else
+                {
+                    errormensaje = "Error al Guardar Permiso";
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, lista_menu_usuario = lista_menu_usuario, mensaje = errormensaje });
+        }
+        public ActionResult SubMenuPermisoQuitar(int fk_submenu, int fk_usuario)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = true;
+            var lista_menu_usuario = new List<PermisoEntidad>();
+            try
+            {
+                respuestaConsulta = permisobl.PermisoQuitar(fk_submenu,fk_usuario);
+                lista_menu_usuario = permisobl.PermisoListarUsuarioJson(fk_usuario);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Permiso Quitado";
+                }
+                else
+                {
+                    errormensaje = "Error al Quitar Permiso";
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, lista_menu_usuario = lista_menu_usuario, mensaje = errormensaje });
         }
     }
 }

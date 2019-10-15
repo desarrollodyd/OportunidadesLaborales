@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Activar Registro";
+    Layout = "~/Views/Shared/_LoginProveedor.cshtml";
+}
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@{
+    String respuesta = new JavaScriptSerializer().Serialize(ViewBag.respuesta);
+    String data = new JavaScriptSerializer().Serialize(ViewBag.data);
+    String mensaje = new JavaScriptSerializer().Serialize(ViewBag.mensaje);
+}
+<script type="text/javascript">
+    respuesta = (@Html.Raw(respuesta));
+    data = (@Html.Raw(data));
+    mensaje = (@Html.Raw(mensaje));
+</script>
+
+<div class="wrap">
+    <!-- TOGGLE -->
+    <div id="toggle-wrap">
+        <div id="toggle-terms">
+            <div id="cross">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SLIDER -->
+    <div class="content" style="text-align: center;">
+        <!-- LOGO -->
+        <div class="logo">
+            <a href="#"><img src="~/Content/images/LOGOPJ.png" alt=""></a>
+        </div>
+        <!-- SLIDESHOW -->
+        <div id="slideshow">
+            <div class="one">
+                <h2><span>Corporacion PJ </span></h2>
+                <p>Accede a Nuestra Seccion de Proveedores</p>
+            </div>
+            <div class="two">
+                <h2><span>Corporacion PJ</span></h2>
+                <p>Somos una empresa peruana, dedicada a la administración de casinos y salas de juegos.</p>
+            </div>
+        </div>
+    </div>
+    <!-- LOGIN FORM -->
+    <div class="user">
+
+        <div class="form-wrap">
+            <!-- TABS -->
+            <div class="tabs">
+                <h3 class="login-tab" style="width: 100%;"><a class="log-in active" href="#login-tab-content"><span>Actualizar Contraseña</span></a></h3>
+            </div>
+            <!-- TABS CONTENT -->
+            <div class="tabs-content">
+                <!-- TABS CONTENT LOGIN -->
+                <div id="login-tab-content" style="margin-top: 3em;" class="active">
+                    <div>
+                        <p class="divcomentario">Por Favor, Cambie su contraseña para poder acceder al sistema, una vez cambiada podra acceder sin problemas.</p>
+                    </div>
+                    <form id="activacion-form" class="login-form" action="" method="post">
+                        <input type="hidden" name="usu_id" id="usu_id" value="" />
+                        <input type="password" class="input" id="usu_password" name="usu_password" autocomplete="off" placeholder="Contraseña Nueva">
+                        <input type="password" class="input" id="usu_password_repetido" name="usu_password_repetido" autocomplete="off" placeholder="Repita Contraseña">
+                        <button type="button" class="button btn_guardar">Guardar</button>
+                    </form>
+                </div>
+                <!-- TABS CONTENT SIGNUP -->
+            </div>
+        </div>
+    </div>
+</div>
+@section js
+    {
+    <script src="~/Content/viewjs/Login/Activacion.js"></script>
+}
