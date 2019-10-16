@@ -47,53 +47,68 @@ namespace SistemaReclutamiento.Controllers
 
             string contrasenia = "";
             string correo = datos.per_correoelectronico;
-
-            var persona_repetida = personabl.PersonaEmailDniObtenerJson(datos.per_correoelectronico, datos.per_numdoc);
-            if (persona_repetida.per_id == 0)
+            var usuario_repetido = usuariobl.ProveedorUsuarioObtenerxRUC(datos.per_numdoc);
+            if (usuario_repetido.usu_id == 0)
             {
-                //Seteando datos correspondiente a persona            
-                persona.per_numdoc = datos.per_numdoc;
-                persona.per_nombre = datos.per_numdoc;
-                persona.per_apellido_pat = datos.per_numdoc;
-                persona.per_apellido_mat = datos.per_numdoc;
-                persona.per_correoelectronico = datos.per_correoelectronico;
-                persona.per_estado = "A";
-                //persona.per_tipodoc = datos.per_tipodoc;
-                persona.per_fecha_reg = DateTime.Now;
-                respuestaPersonaInsertada = personabl.PersonaProveedorInsertarJson(persona);
-                if (respuestaPersonaInsertada != 0)
+                var persona_repetida_tupla = personabl.PersonaEmailObtenerJson(datos.per_correoelectronico);
+                var persona_repetida = persona_repetida_tupla.persona;
+                var error = persona_repetida_tupla.error;
+                if (error.Key.Equals(string.Empty))
                 {
-                    //Insercion de Usuario
-                    contrasenia = GeneradorPassword.GenerarPassword(8);
-                    usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
-                    usuario.usu_nombre = datos.per_numdoc;
-                    usuario.fk_persona = respuestaPersonaInsertada;
-                    usuario.usu_estado = "P";
-                    usuario.usu_cambio_pass = true;
-                    usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
-                    usuario.usu_fecha_reg = DateTime.Now;
-                    usuario.usu_tipo = "PROVEEDOR";
-                    respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
-
-                    if (respuestaUsuarioInsertado == 0)
+                    if (persona_repetida.per_id == 0)
                     {
-                        return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
+                        //Seteando datos correspondiente a persona            
+                        persona.per_numdoc = datos.per_numdoc;
+                        persona.per_nombre = datos.per_numdoc;
+                        persona.per_apellido_pat = datos.per_numdoc;
+                        persona.per_apellido_mat = datos.per_numdoc;
+                        persona.per_correoelectronico = datos.per_correoelectronico;
+                        persona.per_estado = "A";
+                        //persona.per_tipodoc = datos.per_tipodoc;
+                        persona.per_fecha_reg = DateTime.Now;
+                        respuestaPersonaInsertada = personabl.PersonaProveedorInsertarJson(persona);
+                        if (respuestaPersonaInsertada != 0)
+                        {
+                            //Insercion de Usuario
+                            contrasenia = GeneradorPassword.GenerarPassword(8);
+                            usuario.usu_contrasenia = Seguridad.EncriptarSHA512(contrasenia);
+                            usuario.usu_nombre = datos.per_numdoc;
+                            usuario.fk_persona = respuestaPersonaInsertada;
+                            usuario.usu_estado = "P";
+                            usuario.usu_cambio_pass = true;
+                            usuario.usu_clave_temp = Seguridad.EncriptarSHA512(usuario.usu_nombre);
+                            usuario.usu_fecha_reg = DateTime.Now;
+                            usuario.usu_tipo = "PROVEEDOR";
+                            respuestaUsuarioInsertado = usuariobl.PostulanteUsuarioInsertarJson(usuario);
+
+                            if (respuestaUsuarioInsertado == 0)
+                            {
+                                return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar Usuario" });
+                            }
+                            respuestaConsulta = true;
+                            //datos para cuerpo de correo
+                            usuario_envio = usuario.usu_nombre;
+                            contrasenia_envio = usuario.usu_contrasenia;
+                        }
+                        else
+                        {
+                            return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
+                        }
                     }
-                    respuestaConsulta = true;
-                    //datos para cuerpo de correo
-                    usuario_envio = usuario.usu_nombre;
-                    contrasenia_envio = usuario.usu_contrasenia;
+                    else
+                    {
+                        return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
+                    }
                 }
-                else
-                {
-                    return Json(new { respuesta = respuestaConsulta, mensaje = "Error al Intentar Registrar a la Persona" });
+                else {
+                    return Json(new { respuesta = respuestaConsulta, mensaje = error.Value });
                 }
-            }
-            else
-            {
-                return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
+           
             }
 
+            else {
+                return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el RUC: " + datos.per_numdoc });
+            }
             if (respuestaConsulta)
             {
                 /*LOGICA PARA ENVIO DE CORREO DE CONFIRMACION*/
@@ -235,7 +250,7 @@ namespace SistemaReclutamiento.Controllers
                 lista = sql.CPCARTListarPagosPorCompania(nombretabla,usuario.usu_nombre,tipo_doc,fecha_inicio,fecha_final);
                 if (lista.Count > 0) {
                     foreach (var m in lista) {
-                        m.subtotal = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC);
+                        m.subtotal = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
                     }
                 }
                 errormensaje = "Cargando Data ...";

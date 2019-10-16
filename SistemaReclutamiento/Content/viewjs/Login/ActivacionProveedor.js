@@ -30,7 +30,7 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     redirect: true,
-                    redirectUrl: "",
+                    redirectUrl: "/Proveedor/Index",
                 });
             } else {
                 messageResponse({

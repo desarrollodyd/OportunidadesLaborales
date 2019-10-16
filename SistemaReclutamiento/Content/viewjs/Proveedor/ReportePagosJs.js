@@ -61,10 +61,7 @@
                             title: "CP_CNUMDOC"
                         },
                         
-                        {
-                            data: "CP_NIMPOUS",
-                            title: "CP_NIMPOUS"
-                        },
+                   
                         {
                             data: "CP_NIMPOMN",
                             title: "CP_NIMPOMN"
@@ -75,27 +72,28 @@
                             title: "CP_NSALDMN"
                         },
                         {
+                            data: "CP_NIMPOUS",
+                            title: "CP_NIMPOUS"
+                        },
+                        {
                             data: "CP_NSALDUS",
                             title: "CP_NSALDUS"
                         },
                         {
                             data: "subtotal",
-                            title: "subtotal"
-                        },
-                        {
-                            data: "subtotal",
-                            title: "subtotal",
+                            title: "ESTADO",
                             "render": function (value, type, oData, meta) {
-                                var pagado = value;
+                                var pagado = oData.subtotal;
                                 var mensaje_estado = "";
                                 if (pagado == oData.CP_NIMPOMN) {
                                     estado = "success";
                                     mensaje_estado = "PAGADO";
-                                } else if (pagado == 0) {
+                                }
+                                else if (pagado == 0) {
                                     estado = "danger";
                                     mensaje_estado = "PENDIENTE";
                                 }
-                                else {
+                                else if (pagado != 0 && pagado < oData.CP_NIMPOMN){
                                     estado = "warning";
                                     mensaje_estado = "PARCIAL";
                                 }
@@ -119,7 +117,7 @@
                             "bSortable": false,
                             "render": function (value, type, oData, meta) {
                                 var boton =
-                                    '<a href="#" class="btn btn-success btn_detalle" data-toggle="modal" data-target=".bs-example-modal-detalle" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '"> Ver Detalle</a>'
+                                    '<a href="#" class="btn btn-success btn_detalle" data-toggle="modal" data-target=".bs-example-modal-detalle" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="'+oData.subtotal+'"> Ver Detalle</a>'
                                     ;
                                 return boton;
                             }
@@ -143,6 +141,7 @@
         $(document).on("click", ".btn_detalle", function (e) {
             var num_doc = $(this).data("numdoc");
             var nombre_tabla = $(this).data("tabla");
+            var subtotal = $(this).data("subtotal");
             var dataForm = { num_doc: num_doc, nombre_tabla: nombre_tabla };
             if (!$().DataTable) {
                 console.warn('Advertencia - datatables.min.js no esta declarado.');
@@ -187,6 +186,7 @@
                     }
                 ]
             });
+            $("#subtotal").text(subtotal);
             //responseSimple({
             //    url: "Proveedor/ListarPagosporNumeroDocumentoJson",
             //    data: JSON.stringify(dataForm),

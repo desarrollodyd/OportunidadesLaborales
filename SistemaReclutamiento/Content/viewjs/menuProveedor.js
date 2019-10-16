@@ -1,5 +1,5 @@
 ﻿var ProveedorVista = function () {
-    var _inicio = function () {            
+    var _inicio = function () {
     };
     var _claseActiva = function () {
         $SIDEBAR_MENU = $("#moduloPrincipal");
@@ -44,14 +44,14 @@
                     $.each(data, function (index, menu) {
                         if (menu.SubMenu.length > 0) {
                             console.log(menu.SubMenu);
-                            $("#moduloPrincipal").append('<li  class="menu' + menu.men_id + '"><a href="#">' + menu.men_descripcion + '<span class="fa fa-chevron-down"></span></a></li>');
-                            $('.menu' + menu.men_id + ">a").append('<ul class="nav child_menu"></ul>');
+                            $("#moduloPrincipal").append('<li  class="menu' + menu.men_id + '" modulo ocult><a href="#">' + menu.men_descripcion + '<span class="fa fa-chevron-down"></span></a></li>');
+                            $('.menu' + menu.men_id + "").append('<ul class="nav child_menu"></ul>');
                             $.each(menu.SubMenu, function (i, submenu) {
-                                $('.menu' + menu.men_id + ">a>ul").append('<li class="sub_menu"><a href="' + submenu.snu_url + '">' + submenu.snu_descripcion + '</a></li>');
+                                $('.menu' + menu.men_id + ">ul").append('<li class="sub_menu ocult"><a href="' + submenu.snu_url + '">' + submenu.snu_descripcion + '</a></li>');
                             });
                         }
                         else {
-                            $("#moduloPrincipal").append('<li  class="menu' + menu.men_id + ' ocult"><a href="#">' + menu.men_descripcion + '</a></li>');
+                            $("#moduloPrincipal").append('<li  class="menu' + menu.men_id + ' modulo ocult"><a href="#">' + menu.men_descripcion + '</a></li>');
                         }
                     });
                 }

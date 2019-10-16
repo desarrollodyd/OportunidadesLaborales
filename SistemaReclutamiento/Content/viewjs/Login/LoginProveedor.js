@@ -162,8 +162,8 @@
                 per_numdoc:
                 {
                     required: 'Nro de RUC Obligatorio',
-                    minlength: 'Minimo 8 Caracteres',
-                    maxlength: 'Maximo 8 caracteres',
+                    minlength: 'Minimo 11 Caracteres',
+                    maxlength: 'Maximo 11 caracteres',
                     digits: 'Solo Numeros'
                 },
                 per_correoelectronico:

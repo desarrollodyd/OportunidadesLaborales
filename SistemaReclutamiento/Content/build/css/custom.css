@@ -788,7 +788,7 @@ a:focus {
 }
 .nav.child_menu li li a:hover,
 .nav.child_menu li li a.active {
-    color: #fff
+    color: #999
 }
 .nav>li>a {
     position: relative;

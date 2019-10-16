@@ -554,6 +554,43 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
+        /// <summary>
+        /// Metodo que sirve para verificar que nombres de usuario no se repitan
+        /// </summary>
+        /// <param name="direccion_correo">(string) direccion de correo obtenida de formulario de Registro</param>
+        /// <returns>retorna la informacion del usuario buscado</returns>
+        public UsuarioEntidad ProveedorUsuarioObtenerxRUC(string ruc)
+        {
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            string consulta = @"SELECT usu_id,usu_nombre,usu_estado
+	                            FROM seguridad.seg_usuario where usu_nombre=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ruc);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                usuario.usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]);
+                                usuario.usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]);
+                                usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return usuario;
+        }
         #endregion
     }
 }

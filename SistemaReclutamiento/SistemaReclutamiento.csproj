@@ -132,6 +132,7 @@
     <Content Include="Content\images\ray.png" />
     <Content Include="Content\images\splat.png" />
     <Content Include="Content\login.css" />
+    <Content Include="Content\proveedorCSS.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\src\js\custom.js" />
     <Content Include="Content\src\js\helpers\smartresize.js" />
@@ -3640,12 +3641,14 @@
     <Content Include="Content\vendors\validator\validator.js" />
     <Content Include="Content\viewjs\Desarrollo\PanelPrincipal.js" />
     <Content Include="Content\viewjs\general.js" />
+    <Content Include="Content\viewjs\generalProveedor.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
     <Content Include="Content\viewjs\Login\LoginPostulante.js" />
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Login\LoginProveedor.js" />
+    <Content Include="Content\viewjs\menuProveedor.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\CambiarPasswordVista.js" />
