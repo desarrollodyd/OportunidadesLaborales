@@ -47,7 +47,7 @@
                             $("#moduloPrincipal").append('<li  class="menu' + menu.men_id + '" modulo ocult><a href="#">' + menu.men_descripcion + '<span class="fa fa-chevron-down"></span></a></li>');
                             $('.menu' + menu.men_id + "").append('<ul class="nav child_menu"></ul>');
                             $.each(menu.SubMenu, function (i, submenu) {
-                                $('.menu' + menu.men_id + ">ul").append('<li class="sub_menu ocult"><a href="' + submenu.snu_url + '">' + submenu.snu_descripcion + '</a></li>');
+                                $('.menu' + menu.men_id + ">ul").append('<li class="sub_menu ocult"><a href="' +basePath+ submenu.snu_url + '">' + submenu.snu_descripcion + '</a></li>');
                             });
                         }
                         else {

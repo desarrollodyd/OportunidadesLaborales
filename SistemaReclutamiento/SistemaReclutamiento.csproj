@@ -3639,6 +3639,8 @@
     <Content Include="Content\vendors\validator\index.html" />
     <Content Include="Content\vendors\validator\multifield.js" />
     <Content Include="Content\vendors\validator\validator.js" />
+    <Content Include="Content\viewjs\Desarrollo\CrearMenusJs.js" />
+    <Content Include="Content\viewjs\Desarrollo\CrearSubMenusJs.js" />
     <Content Include="Content\viewjs\Desarrollo\PanelPrincipal.js" />
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\generalProveedor.js" />
@@ -4692,6 +4694,8 @@
     <Content Include="Views\Shared\_LayoutWebCorporativa.cshtml" />
     <Content Include="Views\Proveedor\ReportePagosVista.cshtml" />
     <Content Include="Views\Login\ValidarProveedorIndex.cshtml" />
+    <Content Include="Views\Super\CrearMenusView.cshtml" />
+    <Content Include="Views\Super\CrearSubmenusView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4706,7 +4710,6 @@
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
     <Folder Include="Views\SQL\" />
-    <Folder Include="Views\Super\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

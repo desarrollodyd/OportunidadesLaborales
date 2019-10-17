@@ -39,14 +39,21 @@
                     refresh: false,
                     callBackSuccess: function (response) {
                         console.log(response);
-                        if (response.respuesta) {
-                            redirect({ site: "Proveedor/Index" });
+                        var pendiente = response.estado;
+                        if (pendiente != "") {
+                            redirect({ site: "Login/ProveedorActivacion?id=" + pendiente });
                         }
                         else {
-                            $("#usu_password").val("");
+                            if (response.respuesta) {
+                                redirect({ site: "Proveedor/Index" });
+                            }
+                            else {
+                                $("#usu_password").val("");
+                            }
                         }
+                        
                     },
-                    time: 5000
+                    time: 500
                 });
             } else {
                 messageResponse({

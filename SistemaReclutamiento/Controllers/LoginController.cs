@@ -272,6 +272,7 @@ namespace SistemaReclutamiento.Controllers
             var usuario = new UsuarioEntidad();
             var persona = new PersonaEntidad();
             string proveedor = "PROVEEDOR";
+            string pendiente = "";
             //var postulante = new postulanteEntidad();
             //var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
             RutaImagenes rutaImagenes = new RutaImagenes();
@@ -281,20 +282,12 @@ namespace SistemaReclutamiento.Controllers
                 usuario = usuariobl.ProveedorValidarCredenciales(usu_login.ToLower());
                 if (usuario.usu_id > 0)
                 {
-                    if (usuario.usu_tipo.Equals(proveedor))
+                    if (usuario.usu_estado == "P")
                     {
-                        string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
-                        if (usuario.usu_contrasenia == password_encriptado)
+                        if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
                         {
-                            Session["usu_proveedor"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
-                            persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                            Session["per_proveedor"] = persona;
-                            //Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
-                            //postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
-                            //Session["postulante"] = postulante;
-                            //rutaImagenes.imagenPostulante_CV(configuracion.config_nombre, postulante.pos_foto);
-                            respuesta = true;
-                            errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                            pendiente = usuario.usu_clave_temp;
+                            errormensaje = "Usuario Pendiente de Activacion";
                         }
                         else
                         {
@@ -302,8 +295,32 @@ namespace SistemaReclutamiento.Controllers
                         }
                     }
                     else {
-                        errormensaje = "Usted no tiene permiso para Acceder a Esta Seccion";
+                        if (usuario.usu_tipo.Equals(proveedor))
+                        {
+                            string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
+                            if (usuario.usu_contrasenia == password_encriptado)
+                            {
+                                Session["usu_proveedor"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                                persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                                Session["per_proveedor"] = persona;
+                                //Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
+                                //postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
+                                //Session["postulante"] = postulante;
+                                //rutaImagenes.imagenPostulante_CV(configuracion.config_nombre, postulante.pos_foto);
+                                respuesta = true;
+                                errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                            }
+                            else
+                            {
+                                errormensaje = "La contraseña ingresada es erronea";
+                            }
+                        }
+                        else
+                        {
+                            errormensaje = "Usted no tiene permiso para Acceder a Esta Seccion";
+                        }
                     }
+                 
                     
                     
                 }
@@ -317,7 +334,7 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = exp.Message + "";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = errormensaje,/* estado = pendiente, usuario=usuario*/ });
+            return Json(new { respuesta = respuesta, mensaje = errormensaje,estado = pendiente, usuario=usuario });
         }
 
         [HttpPost]

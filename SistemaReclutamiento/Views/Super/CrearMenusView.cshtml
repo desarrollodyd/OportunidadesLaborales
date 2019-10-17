@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSuper.cshtml";
+
+}
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div class="x_title">
+            <h2><i class="fa fa-edit"></i> <small>Mantenimientos Menus</small></h2>
+            <div class="clearfix"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @* Formulario *@
+                <form id="frmMenu-form" class="" method="post">
+                    <div class="col-md-12 col-xs-12">
+
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Agregar Menu
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Descripcion</label>
+                                        <input type="text" name="men_descripcion" id="men_descripcion" class="form-control" placeholder="Descripcion" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Icono</label>
+                                        <input type="text" name="men_icono" id="men_icono" class="form-control" placeholder="Icono" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12" style="margin-bottom:10px;">
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-danger col-xs-12 btn_guardar"><i class="fa fa-save"></i> Guardar</button>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-primary col-xs-12 btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="ln_solid"></div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="container">
+                                <table id="Menu-table" class="table table-bordered table-condensed table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th width="30%">Descripción</th>
+                                            <th width="30">Ícono</th>
+                                            <th width="20%">Estado</th>
+                                            <th width="25%">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_Menu"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+         
+        </div>
+        <div class="container">
+            <!-- Basic datatable -->
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-xs table-bordered" id="tablepermiso"></table>
+                </div>
+            </div>
+            <!-- /basic datatable -->
+        </div>
+    </div>
+</div>
+
+<!--Final-->
+@section js
+{
+    <script src="~/Content/viewjs/Desarrollo/CrearMenusJs.js"></script>
+}
+

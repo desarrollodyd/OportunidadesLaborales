@@ -315,7 +315,7 @@ namespace SistemaReclutamiento.Models
                                 usu_tipo
                                 FROM seguridad.seg_usuario
                                 where usu_nombre = @p0
-                                and usu_estado='A'; ";
+                               ; ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

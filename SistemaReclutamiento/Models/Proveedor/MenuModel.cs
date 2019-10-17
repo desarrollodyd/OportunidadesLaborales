@@ -31,7 +31,7 @@ namespace SistemaReclutamiento.Models
 								join seguridad.seg_permiso
 								on seguridad.seg_permiso.fk_submenu=seguridad.seg_submenu.snu_id
 	                            where seguridad.seg_modulo.mod_tipo=@p0
-								and seguridad.seg_permiso.fk_usuario=@p1;";
+								and seguridad.seg_permiso.fk_usuario=@p1 and seguridad.seg_menu.men_estado='A';";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -74,6 +74,62 @@ namespace SistemaReclutamiento.Models
             }
             return (lista:lista,error:error);
         }
+        public List<MenuEntidad>  MenuListarporTipoJson()
+        {
+            List<MenuEntidad> lista = new List<MenuEntidad>();
+            
+            string consulta = @"SELECT 
+                                men_descripcion, 
+                                men_orden, 
+                                men_icono, 
+                                men_estado, 
+                                men_id,
+                                men_descripcion_eng,
+                                men_tipo,                       
+                                fk_modulo
+	                            FROM seguridad.seg_menu join seguridad.seg_modulo
+	                            on seguridad.seg_menu.fk_modulo=seguridad.seg_modulo.mod_id
+	                            where seguridad.seg_modulo.mod_tipo=@p0 and seguridad.seg_menu.men_estado='A';";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", moduloBusqueda);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var menu = new MenuEntidad
+                                {
+
+                                    men_descripcion = ManejoNulos.ManageNullStr(dr["men_descripcion"]),
+                                    men_orden = ManejoNulos.ManageNullInteger(dr["men_orden"]),
+                                    men_icono = ManejoNulos.ManageNullStr(dr["men_icono"]),
+                                    men_estado = ManejoNulos.ManageNullStr(dr["men_estado"]),
+                                    men_id = ManejoNulos.ManageNullInteger(dr["men_id"]),
+                                    men_descripcion_eng = ManejoNulos.ManageNullStr(dr["men_descripcion_eng"]),
+                                    men_tipo = ManejoNulos.ManageNullStr(dr["men_tipo"]),
+                                    fk_modulo = ManejoNulos.ManageNullInteger(dr["fk_modulo"]),
+
+                                };
+
+                                lista.Add(menu);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return  lista;
+        }
         public MenuEntidad MenuIdObtenerJson(int men_id)
         {
             MenuEntidad menu = new MenuEntidad();
@@ -86,8 +142,8 @@ namespace SistemaReclutamiento.Models
                                 men_descripcion_eng, 
                                 men_tipo, 
                                 fk_modulo
-	                                FROM seguridad.seg_menu;
-                                where men_id=@p0;";
+	                                FROM seguridad.seg_menu
+                                where men_id=@p0 and seguridad.seg_menu.men_estado='A';";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -121,13 +177,12 @@ namespace SistemaReclutamiento.Models
             }
             return menu;
         }
-
-        public bool ModuloInsertarJson(MenuEntidad menu)
+        public bool MenuInsertarJson(MenuEntidad menu)
         {
             bool response = false;
             string consulta = @"INSERT INTO seguridad.seg_menu(
-	men_descripcion, men_orden, men_icono, men_estado, men_descripcion_eng, men_tipo, fk_modulo)
-	VALUES ( @p0, @p1, @p2, @p3, @p4, @p5, @p6); ";
+	                    men_descripcion, men_icono, men_estado, fk_modulo, men_id)
+	                    VALUES ( @p0, @p1, @p2, @p3,@p4); ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -135,12 +190,67 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", menu.men_descripcion);
-                    query.Parameters.AddWithValue("@p1", menu.men_orden);
-                    query.Parameters.AddWithValue("@p2", menu.men_icono);
-                    query.Parameters.AddWithValue("@p3", menu.men_estado);
-                    query.Parameters.AddWithValue("@p4", menu.men_descripcion_eng);
-                    query.Parameters.AddWithValue("@p5", menu.men_tipo);
-                    query.Parameters.AddWithValue("@p6", menu.fk_modulo);
+                    query.Parameters.AddWithValue("@p1", menu.men_icono);
+                    query.Parameters.AddWithValue("@p2", menu.men_estado);
+                    query.Parameters.AddWithValue("@p3", menu.fk_modulo);
+                    query.Parameters.AddWithValue("@p4", menu.men_id);
+           
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return response;
+        }
+        public int MenuObtenerUltimo()
+        {
+            int men_id = 0;
+            string consulta = @"select men_id
+                                  from seguridad.seg_menu
+                                     order by men_id desc
+                                     limit 1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", men_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                men_id = ManejoNulos.ManageNullInteger(dr["men_id"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return men_id;
+        }
+        public bool MenuEliminarJson(int men_id)
+        {
+            bool response = false;
+            string consulta = @"
+                                DELETE FROM 
+                                seguridad.seg_menu
+                                WHERE  men_id=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(men_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

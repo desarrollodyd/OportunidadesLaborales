@@ -117,12 +117,14 @@ namespace SistemaReclutamiento.Models
             return modulo;
         }
 
-        public bool ModuloInsertarJson(ModuloEntidad modulo)
+        public int ModuloInsertarJson(ModuloEntidad modulo)
         {
-            bool response = false;
+            int idModuloinsertado = 0;
+            //bool response = false;
             string consulta = @"INSERT INTO seguridad.seg_modulo(
 	                             mod_descripcion, mod_descripcion_eng, mod_tipo, mod_orden, mod_icono, mod_estado)
-	                            VALUES ( @p0, @p1, @p2, @p3, @p4, @p5); ";
+	                            VALUES ( @p0, @p1, @p2, @p3, @p4, @p5)
+                                returning mod_id; ";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -135,15 +137,61 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p3", modulo.mod_orden);
                     query.Parameters.AddWithValue("@p4", modulo.mod_icono);
                     query.Parameters.AddWithValue("@p5", modulo.mod_estado);
-                    query.ExecuteNonQuery();
-                    response = true;
+                    idModuloinsertado = Int32.Parse(query.ExecuteScalar().ToString());
+                    //query.ExecuteNonQuery();
+                    //response = true;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            return response;
+            return idModuloinsertado;
+        }
+        public ModuloEntidad ModuloObtenerporTipoJson(string mod_tipo)
+        {
+            ModuloEntidad modulo = new ModuloEntidad();
+            string consulta = @"SELECT 
+                                mod_id,
+                                mod_descripcion, 
+                                mod_descripcion_eng,
+                                mod_tipo, 
+                                mod_orden,
+                                mod_icono,
+                                mod_estado
+	                            FROM seguridad.seg_modulo
+                                where mod_tipo=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", mod_tipo);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                modulo.mod_id = ManejoNulos.ManageNullInteger(dr["mod_id"]);
+                                modulo.mod_descripcion = ManejoNulos.ManageNullStr(dr["mod_descripcion"]);
+                                modulo.mod_descripcion_eng = ManejoNulos.ManageNullStr(dr["mod_descripcion_eng"]);
+                                modulo.mod_tipo = ManejoNulos.ManageNullStr(dr["mod_tipo"]);
+                                modulo.mod_orden = ManejoNulos.ManageNullInteger(dr["mod_orden"]);
+                                modulo.mod_icono = ManejoNulos.ManageNullStr(dr["mod_icono"]);
+                                modulo.mod_estado = ManejoNulos.ManageNullStr(dr["mod_estado"]);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return modulo;
         }
 
     }

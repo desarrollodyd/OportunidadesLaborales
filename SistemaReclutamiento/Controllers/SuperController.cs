@@ -12,10 +12,27 @@ namespace SistemaReclutamiento.Controllers
     {
         SubMenuModel submenubl = new SubMenuModel();
         PermisoModel permisobl = new PermisoModel();
+        MenuModel menubl = new MenuModel();
+        ModuloModel modulobl = new ModuloModel();
         // GET: Super
         public ActionResult Control()
         {
             return View("~/Views/Desarrollo/PanelPrincipal.cshtml");
+        }
+        public ActionResult CrearMenusView() {
+            return View();
+        }
+        public ActionResult CrearSubmenusView(int men_id)
+        {
+            try
+            {
+                var menu = menubl.MenuIdObtenerJson(men_id);
+                ViewBag.Menu = menu;
+            }
+            catch (Exception ex) {
+
+            }
+            return View();
         }
         [HttpPost]
         public ActionResult PermisosListarJson(int usu_id)
@@ -159,6 +176,170 @@ namespace SistemaReclutamiento.Controllers
             }
 
             return Json(new { respuesta = respuestaConsulta, lista_menu_usuario = lista_menu_usuario, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult MenuInsertarJson(MenuEntidad menu)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            int idmoduloinsertado = 0;
+            //int ultimoMenu = menubl.MenuObtenerUltimo();
+            menu.men_id = menubl.MenuObtenerUltimo()+1 ;
+            try
+            {
+                var modulo = modulobl.ModuloObtenerporTipoJson("Proveedor");
+                if (modulo.mod_id > 0) {
+                   
+                    menu.fk_modulo = modulo.mod_id;
+                    menu.men_estado = "A";
+                    respuestaConsulta = menubl.MenuInsertarJson(menu);
+                    if (respuestaConsulta)
+                    {
+                        errormensaje = "Se Registró Correctamente";
+                    }
+                    else
+                    {
+                        errormensaje = "Error, no se Puede Registrar";
+                    }
+                }
+                else{
+                    /*Crear modulo e insertar menu*/
+                    ModuloEntidad moduloInsertar = new ModuloEntidad();
+                    moduloInsertar.mod_descripcion = "Proveedores";
+                    moduloInsertar.mod_descripcion_eng = "Providers";
+                    moduloInsertar.mod_icono = "fa fa-paypal";
+                    moduloInsertar.mod_tipo = "Proveedor";
+                    moduloInsertar.mod_orden = 1;
+                    moduloInsertar.mod_estado = "A";
+                    idmoduloinsertado = modulobl.ModuloInsertarJson(moduloInsertar);
+                    if (idmoduloinsertado > 0)
+                    {
+                        menu.fk_modulo = idmoduloinsertado;
+                        menu.men_estado = "A";
+                        respuestaConsulta = menubl.MenuInsertarJson(menu);
+                        if (respuestaConsulta)
+                        {
+                            errormensaje = "Se Registró Correctamente";
+                        }
+                        else
+                        {
+                            errormensaje = "Error, no se Puede Registrar";
+                        }
+                    }
+                    else {
+                        errormensaje = "Error, no se Puede Registrar";
+                    }
+                   
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult MenuListarporTipoJson()
+        {
+            var errormensaje = "";
+            var lista = new List<MenuEntidad>();
+            bool response = false;
+            try
+            {
+                lista = menubl.MenuListarporTipoJson();
+                response = true;
+                if (lista.Count > 0)
+                {
+                    errormensaje = "Cargando Data...";
+                }
+                else {
+                    errormensaje = "No Hay Registros...";
+                }
+              
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = response, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult MenuEliminarJson(int men_id)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+
+            try
+            {
+                respuestaConsulta = menubl.MenuEliminarJson(men_id);
+                if (respuestaConsulta)
+                {
+                    errormensaje = "Se Eliminó Correctamente";
+                }
+                else
+                {
+                    errormensaje = "Error, no se Puede Eliminar";
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult SubMenuListarporMenuJson(int men_id)
+        {
+            var errormensaje = "";
+            var lista = new List<SubMenuEntidad>();
+            bool response = false;
+            try
+            {
+                lista = submenubl.SubMenuListarPorMenu(men_id);
+                response = true;
+                if (lista.Count > 0)
+                {
+                    errormensaje = "Cargando Data...";
+                }
+                else
+                {
+                    errormensaje = "No Hay Registros...";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta = response, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult SubMenuInsertarJson(SubMenuEntidad submenu)
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            //int ultimoMenu = menubl.MenuObtenerUltimo();
+            submenu.snu_id = submenubl.SubMenuObtenerUltimo() + 1;
+            try
+            {
+                    submenu.snu_estado = "A";
+                    respuestaConsulta = submenubl.SubMenuInsertarJson(submenu);
+                    if (respuestaConsulta)
+                    {
+                        errormensaje = "Se Registró Correctamente";
+                    }
+                    else
+                    {
+                        errormensaje = "Error, no se Puede Registrar";
+                    }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
     }
 }
