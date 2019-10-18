@@ -18,7 +18,7 @@
                         else {
                             estado = "INACTIVO";
                         }
-                        $("#tbody_Menu").append('<tr><td>' + value.men_descripcion + '</td><td>' + value.men_icono + '</td><td>' + estado + '</td><td><button type="button" data-id="' + value.men_id + '" class="btn btn-danger btn_delete">Eliminar</button><button type="button" data-id="' + value.men_id + '" class="btn btn-default btn_submenu">Agregar Submenu</button></td></tr>');
+                        $("#tbody_Menu").append('<tr><td>' + value.men_descripcion + '</td><td>' + value.men_icono + '</td><td>' + estado + '</td><td><button type="button" data-id="' + value.men_id + '" class="btn btn-success btn_submenu">Agregar Submenu</button></td></tr>');
                     });
                     if (datos.length == 0) {
                         messageResponse({

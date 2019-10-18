@@ -38,6 +38,7 @@ namespace SistemaReclutamiento.Entidades.Proveedor
         public string CP_CFDOCRE { get; set; }
         public string CP_CTDOCCO { get; set; }
         public DateTime CP_DFECDOC { get; set; }
-        public decimal subtotal { get; set; }
+        public decimal subtotalSoles { get; set; }
+        public decimal subtotalDolares { get; set; }
     }
 }

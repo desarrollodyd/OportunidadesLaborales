@@ -280,10 +280,11 @@ namespace SistemaReclutamiento.Models
 
             return lista;
         }
-        public decimal ObtenerSubtotalporNumeroDocumento(string nombre_tabla, string num_doc, string tipo_doc,string cod_proveedor)
+        public (decimal subtotalSoles,decimal subtotalDolares) ObtenerSubtotalporNumeroDocumento(string nombre_tabla, string num_doc, string tipo_doc,string cod_proveedor)
         {
-            decimal subtotal=0;
-            string consulta = @"select sum(PG_NIMPOMN) AS subtotal FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 ;";
+            decimal subtotalSoles=0;
+            decimal subtotalDolares = 0;
+            string consulta = @"select sum(PG_NIMPOMN) AS subtotalSoles, sum(PG_NIMPOUS) as subtotalDolares  FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 ;";
             try
             {
                 using (var con = new SqlConnection(_conexion_concar))
@@ -302,7 +303,8 @@ namespace SistemaReclutamiento.Models
                             {
                                 while (dr.Read())
                                 {
-                                    subtotal= ManejoNulos.ManageNullDecimal(dr["subtotal"]);
+                                    subtotalSoles= ManejoNulos.ManageNullDecimal(dr["subtotalSoles"]);
+                                    subtotalDolares = ManejoNulos.ManageNullDecimal(dr["subtotalDolares"]);
                                 }
                             }
                         }
@@ -315,7 +317,7 @@ namespace SistemaReclutamiento.Models
                 Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
 
-            return subtotal;
+            return (subtotalSoles,subtotalDolares);
         }
     }
 }

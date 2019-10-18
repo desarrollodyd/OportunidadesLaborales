@@ -20,7 +20,7 @@
             CampoValor: "cia_nombre",
             select2: true,
             allOption: false,
-            placeholder: "Seleccione Compañia"
+            placeholder: "Seleccione Empresa"
         });
     };
     var _componentes = function () {
@@ -50,65 +50,126 @@
                     tableColumns: [
                         {
                             data: "CP_CVANEXO",
-                            title: "CP_CVANEXO",
+                            title: "Tipo Anexo",
                         },
                         {
                             data: "CP_CCODIGO",
-                            title: "CP_CCODIGO"
+                            title: "RUC"
                         },
                         {
                             data: "CP_CNUMDOC",
-                            title: "CP_CNUMDOC"
+                            title: "Nro. Documento"
                         },
                         
-                   
-                        {
-                            data: "CP_NIMPOMN",
-                            title: "CP_NIMPOMN"
-                        },
-
-                        {
-                            data: "CP_NSALDMN",
-                            title: "CP_NSALDMN"
-                        },
-                        {
-                            data: "CP_NIMPOUS",
-                            title: "CP_NIMPOUS"
-                        },
-                        {
-                            data: "CP_NSALDUS",
-                            title: "CP_NSALDUS"
-                        },
-                        {
-                            data: "subtotal",
-                            title: "ESTADO",
-                            "render": function (value, type, oData, meta) {
-                                var pagado = oData.subtotal;
-                                var mensaje_estado = "";
-                                if (pagado == oData.CP_NIMPOMN) {
-                                    estado = "success";
-                                    mensaje_estado = "PAGADO";
-                                }
-                                else if (pagado == 0) {
-                                    estado = "danger";
-                                    mensaje_estado = "PENDIENTE";
-                                }
-                                else if (pagado != 0 && pagado < oData.CP_NIMPOMN){
-                                    estado = "warning";
-                                    mensaje_estado = "PARCIAL";
-                                }
-                                var span = '<span class="badge badge-' + estado + '">' + mensaje_estado + '</span>';
-                                return span;
-                            }
-                        },
                         {
                             data: "CP_DFECDOC",
-                            title: "CP_DFECDOC",
+                            title: "Fecha Documento",
                             "render": function (value) {
                                 var span = '<span>' + moment(value).format("DD/MM/YYYY") + '</span>';
                                 return span;
                             }
                         },
+                        {
+                            data: "CP_CCODMON",
+                            title: "Moneda",
+                            "render": function (value) {
+                                var moneda = "";
+                                if (value == 'MN') {
+                                    moneda = "Soles";
+                                }
+                                else {
+                                    moneda = "Dolares";
+                                }
+                                return moneda;
+                            }
+                        },
+                        {
+                            data: "CP_CCODMON",
+                            title: "Importe",
+                            "render": function (value, type, oData, meta) {
+                                if (value == 'MN') {
+                                    return oData.CP_NIMPOMN;
+                                }
+                                else {
+                                    return oData.CP_NIMPOUS;
+                                }
+                            }
+                        },
+                        {
+                            data: "CP_CCODMON",
+                            title: "Monto Pagado",
+                            "render": function (value, type, oData, meta) {
+                                if (value == "MN") {
+                                    return oData.subtotalSoles;
+                                }
+                                else {
+                                    return oData.subtotalDolares;
+                                }
+                            }
+                        },
+                        {
+                            data: "CP_CCODMON",
+                            title: "Saldo",
+                            "render": function (value, type, oData, meta) {
+                                var montoPagado = 0;
+                                var importe = 0;
+                                var saldo = 0;
+                                if (value == "MN") {
+                                    importe = oData.CP_NIMPOMN;
+                                    montoPagado = oData.subtotalSoles;
+                                   
+                                }
+                                else {
+                                    importe = oData.CP_NIMPOUS;
+                                    montoPagado = oData.subtotalDolares;
+                                   
+                                }
+                                saldo = importe - montoPagado;
+                                return saldo;
+                            }
+                        },
+                        {
+                            data: "CP_CCODMON",
+                            title: "ESTADO",
+                            "render": function (value, type, oData, meta) {
+                                if (value == "MN") {
+                                    var pagado = oData.subtotalSoles;
+                                    var mensaje_estado = "";
+                                    if (pagado == oData.CP_NIMPOMN) {
+                                        estado = "success";
+                                        mensaje_estado = "PAGADO";
+                                    }
+                                    else if (pagado == 0) {
+                                        estado = "danger";
+                                        mensaje_estado = "PENDIENTE";
+                                    }
+                                    else if (pagado != 0 && pagado < oData.CP_NIMPOMN) {
+                                        estado = "warning";
+                                        mensaje_estado = "PARCIAL";
+                                    }
+                                }
+                                else {
+                                    var pagado = oData.subtotalDolares;
+                                    var mensaje_estado = "";
+                                    if (pagado == oData.CP_NIMPOUS) {
+                                        estado = "success";
+                                        mensaje_estado = "PAGADO";
+                                    }
+                                    else if (pagado == 0) {
+                                        estado = "danger";
+                                        mensaje_estado = "PENDIENTE";
+                                    }
+                                    else if (pagado != 0 && pagado < oData.CP_NIMPOUS) {
+                                        estado = "warning";
+                                        mensaje_estado = "PARCIAL";
+                                    }
+                                }
+                              
+                                var span = '<span class="badge badge-' + estado + '">' + mensaje_estado + '</span>';
+                                return span;
+                            }
+                        },
+                     
 
                         {
                             data: 'CP_CNUMDOC',
@@ -116,8 +177,15 @@
                             className: 'text-center',
                             "bSortable": false,
                             "render": function (value, type, oData, meta) {
+                                var subtotal = 0;
+                                if (oData.CP_CCODMON == "MN") {
+                                    subtotal = oData.subtotalSoles;
+                                }
+                                else {
+                                    subtotal = oData.subtotalDolares;
+                                }
                                 var boton =
-                                    '<a href="#" class="btn btn-success btn_detalle" data-toggle="modal" data-target=".bs-example-modal-detalle" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="'+oData.subtotal+'"> Ver Detalle</a>'
+                                    '<a href="#" class="btn btn-success btn_detalle" data-toggle="modal" data-target=".bs-example-modal-detalle" data-moneda="' + oData.CP_CCODMON+'" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="' + subtotal+'"> Ver Detalle</a>'
                                     ;
                                 return boton;
                             }
@@ -142,6 +210,7 @@
             var num_doc = $(this).data("numdoc");
             var nombre_tabla = $(this).data("tabla");
             var subtotal = $(this).data("subtotal");
+            var moneda = $(this).data("moneda");
             var dataForm = { num_doc: num_doc, nombre_tabla: nombre_tabla };
             if (!$().DataTable) {
                 console.warn('Advertencia - datatables.min.js no esta declarado.');
@@ -157,28 +226,45 @@
                 tableColumns: [
                     {
                         data: "PG_CVANEXO",
-                        title: "PG_CVANEXO",
+                        title: "Tipo Anexo",
                     },
                     {
                         data: "PG_CCODIGO",
-                        title: "PG_CCODIGO"
+                        title: "RUC"
                     },
                     {
                         data: "PG_CTIPDOC",
-                        title: "PG_CTIPDOC"
+                        title: "Tipo de Documento"
                     },
                     {
                         data: "PG_CNUMDOC",
-                        title: "PG_CNUMDOC"
-                    },
-
-                    {
-                        data: "PG_NIMPOMN",
-                        title: "PG_NIMPOMN"
+                        title: "Nro. Documento"
                     },
                     {
-                        data: "PG_NIMPOUS",
-                        title: "PG_NIMPOUS"
+                        data: "PG_CCODMON",
+                        title: "Moneda",
+                        "render": function (value) {
+                            var moneda = "";
+                            if (value == "MN") {
+                                moneda="Soles";
+                            }
+                            else {
+                                moneda = "Dolares";
+                            }
+                            return moneda;
+                        }
+                    },
+                    {
+                        data: "PG_CCODMON",
+                        title: "Importe",
+                        "render": function (value, type, oData, meta) {
+                            if (value == "MN") {
+                                return oData.PG_NIMPOMN;
+                            }
+                            else {
+                                return oData.PG_NIMPOUS;
+                            }
+                        }
                     },
                     {
                         data: "PG_CGLOSA",
@@ -186,6 +272,12 @@
                     }
                 ]
             });
+            if (moneda == "MN") {
+                $("#moneda").text("Soles : S/ ");
+            }
+            else {
+                $("#moneda").text("Dolares : $ ");
+            }
             $("#subtotal").text(subtotal);
             //responseSimple({
             //    url: "Proveedor/ListarPagosporNumeroDocumentoJson",

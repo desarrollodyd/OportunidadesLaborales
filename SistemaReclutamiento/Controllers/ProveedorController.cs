@@ -250,7 +250,9 @@ namespace SistemaReclutamiento.Controllers
                 lista = sql.CPCARTListarPagosPorCompania(nombretabla,usuario.usu_nombre,tipo_doc,fecha_inicio,fecha_final);
                 if (lista.Count > 0) {
                     foreach (var m in lista) {
-                        m.subtotal = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
+                        var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
+                        m.subtotalSoles = subtotaltupla.subtotalSoles ;
+                        m.subtotalDolares = subtotaltupla.subtotalDolares;
                     }
                 }
                 errormensaje = "Cargando Data ...";
