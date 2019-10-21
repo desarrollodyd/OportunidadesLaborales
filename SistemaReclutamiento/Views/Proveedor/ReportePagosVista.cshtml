@@ -94,19 +94,27 @@
 <div class="modal fade bs-example-modal-detalle" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
                 <h4 class="modal-title" id="detalleModalLabel">Detalle de Pago</h4>
-                <h4>Total en <span id="moneda"></span> <span id="subtotal"></span></h4>
+               
             </div>
             <div class="modal-body" id="detalleModalBody">
-                <table class="table table-xs table-bordered" id="table-detalle"></table>
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-4">
+                        <h4 class="text-danger">Total en <span id="moneda"></span> <span class="text-primary" id="subtotal" style="font-size:30px;"></span></h4>
+                    </div>
+                    <div class="col-md-12">
+                       
+                            <table class="table table-xs table-condensed table-bordered" id="table-detalle"></table>
+                    
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

@@ -31,7 +31,7 @@
             $('#myDatepicker1').data("DateTimePicker").maxDate(e.date);
         });
         $(document).on("click", ".btn_filtrar", function (e) {
-           
+            $("#frmReportePagos-form").submit()
             if (_objetoForm_frmReportePagos.valid()) {
                 var nombre_tabla = $("#cboCompania").val();
                 var dataForm = $('#frmReportePagos-form').serializeFormJSON();
@@ -230,7 +230,7 @@
                 tableColumns: [
                     {
                         data: "PG_CVANEXO",
-                        title: "Tipo Anexo",
+                        title: "T. Anexo",
                     },
                     {
                         data: "PG_CCODIGO",
@@ -238,11 +238,11 @@
                     },
                     {
                         data: "PG_CTIPDOC",
-                        title: "Tipo de Documento"
+                        title: "Tipo de Doc"
                     },
                     {
                         data: "PG_CNUMDOC",
-                        title: "Nro. Documento"
+                        title: "Nro. Doc"
                     },
                     {
                         data: "PG_CCODMON",

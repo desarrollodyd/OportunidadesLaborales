@@ -4297,3 +4297,11 @@ table.dataTable thead th {
 .nav.child_menu li ul li {
     background-color: rgb(211, 214, 218);
 }
+
+.bg-dark {
+    background-color: #394D5F;
+    color: white;
+}
+.modal-footer {
+    background-color: #e5e5e5;
+}
