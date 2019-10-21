@@ -268,7 +268,7 @@
                     },
                     {
                         data: "PG_CGLOSA",
-                        title: "PG_CGLOSA"
+                        title: "GLOSA"
                     }
                 ]
             });
