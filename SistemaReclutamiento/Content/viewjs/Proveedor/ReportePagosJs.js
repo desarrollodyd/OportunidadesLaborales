@@ -31,7 +31,7 @@
             $('#myDatepicker1').data("DateTimePicker").maxDate(e.date);
         });
         $(document).on("click", ".btn_filtrar", function (e) {
-            $("#frmReportePagos-form").submit();
+           
             if (_objetoForm_frmReportePagos.valid()) {
                 var nombre_tabla = $("#cboCompania").val();
                 var dataForm = $('#frmReportePagos-form').serializeFormJSON();
@@ -47,6 +47,10 @@
                     tableNameVariable: "permiso",
                     tableHeaderCheck: false,
                     table: "#tablepermiso",
+                    columnDefs: [
+                        { className: 'text-center', targets: [3, 8] },
+                        { className: 'text-right', targets: [5, 6,7] },
+                    ],
                     tableColumns: [
                         {
                             data: "CP_CVANEXO",
@@ -165,7 +169,7 @@
                                     }
                                 }
                               
-                                var span = '<span class="badge badge-' + estado + '">' + mensaje_estado + '</span>';
+                                var span = '<span class="label label-' + estado + '">' + mensaje_estado + '</span>';
                                 return span;
                             }
                         },
@@ -185,7 +189,7 @@
                                     subtotal = oData.subtotalDolares;
                                 }
                                 var boton =
-                                    '<a href="#" class="btn btn-success btn_detalle" data-toggle="modal" data-target=".bs-example-modal-detalle" data-moneda="' + oData.CP_CCODMON+'" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="' + subtotal+'"> Ver Detalle</a>'
+                                    '<a href="#" class="btn btn-dark btn_detalle btn-sm" data-toggle="modal" data-target=".bs-example-modal-detalle" data-moneda="' + oData.CP_CCODMON+'" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="' + subtotal+'"> Ver Detalle</a>'
                                     ;
                                 return boton;
                             }

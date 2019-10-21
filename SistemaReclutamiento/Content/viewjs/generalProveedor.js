@@ -642,6 +642,7 @@ function simpleDataTable(obj) {
         table: "table",
         tableColumnsData: [],
         tableColumns: [],
+        columnDefs: [],
         tablePaging: true,
         tableOrdering: true,
         tableInfo: true,
@@ -664,6 +665,7 @@ function simpleDataTable(obj) {
         "lengthChange": opciones.tableLengthChange,
         data: opciones.tableColumnsData,
         columns: opciones.tableColumns,
+        columnDefs: opciones.columnDefs,
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {

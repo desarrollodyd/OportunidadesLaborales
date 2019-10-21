@@ -16,106 +16,97 @@
             <div class="clearfix"></div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                @* Formulario *@
-                <form id="frmReportePagos-form" class="" method="post">
-                    <div class="col-md-12 col-xs-12" style="padding-top:10px;">
+            @* Formulario *@
+            <form id="frmReportePagos-form" class="" method="post">
+                <div class="col-md-10">
 
-                        <div class="col-md-4 col-xs-12">
-                            <div class="form-group">
-                                <label>Empresa</label>
-                                <select class="form-control input-sm" id="cboCompania" name="cboCompania" style="width:100%"></select>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-xs-12">
-                            <div class="form-group">
-                                <label>Fecha Inicio</label>
-                                <div class='input-group date' id='myDatepicker1'>
-                                    <input type='text' class="form-control" name="fecha_inicio" id="fecha_inicio" data-inputmask="'mask': '9999-99-99'" placeholder="Fecha de Inicio" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4 col-xs-12">
-                            <div class="form-group">
-                                <label>Fecha Fin</label>
-                                <div class='input-group date' id='myDatepicker2'>
-                                    <input type='text' class="form-control" name="fecha_final" id="fecha_final" data-inputmask="'mask': '9999-99-99'" placeholder="Fecha de Fin" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-bottom:10px;">
-                            <div class="col-xs-2">
-                                <button type="button" class="btn btn-danger col-xs-12 btn_filtrar"><i class="fa fa-save"></i> Filtrar</button>
-                            </div>
-                            <div class="col-xs-2">
-                                <button type="button" class="btn btn-primary col-xs-12 btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
-                            </div>
+                    <div class="col-md-12" style="padding-bottom:5px">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                Empresa
+                            </span>
+                            <select class="form-control input-sm" id="cboCompania" name="cboCompania" style="width:100%"></select>
                         </div>
                     </div>
 
-                </form>
-                @* End Formuklario *@
-                @*<div class="">
-                    <div class="form-group">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    Usuario
-                                </span>
-                                <select class="form-control input-sm" id="cboCompania" name="cboCompania">
-                                    <option value="">--Seleccione--</option>
-                                </select>
-                            </div>
+                    <div class="col-md-6 col-xs-12" style="padding-bottom:5px">
+                        <div class="input-group date" id='myDatepicker1'>
+                            <span class="input-group-addon">
+                                Fecha Inicio
+                            </span>
+                            <input type='text' class="form-control" name="fecha_inicio" id="fecha_inicio" data-inputmask="'mask': '9999-99-99'" placeholder="Fecha Inicio" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
                         </div>
                     </div>
-                </div>*@
-                @*<div class="">
-                    <div class="col-md-8">
-                        <div class="form-group pull-right div_check_total">
-                            <div class="icheck_total"><input type="checkbox" id="CheckTodosMenus" checkbox="icheckbox_square-blue" disabled> Seleccionar Todo</div>
-                        </div>
-                    </div>
-                </div>*@
 
+                    <div class="col-md-6 col-xs-12" style="padding-bottom:5px">
+                        <div class="input-group date" id='myDatepicker2'>
+                            <span class="input-group-addon">
+                                Fecha Fin
+                            </span>
+                            <input type='text' class="form-control" name="fecha_final" id="fecha_final" data-inputmask="'mask': '9999-99-99'" placeholder="Fecha Fin" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12 col-xs-12" style="padding-bottom:5px">
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                        <button type="button" class="btn btn-danger btn-block btn_filtrar"><i class="fa fa-save"></i> Filtrar</button>
+                    </div>
+                    <div class="col-md-12 col-sm-6 col-xs-12">
+                        <button type="button" class="btn btn-primary btn-block btn_cancelar"><i class="fa fa-ban"></i> Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr />
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-condensed table-xs table-bordered" id="tablepermiso"></table>
             </div>
         </div>
+       
+        
         <div id="menu">
-        </div>
-        <div class="container">
-            <!-- Basic datatable -->
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-xs table-bordered" id="tablepermiso"></table>
-                </div>
-            </div>
-            <!-- /basic datatable -->
-        </div>
-        <!-- modal detalle de Pagos -->
-        <div class="modal fade bs-example-modal-detalle" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                        <h4 class="modal-title" id="detalleModalLabel">Detalle de Pago</h4>
-                        <h4>Total en <span id="moneda"></span> <span id="subtotal"></span></h4>
-                    </div>
-                    <div class="modal-body" id="detalleModalBody">
-                        <table class="table table-xs table-bordered" id="table-detalle"></table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <!-- Basic datatable -->
+    <div class="card">
+        <div class="card-body">
+            
+        </div>
+    </div>
+    <!-- /basic datatable -->
+</div>
+
+
+
+<!-- modal detalle de Pagos -->
+<div class="modal fade bs-example-modal-detalle" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="detalleModalLabel">Detalle de Pago</h4>
+                <h4>Total en <span id="moneda"></span> <span id="subtotal"></span></h4>
+            </div>
+            <div class="modal-body" id="detalleModalBody">
+                <table class="table table-xs table-bordered" id="table-detalle"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>

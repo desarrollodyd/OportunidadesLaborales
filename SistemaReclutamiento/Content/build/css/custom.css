@@ -774,7 +774,7 @@ a:focus {
     top: 0
 }
 .nav-md ul.nav.child_menu li:last-child::after {
-  bottom: 50%;
+  /*bottom: 50%;*/
 }
 .nav.side-menu > li > a,
 .nav.child_menu > li > a {
@@ -1302,8 +1302,8 @@ table.countries_list td {
 }
 .dataTables_paginate a {
     padding: 6px 9px !important;
-    background: #ddd !important;
-    border-color: #ddd !important
+    background: #de1111 !important;
+    border-color: #1f1c1b !important;
 }
 .paging_full_numbers a.paginate_active {
     background-color: rgba(38, 185, 154, 0.59) !important;
@@ -2352,7 +2352,8 @@ select.parsley-error {
     font-weight: bolder
 }
 .btn {
-    border-radius: 3px
+    border-radius: 3px;
+    line-height: 1.18571;
 }
 a.btn-success,
 a.btn-primary,
@@ -4278,4 +4279,21 @@ table thead .checkbox.radio { margin-top:-7px;margin-top:-21px; }
     background-color: #ffffff !important;
     color:black !important;
     cursor:pointer;
+}
+
+table.dataTable thead th {
+    background-color: #de1111;
+    color: white;
+}
+
+.pagination > li > a, .pagination > li > span {
+    color: #141415;
+}
+
+.pagination > .disabled > a, .pagination > .disabled > a:focus, .pagination > .disabled > a:hover, .pagination > .disabled > span, .pagination > .disabled > span:focus, .pagination > .disabled > span:hover {
+    color: #141415;
+}
+
+.nav.child_menu li ul li {
+    background-color: rgb(211, 214, 218);
 }
