@@ -2,16 +2,25 @@
     var total_menus = 0;
     //var lista_unchecked_menus = [];
     var _inicio = function () {
+      
+        var hoy = new Date();
+        var ayer = new Date(hoy.getTime() - 24 * 60 * 60 * 1000);
+        var fecha_hoy = moment(hoy).format('YYYY-MM-DD');
+        var fecha_ayer = moment(ayer).format('YYYY-MM-DD');
+        $("#fecha_final").val(fecha_hoy);
+        $("#fecha_inicio").val(fecha_ayer);
         $('#myDatepicker1').datetimepicker({
             format: 'YYYY-MM-DD',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            
         });
         $('#myDatepicker2').datetimepicker({
             format: 'YYYY-MM-DD',
             ignoreReadonly: true,
             allowInputToggle: true,
-            useCurrent: false
+            useCurrent: false,
+           
         });
         selectResponse({
             url: "Proveedor/MesaPartesListarCompaniasJson",
