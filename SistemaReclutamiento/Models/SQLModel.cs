@@ -105,41 +105,15 @@ namespace SistemaReclutamiento.Models
             }
             return (listapuesto: lista, error: error);
         }
-        public List<CPCARTEntidad> CPCARTListarPagosPorCompania(string nombre_tabla,string cod_proveedor, string tipo_doc, string fecha_inicio, string fecha_final)
+        public (List<CPCARTEntidad> lista, claseError error,string cadena) CPCARTListarPagosPorCompania(string nombre_tabla,string cod_proveedor, string tipo_doc, string fecha_inicio, string fecha_final)
         {
+            
+            claseError error = new claseError();
             List<CPCARTEntidad> lista = new List<CPCARTEntidad>();
-            string consulta = @"SELECT [CP_CVANEXO]
-                              ,[CP_CCODIGO]
-                              ,[CP_CTIPDOC]
-                              ,[CP_CNUMDOC]
-                              ,[CP_CFECDOC]
-                              ,[CP_CFECVEN]
-                              ,[CP_CFECREC]
-                              ,[CP_CSITUAC]
-                              ,[CP_CFECCOM]
-                              ,[CP_CSUBDIA]
-                              ,[CP_CCOMPRO]
-                              ,[CP_CDEBHAB]
-                              ,[CP_CCODMON]
-                              ,[CP_NTIPCAM]
-                              ,[CP_NIMPOMN]
-                              ,[CP_NIMPOUS]
-                              ,[CP_NSALDMN]
-                              ,[CP_NSALDUS]
-                              ,[CP_NIGVMN]
-                              ,[CP_NIGVUS]
-                              ,[CP_NIMP2MN]
-                              ,[CP_NIMP2US]
-                              ,[CP_NIMPAJU]
-                              ,[CP_CCUENTA]
-                              ,[CP_CAREA]
-                              ,[CP_CFECUBI]
-                              ,[CP_CTDOCRE]
-                              ,[CP_CNDOCRE]
-                              ,[CP_CFDOCRE]
-                              ,[CP_CTDOCCO]
-                                ,[CP_DFECDOC]
-                          FROM [dbo].[" + nombre_tabla+ "] where CP_CCODIGO=@p1 and CP_CTIPDOC=@p2 and CP_DFECDOC between @p3 and @p4 ";
+            string cadena= "";
+            string consulta = @"SELECT [CP_CVANEXO],[CP_CCODIGO],[CP_CTIPDOC],[CP_CNUMDOC],[CP_CFECDOC],[CP_CFECVEN],[CP_CFECREC],[CP_CSITUAC],[CP_CFECCOM],[CP_CSUBDIA],[CP_CCOMPRO],[CP_CDEBHAB],[CP_CCODMON],[CP_NTIPCAM],[CP_NIMPOMN],[CP_NIMPOUS],[CP_NSALDMN],[CP_NSALDUS],[CP_NIGVMN],[CP_NIGVUS],[CP_NIMP2MN],[CP_NIMP2US],[CP_NIMPAJU],[CP_CCUENTA],[CP_CAREA],[CP_CFECUBI],[CP_CTDOCRE],[CP_CNDOCRE],[CP_CFDOCRE],[CP_CTDOCCO],[CP_DFECDOC] FROM [" + nombre_tabla+ "] where CP_CCODIGO=@p1 and CP_CTIPDOC=@p2 and CP_DFECDOC between @p3 and @p4 ";
+
+            cadena+=consulta+ "-"+ nombre_tabla+"-"+ cod_proveedor+"-"+tipo_doc+"-"+ fecha_inicio+"-"+fecha_final;
             try
             {
                 using (var con = new SqlConnection(_conexion_concar))
@@ -147,10 +121,10 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new SqlCommand(consulta, con);
           
-                    query.Parameters.AddWithValue("@p1", cod_proveedor);
-                    query.Parameters.AddWithValue("@p2", tipo_doc);
-                    query.Parameters.AddWithValue("@p3", fecha_inicio);
-                    query.Parameters.AddWithValue("@p4", fecha_final);
+                    query.Parameters.AddWithValue("@p1", cod_proveedor.Trim());
+                    query.Parameters.AddWithValue("@p2", tipo_doc.Trim());
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullDate(fecha_inicio));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(fecha_final));
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -201,15 +175,17 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
             }
 
-            return lista;
+            return (lista,error, cadena);
         }
 
-        public List<CPPAGOEntidad> CPPAGOListarPagosPorNumeroDocumento(string nombre_tabla, string cod_proveedor, string tipo_doc, string num_doc)
+        public (List<CPPAGOEntidad> lista, claseError error) CPPAGOListarPagosPorNumeroDocumento(string nombre_tabla, string cod_proveedor, string tipo_doc, string num_doc)
         {
             List<CPPAGOEntidad> lista = new List<CPPAGOEntidad>();
+            claseError error = new claseError();
             string consulta = @"SELECT [PG_CVANEXO]
                                       ,[PG_CCODIGO]
                                       ,[PG_CTIPDOC]
@@ -275,13 +251,15 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
             }
 
-            return lista;
+            return (lista,error);
         }
-        public (decimal subtotalSoles,decimal subtotalDolares) ObtenerSubtotalporNumeroDocumento(string nombre_tabla, string num_doc, string tipo_doc,string cod_proveedor)
+        public (decimal subtotalSoles,decimal subtotalDolares, claseError error) ObtenerSubtotalporNumeroDocumento(string nombre_tabla, string num_doc, string tipo_doc,string cod_proveedor)
         {
+            claseError error = new claseError();
             decimal subtotalSoles=0;
             decimal subtotalDolares = 0;
             string consulta = @"select sum(PG_NIMPOMN) AS subtotalSoles, sum(PG_NIMPOUS) as subtotalDolares  FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 ;";
@@ -314,10 +292,11 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
             }
 
-            return (subtotalSoles,subtotalDolares);
+            return (subtotalSoles,subtotalDolares, error);
         }
     }
 }

@@ -303,6 +303,9 @@
             
         });
     };
+    $(document).on("click", ".btn_cancelar", function (e) {
+        _objetoForm_frmReportePagos.resetForm();
+    });
     var _metodos = function () {
         validar_Form({
             nameVariable: 'frmReportePagos',
@@ -310,37 +313,32 @@
             rules: {
                 fecha_final:
                 {
-                    required: true,
-
+                    required: true
                 },
                 fecha_inicio:
                 {
-                    required: true,
-
+                    required: true
                 },
                 cboCompania:
                 {
-                    required: true,
-
+                    required: true
                 }
-
             },
             messages: {
                 fecha_final:
                 {
-                    required: 'Campo Obligatorio',
+                    required: 'Campo Obligatorio'
                 },
                 fecha_inicio:
                 {
-                    required: 'Campo Obligatorio',
+                    required: 'Campo Obligatorio'
                 },
                 cboCompania:
                 {
-                    required: 'Campo Obligatorio',
+                    required: 'Campo Obligatorio'
                 },
             }
         });
-
     };
     return {
         init: function () {

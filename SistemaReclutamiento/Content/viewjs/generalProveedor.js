@@ -712,6 +712,7 @@ function simpleAjaxDataTable(obj) {
         },
         success: function (response) {
             opciones.tableColumnsData = response.data;
+            console.log(response);
             simpleDataTable(opciones);
         },
         error: function (xmlHttpRequest, textStatus, errorThrow) {

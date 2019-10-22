@@ -238,6 +238,7 @@ namespace SistemaReclutamiento.Controllers
         {
             //yyyy - MM - dd HH':'mm':'ss
             bool respuesta = false;
+            string cadena = "";
             var errormensaje = "";
             string nombretabla = "CP" + cboCompania + "CART";
             string nombretablapago = "CP" + cboCompania + "PAGO";
@@ -247,22 +248,35 @@ namespace SistemaReclutamiento.Controllers
             var lista = new List<CPCARTEntidad>();
             try
             {
-                lista = sql.CPCARTListarPagosPorCompania(nombretabla,usuario.usu_nombre,tipo_doc,fecha_inicio,fecha_final);
-                if (lista.Count > 0) {
-                    foreach (var m in lista) {
-                        var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
-                        m.subtotalSoles = subtotaltupla.subtotalSoles ;
-                        m.subtotalDolares = subtotaltupla.subtotalDolares;
+                var listatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_final);
+                lista = listatupla.lista;
+                cadena = listatupla.cadena;
+                var errorlista= listatupla.error;
+                if (errorlista.Key.Equals(string.Empty))
+                {
+                    if (lista.Count > 0)
+                    {
+                        foreach (var m in lista)
+                        {
+                            var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
+                            m.subtotalSoles = subtotaltupla.subtotalSoles;
+                            m.subtotalDolares = subtotaltupla.subtotalDolares;
+                        }
                     }
+                    errormensaje = "Cargando Data ...";
+                    respuesta = true;
                 }
-                errormensaje = "Cargando Data ...";
-                respuesta = true;
+                else {
+                    errormensaje = errorlista.Value;
+                    respuesta = false;
+                }
+                
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
+            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje, cadena=cadena });
         }
         public ActionResult ListarPagosporNumeroDocumentoJson(string num_doc, string nombre_tabla)
         {
@@ -276,9 +290,19 @@ namespace SistemaReclutamiento.Controllers
             var lista = new List<CPPAGOEntidad>();
             try
             {
-                lista = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla,usuario.usu_nombre,tipo_doc,num_doc.Trim());
-                errormensaje = "Cargando Data ...";
-                respuesta = true;
+                var listatupla = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim());
+                lista = listatupla.lista;
+                var errorlista = listatupla.error;
+                if (errorlista.Key.Equals(string.Empty))
+                {
+                    errormensaje = "Cargando Data ...";
+                    respuesta = true;
+                }
+                else {
+                    errormensaje = errorlista.Value;
+                    respuesta = false;
+                }
+                
             }
             catch (Exception exp)
             {
