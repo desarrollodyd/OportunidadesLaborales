@@ -310,6 +310,7 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
         }
+
         #endregion
         //public ActionResult Index()
         //{

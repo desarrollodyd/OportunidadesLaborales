@@ -236,6 +236,9 @@
                 tableNameVariable: "detalle",
                 tableHeaderCheck: false,
                 table: "#table-detalle",
+                columnDefs: [
+                    { className: 'text-center', targets: [6] },
+                ],
                 tableColumns: [
                     {
                         data: "PG_CVANEXO",
@@ -277,6 +280,14 @@
                             else {
                                 return oData.PG_NIMPOUS;
                             }
+                        }
+                    },
+                    {
+                        data: "PG_DFECCOM",
+                        title: "Fecha de Pago",
+                        "render": function (value) {
+                            var span = '<span>' + moment(value).format("DD/MM/YYYY") + '</span>';
+                            return span;
                         }
                     },
                     {
