@@ -1,4 +1,5 @@
-﻿using SistemaReclutamiento.Entidades;
+﻿using OfficeOpenXml;
+using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.Proveedor;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.Proveedor;
@@ -311,6 +312,48 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
         }
 
+        public void ReportePagosExportarExcel(string nombre_tabla, string fecha_inicio, string fecha_fin) {
+            MesaPartesCIAModel mesapartesbl = new MesaPartesCIAModel();
+            var lista = new List<MesaPartesCIAEntidad>();
+            try
+            {
+                lista = mesapartesbl.MesaPartesListarCompanias();
+            }
+            catch (Exception exp)
+            {
+                throw;
+            }
+
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Reporte");
+
+            ws.Cells["A6"].Value = "Id";
+            ws.Cells["B6"].Value = "Codigo";
+            ws.Cells["C6"].Value = "Nombre";
+            ws.Cells["D6"].Value = "Estado";
+
+            int rowStart = 7;
+            foreach (var item in lista)
+            {
+                ws.Cells[string.Format("A{0}", rowStart)].Value = item.cia_id;
+                ws.Cells[string.Format("B{0}", rowStart)].Value = item.cia_codigo;
+                ws.Cells[string.Format("C{0}", rowStart)].Value = item.cia_nombre;
+                ws.Cells[string.Format("D{0}", rowStart)].Value = item.cia_estado;
+                rowStart++;
+            }
+            for (var i = 7; i <= rowStart; i++)
+            {
+                ws.Row(i).OutlineLevel = 1;
+                ws.Row(i).Collapsed = true;
+            }
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment: filename=" + "ExcelReport.xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+        }
         #endregion
         //public ActionResult Index()
         //{

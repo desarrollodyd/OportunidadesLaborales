@@ -33,6 +33,13 @@
         });
     };
     var _componentes = function () {
+        $(document).on('click', ".btn_excel", function (e) {
+            var fecha_inicio=$("#fecha_inicio_excel").val();
+            var fecha_fin=$("#fecha_fin_excel").val();
+            var nombre_tabla = $("#nombre_tabla_excel").val();
+            ///Listing/%20GetByList?name=John&contact=calgary%2C%20vancouver
+            window.location.href = basePath + "Proveedor/ReportePagosExportarExcel?fecha_inicio=" + fecha_inicio + "&fecha_fin=" + fecha_fin + "&nombre_tabla=" + nombre_tabla;
+        });
         $("#myDatepicker1").on("dp.change", function (e) {
             $('#myDatepicker2').data("DateTimePicker").minDate(e.date);
         });
@@ -44,7 +51,9 @@
             if (_objetoForm_frmReportePagos.valid()) {
                 var nombre_tabla = $("#cboCompania").val();
                 var dataForm = $('#frmReportePagos-form').serializeFormJSON();
-
+                $("#fecha_inicio_excel").val($("#fecha_inicio").val());
+                $("#fecha_fin_excel").val($("#fecha_final").val());
+                $("#nombre_tabla_excel").val($("#cboCompania").val());
                 if (!$().DataTable) {
                     console.warn('Advertencia - datatables.min.js no esta declarado.');
                     return;

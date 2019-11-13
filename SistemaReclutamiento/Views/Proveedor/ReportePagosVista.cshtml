@@ -16,6 +16,9 @@
             <div class="clearfix"></div>
         </div>
         <div class="row">
+            <input type="hidden" name="fecha_inicio_excel" id="fecha_inicio_excel" value="" />
+            <input type="hidden" name="fecha_fin_excel" id="fecha_fin_excel" value="" />
+            <input type="hidden" name="nombre_tabla_excel" id="nombre_tabla_excel" value="" />
             @* Formulario *@
             <form id="frmReportePagos-form" class="" method="post">
                 <div class="col-md-10">
@@ -64,13 +67,16 @@
             </form>
         </div>
         <hr />
+        <div class="col-md-12 col-sm-6 col-xs-12">
+            <button type="button" class="btn btn-primary btn-block btn_excel"><i class="fa fa-ban"></i> Exportar a Excel</button>
+        </div>
         <div class="col-md-12">
             <div class="table-responsive">
                 <table class="table table-condensed table-xs table-bordered" id="tablepermiso"></table>
             </div>
         </div>
-       
-        
+
+
         <div id="menu">
 
         </div>
