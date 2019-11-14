@@ -187,13 +187,10 @@
                                         mensaje_estado = "PARCIAL";
                                     }
                                 }
-                              
                                 var span = '<span class="label label-' + estado + '">' + mensaje_estado + '</span>';
                                 return span;
                             }
                         },
-                     
-
                         {
                             data: 'CP_CNUMDOC',
                             title: "Acciones",

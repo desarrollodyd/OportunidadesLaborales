@@ -111,7 +111,7 @@ namespace SistemaReclutamiento.Models
             claseError error = new claseError();
             List<CPCARTEntidad> lista = new List<CPCARTEntidad>();
             string cadena= "";
-            string consulta = @"SELECT [CP_CVANEXO],[CP_CCODIGO],[CP_CTIPDOC],[CP_CNUMDOC],[CP_CFECDOC],[CP_CFECVEN],[CP_CFECREC],[CP_CSITUAC],[CP_CFECCOM],[CP_CSUBDIA],[CP_CCOMPRO],[CP_CDEBHAB],[CP_CCODMON],[CP_NTIPCAM],[CP_NIMPOMN],[CP_NIMPOUS],[CP_NSALDMN],[CP_NSALDUS],[CP_NIGVMN],[CP_NIGVUS],[CP_NIMP2MN],[CP_NIMP2US],[CP_NIMPAJU],[CP_CCUENTA],[CP_CAREA],[CP_CFECUBI],[CP_CTDOCRE],[CP_CNDOCRE],[CP_CFDOCRE],[CP_CTDOCCO],[CP_DFECDOC] FROM [" + nombre_tabla+ "] where CP_CCODIGO=@p1 and CP_CTIPDOC=@p2 and CP_DFECDOC between @p3 and @p4 ";
+            string consulta = @"SELECT [CP_CVANEXO],[CP_CCODIGO],[CP_CTIPDOC],[CP_CNUMDOC],[CP_CFECDOC],[CP_CFECVEN],[CP_CFECREC],[CP_CSITUAC],[CP_CFECCOM],[CP_CSUBDIA],[CP_CCOMPRO],[CP_CDEBHAB],[CP_CCODMON],[CP_NTIPCAM],[CP_NIMPOMN],[CP_NIMPOUS],[CP_NSALDMN],[CP_NSALDUS],[CP_NIGVMN],[CP_NIGVUS],[CP_NIMP2MN],[CP_NIMP2US],[CP_NIMPAJU],[CP_CCUENTA],[CP_CAREA],[CP_CFECUBI],[CP_CTDOCRE],[CP_CNDOCRE],[CP_CFDOCRE],[CP_CTDOCCO],[CP_DFECDOC],[CP_DFECCOM] FROM [" + nombre_tabla+ "] where CP_CCODIGO=@p1 and CP_CTIPDOC=@p2 and CP_DFECDOC between @p3 and @p4 ";
 
             cadena+=consulta+ "-"+ nombre_tabla+"-"+ cod_proveedor+"-"+tipo_doc+"-"+ fecha_inicio+"-"+fecha_final;
             try
@@ -163,7 +163,8 @@ namespace SistemaReclutamiento.Models
                                     CP_CNDOCRE = ManejoNulos.ManageNullStr(dr["CP_CNDOCRE"]),
                                     CP_CFDOCRE = ManejoNulos.ManageNullStr(dr["CP_CFDOCRE"]),
                                     CP_CTDOCCO = ManejoNulos.ManageNullStr(dr["CP_CTDOCCO"]),
-                                    CP_DFECDOC=ManejoNulos.ManageNullDate(dr["CP_DFECDOC"])
+                                    CP_DFECDOC=ManejoNulos.ManageNullDate(dr["CP_DFECDOC"]),
+                                    CP_DFECCOM=ManejoNulos.ManageNullDate(dr["CP_DFECCOM"])
                                 };
 
                                 lista.Add(cartera);
