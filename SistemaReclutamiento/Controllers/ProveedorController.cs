@@ -362,7 +362,7 @@ namespace SistemaReclutamiento.Controllers
             ws.Cells["A6:I6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
             ws.Cells["A6:I6"].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
             ws.Cells["A6:I6"].Style.Font.Color.SetColor(Color.White);
-            int inicioFila = 7,inicioGrupo=0,finGrupo=0;
+            int fila = 7,inicioGrupo=0,finGrupo=0;
             foreach (var item in listaPagosporCompania)
             {
                 //Maestro
@@ -409,24 +409,24 @@ namespace SistemaReclutamiento.Controllers
                         estado = "PARCIAL";
                     }
                 }
-                ws.Cells[string.Format("A{0}", inicioFila)].Value = item.CP_CVANEXO;
-                ws.Cells[string.Format("B{0}", inicioFila)].Value = item.CP_CCODIGO;
-                ws.Cells[string.Format("C{0}", inicioFila)].Value = item.CP_CNUMDOC;
-                ws.Cells[string.Format("D{0}", inicioFila)].Value = fecha;
-                ws.Cells[string.Format("E{0}", inicioFila)].Value = moneda;
-                ws.Cells[string.Format("F{0}", inicioFila)].Value = importe;
-                ws.Cells[string.Format("G{0}", inicioFila)].Value = monto_pagado;
-                ws.Cells[string.Format("H{0}", inicioFila)].Value = saldo;
-                ws.Cells[string.Format("I{0}", inicioFila)].Value = estado;
-                ws.Cells[string.Format("A{0}:I{0}", inicioFila)].Style.Font.Bold = true;
-                inicioFila++;
+                ws.Cells[string.Format("A{0}", fila)].Value = item.CP_CVANEXO;
+                ws.Cells[string.Format("B{0}", fila)].Value = item.CP_CCODIGO;
+                ws.Cells[string.Format("C{0}", fila)].Value = item.CP_CNUMDOC;
+                ws.Cells[string.Format("D{0}", fila)].Value = fecha;
+                ws.Cells[string.Format("E{0}", fila)].Value = moneda;
+                ws.Cells[string.Format("F{0}", fila)].Value = importe;
+                ws.Cells[string.Format("G{0}", fila)].Value = monto_pagado;
+                ws.Cells[string.Format("H{0}", fila)].Value = saldo;
+                ws.Cells[string.Format("I{0}", fila)].Value = estado;
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Bold = true;
+                fila++;
                 
                 //Detalle
                 var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumento
                     (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim());
                 listapagosporDocumento = listapagosporDocumentotupla.lista;
                 if (listapagosporDocumento.Count > 0) {
-                    inicioGrupo = inicioFila;
+                    inicioGrupo = fila;
                     
                     //Cabeceras
                     ws.Cells[string.Format("B{0}", inicioGrupo)].Value = "Tipo Anexo";
@@ -441,7 +441,7 @@ namespace SistemaReclutamiento.Controllers
                     ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Fill.PatternType = ExcelFillStyle.Solid;
                     ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
                     ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Font.Color.SetColor(Color.White);
-                    inicioFila++;
+                    fila++;
                     //Datos
                     foreach (var detalle in listapagosporDocumento) {
                         DateTime fechapagodoc = ManejoNulos.ManageNullDate(detalle.PG_DFECCOM);
@@ -457,17 +457,17 @@ namespace SistemaReclutamiento.Controllers
                             monedadetalle = "Dolares";
                             importedetalle = detalle.PG_NIMPOUS;
                         }
-                        ws.Cells[string.Format("B{0}", inicioFila)].Value = detalle.PG_CVANEXO;
-                        ws.Cells[string.Format("C{0}", inicioFila)].Value = detalle.PG_CCODIGO;
-                        ws.Cells[string.Format("D{0}", inicioFila)].Value = detalle.PG_CTIPDOC;
-                        ws.Cells[string.Format("E{0}", inicioFila)].Value = detalle.PG_CNUMDOC;
-                        ws.Cells[string.Format("F{0}", inicioFila)].Value = monedadetalle;
-                        ws.Cells[string.Format("G{0}", inicioFila)].Value = importedetalle;
-                        ws.Cells[string.Format("H{0}", inicioFila)].Value = fechapago;
-                        ws.Cells[string.Format("I{0}", inicioFila)].Value = detalle.PG_CGLOSA;
-                        inicioFila++;
+                        ws.Cells[string.Format("B{0}", fila)].Value = detalle.PG_CVANEXO;
+                        ws.Cells[string.Format("C{0}", fila)].Value = detalle.PG_CCODIGO;
+                        ws.Cells[string.Format("D{0}", fila)].Value = detalle.PG_CTIPDOC;
+                        ws.Cells[string.Format("E{0}", fila)].Value = detalle.PG_CNUMDOC;
+                        ws.Cells[string.Format("F{0}", fila)].Value = monedadetalle;
+                        ws.Cells[string.Format("G{0}", fila)].Value = importedetalle;
+                        ws.Cells[string.Format("H{0}", fila)].Value = fechapago;
+                        ws.Cells[string.Format("I{0}", fila)].Value = detalle.PG_CGLOSA;
+                        fila++;
                     }
-                    finGrupo = inicioFila-1;
+                    finGrupo = fila-1;
                     for (var i = inicioGrupo; i <= finGrupo; i++) {
                         ws.Row(i).OutlineLevel = 1;
                         ws.Row(i).Collapsed = true;
@@ -475,7 +475,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 //Fin de Detalle
             }
-            //for (var i = 7; i <= inicioFila; i++)
+            //for (var i = 7; i <= fila; i++)
             //{
             //    ws.Row(i).OutlineLevel = 1;
             //    ws.Row(i).Collapsed = true;
