@@ -54,6 +54,7 @@
                 $("#fecha_inicio_excel").val($("#fecha_inicio").val());
                 $("#fecha_fin_excel").val($("#fecha_final").val());
                 $("#nombre_tabla_excel").val($("#cboCompania").val());
+                $("#btn_excel_mostrar").show();
                 if (!$().DataTable) {
                     console.warn('Advertencia - datatables.min.js no esta declarado.');
                     return;
