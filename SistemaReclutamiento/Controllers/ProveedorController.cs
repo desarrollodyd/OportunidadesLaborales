@@ -321,6 +321,10 @@ namespace SistemaReclutamiento.Controllers
             string nombretablapago = "CP" + nombre_tabla.Trim() + "PAGO";
             string tipo_doc = "FT";
             UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+            string nombreusuario = usuario.usu_nombre;
+            DateTime fechahoy = DateTime.Now;
+            string fechareporte = fechahoy.ToString("dd/MM/yyyy");
+            string nombredocumento = "ReportePagos_" + fechareporte;
             SQLModel sql = new SQLModel();
             var listaPagosporCompania = new List<CPCARTEntidad>();
 
@@ -348,7 +352,17 @@ namespace SistemaReclutamiento.Controllers
 
             ExcelPackage pck = new ExcelPackage();
             ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Reporte");
-
+            ws.Cells["A1"].Value = "Reporte de Pagos";
+            ws.Cells[string.Format("A1:B1")].Style.Font.Bold = true;
+            ws.Cells["A1"].Style.Font.Size = 20;
+            ws.Cells["A1"].Style.HorizontalAlignment=ExcelHorizontalAlignment.Center;
+            ws.Cells["A1:I1"].Merge = true;
+            ws.Cells["A3"].Value = "Usuario";
+            ws.Cells["B3"].Value = nombreusuario;
+            ws.Cells[string.Format("A3:B3")].Style.Font.Bold = true;
+            ws.Cells["A4"].Value = "Fecha";
+            ws.Cells["B4"].Value = fechareporte;
+            ws.Cells[string.Format("A4:B4")].Style.Font.Bold = true;
             ws.Cells["A6"].Value = "Tipo Anexo";
             ws.Cells["B6"].Value = "RUC";
             ws.Cells["C6"].Value = "Nro. Documento";
@@ -482,9 +496,12 @@ namespace SistemaReclutamiento.Controllers
             //}
 
             ws.Cells["A:AZ"].AutoFitColumns();
+
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", "attachment: filename=" + "ExcelReport.xlsx");
+            Response.AddHeader("content-disposition", string.Format("attachment;  filename={0}", nombredocumento+".xlsx"));
+            
+            //Response.AddHeader("content-disposition", "attachment: filename=" + nombredocumento+".xlsx");
             Response.BinaryWrite(pck.GetAsByteArray());
             Response.End();
         }
