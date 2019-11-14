@@ -487,7 +487,9 @@ function selectResponse(obj) {
                     text: mensaje,
                     type: "success"
                 });
+                
             }
+            CloseMessages();
         },
         complete: function () {
             //$.LoadingOverlay("hide");

@@ -433,6 +433,9 @@ namespace SistemaReclutamiento.Controllers
                 ws.Cells[string.Format("H{0}", fila)].Value = saldo;
                 ws.Cells[string.Format("I{0}", fila)].Value = estado;
                 ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Bold = true;
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Fill.PatternType = ExcelFillStyle.Gray125;
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Color.SetColor(Color.Black);
                 fila++;
                 
                 //Detalle
