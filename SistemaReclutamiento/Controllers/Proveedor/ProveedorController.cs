@@ -327,6 +327,12 @@ namespace SistemaReclutamiento.Controllers
             string nombredocumento = "ReportePagos_" + fechareporte;
             SQLModel sql = new SQLModel();
             var listaPagosporCompania = new List<CPCARTEntidad>();
+            decimal totalImporteSoles = 0,
+                  totalImporteDolares = 0,
+                  totalPagadoSoles = 0,
+                  totalPagadoDolares = 0,
+                  totalSaldoSoles = 0,
+                  totalSaldoDolares = 0;
 
             //Variables para Detalle
             var listapagosporDocumento = new List<CPPAGOEntidad>();
@@ -344,39 +350,59 @@ namespace SistemaReclutamiento.Controllers
                         var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
                         m.subtotalSoles = subtotaltupla.subtotalSoles;
                         m.subtotalDolares = subtotaltupla.subtotalDolares;
+                        if (m.CP_CCODMON.Equals("MN"))
+                        {
+                            totalPagadoSoles += subtotaltupla.subtotalSoles;
+                            totalImporteSoles += m.CP_NIMPOMN;
+                        }
+                        else {
+                            totalPagadoDolares += subtotaltupla.subtotalDolares;
+                            totalImporteDolares += m.CP_NIMPOUS;
+                        }
                     }
                 }
             }
-          
-
-
+            totalSaldoSoles = totalImporteSoles - totalPagadoSoles;
+            totalSaldoDolares = totalImporteDolares - totalPagadoDolares;
             ExcelPackage pck = new ExcelPackage();
             ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Reporte");
-            ws.Cells["A1"].Value = "Reporte de Pagos";
-            ws.Cells[string.Format("A1:B1")].Style.Font.Bold = true;
-            ws.Cells["A1"].Style.Font.Size = 20;
-            ws.Cells["A1"].Style.HorizontalAlignment=ExcelHorizontalAlignment.Center;
-            ws.Cells["A1:I1"].Merge = true;
-            ws.Cells["A3"].Value = "Usuario";
-            ws.Cells["B3"].Value = nombreusuario;
-            ws.Cells[string.Format("A3:B3")].Style.Font.Bold = true;
-            ws.Cells["A4"].Value = "Fecha";
+            ws.Cells["B1"].Value = "Reporte de Pagos";
+            ws.Cells["B1:C1"].Style.Font.Bold = true;
+            
+            ws.Cells["B1"].Style.Font.Size = 20;
+            ws.Cells["B1"].Style.HorizontalAlignment=ExcelHorizontalAlignment.Center;
+            ws.Cells["B1:J1"].Merge = true;
+            ws.Cells["B1:J1"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            ws.Cells["B3"].Value = "Usuario";
+            ws.Cells["B3"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            ws.Cells["C3"].Value = nombreusuario;
+            ws.Cells["C3"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            ws.Cells["B3:C3"].Style.Font.Bold = true;
+
+            ws.Cells["B4"].Value = "Fecha";
+            ws.Cells["B4"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             ws.Cells["B4"].Value = fechareporte;
-            ws.Cells[string.Format("A4:B4")].Style.Font.Bold = true;
-            ws.Cells["A6"].Value = "Tipo Anexo";
-            ws.Cells["B6"].Value = "RUC";
-            ws.Cells["C6"].Value = "Nro. Documento";
-            ws.Cells["D6"].Value = "Fecha Documento";
-            ws.Cells["E6"].Value = "Moneda";
-            ws.Cells["F6"].Value = "Importe";
-            ws.Cells["G6"].Value = "Monto Pagado";
-            ws.Cells["H6"].Value = "Saldo";
-            ws.Cells["I6"].Value = "Estado";
-            ws.Cells["A6:I6"].Style.Font.Bold = true;
-            ws.Cells["A6:I6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            ws.Cells["A6:I6"].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
-            ws.Cells["A6:I6"].Style.Font.Color.SetColor(Color.White);
+            ws.Cells["B4"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            ws.Cells["B4:C4"].Style.Font.Bold = true;
+
+            ws.Cells["B6"].Value = "Tipo Anexo";
+            ws.Cells["C6"].Value = "RUC";
+            ws.Cells["D6"].Value = "Nro. Documento";
+            ws.Cells["E6"].Value = "Fecha Documento";
+            ws.Cells["F6"].Value = "Moneda";
+            ws.Cells["G6"].Value = "Importe";
+            ws.Cells["H6"].Value = "Monto Pagado";
+            ws.Cells["I6"].Value = "Saldo";
+            ws.Cells["J6"].Value = "Estado";
+
+            ws.Cells["B6:J6"].Style.Font.Bold = true;
+            ws.Cells["B6:J6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            ws.Cells["B6:J6"].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
+            ws.Cells["B6:J6"].Style.Font.Color.SetColor(Color.White);
+            ws.Cells["B6:J6"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             int fila = 7,inicioGrupo=0,finGrupo=0;
+          
             foreach (var item in listaPagosporCompania)
             {
                 //Maestro
@@ -423,44 +449,47 @@ namespace SistemaReclutamiento.Controllers
                         estado = "PARCIAL";
                     }
                 }
-                ws.Cells[string.Format("A{0}", fila)].Value = item.CP_CVANEXO;
-                ws.Cells[string.Format("B{0}", fila)].Value = item.CP_CCODIGO;
-                ws.Cells[string.Format("C{0}", fila)].Value = item.CP_CNUMDOC;
-                ws.Cells[string.Format("D{0}", fila)].Value = fecha;
-                ws.Cells[string.Format("E{0}", fila)].Value = moneda;
-                ws.Cells[string.Format("F{0}", fila)].Value = importe;
-                ws.Cells[string.Format("G{0}", fila)].Value = monto_pagado;
-                ws.Cells[string.Format("H{0}", fila)].Value = saldo;
-                ws.Cells[string.Format("I{0}", fila)].Value = estado;
-                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Bold = true;
-                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Fill.PatternType = ExcelFillStyle.Gray125;
-                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Color.SetColor(Color.Black);
+                ws.Cells[string.Format("B{0}", fila)].Value = item.CP_CVANEXO;
+                ws.Cells[string.Format("C{0}", fila)].Value = item.CP_CCODIGO;
+                ws.Cells[string.Format("D{0}", fila)].Value = item.CP_CNUMDOC;
+                ws.Cells[string.Format("E{0}", fila)].Value = fecha;
+                ws.Cells[string.Format("F{0}", fila)].Value = moneda;
+                ws.Cells[string.Format("G{0}", fila)].Value = importe;
+                ws.Cells[string.Format("H{0}", fila)].Value = monto_pagado;
+                ws.Cells[string.Format("I{0}", fila)].Value = saldo;
+                ws.Cells[string.Format("J{0}", fila)].Value = estado;
+                ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Font.Bold = true;
+                ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Fill.PatternType = ExcelFillStyle.Gray125;
+                ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
+                ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Font.Color.SetColor(Color.Black);
+                ws.Cells[string.Format("B{0}:J{0}",fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 fila++;
                 
                 //Detalle
                 var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumento
                     (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim());
                 listapagosporDocumento = listapagosporDocumentotupla.lista;
-                if (listapagosporDocumento.Count > 0) {
+                if (listapagosporDocumento.Count > 0)
+                {
                     inicioGrupo = fila;
-                    
+
                     //Cabeceras
-                    ws.Cells[string.Format("B{0}", inicioGrupo)].Value = "Tipo Anexo";
-                    ws.Cells[string.Format("C{0}", inicioGrupo)].Value = "RUC";
-                    ws.Cells[string.Format("D{0}", inicioGrupo)].Value = "Tipo Documento";
-                    ws.Cells[string.Format("E{0}", inicioGrupo)].Value = "Nro Documento";
-                    ws.Cells[string.Format("F{0}", inicioGrupo)].Value = "Moneda";
-                    ws.Cells[string.Format("G{0}", inicioGrupo)].Value = "Importe";
-                    ws.Cells[string.Format("H{0}", inicioGrupo)].Value = "Fecha";
-                    ws.Cells[string.Format("I{0}", inicioGrupo)].Value = "Glosa";
-                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Font.Bold = true;
-                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Font.Color.SetColor(Color.White);
+                    ws.Cells[string.Format("C{0}", inicioGrupo)].Value = "Tipo Anexo";
+                    ws.Cells[string.Format("D{0}", inicioGrupo)].Value = "RUC";
+                    ws.Cells[string.Format("E{0}", inicioGrupo)].Value = "Tipo Documento";
+                    ws.Cells[string.Format("F{0}", inicioGrupo)].Value = "Nro Documento";
+                    ws.Cells[string.Format("G{0}", inicioGrupo)].Value = "Moneda";
+                    ws.Cells[string.Format("H{0}", inicioGrupo)].Value = "Importe";
+                    ws.Cells[string.Format("I{0}", inicioGrupo)].Value = "Fecha";
+                    ws.Cells[string.Format("J{0}", inicioGrupo)].Value = "Glosa";
+                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Font.Bold = true;
+                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Font.Color.SetColor(Color.White);
                     fila++;
                     //Datos
-                    foreach (var detalle in listapagosporDocumento) {
+                    foreach (var detalle in listapagosporDocumento)
+                    {
                         DateTime fechapagodoc = ManejoNulos.ManageNullDate(detalle.PG_DFECCOM);
                         string fechapago = fechapagodoc.ToString("dd/MM/yyyy");
                         string monedadetalle = "";
@@ -470,36 +499,84 @@ namespace SistemaReclutamiento.Controllers
                             monedadetalle = "Soles";
                             importedetalle = detalle.PG_NIMPOMN;
                         }
-                        else {
+                        else
+                        {
                             monedadetalle = "Dolares";
                             importedetalle = detalle.PG_NIMPOUS;
                         }
-                        ws.Cells[string.Format("B{0}", fila)].Value = detalle.PG_CVANEXO;
-                        ws.Cells[string.Format("C{0}", fila)].Value = detalle.PG_CCODIGO;
-                        ws.Cells[string.Format("D{0}", fila)].Value = detalle.PG_CTIPDOC;
-                        ws.Cells[string.Format("E{0}", fila)].Value = detalle.PG_CNUMDOC;
-                        ws.Cells[string.Format("F{0}", fila)].Value = monedadetalle;
-                        ws.Cells[string.Format("G{0}", fila)].Value = importedetalle;
-                        ws.Cells[string.Format("H{0}", fila)].Value = fechapago;
-                        ws.Cells[string.Format("I{0}", fila)].Value = detalle.PG_CGLOSA;
+                        ws.Cells[string.Format("C{0}", fila)].Value = detalle.PG_CVANEXO;
+                        ws.Cells[string.Format("D{0}", fila)].Value = detalle.PG_CCODIGO;
+                        ws.Cells[string.Format("E{0}", fila)].Value = detalle.PG_CTIPDOC;
+                        ws.Cells[string.Format("F{0}", fila)].Value = detalle.PG_CNUMDOC;
+                        ws.Cells[string.Format("G{0}", fila)].Value = monedadetalle;
+                        ws.Cells[string.Format("H{0}", fila)].Value = importedetalle;
+                        ws.Cells[string.Format("I{0}", fila)].Value = fechapago;
+                        ws.Cells[string.Format("J{0}", fila)].Value = detalle.PG_CGLOSA;
                         fila++;
                     }
-                    finGrupo = fila-1;
-                    for (var i = inicioGrupo; i <= finGrupo; i++) {
+                    //Agregar una fila extra en el detalle para que no se confundan con el collapse
+                    fila++;
+                    finGrupo = fila - 1;
+                    for (var i = inicioGrupo; i <= finGrupo; i++)
+                    {
                         ws.Row(i).OutlineLevel = 1;
                         ws.Row(i).Collapsed = true;
                     }
+                 
+                }
+                else {
+                    ws.Cells[string.Format("C{0}", fila)].Value = "No se encontro pagos para este documento";
+                    ws.Cells[string.Format("C{0}:J{0}", fila)].Style.Font.Bold = true;
+                    ws.Cells[string.Format("C{0}", fila)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    ws.Cells[string.Format("C{0}:J{0}", fila)].Merge = true;
+                    ws.Row(fila).OutlineLevel = 1;
+                    ws.Row(fila).Collapsed = true;
+                    //Agregar una fila extra en el detalle para que no se confundan con el collapse
+                    fila++;
+                    ws.Row(fila).OutlineLevel = 1;
+                    ws.Row(fila).Collapsed = true;
+                    
+                    fila++;
                 }
                 //Fin de Detalle
             }
-            //for (var i = 7; i <= fila; i++)
-            //{
-            //    ws.Row(i).OutlineLevel = 1;
-            //    ws.Row(i).Collapsed = true;
-            //}
+            fila++;
+            ws.Cells[string.Format("G{0}", fila)].Value = "Total en Pagos";
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Font.Bold = true;
+
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Font.Size = 14;
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Merge = true;
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            fila++;
+            //Cabecera Total Final
+            ws.Cells[string.Format("G{0}", fila)].Value = "Importe";
+            ws.Cells[string.Format("H{0}", fila)].Value = "Monto Pagado";
+            ws.Cells[string.Format("I{0}", fila)].Value = "Saldo";
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Font.Bold = true;
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Fill.PatternType=ExcelFillStyle.Solid;
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Font.Color.SetColor(Color.White);
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+         
+            fila++;
+            //Soles
+            ws.Cells[string.Format("F{0}", fila)].Value = "Total Soles";
+            ws.Cells[string.Format("G{0}", fila)].Value = totalImporteSoles;
+            ws.Cells[string.Format("H{0}", fila)].Value = totalPagadoSoles;
+            ws.Cells[string.Format("I{0}", fila)].Value = totalSaldoSoles;
+            ws.Cells[string.Format("F{0}:I{0}", fila)].Style.Font.Bold = true;
+            ws.Cells[string.Format("F{0}:I{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            fila++;
+            //Dolares
+            ws.Cells[string.Format("F{0}", fila)].Value = "Total Dolares";
+            ws.Cells[string.Format("G{0}", fila)].Value = totalImporteDolares;
+            ws.Cells[string.Format("H{0}", fila)].Value = totalPagadoDolares;
+            ws.Cells[string.Format("I{0}", fila)].Value = totalSaldoDolares;
+            ws.Cells[string.Format("F{0}:I{0}", fila)].Style.Font.Bold = true;
+            ws.Cells[string.Format("F{0}:I{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
             ws.Cells["A:AZ"].AutoFitColumns();
-
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", string.Format("attachment;  filename={0}", nombredocumento+".xlsx"));
