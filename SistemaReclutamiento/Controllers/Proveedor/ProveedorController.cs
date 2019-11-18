@@ -1,10 +1,13 @@
-﻿using SistemaReclutamiento.Entidades;
+﻿using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.Proveedor;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.Proveedor;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -238,6 +241,7 @@ namespace SistemaReclutamiento.Controllers
         {
             //yyyy - MM - dd HH':'mm':'ss
             bool respuesta = false;
+            string cadena = "";
             var errormensaje = "";
             string nombretabla = "CP" + cboCompania + "CART";
             string nombretablapago = "CP" + cboCompania + "PAGO";
@@ -247,22 +251,35 @@ namespace SistemaReclutamiento.Controllers
             var lista = new List<CPCARTEntidad>();
             try
             {
-                lista = sql.CPCARTListarPagosPorCompania(nombretabla,usuario.usu_nombre,tipo_doc,fecha_inicio,fecha_final);
-                if (lista.Count > 0) {
-                    foreach (var m in lista) {
-                        var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
-                        m.subtotalSoles = subtotaltupla.subtotalSoles ;
-                        m.subtotalDolares = subtotaltupla.subtotalDolares;
+                var listatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_final);
+                lista = listatupla.lista;
+                cadena = listatupla.cadena;
+                var errorlista= listatupla.error;
+                if (errorlista.Key.Equals(string.Empty))
+                {
+                    if (lista.Count > 0)
+                    {
+                        foreach (var m in lista)
+                        {
+                            var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
+                            m.subtotalSoles = subtotaltupla.subtotalSoles;
+                            m.subtotalDolares = subtotaltupla.subtotalDolares;
+                        }
                     }
+                    errormensaje = "Cargando Data ...";
+                    respuesta = true;
                 }
-                errormensaje = "Cargando Data ...";
-                respuesta = true;
+                else {
+                    errormensaje = errorlista.Value;
+                    respuesta = false;
+                }
+                
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
+            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje, cadena=cadena });
         }
         public ActionResult ListarPagosporNumeroDocumentoJson(string num_doc, string nombre_tabla)
         {
@@ -276,15 +293,220 @@ namespace SistemaReclutamiento.Controllers
             var lista = new List<CPPAGOEntidad>();
             try
             {
-                lista = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla,usuario.usu_nombre,tipo_doc,num_doc.Trim());
-                errormensaje = "Cargando Data ...";
-                respuesta = true;
+                var listatupla = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim());
+                lista = listatupla.lista;
+                var errorlista = listatupla.error;
+                if (errorlista.Key.Equals(string.Empty))
+                {
+                    errormensaje = "Cargando Data ...";
+                    respuesta = true;
+                }
+                else {
+                    errormensaje = errorlista.Value;
+                    respuesta = false;
+                }
+                
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
+        }
+
+        public void ReportePagosExportarExcel(string nombre_tabla, string fecha_inicio, string fecha_fin) {
+
+
+            string nombretabla = "CP" + nombre_tabla.Trim() + "CART";
+            string nombretablapago = "CP" + nombre_tabla.Trim() + "PAGO";
+            string tipo_doc = "FT";
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+            string nombreusuario = usuario.usu_nombre;
+            DateTime fechahoy = DateTime.Now;
+            string fechareporte = fechahoy.ToString("dd/MM/yyyy");
+            string nombredocumento = "ReportePagos_" + fechareporte;
+            SQLModel sql = new SQLModel();
+            var listaPagosporCompania = new List<CPCARTEntidad>();
+
+            //Variables para Detalle
+            var listapagosporDocumento = new List<CPPAGOEntidad>();
+            //Fin
+
+            var listatuplapagosporcompaniatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_fin);
+            listaPagosporCompania = listatuplapagosporcompaniatupla.lista;
+            var errorlista = listatuplapagosporcompaniatupla.error;
+            if (errorlista.Key.Equals(string.Empty))
+            {
+                if (listaPagosporCompania.Count > 0)
+                {
+                    foreach (var m in listaPagosporCompania)
+                    {
+                        var subtotaltupla = sql.ObtenerSubtotalporNumeroDocumento(nombretablapago, m.CP_CNUMDOC, m.CP_CTIPDOC, usuario.usu_nombre);
+                        m.subtotalSoles = subtotaltupla.subtotalSoles;
+                        m.subtotalDolares = subtotaltupla.subtotalDolares;
+                    }
+                }
+            }
+          
+
+
+            ExcelPackage pck = new ExcelPackage();
+            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Reporte");
+            ws.Cells["A1"].Value = "Reporte de Pagos";
+            ws.Cells[string.Format("A1:B1")].Style.Font.Bold = true;
+            ws.Cells["A1"].Style.Font.Size = 20;
+            ws.Cells["A1"].Style.HorizontalAlignment=ExcelHorizontalAlignment.Center;
+            ws.Cells["A1:I1"].Merge = true;
+            ws.Cells["A3"].Value = "Usuario";
+            ws.Cells["B3"].Value = nombreusuario;
+            ws.Cells[string.Format("A3:B3")].Style.Font.Bold = true;
+            ws.Cells["A4"].Value = "Fecha";
+            ws.Cells["B4"].Value = fechareporte;
+            ws.Cells[string.Format("A4:B4")].Style.Font.Bold = true;
+            ws.Cells["A6"].Value = "Tipo Anexo";
+            ws.Cells["B6"].Value = "RUC";
+            ws.Cells["C6"].Value = "Nro. Documento";
+            ws.Cells["D6"].Value = "Fecha Documento";
+            ws.Cells["E6"].Value = "Moneda";
+            ws.Cells["F6"].Value = "Importe";
+            ws.Cells["G6"].Value = "Monto Pagado";
+            ws.Cells["H6"].Value = "Saldo";
+            ws.Cells["I6"].Value = "Estado";
+            ws.Cells["A6:I6"].Style.Font.Bold = true;
+            ws.Cells["A6:I6"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            ws.Cells["A6:I6"].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
+            ws.Cells["A6:I6"].Style.Font.Color.SetColor(Color.White);
+            int fila = 7,inicioGrupo=0,finGrupo=0;
+            foreach (var item in listaPagosporCompania)
+            {
+                //Maestro
+                DateTime fechadoc = ManejoNulos.ManageNullDate(item.CP_DFECDOC);
+                string fecha = fechadoc.ToString("dd/MM/yyyy");
+                string moneda = "", estado="";
+                decimal subtotalsoles = item.subtotalSoles;
+                decimal subtotaldolares = item.subtotalDolares;
+                decimal importe = 0, monto_pagado=0,saldo=0;
+                if (item.CP_CCODMON.Equals("MN"))
+                {
+                    moneda = "Soles";
+                    importe = item.CP_NIMPOMN;
+                    monto_pagado = subtotalsoles;
+                    saldo = importe - subtotalsoles;
+                    if (subtotalsoles == importe)
+                    {
+                        estado = "PAGADO";
+                    }
+                    else if (subtotalsoles == 0)
+                    {
+                        estado = "PENDIENTE";
+                    }
+                    else if (subtotalsoles != 0 && subtotalsoles < importe)
+                    {
+                        estado = "PARCIAL";
+                    }
+                }
+                else {
+                    moneda = "Dolares";
+                    importe = item.CP_NIMPOUS;
+                    monto_pagado = subtotaldolares;
+                    saldo = importe - subtotaldolares;
+                    if (subtotaldolares == importe)
+                    {
+                        estado = "PAGADO";
+                    }
+                    else if (subtotaldolares == 0)
+                    {
+                        estado = "PENDIENTE";
+                    }
+                    else if (subtotaldolares != 0 && subtotaldolares < importe)
+                    {
+                        estado = "PARCIAL";
+                    }
+                }
+                ws.Cells[string.Format("A{0}", fila)].Value = item.CP_CVANEXO;
+                ws.Cells[string.Format("B{0}", fila)].Value = item.CP_CCODIGO;
+                ws.Cells[string.Format("C{0}", fila)].Value = item.CP_CNUMDOC;
+                ws.Cells[string.Format("D{0}", fila)].Value = fecha;
+                ws.Cells[string.Format("E{0}", fila)].Value = moneda;
+                ws.Cells[string.Format("F{0}", fila)].Value = importe;
+                ws.Cells[string.Format("G{0}", fila)].Value = monto_pagado;
+                ws.Cells[string.Format("H{0}", fila)].Value = saldo;
+                ws.Cells[string.Format("I{0}", fila)].Value = estado;
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Bold = true;
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Fill.PatternType = ExcelFillStyle.Gray125;
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+                ws.Cells[string.Format("A{0}:I{0}", fila)].Style.Font.Color.SetColor(Color.Black);
+                fila++;
+                
+                //Detalle
+                var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumento
+                    (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim());
+                listapagosporDocumento = listapagosporDocumentotupla.lista;
+                if (listapagosporDocumento.Count > 0) {
+                    inicioGrupo = fila;
+                    
+                    //Cabeceras
+                    ws.Cells[string.Format("B{0}", inicioGrupo)].Value = "Tipo Anexo";
+                    ws.Cells[string.Format("C{0}", inicioGrupo)].Value = "RUC";
+                    ws.Cells[string.Format("D{0}", inicioGrupo)].Value = "Tipo Documento";
+                    ws.Cells[string.Format("E{0}", inicioGrupo)].Value = "Nro Documento";
+                    ws.Cells[string.Format("F{0}", inicioGrupo)].Value = "Moneda";
+                    ws.Cells[string.Format("G{0}", inicioGrupo)].Value = "Importe";
+                    ws.Cells[string.Format("H{0}", inicioGrupo)].Value = "Fecha";
+                    ws.Cells[string.Format("I{0}", inicioGrupo)].Value = "Glosa";
+                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Font.Bold = true;
+                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                    ws.Cells[string.Format("B{0}:I{0}", inicioGrupo)].Style.Font.Color.SetColor(Color.White);
+                    fila++;
+                    //Datos
+                    foreach (var detalle in listapagosporDocumento) {
+                        DateTime fechapagodoc = ManejoNulos.ManageNullDate(detalle.PG_DFECCOM);
+                        string fechapago = fechapagodoc.ToString("dd/MM/yyyy");
+                        string monedadetalle = "";
+                        decimal importedetalle = 0;
+                        if (detalle.PG_CCODMON.Equals("MN"))
+                        {
+                            monedadetalle = "Soles";
+                            importedetalle = detalle.PG_NIMPOMN;
+                        }
+                        else {
+                            monedadetalle = "Dolares";
+                            importedetalle = detalle.PG_NIMPOUS;
+                        }
+                        ws.Cells[string.Format("B{0}", fila)].Value = detalle.PG_CVANEXO;
+                        ws.Cells[string.Format("C{0}", fila)].Value = detalle.PG_CCODIGO;
+                        ws.Cells[string.Format("D{0}", fila)].Value = detalle.PG_CTIPDOC;
+                        ws.Cells[string.Format("E{0}", fila)].Value = detalle.PG_CNUMDOC;
+                        ws.Cells[string.Format("F{0}", fila)].Value = monedadetalle;
+                        ws.Cells[string.Format("G{0}", fila)].Value = importedetalle;
+                        ws.Cells[string.Format("H{0}", fila)].Value = fechapago;
+                        ws.Cells[string.Format("I{0}", fila)].Value = detalle.PG_CGLOSA;
+                        fila++;
+                    }
+                    finGrupo = fila-1;
+                    for (var i = inicioGrupo; i <= finGrupo; i++) {
+                        ws.Row(i).OutlineLevel = 1;
+                        ws.Row(i).Collapsed = true;
+                    }
+                }
+                //Fin de Detalle
+            }
+            //for (var i = 7; i <= fila; i++)
+            //{
+            //    ws.Row(i).OutlineLevel = 1;
+            //    ws.Row(i).Collapsed = true;
+            //}
+
+            ws.Cells["A:AZ"].AutoFitColumns();
+
+            Response.Clear();
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", string.Format("attachment;  filename={0}", nombredocumento+".xlsx"));
+            
+            //Response.AddHeader("content-disposition", "attachment: filename=" + nombredocumento+".xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
         }
         #endregion
         //public ActionResult Index()

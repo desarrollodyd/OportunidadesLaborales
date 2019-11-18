@@ -45,10 +45,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.3.2, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.2\lib\net40\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Npgsql, Version=4.0.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.0.7\lib\net451\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
@@ -62,6 +66,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -3643,6 +3648,7 @@
     <Content Include="Content\viewjs\Desarrollo\CrearSubMenusJs.js" />
     <Content Include="Content\viewjs\Desarrollo\PanelPrincipal.js" />
     <Content Include="Content\viewjs\general.js" />
+    <Content Include="Content\viewjs\generalIntranetPJ.js" />
     <Content Include="Content\viewjs\generalProveedor.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
@@ -4570,20 +4576,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\EducacionBasicaController.cs" />
-    <Compile Include="Controllers\EducacionSuperiorController.cs" />
-    <Compile Include="Controllers\EstIdiomaController.cs" />
-    <Compile Include="Controllers\ExperienciaController.cs" />
+    <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
+    <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
+    <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
+    <Compile Include="Controllers\Postulante\ExperienciaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IdiomaController.cs" />
+    <Compile Include="Controllers\Postulante\IdiomaController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetPjAdminController.cs" />
+    <Compile Include="Controllers\IntranetPJ\IntranetPJController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\OfertaLaboralController.cs" />
-    <Compile Include="Controllers\OfimaticaController.cs" />
-    <Compile Include="Controllers\EstOfimaticaController.cs" />
+    <Compile Include="Controllers\Postulante\OfertaLaboralController.cs" />
+    <Compile Include="Controllers\Postulante\OfimaticaController.cs" />
+    <Compile Include="Controllers\Postulante\EstOfimaticaController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
-    <Compile Include="Controllers\PostgradoController.cs" />
-    <Compile Include="Controllers\PostulanteController.cs" />
-    <Compile Include="Controllers\ProveedorController.cs" />
+    <Compile Include="Controllers\Postulante\PostgradoController.cs" />
+    <Compile Include="Controllers\Postulante\PostulanteController.cs" />
+    <Compile Include="Controllers\Proveedor\ProveedorController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
@@ -4619,7 +4627,6 @@
     <Compile Include="Entidades\UbigeoEntidad.cs" />
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
-    <Compile Include="Entidades\WebCorporativa\LocalEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4651,7 +4658,6 @@
     <Compile Include="Models\Proveedor\SubMenuModel.cs" />
     <Compile Include="Models\UbigeoModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
-    <Compile Include="Models\WebCorporativa\LocalModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
@@ -4696,6 +4702,10 @@
     <Content Include="Views\Login\ValidarProveedorIndex.cshtml" />
     <Content Include="Views\Super\CrearMenusView.cshtml" />
     <Content Include="Views\Super\CrearSubmenusView.cshtml" />
+    <Content Include="Views\Shared\_LayoutIntranetPJ.cshtml" />
+    <Content Include="Views\IntranetPJ\IntranetPJIndex.cshtml" />
+    <Content Include="Views\Shared\_LayoutIntranetPJAdmin.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJAdminIndex.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4708,7 +4718,9 @@
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="Entidades\IntranetPJ\" />
     <Folder Include="log\" />
+    <Folder Include="Models\IntranetPJ\" />
     <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>

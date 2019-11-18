@@ -2,16 +2,25 @@
     var total_menus = 0;
     //var lista_unchecked_menus = [];
     var _inicio = function () {
+      
+        var hoy = new Date();
+        var ayer = new Date(hoy.getTime() - 24 * 60 * 60 * 1000);
+        var fecha_hoy = moment(hoy).format('YYYY-MM-DD');
+        var fecha_ayer = moment(ayer).format('YYYY-MM-DD');
+        $("#fecha_final").val(fecha_hoy);
+        $("#fecha_inicio").val(fecha_ayer);
         $('#myDatepicker1').datetimepicker({
             format: 'YYYY-MM-DD',
             ignoreReadonly: true,
-            allowInputToggle: true
+            allowInputToggle: true,
+            
         });
         $('#myDatepicker2').datetimepicker({
             format: 'YYYY-MM-DD',
             ignoreReadonly: true,
             allowInputToggle: true,
-            useCurrent: false
+            useCurrent: false,
+           
         });
         selectResponse({
             url: "Proveedor/MesaPartesListarCompaniasJson",
@@ -24,6 +33,13 @@
         });
     };
     var _componentes = function () {
+        $(document).on('click', ".btn_excel", function (e) {
+            var fecha_inicio=$("#fecha_inicio_excel").val();
+            var fecha_fin=$("#fecha_fin_excel").val();
+            var nombre_tabla = $("#nombre_tabla_excel").val();
+            ///Listing/%20GetByList?name=John&contact=calgary%2C%20vancouver
+            window.location.href = basePath + "Proveedor/ReportePagosExportarExcel?fecha_inicio=" + fecha_inicio + "&fecha_fin=" + fecha_fin + "&nombre_tabla=" + nombre_tabla;
+        });
         $("#myDatepicker1").on("dp.change", function (e) {
             $('#myDatepicker2').data("DateTimePicker").minDate(e.date);
         });
@@ -35,7 +51,10 @@
             if (_objetoForm_frmReportePagos.valid()) {
                 var nombre_tabla = $("#cboCompania").val();
                 var dataForm = $('#frmReportePagos-form').serializeFormJSON();
-
+                $("#fecha_inicio_excel").val($("#fecha_inicio").val());
+                $("#fecha_fin_excel").val($("#fecha_final").val());
+                $("#nombre_tabla_excel").val($("#cboCompania").val());
+                $("#btn_excel_mostrar").show();
                 if (!$().DataTable) {
                     console.warn('Advertencia - datatables.min.js no esta declarado.');
                     return;
@@ -168,13 +187,10 @@
                                         mensaje_estado = "PARCIAL";
                                     }
                                 }
-                              
                                 var span = '<span class="label label-' + estado + '">' + mensaje_estado + '</span>';
                                 return span;
                             }
                         },
-                     
-
                         {
                             data: 'CP_CNUMDOC',
                             title: "Acciones",
@@ -227,6 +243,9 @@
                 tableNameVariable: "detalle",
                 tableHeaderCheck: false,
                 table: "#table-detalle",
+                columnDefs: [
+                    { className: 'text-center', targets: [6] },
+                ],
                 tableColumns: [
                     {
                         data: "PG_CVANEXO",
@@ -271,6 +290,14 @@
                         }
                     },
                     {
+                        data: "PG_DFECCOM",
+                        title: "Fecha de Pago",
+                        "render": function (value) {
+                            var span = '<span>' + moment(value).format("DD/MM/YYYY") + '</span>';
+                            return span;
+                        }
+                    },
+                    {
                         data: "PG_CGLOSA",
                         title: "GLOSA"
                     }
@@ -294,6 +321,9 @@
             
         });
     };
+    $(document).on("click", ".btn_cancelar", function (e) {
+        _objetoForm_frmReportePagos.resetForm();
+    });
     var _metodos = function () {
         validar_Form({
             nameVariable: 'frmReportePagos',
@@ -301,37 +331,32 @@
             rules: {
                 fecha_final:
                 {
-                    required: true,
-
+                    required: true
                 },
                 fecha_inicio:
                 {
-                    required: true,
-
+                    required: true
                 },
                 cboCompania:
                 {
-                    required: true,
-
+                    required: true
                 }
-
             },
             messages: {
                 fecha_final:
                 {
-                    required: 'Campo Obligatorio',
+                    required: 'Campo Obligatorio'
                 },
                 fecha_inicio:
                 {
-                    required: 'Campo Obligatorio',
+                    required: 'Campo Obligatorio'
                 },
                 cboCompania:
                 {
-                    required: 'Campo Obligatorio',
+                    required: 'Campo Obligatorio'
                 },
             }
         });
-
     };
     return {
         init: function () {

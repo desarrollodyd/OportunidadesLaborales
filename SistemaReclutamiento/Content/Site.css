@@ -6,7 +6,7 @@ label.validation-invalid-label {
     color: #fff;
     position: absolute !important;
     border-radius: 5px;
-    z-index: 2;
+    z-index: 3;
     padding-top: 2px;
     padding-left: 1.625rem;
     padding-bottom: 1px;
@@ -21,7 +21,7 @@ label.validation-valid-label {
     color: #fff;
     position: absolute !important;
     border-radius: 5px;
-    z-index: 2;
+    z-index: 3;
     padding-top: 2px;
     padding-left: 1.625rem;
     padding-bottom: 1px;

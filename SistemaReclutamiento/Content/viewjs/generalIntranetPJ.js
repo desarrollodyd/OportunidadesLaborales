@@ -487,9 +487,7 @@ function selectResponse(obj) {
                     text: mensaje,
                     type: "success"
                 });
-                
             }
-            CloseMessages();
         },
         complete: function () {
             //$.LoadingOverlay("hide");
@@ -644,7 +642,6 @@ function simpleDataTable(obj) {
         table: "table",
         tableColumnsData: [],
         tableColumns: [],
-        columnDefs: [],
         tablePaging: true,
         tableOrdering: true,
         tableInfo: true,
@@ -667,7 +664,6 @@ function simpleDataTable(obj) {
         "lengthChange": opciones.tableLengthChange,
         data: opciones.tableColumnsData,
         columns: opciones.tableColumns,
-        columnDefs: opciones.columnDefs,
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
@@ -714,7 +710,6 @@ function simpleAjaxDataTable(obj) {
         },
         success: function (response) {
             opciones.tableColumnsData = response.data;
-            console.log(response);
             simpleDataTable(opciones);
         },
         error: function (xmlHttpRequest, textStatus, errorThrow) {

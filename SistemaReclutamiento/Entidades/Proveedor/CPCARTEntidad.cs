@@ -40,5 +40,6 @@ namespace SistemaReclutamiento.Entidades.Proveedor
         public DateTime CP_DFECDOC { get; set; }
         public decimal subtotalSoles { get; set; }
         public decimal subtotalDolares { get; set; }
+        public DateTime CP_DFECCOM { get; set; }
     }
 }

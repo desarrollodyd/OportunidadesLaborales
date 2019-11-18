@@ -1,26 +1,26 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @using SistemaReclutamiento.Utilitarios;
-@{
+@*@{
     int usu_id = 0;
     int fk_persona = 0;
     string usu_nombre = "";
     string encriptado = "";
 
-    if (Session["usu_proveedor"] == null || Session["per_proveedor"] == null)
+    if (Session["usu_full"] == null || Session["per_full"] == null || Session["postulante"] == null)
     {
-        Response.Redirect("~/Login/ProveedorIndex");
+        Response.Redirect("~/");
     }
     else
     {
-        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
 
         usu_id = usuario.usu_id;
         usu_nombre = usuario.usu_nombre;
         fk_persona = usuario.fk_persona;
         encriptado = Seguridad.Encriptar(fk_persona.ToString());
     }
-}
+}*@
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +47,7 @@
     <link href="~/Content/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="~/Content/build/css/custom.css" rel="stylesheet">
-    @*<link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />*@
+    <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -56,30 +56,22 @@
     <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
-    <link href="~/Content/proveedorCSS.css" rel="stylesheet" />
-    <!--DATATABLES-->
-    <link href="~/Content/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-    @*<link href="~/Content/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-        <link href="~/Content/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-        <link href="~/Content/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-        <link href="~/Content/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">*@
+    <link href="~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" />
 </head>
 
 <body class="nav-md">
     <div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
     <div class="container body">
         <div class="main_container">
-            <div class="col-md-3 left_col ">
+            <div class="col-md-3 left_col menu_fixed">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="#" class="site_title">
+                        <a href="~/" class="site_title">
                             <i class="fa fa-newspaper-o" style="display:none;"></i>
-                            <div style="width: 44px;height: 35px;border: 1px solid #fff;float: left;margin-top: 13px;line-height: 0;padding: 4px;margin-right: 6px;
-">
-                                <img src="~/images/icon.png" alt="~/Content." class="profile_img" style="width: 34px;height: 25px;background: #fff;">
+                            <div style="width: 48px;height: 48px;border: 1px solid #fff;float: left;margin-top: 7px;line-height: 0;padding: 1px;margin-right: 4px;">
+                                <img src="~/images/icon.png" alt="~/Content." class="profile_img" style="width: 44px;height: 44px;background: #fff;">
                             </div>
-
-                            <span>Seccion Proveedor</span>
+                            <span>Intranet</span>
                         </a>
                     </div>
 
@@ -99,39 +91,23 @@
                         <div class="menu_section">
                             <ul class="nav side-menu" style="margin-left: -1px;">
                                 <li class="active">
-                                    <a><i class="fa fa-edit"></i> Modulo Proveedor <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" id="moduloPrincipal" style="display:block;">
-                                        @*<li  class="modulo ocult" data-menu1="Menu1" data-modulo="Menu1" data-titulo="Menu1"><a href="#">Menu 1</a></li>
-                                            <li class="modulo ocult" data-menu1="Menu2" data-modulo="Menu2" data-titulo="Menu2">
-                                                <a href="#">Menu 2 <span class="fa fa-chevron-down"></span>
-                                                </a>
-                                                <ul class="nav child_menu">
-                                                    <li class="Menu2 ocult sub_menu" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
-                                                        <a href="#" >Submenu 1</a>
-                                                    </li>
-                                                    <li class="Menu2 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2" >
-                                                        <a href="#" >Submenu 2</a>
-                                                    </li>
-                                                    <li class="Menu2 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
-                                                        <a href="#" >Submenu 3</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="modulo ocult" data-menu1="Menu3" data-modulo="Menu3" data-titulo="Menu3">
-                                                <a href="#" >Menu 3 <span class="fa fa-chevron-down"></span> </a>
-                                                <ul class="nav child_menu">
-                                                    <li class="Menu3 modulo ocult" data-menu1="SubMenu1" data-modulo="SubMenu1" data-titulo="SubMenu1">
-                                                        <a href="#" >Submenu 1</a>
-                                                    </li>
-                                                    <li class="Menu3 ocult" data-menu1="SubMenu2" data-modulo="SubMenu2" data-titulo="SubMenu2">
-                                                        <a href="#" >Submenu 2</a>
-                                                    </li>
-                                                    <li class="Menu3 ocult" data-menu1="SubMenu3" data-modulo="SubMenu3" data-titulo="SubMenu3">
-                                                        <a href="#" >Submenu 3</a>
-                                                    </li>
-                                                </ul>
-                                            </li>*@
+                                    <a><i class="fa fa-edit"></i> Perfil <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display:block;">
+                                        <li><a href="~/">Datos Personales</a></li>
+                                        <li><a href="~/Persona/EducacionBasicaVista">Educación Básica</a></li>
+                                        <li><a href="~/Persona/EducacionSuperiorVista">Educación Superior</a></li>
+                                        <li><a href="~/Persona/PostGradoVista">PostGrado</a></li>
+                                        <li><a href="~/Persona/OfimaticaVista">Ofimática</a></li>
+                                        <li><a href="~/Persona/IdiomasVista">Idiomas</a></li>
+                                        <li><a href="~/Persona/ExperienciaVista">Experiencia</a></li>
+                                        <li><a href="~/Persona/InformacionAdicionalVista">Información Adicional</a></li>
                                     </ul>
+                                </li>
+                                <li>
+                                    <a href="~/OfertaLaboral/OfertaLaboralListarVista"><i class="fa fa-search"></i> Ofertas Laborales </a>
+                                </li>
+                                <li>
+                                    <a href="~/OfertaLaboral/OfertaLaboralListarMisPostulacionesVista"><i class="fa fa-briefcase"></i> Mis Postulaciones </a>
                                 </li>
                             </ul>
                         </div>
@@ -151,7 +127,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img id="img_layout_post" src="~/images/user.png" alt="">@usu_nombre
+                                    <img id="img_layout_post" src="~/images/user.png" alt="">@*@usu_nombre*@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -192,30 +168,15 @@
     <!-- FastClick -->
     <script src="~/Content/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
+
     <script src="~/Content/vendors/nprogress/nprogress.js"></script>
     <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
     <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
     <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
     <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
-    <!-- Datatables -->
-    <script src="~/Content/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="~/Content/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    @*<script src="~/Content/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="~/Content/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-        <script src="~/Content/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-        <script src="~/Content/vendors/jszip/dist/jszip.min.js"></script>
-        <script src="~/Content/vendors/pdfmake/build/pdfmake.min.js"></script>
-        <script src="~/Content/vendors/pdfmake/build/vfs_fonts.js"></script>*@
     <!-- Custom Theme Scripts -->
-
+    <script src="~/Content/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <script src="~/Content/vendors/toastr/toastr.min.js"></script>
     <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
@@ -226,17 +187,19 @@
     <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
     <script src="~/Content/vendors/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
     <script src="~/Content/build/js/custom.js"></script>
-    <script src="~/Content/viewjs/generalProveedor.js"></script>
+    <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
+
+
     <script>
         $("#btnCerrarSesion").click(function () {
             $.ajax({
                 type: 'POST',
-                url: basePath + "/Login/ProveedorCerrarSesionLoginJson",
+                url: basePath + "/Login/PostulanteCerrarSesionLoginJson",
                 success: function (response) {
                     var resp = response.respuesta;
                     var msj = response.mensaje;
                     if (resp) {
-                        window.location.replace(basePath + "Login/ProveedorIndex");
+                        window.location.replace(basePath);
                     } else {
                         alert(msj);
                     }
@@ -244,10 +207,10 @@
             });
         });
         $("#btnCambiarPassword").click(function () {
-            window.location.replace(basePath + "Proveedor/ProveedorCambiarPasswordVista");
+            window.location.replace(basePath + "Persona/CambiarPasswordVista");
         });
         $("#btnDatosPersonales").click(function () {
-            window.location.replace(basePath + "Proveedor/Index");
+            window.location.replace(basePath)
         })
     </script>
     @RenderSection("js", required: false)
