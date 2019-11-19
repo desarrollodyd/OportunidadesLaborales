@@ -323,8 +323,9 @@ namespace SistemaReclutamiento.Controllers
             UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
             string nombreusuario = usuario.usu_nombre;
             DateTime fechahoy = DateTime.Now;
-            string fechareporte = fechahoy.ToString("dd/MM/yyyy");
-            string nombredocumento = "ReportePagos_" + fechareporte;
+            string fechareporte = fechahoy.ToString("dd-MM-yyyy");
+            string nombredocumento = "ReportePagos_" + DateTime.Now.Year+"_"+DateTime.Now.Month+"_"+DateTime.Now.Day+"-"+ DateTime.Now.Hour+"_"+DateTime.Now.Minute+"_"+DateTime.Now.Second;
+
             SQLModel sql = new SQLModel();
             var listaPagosporCompania = new List<CPCARTEntidad>();
             decimal totalImporteSoles = 0,
@@ -382,8 +383,8 @@ namespace SistemaReclutamiento.Controllers
 
             ws.Cells["B4"].Value = "Fecha";
             ws.Cells["B4"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-            ws.Cells["B4"].Value = fechareporte;
-            ws.Cells["B4"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            ws.Cells["C4"].Value = fechareporte;
+            ws.Cells["C4"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
             ws.Cells["B4:C4"].Style.Font.Bold = true;
 
             ws.Cells["B6"].Value = "Tipo Anexo";
@@ -407,7 +408,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 //Maestro
                 DateTime fechadoc = ManejoNulos.ManageNullDate(item.CP_DFECDOC);
-                string fecha = fechadoc.ToString("dd/MM/yyyy");
+                string fecha = fechadoc.ToString("dd-MM-yyyy");
                 string moneda = "", estado="";
                 decimal subtotalsoles = item.subtotalSoles;
                 decimal subtotaldolares = item.subtotalDolares;
@@ -491,7 +492,7 @@ namespace SistemaReclutamiento.Controllers
                     foreach (var detalle in listapagosporDocumento)
                     {
                         DateTime fechapagodoc = ManejoNulos.ManageNullDate(detalle.PG_DFECCOM);
-                        string fechapago = fechapagodoc.ToString("dd/MM/yyyy");
+                        string fechapago = fechapagodoc.ToString("dd-MM-yyyy");
                         string monedadetalle = "";
                         decimal importedetalle = 0;
                         if (detalle.PG_CCODMON.Equals("MN"))
