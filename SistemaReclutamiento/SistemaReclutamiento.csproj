@@ -241,12 +241,14 @@
     <Content Include="Content\intranet\js\foundation.min.js" />
     <Content Include="Content\intranet\js\jquery-ui-1.8.23.custom.min.js" />
     <Content Include="Content\intranet\js\jquery.cookie.js" />
+    <Content Include="Content\intranet\js\jquery.easing.min.js" />
     <Content Include="Content\intranet\js\jquery.kinetic.js" />
     <Content Include="Content\intranet\js\jquery.mousewheel.min.js" />
     <Content Include="Content\intranet\js\modernizr.foundation.js" />
     <Content Include="Content\intranet\js\plugins.js" />
     <Content Include="Content\intranet\js\pushy.js" />
     <Content Include="Content\intranet\js\themeswitch.js" />
+    <Content Include="Content\intranet\style.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\proveedorCSS.css" />
     <Content Include="Content\Site.css" />
