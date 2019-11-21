@@ -164,7 +164,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetActividadesEditado: response, error: error);
         }
-        public (bool internetActividadesEliminado, claseError error) IntranetActividadesEliminarJson(int act_id)
+        public (bool intranetActividadesEliminado, claseError error) IntranetActividadesEliminarJson(int act_id)
         {
             bool response = false;
             string consulta = @"DELETE FROM intranet.int_actividades
@@ -188,7 +188,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 error.Value = ex.Message;
             }
 
-            return (internetActividadesEliminado: response, error: error);
+            return (intranetActividadesEliminado: response, error: error);
         }
     }
 }

@@ -4694,6 +4694,9 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\IntranetPJ\IntranetActividadesController.cs" />
+    <Compile Include="Controllers\IntranetPJ\IntranetAplicativoController.cs" />
+    <Compile Include="Controllers\IntranetPJ\IntranetMenuController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
@@ -4757,6 +4760,8 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetIconoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetImagenModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />
     <Compile Include="Models\Postulante\DetRespuestaOLAModel.cs" />
@@ -4848,6 +4853,9 @@
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
+    <Folder Include="Views\IntranetActividades\" />
+    <Folder Include="Views\IntranetAplicativo\" />
+    <Folder Include="Views\IntranetMenu\" />
     <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>

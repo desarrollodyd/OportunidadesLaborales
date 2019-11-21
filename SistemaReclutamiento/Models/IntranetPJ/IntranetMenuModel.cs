@@ -16,7 +16,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<IntranetMenuEntidad> intranetMenuLista, claseError error) IntranetAplicativoListarJson(int fk_layout)
+        public (List<IntranetMenuEntidad> intranetMenuLista, claseError error) IntranetMenuListarJson(int fk_layout)
         {
             List<IntranetMenuEntidad> lista = new List<IntranetMenuEntidad>();
             claseError error = new claseError();
@@ -182,7 +182,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetMenuEditado: response, error: error);
         }
-        public (bool internetMenuEliminado, claseError error) IntranetMenuEliminarJson(int menu_id)
+        public (bool intranetMenuEliminado, claseError error) IntranetMenuEliminarJson(int menu_id)
         {
             bool response = false;
             string consulta = @"DELETE FROM intranet.int_menu
@@ -206,7 +206,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 error.Value = ex.Message;
             }
 
-            return (internetMenuEliminado: response, error: error);
+            return (intranetMenuEliminado: response, error: error);
         }
     }
 }

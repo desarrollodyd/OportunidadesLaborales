@@ -187,7 +187,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetAplicativoEditado: response, error: error);
         }
-        public (bool internetAplicativoEliminado, claseError error) IntranetAplicativoEliminarJson(int apl_id)
+        public (bool intranetAplicativoEliminado, claseError error) IntranetAplicativoEliminarJson(int apl_id)
         {
             bool response = false;
             string consulta = @"DELETE FROM intranet.int_aplicativo
@@ -211,7 +211,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 error.Value = ex.Message;
             }
 
-            return (internetAplicativoEliminado: response, error: error);
+            return (intranetAplicativoEliminado: response, error: error);
         }
     }
 }
