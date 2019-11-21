@@ -2935,7 +2935,7 @@ img.slidefeatured{height: 450px;width: 100%;}
 	.pushy{font-size: 1.0em;}
 	ul#logos { display: block !important;overflow: hidden;}
 	li.logos{width: 100% !important;}
-	#catslide{display: none;}
+	#catslide{/*display: none;*/}
 
 }
 @media only screen and (max-width: 900px){
@@ -2956,7 +2956,7 @@ img.slidefeatured{height: 450px;width: 100%;}
     ul#logos { display: block !important;overflow: hidden;}
     li.logos{width: 100% !important;}
     .panel{ display: none;}
-    #catslide,.orbit-wrapper{display: none;}
+    #catslide,.orbit-wrapper{/*display: none;*/}
     ul.listreview li .ctitle {padding: 10px 14px 8px 5px;}
     .descreview {padding: 15px;line-height: 18px;}
     .rateview{font-size: 32px;}
@@ -3071,3 +3071,115 @@ body{
 	transition: backgroun 0.25s;
 }
 
+
+
+/*/////////////////////////////////////////////////changessss//////////////*/
+#mainbar img.logo {
+    background: white;
+    width: 52px;
+    height: 51px;
+    margin-top: 2px;
+    line-height: 0px;
+    padding: 0px;
+}
+
+.nav-bar li img.logo {
+    background: white;
+    width: 52px;
+    height: 51px;
+    margin-top: 2px;
+    margin-left: -12px;
+}
+
+.topbar {
+    background: #f00;
+}
+
+.sf-menu_ li {
+    background: #ff0000;
+}
+
+.sf-menu_ a {
+    border-right: 1px solid #f00;
+}
+
+.sf-menu_ li:hover, .sf-menu li.sfHover {
+    background: #d30000;
+}
+
+ul#logos.nav-bar {
+    background: #e30613;
+}
+
+ul#logos div.menu-btn {
+    background: #e30613;
+}
+
+ul#logos.nav-bar > li.logos:hover {
+    background: #e30613;
+}
+
+.pushy a:hover {
+    background: #e30613;
+}
+
+.dcontact{
+    text-align:center;
+}
+
+.dcontact p{
+    text-align:left;
+}
+
+.dcontact img {
+     width: 42%;
+     background: white;
+}
+
+.lthumb_ {
+    width: 354px;
+    height: 190px;
+    overflow: hidden;
+    float: left;
+    margin-right: 20px;
+}
+
+.getcat .lthumb_ .overlay {
+    position: absolute;
+    right: 0;
+    padding: 20px;
+    top: 0px;
+    color: #FFFFFF;
+}
+.meta-carousel{
+    margin-top:59px;
+}
+
+.catf {
+    width: 100%;
+}
+
+.catf .catf-caption {
+        margin-top: -120px;
+        width: auto;
+}
+
+.orbit-wrapper .slider-nav span.right {
+    right: 0px;
+}
+
+.orbit-wrapper .slider-nav span.left {
+    left: 0px;
+}
+
+ .hide-for-small, .show-for-medium, .hide-for-medium-down, .show-for-large, .show-for-large-up, .show-for-xlarge {
+    display:block !important;
+}
+
+#catslide {
+    margin-top: 0px;
+}
+
+.meta a{
+    color:white !important;
+}

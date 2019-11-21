@@ -19,18 +19,13 @@
 <body>
     <nav class="pushy pushy-left">
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="archive.html">Blog 1</a></li>
-            <li><a href="archive_two.html">Blog 2</a></li>
-            <li><a href="archive_three.html">Blog 3</a></li>
-            <li><a href="single-review.html">Page / Single Review </a>
-            <li><a href="single-soundcloud.html">Page Souncloud</a></li>
-            <li><a href="single-gallery.html">Page Gallery</a></li>
-            <li><a href="single-video.html">Page Video</a></li>
-            <li><a href="single.html">Typography</a></li>
-            <li><a href="single-left.html">Page Sidebar Left</a></li>
-           
-            <li><a href="single-element.html">Element</a></li>
+            <li><a href="#">INICIO</a></li>
+            <li><a href="#">PJ NEWS</a></li>
+            <li><a href="#">SOMOS PJ</a></li>
+            <li><a href="#">POLÍTICAS</a></li>
+            <li><a href="#">CARRERA</a>
+            <li><a href="#">MI TIEMPO</a></li>
+            <li><a href="#">GESTION</a></li>
         </ul>
     </nav>
 
@@ -43,33 +38,19 @@
                 <div class="twelve columns">
                     <nav class="topbar">
                         <div class="nine columns">
-                            <ul class="sf-menu" id="tobar">
+                            <ul class="sf-menu sf-menu_" id="tobar">
                                 <li class="current">
-                                    <a class="" href="#"> INICIO </a>
+                                    <a class="" href="#"> Corporacion PJ te da la Bienvenida .... </a>
                                 </li>
-                                <li>
-                                    <a class="" href="#"> PJ NEWS </a>
-                                </li>
-                                <li>
-                                    <a class="" href="#"> SOMOS PJ </a>
-                                </li>
-                                <li>
-                                    <a class="" href="#"> POLITICAS </a>
-                                </li>
-                                <li>
-                                    <a class="" href="#"> CARRERA </a>
-                                </li>
-                                <li>
-                                    <a class="" href="#"> MI TIEMPO </a>
-                                </li>
-                                <li>
-                                    <a class="" href="#"> GESTION </a>
-                                </li>
+                               
                             </ul>
                         </div>
                         <div class="three columns">
-                            <ul class="sf-menu" id="topsearch">
-                                <li class=""><a href="#" style="border-right:0px">Saturday, December 21, 2013</a> </li>
+                            <ul class="sf-menu sf-menu_" id="topsearch">
+                                <li class="">
+                                    <a href="#" style="border-right:0px">@DateTime.Now.ToString("dddd"),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year 
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </nav>
@@ -81,15 +62,34 @@
                 <div class="twelve columns">
                     <!-- off-canvas menus -->
                     <ul id="logos" class="nav-bar">
-                        <li class="logos"><a href="#"><img class="logo" src="images/logo.png" alt="" title=""></a><div class="menu-btn">&#9776; </div></li>
+                        <li class="logos">
+                            <a href="~/">
+                                <img class="logo" src="~/Content/intranet/images/logo.png" alt="" title="">
+                            </a>
+                            <div class="menu-btn">&#9776; </div>
+                        </li>
                     </ul>
 
-
+                    <nav class="mainbar" id="mainbar">
+                        <div class="one columns">
+                            <a href="#"><img class="logo" src="~/Content/intranet/images/logo.png" alt="" title=""></a>
+                        </div>
+                        <div class="eleven columns">
+                            <ul id="barnav" class="sf-menu nav-bar">
+                                <li class="active"><a href="#">PJ NEWS</a></li>
+                                <li><a href="#">SOMOS PJ</a></li>
+                                <li><a href="#">POLÍTICAS</a></li>
+                                <li><a href="#">CARRERA</a></li>
+                                <li><a href="#">MI TIEMPO</a></li>
+                                <li><a href="#" class="">GESTION</a></li>
+                            </ul>
+                        </div>
+                    </nav>
 
                     <!-- Newsticker Area -->
                     <div class="panel white">
                         <div class="one columns">
-                            <div class="trending">Trending</div>
+                            <div class="trending">Noticias</div>
                         </div>
                         <div class="eleven columns">
                             <ul id="ticker01">
@@ -113,42 +113,20 @@
         </header>
 
         @RenderBody()
+
         <footer>
             <div class="row">
                 <div class="twelve columns">
                     <section id="footer">
-                        <!-- widget tags -->
-                        <div class="four columns">
-                            <div class="widget wcategory">
-                                <h3 class="blocktitle"><span>TAGS POST</span></h3>
-                                <div class="tagcloud">
-                                    <a href="#" rel="tag">Style</a>
-                                    <a href="#" rel="tag">masonry</a>
-                                    <a href="#" rel="tag">Music</a>
-                                    <a href="#" rel="tag">art</a>
-                                    <a href="#" rel="tag">design</a>
-                                    <a href="#" rel="tag">creative</a>
-                                    <a href="#" rel="tag">nature</a>
-                                    <a href="#" rel="tag">word</a>
-                                    <a href="#" rel="tag">inspiration</a>
-                                    <a href="#" rel="tag">video</a>
-                                    <a href="#" rel="tag">quote</a>
-                                    <a href="#" rel="tag">sytle</a>
-                                    <a href="#" rel="tag">life</a>
-                                    <a href="#" rel="tag">mas</a>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- widget latest comment -->
-                        <div class="four columns gridfooter">
+                        <div class="eight columns gridfooter">
                             <div class="widget lastcomment">
-                                <h3 class="blocktitle"><span>LATEST COMMENTS</span></h3>
+                                <h3 class="blocktitle"><span>ULTIMOS COMENTARIOS</span></h3>
                                 <div class="listcomment">
                                     <ul class="listcomment">
                                         <li>
                                             <div class="cthumb">
-                                                <a href="#"><img src="images/user1.jpg" alt=""></a>
+                                                <a href="#"><img src="~/Content/intranet/images/user1.jpg" alt=""></a>
                                             </div>
                                             <div class="dcomment">
                                                 <a href="#"><strong>Richard</strong> on Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu convallis mi, sit amet iaculis orci. Duis v...</a>
@@ -156,7 +134,7 @@
                                         </li>
                                         <li>
                                             <div class="cthumb">
-                                                <a href="#"><img src="images/user2.jpg" alt=""></a>
+                                                <a href="#"><img src="~/Content/intranet/images/user2.jpg" alt=""></a>
                                             </div>
                                             <div class="dcomment">
                                                 <a href="#"><strong>Richard</strong> on Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu convallis mi, sit amet iaculis orci. Duis v...</a>
@@ -164,7 +142,7 @@
                                         </li>
                                         <li>
                                             <div class="cthumb">
-                                                <a href="#"><img src="images/user3.jpg" alt=""></a>
+                                                <a href="#"><img src="~/Content/intranet/images/user3.jpg" alt=""></a>
                                             </div>
                                             <div class="dcomment">
                                                 <a href="#"><strong>Richard</strong> on Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu convallis mi, sit amet iaculis orci. Duis v...</a>
@@ -181,18 +159,12 @@
                         <!-- widget contact -->
                         <div class="four columns">
                             <div class="widget wcontact">
-                                <h3 class="blocktitle"><span>OUR CONTACT</span></h3>
+                                <h3 class="blocktitle"><span>DIRECCION</span></h3>
                                 <div class="dcontact">
-                                    <img src="images/logo.png" alt=""><br />
+                                    <img src="~/Content/intranet/images/logo.png" alt=""><br />
                                     <p>100 Biscayne Blvd. (North) 21st Floor <br />New World Tower Miami,<br /> Florida 33148</p>
                                     <br /><br />
-                                    <div class="sn">
-                                        <a href="#"><i class="fa fa-facebook"></i></a>
-                                        <a href="#"><i class="fa fa-google-plus"></i></a>
-                                        <a href="#"><i class="fa fa-twitter"></i></a>
-                                        <a href="#"><i class="fa fa-youtube"></i></a>
-                                        <a href="#"><i class="fa fa-instagram"></i></a>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -201,7 +173,7 @@
                         <div class="row clear"></div>
                         <!-- copyright -->
                         <div class="copyright twelve columns">
-                            <div class="five columns">&copy; Copyright 2013, <span style="color:#FF0000;">EXTRA</span>NEWS</div>
+                            <div class="five columns">&copy; Copyright 2019, <span style="color:#FF0000;">CORPORACIÓN</span> PJ</div>
                             <div class="seven columns">
                                 <div class="backtop">
                                     <a href="#container" class="toppage">
