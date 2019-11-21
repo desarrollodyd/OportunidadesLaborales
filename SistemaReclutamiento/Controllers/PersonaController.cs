@@ -102,7 +102,8 @@ namespace SistemaReclutamiento.Controllers
             {
 
                 persona = personabl.PersonaIdObtenerJson(idPersona);
-                if (persona.fk_ubigeo != 0) {
+                if (persona.fk_ubigeo != 0)
+                {
                     ubigeo = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                 }
             }
@@ -115,7 +116,7 @@ namespace SistemaReclutamiento.Controllers
             ViewBag.errormensaje = errormensaje;
             return View();
         }
-      
+
         [HttpPost]
         public ActionResult PersonaInsertarJson(UsuarioPersonaEntidad datos)
         {
@@ -198,7 +199,7 @@ namespace SistemaReclutamiento.Controllers
                 if (usuario_repetido.usu_id == 0)
                 {
                     //Insercion de Usuario     
-                    var personatupla= personabl.PersonaDniObtenerJson(datos.per_numdoc);
+                    var personatupla = personabl.PersonaDniObtenerJson(datos.per_numdoc);
                     persona = personatupla.persona;
                     claseError error = personatupla.error;
                     contrasenia = GeneradorPassword.GenerarPassword(8);
@@ -302,15 +303,15 @@ namespace SistemaReclutamiento.Controllers
                 {
                     //string cuerpo_correo = "";
                     Correo correo_enviar = new Correo();
-                    string basepath = Request.Url.Scheme+"://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                    string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
                     correo_enviar.EnviarCorreo(
                         correo,
-                        "Correo de Confirmacion",
+                        "Correo de Confirmacion Postulante",
                         "Hola! : " + nombre + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
-                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : "+basepath+"Login/PostulanteActivacion?id=" + usuario.usu_clave_temp
+                        " o puede hacer click en el siguiente enlace y seguir los pasos indicados para cambiar su contraseña y completar su registro : " + basepath + "Login/PostulanteActivacion?id=" + usuario.usu_clave_temp
                         );
                     errormensaje = "Verifique su Correo ,Se le ha enviado su Usuario y Contraseña para activar su Registro, Gracias.";
                 }
@@ -332,7 +333,7 @@ namespace SistemaReclutamiento.Controllers
             PostulanteEntidad postulante = new PostulanteEntidad();
             UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
             ubigeo = ubigeobl.UbigeoIdObtenerJson(data.ubi_pais_id, data.ubi_departamento_id, data.ubi_provincia_id, data.ubi_distrito_id);
-            
+
             //Seteando datos correspondiente a persona            
             persona.per_nombre = data.per_nombre;
             persona.per_apellido_pat = data.per_apellido_pat;
@@ -379,7 +380,8 @@ namespace SistemaReclutamiento.Controllers
                     }
 
                 }
-                else {
+                else
+                {
                     return Json(new { respuesta = respuestaConsulta, mensaje = "Error Registrar Datos" });
                 }
             }
@@ -447,18 +449,20 @@ namespace SistemaReclutamiento.Controllers
                                 _encontrado = "nuevo";
                             }
                         }
-                        else {
+                        else
+                        {
                             errormensaje = error.Value;
                             _encontrado = string.Empty;
                         }
-                        
+
                     }
                 }
-                else {
+                else
+                {
                     errormensaje = error.Value;
                     _encontrado = string.Empty;
                 }
-                
+
             }
             catch (Exception exp)
             {
