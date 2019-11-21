@@ -1120,13 +1120,13 @@ input.custom-text:focus{
 * by Christopher Yee */
 
 /* Menu Appearance */
-.pushy{
+.pushy {
     position: fixed;
     width: 200px;
     height: 100%;
     top: 0;
     z-index: 9999;
-    background: #333332;
+    background: #000000;
     font-size: 0.9em;
     font-weight: bold;
     -webkit-box-shadow: inset -10px 0 6px -9px rgba(0, 0, 0, .7);
@@ -3159,17 +3159,20 @@ ul#logos.nav-bar > li.logos:hover {
     width: 100%;
 }
 
-.catf .catf-caption {
+    .catf .catf-caption {
         margin-top: -120px;
         width: auto;
-}
+        margin-right: 17px;
+    }
 
 .orbit-wrapper .slider-nav span.right {
-    right: 0px;
+    right: -24px;
+    background-color: #ff0000;
 }
 
 .orbit-wrapper .slider-nav span.left {
-    left: 0px;
+    left: -24px;
+    background-color: #ff0000;
 }
 
  .hide-for-small, .show-for-medium, .hide-for-medium-down, .show-for-large, .show-for-large-up, .show-for-xlarge {
@@ -3178,8 +3181,221 @@ ul#logos.nav-bar > li.logos:hover {
 
 #catslide {
     margin-top: 0px;
+    margin-bottom: 20px;
+    background: #ff0000;
 }
 
 .meta a{
     color:white !important;
+}
+
+h3.blocktitle {
+    background: #000000;
+    color: white;
+}
+
+.mainbar .sf-arrows li.active > .sf-with-ul:after {
+    border: 5px solid #ffffff !important;
+}
+
+.mainbar .sf-arrows li.sfHover > .sf-with-ul:after {
+    border: 5px solid #ffffff !important;
+}
+
+.catf-format {
+    margin-left: 22px;
+    margin-top: 7px;
+}
+
+.catf .catf-caption h2 {
+    background: rgba(0, 0, 0, 0.77);
+    margin-left: 17px;
+    font-size:22px;
+}
+
+.catf-format .fdate {
+    background: rgba(0, 0, 0, 0.77);
+    padding-top:12px;
+}
+
+
+.paddingleftright {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+@media only screen and (max-width: 1025px) {
+    .orbit-wrapper .slider-nav span.left {
+        background-color: #ff0000;
+    }
+
+    .orbit-wrapper .slider-nav span.right {
+        background-color: #ff0000;
+    }
+    #cat2news .othercat div.desc {
+        font-size: 11px;
+    }
+
+    #cat2news .othercat h4{
+        font-size:11px;
+    }
+
+    #cat2news .thumb {
+        height: 173px !important;
+    }
+    #cat2news .featured img {
+        height: 173px;
+    }
+
+    #cat2news .title-carousel {
+        margin-top: 155px !important;
+    }
+
+    h3 {
+        font-size: 18px !important;
+    }
+
+    #cat2news .ticarousel {
+        font-size: 12px;
+    }
+
+    .catf .catf-caption h2 {
+        font-size: 12px;
+    }
+
+    #slider {
+        height: 350px !important;
+    }
+
+    #catslide {
+        min-height: 350px !important;
+    }
+
+    .catf .catf-caption {
+        margin-top: -230px !important;
+    }
+
+    .dcontact img {
+        width: 30%;
+    }
+
+    .dcontact p {
+        margin-bottom:0px;
+    }
+
+    ul#logos.nav-bar {
+        background: #000000;
+    }
+
+    ul#logos {
+        overflow:visible !important; 
+    }
+
+    .nav-bar li img.logo {
+        width: 210px;
+        height: 166px;
+        margin-top: 8px;
+        margin-left: 21%;
+        position: absolute;
+        z-index: 100;
+    }
+
+    .ocultar{
+        display:none;
+    }
+
+    #catnews{
+        padding-top:20px !important;
+    }
+
+    ul#logos div.menu-btn {
+        background: #000000;
+    }
+
+    ul#logos.nav-bar > li.logos:hover {
+        background: #000000;
+    }
+    .nav-bar li img.logo {
+        background-color:transparent;
+    }
+}
+
+ul.catlist {
+    margin-bottom:20px;
+}
+
+    ul.catlist li:first-child {
+        border-top: 1px solid white;
+    }
+
+ul.listcomment li a:hover {
+    background: #ff0000;
+    color: #ffffff;
+}
+
+ul.catlist img {
+    width: 37px;
+    float: left;
+    margin-top: 2px;
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+p.meta-date {
+    margin-top: 5px;
+}
+
+ul.catlist h2.wtitle {
+    margin-bottom: 5px;
+    font-size:16px;
+}
+
+.spannumber {
+    float: left;
+    margin-left: -40px;
+    margin-top: 16px;
+    color: black;
+    width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+#cat2news .thumb {
+    height: 221px;
+    margin-bottom:5px;
+}
+
+#cat2news .overlay {
+  padding:0px;
+    /* padding: 20px 20px 20px 20px; */
+}
+
+#cat2news .title-carousel {
+    margin-top: 174px;
+}
+
+#cat2news p.pcats {
+    line-height: 1.2;
+    margin-bottom: 7px;
+}
+
+ul.oc-horizon li {
+    padding-bottom: 10px;
+}
+
+#cat2news .othercat {
+    float: left;
+    width: 48%;
+    padding-left: 0px;
+    padding: 0px;
+    padding-right: 20px;
+}
+
+#cat2news .ticarousel {
+    padding: 6px 0px 6px 10px;
+}
+
+#cat2news .thumb img {
+    height:221px;
 }

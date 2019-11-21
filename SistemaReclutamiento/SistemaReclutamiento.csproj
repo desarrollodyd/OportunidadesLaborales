@@ -179,6 +179,7 @@
     <Content Include="Content\intranet\images\kitchen_adventurer_donut.jpg" />
     <Content Include="Content\intranet\images\kitchen_adventurer_lemon.jpg" />
     <Content Include="Content\intranet\images\logo.png" />
+    <Content Include="Content\intranet\images\logo_.png" />
     <Content Include="Content\intranet\images\n1.jpg" />
     <Content Include="Content\intranet\images\n2.jpg" />
     <Content Include="Content\intranet\images\n3.jpg" />
@@ -207,6 +208,8 @@
     <Content Include="Content\intranet\images\patterns\7.png" />
     <Content Include="Content\intranet\images\patterns\8.png" />
     <Content Include="Content\intranet\images\patterns\9.png" />
+    <Content Include="Content\intranet\images\png\actividad.png" />
+    <Content Include="Content\intranet\images\png\calendar.png" />
     <Content Include="Content\intranet\images\prettyPhoto\default\default_thumb.png" />
     <Content Include="Content\intranet\images\prettyPhoto\default\loader.gif" />
     <Content Include="Content\intranet\images\prettyPhoto\default\sprite.png" />
