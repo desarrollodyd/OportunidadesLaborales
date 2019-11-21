@@ -23,13 +23,14 @@ namespace SistemaReclutamiento.Controllers
         UbigeoModel ubigeobl = new UbigeoModel();
         public ActionResult Index()
         {
-           return View();
+            return View();
         }
         public ActionResult ReportePagosVista()
         {
             return View();
         }
-        public ActionResult ProveedorCambiarPasswordVista() {
+        public ActionResult ProveedorCambiarPasswordVista()
+        {
             return View();
         }
         #region Seccion de Acceso
@@ -103,13 +104,15 @@ namespace SistemaReclutamiento.Controllers
                         return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el correo: " + datos.per_correoelectronico });
                     }
                 }
-                else {
+                else
+                {
                     return Json(new { respuesta = respuestaConsulta, mensaje = error.Value });
                 }
-           
+
             }
 
-            else {
+            else
+            {
                 return Json(new { respuesta = respuestaConsulta, mensaje = "Ya hay un usuario registrado con el RUC: " + datos.per_numdoc });
             }
             if (respuestaConsulta)
@@ -123,7 +126,7 @@ namespace SistemaReclutamiento.Controllers
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
                     correo_enviar.EnviarCorreo(
                         correo,
-                        "Correo de Confirmacion",
+                        "Correo de Confirmacion Proveedores",
                         "Hola! : " + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
@@ -254,7 +257,7 @@ namespace SistemaReclutamiento.Controllers
                 var listatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_final);
                 lista = listatupla.lista;
                 cadena = listatupla.cadena;
-                var errorlista= listatupla.error;
+                var errorlista = listatupla.error;
                 if (errorlista.Key.Equals(string.Empty))
                 {
                     if (lista.Count > 0)
@@ -269,17 +272,18 @@ namespace SistemaReclutamiento.Controllers
                     errormensaje = "Cargando Data ...";
                     respuesta = true;
                 }
-                else {
+                else
+                {
                     errormensaje = errorlista.Value;
                     respuesta = false;
                 }
-                
+
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje, cadena=cadena });
+            return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje, cadena = cadena });
         }
         public ActionResult ListarPagosporNumeroDocumentoJson(string num_doc, string nombre_tabla)
         {
@@ -301,11 +305,12 @@ namespace SistemaReclutamiento.Controllers
                     errormensaje = "Cargando Data ...";
                     respuesta = true;
                 }
-                else {
+                else
+                {
                     errormensaje = errorlista.Value;
                     respuesta = false;
                 }
-                
+
             }
             catch (Exception exp)
             {
@@ -314,7 +319,8 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje });
         }
 
-        public void ReportePagosExportarExcel(string nombre_tabla, string fecha_inicio, string fecha_fin) {
+        public void ReportePagosExportarExcel(string nombre_tabla, string fecha_inicio, string fecha_fin)
+        {
 
 
             string nombretabla = "CP" + nombre_tabla.Trim() + "CART";
@@ -324,7 +330,7 @@ namespace SistemaReclutamiento.Controllers
             string nombreusuario = usuario.usu_nombre;
             DateTime fechahoy = DateTime.Now;
             string fechareporte = fechahoy.ToString("dd-MM-yyyy");
-            string nombredocumento = "ReportePagos_" + DateTime.Now.Year+"_"+DateTime.Now.Month+"_"+DateTime.Now.Day+"-"+ DateTime.Now.Hour+"_"+DateTime.Now.Minute+"_"+DateTime.Now.Second;
+            string nombredocumento = "ReportePagos_" + DateTime.Now.Year + "_" + DateTime.Now.Month + "_" + DateTime.Now.Day + "-" + DateTime.Now.Hour + "_" + DateTime.Now.Minute + "_" + DateTime.Now.Second;
 
             SQLModel sql = new SQLModel();
             var listaPagosporCompania = new List<CPCARTEntidad>();
@@ -356,7 +362,8 @@ namespace SistemaReclutamiento.Controllers
                             totalPagadoSoles += subtotaltupla.subtotalSoles;
                             totalImporteSoles += m.CP_NIMPOMN;
                         }
-                        else {
+                        else
+                        {
                             totalPagadoDolares += subtotaltupla.subtotalDolares;
                             totalImporteDolares += m.CP_NIMPOUS;
                         }
@@ -369,9 +376,9 @@ namespace SistemaReclutamiento.Controllers
             ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Reporte");
             ws.Cells["B1"].Value = "Reporte de Pagos";
             ws.Cells["B1:C1"].Style.Font.Bold = true;
-            
+
             ws.Cells["B1"].Style.Font.Size = 20;
-            ws.Cells["B1"].Style.HorizontalAlignment=ExcelHorizontalAlignment.Center;
+            ws.Cells["B1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             ws.Cells["B1:J1"].Merge = true;
             ws.Cells["B1:J1"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
@@ -402,17 +409,17 @@ namespace SistemaReclutamiento.Controllers
             ws.Cells["B6:J6"].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
             ws.Cells["B6:J6"].Style.Font.Color.SetColor(Color.White);
             ws.Cells["B6:J6"].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-            int fila = 7,inicioGrupo=0,finGrupo=0;
-          
+            int fila = 7, inicioGrupo = 0, finGrupo = 0;
+
             foreach (var item in listaPagosporCompania)
             {
                 //Maestro
                 DateTime fechadoc = ManejoNulos.ManageNullDate(item.CP_DFECDOC);
                 string fecha = fechadoc.ToString("dd-MM-yyyy");
-                string moneda = "", estado="";
+                string moneda = "", estado = "";
                 decimal subtotalsoles = item.subtotalSoles;
                 decimal subtotaldolares = item.subtotalDolares;
-                decimal importe = 0, monto_pagado=0,saldo=0;
+                decimal importe = 0, monto_pagado = 0, saldo = 0;
                 if (item.CP_CCODMON.Equals("MN"))
                 {
                     moneda = "Soles";
@@ -432,7 +439,8 @@ namespace SistemaReclutamiento.Controllers
                         estado = "PARCIAL";
                     }
                 }
-                else {
+                else
+                {
                     moneda = "Dolares";
                     importe = item.CP_NIMPOUS;
                     monto_pagado = subtotaldolares;
@@ -463,9 +471,9 @@ namespace SistemaReclutamiento.Controllers
                 ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Fill.PatternType = ExcelFillStyle.Gray125;
                 ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.LightSkyBlue);
                 ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Font.Color.SetColor(Color.Black);
-                ws.Cells[string.Format("B{0}:J{0}",fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 fila++;
-                
+
                 //Detalle
                 var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumento
                     (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim());
@@ -523,9 +531,10 @@ namespace SistemaReclutamiento.Controllers
                         ws.Row(i).OutlineLevel = 1;
                         ws.Row(i).Collapsed = true;
                     }
-                 
+
                 }
-                else {
+                else
+                {
                     ws.Cells[string.Format("C{0}", fila)].Value = "No se encontro pagos para este documento";
                     ws.Cells[string.Format("C{0}:J{0}", fila)].Style.Font.Bold = true;
                     ws.Cells[string.Format("C{0}", fila)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -536,7 +545,7 @@ namespace SistemaReclutamiento.Controllers
                     fila++;
                     ws.Row(fila).OutlineLevel = 1;
                     ws.Row(fila).Collapsed = true;
-                    
+
                     fila++;
                 }
                 //Fin de Detalle
@@ -555,11 +564,11 @@ namespace SistemaReclutamiento.Controllers
             ws.Cells[string.Format("H{0}", fila)].Value = "Monto Pagado";
             ws.Cells[string.Format("I{0}", fila)].Value = "Saldo";
             ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Font.Bold = true;
-            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Fill.PatternType=ExcelFillStyle.Solid;
+            ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Fill.PatternType = ExcelFillStyle.Solid;
             ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Fill.BackgroundColor.SetColor(Color.DarkBlue);
             ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Font.Color.SetColor(Color.White);
             ws.Cells[string.Format("G{0}:I{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-         
+
             fila++;
             //Soles
             ws.Cells[string.Format("F{0}", fila)].Value = "Total Soles";
@@ -580,8 +589,8 @@ namespace SistemaReclutamiento.Controllers
             ws.Cells["A:AZ"].AutoFitColumns();
             Response.Clear();
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            Response.AddHeader("content-disposition", string.Format("attachment;  filename={0}", nombredocumento+".xlsx"));
-            
+            Response.AddHeader("content-disposition", string.Format("attachment;  filename={0}", nombredocumento + ".xlsx"));
+
             //Response.AddHeader("content-disposition", "attachment: filename=" + nombredocumento+".xlsx");
             Response.BinaryWrite(pck.GetAsByteArray());
             Response.End();

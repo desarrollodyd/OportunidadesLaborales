@@ -386,5 +386,54 @@ namespace SistemaReclutamiento.Models
             return idPersonaInsertada;
         }
         #endregion
+        #region Region IntranetPJ
+        public (PersonaEntidad persona, claseError error) PersonaObtenerCumpleaniosporDia()
+        {
+            claseError error = new claseError();
+            PersonaEntidad persona = new PersonaEntidad();
+            string consulta = @"select 
+                                    per_nombre,
+                                    per_apellido_pat,
+                                    per_correoelectronico,
+                                    per_apellido_mat,
+                                    per_fechanacimiento 
+                                    from marketing.cpj_persona 
+                                    where 
+	                                extract(day from per_fechanacimiento)=extract(day from (select current_date)) 
+	                                and 
+	                                extract(month from per_fechanacimiento)=extract(month from (select current_date))
+	                                and per_tipo='EMPLEADO'
+	                                and per_estado='A'";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                persona.per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]);
+                                persona.per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]);
+                                persona.per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]);
+                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
+                                persona.per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                // Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return (persona: persona, error: error);
+        }
+        #endregion
     }
 }

@@ -4693,6 +4693,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
@@ -4713,6 +4714,12 @@
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetAplicativoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetIconoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetImagenEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetSliderEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetPreguntaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetRespuestaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\EducacionBasicaEntidad.cs" />
@@ -4748,6 +4755,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ConfiguracionModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />
     <Compile Include="Models\Postulante\DetRespuestaOLAModel.cs" />
     <Compile Include="Models\Postulante\EducacionBasicaModel.cs" />
@@ -4823,6 +4833,8 @@
     <Content Include="Views\IntranetPJ\IntranetPJIndex.cshtml" />
     <Content Include="Views\Shared\_LayoutIntranetPJAdmin.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJAdminIndex.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4835,9 +4847,7 @@
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\viewjs\Usuario\" />
-    <Folder Include="Entidades\IntranetPJ\" />
     <Folder Include="log\" />
-    <Folder Include="Models\IntranetPJ\" />
     <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>
