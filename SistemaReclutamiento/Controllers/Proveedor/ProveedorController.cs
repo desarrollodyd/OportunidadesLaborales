@@ -123,7 +123,7 @@ namespace SistemaReclutamiento.Controllers
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
                     correo_enviar.EnviarCorreo(
                         correo,
-                        "Correo de Confirmacion Proveedores",
+                        "Correo de Confirmacion",
                         "Hola! : " + " \n " +
                         "Sus credenciales son las siguientes:\n Usuario : " + usuario_envio + "\n Contraseña : " + contrasenia
                         + "\n puede usar estas credenciales para acceder al sistema, donde se le pedira realizar un cambio de esta contraseña por su seguridad, \n" +
