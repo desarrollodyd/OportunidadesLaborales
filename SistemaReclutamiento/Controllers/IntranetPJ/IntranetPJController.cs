@@ -13,5 +13,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         {
             return View();
         }
+
+        public ActionResult somopj()
+        {
+            return View();
+        }
     }
 }

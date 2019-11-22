@@ -4843,6 +4843,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJAdminIndex.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\IntranetPJ\somopj.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

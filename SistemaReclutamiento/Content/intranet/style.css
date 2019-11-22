@@ -3293,10 +3293,11 @@ h3.blocktitle {
 
     .nav-bar li img.logo {
         width: 210px;
-        height: 166px;
-        margin-top: 8px;
-        margin-left: 21%;
+        height: 190px;
         position: absolute;
+        left: 50%;
+        right: 50%;
+        transform: translate(-50%, 10px);
         z-index: 100;
     }
 
@@ -3398,4 +3399,38 @@ ul.oc-horizon li {
 
 #cat2news .thumb img {
     height:221px;
+}
+
+#singlepost .postmeta {
+    background: #000000;
+    color: white;
+}
+
+#singlepost header h1 {
+    padding: 14px 20px;
+}
+
+#singlepost .post-content {
+    width: 100%;
+}
+
+.separador {
+    border-top: 1px solid #d6d6d6;
+    clear:both;
+}
+
+.lista_titulo{
+    margin-bottom:4px;
+}
+
+.listas {
+    margin-left: 28px;
+}
+
+blockquote p{
+    margin-bottom:0px !important;
+}
+
+blockquote {
+    margin-bottom: 0px !important;
 }

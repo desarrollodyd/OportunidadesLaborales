@@ -41,13 +41,14 @@
                                 <li class="current">
                                     <a class="" href="#"> Corporacion PJ te da la Bienvenida .... </a>
                                 </li>
-                               
+
                             </ul>
                         </div>
                         <div class="three columns">
                             <ul class="sf-menu sf-menu_" id="topsearch">
                                 <li class="">
-                                    <a href="#" style="border-right:0px">@DateTime.Now.ToString("dddd"),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year 
+                                    <a href="#" style="border-right:0px">
+                                        @DateTime.Now.ToString("dddd"),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year
                                     </a>
                                 </li>
                             </ul>
@@ -111,7 +112,110 @@
             </div>
         </header>
 
-        @RenderBody()
+       
+
+        <div class="clear"></div>
+
+        <!-- main content -->
+        <div class="row">
+            <div class="twelve columns">
+                <section id="maincontainer">
+
+                    <!-- Side Left Main Conten Area -->
+                    <div class="eight columns">
+                        <div id="content">
+
+                            @RenderBody()
+
+                        </div>
+                    </div>
+
+                    <div class="four columns gridleft">
+                        <aside>
+
+                            <div class="widget wlistcat">
+                                <h3 class="blocktitle">CUMPLEAÑOS DE OCTUBRE <span><a href="#">MAS</a></span></h3>
+                                <div class="getcat">
+                                    <ul class="catlist">
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/calendar.png" />
+                                                <div class="spannumber">21</div>
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Mario Sega</h2>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/calendar.png" />
+                                                <div class="spannumber">20</div>
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Juan Quispe</h2>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/calendar.png" />
+                                                <div class="spannumber">18</div>
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Mario Sega</h2>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/calendar.png" />
+                                                <div class="spannumber">14</div>
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Juan Quispe</h2>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/calendar.png" />
+                                                <div class="spannumber">10</div>
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Mario Sega</h2>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/calendar.png" />
+                                                <div class="spannumber">1</div>
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Juan Quispe</h2>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="widget wlistcat">
+                                <h3 class="blocktitle">ACTIVIDADES DE OCTUBRE <span><a href="#">MAS</a></span></h3>
+                                <div class="getcat">
+
+                                    <ul class="catlist">
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/actividad.png" />
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Junction Point closed, Spector leaving Disney</h2>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <img src="~/Content/intranet/images/png/actividad.png" />
+                                                <p class="meta-date">December 21, 2013</p>
+                                                <h2 class="wtitle">Barack Obama’s Complete 2013 Inauguration Speech</h2>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+            </div>
+        </div>
 
         <footer>
             <div class="row">
@@ -163,7 +267,7 @@
                                     <img src="~/Content/intranet/images/logo.png" alt=""><br />
                                     <p>100 Biscayne Blvd. (North) 21st Floor <br />New World Tower Miami,<br /> Florida 33148</p>
                                     <br />
-                                    
+
                                 </div>
                             </div>
                         </div>
