@@ -387,23 +387,26 @@ namespace SistemaReclutamiento.Models
         }
         #endregion
         #region Region IntranetPJ
-        public (PersonaEntidad persona, claseError error) PersonaObtenerCumpleaniosporDia()
+        public (List<PersonaEntidad> personaLista, claseError error) PersonaObtenerCumpleaniosporDia()
         {
             claseError error = new claseError();
-            PersonaEntidad persona = new PersonaEntidad();
+            List<PersonaEntidad> personaLista = new List<PersonaEntidad>();
             string consulta = @"select 
                                     per_nombre,
                                     per_apellido_pat,
                                     per_correoelectronico,
                                     per_apellido_mat,
-                                    per_fechanacimiento 
+                                    per_fechanacimiento ,
+									per_tipo
                                     from marketing.cpj_persona 
                                     where 
-	                                extract(day from per_fechanacimiento)=extract(day from (select current_date)) 
-	                                and 
-	                                extract(month from per_fechanacimiento)=extract(month from (select current_date))
+									extract(day from per_fechanacimiento)>=extract(day from(select current_date))
+									and
+	                            	extract(month from per_fechanacimiento)=extract(month from (select current_date))
 	                                and per_tipo='EMPLEADO'
-	                                and per_estado='A'";
+	                                and per_estado='A'
+									order by extract(day from per_fechanacimiento) asc
+									limit 8";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -414,13 +417,18 @@ namespace SistemaReclutamiento.Models
                     {
                         if (dr.HasRows)
                         {
+
                             while (dr.Read())
                             {
-                                persona.per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]);
-                                persona.per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]);
-                                persona.per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]);
-                                persona.per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]);
-                                persona.per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]);
+                                var persona = new PersonaEntidad
+                                {
+                                    per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
+                                    per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
+                                    per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]),
+                                    per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]),
+                                    per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]),
+                                };
+                                personaLista.Add(persona);
                             }
                         }
                     }
@@ -432,7 +440,7 @@ namespace SistemaReclutamiento.Models
                 error.Value = ex.Message;
                 // Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
-            return (persona: persona, error: error);
+            return (personaLista: personaLista, error: error);
         }
         #endregion
     }

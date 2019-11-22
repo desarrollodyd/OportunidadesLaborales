@@ -29,7 +29,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 menu_orden, 
                                 menu_blank
 	                            FROM intranet.int_menu
-                                where fk_layout=@p0;";
+                                where fk_layout=@p0 order by menu_orden;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

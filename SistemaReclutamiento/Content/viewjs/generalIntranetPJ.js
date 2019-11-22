@@ -1,5 +1,4 @@
-﻿var basePath = $("#BasePath").text();
-
+﻿var basePath = $("#BasePath").val();
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {
         messageResponse({

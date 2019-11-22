@@ -9,36 +9,36 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
-    public class IntranetActividadesController : Controller
+    public class IntranetImagenController : Controller
     {
-        IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
+        IntranetImagenModel intranetImagenbl = new IntranetImagenModel();
         claseError error = new claseError();
-        // GET: IntranetActividades
+        // GET: IntranetImagen
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult IntranetActividadesListarJson(int fk_layout)
+        public ActionResult IntranetImagenListarJson(int fk_layout)
         {
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            List<IntranetActividadesEntidad> listaActividades = new List<IntranetActividadesEntidad>();
+            List<IntranetImagenEntidad> listaImagen = new List<IntranetImagenEntidad>();
             try
             {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarJson(fk_layout);
-                error = ActividadesTupla.error;
-                listaActividades = ActividadesTupla.intranetActividadesLista;
+                var ImagenTupla = intranetImagenbl.IntranetImagenListarJson(fk_layout);
+                error = ImagenTupla.error;
+                listaImagen = ImagenTupla.intranetImagenLista;
                 if (error.Key.Equals(string.Empty))
                 {
-                    mensaje = "Listando Actividadess";
+                    mensaje = "Listando Imagenes";
                     respuesta = true;
                 }
                 else
                 {
                     mensajeConsola = error.Value;
-                    mensaje = "No se Pudieron Listar las Actividadess";
+                    mensaje = "No se Pudieron Listar las Imagenes";
                 }
 
             }
@@ -46,29 +46,29 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             {
                 mensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+            return Json(new { data = listaImagen.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetActividadesInsertarJson(IntranetActividadesEntidad intranetActividades)
+        public ActionResult IntranetImagenInsertarJson(IntranetImagenEntidad intranetImagen)
         {
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            int idIntranetActividadesInsertado = 0;
+            int idIntranetImagenInsertado = 0;
             try
             {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesInsertarJson(intranetActividades);
-                error = ActividadesTupla.error;
+                var ImagenTupla = intranetImagenbl.IntranetImagenInsertarJson(intranetImagen);
+                error = ImagenTupla.error;
 
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
-                    idIntranetActividadesInsertado = ActividadesTupla.idIntranetActividadesInsertado;
+                    idIntranetImagenInsertado = ImagenTupla.idIntranetImagenInsertado;
                 }
                 else
                 {
-                    mensaje = "No se Pudo insertar las Actividades";
+                    mensaje = "No se Pudo insertar las Imagen";
                     mensajeConsola = error.Value;
                 }
 
@@ -78,21 +78,21 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 mensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetActividadesInsertado = idIntranetActividadesInsertado, mensajeconsola = mensajeConsola });
+            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetImagenInsertado = idIntranetImagenInsertado, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetActividadesEditarJson(IntranetActividadesEntidad intranetActividades)
+        public ActionResult IntranetImagenEditarJson(IntranetImagenEntidad intranetImagen)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
             try
             {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividades);
-                error = ActividadesTupla.error;
+                var ImagenTupla = intranetImagenbl.IntranetImagenEditarJson(intranetImagen);
+                error = ImagenTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = ActividadesTupla.intranetActividadesEditado;
+                    respuestaConsulta = ImagenTupla.intranetImagenEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
@@ -109,19 +109,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetActividadesEliminarJson(int act_id)
+        public ActionResult IntranetImagenEliminarJson(int img_id)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
             try
             {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
-                error = ActividadesTupla.error;
+                var ImagenTupla = intranetImagenbl.IntranetImagenEliminarJson(img_id);
+                error = ImagenTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                    errormensaje = "Actividades Eliminado";
+                    respuestaConsulta = ImagenTupla.intranetImagenEliminado;
+                    errormensaje = "Imagen Eliminada";
                 }
                 else
                 {

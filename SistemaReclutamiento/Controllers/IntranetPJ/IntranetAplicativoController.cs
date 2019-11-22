@@ -109,14 +109,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetAplicativoEliminarJson(int Aplicativo_id)
+        public ActionResult IntranetAplicativoEliminarJson(int apl_id)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
             try
             {
-                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoEliminarJson(Aplicativo_id);
+                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoEliminarJson(apl_id);
                 error = AplicativoTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {

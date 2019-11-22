@@ -3766,6 +3766,7 @@
     <Content Include="Content\viewjs\general.js" />
     <Content Include="Content\viewjs\generalIntranetPJ.js" />
     <Content Include="Content\viewjs\generalProveedor.js" />
+    <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
@@ -4699,6 +4700,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IntranetPJ\IntranetActividadesController.cs" />
     <Compile Include="Controllers\IntranetPJ\IntranetAplicativoController.cs" />
+    <Compile Include="Controllers\IntranetPJ\IntranetImagenController.cs" />
     <Compile Include="Controllers\IntranetPJ\IntranetMenuController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
@@ -4726,6 +4728,7 @@
     <Compile Include="Entidades\IntranetPJ\IntranetImagenEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSliderEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetUsuarioEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetPreguntaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetRespuestaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\EducacionBasicaEntidad.cs" />
@@ -4766,6 +4769,7 @@
     <Compile Include="Models\IntranetPJ\IntranetIconoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetImagenModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetUsuarioModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />
     <Compile Include="Models\Postulante\DetRespuestaOLAModel.cs" />
     <Compile Include="Models\Postulante\EducacionBasicaModel.cs" />
@@ -4843,6 +4847,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJAdminIndex.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Shared\_LoginIntranetPJAdmin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4858,6 +4863,7 @@
     <Folder Include="log\" />
     <Folder Include="Views\IntranetActividades\" />
     <Folder Include="Views\IntranetAplicativo\" />
+    <Folder Include="Views\IntranetImagen\" />
     <Folder Include="Views\IntranetMenu\" />
     <Folder Include="Views\SQL\" />
   </ItemGroup>

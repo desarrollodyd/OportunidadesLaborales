@@ -15,10 +15,20 @@
     <!-- switch theme  remove this on live project -->
     <link href="~/Content/intranet/css/schemes/redori.css" id="switchyuk" rel='stylesheet' type='text/css' />
 
+    @* Archivos css *@
+    <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+
 </head>
 <body>
+    <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
+    @*<div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>*@
     <nav class="pushy pushy-left">
-        <ul>
+        <ul id="menuIntranet">
             <li><a href="#">PJ NEWS</a></li>
             <li><a href="#">SOMOS PJ</a></li>
             <li><a href="#">POLÍTICAS</a></li>
@@ -41,13 +51,14 @@
                                 <li class="current">
                                     <a class="" href="#"> Corporacion PJ te da la Bienvenida .... </a>
                                 </li>
-                               
+
                             </ul>
                         </div>
                         <div class="three columns">
                             <ul class="sf-menu sf-menu_" id="topsearch">
                                 <li class="">
-                                    <a href="#" style="border-right:0px">@DateTime.Now.ToString("dddd"),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year 
+                                    <a href="#" style="border-right:0px">
+                                        @DateTime.Now.ToString("dddd"),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year
                                     </a>
                                 </li>
                             </ul>
@@ -163,7 +174,7 @@
                                     <img src="~/Content/intranet/images/logo.png" alt=""><br />
                                     <p>100 Biscayne Blvd. (North) 21st Floor <br />New World Tower Miami,<br /> Florida 33148</p>
                                     <br />
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -197,6 +208,20 @@
     <script src="~/Content/intranet/js/pushy.js"></script>
     <script src="~/Content/intranet/js/plugins.js"></script>
     <script src="~/Content/intranet/js/app.js"></script>
+
+    @* Archivos para general.js *@
+    <!-- NProgress -->
+    <script src="~/Content/vendors/nprogress/nprogress.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
+    <script src="~/Content/vendors/moment/moment.js"></script>
+
+
+    <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
 
     @RenderSection("js", required: false)
 </body>
