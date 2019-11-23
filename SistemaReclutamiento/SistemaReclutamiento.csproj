@@ -138,6 +138,7 @@
     <Content Include="Content\images\ray.png" />
     <Content Include="Content\images\splat.png" />
     <Content Include="Content\intranet\css\schemes\redori.css" />
+    <Content Include="Content\intranet\css\venobox.css" />
     <Content Include="Content\intranet\font\fontawesome-webfont9b1a.svg" />
     <Content Include="Content\intranet\images\arrow_left.gif" />
     <Content Include="Content\intranet\images\arrow_right.gif" />
@@ -252,6 +253,7 @@
     <Content Include="Content\intranet\js\plugins.js" />
     <Content Include="Content\intranet\js\pushy.js" />
     <Content Include="Content\intranet\js\themeswitch.js" />
+    <Content Include="Content\intranet\js\venobox.js" />
     <Content Include="Content\intranet\style.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\proveedorCSS.css" />
