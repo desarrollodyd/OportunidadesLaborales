@@ -13,6 +13,7 @@
             url: "IntranetPJ/IntranetPjListarDataInicialJson",
             refresh: false,
             callBackSuccess: function (response) {
+                console.log(response)
                 var dataMenus = response.dataMenus;
                 var dataCumpleanios = response.dataCumpleanios;
                 var dataActividades = response.dataActividades;
@@ -25,17 +26,13 @@
                     var appendMenuPrincipal = "";
                     $.each(dataMenus, function (index, menu) {
                         appendMenuLateral += '<li><a href="' + menu.menu_url + '">' + menu.menu_titulo + '</a></li>';
-                        if (menu.menu_orden === 1) {
-                            appendMenuPrincipal += '<li class="active"><a href="' + menu.menu_url + '">' + menu.menu_titulo + '</a><ul></ul></li>';
-                        }
-                        else {
-                            appendMenuPrincipal += '<li><a href="' + menu.menu_url + '">' + menu.menu_titulo + '</a><ul></ul></li>';
-                        }
+                        var clase = (index == 0) ? "active" : "";
+                        appendMenuPrincipal += '<li class="' + clase + '"><a href="' + menu.menu_url + '" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
                         //noticia.push(menu.menu_titulo)
-                        
                     });
-                    $("#menuIntranet").append(appendMenuLateral);
-                    $("#barnav").append(appendMenuPrincipal);
+
+                    $("#menuIntranet").html(appendMenuLateral);
+                    $("#barnav").html(appendMenuPrincipal);
                 }
                 //Creacion de Aside para Cumpleaños
                 if (dataCumpleanios.length > 0) {
@@ -47,7 +44,7 @@
                         appendCumpleanios += '<li><a href = "#" ><img src="' + basePath + '/Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate() + 1) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
-                    $("#cumpleaniosIntranet").append(appendCumpleanios);
+                    $("#cumpleaniosIntranet").html(appendCumpleanios);
 
                 }
                 //Creacion de Aside Para Actividades

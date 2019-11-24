@@ -43,7 +43,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             bool respuesta = false;
             try {
                 //listando menus
-                var menuTupla = intranetMenubl.IntranetMenuListarJson(fk_layout=1);
+                var menuTupla = intranetMenubl.IntranetMenuListarJson();
                 error = menuTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
@@ -88,7 +88,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     dataActividades = intranetActividades.ToList(),
                     dataCumpleanios =persona,
                     respuesta =respuesta,
-                    mensaje =mensaje
+                    mensaje =mensaje,
+                    error=error
                 });
         }
         

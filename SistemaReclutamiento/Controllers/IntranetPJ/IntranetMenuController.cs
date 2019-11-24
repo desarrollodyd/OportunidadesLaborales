@@ -19,7 +19,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             return View();
         }
         [HttpPost]
-        public ActionResult IntranetMenuListarJson(int fk_layout)
+        public ActionResult IntranetMenuListarJson()
         {
             string mensaje = "";
             string mensajeConsola = "";
@@ -27,7 +27,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetMenuEntidad> listaMenus = new List<IntranetMenuEntidad>();
             try
             {
-                var menuTupla = intranetMenubl.IntranetMenuListarJson(fk_layout);
+                var menuTupla = intranetMenubl.IntranetMenuListarJson();
                 error = menuTupla.error;
                 listaMenus = menuTupla.intranetMenuLista;
                 if (error.Key.Equals(string.Empty))

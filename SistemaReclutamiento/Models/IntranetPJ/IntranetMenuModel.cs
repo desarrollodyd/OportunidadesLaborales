@@ -16,27 +16,25 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<IntranetMenuEntidad> intranetMenuLista, claseError error) IntranetMenuListarJson(int fk_layout)
+        public (List<IntranetMenuEntidad> intranetMenuLista, claseError error) IntranetMenuListarJson()
         {
             List<IntranetMenuEntidad> lista = new List<IntranetMenuEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT 
                                 menu_id, 
-                                fk_layout, 
                                 menu_titulo, 
                                 menu_url, 
                                 menu_estado, 
                                 menu_orden, 
                                 menu_blank
 	                            FROM intranet.int_menu
-                                where fk_layout=@p0 order by menu_orden;";
+                                 order by menu_orden;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_layout);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -47,7 +45,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 {
 
                                     menu_id = ManejoNulos.ManageNullInteger(dr["menu_id"]),
-                                    fk_layout = ManejoNulos.ManageNullInteger(dr["fk_layout"]),
                                     menu_titulo = ManejoNulos.ManageNullStr(dr["menu_titulo"]),
                                     menu_url = ManejoNulos.ManageNullStr(dr["menu_url"]),
                                     menu_estado = ManejoNulos.ManageNullStr(dr["menu_estado"]),
@@ -76,7 +73,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             string consulta = @"SELECT 
                                 menu_id, 
-                                fk_layout, 
                                 menu_titulo, 
                                 menu_url, 
                                 menu_estado, 
@@ -99,7 +95,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                             {
 
                                 intranetMenu.menu_id = ManejoNulos.ManageNullInteger(dr["menu_id"]);
-                                intranetMenu.fk_layout = ManejoNulos.ManageNullInteger(dr["fk_layout"]);
                                 intranetMenu.menu_titulo = ManejoNulos.ManageNullStr(dr["menu_titulo"]);
                                 intranetMenu.menu_url = ManejoNulos.ManageNullStr(dr["menu_url"]);
                                 intranetMenu.menu_estado = ManejoNulos.ManageNullStr(dr["menu_estado"]);
@@ -122,8 +117,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             //bool response = false;
             int idIntranetMenuInsertado = 0;
             string consulta = @"
-            INSERT INTO intranet.int_menu(
-	            fk_layout, menu_titulo, menu_url, menu_orden, menu_estado, menu_blank)
+            INSERT INTO intranet.int_menu(menu_titulo, menu_url, menu_orden, menu_estado, menu_blank)
 	            VALUES (@p0, @p1, @p2, @p3, @p4, @p5)
                 returning menu_id;";
             claseError error = new claseError();
@@ -133,7 +127,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(intranetMenu.fk_layout));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetMenu.menu_titulo));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetMenu.menu_url));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetMenu.menu_orden));
@@ -156,7 +149,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_menu
-	                            SET fk_layout=@p0, menu_titulo=@p1, menu_url=@p2, menu_orden=@p3, menu_estado=@p4, menu_blank=@p5
+	                            SET menu_titulo=@p1, menu_url=@p2, menu_orden=@p3, menu_estado=@p4, menu_blank=@p5
 	                            WHERE menu_id=@p6;";
             try
             {
@@ -164,7 +157,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(intranetMenu.fk_layout));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetMenu.menu_titulo));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetMenu.menu_url));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetMenu.menu_orden));

@@ -12,7 +12,6 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public int fk_imagen { get; set; }
         public DateTime act_fecha { get; set; }
         public string act_estado { get; set; }
-        public int fk_layout { get; set; }
         //imagen
         public string img_ubicacion { get; set; }
         //cumpleaños de persona para listado de noticias
