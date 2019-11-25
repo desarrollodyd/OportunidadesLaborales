@@ -13,10 +13,10 @@
             url: "IntranetPJ/IntranetPjListarDataInicialJson",
             refresh: false,
             callBackSuccess: function (response) {
-                console.log(response)
                 var dataMenus = response.dataMenus;
                 var dataCumpleanios = response.dataCumpleanios;
                 var dataActividades = response.dataActividades;
+                var listaNoticias = response.listaNoticias;
                 var noticia = [];
                 //Creacion de Menus
                 if (dataMenus.length > 0) {
@@ -60,7 +60,19 @@
                     $("#actividadesMes").append(appendActividades);
                 }
                 //Listado en Seccion de Noticias
-
+                console.log(response.mensajeerrorBD);
+                if (listaNoticias.length > 0) {
+                    $("#ticker01").html("");
+                    var appendNoticias = '';
+                    $.each(listaNoticias, function (index, noticia) {
+                        var fechaNoticiaBD = new Date(moment(noticia.Item1).format('YYYY-MM-DD'));
+                        var fechaNoticia = (fechaNoticiaBD.getDate() + 1) + " de " + meses[fechaNoticiaBD.getMonth()];
+                        var comentarioExtra = (noticia.Item3 === "actividad") ? "Actividad : " : "Cumpleaños de : ";
+                        appendNoticias += '<li><span>' + fechaNoticia + '</span><a href="#">' + comentarioExtra + noticia.Item2 + '</a></li>';
+                    })
+                    $("#ticker01").html(appendNoticias);
+                  
+                }
             }
         });
     };

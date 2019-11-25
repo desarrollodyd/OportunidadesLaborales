@@ -16,8 +16,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
-       
-        int fk_layout = 1;
+        
         // GET: IntranetPJ
         public ActionResult IntranetPJIndex()
         {
@@ -34,11 +33,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetActividadesEntidad> intranetActividadesCumpleanios = new List<IntranetActividadesEntidad>();
             IntranetActividadesEntidad intranetActividadCumpleanio = new IntranetActividadesEntidad();
 
-            List<PersonaEntidad> persona = new List<PersonaEntidad>();
+            List<PersonaEntidad> listaPersona = new List<PersonaEntidad>();
             claseError error = new claseError();
-            string mensajeerrormenus = "";
-            string mensajeerroractividades = "";
-            string mensajeerrorcumpleanios = "";
+
+            //Para rotulado de noticias
+            List<Tuple<DateTime ,string ,string >> listaNoticias = new List<Tuple<DateTime, string ,string>>();
+            List<Tuple<DateTime, string, string>> listaNoticiasDesordenado = new List<Tuple<DateTime, string, string>>();
+            Random randNum = new Random();
+
+            string mensajeerrorBD = "";
             string mensaje = "";
             bool respuesta = false;
             try {
@@ -48,32 +51,54 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 if (error.Key.Equals(string.Empty))
                 {
                     intranetMenu = menuTupla.intranetMenuLista;
+                    
                 }
                 else {
-                    mensajeerrormenus = error.Value;
+                    mensajeerrorBD += "Error en Menus: " + error.Value+"\n";
                 }
                 //listando actividades
-                var actividadesTupla = intranetActividadesbl.IntranetActividadesListarJson(fk_layout = 1);
+                var actividadesTupla = intranetActividadesbl.IntranetActividadesListarJson();
                 error = actividadesTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
                     intranetActividades = actividadesTupla.intranetActividadesLista;
+                    if (intranetActividades.Count > 0)
+                    {
+                        foreach (var m in intranetActividades)
+                        {
+                            listaNoticias.Add(Tuple.Create( m.act_fecha,  m.act_descripcion, "actividad"));
+                        }
+                    }
                 }
                 else
                 {
-                    mensajeerroractividades = error.Value;
+                    mensajeerrorBD += "Error en Actividades: " + error.Value + "\n";
                 }
                 //listando Cumpleaños
                 var cumpleaniosTupla = personabl.PersonaObtenerCumpleaniosporDia();
                 error = cumpleaniosTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    persona = cumpleaniosTupla.personaLista;
+                    listaPersona = cumpleaniosTupla.personaLista;
+                    if (listaPersona.Count > 0) {
+                        foreach (var m in listaPersona) {
+                            string descripcionNoticia = m.per_nombre + " " + m.per_apellido_pat + " " + m.per_apellido_mat;
+                            listaNoticias.Add(Tuple.Create(m.per_fechanacimiento, descripcionNoticia, "cumpleanios"));
+                        }
+                    }
                 }
                 else
                 {
-                    mensajeerrorcumpleanios = error.Value;
+                    mensajeerrorBD += "Error en Actividades: " + error.Value + "\n";
                 }
+                //desordenando lista de noticias
+                while (listaNoticias.Count > 0)
+                {
+                    int val = randNum.Next(0, listaNoticias.Count - 1);
+                    listaNoticiasDesordenado.Add(listaNoticias[val]);
+                    listaNoticias.RemoveAt(val);
+                }
+
                 respuesta = true;
                 mensaje = "Listando Data";
                 //listando
@@ -86,10 +111,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 new {
                     dataMenus = intranetMenu.ToList(),
                     dataActividades = intranetActividades.ToList(),
-                    dataCumpleanios =persona,
-                    respuesta =respuesta,
-                    mensaje =mensaje,
-                    error=error
+                    dataCumpleanios = listaPersona,
+                    respuesta = respuesta,
+                    mensaje = mensaje,
+                    listaNoticias = listaNoticiasDesordenado,
+                    mensajeerrorBD= mensajeerrorBD
                 });
         }
         

@@ -27,7 +27,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetActividadesEntidad> listaActividades = new List<IntranetActividadesEntidad>();
             try
             {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarJson(fk_layout);
+                var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarJson();
                 error = ActividadesTupla.error;
                 listaActividades = ActividadesTupla.intranetActividadesLista;
                 if (error.Key.Equals(string.Empty))

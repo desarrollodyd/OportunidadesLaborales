@@ -16,7 +16,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<IntranetActividadesEntidad> intranetActividadesLista, claseError error) IntranetActividadesListarJson(int fk_layout)
+        public (List<IntranetActividadesEntidad> intranetActividadesLista, claseError error) IntranetActividadesListarJson()
         {
             List<IntranetActividadesEntidad> lista = new List<IntranetActividadesEntidad>();
             claseError error = new claseError();
@@ -26,7 +26,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 	                                on act.fk_imagen = img.img_id
 	                                where extract(day from act.act_fecha)>=extract(day from (select current_date))
 	                                and extract(month from act.act_fecha)=extract(month from(select current_date))
-	                                and act.fk_layout=@p0
 	                                and act.act_estado='A'
                                     order by act.act_fecha asc
 	                                limit 8
@@ -37,7 +36,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_layout);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

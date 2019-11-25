@@ -16,20 +16,19 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<IntranetImagenEntidad> intranetImagenLista, claseError error) IntranetImagenListarJson(int fk_layout)
+        public (List<IntranetImagenEntidad> intranetImagenLista, claseError error) IntranetImagenListarJson()
         {
             List<IntranetImagenEntidad> lista = new List<IntranetImagenEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT 
-img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, img_estado
-	FROM intranet.int_imagen where fk_layout=@p0;";
+            string consulta = @"SELECT img_id, img_descripcion, img_nombre, 
+                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_elemento_modal
+	                                FROM intranet.int_imagen;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_layout);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -44,8 +43,9 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
                                     img_nombre = ManejoNulos.ManageNullStr(dr["img_nombre"]),
                                     img_extension = ManejoNulos.ManageNullStr(dr["img_extension"]),
                                     img_ubicacion = ManejoNulos.ManageNullStr(dr["img_ubicacion"]),
-                                    fk_layout = ManejoNulos.ManageNullInteger(dr["fk_layout"]),
                                     img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]),
+                                    fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]),
+                                    fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_emelento_modal"]),
 
                                 };
 
@@ -67,9 +67,9 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
         {
             IntranetImagenEntidad intranetImagen = new IntranetImagenEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT 
-                        img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, img_estado
-	                        FROM intranet.int_imagen where img_id=@p0;";
+            string consulta = @"SELECT img_id, img_descripcion, img_nombre, 
+                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_elemento_modal
+	                                FROM intranet.int_imagen where img_id=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -89,8 +89,9 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
                                 intranetImagen.img_nombre = ManejoNulos.ManageNullStr(dr["img_nombre"]);
                                 intranetImagen.img_extension = ManejoNulos.ManageNullStr(dr["img_extension"]);
                                 intranetImagen.img_ubicacion = ManejoNulos.ManageNullStr(dr["img_ubicacion"]);
-                                intranetImagen.fk_layout = ManejoNulos.ManageNullInteger(dr["fk_layout"]);
                                 intranetImagen.img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]);
+                                intranetImagen.fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]);
+                                intranetImagen.fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]);
                             }
                         }
                     }
@@ -109,8 +110,8 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
             int idIntranetImagenInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_imagen(
-	            img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, img_estado)
-	            VALUES ( @p0, @p1, @p2,@p3, @p4, @p5);
+	            img_descripcion, img_nombre, img_extension, img_ubicacion, img_estado,fk_elemento,fk_elemento_modal)
+	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7);
                 returning img_id;";
             claseError error = new claseError();
             try
@@ -123,8 +124,9 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetImagen.img_nombre));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetImagen.img_extension));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetImagen.img_ubicacion));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(intranetImagen.fk_layout));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetImagen.img_estado));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento_modal));
                     idIntranetImagenInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -143,7 +145,7 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_imagen
-	                    SET  img_descripcion=@p0, img_nombre=@p1, img_extension=@p2, img_ubicacion=@p3, fk_layout=@p4, img_estado=@p5
+	                    SET  img_descripcion=@p0, img_nombre=@p1, img_extension=@p2, img_ubicacion=@p3,  img_estado=@p5,fk_elemento=@p7,@fk_elemento_modal=@p8
 	                    WHERE img_id=@p6;";
             try
             {
@@ -155,9 +157,10 @@ img_id, img_descripcion, img_nombre, img_extension, img_ubicacion, fk_layout, im
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetImagen.img_nombre));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetImagen.img_extension));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetImagen.img_ubicacion));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(intranetImagen.fk_layout));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetImagen.img_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetImagen.img_id));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento_modal));
                     query.ExecuteNonQuery();
                     response = true;
                 }

@@ -117,7 +117,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\backupbd\cpj_backup_22-11-2019.backup" />
     <Content Include="Content\build\css\custom.css" />
     <Content Include="Content\build\css\custom.min.css" />
     <Content Include="Content\build\images\back_disabled.png" />
@@ -4727,10 +4726,14 @@
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetAplicativoEntidad.cs" />
-    <Compile Include="Entidades\IntranetPJ\IntranetIconoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetElementoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetElementoModalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetImagenEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
-    <Compile Include="Entidades\IntranetPJ\IntranetSliderEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\intranetSaludoCumpleanioEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetSeccionElementoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetSeccionEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetTipoElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetUsuarioEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetPreguntaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetRespuestaOLAEntidad.cs" />
@@ -4769,9 +4772,11 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetIconoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetImagenModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetTipoElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetUsuarioModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />
     <Compile Include="Models\Postulante\DetRespuestaOLAModel.cs" />
@@ -4863,6 +4868,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
+    <Folder Include="Content\backupbd\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
     <Folder Include="Views\IntranetActividades\" />

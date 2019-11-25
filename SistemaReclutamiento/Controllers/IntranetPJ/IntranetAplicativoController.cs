@@ -27,7 +27,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetAplicativoEntidad> listaAplicativo = new List<IntranetAplicativoEntidad>();
             try
             {
-                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoListarJson(fk_layout);
+                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoListarJson();
                 error = AplicativoTupla.error;
                 listaAplicativo = AplicativoTupla.intranetAplicativoLista;
                 if (error.Key.Equals(string.Empty))

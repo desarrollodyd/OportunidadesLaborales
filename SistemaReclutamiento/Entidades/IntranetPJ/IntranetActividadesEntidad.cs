@@ -14,10 +14,6 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string act_estado { get; set; }
         //imagen
         public string img_ubicacion { get; set; }
-        //cumpleaños de persona para listado de noticias
-        public string per_nombre { get; set; }
-        public string per_apellido_pat { get; set; }
-        public string per_apellido_mat { get; set; }
-        public string per_fechanacimiento { get; set; }
+ 
     }
 }

@@ -14,6 +14,5 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string apl_url { get; set; }
         public bool apl_blank { get; set; }
         public string apl_tipo { get; set; }
-        public int fk_layout { get; set; }
     }
 }

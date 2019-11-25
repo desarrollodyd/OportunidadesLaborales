@@ -16,7 +16,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<IntranetAplicativoEntidad> intranetAplicativoLista, claseError error) IntranetAplicativoListarJson(int fk_layout)
+        public (List<IntranetAplicativoEntidad> intranetAplicativoLista, claseError error) IntranetAplicativoListarJson()
         {
             List<IntranetAplicativoEntidad> lista = new List<IntranetAplicativoEntidad>();
             claseError error = new claseError();
@@ -28,15 +28,13 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     apl_url, 
                                     apl_blank, 
                                     apl_tipo, 
-                                    fk_layout
-	                                    FROM intranet.int_aplicativo where fk_layout=@p0;";
+	                                    FROM intranet.int_aplicativo";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", fk_layout);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -53,7 +51,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     apl_url = ManejoNulos.ManageNullStr(dr["apl_url"]),
                                     apl_blank = ManejoNulos.ManegeNullBool(dr["apl_blank"]),
                                     apl_tipo = ManejoNulos.ManageNullStr(dr["apl_tipo"]),
-                                    fk_layout = ManejoNulos.ManageNullInteger(dr["fk_layout"]),
 
                                 };
 
@@ -83,7 +80,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     apl_url, 
                                     apl_blank, 
                                     apl_tipo, 
-                                    fk_layout
 	                                    FROM intranet.int_aplicativo where apl_id=@p0;";
             try
             {
@@ -106,7 +102,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetAplicativo.apl_url = ManejoNulos.ManageNullStr(dr["apl_url"]);
                                 intranetAplicativo.apl_blank = ManejoNulos.ManegeNullBool(dr["apl_blank"]);
                                 intranetAplicativo.apl_tipo = ManejoNulos.ManageNullStr(dr["apl_tipo"]);
-                                intranetAplicativo.fk_layout = ManejoNulos.ManageNullInteger(dr["fk_layout"]);
                             }
                         }
                     }
@@ -125,8 +120,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetAplicativoInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_aplicativo(
-	            apl_descripcion, fk_icono, apl_url, apl_tipo, fk_layout, apl_estado, apl_blank)
-	            VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+	            apl_descripcion, fk_icono, apl_url, apl_tipo, apl_estado, apl_blank)
+	            VALUES (@p0, @p1, @p2, @p3, @p5, @p6)
                 returning apl_id;";
             claseError error = new claseError();
             try
@@ -139,7 +134,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_icono));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetAplicativo.apl_url));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetAplicativo.apl_tipo));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_layout));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetAplicativo.apl_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManegeNullBool(intranetAplicativo.apl_blank));
                     idIntranetAplicativoInsertado = Int32.Parse(query.ExecuteScalar().ToString());
@@ -160,7 +154,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_aplicativo
-	        SET apl_descripcion=@p0, fk_icono=@p1, apl_url=@p2, apl_tipo=@p3, fk_layout=@p4, apl_estado=@p5, apl_blank=@p6
+	        SET apl_descripcion=@p0, fk_icono=@p1, apl_url=@p2, apl_tipo=@p3, apl_estado=@p5, apl_blank=@p6
 	        WHERE apl_id=@p7;";
             try
             {
@@ -172,7 +166,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_icono));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetAplicativo.apl_url));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetAplicativo.apl_tipo));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_layout));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetAplicativo.apl_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManegeNullBool(intranetAplicativo.apl_blank));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetAplicativo.apl_id));
