@@ -3319,6 +3319,32 @@ h3.blocktitle {
     .nav-bar li img.logo {
         background-color:transparent;
     }
+
+
+    #singlepost header h1 {
+        padding: 10px 14px;
+    }
+
+    #singlepost header h1 {
+        padding: 0px 20px;
+        font-size: 24px;
+        margin-left: 10px;
+        margin-top: 10px;
+        min-height: 45px;
+    }
+    .excerpt{
+        text-align:center;
+    }
+
+    .tilesli div.thumb {
+        margin-bottom: 0px;
+        text-align: center;
+        padding-top: 6px;
+    }
+
+    .thumb img {
+        width: 45%;
+    }
 }
 
 ul.catlist {
@@ -3433,4 +3459,186 @@ blockquote p{
 
 blockquote {
     margin-bottom: 0px !important;
+    clear: both;
+}
+
+.ticarousel{
+    color:#fff;
+}
+
+.row .row {
+    margin: 6px -15px;
+}
+
+#mixedContent .overlay:hover > .title-carousel {
+    background: rgba(255, 0, 0, 0.63)!important;
+}
+
+/*//////////////////////////////slider*/
+.mixedContent {
+    width: 100%;
+    height: 172px;
+    position: relative;
+    display: block;
+    margin-bottom: 1px;
+}
+
+    .mixedContent .contentBox {
+        position: relative;
+        float: left;
+        display: block;
+        height: 172px;
+        width: 291px;
+        border: solid 0px #ccc;
+        margin: 0px 1px;
+        background: #000000;
+        /* If you don't want the images in the scroller to be selectable, try the following
+	   block of code. It's just a nice feature that prevent the images from
+	   accidentally becoming selected/inverted when the user interacts with the scroller. */
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
+
+        .mixedContent .contentBox img {
+            margin-bottom: 10px;
+            width: 100%;
+            opacity: 0.5;
+        }
+
+    .mixedContent .overlay:hover > .contentBox img {
+        opacity: 1;
+        -webkit-transition: all 0.5s ease-in-out;
+        -moz-transition: all 0.5s ease-in-out;
+        -o-transition: all 0.5s ease-in-out;
+        -ms-transition: all 0.5s ease-in-out;
+    }
+
+    .mixedContent .contentBox p {
+        font-size: 10px;
+    }
+
+.mixedContent .overlay, .mixedContent .overlay-active {
+    height: 100%;
+    width: 100%;
+    margin-top: -172px;
+    color: #FFFFFF;
+    padding: 0 10px 10px 10px;
+    position: absolute;
+}
+
+.mixedContent .overlay:hover > .title-carousel > a .ticarousel {
+    border-left: 3px solid #FFFFFF !important;
+}
+
+    .mixedContent .overlay:hover > .title-carousel {
+        background: rgba(255, 0, 0, 0.63);
+    }
+
+.mixedContent .overlay-active > .title-carousel {
+    background: #FF0000;
+    opacity: 0.5;
+}
+
+.mixedContent .overlay-active .title-carousel > a .ticarousel {
+    border-left: 3px solid #FFFFFF !important;
+}
+
+.slide_p {
+    margin-bottom: 20px;
+    
+}
+
+.onlyimgblank .contentBox {
+    background-color:transparent;
+    text-align: center;
+}
+
+.onlyimgblank .contentBox img {
+    width: 204px;
+    opacity: 1 !important;
+    height: 172px;
+}
+
+.onlyimgblank .title-carousel {
+    background-color: rgba(0, 0, 0, 0.42);
+    bottom: 12px;
+}
+
+ul.listreview li .ctitle {
+    font-size: 12px;
+    color: #FFFFFF;
+    line-height: 18px;
+    padding: 18px 30px 18px 14px;
+}
+
+.listreview {
+    padding: 0 12px 12px 12px;
+}
+
+.sponsor {
+    text-align: center;
+}
+
+    .sponsor img {
+        /*width: 50%;*/
+        width: auto;
+        height: 280px;
+    }
+
+
+/*///////////////////////////////////////////*/
+.pgwModal .pm-close {
+    cursor: pointer;
+    color: white;
+    background-color: #eae5e5;
+}
+
+.pgwModal .pm-title {
+    background: #080707 !important;
+    padding: 12px 0 10px !important;
+    border-bottom: 1px solid #d5d5d5 !important;
+    border-radius: 5px 5px 0 0;
+    font-size: 14px !important;
+    min-height: 30px !important;
+    color: #ffffff;
+}
+.space_ {
+    padding: 4px;
+    border: 1px solid #dedede;
+}
+
+.tilesli {
+    padding: 4px !important;
+}
+
+.tilesli div.itemblog {
+    background-color: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    cursor: pointer;
+}
+
+
+    .tilesli div.thumb {
+        margin-bottom:0px;
+        padding:4px;
+    }
+
+h2.ntitle {
+    font-size: 12px;
+    display: inline;
+    overflow: hidden;
+}
+
+[class*="column"] + [class*="column"]:last-child {
+    float: left !important;
+}
+
+#singlepost .postmeta .meta-date {
+    width: 100%; 
 }

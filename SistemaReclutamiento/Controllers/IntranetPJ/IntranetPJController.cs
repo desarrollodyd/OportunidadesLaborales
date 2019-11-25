@@ -118,11 +118,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     mensajeerrorBD= mensajeerrorBD
                 });
         }
-        
-
 
 
         public ActionResult somopj()
+        {
+            return View();
+        }
+
+        public ActionResult politicaspj()
+        {
+            return View();
+        }
+        public ActionResult mitiempopj()
+        {
+            return View();
+        }
+        public ActionResult misherramientaspj()
         {
             return View();
         }
