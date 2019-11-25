@@ -4926,7 +4926,6 @@
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />
-    <Compile Include="Models\IntranetPJ\IntranetIconoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetImagenModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetTipoElementoModel.cs" />

@@ -27,7 +27,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetImagenEntidad> listaImagen = new List<IntranetImagenEntidad>();
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenListarJson(fk_layout);
+                var ImagenTupla = intranetImagenbl.IntranetImagenListarJson();
                 error = ImagenTupla.error;
                 listaImagen = ImagenTupla.intranetImagenLista;
                 if (error.Key.Equals(string.Empty))
