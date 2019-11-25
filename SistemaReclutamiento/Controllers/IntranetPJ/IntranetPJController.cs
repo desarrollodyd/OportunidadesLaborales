@@ -92,11 +92,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     error=error
                 });
         }
-        
-
 
 
         public ActionResult somopj()
+        {
+            return View();
+        }
+
+        public ActionResult politicaspj()
+        {
+            return View();
+        }
+        public ActionResult mitiempopj()
+        {
+            return View();
+        }
+        public ActionResult misherramientaspj()
         {
             return View();
         }

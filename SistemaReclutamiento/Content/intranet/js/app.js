@@ -88,6 +88,10 @@
       touchScrolling: true
     });
 
+    $("#slidercontent").smoothDivScroll({
+        touchScrolling: true
+    });
+
     $(".contentBox .overlay").mouseover(function(){
      $(this).prev().css({
           opacity          : 1,

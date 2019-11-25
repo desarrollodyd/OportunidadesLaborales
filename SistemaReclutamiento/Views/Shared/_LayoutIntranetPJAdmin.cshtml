@@ -1,219 +1,596 @@
-﻿@using SistemaReclutamiento.Models;
-@using SistemaReclutamiento.Entidades;
-@using SistemaReclutamiento.Utilitarios;
-@*@{
-        int usu_id = 0;
-        int fk_persona = 0;
-        string usu_nombre = "";
-        string encriptado = "";
-
-        if (Session["usu_full"] == null || Session["per_full"] == null || Session["postulante"] == null)
-        {
-            Response.Redirect("~/");
-        }
-        else
-        {
-            UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
-
-            usu_id = usuario.usu_id;
-            usu_nombre = usuario.usu_nombre;
-            fk_persona = usuario.fk_persona;
-            encriptado = Seguridad.Encriptar(fk_persona.ToString());
-        }
-    }*@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="~/Content/images/icon.png">
-    <title>CORPORACION PJ</title>
 
-    <!-- Bootstrap -->
-    <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="~/Content/vendors/icomoon/styles.min.css" rel="stylesheet" />
-    <!-- NProgress -->
-    <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- jQuery custom content scroller -->
-    <link href="~/Content/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
-    <!-- iCheck -->
-    <link href="~/Content/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- Custom Theme Style -->
-    <link href="~/Content/build/css/custom.css" rel="stylesheet">
-    <link href="~/Content/vendors/toastr/toastr.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
-    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
-    <link href="~/Content/Site.css" rel="stylesheet" />
-    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
-    <link href="~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" />
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>SGC Intranet</title>
+
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/fonts.googleapis.com.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-rtl.min.css" />
+
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="~/Content/intranetSGC/assets/js/ace-extra.min.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="~/Content/intranetSGC/assets/js/html5shiv.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/respond.min.js"></script>
+    <![endif]-->
 </head>
 
-<body class="nav-md">
-    <div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
-    <div class="container body">
-        <div class="main_container">
-            <div class="col-md-3 left_col menu_fixed">
-                <div class="left_col scroll-view">
-                    <div class="navbar nav_title" style="border: 0;">
-                        <a href="~/" class="site_title">
-                            <i class="fa fa-newspaper-o" style="display:none;"></i>
-                            <div style="width: 48px;height: 48px;border: 1px solid #fff;float: left;margin-top: 7px;line-height: 0;padding: 1px;margin-right: 4px;">
-                                <img src="~/images/icon.png" alt="~/Content." class="profile_img" style="width: 44px;height: 44px;background: #fff;">
-                            </div>
-                            <span>Administrativo</span>
-                        </a>
-                    </div>
+<body class="no-skin">
+    <div id="navbar" class="navbar navbar-default          ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
 
-                    <div class="clearfix"></div>
+                <span class="icon-bar"></span>
 
-                    <!-- menu profile quick info -->
-                    <div class="profile clearfix" style="display:none;">
-                        <div class="profile_pic">
-                            <img src="~/images/icon.png" alt="~/Content." class="img-circle profile_img" style="border-radius:3%;">
-                        </div>
+                <span class="icon-bar"></span>
 
-                        <div class="clearfix"></div>
-                    </div>
-                    <!-- /menu profile quick info -->
-                    <!-- sidebar menu -->
-                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-                        <div class="menu_section">
-                            <ul class="nav side-menu" style="margin-left: -1px;">
-                                <li class="active">
-                                    <a><i class="fa fa-edit"></i> Perfil <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display:block;">
-                                        <li><a href="~/">Datos Personales</a></li>
-                                        <li><a href="~/Persona/EducacionBasicaVista">Educación Básica</a></li>
-                                        <li><a href="~/Persona/EducacionSuperiorVista">Educación Superior</a></li>
-                                        <li><a href="~/Persona/PostGradoVista">PostGrado</a></li>
-                                        <li><a href="~/Persona/OfimaticaVista">Ofimática</a></li>
-                                        <li><a href="~/Persona/IdiomasVista">Idiomas</a></li>
-                                        <li><a href="~/Persona/ExperienciaVista">Experiencia</a></li>
-                                        <li><a href="~/Persona/InformacionAdicionalVista">Información Adicional</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="~/OfertaLaboral/OfertaLaboralListarVista"><i class="fa fa-search"></i> Ofertas Laborales </a>
-                                </li>
-                                <li>
-                                    <a href="~/OfertaLaboral/OfertaLaboralListarMisPostulacionesVista"><i class="fa fa-briefcase"></i> Mis Postulaciones </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /sidebar menu -->
-                </div>
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="navbar-header pull-left">
+                <a href="index-2.html" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        Gestor de Contenidos
+                    </small>
+                </a>
             </div>
 
-            <!-- top navigation -->
-            <div class="top_nav">
-                <div class="nav_menu">
-                    <nav>
-                        <div class="nav toggle">
-                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-                        </div>
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img id="img_layout_post" src="~/images/user.png" alt="">@*@usu_nombre*@
-                                    <span class=" fa fa-angle-down"></span>
+                    <li class="light-blue dropdown-modal">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="~/Content/intranetSGC/assets/images/avatars/user.jpg" alt="Jason's Photo" />
+                            <span class="user-info">
+                                <small>Bienvenido,</small>
+                                Administrador
+                            </span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#">
+                                    <i class="ace-icon fa fa-cog"></i>
+                                    Configuracion
                                 </a>
-                                <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="#" id="btnDatosPersonales">Datos Personales</a></li>
-                                    <li><a href="#" id="btnCambiarPassword"><i class="fa fa-lock pull-right"></i> Cambiar Contraseña</a></li>
-                                    <li><a href="#" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i> Salir</a></li>
-                                </ul>
+                            </li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="#">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    Salir
+                                </a>
                             </li>
                         </ul>
-                    </nav>
-                </div>
+                    </li>
+                </ul>
             </div>
-            <!-- /top navigation -->
-            <!-- page content -->
-            <div class="right_col" role="main">
-                <div class="">
-                    <div class="row">
-                        @RenderBody()
-                    </div>
-                </div>
-            </div>
-            <!-- /page content -->
-            <!-- footer content -->
-            <footer>
-                <div class="pull-right foot">
-                    ©@DateTime.Now.Year Corporacion PJ
-                </div>
-                <div class="clearfix"></div>
-            </footer>
-            <!-- /footer content -->
-        </div>
+        </div><!-- /.navbar-container -->
     </div>
 
-    <!-- jQuery -->
-    <script src="~/Content/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="~/Content/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="~/Content/vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try { ace.settings.loadState('main-container') } catch (e) { }
+        </script>
 
-    <script src="~/Content/vendors/nprogress/nprogress.js"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
-    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
-    <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
-    <!-- Custom Theme Scripts -->
-    <script src="~/Content/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-    <script src="~/Content/vendors/toastr/toastr.min.js"></script>
-    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
-    <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
-    <script src="~/Content/vendors/moment/moment.js"></script>
-    <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
-    <script src="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.js"></script>
-    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
-    <script src="~/Content/vendors/jquery.inputmask/dist/jquery.inputmask.bundle.js"></script>
-    <script src="~/Content/build/js/custom.js"></script>
-    <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
+        <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+            <script type="text/javascript">
+                try { ace.settings.loadState('sidebar') } catch (e) { }
+            </script>
 
+            <ul class="nav nav-list">
+                <li class="active">
+                    <a href="index-2.html">
+                        <i class="menu-icon fa fa-tachometer"></i>
+                        <span class="menu-text"> Inicio </span>
+                    </a>
 
-    <script>
-        $("#btnCerrarSesion").click(function () {
-            $.ajax({
-                type: 'POST',
-                url: basePath + "/Login/PostulanteCerrarSesionLoginJson",
-                success: function (response) {
-                    var resp = response.respuesta;
-                    var msj = response.mensaje;
-                    if (resp) {
-                        window.location.replace(basePath);
-                    } else {
-                        alert(msj);
-                    }
-                }
-            });
-        });
-        $("#btnCambiarPassword").click(function () {
-            window.location.replace(basePath + "Persona/CambiarPasswordVista");
-        });
-        $("#btnDatosPersonales").click(function () {
-            window.location.replace(basePath)
-        })
+                    <b class="arrow"></b>
+                </li>
+
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-desktop"></i>
+                        <span class="menu-text">
+                            UI &amp; Elements
+                        </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+
+                                Layouts
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+
+                            <ul class="submenu">
+                                <li class="">
+                                    <a href="top-menu.html">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Top Menu
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="two-menu-1.html">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Two Menus 1
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="two-menu-2.html">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Two Menus 2
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="mobile-menu-1.html">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Default Mobile Menu
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="mobile-menu-2.html">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Mobile Menu 2
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="mobile-menu-3.html">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        Mobile Menu 3
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="">
+                            <a href="typography.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Typography
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="elements.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Elements
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="buttons.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Buttons &amp; Icons
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="content-slider.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Content Sliders
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="treeview.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Treeview
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="jquery-ui.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                jQuery UI
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="nestable-list.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Nestable Lists
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-caret-right"></i>
+
+                                Three Level Menu
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+
+                            <ul class="submenu">
+                                <li class="">
+                                    <a href="#">
+                                        <i class="menu-icon fa fa-leaf green"></i>
+                                        Item #1
+                                    </a>
+
+                                    <b class="arrow"></b>
+                                </li>
+
+                                <li class="">
+                                    <a href="#" class="dropdown-toggle">
+                                        <i class="menu-icon fa fa-pencil orange"></i>
+
+                                        4th level
+                                        <b class="arrow fa fa-angle-down"></b>
+                                    </a>
+
+                                    <b class="arrow"></b>
+
+                                    <ul class="submenu">
+                                        <li class="">
+                                            <a href="#">
+                                                <i class="menu-icon fa fa-plus purple"></i>
+                                                Add Product
+                                            </a>
+
+                                            <b class="arrow"></b>
+                                        </li>
+
+                                        <li class="">
+                                            <a href="#">
+                                                <i class="menu-icon fa fa-eye pink"></i>
+                                                View Products
+                                            </a>
+
+                                            <b class="arrow"></b>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-list"></i>
+                        <span class="menu-text"> Tables </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="tables.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Simple &amp; Dynamic
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="jqgrid.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                jqGrid plugin
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-pencil-square-o"></i>
+                        <span class="menu-text"> Forms </span>
+
+                        <b class="arrow fa fa-angle-down"></b>
+                    </a>
+
+                    <b class="arrow"></b>
+
+                    <ul class="submenu">
+                        <li class="">
+                            <a href="form-elements.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Form Elements
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="form-elements-2.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Form Elements 2
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="form-wizard.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Wizard &amp; Validation
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="wysiwyg.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Wysiwyg &amp; Markdown
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+
+                        <li class="">
+                            <a href="dropzone.html">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Dropzone File Upload
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="widgets.html">
+                        <i class="menu-icon fa fa-list-alt"></i>
+                        <span class="menu-text"> Widgets </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+  
+            </ul><!-- /.nav-list -->
+
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="main-content-inner">
+                @RenderBody()
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="#">Inicio</a>
+                        </li>
+                        <li class="active">Panel Inicial</li>
+                    </ul><!-- /.breadcrumb -->
+
+                    <div class="nav-search" id="nav-search">
+                        <form class="form-search">
+                            <span class="input-icon">
+                                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+                                <i class="ace-icon fa fa-search nav-search-icon"></i>
+                            </span>
+                        </form>
+                    </div><!-- /.nav-search -->
+                </div>
+
+                <div class="page-content">
+                    <div class="ace-settings-container" id="ace-settings-container">
+                        <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                            <i class="ace-icon fa fa-cog bigger-130"></i>
+                        </div>
+
+                        <div class="ace-settings-box clearfix" id="ace-settings-box">
+                            <div class="pull-left width-50">
+                                <div class="ace-settings-item">
+                                    <div class="pull-left">
+                                        <select id="skin-colorpicker" class="hide">
+                                            <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                                            <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                                            <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                                            <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                                        </select>
+                                    </div>
+                                    <span>&nbsp; Choose Skin</span>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-navbar" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-sidebar" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-breadcrumbs" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2 ace-save-state" id="ace-settings-add-container" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-add-container">
+                                        Inside
+                                        <b>.container</b>
+                                    </label>
+                                </div>
+                            </div><!-- /.pull-left -->
+
+                            <div class="pull-left width-50">
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+                                </div>
+
+                                <div class="ace-settings-item">
+                                    <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" autocomplete="off" />
+                                    <label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+                                </div>
+                            </div><!-- /.pull-left -->
+                        </div><!-- /.ace-settings-box -->
+                    </div><!-- /.ace-settings-container -->
+
+                    <div class="page-header">
+                        <h1>
+                            Panel Inicial
+                            <small>
+                                <i class="ace-icon fa fa-angle-double-right"></i>
+                                
+                            </small>
+                        </h1>
+                    </div><!-- /.page-header -->
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <!-- PAGE CONTENT BEGINS -->
+                            <div class="alert alert-block alert-success">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="ace-icon fa fa-times"></i>
+                                </button>
+
+                                <i class="ace-icon fa fa-check green"></i>
+
+                                Bienvenido
+                                <strong class="green">
+                                    Usuario
+                                    <small> Gestor de Contenidos Intranet(v1.4)</small>
+                                </strong>
+                            </div>
+
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.page-content -->
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">Corporacion PJ</span>
+                         &copy; 2019
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script src="~/Content/intranetSGC/assets/js/jquery-2.1.4.min.js"></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/intranetSGC/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script>
-    @RenderSection("js", required: false)
-</body>
-</html>
+    <script src="~/Content/intranetSGC/assets/js/bootstrap.min.js"></script>
 
+    <!-- page specific plugin scripts -->
+    <!--[if lte IE 8]>
+      <script src="assets/js/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="~/Content/intranetSGC/assets/js/jquery-ui.custom.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.easypiechart.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.sparkline.index.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.flot.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.flot.pie.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.flot.resize.min.js"></script>
+
+    <!-- ace scripts -->
+    <script src="~/Content/intranetSGC/assets/js/ace-elements.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
+
+    @RenderSection("js", required: false)
+
+</body>
+
+</html>
