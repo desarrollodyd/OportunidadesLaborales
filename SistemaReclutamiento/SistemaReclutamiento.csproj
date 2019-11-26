@@ -3909,8 +3909,12 @@
     <Content Include="Content\viewjs\Desarrollo\CrearSubMenusJs.js" />
     <Content Include="Content\viewjs\Desarrollo\PanelPrincipal.js" />
     <Content Include="Content\viewjs\general.js" />
+    <Content Include="Content\viewjs\generalIntranetAdmin.js" />
     <Content Include="Content\viewjs\generalIntranetPJ.js" />
     <Content Include="Content\viewjs\generalProveedor.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJActividades.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminIndex.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
@@ -5012,6 +5016,8 @@
     <Content Include="Views\IntranetPJ\politicaspj.cshtml" />
     <Content Include="Views\IntranetPJ\mitiempopj.cshtml" />
     <Content Include="Views\IntranetPJ\misherramientaspj.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJMenus.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJActividades.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
