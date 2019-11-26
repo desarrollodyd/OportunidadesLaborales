@@ -45,7 +45,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     img_ubicacion = ManejoNulos.ManageNullStr(dr["img_ubicacion"]),
                                     img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]),
                                     fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]),
-                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_emelento_modal"]),
+                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
 
                                 };
 
