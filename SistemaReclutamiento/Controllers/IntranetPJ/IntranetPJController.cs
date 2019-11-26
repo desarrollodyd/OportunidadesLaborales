@@ -13,25 +13,26 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
     public class IntranetPJController : Controller
     {
+        IntranetSeccionModel intraSeccionBL = new IntranetSeccionModel();
+        IntranetElementoModel intraElementobl = new IntranetElementoModel();
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
         
         // GET: IntranetPJ
-        public ActionResult IntranetPJIndex()
+        public ActionResult Index()
         {
-            return View();
+            return View("~/Views/IntranetPJ/IntranetPJIndex.cshtml");
         }
+
         [HttpPost]
-        public ActionResult IntranetPjListarDataInicialJson()
+        public ActionResult ListarDataJson(int menu_id)
         {
+
             //listar menus, cumpleaños, actividades, informacion de la Empresa, comentarios y Seccion PJ NEWS para el layout
-            
+            List<IntranetSeccionEntidad> intranetSeccion = new List<IntranetSeccionEntidad>();
             List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
             List<IntranetActividadesEntidad> intranetActividades = new List<IntranetActividadesEntidad>();
-            //Para Seccion Noticias
-            List<IntranetActividadesEntidad> intranetActividadesCumpleanios = new List<IntranetActividadesEntidad>();
-            IntranetActividadesEntidad intranetActividadCumpleanio = new IntranetActividadesEntidad();
 
             List<PersonaEntidad> listaPersona = new List<PersonaEntidad>();
             claseError error = new claseError();
@@ -40,7 +41,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<Tuple<DateTime ,string ,string >> listaNoticias = new List<Tuple<DateTime, string ,string>>();
             List<Tuple<DateTime, string, string>> listaNoticiasDesordenado = new List<Tuple<DateTime, string, string>>();
             Random randNum = new Random();
-
+            var ListaSeccion = new List<dynamic>();
             string mensajeerrorBD = "";
             string mensaje = "";
             bool respuesta = false;
@@ -89,7 +90,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 }
                 else
                 {
-                    mensajeerrorBD += "Error en Actividades: " + error.Value + "\n";
+                    mensajeerrorBD += "Error en Cumpleaños: " + error.Value + "\n";
                 }
                 //desordenando lista de noticias
                 while (listaNoticias.Count > 0)
@@ -98,6 +99,45 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     listaNoticiasDesordenado.Add(listaNoticias[val]);
                     listaNoticias.RemoveAt(val);
                 }
+                
+                var seccionesMenu = intraSeccionBL.IntranetSeccionListarxMenuIDJson(menu_id);
+                error = seccionesMenu.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetSeccion = seccionesMenu.intranetSeccionListaxMenuID;
+                    if (intranetSeccion.Count > 0)
+                    {
+                        
+                        foreach (var itemSt in intranetSeccion)
+                        {
+                            var ListaElementos = new List<dynamic>();
+                            var elementos = intraElementobl.IntranetElementoListarxSeccionIDJson(itemSt.sec_id);
+                            if (elementos.intranetElementoListaxSeccionID.Count > 0)
+                            {
+                                foreach (var itemElementos in elementos.intranetElementoListaxSeccionID)
+                                {
+                                    ListaElementos.Add(new { itemElementos.elem_id,
+                                        itemElementos.elem_titulo,
+                                        itemElementos.elem_descripcion,
+                                        itemElementos.elem_contenido,
+                                        itemElementos.elem_orden,
+                                        itemElementos.fk_seccion,
+                                        itemElementos.fk_tipo_elemento });
+                                }
+                            }
+
+                            ListaSeccion.Add(new { itemSt.sec_id,itemSt.sec_orden, elementos = ListaElementos });
+                        }
+                    }
+
+                }
+                else
+                {
+                    mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+                }
+
+
+
 
                 respuesta = true;
                 mensaje = "Listando Data";

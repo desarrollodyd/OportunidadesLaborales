@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetImagenEntidad> lista = new List<IntranetImagenEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT img_id, img_descripcion, img_nombre, 
-                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_elemento_modal
+                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_seccion_elemento
 	                                FROM intranet.int_imagen;";
             try
             {
@@ -45,7 +45,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     img_ubicacion = ManejoNulos.ManageNullStr(dr["img_ubicacion"]),
                                     img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]),
                                     fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]),
-                                    fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_emelento_modal"]),
+                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
 
                                 };
 
@@ -68,7 +68,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             IntranetImagenEntidad intranetImagen = new IntranetImagenEntidad();
             claseError error = new claseError();
             string consulta = @"SELECT img_id, img_descripcion, img_nombre, 
-                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_elemento_modal
+                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_seccion_elemento
 	                                FROM intranet.int_imagen where img_id=@p0;";
             try
             {
@@ -91,7 +91,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetImagen.img_ubicacion = ManejoNulos.ManageNullStr(dr["img_ubicacion"]);
                                 intranetImagen.img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]);
                                 intranetImagen.fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]);
-                                intranetImagen.fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]);
+                                intranetImagen.fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]);
                             }
                         }
                     }
@@ -110,7 +110,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetImagenInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_imagen(
-	            img_descripcion, img_nombre, img_extension, img_ubicacion, img_estado,fk_elemento,fk_elemento_modal)
+	            img_descripcion, img_nombre, img_extension, img_ubicacion, img_estado,fk_elemento,fk_seccion_elemento)
 	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7);
                 returning img_id;";
             claseError error = new claseError();
@@ -126,7 +126,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetImagen.img_ubicacion));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetImagen.img_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento));
-                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento_modal));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetImagen.fk_seccion_elemento));
                     idIntranetImagenInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -145,7 +145,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_imagen
-	                    SET  img_descripcion=@p0, img_nombre=@p1, img_extension=@p2, img_ubicacion=@p3,  img_estado=@p5,fk_elemento=@p7,@fk_elemento_modal=@p8
+	                    SET  img_descripcion=@p0, img_nombre=@p1, img_extension=@p2, img_ubicacion=@p3,  img_estado=@p5,fk_elemento=@p7,@fk_seccion_elemento=@p8
 	                    WHERE img_id=@p6;";
             try
             {
@@ -160,7 +160,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetImagen.img_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetImagen.img_id));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento));
-                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetImagen.fk_elemento_modal));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetImagen.fk_seccion_elemento));
                     query.ExecuteNonQuery();
                     response = true;
                 }

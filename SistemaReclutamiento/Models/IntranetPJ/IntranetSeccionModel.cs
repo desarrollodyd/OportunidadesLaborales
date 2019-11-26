@@ -58,6 +58,52 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetSeccionLista: lista, error: error);
         }
+
+        public (List<IntranetSeccionEntidad> intranetSeccionListaxMenuID, claseError error) IntranetSeccionListarxMenuIDJson(int menu_id)
+        {
+            List<IntranetSeccionEntidad> lista = new List<IntranetSeccionEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT sec_id, sec_orden, sec_estado, fk_menu
+	                                FROM intranet.int_seccion
+                                    where fk_menu=@p0
+                                        order by sec_orden;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", menu_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var Seccion = new IntranetSeccionEntidad
+                                {
+
+                                    sec_id = ManejoNulos.ManageNullInteger(dr["sec_id"]),
+                                    sec_orden = ManejoNulos.ManageNullInteger(dr["sec_orden"]),
+                                    sec_estado = ManejoNulos.ManageNullStr(dr["sec_estado"]),
+                                    fk_menu = ManejoNulos.ManageNullInteger(dr["fk_menu"]),
+                                };
+
+                                lista.Add(Seccion);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetSeccionListaxMenuID: lista, error: error);
+        }
+
         public (IntranetSeccionEntidad intranetSeccion, claseError error) IntranetSeccionIdObtenerJson(int sec_id)
         {
             IntranetSeccionEntidad intranetSeccion = new IntranetSeccionEntidad();

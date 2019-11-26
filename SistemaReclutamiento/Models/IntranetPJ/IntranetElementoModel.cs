@@ -64,6 +64,59 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetElementoLista: lista, error: error);
         }
+
+        public (List<IntranetElementoEntidad> intranetElementoListaxSeccionID, claseError error) IntranetElementoListarxSeccionIDJson(int seccion_id)
+        {
+            List<IntranetElementoEntidad> lista = new List<IntranetElementoEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT elem_id, elem_titulo, elem_descripcion, elem_contenido, elem_orden, 
+                                elem_posicion, elem_estado, fk_seccion, fk_tipo_elemento
+	                            FROM intranet.int_elemento
+                                where fk_seccion = @p0 
+                                order by elem_orden;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", seccion_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var Elemento = new IntranetElementoEntidad
+                                {
+
+                                    elem_id = ManejoNulos.ManageNullInteger(dr["elem_id"]),
+                                    elem_titulo = ManejoNulos.ManageNullStr(dr["elem_titulo"]),
+                                    elem_descripcion = ManejoNulos.ManageNullStr(dr["elem_descripcion"]),
+                                    elem_contenido = ManejoNulos.ManageNullStr(dr["elem_contenido"]),
+                                    elem_orden = ManejoNulos.ManageNullInteger(dr["elem_orden"]),
+                                    elem_posicion = ManejoNulos.ManageNullStr(dr["elem_posicion"]),
+                                    elem_estado = ManejoNulos.ManageNullStr(dr["elem_estado"]),
+                                    fk_seccion = ManejoNulos.ManageNullInteger(dr["fk_seccion"]),
+                                    fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
+                                };
+
+                                lista.Add(Elemento);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetElementoListaxSeccionID: lista, error: error);
+        }
+
+
         public (IntranetElementoEntidad intranetElemento, claseError error) IntranetElementoIdObtenerJson(int Elemento_id)
         {
             IntranetElementoEntidad intranetElemento = new IntranetElementoEntidad();

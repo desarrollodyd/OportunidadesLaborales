@@ -1,23 +1,21 @@
 ﻿var LayoutVista = function () {
-    var _inicio = function () {
-    };
-
-    var _CrearMenu = function () {
+    var _Layout = function () {
         var meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
             "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
         ];
         dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
         var diahoy = new Date();
+        var menuInicio = localStorage.getItem('posicionMenu');
         //console.log(meses[diahoy.getMonth()]);
         responseSimple({
-            url: "IntranetPJ/IntranetPjListarDataInicialJson",
+            url: "IntranetPJ/ListarDataJson",
+            data: JSON.stringify({ menu_id: menuInicio }),
             refresh: false,
             callBackSuccess: function (response) {
                 var dataMenus = response.dataMenus;
                 var dataCumpleanios = response.dataCumpleanios;
                 var dataActividades = response.dataActividades;
                 var listaNoticias = response.listaNoticias;
-                var noticia = [];
                 //Creacion de Menus
                 if (dataMenus.length > 0) {
                     $("#menuIntranet").html("");
@@ -30,10 +28,8 @@
                         appendMenuPrincipal += '<li class="' + clase + '"><a href="#" data-id="' + menu.menu_id+'" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
                         //noticia.push(menu.menu_titulo)
                     });
-
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
-
                 }
 
                 //Creacion de Aside para Cumpleaños
@@ -47,8 +43,8 @@
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
-
                 }
+
                 //Creacion de Aside Para Actividades
                 if (dataActividades.length > 0) {
                     $("#actividadesMes").html("");
@@ -61,8 +57,8 @@
                     appendActividades += '</ul></div >';
                     $("#actividadesMes").append(appendActividades);
                 }
+
                 //Listado en Seccion de Noticias
-                console.log(response.mensajeerrorBD);
                 if (listaNoticias.length > 0) {
                     $("#ticker01").html("");
                     var appendNoticias = '';
@@ -84,8 +80,7 @@
     //
     return {
         init: function () {
-            _inicio();
-            _CrearMenu();
+            _Layout();
         }
     }
 }();
