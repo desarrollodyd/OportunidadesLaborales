@@ -4857,10 +4857,10 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Controllers\IntranetPJ\IntranetActividadesController.cs" />
-    <Compile Include="Controllers\IntranetPJ\IntranetAplicativoController.cs" />
-    <Compile Include="Controllers\IntranetPJ\IntranetImagenController.cs" />
-    <Compile Include="Controllers\IntranetPJ\IntranetMenuController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetActividadesController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetAplicativoController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetImagenController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetMenuController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />

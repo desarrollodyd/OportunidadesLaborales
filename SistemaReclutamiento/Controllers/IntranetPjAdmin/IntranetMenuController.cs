@@ -7,68 +7,68 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SistemaReclutamiento.Controllers.IntranetPJ
+namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
-    public class IntranetImagenController : Controller
+    public class IntranetMenuController : Controller
     {
-        IntranetImagenModel intranetImagenbl = new IntranetImagenModel();
+        IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         claseError error = new claseError();
-        // GET: IntranetImagen
+        // GET: IntranetMenu
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult IntranetImagenListarJson(int fk_layout)
+        public ActionResult IntranetMenuListarJson()
         {
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            List<IntranetImagenEntidad> listaImagen = new List<IntranetImagenEntidad>();
+            List<IntranetMenuEntidad> listaMenus = new List<IntranetMenuEntidad>();
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenListarJson();
-                error = ImagenTupla.error;
-                listaImagen = ImagenTupla.intranetImagenLista;
+                var menuTupla = intranetMenubl.IntranetMenuListarJson();
+                error = menuTupla.error;
+                listaMenus = menuTupla.intranetMenuLista;
                 if (error.Key.Equals(string.Empty))
                 {
-                    mensaje = "Listando Imagenes";
+                    mensaje = "Listando Menus";
                     respuesta = true;
                 }
                 else
                 {
                     mensajeConsola = error.Value;
-                    mensaje = "No se Pudieron Listar las Imagenes";
+                    mensaje = "No se Pudieron Listar los Menus";
                 }
-
+                
             }
             catch (Exception exp)
             {
                 mensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = listaImagen.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+            return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola=mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetImagenInsertarJson(IntranetImagenEntidad intranetImagen)
+        public ActionResult IntranetMenuInsertarJson(IntranetMenuEntidad intranetMenu)
         {
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            int idIntranetImagenInsertado = 0;
+            int idIntranetMenuInsertado=0;
+            claseError error = new claseError();
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenInsertarJson(intranetImagen);
-                error = ImagenTupla.error;
-
-                if (error.Key.Equals(string.Empty))
-                {
+                var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
+                error = menuTupla.error;
+               
+                if (error.Key.Equals(string.Empty)){
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
-                    idIntranetImagenInsertado = ImagenTupla.idIntranetImagenInsertado;
+                    idIntranetMenuInsertado = menuTupla.idIntranetMenuInsertado;
                 }
                 else
                 {
-                    mensaje = "No se Pudo insertar las Imagen";
+                    mensaje = "No se Pudo insertar el Menu";
                     mensajeConsola = error.Value;
                 }
 
@@ -78,21 +78,21 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 mensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetImagenInsertado = idIntranetImagenInsertado, mensajeconsola = mensajeConsola });
+            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetMenuInsertado=idIntranetMenuInsertado,mensajeconsola=mensajeConsola});
         }
         [HttpPost]
-        public ActionResult IntranetImagenEditarJson(IntranetImagenEntidad intranetImagen)
+        public ActionResult IntranetMenuEditarJson(IntranetMenuEntidad intranetMenu)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
+            claseError error = new claseError();
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenEditarJson(intranetImagen);
-                error = ImagenTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    respuestaConsulta = ImagenTupla.intranetImagenEditado;
+                var menuTupla = intranetMenubl.IntranetMenuEditarJson(intranetMenu);
+                error = menuTupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    respuestaConsulta = menuTupla.intranetMenuEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
@@ -106,22 +106,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje,mensajeconsola=mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetImagenEliminarJson(int img_id)
+        public ActionResult IntranetMenuEliminarJson(int menu_id)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
+            claseError error = new claseError();
             string mensajeConsola = "";
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenEliminarJson(img_id);
-                error = ImagenTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    respuestaConsulta = ImagenTupla.intranetImagenEliminado;
-                    errormensaje = "Imagen Eliminada";
+                var menuTupla = intranetMenubl.IntranetMenuEliminarJson(menu_id);
+                error = menuTupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    respuestaConsulta = menuTupla.intranetMenuEliminado;
+                    errormensaje = "Menu Eliminado";
                 }
                 else
                 {
@@ -133,7 +133,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             {
                 errormensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje,mensajeconsola=mensajeConsola });
         }
     }
 }

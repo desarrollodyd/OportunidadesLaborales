@@ -7,38 +7,38 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SistemaReclutamiento.Controllers.IntranetPJ
+namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
-    public class IntranetAplicativoController : Controller
+    public class IntranetActividadesController : Controller
     {
-        IntranetAplicativoModel intranetAplicativobl = new IntranetAplicativoModel();
+        IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         claseError error = new claseError();
-        // GET: IntranetAplicativo
+        // GET: IntranetActividades
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult IntranetAplicativoListarJson(int fk_layout)
+        public ActionResult IntranetActividadesListarJson(int fk_layout)
         {
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            List<IntranetAplicativoEntidad> listaAplicativo = new List<IntranetAplicativoEntidad>();
+            List<IntranetActividadesEntidad> listaActividades = new List<IntranetActividadesEntidad>();
             try
             {
-                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoListarJson();
-                error = AplicativoTupla.error;
-                listaAplicativo = AplicativoTupla.intranetAplicativoLista;
+                var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarJson();
+                error = ActividadesTupla.error;
+                listaActividades = ActividadesTupla.intranetActividadesLista;
                 if (error.Key.Equals(string.Empty))
                 {
-                    mensaje = "Listando Aplicativos";
+                    mensaje = "Listando Actividadess";
                     respuesta = true;
                 }
                 else
                 {
                     mensajeConsola = error.Value;
-                    mensaje = "No se Pudieron Listar las Aplicativos";
+                    mensaje = "No se Pudieron Listar las Actividadess";
                 }
 
             }
@@ -46,29 +46,29 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             {
                 mensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = listaAplicativo.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+            return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetAplicativoInsertarJson(IntranetAplicativoEntidad intranetAplicativo)
+        public ActionResult IntranetActividadesInsertarJson(IntranetActividadesEntidad intranetActividades)
         {
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            int idIntranetAplicativoInsertado = 0;
+            int idIntranetActividadesInsertado = 0;
             try
             {
-                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoInsertarJson(intranetAplicativo);
-                error = AplicativoTupla.error;
+                var ActividadesTupla = intranetActividadesbl.IntranetActividadesInsertarJson(intranetActividades);
+                error = ActividadesTupla.error;
 
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
-                    idIntranetAplicativoInsertado = AplicativoTupla.idIntranetAplicativoInsertado;
+                    idIntranetActividadesInsertado = ActividadesTupla.idIntranetActividadesInsertado;
                 }
                 else
                 {
-                    mensaje = "No se Pudo insertar las Aplicativo";
+                    mensaje = "No se Pudo insertar las Actividades";
                     mensajeConsola = error.Value;
                 }
 
@@ -78,21 +78,21 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 mensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetAplicativoInsertado = idIntranetAplicativoInsertado, mensajeconsola = mensajeConsola });
+            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetActividadesInsertado = idIntranetActividadesInsertado, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetAplicativoEditarJson(IntranetAplicativoEntidad intranetAplicativo)
+        public ActionResult IntranetActividadesEditarJson(IntranetActividadesEntidad intranetActividades)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
             try
             {
-                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoEditarJson(intranetAplicativo);
-                error = AplicativoTupla.error;
+                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividades);
+                error = ActividadesTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = AplicativoTupla.intranetAplicativoEditado;
+                    respuestaConsulta = ActividadesTupla.intranetActividadesEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
@@ -109,19 +109,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetAplicativoEliminarJson(int apl_id)
+        public ActionResult IntranetActividadesEliminarJson(int act_id)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
             try
             {
-                var AplicativoTupla = intranetAplicativobl.IntranetAplicativoEliminarJson(apl_id);
-                error = AplicativoTupla.error;
+                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
+                error = ActividadesTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = AplicativoTupla.intranetAplicativoEliminado;
-                    errormensaje = "Aplicativo Eliminado";
+                    respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                    errormensaje = "Actividades Eliminado";
                 }
                 else
                 {

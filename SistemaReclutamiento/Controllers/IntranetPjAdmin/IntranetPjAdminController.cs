@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
+namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
     public class IntranetPjAdminController : Controller
     {
