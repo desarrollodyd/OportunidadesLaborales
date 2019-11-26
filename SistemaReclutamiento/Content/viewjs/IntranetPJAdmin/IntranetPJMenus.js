@@ -1,37 +1,83 @@
 ﻿var PanelMenus = function () {
 
     var _ListarMenus = function () {
+        if (!$().DataTable) {
+            console.warn('Advertencia - datatables.min.js no esta declarado.');
+            return;
+        }
         responseSimple({
-            url: "Super/MenuListarporTipoJson",
+            url: "IntranetMenu/IntranetMenuListarJson",
             refresh: false,
             callBackSuccess: function (response) {
-                console.log(response);
-                var respuesta = response.respuesta;
-                var datos = response.data;
-                if (respuesta) {
-                    $("#tbody_Menu").html("");
-                    $.each(datos, function (index, value) {
-                        var estado = "";
-                        if (value.men_estado == 'A') {
-                            estado = "ACTIVO";
+                simpleDataTable({
+                    uniform: false,
+                    tableNameVariable: "menusListado",
+                    table: ".datatable-menulistado",
+                    tableColumnsData: response.data,
+                    tableColumns: [
+                        {
+                            data: "menu_id",
+                            title: "",
+                            "bSortable": false,
+                            "render": function (value) {
+                                var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
+                                return check;
+                            }
+                        },
+                        {
+                            data: "menu_id",
+                            title: "ID",
+                        },
+                        {
+                            data: "menu_orden",
+                            title: "Orden",
+                          
+                        },
+                        {
+                            data: "menu_titulo",
+                            title: "Titulo"
+                        },
+                        {
+                            data: "menu_url",
+                            title: "URI"
+                        },
+                        {
+                            data: "menu_estado",
+                            title: "Estado",
+                            "render": function (value) {
+                                var estado = value;
+                                var mensaje_estado = "";
+                                if (estado === 'A') {
+                                    estado = "success";
+                                    mensaje_estado = "Activo";
+                                } else {
+                                    estado = "danger";
+                                    mensaje_estado = "InActivo";
+                                }
+                                var span = '<span class="label label-sm label-' + estado + ' arrowed arrowed-righ">' + mensaje_estado + '</span>';
+                                //var span = '<span class="badge badge-' + estado + '">' + mensaje_estado + '</span>';
+                                return span;
+                            }
+                        },
+                        {
+                            data: "menu_id",
+                            title: "Acciones",
+                            "render": function (value) {
+                                var span = '';
+                                var menu_id = value;
+                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id"' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
+                                return span;
+                            }
                         }
-                        else {
-                            estado = "INACTIVO";
-                        }
-                        $("#tbody_Menu").append('<tr><td>' + value.men_descripcion + '</td><td>' + value.men_icono + '</td><td>' + estado + '</td><td><button type="button" data-id="' + value.men_id + '" class="btn btn-success btn_submenu">Agregar Submenu</button></td></tr>');
-                    });
-                    if (datos.length == 0) {
-                        messageResponse({
-                            text: "No se Encontraron Registros",
-                            type: "warning"
-                        });
-                    }
-                    CloseMessages();
-                }
+
+                    ]
+                })
+                
             }
         });
     };
     var _componentes = function () {
+        
         $(document).on("click", "#btn_eliminar", function (e) {
             console.log("#btn eliminar");
             $("#frmMenu-form").submit();
@@ -60,26 +106,97 @@
         });
 
         $(document).on("click", "#btn_nuevo", function (e) {
+            $("#menu_id").val(0);
             $("#modalFormulario").modal("show");
         });
-
-        $(document).on("click", ".btn_submenu", function () {
-            var IdSala = $(this).data("id");
-            var url = basePath + "Super/CrearSubMenusView?men_id=" + IdSala;
-            window.location.href = url;
+        $(document).on('click', ".btn-guardar", function (e) {
+            $("#form_menus").submit();
+            if (_objetoForm_form_menus.valid()) {
+                var dataForm = $('#form_menus').serializeFormJSON();
+                responseSimple({
+                    url: "IntranetMenu/IntranetMenuGuardarJson",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        console.log(response);
+                        var respuesta = response.respuesta;
+                        if (respuesta) {
+                            //limpiar_form({ contenedor: "#form_menus" });
+                            //_objetoForm_form_menus.resetForm();
+                            PanelMenus.init_ListarMenus();
+                            //refresh(true);
+                        }
+                    }
+                });
+            } else {
+                messageResponse({
+                    text: "Complete los campos Obligatorios",
+                    type: "error"
+                })
+            }
+        })
+        $(document).on("click", ".btn-detalle", function () {
+            var menu_id = $(this).data("id");
+            var dataForm = { menu_id: menu_id };
+            responseSimple({
+                url: "IntranetMenu/IntranetMenuIdObtenerJson",
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                    //llenando datos en inputs
+                    if (response.respuesta) {
+                        var menu = response.data;
+                        $("#menu_titulo").val(menu.menu_titulo);
+                        $("#menu_url").val(menu.menu_url);
+                        $("#menu_orden").val(menu.menu_orden);
+                        $("#menu_estado").val(menu.menu_estado);
+                        menu.menu_blank == false ? $("#menu_blank").val("false") : $("#menu_blank").val("true");
+                        $("#menu_id").val(menu.menu_id);
+                        $("#modalFormulario").modal("show");
+                    }
+                }
+            })
         })
 
-        $(document).on("click", ".btn_delete", function (e) {
-            var men_id = $(this).data("id");
-            if (men_id != "" || men_id > 0) {
+        $(document).on("click", ".btn-editar", function () {
+            var menu_id = $(this).data("id");
+            var dataForm = { menu_id: menu_id };
+            responseSimple({
+                url: "IntranetMenu/IntranetMenuIdObtenerJson",
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                    //llenando datos en inputs
+                    if (response.respuesta) {
+                        var menu = response.data;
+                        $("#menu_titulo").val(menu.menu_titulo);
+                        $("#menu_url").val(menu.menu_url);
+                        $("#menu_orden").val(menu.menu_orden);
+                        $("#menu_estado").val(menu.menu_estado);
+                        menu.menu_blank == false ? $("#menu_blank").val("false") : $("#menu_blank").val("true");
+                        $("#menu_id").val(menu.menu_id);
+                        $("#modalFormulario").modal("show");
+                    }
+                }
+            })
+        })
+
+
+        $(document).on("click", ".btn-eliminar", function (e) {
+            var menu_id = $(this).data("id");
+            console.log(menu_id);
+            if (menu_id != "" || menu_id > 0) {
                 messageConfirmation({
                     callBackSAceptarComplete: function () {
                         responseSimple({
-                            url: "Super/MenuEliminarJson",
-                            data: JSON.stringify({ men_id: men_id }),
+                            url: "IntranetMenu/IntranetMenuEliminarJson",
+                            data: JSON.stringify({ menu_id: menu_id }),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                MenuVista.init_ListarMenus();
+                                PanelMenus.init_ListarMenus();
+                                //refresh(true);
                             }
                         });
                     }
@@ -96,28 +213,30 @@
 
     var _metodos = function () {
         validar_Form({
-            nameVariable: 'frmMenu',
-            contenedor: '#frmMenu-form',
+            nameVariable: 'form_menus',
+            contenedor: '#form_menus',
             rules: {
-                men_descripcion:
+                menu_titulo:
                 {
                     required: true,
 
                 },
-                men_icono:
+                menu_url:
                 {
                     required: true,
 
+                },
+                menu_orden: {
+                    required:true,
                 }
-
 
             },
             messages: {
-                men_descripcion:
+                menu_titulo:
                 {
                     required: 'Campo Obligatorio',
                 },
-                men_icono:
+                menu_url:
                 {
                     required: 'Campo Obligatorio',
                 }
@@ -132,7 +251,7 @@
     //
     return {
         init: function () {
-            //_ListarMenus();
+           _ListarMenus();
             _componentes();
             _metodos();
 
