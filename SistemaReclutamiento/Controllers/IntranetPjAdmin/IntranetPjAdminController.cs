@@ -14,11 +14,21 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
     {
         IntranetUsuarioModel usuariobl = new IntranetUsuarioModel();
         // GET: IntranetPjAdmin
-        public ActionResult IntranetPJAdminIndex()
+        public ActionResult Index()
         {
-            return View();
+            return View("~/Views/IntranetPJAdmin/IntranetPJAdminIndex.cshtml");
         }
-    #region Region Acceso a Mantenimiento Intranet PJ
+
+        public ActionResult PanelMenus()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJMenus.cshtml");
+        }
+        public ActionResult PanelActividades()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJActividades.cshtml");
+        }
+
+        #region Region Acceso a Mantenimiento Intranet PJ
         [HttpPost]
         public ActionResult IntranetPJValidarLoginJson(string usu_login, string usu_password)
         {

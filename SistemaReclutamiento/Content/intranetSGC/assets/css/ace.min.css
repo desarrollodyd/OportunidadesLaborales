@@ -22902,3 +22902,28 @@ input.typeahead.scrollable ~ .tt-menu {
     background-color: #0e0e0e;
     color: #ffffff;
 }
+
+.no-skin .nav-list > li > .submenu li.open > a {
+    color: #ffffff;
+}
+
+.no-skin .nav-list .open > a, .no-skin .nav-list .open > a:focus {
+    background-color: #0e0e0e;
+}
+
+.no-skin .nav-list > li .submenu > li > a:hover {
+    color: #ffffff;
+    background-color: #0e0e0e;
+}
+
+.no-skin .sidebar.menu-min .nav-list > li > .arrow:after {
+    border-right-color: #e21c1c;
+}
+
+.no-skin .nav-list li > .arrow:before {
+    border-right-color: #d42d2d;
+}
+
+.no-skin .sidebar.menu-min .nav-list > li > a > .menu-text {
+    background-color: #0e0e0e;
+}
