@@ -4883,7 +4883,7 @@
     <Compile Include="Entidades\IntranetPJ\IntranetElementoModalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetImagenEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
-    <Compile Include="Entidades\IntranetPJ\intranetSaludoCumpleanioEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetSaludoCumpleanioEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetTipoElementoEntidad.cs" />
@@ -4925,9 +4925,13 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetImagenModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetSaludoCumpleaniosModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetSeccionElementoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetSeccionModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetTipoElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetUsuarioModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />

@@ -12,7 +12,7 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string emod_descripcion { get; set; }
         public string emod_contenido { get; set; }
         public int emod_orden { get; set; }
-        public int emod_posicion { get; set; }
+        public string emod_posicion { get; set; }
         public int fk_seccion_elemento { get; set; }
         public int fk_tipo_elemento { get; set; }
         public string emod_estado { get; set; }

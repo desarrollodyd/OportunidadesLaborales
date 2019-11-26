@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades.IntranetPJ
 {
-    public class intranetSaludoCumpleanioEntidad
+    public class IntranetSaludoCumpleanioEntidad
     {
         public int sld_id { get; set; }
         public string sld_cuerpo { get; set; }
