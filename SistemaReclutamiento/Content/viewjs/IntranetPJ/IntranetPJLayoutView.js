@@ -27,13 +27,15 @@
                     $.each(dataMenus, function (index, menu) {
                         appendMenuLateral += '<li><a href="' + menu.menu_url + '">' + menu.menu_titulo + '</a></li>';
                         var clase = (index == 0) ? "active" : "";
-                        appendMenuPrincipal += '<li class="' + clase + '"><a href="' + menu.menu_url + '" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
+                        appendMenuPrincipal += '<li class="' + clase + '"><a href="#" data-id="' + menu.menu_id+'" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
                         //noticia.push(menu.menu_titulo)
                     });
 
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
+
                 }
+
                 //Creacion de Aside para Cumpleaños
                 if (dataCumpleanios.length > 0) {
                     $("#cumpleaniosIntranet").html("");
@@ -67,10 +69,11 @@
                     $.each(listaNoticias, function (index, noticia) {
                         var fechaNoticiaBD = new Date(moment(noticia.Item1).format('YYYY-MM-DD'));
                         var fechaNoticia = (fechaNoticiaBD.getDate() + 1) + " de " + meses[fechaNoticiaBD.getMonth()];
-                        var comentarioExtra = (noticia.Item3 === "actividad") ? "Actividad : " : "Cumpleaños de : ";
+                        var comentarioExtra = noticia.Item3;
                         appendNoticias += '<li><span>' + fechaNoticia + '</span><a href="#">' + comentarioExtra + noticia.Item2 + '</a></li>';
                     })
                     $("#ticker01").html(appendNoticias);
+                    $("ul#ticker01").liScroll().css({ 'opacity': 1 });
                   
                 }
             }

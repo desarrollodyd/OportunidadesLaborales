@@ -23,7 +23,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"SELECT 
                                     apl_id, 
                                     apl_descripcion, 
-                                    fk_icono, 
+                                    fk_imagen, 
                                     apl_estado, 
                                     apl_url, 
                                     apl_blank, 
@@ -46,7 +46,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
                                     apl_id = ManejoNulos.ManageNullInteger(dr["apl_id"]),
                                     apl_descripcion = ManejoNulos.ManageNullStr(dr["apl_descripcion"]),
-                                    fk_icono = ManejoNulos.ManageNullInteger(dr["fk_icono"]),
+                                    fk_imagen = ManejoNulos.ManageNullInteger(dr["fk_imagen"]),
                                     apl_estado = ManejoNulos.ManageNullStr(dr["apl_estado"]),
                                     apl_url = ManejoNulos.ManageNullStr(dr["apl_url"]),
                                     apl_blank = ManejoNulos.ManegeNullBool(dr["apl_blank"]),
@@ -75,7 +75,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"SELECT 
                                     apl_id, 
                                     apl_descripcion, 
-                                    fk_icono, 
+                                    fk_imagen, 
                                     apl_estado, 
                                     apl_url, 
                                     apl_blank, 
@@ -97,7 +97,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
                                 intranetAplicativo.apl_id = ManejoNulos.ManageNullInteger(dr["apl_id"]);
                                 intranetAplicativo.apl_descripcion = ManejoNulos.ManageNullStr(dr["apl_descripcion"]);
-                                intranetAplicativo.fk_icono = ManejoNulos.ManageNullInteger(dr["fk_icono"]);
+                                intranetAplicativo.fk_imagen = ManejoNulos.ManageNullInteger(dr["fk_imagen"]);
                                 intranetAplicativo.apl_estado = ManejoNulos.ManageNullStr(dr["apl_estado"]);
                                 intranetAplicativo.apl_url = ManejoNulos.ManageNullStr(dr["apl_url"]);
                                 intranetAplicativo.apl_blank = ManejoNulos.ManegeNullBool(dr["apl_blank"]);
@@ -120,7 +120,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetAplicativoInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_aplicativo(
-	            apl_descripcion, fk_icono, apl_url, apl_tipo, apl_estado, apl_blank)
+	            apl_descripcion, fk_imagen, apl_url, apl_tipo, apl_estado, apl_blank)
 	            VALUES (@p0, @p1, @p2, @p3, @p5, @p6)
                 returning apl_id;";
             claseError error = new claseError();
@@ -131,7 +131,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetAplicativo.apl_descripcion));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_icono));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_imagen));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetAplicativo.apl_url));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetAplicativo.apl_tipo));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetAplicativo.apl_estado));
@@ -154,7 +154,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_aplicativo
-	        SET apl_descripcion=@p0, fk_icono=@p1, apl_url=@p2, apl_tipo=@p3, apl_estado=@p5, apl_blank=@p6
+	        SET apl_descripcion=@p0, fk_imagen=@p1, apl_url=@p2, apl_tipo=@p3, apl_estado=@p5, apl_blank=@p6
 	        WHERE apl_id=@p7;";
             try
             {
@@ -163,7 +163,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetAplicativo.apl_descripcion));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_icono));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetAplicativo.fk_imagen));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetAplicativo.apl_url));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetAplicativo.apl_tipo));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetAplicativo.apl_estado));

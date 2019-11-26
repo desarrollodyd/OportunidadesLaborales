@@ -19,7 +19,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return View();
         }
         [HttpPost]
-        public ActionResult IntranetAplicativoListarJson(int fk_layout)
+        public ActionResult IntranetAplicativoListarJson()
         {
             string mensaje = "";
             string mensajeConsola = "";

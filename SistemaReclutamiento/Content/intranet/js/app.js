@@ -230,7 +230,7 @@
 
     /*1.9 ========== Newsticker  ============*/
 
-    $("ul#ticker01").liScroll().css({'opacity':1});
+    
     
     /*1.11 ========== Breadcumb  ============*/
     $('.breadcrumbs').css({'opacity':1,
