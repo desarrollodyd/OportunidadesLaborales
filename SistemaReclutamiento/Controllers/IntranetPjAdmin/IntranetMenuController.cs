@@ -49,6 +49,36 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola=mensajeConsola });
         }
         [HttpPost]
+        public ActionResult IntranetMenuIdObtenerJson(int menu_id)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            IntranetMenuEntidad menu = new IntranetMenuEntidad();
+            try
+            {
+                var menuTupla = intranetMenubl.IntranetMenuIdObtenerJson(menu_id);
+                error = menuTupla.error;
+                menu = menuTupla.intranetMenu;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Obteniendo Informacion del Menu Seleccionado";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudo Obtener La Informacionb del Menu Seleccionado";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = menu, respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
         public ActionResult IntranetMenuInsertarJson(IntranetMenuEntidad intranetMenu)
         {
             string mensaje = "";
@@ -134,6 +164,69 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 errormensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje,mensajeconsola=mensajeConsola });
+        }
+        [HttpPost]
+        public ActionResult IntranetMenuGuardarJson(IntranetMenuEntidad intranetMenu) {
+            string mensaje = "";
+            string mensajeConsola = "";
+            string accion = "";
+            bool respuesta = false;
+            int idIntranetMenuInsertado = 0;
+            claseError error = new claseError();
+            if (intranetMenu.menu_id == 0)
+            {
+                //Insertar
+                try
+                {
+                    var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
+                    error = menuTupla.error;
+
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        mensaje = "Se Registró Correctamente";
+                        respuesta = true;
+                        idIntranetMenuInsertado = menuTupla.idIntranetMenuInsertado;
+                        accion = "Insertado";
+                    }
+                    else
+                    {
+                        mensaje = "No se Pudo insertar el Menu";
+                        mensajeConsola = error.Value;
+                    }
+
+                }
+                catch (Exception exp)
+                {
+                    mensaje = exp.Message + " ,Llame Administrador";
+                }
+
+            }
+            else {
+                //Editar
+                try
+                {
+                    var menuTupla = intranetMenubl.IntranetMenuEditarJson(intranetMenu);
+                    error = menuTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        respuesta = menuTupla.intranetMenuEditado;
+                        mensaje = "Se Editó Correctamente";
+                        accion = "Editado";
+                    }
+                    else
+                    {
+                        mensajeConsola = error.Value;
+                        mensaje = "Error, no se Puede Editar";
+                    }
+                }
+                catch (Exception exp)
+                {
+                    mensaje = exp.Message + " ,Llame Administrador";
+                }
+            }
+          
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola,accion=accion });
         }
     }
 }
