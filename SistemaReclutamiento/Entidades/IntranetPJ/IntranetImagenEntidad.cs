@@ -14,6 +14,8 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string img_ubicacion { get; set; }
         public string img_estado { get; set; }
         public int fk_elemento { get; set; }
+        public int img_orden { get; set; }
+        public string img_posicion { get; set; }
         public int fk_seccion_elemento { get; set; }
     }
 }

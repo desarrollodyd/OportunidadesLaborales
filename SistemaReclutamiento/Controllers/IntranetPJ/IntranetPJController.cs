@@ -15,6 +15,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
     {
         IntranetSeccionModel intraSeccionBL = new IntranetSeccionModel();
         IntranetElementoModel intraElementobl = new IntranetElementoModel();
+        IntranetImagenModel intraImagenbl = new IntranetImagenModel();
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
@@ -116,6 +117,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                             {
                                 foreach (var itemElementos in elementos.intranetElementoListaxSeccionID)
                                 {
+                                    var ListaElementosImagen = new List<dynamic>();
+                                    var elementosImagen = intraImagenbl.IntranetImagenListarxElementoIDJson(itemSt.sec_id);
+
+
+
                                     ListaElementos.Add(new { itemElementos.elem_id,
                                         itemElementos.elem_titulo,
                                         itemElementos.elem_descripcion,

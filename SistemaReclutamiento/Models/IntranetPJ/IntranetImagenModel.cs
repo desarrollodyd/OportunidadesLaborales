@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetImagenEntidad> lista = new List<IntranetImagenEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT img_id, img_descripcion, img_nombre, 
-                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_seccion_elemento
+                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_seccion_elemento,img_orden,img_posicion
 	                                FROM intranet.int_imagen;";
             try
             {
@@ -46,7 +46,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]),
                                     fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]),
                                     fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
-
+                                    img_orden = ManejoNulos.ManageNullInteger(dr["img_orden"]),
+                                    img_posicion = ManejoNulos.ManageNullStr(dr["img_posicion"]),
                                 };
 
                                 lista.Add(Imagen);
@@ -63,6 +64,59 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetImagenLista: lista, error: error);
         }
+
+        public (List<IntranetImagenEntidad> intranetImagenListaxElementoID, claseError error) IntranetImagenListarxElementoIDJson(int elemento_id)
+        {
+            List<IntranetImagenEntidad> lista = new List<IntranetImagenEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT img_id, img_descripcion, img_nombre, 
+                                img_extension, img_ubicacion, img_estado, fk_elemento, fk_seccion_elemento,img_orden,img_posicion
+	                                FROM intranet.int_imagen 
+                                    where fk_elemento=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", elemento_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var Imagen = new IntranetImagenEntidad
+                                {
+
+                                    img_id = ManejoNulos.ManageNullInteger(dr["img_id"]),
+                                    img_descripcion = ManejoNulos.ManageNullStr(dr["img_descripcion"]),
+                                    img_nombre = ManejoNulos.ManageNullStr(dr["img_nombre"]),
+                                    img_extension = ManejoNulos.ManageNullStr(dr["img_extension"]),
+                                    img_ubicacion = ManejoNulos.ManageNullStr(dr["img_ubicacion"]),
+                                    img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]),
+                                    fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]),
+                                    img_orden = ManejoNulos.ManageNullInteger(dr["img_orden"]),
+                                    img_posicion = ManejoNulos.ManageNullStr(dr["img_posicion"]),
+                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
+
+                                };
+
+                                lista.Add(Imagen);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetImagenListaxElementoID: lista, error: error);
+        }
+
         public (IntranetImagenEntidad intranetImagen, claseError error) IntranetImagenIdObtenerJson(int img_id)
         {
             IntranetImagenEntidad intranetImagen = new IntranetImagenEntidad();
@@ -92,6 +146,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetImagen.img_estado = ManejoNulos.ManageNullStr(dr["img_estado"]);
                                 intranetImagen.fk_elemento = ManejoNulos.ManageNullInteger(dr["fk_elemento"]);
                                 intranetImagen.fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]);
+                                intranetImagen.img_orden = ManejoNulos.ManageNullInteger(dr["img_orden"]);
+                                intranetImagen.img_posicion = ManejoNulos.ManageNullStr(dr["img_posicion"]);
                             }
                         }
                     }
