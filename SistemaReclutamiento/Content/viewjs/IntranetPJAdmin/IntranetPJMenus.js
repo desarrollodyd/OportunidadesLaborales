@@ -65,7 +65,7 @@
                             "render": function (value) {
                                 var span = '';
                                 var menu_id = value;
-                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id"' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
+                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + menu_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + menu_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + menu_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
                                 return span;
                             }
                         }
@@ -78,35 +78,22 @@
     };
     var _componentes = function () {
         
-        $(document).on("click", "#btn_eliminar", function (e) {
-            console.log("#btn eliminar");
-            $("#frmMenu-form").submit();
-            if (_objetoForm_frmMenu.valid()) {
-                var dataForm = $('#frmMenu-form').serializeFormJSON();
-                responseSimple({
-                    url: "Super/MenuInsertarJson",
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-
-                        var respuesta = response.respuesta;
-                        if (respuesta) {
-                            limpiar_form({ contenedor: "#frmMenu-form" });
-                            _objetoForm_frmMenu.resetForm();
-                            MenuVista.init_ListarMenus();
-                        }
-                    }
-                });
-            } else {
-                messageResponse({
-                    text: "Complete los campos Obligatorios",
-                    type: "error"
-                })
-            }
-        });
-
         $(document).on("click", "#btn_nuevo", function (e) {
             $("#menu_id").val(0);
+            $("#menu_titulo").prop('disabled', false);
+            $("#menu_url").prop('disabled', false);
+            $("#menu_orden").prop('disabled', false);
+            $("#menu_estado").prop('disabled', false);
+            $("#menu_blank").prop('disabled', false);
+
+            $("#menu_titulo").val("");
+            $("#menu_url").val("");
+            $("#menu_orden").val(1);
+            $("#menu_estado").val("A");
+            $("#menu_blank").val("false");
+
+            $(".btn-guardar").show();
+
             $("#modalFormulario").modal("show");
         });
         $(document).on('click', ".btn-guardar", function (e) {
@@ -137,6 +124,7 @@
         })
         $(document).on("click", ".btn-detalle", function () {
             var menu_id = $(this).data("id");
+            console.log(menu_id);
             var dataForm = { menu_id: menu_id };
             responseSimple({
                 url: "IntranetMenu/IntranetMenuIdObtenerJson",
@@ -152,7 +140,16 @@
                         $("#menu_orden").val(menu.menu_orden);
                         $("#menu_estado").val(menu.menu_estado);
                         menu.menu_blank == false ? $("#menu_blank").val("false") : $("#menu_blank").val("true");
+
                         $("#menu_id").val(menu.menu_id);
+
+                        $("#menu_titulo").prop('disabled', true);
+                        $("#menu_url").prop('disabled', true);
+                        $("#menu_orden").prop('disabled', true);
+                        $("#menu_estado").prop('disabled', true);
+                        $("#menu_blank").prop('disabled', true);
+                        $(".btn-guardar").hide();
+
                         $("#modalFormulario").modal("show");
                     }
                 }
@@ -177,6 +174,14 @@
                         $("#menu_estado").val(menu.menu_estado);
                         menu.menu_blank == false ? $("#menu_blank").val("false") : $("#menu_blank").val("true");
                         $("#menu_id").val(menu.menu_id);
+
+                        $("#menu_titulo").prop('disabled', false);
+                        $("#menu_url").prop('disabled', false);
+                        $("#menu_orden").prop('disabled', false);
+                        $("#menu_estado").prop('disabled', false);
+                        $("#menu_blank").prop('disabled', false);
+                        $(".btn-guardar").show();
+
                         $("#modalFormulario").modal("show");
                     }
                 }
