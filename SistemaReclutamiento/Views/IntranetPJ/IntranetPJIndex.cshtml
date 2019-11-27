@@ -4,6 +4,13 @@
 }
 
 
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@{
+    String menu_id = new JavaScriptSerializer().Serialize(ViewBag.menu_id);
+}
+
 <section id="singlepost">
     <header>
         <div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>
@@ -78,7 +85,7 @@
     <article>
 
         <div class="post-content" style="padding:0px;">
-            
+
             <section id="cat2news">
                 <!-- Block Featured  -->
                 <div class="featured">
@@ -137,3 +144,11 @@
     </article>
 </section>
 <div class="separador"></div>
+
+@section js
+{
+    <script type="text/javascript">
+    menu_id = (@Html.Raw(menu_id));
+    </script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
+}
