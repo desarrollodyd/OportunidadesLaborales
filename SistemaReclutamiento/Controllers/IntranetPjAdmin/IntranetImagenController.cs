@@ -11,7 +11,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
     public class IntranetImagenController : Controller
     {
-        IntranetImagenModel intranetImagenbl = new IntranetImagenModel();
+        IntranetDetalleElementoModel intranetImagenbl = new IntranetDetalleElementoModel();
         claseError error = new claseError();
         // GET: IntranetImagen
         public ActionResult Index()
@@ -24,7 +24,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            List<IntranetImagenEntidad> listaImagen = new List<IntranetImagenEntidad>();
+            List<IntranetDetalleElementoEntidad> listaImagen = new List<IntranetDetalleElementoEntidad>();
             try
             {
                 var ImagenTupla = intranetImagenbl.IntranetImagenListarJson();
@@ -49,7 +49,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return Json(new { data = listaImagen.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetImagenInsertarJson(IntranetImagenEntidad intranetImagen)
+        public ActionResult IntranetImagenInsertarJson(IntranetDetalleElementoEntidad intranetImagen)
         {
             string mensaje = "";
             string mensajeConsola = "";
@@ -81,7 +81,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetImagenInsertado = idIntranetImagenInsertado, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetImagenEditarJson(IntranetImagenEntidad intranetImagen)
+        public ActionResult IntranetImagenEditarJson(IntranetDetalleElementoEntidad intranetImagen)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;

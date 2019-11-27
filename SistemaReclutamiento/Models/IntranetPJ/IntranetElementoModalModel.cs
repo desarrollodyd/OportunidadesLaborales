@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetElementoModalEntidad> lista = new List<IntranetElementoModalEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT emod_id, emod_titulo, emod_descripcion, emod_contenido, 
-                                emod_orden, emod_posicion, fk_seccion_elemento, fk_tipo_elemento, emod_estado
+                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado
 	                            FROM intranet.int_elemento_modal    
                                 order by emod_orden;";
             try
@@ -44,7 +44,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     emod_descripcion = ManejoNulos.ManageNullStr(dr["emod_descripcion"]),
                                     emod_contenido = ManejoNulos.ManageNullStr(dr["emod_contenido"]),
                                     emod_orden = ManejoNulos.ManageNullInteger(dr["emod_orden"]),
-                                    emod_posicion = ManejoNulos.ManageNullStr(dr["emod_posicion"]),
                                     fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
                                     fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
                                     emod_estado = ManejoNulos.ManageNullStr(dr["emod_estado"]),
@@ -64,12 +63,62 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetElementoModalLista: lista, error: error);
         }
+
+        public (List<IntranetElementoModalEntidad> intranetElementoModalListaxseccionelementoID, claseError error) IntranetElementoModalListarxSeccionElementoIDJson(int seccion_elemento_id)
+        {
+            List<IntranetElementoModalEntidad> lista = new List<IntranetElementoModalEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT emod_id, emod_titulo, emod_descripcion, emod_contenido, 
+                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado
+	                            FROM intranet.int_elemento_modal   
+                                where fk_seccion_elemento = @p0
+                                order by emod_orden;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", seccion_elemento_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var ElementoModal = new IntranetElementoModalEntidad
+                                {
+
+                                    emod_id = ManejoNulos.ManageNullInteger(dr["emod_id"]),
+                                    emod_titulo = ManejoNulos.ManageNullStr(dr["emod_titulo"]),
+                                    emod_descripcion = ManejoNulos.ManageNullStr(dr["emod_descripcion"]),
+                                    emod_contenido = ManejoNulos.ManageNullStr(dr["emod_contenido"]),
+                                    emod_orden = ManejoNulos.ManageNullInteger(dr["emod_orden"]),
+                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
+                                    fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
+                                    emod_estado = ManejoNulos.ManageNullStr(dr["emod_estado"]),
+                                };
+
+                                lista.Add(ElementoModal);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetElementoModalListaxseccionelementoID: lista, error: error);
+        }
         public (IntranetElementoModalEntidad intranetElementoModal, claseError error) IntranetElementoModalIdObtenerJson(int emod_id)
         {
             IntranetElementoModalEntidad intranetElementoModal = new IntranetElementoModalEntidad();
             claseError error = new claseError();
             string consulta = @"SELECT emod_id, emod_titulo, emod_descripcion, emod_contenido, 
-                                emod_orden, emod_posicion, fk_seccion_elemento, fk_tipo_elemento, emod_estado
+                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado
 	                            FROM intranet.int_elemento_modal  
                                 where emod_orden=@p0;";
             try
@@ -91,7 +140,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetElementoModal.emod_descripcion = ManejoNulos.ManageNullStr(dr["emod_descripcion"]);
                                 intranetElementoModal.emod_contenido = ManejoNulos.ManageNullStr(dr["emod_contenido"]);
                                 intranetElementoModal.emod_orden = ManejoNulos.ManageNullInteger(dr["emod_orden"]);
-                                intranetElementoModal.emod_posicion = ManejoNulos.ManageNullStr(dr["emod_posicion"]);
                                 intranetElementoModal.fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]);
                                 intranetElementoModal.fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]);
                                 intranetElementoModal.emod_estado = ManejoNulos.ManageNullStr(dr["emod_estado"]);
@@ -112,9 +160,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             //bool response = false;
             int idIntranetElementoModalInsertado = 0;
             string consulta = @"INSERT INTO intranet.int_elemento_modal(
-	                            emod_titulo, emod_descripcion, emod_contenido, emod_orden, 
-                            emod_posicion, fk_seccion_elemento, fk_tipo_elemento, emod_estado)
-	                            VALUES ( @p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7)
+	                            emod_titulo, emod_descripcion, emod_contenido, emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado)
+	                            VALUES ( @p0, @p1, @p2, @p3, @p5, @p6, @p7)
                                             returning elem_id;";
             claseError error = new claseError();
             try
@@ -127,7 +174,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetElementoModal.emod_descripcion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetElementoModal.emod_contenido));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_orden));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetElementoModal.emod_posicion));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_seccion_elemento));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_tipo_elemento));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(intranetElementoModal.emod_estado));
@@ -149,7 +195,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             bool response = false;
             string consulta = @"UPDATE intranet.int_elemento_modal
 	                        SET  emod_titulo=@p0, emod_descripcion=@p1, emod_contenido=@p2, emod_orden=@p3,
-                        emod_posicion=@p4, fk_seccion_elemento=@p5, fk_tipo_elemento=@p6, emod_estado=@p7
+                         fk_seccion_elemento=@p5, fk_tipo_elemento=@p6, emod_estado=@p7
 	                        WHERE emod_id=@p8;";
             try
             {
@@ -161,7 +207,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetElementoModal.emod_descripcion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetElementoModal.emod_contenido));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_orden));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetElementoModal.emod_posicion));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_seccion_elemento));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_tipo_elemento));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(intranetElementoModal.emod_estado));

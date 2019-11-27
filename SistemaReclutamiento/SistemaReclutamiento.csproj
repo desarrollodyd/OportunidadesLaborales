@@ -4883,9 +4883,10 @@
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetAplicativoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetDetalleElementoModalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetElementoModalEntidad.cs" />
-    <Compile Include="Entidades\IntranetPJ\IntranetImagenEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetDetalleElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSaludoCumpleanioEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionElementoEntidad.cs" />
@@ -4929,9 +4930,10 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetDetalleElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />
-    <Compile Include="Models\IntranetPJ\IntranetImagenModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetDetalleElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetSaludoCumpleaniosModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetSeccionElementoModel.cs" />

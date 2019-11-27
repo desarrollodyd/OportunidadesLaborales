@@ -15,8 +15,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
     {
         IntranetSeccionModel intraSeccionBL = new IntranetSeccionModel();
         IntranetElementoModel intraElementobl = new IntranetElementoModel();
-        IntranetImagenModel intraImagenbl = new IntranetImagenModel();
+        IntranetDetalleElementoModel intraImagenbl = new IntranetDetalleElementoModel();
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
+        IntranetElementoModalModel intranetElementoModalbl = new IntranetElementoModalModel();
+        IntranetSeccionElementoModel intranetSeccionImagenbl = new IntranetSeccionElementoModel();
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
         
@@ -117,18 +119,69 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                             {
                                 foreach (var itemElementos in elementos.intranetElementoListaxSeccionID)
                                 {
-                                    var ListaElementosImagen = new List<dynamic>();
-                                    var elementosImagen = intraImagenbl.IntranetImagenListarxElementoIDJson(itemSt.sec_id);
+                                    var ListaDetalleElemento = new List<dynamic>();
+                                    var detalleelementos = intraImagenbl.IntranetDetalleElementoListarxElementoIDJson(itemSt.sec_id);
+                                    if (detalleelementos.intranetDetalleElementoListaxElementoID.Count > 0) {
+                                        foreach (var itemDetalleElemento in detalleelementos.intranetDetalleElementoListaxElementoID)
+                                        {
+                                            var seccion_elemento = new List<dynamic>();
+                                            if (itemDetalleElemento.fk_seccion_elemento>0)
+                                            {
+                                                var seccion_ele = intranetSeccionImagenbl.IntranetSeccionElementoIdObtenerJson(itemDetalleElemento.fk_seccion_elemento);
+                                                if (seccion_ele.intranetSeccionElemento.sele_id > 0)
+                                                {
+                                                    var Lista_elemento_modal = new List<dynamic>();
+                                                    var elementosModal = intranetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(seccion_ele.intranetSeccionElemento.sele_id);
+                                                    if (elementosModal.intranetElementoModalListaxseccionelementoID.Count > 0)
+                                                    {
+                                                        foreach (var itemElementosModal in elementosModal.intranetElementoModalListaxseccionelementoID)
+                                                        {
+                                                            Lista_elemento_modal.Add(new
+                                                            {
+                                                                itemElementosModal.emod_id,
+                                                                itemElementosModal.emod_titulo,
+                                                                itemElementosModal.emod_descripcion,
+                                                                itemElementosModal.emod_contenido,
+                                                                itemElementosModal.emod_orden,
+                                                                itemElementosModal.fk_seccion_elemento,
+                                                                itemElementosModal.fk_tipo_elemento,
+                                                            });
+                                                        }
+                                                    }
 
+                                                        seccion_elemento.Add(new{
+                                                            seccion_ele.intranetSeccionElemento.sele_id,
+                                                            seccion_ele.intranetSeccionElemento.sele_orden,
+                                                            componente = Lista_elemento_modal
+                                                        });
+                                                }
+                                            }
 
+                                            ListaDetalleElemento.Add(new {
+                                                itemDetalleElemento.detel_id,
+                                                itemDetalleElemento.detel_descripcion,
+                                                itemDetalleElemento.detel_nombre,
+                                                itemDetalleElemento.detel_extension,
+                                                itemDetalleElemento.detel_ubicacion,
+                                                itemDetalleElemento.fk_elemento,
+                                                itemDetalleElemento.fk_seccion_elemento,
+                                                itemDetalleElemento.detel_orden,
+                                                itemDetalleElemento.detel_posicion,
+                                                detalleModal = seccion_elemento 
+                                            });
+                                        }
 
-                                    ListaElementos.Add(new { itemElementos.elem_id,
+                                    }
+                                    ListaElementos.Add(new {
+                                        itemElementos.elem_id,
                                         itemElementos.elem_titulo,
                                         itemElementos.elem_descripcion,
                                         itemElementos.elem_contenido,
                                         itemElementos.elem_orden,
                                         itemElementos.fk_seccion,
-                                        itemElementos.fk_tipo_elemento });
+                                        itemElementos.fk_tipo_elemento,
+                                        componentes = ListaDetalleElemento
+                                    });
                                 }
                             }
 
