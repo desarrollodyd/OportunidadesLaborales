@@ -27,7 +27,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJActividades.cshtml");
         }
-
+        public ActionResult PanelComentarios()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJComentarios.cshtml");
+        }
         #region Region Acceso a Mantenimiento Intranet PJ
         [HttpPost]
         public ActionResult IntranetPJValidarLoginJson(string usu_login, string usu_password)

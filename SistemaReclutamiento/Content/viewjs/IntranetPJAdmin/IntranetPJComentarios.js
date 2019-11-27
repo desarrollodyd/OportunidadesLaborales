@@ -1,26 +1,25 @@
-﻿var PanelMenus = function () {
+﻿var PanelComentarios = function () {
     var _funcionCheckBox = function () {
 
     }
-    var _ListarMenus = function () {
+    var _ListarComentarios = function () {
         if (!$().DataTable) {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
             return;
         }
         responseSimple({
-            url: "IntranetMenu/IntranetMenuListarJson",
+            url: "IntranetSaludosCumpleanios/IntranetSaludoCumpleanioListarJson",
             refresh: false,
             callBackSuccess: function (response) {
-                var totalMenus = response.data.length;
                 simpleDataTable({
                     uniform: false,
-                    tableNameVariable: "menusListado",
-                    table: ".datatable-menulistado",
+                    tableNameVariable: "comentariosListado",
+                    table: ".datatable-comentariolistado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
                     tableColumns: [
                         {
-                            data: "menu_id",
+                            data: "sld_id",
                             title: "",
                             "bSortable": false,
                             "render": function (value) {
@@ -30,24 +29,28 @@
                             width: "50px",
                         },
                         {
-                            data: "menu_id",
+                            data: "sld_id",
                             title: "ID",
                         },
                         {
-                            data: "menu_orden",
-                            title: "Orden",
-                          
+                            data: "sld_cuerpo",
+                            title: "Mensaje",
+
                         },
                         {
-                            data: "menu_titulo",
-                            title: "Titulo"
+                            data: "sld_fecha",
+                            title: "Fecha",
+                            "render": function (value) {
+                                var fecha = moment(value).format('YYYY-MM-DD');
+                                return fecha;
+                            }
                         },
                         {
-                            data: "menu_url",
+                            data: "sld_fecha",
                             title: "URI"
                         },
                         {
-                            data: "menu_estado",
+                            data: "sld_estado",
                             title: "Estado",
                             "render": function (value) {
                                 var estado = value;
@@ -65,23 +68,23 @@
                             }
                         },
                         {
-                            data: "menu_id",
+                            data: "sld_id",
                             title: "Acciones",
                             "render": function (value) {
                                 var span = '';
                                 var menu_id = value;
-                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + menu_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + menu_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + menu_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
+                                var span = '<div class="hidden-sm hidden-xs action-buttons">< a class="red" href = "#" ><i class="ace-icon fa fa-trash-o bigger-130"></i></a ></div >    <div class="hidden-md hidden-lg">        <div class="inline pos-rel">            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>            </button>            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">                <li>                    <a href="#" class="tooltip-error" data-rel="tooltip" title="delete">                        <span class="red">                            <i class="ace-icon fa fa-trash-o bigger-120"></i>                        </span>                    </a>                </li>            </ul>        </div>    </div>';
                                 return span;
                             }
                         }
 
                     ]
                 })
-                          }
+            }
         });
     };
     var _componentes = function () {
-        
+
         $(document).on("click", "#btn_nuevo", function (e) {
             $("#menu_id").val(0);
             $("#tituloModalMenu").text("Nuevo");
@@ -115,7 +118,7 @@
                         if (respuesta) {
                             //limpiar_form({ contenedor: "#form_menus" });
                             //_objetoForm_form_menus.resetForm();
-                            PanelMenus.init_ListarMenus();
+                            PanelComentarios.init_ListarComentarios();
                             //refresh(true);
                             $("#modalFormulario").modal("hide");
                         }
@@ -208,7 +211,7 @@
                             data: JSON.stringify({ menu_id: menu_id }),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                PanelMenus.init_ListarMenus();
+                                PanelComentarios.init_ListarComentarios();
                                 //refresh(true);
                             }
                         });
@@ -251,7 +254,7 @@
                             data: JSON.stringify(dataForm),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                PanelMenus.init_ListarMenus();
+                                PanelComentarios.init_ListarComentarios();
                                 //refresh(true);
                             }
                         })
@@ -264,7 +267,7 @@
                     type: "error"
                 })
             }
-           
+
         })
 
     };
@@ -285,7 +288,7 @@
 
                 },
                 menu_orden: {
-                    required:true,
+                    required: true,
                 }
 
             },
@@ -309,13 +312,13 @@
     //
     return {
         init: function () {
-           _ListarMenus();
+            _ListarComentarios();
             _componentes();
             _metodos();
 
         },
-        init_ListarMenus: function () {
-            _ListarMenus();
+        init_ListarComentarios: function () {
+            _ListarComentarios();
         }
     }
 }();
@@ -324,5 +327,5 @@
 // ------------------------------
 
 document.addEventListener('DOMContentLoaded', function () {
-    PanelMenus.init();
+    PanelComentarios.init();
 });

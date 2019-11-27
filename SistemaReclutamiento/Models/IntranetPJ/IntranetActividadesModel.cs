@@ -20,10 +20,9 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             List<IntranetActividadesEntidad> lista = new List<IntranetActividadesEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT act.act_id, act.act_descripcion, act.fk_imagen, 
-                                 act.act_estado, act.act_fecha, img.img_ubicacion
-	                                FROM intranet.int_actividades as act full outer join intranet.int_imagen as img
-	                                on act.fk_imagen = img.img_id
+            string consulta = @"SELECT act.act_id, act.act_descripcion, act.act_imagen, 
+                                 act.act_estado, act.act_fecha
+	                                FROM intranet.int_actividades as act 
 	                                where extract(day from act.act_fecha)>=extract(day from (select current_date))
 	                                and extract(month from act.act_fecha)=extract(month from(select current_date))
 	                                and act.act_estado='A'
@@ -47,10 +46,9 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
                                     act_id = ManejoNulos.ManageNullInteger(dr["act_id"]),
                                     act_descripcion = ManejoNulos.ManageNullStr(dr["act_descripcion"]),
-                                    fk_imagen = ManejoNulos.ManageNullInteger(dr["fk_imagen"]),
+                                    act_imagen = ManejoNulos.ManageNullStr(dr["act_imagen"]),
                                     act_fecha = ManejoNulos.ManageNullDate(dr["act_fecha"]),
                                     act_estado = ManejoNulos.ManageNullStr(dr["act_estado"]),
-                                    img_ubicacion=ManejoNulos.ManageNullStr(dr["img_ubicacion"]),
                                 };
 
                                 lista.Add(actividades);
@@ -71,7 +69,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             IntranetActividadesEntidad intranetActividades = new IntranetActividadesEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT act_id, act_descripcion, fk_imagen, act_fecha, act_estado
+            string consulta = @"SELECT act_id, act_descripcion, act_imagen, act_fecha, act_estado
 	                                FROM intranet.int_actividades
                                      where act_id=@p0;";
             try
@@ -90,7 +88,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
                                 intranetActividades.act_id = ManejoNulos.ManageNullInteger(dr["act_id"]);
                                 intranetActividades.act_descripcion = ManejoNulos.ManageNullStr(dr["act_descripcion"]);
-                                intranetActividades.fk_imagen = ManejoNulos.ManageNullInteger(dr["fk_imagen"]);
+                                intranetActividades.act_imagen = ManejoNulos.ManageNullStr(dr["act_imagen"]);
                                 intranetActividades.act_fecha = ManejoNulos.ManageNullDate(dr["act_fecha"]);
                                 intranetActividades.act_estado = ManejoNulos.ManageNullStr(dr["act_estado"]);
                             }
@@ -111,7 +109,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetActividadesInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_actividades(
-	                             act_descripcion, fk_imagen, act_fecha, act_estado)
+	                             act_descripcion, act_imagen, act_fecha, act_estado)
 	                            VALUES (@p0, @p1, @p2, @p4)
                                 returning act_id;";
             claseError error = new claseError();
@@ -122,7 +120,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetActividades.act_descripcion));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetActividades.fk_imagen));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetActividades.act_imagen));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(intranetActividades.act_fecha));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetActividades.act_estado));
                     idIntranetActividadesInsertado = Int32.Parse(query.ExecuteScalar().ToString());
@@ -143,7 +141,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_actividades
-	                            SET act_descripcion=@p0, fk_imagen=@p1, act_fecha=@p2,  act_estado=@p4
+	                            SET act_descripcion=@p0, act_imagen=@p1, act_fecha=@p2,  act_estado=@p4
 	                            WHERE act_id=@p5;";
             try
             {
@@ -152,7 +150,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetActividades.act_descripcion));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetActividades.fk_imagen));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetActividades.act_imagen));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(intranetActividades.act_fecha));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetActividades.act_estado));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetActividades.act_id));
@@ -192,6 +190,50 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
 
             return (intranetActividadesEliminado: response, error: error);
+        }
+        public (List<IntranetActividadesEntidad> intranetActividadesLista, claseError error) IntranetActividadesListarTodoJson() {
+            List<IntranetActividadesEntidad> lista = new List<IntranetActividadesEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT act.act_id, act.act_descripcion, act.act_imagen, 
+                                 act.act_estado, act.act_fecha
+	                                FROM intranet.int_actividades as act 
+	                                where act.act_estado='A'
+                                    order by act.act_fecha desc";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var actividades = new IntranetActividadesEntidad
+                                {
+
+                                    act_id = ManejoNulos.ManageNullInteger(dr["act_id"]),
+                                    act_descripcion = ManejoNulos.ManageNullStr(dr["act_descripcion"]),
+                                    act_imagen = ManejoNulos.ManageNullStr(dr["act_imagen"]),
+                                    act_fecha = ManejoNulos.ManageNullDate(dr["act_fecha"]),
+                                    act_estado = ManejoNulos.ManageNullStr(dr["act_estado"]),
+                                };
+
+                                lista.Add(actividades);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetActividadesLista: lista, error: error);
         }
     }
 }

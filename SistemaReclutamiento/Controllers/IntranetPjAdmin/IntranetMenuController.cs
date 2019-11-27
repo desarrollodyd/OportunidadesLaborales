@@ -228,5 +228,35 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
             return Json(new { respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola,accion=accion });
         }
+        [HttpPost]
+        public ActionResult IntranetMenuEliminarVariosJson(int[] listaMenuEliminar) {
+            string errormensaje = "";
+            string mensajeConsola = "";
+            bool respuestaConsulta = false;
+            claseError error = new claseError();
+            try
+            {
+                for (int i = 0; i <= listaMenuEliminar.Length - 1; i++) {
+                    var menuTupla = intranetMenubl.IntranetMenuEliminarJson(listaMenuEliminar[i]);
+                    error = menuTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        respuestaConsulta = menuTupla.intranetMenuEliminado;
+                        errormensaje = "Menu Eliminado";
+                    }
+                    else
+                    {
+                        errormensaje = "Error, no se Puede Eliminar";
+                        mensajeConsola = error.Value;
+                    }
+                }
+                respuestaConsulta = true;
+            }
+            catch (Exception ex) {
+
+            }
+
+            return Json(new { respuesta = respuestaConsulta , mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
     }
 }

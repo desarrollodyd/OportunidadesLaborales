@@ -666,7 +666,7 @@ function simpleDataTable(obj) {
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
-                $(api.column(0).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all"> Seleccionar Todo');
+                $(api.column(0).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all">');
             }
             //if (opciones.uniform) {
             //    // Info
@@ -718,21 +718,21 @@ function simpleAjaxDataTable(obj) {
 }
 
 //////////////////////////////////////////////////
-$(document).on("click", ".chk_all", function () {
-    var children = ($(this).data("children")).substring(1);
-    var checkboxsNotCheck = $("input:checkbox." + children + ":not(checked)");
-    var checkboxCheck = $("input:checkbox." + children + ":checked");
-    var elementos = [];
+//$(document).on("click", ".chk_all", function () {
+//    var children = ($(this).data("children")).substring(1);
+//    var checkboxsNotCheck = $("input:checkbox." + children + ":not(checked)");
+//    var checkboxCheck = $("input:checkbox." + children + ":checked");
+//    var elementos = [];
 
-    if (checkboxsNotCheck.length == 0) {
-        return false;
-    };
+//    if (checkboxsNotCheck.length == 0) {
+//        return false;
+//    };
 
-    $.each(checkboxsNotCheck, function (index, value) {
-        elementos.push($(this).data("id"));
-    });
+//    $.each(checkboxsNotCheck, function (index, value) {
+//        elementos.push($(this).data("id"));
+//    });
 
-    console.info(elementos);
-});
+//    console.info(elementos);
+//});
 
 /*End Datatables*/

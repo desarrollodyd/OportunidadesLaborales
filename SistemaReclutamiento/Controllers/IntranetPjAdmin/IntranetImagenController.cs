@@ -27,9 +27,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             List<IntranetDetalleElementoEntidad> listaImagen = new List<IntranetDetalleElementoEntidad>();
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenListarJson();
+                var ImagenTupla = intranetImagenbl.IntranetDetalleElementoListarJson();
                 error = ImagenTupla.error;
-                listaImagen = ImagenTupla.intranetImagenLista;
+                listaImagen = ImagenTupla.intranetDetalleElementoLista;
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Listando Imagenes";
@@ -57,14 +57,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             int idIntranetImagenInsertado = 0;
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenInsertarJson(intranetImagen);
+                var ImagenTupla = intranetImagenbl.IntranetDetalleElementoInsertarJson(intranetImagen);
                 error = ImagenTupla.error;
 
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
-                    idIntranetImagenInsertado = ImagenTupla.idIntranetImagenInsertado;
+                    idIntranetImagenInsertado = ImagenTupla.idIntranetDetalleElementoInsertado;
                 }
                 else
                 {
@@ -88,11 +88,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string mensajeConsola = "";
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenEditarJson(intranetImagen);
+                var ImagenTupla = intranetImagenbl.IntranetDetalleElementoEditarJson(intranetImagen);
                 error = ImagenTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = ImagenTupla.intranetImagenEditado;
+                    respuestaConsulta = ImagenTupla.intranetDetalleElementoEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
@@ -116,11 +116,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string mensajeConsola = "";
             try
             {
-                var ImagenTupla = intranetImagenbl.IntranetImagenEliminarJson(img_id);
+                var ImagenTupla = intranetImagenbl.IntranetDetalleElementoEliminarJson(img_id);
                 error = ImagenTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = ImagenTupla.intranetImagenEliminado;
+                    respuestaConsulta = ImagenTupla.intranetDetalleElementoEliminado;
                     errormensaje = "Imagen Eliminada";
                 }
                 else
