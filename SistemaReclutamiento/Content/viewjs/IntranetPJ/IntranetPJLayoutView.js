@@ -145,6 +145,59 @@
 
                                 }
 
+                                if (elemento.fk_tipo_elemento == 9) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 10) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 11) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 12) {
+                                    appendElementos += '<article>' +
+                                        '<div class="post-content">' +
+                                        '<section id="cat2news">'+
+                                            '<div class="featured">'+
+                                                '<div class="thumb">'+
+                                                   ' <img src="~/Content/intranet/images/c2.jpg" alt="">'+
+                                                        '<div class="overlay">'+
+                                                            '<div class="title-carousel">'+
+                                                                '<div class="ticarousel"> MESA DE PARTES</div>'+
+                                                            '</div>'+
+                                                        '</div>'+
+                                                ' </div>'+
+                                                 '<div class="excerpt">'+
+                                                        '<p class="meta-date">December 23,2012</p>'+
+                                                        '<div class="desc">'+
+                                                            '<p class="pcats">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>'+
+                                                            '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>'+
+                                                        '</div>'+
+                                                  '</div>'+
+                                             '</div>'+
+
+                                             '<div class="othercat">'+
+                                                    '<ul class="oc-horizon">'+
+                                                        '<li>'+
+                                                            '<div class="octhumb">'+
+                                                                '<a href="#"><img src="~/Content/intranet/images/n3.jpg" alt=""></a>'+
+                                                            '</div>'+
+                                                                '<div class="desc">'+
+                                                                    '<a href="#">RESERVA DE SALA</a>'+
+                                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>'+
+                                                                '</div>'+
+                                                        '</li>'+
+                           
+                                                    '</ul>'+
+                                            '</div>'+
+                                        '</section>'+
+                                        '</div>' +
+                                        '<div class="clear"></div>' +
+                                        '</article >';
+                                }
                             })
                         }
 
