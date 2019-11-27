@@ -1,11 +1,13 @@
 ﻿var LayoutVista = function () {
     var _Layout = function () {
+        //console.log(menu_id);
+
         var meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
             "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
         ];
         dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
         var diahoy = new Date();
-        var menuInicio = localStorage.getItem('posicionMenu');
+        var menuInicio = menu_id;
         //console.log(meses[diahoy.getMonth()]);
         responseSimple({
             url: "IntranetPJ/ListarDataJson",
@@ -16,6 +18,8 @@
                 var dataCumpleanios = response.dataCumpleanios;
                 var dataActividades = response.dataActividades;
                 var listaNoticias = response.listaNoticias;
+                var secciones = response.dataSecciones;
+
                 //Creacion de Menus
                 if (dataMenus.length > 0) {
                     $("#menuIntranet").html("");
@@ -24,8 +28,15 @@
                     var appendMenuPrincipal = "";
                     $.each(dataMenus, function (index, menu) {
                         appendMenuLateral += '<li><a href="' + menu.menu_url + '">' + menu.menu_titulo + '</a></li>';
-                        var clase = (index == 0) ? "active" : "";
-                        appendMenuPrincipal += '<li class="' + clase + '"><a href="#" data-id="' + menu.menu_id+'" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
+                        var clase = "";
+                        if (menuInicio == 0) {
+                            clase = (index == 0) ? "active" : "";
+                        }
+                        else {
+                            clase = (menu.menu_id == menuInicio) ? "active" : "";
+                        }
+
+                        appendMenuPrincipal += '<li class="' + clase + '"><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id+'" data-id="' + menu.menu_id + '" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
                         //noticia.push(menu.menu_titulo)
                     });
                     $("#menuIntranet").html(appendMenuLateral);
@@ -72,8 +83,136 @@
                     $("ul#ticker01").liScroll().css({ 'opacity': 1 });
                   
                 }
+
+                //listado secciones
+                if (secciones.length > 0) {
+                    console.log(secciones)
+                    $("#content").html("");
+                    var appendSeccion = "";
+                    $.each(secciones, function (index, seccion) {
+                        var elementos = seccion.elementos;
+                        var appendElementos = "";
+                        if (elementos.length > 0) {
+                            $.each(elementos, function (index, elemento) {
+
+                                if (elemento.fk_tipo_elemento == 1) {
+                                    appendElementos += '<header>' +
+                                        '<div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>' +
+                                        '<h1>' + elemento.elem_titulo + '</h1>' +
+                                        '</header>';
+                                }
+
+                                if (elemento.fk_tipo_elemento == 2) {
+                                    appendElementos += '<header>' +
+                                        '<div class="postmeta">' +
+                                        '<div class="meta-date">' + elemento.elem_titulo+'</div>' +
+                                        '</div>' +
+                                        '</header>';
+                                }
+
+                                if (elemento.fk_tipo_elemento == 3) {
+                                    appendElementos += '<article>'+
+                                        '<div class="post-content">'+
+                                        '<p> ' + elemento.elem_titulo+'</p>' +
+                                        '</div>' +
+                                        '<div class="clear"></div>' +
+                                        '</article >';
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 4) {
+                                    appendElementos += '<article>' +
+                                        '<div class="post-content">' +
+                                        '<h4 class="lista_titulo">' + elemento.elem_titulo + '</h4>'+
+                                        '</div>' +
+                                        '<div class="clear"></div>' +
+                                        '</article >';
+                                }
+
+                                if (elemento.fk_tipo_elemento == 5) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 6) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 7) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 8) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 9) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 10) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 11) {
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 12) {
+                                    appendElementos += '<article>' +
+                                        '<div class="post-content">' +
+                                        '<section id="cat2news">'+
+                                            '<div class="featured">'+
+                                                '<div class="thumb">'+
+                                                   ' <img src="~/Content/intranet/images/c2.jpg" alt="">'+
+                                                        '<div class="overlay">'+
+                                                            '<div class="title-carousel">'+
+                                                                '<div class="ticarousel"> MESA DE PARTES</div>'+
+                                                            '</div>'+
+                                                        '</div>'+
+                                                ' </div>'+
+                                                 '<div class="excerpt">'+
+                                                        '<p class="meta-date">December 23,2012</p>'+
+                                                        '<div class="desc">'+
+                                                            '<p class="pcats">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>'+
+                                                            '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>'+
+                                                        '</div>'+
+                                                  '</div>'+
+                                             '</div>'+
+
+                                             '<div class="othercat">'+
+                                                    '<ul class="oc-horizon">'+
+                                                        '<li>'+
+                                                            '<div class="octhumb">'+
+                                                                '<a href="#"><img src="~/Content/intranet/images/n3.jpg" alt=""></a>'+
+                                                            '</div>'+
+                                                                '<div class="desc">'+
+                                                                    '<a href="#">RESERVA DE SALA</a>'+
+                                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>'+
+                                                                '</div>'+
+                                                        '</li>'+
+                           
+                                                    '</ul>'+
+                                            '</div>'+
+                                        '</section>'+
+                                        '</div>' +
+                                        '<div class="clear"></div>' +
+                                        '</article >';
+                                }
+                            })
+                        }
+
+
+                        appendSeccion += '<section id="singlepost">' + appendElementos+'</section>';
+                    })
+                    $("#content").html(appendSeccion);
+
+                }
             }
         });
+    };
+    var _componentes = function () {
+
+
     };
     //
     // Return objects assigned to module
@@ -81,6 +220,7 @@
     return {
         init: function () {
             _Layout();
+            _componentes();
         }
     }
 }();

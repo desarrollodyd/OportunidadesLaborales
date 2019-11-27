@@ -15,16 +15,46 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
     {
         IntranetSeccionModel intraSeccionBL = new IntranetSeccionModel();
         IntranetElementoModel intraElementobl = new IntranetElementoModel();
-        IntranetDetalleElementoModel intraImagenbl = new IntranetDetalleElementoModel();
+        IntranetDetalleElementoModel intraDetalleElementobl = new IntranetDetalleElementoModel();
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         IntranetElementoModalModel intranetElementoModalbl = new IntranetElementoModalModel();
+        IntranetDetalleElementoModalModel intranetDetalleElementoModalbl = new IntranetDetalleElementoModalModel();
         IntranetSeccionElementoModel intranetSeccionImagenbl = new IntranetSeccionElementoModel();
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
         
         // GET: IntranetPJ
-        public ActionResult Index()
+        public ActionResult Index(int? menu)
         {
+            claseError error = new claseError();
+            var menuTupla = intranetMenubl.IntranetMenuListarJson();
+            int? id = 0;
+            if (menu != 0)
+            {
+                id = menu;
+            }
+            else
+            {
+                error = menuTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    if (menuTupla.intranetMenuLista.Count > 0)
+                    {
+                        var elementomenu = menuTupla.intranetMenuLista.First();
+                        id = elementomenu.menu_id;
+                    }
+                    else
+                    {
+                        id = 0;
+                    }
+
+                }
+                else
+                {
+                    id = -1;
+                }
+            }
+            ViewBag.menu_id = id;
             return View("~/Views/IntranetPJ/IntranetPJIndex.cshtml");
         }
 
@@ -110,18 +140,20 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     intranetSeccion = seccionesMenu.intranetSeccionListaxMenuID;
                     if (intranetSeccion.Count > 0)
                     {
-                        
+                        //secciones
                         foreach (var itemSt in intranetSeccion)
                         {
                             var ListaElementos = new List<dynamic>();
                             var elementos = intraElementobl.IntranetElementoListarxSeccionIDJson(itemSt.sec_id);
                             if (elementos.intranetElementoListaxSeccionID.Count > 0)
                             {
+                                //elementos
                                 foreach (var itemElementos in elementos.intranetElementoListaxSeccionID)
                                 {
                                     var ListaDetalleElemento = new List<dynamic>();
-                                    var detalleelementos = intraImagenbl.IntranetDetalleElementoListarxElementoIDJson(itemSt.sec_id);
+                                    var detalleelementos = intraDetalleElementobl.IntranetDetalleElementoListarxElementoIDJson(itemElementos.elem_id);
                                     if (detalleelementos.intranetDetalleElementoListaxElementoID.Count > 0) {
+                                        //detalle elementos
                                         foreach (var itemDetalleElemento in detalleelementos.intranetDetalleElementoListaxElementoID)
                                         {
                                             var seccion_elemento = new List<dynamic>();
@@ -134,8 +166,29 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                     var elementosModal = intranetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(seccion_ele.intranetSeccionElemento.sele_id);
                                                     if (elementosModal.intranetElementoModalListaxseccionelementoID.Count > 0)
                                                     {
+                                                        //elemento modal
                                                         foreach (var itemElementosModal in elementosModal.intranetElementoModalListaxseccionelementoID)
                                                         {
+                                                            var ListaDetalleElementoModal = new List<dynamic>();
+                                                            var detalleelementosModal = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(itemElementosModal.emod_id);
+                                                            if (detalleelementosModal.intranetDetalleElementoModalListaxElementoID.Count > 0)
+                                                            {
+                                                                foreach (var itemDetalleElementosModal in detalleelementosModal.intranetDetalleElementoModalListaxElementoID)
+                                                                {
+                                                                    ListaDetalleElementoModal.Add(new
+                                                                    {
+                                                                        itemDetalleElementosModal.detelm_id,
+                                                                        itemDetalleElementosModal.detelm_descripcion,
+                                                                        itemDetalleElementosModal.detelm_nombre,
+                                                                        itemDetalleElementosModal.detelm_extension,
+                                                                        itemDetalleElementosModal.detelm_ubicacion,
+                                                                        itemDetalleElementosModal.fk_elemento_modal,
+                                                                        itemDetalleElementosModal.detelm_orden,
+                                                                        itemDetalleElementosModal.detelm_posicion,
+                                                                        itemDetalleElementosModal.fk_seccion_elemento,
+                                                                    });
+                                                                }
+                                                            }
                                                             Lista_elemento_modal.Add(new
                                                             {
                                                                 itemElementosModal.emod_id,
@@ -145,6 +198,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                                 itemElementosModal.emod_orden,
                                                                 itemElementosModal.fk_seccion_elemento,
                                                                 itemElementosModal.fk_tipo_elemento,
+                                                                detalle_elemento_modal = ListaDetalleElementoModal
                                                             });
                                                         }
                                                     }
@@ -152,7 +206,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                         seccion_elemento.Add(new{
                                                             seccion_ele.intranetSeccionElemento.sele_id,
                                                             seccion_ele.intranetSeccionElemento.sele_orden,
-                                                            componente = Lista_elemento_modal
+                                                            elemento_modal = Lista_elemento_modal
                                                         });
                                                 }
                                             }
@@ -167,7 +221,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                 itemDetalleElemento.fk_seccion_elemento,
                                                 itemDetalleElemento.detel_orden,
                                                 itemDetalleElemento.detel_posicion,
-                                                detalleModal = seccion_elemento 
+                                                seccion_elemento = seccion_elemento 
                                             });
                                         }
 
@@ -180,7 +234,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                         itemElementos.elem_orden,
                                         itemElementos.fk_seccion,
                                         itemElementos.fk_tipo_elemento,
-                                        componentes = ListaDetalleElemento
+                                        detalleElemento = ListaDetalleElemento
                                     });
                                 }
                             }
@@ -214,7 +268,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     respuesta = respuesta,
                     mensaje = mensaje,
                     listaNoticias = listaNoticiasDesordenado,
-                    mensajeerrorBD= mensajeerrorBD
+                    dataSecciones = ListaSeccion.ToList(),
+                    mensajeerrorBD = mensajeerrorBD
                 });
         }
 
