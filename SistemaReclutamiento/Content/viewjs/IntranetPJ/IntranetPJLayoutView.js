@@ -89,6 +89,7 @@
                     console.log(secciones)
                     $("#content").html("");
                     var appendSeccion = "";
+                    slider = false;
                     $.each(secciones, function (index, seccion) {
                         var elementos = seccion.elementos;
                         var appendElementos = "";
@@ -111,12 +112,8 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 3) {
-                                    appendElementos += '<article>'+
-                                        '<div class="post-content">'+
-                                        '<p> ' + elemento.elem_titulo+'</p>' +
-                                        '</div>' +
-                                        '<div class="clear"></div>' +
-                                        '</article >';
+                                    appendElementos += 
+                                        '<p> ' + elemento.elem_titulo+'</p>';
 
                                 }
 
@@ -126,7 +123,7 @@
                                         '<h4 class="lista_titulo">' + elemento.elem_titulo + '</h4>'+
                                         '</div>' +
                                         '<div class="clear"></div>' +
-                                        '</article >';
+                                        '</article>';
                                 }
 
                                 if (elemento.fk_tipo_elemento == 5) {
@@ -150,25 +147,99 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 10) {
+                                    slider = true;
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendslider = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendslider += '<li data-orbit-slide="headline-' + (index + 1) + '" style="width:100%">' +
+                                                '<div class="row">' +
+                                                '<div class="twelve columns">' +
+                                                '<div class="itemcatslide">' +
+                                                '<div class="catf">' +
+                                                '<div class="catf-format">' +
+                                                '<div class="fdate">15<br /><span>Dec</span></div>' +
+                                                '</div>' +
+                                                '<div class="imgslide">' +
+                                                '<img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="" title="" class="slidefeatured">' +
+                                                '</div>' +
+                                                '<div class="catf-caption">' +
+                                                '<h2>Star Trek Into Darkness is a 2013 American</h2>' +
+                                                '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</li >';
 
+                                        });
+
+                                        appendElementos += '<div class="row">'+
+                                            '<div class="twelve columns">'+
+                                                '<div id="slidercontent" class="mixedContent onlyimgblank">';
+                                    }
                                 }
 
                                 if (elemento.fk_tipo_elemento == 11) {
+                                    slider = true;
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendslider = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendslider += '<li data-orbit-slide="headline-'+(index+1)+'" style="width:100%">'+
+                                                                '<div class="row">'+
+                                                                    '<div class="twelve columns">'+
+                                                                        '<div class="itemcatslide">'+
+                                                                            '<div class="catf">'+
+                                                                                '<div class="catf-format">'+
+                                                                                    '<div class="fdate">15<br /><span>Dec</span></div>'+
+                                                                                '</div>'+
+                                                                                '<div class="imgslide">'+
+                                                '<img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="" title="" class="slidefeatured">'+
+                                                                                '</div>'+
+                                                                                    '<div class="catf-caption">'+
+                                                                                        '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
+                                                                                        '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>'+
+                                                                                    '</div>'+
+                                                                                '</div>'+
+                                                                            '</div>'+
+                                                                        '</div>'+
+                                                                    '</div>'+
+                                                            '</li >';
 
+                                        });
+
+                                        appendElementos += '<article>' +
+                                            '<div class="post-content">' +
+                                            '<div class="">' +
+                                                                '<div class="twelve columns">'+
+                                                                    '<div class="catslide">'+
+                                                                        '<ul class="slider" data-orbit>' +
+                                                                            appendslider+
+                                                                        '</ul>' +
+                                                                    '</div>' +
+                                                                '</div>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="clear"></div>' +
+                                            '</article>';
+                                    }
                                 }
 
                                 if (elemento.fk_tipo_elemento == 12) {
                                     var detalleElementolista = elemento.detalleElemento;
                                     var appendDetalleElementoheader = "";
+                                    var appendDetalleElementobody = "";
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (index == 0) {
                                                 appendDetalleElementoheader += '<div class="featured">' +
                                                     '<div class="thumb">' +
-                                                    ' <img src="' + basePath + 'Content/intranet/images/' + detalleElementolista.detel_ubicacion + '/' + detalleElementolista.detel_nombre + '.' + detalleElementolista.detel_extension + '" alt="">' +
+                                                    ' <img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
-                                                    '<div class="ticarousel"> ' + detalleElementolista.detel_descripcion + '</div>' +
+                                                    '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
                                                     '</div>' +
                                                     '</div>' +
                                                     ' </div>' +
@@ -179,11 +250,19 @@
                                                     '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>' +
                                                     '</div>' +
                                                     '</div>' +
-                                                    '</div>' +;
+                                                    '</div>';
                                             }
                                             else {
 
-
+                                                appendDetalleElementobody += '<li>' +
+                                                    '<div class="octhumb">' +
+                                                    '<a href="#"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>' +
+                                                    '</div>' +
+                                                    '<div class="desc">' +
+                                                    '<a href="#">' + detalleelemento.detel_descripcion + '</a>' +
+                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>' +
+                                                    '</div>' +
+                                                    '</li>';
                                             }
                                         });
                                     }
@@ -192,19 +271,10 @@
                                     appendElementos += '<article>' +
                                         '<div class="post-content">' +
                                         '<section id="cat2news">'+
-                                            appendDetalleElementoheader
+                                            appendDetalleElementoheader+
                                              '<div class="othercat">'+
                                                     '<ul class="oc-horizon">'+
-                                                        '<li>'+
-                                        '<div class="octhumb">' +
-                                        '<a href="#"><img src="' + basePath + 'Content/intranet/images/n3.jpg" alt=""></a>' +
-                                                            '</div>'+
-                                                                '<div class="desc">'+
-                                                                    '<a href="#">RESERVA DE SALA</a>'+
-                                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>'+
-                                                                '</div>'+
-                                                        '</li>'+
-                           
+                                                        appendDetalleElementobody+
                                                     '</ul>'+
                                             '</div>'+
                                         '</section>'+
@@ -215,10 +285,20 @@
                             })
                         }
 
+                        appendSeccion += '<section id="singlepost">' + appendElementos + '</section><div class="separador"></div>';
 
-                        appendSeccion += '<section id="singlepost">' + appendElementos+'</section>';
                     })
                     $("#content").html(appendSeccion);
+                    if (slider) {
+                        $('.slider').orbit({
+                            animation: 'fade',
+                            timer_speed: 10000,
+                            pause_on_hover: true,
+                            resume_on_mouseout: false,
+                            swipe: true,
+                            animation_speed: 500
+                        });
+                    }
 
                 }
             }
