@@ -90,6 +90,7 @@
                     $("#content").html("");
                     var appendSeccion = "";
                     slider = false;
+                    silertrans = false;
                     $.each(secciones, function (index, seccion) {
                         var elementos = seccion.elementos;
                         var appendElementos = "";
@@ -119,15 +120,24 @@
 
                                 if (elemento.fk_tipo_elemento == 4) {
                                     appendElementos += '<article>' +
-                                        '<div class="post-content">' +
-                                        '<h4 class="lista_titulo">' + elemento.elem_titulo + '</h4>'+
-                                        '</div>' +
+                                        '<h4 class="lista_titulo">' + elemento.elem_titulo + '</h4>' +
                                         '<div class="clear"></div>' +
                                         '</article>';
                                 }
 
                                 if (elemento.fk_tipo_elemento == 5) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendLista = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendLista += '<li>' + detalleelemento.detel_descripcion + '</li>';
 
+                                        });
+
+                                        appendElementos += '<ul class="listas">' +
+                                            appendLista +
+                                            '</ul>';
+                                    }
                                 }
 
                                 if (elemento.fk_tipo_elemento == 6) {
@@ -135,10 +145,50 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 7) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendElementos += '<article>' +
+                                                '<div class="imgpost th">' +
+                                                '<img src = "' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt = "">' +
+                                                '</div>' +
+                                                '</article>';
 
+                                        });
+                                    }
+                                    
                                 }
 
                                 if (elemento.fk_tipo_elemento == 8) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendsIzquierda = "";
+                                    var appendsDerecha = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            if (detalleelemento.detel_posicion == "L") {
+                                                appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>'; 
+                                            }
+                                            else {
+                                                appendsDerecha += '<a href="#"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                            }
+
+                                        });
+
+                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">'+
+                                            '<div class="six columns" >'+
+                                                '<div class="widget lreview">'+
+                                                    '<ul class="listreview">'+
+                                            appendsIzquierda+
+                                                   ' </ul>'+
+                                                '</div>'+
+                                             '</div >'+
+                                            '<div class="six columns">'+
+                                            '<div class="sponsor">' +
+                                            appendsDerecha+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div></div>';
+                                    }
 
                                 }
 
@@ -147,37 +197,31 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 10) {
-                                    slider = true;
+                                    silertrans = true;
                                     var detalleElementolista = elemento.detalleElemento;
                                     var appendslider = "";
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
-                                            appendslider += '<li data-orbit-slide="headline-' + (index + 1) + '" style="width:100%">' +
-                                                '<div class="row">' +
-                                                '<div class="twelve columns">' +
-                                                '<div class="itemcatslide">' +
-                                                '<div class="catf">' +
-                                                '<div class="catf-format">' +
-                                                '<div class="fdate">15<br /><span>Dec</span></div>' +
-                                                '</div>' +
-                                                '<div class="imgslide">' +
-                                                '<img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="" title="" class="slidefeatured">' +
-                                                '</div>' +
-                                                '<div class="catf-caption">' +
-                                                '<h2>Star Trek Into Darkness is a 2013 American</h2>' +
-                                                '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</div>' +
-                                                '</li >';
+                                            appendslider += '<div class="contentBox">'+
+                                                '<img src = "' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt = "Field" />'+
+                                                    '<div class="overlay">'+
+                                                        '<div class="title-carousel">'+
+                                                            '<a href="#">'+
+                                                '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>'+
+                                                            '</a>'+
+                                                        '</div>'+
+                                                    '</div>'+
+                                            '</div>';
 
                                         });
 
-                                        appendElementos += '<div class="row">'+
+                                        appendElementos += '<article><div class="post-content" ><div class="row">'+
                                             '<div class="twelve columns">'+
-                                                '<div id="slidercontent" class="mixedContent onlyimgblank">';
+                                            '<div id="slidercontent" class="mixedContent onlyimgblank slidercontent" style="padding-left: 10px;padding-right: 10px;">' +
+                                            appendslider+
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div></div></article>';
                                     }
                                 }
 
@@ -282,6 +326,155 @@
                                         '<div class="clear"></div>' +
                                         '</article >';
                                 }
+
+                                if (elemento.fk_tipo_elemento == 13) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendsIzquierda = "";
+                                    var appendsDerecha = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            if (detalleelemento.detel_posicion == "R") {
+                                                appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                            }
+                                            else {
+                                                appendsIzquierda += '<a href="#"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                            }
+
+                                        });
+
+                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">' +
+                                            '<div class="six columns">' +
+                                            '<div class="sponsor">' +
+                                            appendsIzquierda +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="six columns" >' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsDerecha +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div >' +
+                                            '</div>' +
+                                            '</div>';
+                                    }
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 14) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendsIzquierda = "";
+                                    var appendsDerecha = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            if (detalleelemento.detel_posicion == "L") {
+                                                appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                            }
+                                            else {
+                                                appendsDerecha += '<a href="#"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                            }
+
+                                        });
+
+                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">' +
+                                            '<div class="eight columns" >' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsIzquierda +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div >' +
+                                            '<div class="four columns">' +
+                                            '<div class="sponsor">' +
+                                            appendsDerecha +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div></div>';
+                                    }
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 15) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendsIzquierda = "";
+                                    var appendsDerecha = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            if (detalleelemento.detel_posicion == "R") {
+                                                appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                            }
+                                            else {
+                                                appendsIzquierda += '<a href="#"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                            }
+
+                                        });
+
+                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">' +
+                                            '<div class="four columns">' +
+                                            '<div class="sponsor">' +
+                                            appendsDerecha +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="eight columns" >' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsIzquierda +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            
+                                            '</div></div>';
+                                    }
+
+                                }
+
+                                if (elemento.fk_tipo_elemento == 16) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendsIzquierda = "";
+                                    var appendsCentro = "";
+                                    var appendsDerecha = "";
+                                    if (detalleElementolista.length > 0) {
+                                        iz = 1, ce = 1, r = 1;
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            if (detalleelemento.detel_posicion == "L") {
+                                                appendsIzquierda += '<li><div class="ctitle wt' + iz + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                iz++;
+                                            }
+                                            if (detalleelemento.detel_posicion == "C") {
+                                                appendsCentro += '<li><div class="ctitle wt' + ce + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                ce++;
+                                            }
+                                            if (detalleelemento.detel_posicion == "R") {
+                                                appendsDerecha += '<li><div class="ctitle wt' + r + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                r++;
+                                            }
+                                        });
+
+                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">' +
+                                            '<div class="four columns">' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsIzquierda +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div >' +
+                                            '<div class="four columns">' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsCentro +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '<div class="four columns">' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsDerecha +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div></div>';
+                                    }
+                                }
                             })
                         }
 
@@ -297,6 +490,34 @@
                             resume_on_mouseout: false,
                             swipe: true,
                             animation_speed: 500
+                        });
+                    }
+
+                    if (silertrans) {
+
+                        $(".slidercontent").smoothDivScroll({
+                            touchScrolling: true
+                        });
+
+                        $(".contentBox .overlay").mouseover(function () {
+                            $(this).prev().css({
+                                opacity: 1,
+                                WebkitTransition: 'opacity 1s ease-in-out',
+                                MozTransition: 'opacity 1s ease-in-out',
+                                MsTransition: 'opacity 1s ease-in-out',
+                                OTransition: 'opacity 1s ease-in-out',
+                                transition: 'opacity 1s ease-in-out'
+                            });
+                        });
+                        $(".contentBox .overlay").mouseleave(function () {
+                            $(this).prev().css({
+                                opacity: 0.5,
+                                WebkitTransition: 'opacity 1s ease-in-out',
+                                MozTransition: 'opacity 1s ease-in-out',
+                                MsTransition: 'opacity 1s ease-in-out',
+                                OTransition: 'opacity 1s ease-in-out',
+                                transition: 'opacity 1s ease-in-out'
+                            });
                         });
                     }
 
