@@ -200,6 +200,7 @@
                         $("#divCV").hide();
                         $("#spancv").html("");
                         $("#spancv").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        $("#img_ubicacion").val("");
                         var actividad = response.data;
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");

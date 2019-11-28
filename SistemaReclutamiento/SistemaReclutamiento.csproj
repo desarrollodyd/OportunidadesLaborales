@@ -3916,6 +3916,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminIndex.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
@@ -4863,6 +4864,7 @@
     <Compile Include="Controllers\IntranetPjAdmin\IntranetDetalleElementoController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetMenuController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSaludosCumpleaniosController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetSeccionController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
@@ -5027,6 +5029,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJMenus.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJActividades.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJComentarios.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJSecciones.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5046,6 +5049,7 @@
     <Folder Include="Views\IntranetImagen\" />
     <Folder Include="Views\IntranetMenu\" />
     <Folder Include="Views\IntranetSaludosCumpleanios\" />
+    <Folder Include="Views\IntranetSeccion\" />
     <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>

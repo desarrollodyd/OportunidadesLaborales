@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
     public class IntranetPjAdminController : Controller
     {
         IntranetUsuarioModel usuariobl = new IntranetUsuarioModel();
+        IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         // GET: IntranetPjAdmin
         public ActionResult Index()
         {
@@ -30,6 +31,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         public ActionResult PanelComentarios()
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJComentarios.cshtml");
+        }
+        public ActionResult PanelSecciones(int menu_id=1)
+        {
+            List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
+            claseError error = new claseError();
+            string mensajeerrorBD = "";
+            string mensaje = "";
+            try
+            {
+                var menuTupla = intranetMenubl.IntranetMenuListarJson();
+                error = menuTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetMenu = menuTupla.intranetMenuLista;
+                    ViewBag.Menu = intranetMenu;
+                }
+                else
+                {
+                    mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            
+            return View("~/Views/IntranetPJAdmin/IntranetPJSecciones.cshtml");
         }
         #region Region Acceso a Mantenimiento Intranet PJ
         [HttpPost]
