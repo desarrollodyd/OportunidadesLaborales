@@ -154,21 +154,56 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 11) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendSlider = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendSlider += '<li data-orbit-slide="headline-1" style="width:100%">'+
+                                                '<div class="row" >'+
+                                                    '<div class="twelve columns">'+
+                                                        '<div class="itemcatslide">'+
+                                                            '<div class="catf">'+
+                                                                '<div class="catf-format">'+
+                                                                   '<div class="fdate">15<br /><span>Dec</span></div>'+
+                                                                '</div>'+
+                                                '<div class="imgslide">' +
+                                                '<img src="' + basePath + '/Content/intranet/images' + detalleelemento.detel_ubicacion + '/' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="" title="" class="slidefeatured">' +
+                                                                    '</div>'+
+                                                                    '<div class="catf-caption">'+
+                                                                        '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
+                                                                        '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>'+
+                                                                    '</div>'+
+                                                               ' </div>'+
+                                                            '</div>'+
+                                                        '</div>'+
+                                                   ' </div>'+
+                                                '</li>';
+
+                                        });
+                                    }
+
+                                    appendElementos += '<article>' +
+                                        '<div class="post-content">' +
+                                        '<div class=""> <div class="twelve columns paddingleftright"><div id="catslide"> <ul id="slider" data-orbit>' + appendSlider + '</ul></div></div></div>' +
+                                        '</div>' +
+                                        '<div class="clear"></div>' +
+                                        '</article >';
 
                                 }
 
                                 if (elemento.fk_tipo_elemento == 12) {
                                     var detalleElementolista = elemento.detalleElemento;
                                     var appendDetalleElementoheader = "";
+                                    var appendDetalleElementoBody = "";
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (index == 0) {
                                                 appendDetalleElementoheader += '<div class="featured">' +
                                                     '<div class="thumb">' +
-                                                    ' <img src="' + basePath + 'Content/intranet/images/' + detalleElementolista.detel_ubicacion + '/' + detalleElementolista.detel_nombre + '.' + detalleElementolista.detel_extension + '" alt="">' +
+                                                    ' <img src="' + basePath + 'Content/intranet/images/' + detalleelemento.detel_ubicacion + '/' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
-                                                    '<div class="ticarousel"> ' + detalleElementolista.detel_descripcion + '</div>' +
+                                                    '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
                                                     '</div>' +
                                                     '</div>' +
                                                     ' </div>' +
@@ -179,10 +214,18 @@
                                                     '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>' +
                                                     '</div>' +
                                                     '</div>' +
-                                                    '</div>' +;
+                                                    '</div>';
                                             }
                                             else {
-
+                                                appendDetalleElementoBody += '<li>' +
+                                                    '<div class="octhumb">' +
+                                                    '<a href="#"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>' +
+                                                    '</div>' +
+                                                    '<div class="desc">' +
+                                                    '<a href="#">' + detalleelemento.detel_descripcion +'</a>' +
+                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>' +
+                                                    '</div>' +
+                                                    '</li>';
 
                                             }
                                         });
@@ -192,19 +235,10 @@
                                     appendElementos += '<article>' +
                                         '<div class="post-content">' +
                                         '<section id="cat2news">'+
-                                            appendDetalleElementoheader
+                                            appendDetalleElementoheader+
                                              '<div class="othercat">'+
                                                     '<ul class="oc-horizon">'+
-                                                        '<li>'+
-                                        '<div class="octhumb">' +
-                                        '<a href="#"><img src="' + basePath + 'Content/intranet/images/n3.jpg" alt=""></a>' +
-                                                            '</div>'+
-                                                                '<div class="desc">'+
-                                                                    '<a href="#">RESERVA DE SALA</a>'+
-                                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>'+
-                                                                '</div>'+
-                                                        '</li>'+
-                           
+                                                        appendDetalleElementoBody+
                                                     '</ul>'+
                                             '</div>'+
                                         '</section>'+
@@ -216,7 +250,7 @@
                         }
 
 
-                        appendSeccion += '<section id="singlepost">' + appendElementos+'</section>';
+                        appendSeccion += '<section id="singlepost">' + appendElementos +'</section><div class="separador"></div>';
                     })
                     $("#content").html(appendSeccion);
 
