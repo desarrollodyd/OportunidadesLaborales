@@ -4246,12 +4246,12 @@ ul#logos.nav-bar > li.logos:hover {
 
 .orbit-wrapper .slider-nav span.right {
     right: -24px;
-    background-color: #ff0000;
+    /*background-color: #ff0000;*/
 }
 
 .orbit-wrapper .slider-nav span.left {
     left: -24px;
-    background-color: #ff0000;
+    /*background-color: #ff0000;*/
 }
 
  .hide-for-small, .show-for-medium, .hide-for-medium-down, .show-for-large, .show-for-large-up, .show-for-xlarge {
@@ -4262,6 +4262,30 @@ ul#logos.nav-bar > li.logos:hover {
     margin-top: 0px;
     margin-bottom: 20px;
     background: #ff0000;
+}
+
+.catslide {
+    margin-top: 0px;
+    min-height: 476px;
+    margin-bottom: 1px;
+    padding: 10px;
+    background: #000000;
+}
+
+.slider {
+    margin-bottom: 0;
+    height: 455px !important;
+}
+
+.catslide ul {
+    margin-left: 0px !important;
+}
+
+.singlepost .post-content {
+    width: 100%;
+    margin-top: auto;
+    float: right;
+    padding:0px;
 }
 
 .meta a{
@@ -4411,8 +4435,21 @@ h3.blocktitle {
         margin-top: 10px;
         min-height: 45px;
     }
-    .excerpt{
-        text-align:center;
+
+    #singlepost .post-content {
+        width: 100%;
+        float: right;
+        padding: 20px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+        margin-bottom: 5px;
+        margin-top: 7px;
+    }
+
+  
+
+    .excerpt {
+        text-align: center;
     }
 
     .tilesli div.thumb {
@@ -4517,6 +4554,13 @@ ul.oc-horizon li {
 
 #singlepost .post-content {
     width: 100%;
+}
+
+#singlepost p {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
 }
 
 .separador {
