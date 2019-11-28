@@ -158,32 +158,46 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 12) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendDetalleElementoheader = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            if (index == 0) {
+                                                appendDetalleElementoheader += '<div class="featured">' +
+                                                    '<div class="thumb">' +
+                                                    ' <img src="' + basePath + 'Content/intranet/images/' + detalleElementolista.detel_ubicacion + '/' + detalleElementolista.detel_nombre + '.' + detalleElementolista.detel_extension + '" alt="">' +
+                                                    '<div class="overlay">' +
+                                                    '<div class="title-carousel">' +
+                                                    '<div class="ticarousel"> ' + detalleElementolista.detel_descripcion + '</div>' +
+                                                    '</div>' +
+                                                    '</div>' +
+                                                    ' </div>' +
+                                                    '<div class="excerpt">' +
+                                                    '<p class="meta-date">December 23,2012</p>' +
+                                                    '<div class="desc">' +
+                                                    '<p class="pcats">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>' +
+                                                    '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>' +
+                                                    '</div>' +
+                                                    '</div>' +
+                                                    '</div>' +;
+                                            }
+                                            else {
+
+
+                                            }
+                                        });
+                                    }
+
+
                                     appendElementos += '<article>' +
                                         '<div class="post-content">' +
                                         '<section id="cat2news">'+
-                                            '<div class="featured">'+
-                                                '<div class="thumb">'+
-                                                   ' <img src="~/Content/intranet/images/c2.jpg" alt="">'+
-                                                        '<div class="overlay">'+
-                                                            '<div class="title-carousel">'+
-                                                                '<div class="ticarousel"> MESA DE PARTES</div>'+
-                                                            '</div>'+
-                                                        '</div>'+
-                                                ' </div>'+
-                                                 '<div class="excerpt">'+
-                                                        '<p class="meta-date">December 23,2012</p>'+
-                                                        '<div class="desc">'+
-                                                            '<p class="pcats">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>'+
-                                                            '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>'+
-                                                        '</div>'+
-                                                  '</div>'+
-                                             '</div>'+
-
+                                            appendDetalleElementoheader
                                              '<div class="othercat">'+
                                                     '<ul class="oc-horizon">'+
                                                         '<li>'+
-                                                            '<div class="octhumb">'+
-                                                                '<a href="#"><img src="~/Content/intranet/images/n3.jpg" alt=""></a>'+
+                                        '<div class="octhumb">' +
+                                        '<a href="#"><img src="' + basePath + 'Content/intranet/images/n3.jpg" alt=""></a>' +
                                                             '</div>'+
                                                                 '<div class="desc">'+
                                                                     '<a href="#">RESERVA DE SALA</a>'+
