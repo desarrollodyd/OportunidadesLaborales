@@ -242,7 +242,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     if (error.Key.Equals(string.Empty))
                     {
                         respuestaConsulta = menuTupla.intranetMenuEliminado;
-                        errormensaje = "Menu Eliminado";
+                        errormensaje = "Menus Eliminados";
                     }
                     else
                     {
@@ -253,7 +253,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 respuestaConsulta = true;
             }
             catch (Exception ex) {
-
+                errormensaje = "Error, no se Puede Eliminar, " + ex.Message;
+                respuestaConsulta = false;
             }
 
             return Json(new { respuesta = respuestaConsulta , mensaje = errormensaje, mensajeconsola = mensajeConsola });

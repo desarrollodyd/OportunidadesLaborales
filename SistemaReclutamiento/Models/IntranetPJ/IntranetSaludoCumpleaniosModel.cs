@@ -128,5 +128,57 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (idIntranetSaludoCumpleanioInsertado: idIntranetSaludoCumpleanioInsertado, error: error);
         }
+        public (bool intranetSaludoCumpleanioEditado, claseError error) IntranetSaludoCumpleanioEditarJson(IntranetSaludoCumpleanioEntidad intranetSaludoCumpleanio)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.int_saludos_cumpleanio
+	                            SET sld_estado=@p0
+	                            WHERE sld_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetSaludoCumpleanio.sld_estado));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetSaludoCumpleanio.sld_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetSaludoCumpleanioEditado: response, error: error);
+        }
+        public (bool intranetSaludoCumpleanioEliminado, claseError error) IntranetSaludoCumpleanioEliminarJson(int sld_id)
+        {
+            bool response = false;
+            string consulta = @"DELETE FROM intranet.int_saludos_cumpleanio
+	                                WHERE sld_id=@p0;";
+            claseError error = new claseError();
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(sld_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+
+            return (intranetSaludoCumpleanioEliminado: response, error: error);
+        }
     }
 }
