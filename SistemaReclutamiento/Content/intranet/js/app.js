@@ -80,60 +80,60 @@
 
     
     /* 1.3 ============ carousel post ==============*/ 
-    $("div#makeMeScrollable").smoothDivScroll({
-      autoScrollingMode: "onStart"
-    });
+    //$("div#makeMeScrollable").smoothDivScroll({
+    //  autoScrollingMode: "onStart"
+    //});
 
-    $("#mixedContent").smoothDivScroll({
-      touchScrolling: true
-    });
+    //$("#mixedContent").smoothDivScroll({
+    //  touchScrolling: true
+    //});
 
-    $("#slidercontent").smoothDivScroll({
-        touchScrolling: true
-    });
+    //$("#slidercontent").smoothDivScroll({
+    //    touchScrolling: true
+    //});
 
-    $(".contentBox .overlay").mouseover(function(){
-     $(this).prev().css({
-          opacity          : 1,
-          WebkitTransition : 'opacity 1s ease-in-out',
-          MozTransition    : 'opacity 1s ease-in-out',
-          MsTransition     : 'opacity 1s ease-in-out',
-          OTransition      : 'opacity 1s ease-in-out',
-          transition       : 'opacity 1s ease-in-out'
-      });
-    });
-    $(".contentBox .overlay").mouseleave(function(){
-       $(this).prev().css({
-            opacity          : 0.5,
-            WebkitTransition : 'opacity 1s ease-in-out',
-            MozTransition    : 'opacity 1s ease-in-out',
-            MsTransition     : 'opacity 1s ease-in-out',
-            OTransition      : 'opacity 1s ease-in-out',
-            transition       : 'opacity 1s ease-in-out'
-        });
-    });
+    //$(".contentBox .overlay").mouseover(function(){
+    // $(this).prev().css({
+    //      opacity          : 1,
+    //      WebkitTransition : 'opacity 1s ease-in-out',
+    //      MozTransition    : 'opacity 1s ease-in-out',
+    //      MsTransition     : 'opacity 1s ease-in-out',
+    //      OTransition      : 'opacity 1s ease-in-out',
+    //      transition       : 'opacity 1s ease-in-out'
+    //  });
+    //});
+    //$(".contentBox .overlay").mouseleave(function(){
+    //   $(this).prev().css({
+    //        opacity          : 0.5,
+    //        WebkitTransition : 'opacity 1s ease-in-out',
+    //        MozTransition    : 'opacity 1s ease-in-out',
+    //        MsTransition     : 'opacity 1s ease-in-out',
+    //        OTransition      : 'opacity 1s ease-in-out',
+    //        transition       : 'opacity 1s ease-in-out'
+    //    });
+    //});
 
     /* 1.4 ============ orbit slider ============ */
 
-    $('#slider').orbit({
-      animation: 'fade',
-      timer_speed: 10000,
-      pause_on_hover: true,
-      resume_on_mouseout: false,
-      swipe: true,
-      animation_speed: 500
-    });
+    //$('#slider').orbit({
+    //  animation: 'fade',
+    //  timer_speed: 10000,
+    //  pause_on_hover: true,
+    //  resume_on_mouseout: false,
+    //  swipe: true,
+    //  animation_speed: 500
+    //});
 
-    $('#slider_two').orbit({
-      animation: 'fade',
-      timer_speed: 10000,
-      pause_on_hover: true,
-      resume_on_mouseout: false,
-      next_class: 'orbitnext', // Class name given to the next button
-      prev_class: 'orbitprev', // Class name given to the previous button
-      swipe: true,
-      animation_speed: 500
-    });
+    //$('#slider_two').orbit({
+    //  animation: 'fade',
+    //  timer_speed: 10000,
+    //  pause_on_hover: true,
+    //  resume_on_mouseout: false,
+    //  next_class: 'orbitnext', // Class name given to the next button
+    //  prev_class: 'orbitprev', // Class name given to the previous button
+    //  swipe: true,
+    //  animation_speed: 500
+    //});
 
     /* 1.5 ============ overlay image script ======================= */
 

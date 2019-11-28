@@ -4568,12 +4568,13 @@ ul.oc-horizon li {
     clear:both;
 }
 
-.lista_titulo{
-    margin-bottom:4px;
+.lista_titulo {
+    margin-bottom: 4px;
+    margin-left: 20px;
 }
 
 .listas {
-    margin-left: 28px;
+    margin-left: 50px;
 }
 
 blockquote p{
@@ -4657,7 +4658,7 @@ blockquote {
 }
 
     .mixedContent .overlay:hover > .title-carousel {
-        background: rgba(255, 0, 0, 0.63);
+        background: rgba(255, 0, 0, 1);
     }
 
 .mixedContent .overlay-active > .title-carousel {
@@ -4686,7 +4687,7 @@ blockquote {
 }
 
 .onlyimgblank .title-carousel {
-    background-color: rgba(0, 0, 0, 0.42);
+    background-color: rgba(0, 0, 0, 0.8);
     bottom: 12px;
 }
 
