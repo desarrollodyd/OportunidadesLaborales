@@ -179,7 +179,7 @@
                                                     '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>' +
                                                     '</div>' +
                                                     '</div>' +
-                                                    '</div>' +;
+                                                    '</div>' ;
                                             }
                                             else {
 

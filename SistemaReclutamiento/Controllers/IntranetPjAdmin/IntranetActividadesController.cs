@@ -145,21 +145,51 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
+            IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
             try
             {
+                var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
+                error = actividadesBusquedatupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
+                    if (intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
+                    {
+                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
+                        error = ActividadesTupla.error;
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                            errormensaje = "Actividades Eliminado";
+                        }
+                        else
+                        {
+                            errormensaje = "Error, no se Puede Eliminar";
+                            mensajeConsola = error.Value;
+                        }
+                    }
+                    else {
+                        //Eliminar Archivo Primero
+                        var nombreArchivo = intranetActividadesBusqueda.act_imagen;
+                        var fullPath = Server.MapPath("~/Content/intranet/images/png/"+nombreArchivo);
+                        if (System.IO.File.Exists(fullPath)) {
+                            System.IO.File.Delete(fullPath);
+                        }
+                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
+                        error = ActividadesTupla.error;
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                            errormensaje = "Actividades Eliminado";
+                        }
+                        else
+                        {
+                            errormensaje = "Error, no se Puede Eliminar";
+                            mensajeConsola = error.Value;
+                        }
+                    }
+                }
 
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
-                error = ActividadesTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                    errormensaje = "Actividades Eliminado";
-                }
-                else
-                {
-                    errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
-                }
+               
             }
             catch (Exception exp)
             {
@@ -369,7 +399,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     if (error.Key.Equals(string.Empty))
                     {
                         respuestaConsulta = actividadTupla.intranetActividadesEliminado;
-                        errormensaje = "Actividad Eliminada";
+                        errormensaje = "Actividades Eliminadas";
                     }
                     else
                     {
@@ -381,7 +411,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
             catch (Exception ex)
             {
-
+                errormensaje = "Error, no se Puede Eliminar, " + ex.Message;
+                respuestaConsulta = false;
             }
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
