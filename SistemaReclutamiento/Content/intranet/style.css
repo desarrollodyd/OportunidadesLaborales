@@ -4802,3 +4802,12 @@ h2.ntitle {
 .itemblog .excerpt {
     text-align:center;
 }
+
+#contenido_modal .loverate{
+
+}
+
+#contenido_modal #singlepost header h1 {
+    font-size: 30px;
+    min-height: 50px;
+}
