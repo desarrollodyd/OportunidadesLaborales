@@ -25,17 +25,18 @@
             </small>
 
         </h1>
+   
+    </div><!-- /.page-header -->
+
+    <div class="row">
         <div class="col-md-12 col-xs-12">
             <div class="form-group">
                 <label>Seleccione Menu</label>
                 <select class="form-control" name="men_id" id="cboMenus" style="width:100%">
-                    <option value="">Seleccione</option>
+                    <option value="">Seleccione Menu</option>
                 </select>
             </div>
         </div>
-    </div><!-- /.page-header -->
-
-    <div class="row">
         <div class="col-xs-12">
 
             <div class="clearfix">
@@ -44,15 +45,15 @@
             <div class="table-header">
                 Secciones con estado Inactivo no seran visibles en la pagina principal
             </div>
-
+            <input type="hidden" id="id_menu" name="id_menu" value=""/>
             <!-- div.table-responsive -->
             <!-- div.dataTables_borderWrap -->
             <div>
-                <table id="menusListado" class="table datatable-menulistado table-striped table-bordered table-hover">
+                <table id="seccionesListado" class="table datatable-seccionlistado table-striped table-bordered table-hover">
                     <tbody>
                         <tr>
                             <td colspan="6">
-                                <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                <div class="alert alert-warning alert-dismissible text-center"><span>Seleccione un Menu Para ver sus Secciones</span></div>
                             </td>
                         </tr>
                     </tbody>
@@ -63,50 +64,29 @@
 </div><!-- /.page-content -->
 
 
-<div class="modal fade" tabindex="-1" id="modalFormulario" role="dialog" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="modalFormularioSeccion" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="nf"><span id="tituloModalSeccion"></span> Menu</h4>
+                <h4 class="modal-title" id="nf"><span id="tituloModalSeccion"></span>Sección</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form class="" id="form_menus">
-                        <input type="hidden" name="menu_id" id="menu_id" value="" />
-                        <div class="col-md-12 col-xs-12">
-                            <div class="form-group">
-                                <label>Titulo</label>
-                                <input type="text" name="menu_titulo" id="menu_titulo" class="form-control" placeholder="Titulo" />
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xs-12">
-                            <div class="form-group">
-                                <label>URI</label>
-                                <input type="text" name="menu_url" id="menu_url" class="form-control" placeholder="URI" />
-                            </div>
-                        </div>
+                    <form class="" id="form_secciones">
+                        <input type="hidden" name="sec_id" id="sec_id" value="" />
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Orden</label>
-                                <input type="number" name="menu_orden" id="menu_orden" min="1" class="form-control" value="1" />
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-xs-12">
-                            <div class="form-group">
-                                <label>¿Se abrira en una pestaña nueva?</label>
-                                <select class="form-control" name="menu_blank" id="menu_blank">
-                                    <option value=false selected>No</option>
-                                    <option value=true>Si</option>
-                                </select>
+                                <input type="text" name="sec_orden" id="sec_orden" class="form-control" placeholder="Titulo" />
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select class="form-control" name="menu_estado" id="menu_estado">
+                                <select class="form-control" name="sec_estado" id="sec_estado">
                                     <option value="A" selected>Activo</option>
                                     <option value="I">Inactivo</option>
                                 </select>
@@ -116,7 +96,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button class="btn btn-guardar-seccion btn-primary"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>

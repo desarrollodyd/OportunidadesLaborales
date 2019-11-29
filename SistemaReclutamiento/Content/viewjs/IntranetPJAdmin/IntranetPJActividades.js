@@ -204,9 +204,10 @@
                         var actividad = response.data;
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");
-                            $("#cvnombre").text(nombre_arr[0].substring(0, 28) + "." + nombre_arr[1]);
-                            $("#cvfecha").text(moment(actividad.act_fecha).format("DD-MM-YYYY HH:MM:SS A"));
+                            $("#cvnombre").text("Nombre: "+nombre_arr[0].substring(0, 28) + "." + nombre_arr[1]);
+                            $("#cvfecha").text("Fecha Subida: "+moment(actividad.act_fecha).format("DD-MM-YYYY"));
                             $("#divCV").show();
+                            $("#icono_actual").attr("src", basePath + "/Content/intranet/images/png/" + actividad.act_imagen);
                             $("#img_ubicacion").val(actividad.act_imagen);
                         }
                         

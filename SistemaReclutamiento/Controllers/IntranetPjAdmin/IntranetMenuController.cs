@@ -49,6 +49,36 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola=mensajeConsola });
         }
         [HttpPost]
+        public ActionResult IntranetMenuListarTodoJson()
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<IntranetMenuEntidad> listaMenus = new List<IntranetMenuEntidad>();
+            try
+            {
+                var menuTupla = intranetMenubl.IntranetMenuListarTodoJson();
+                error = menuTupla.error;
+                listaMenus = menuTupla.intranetMenuLista;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Menus";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar los Menus";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
         public ActionResult IntranetMenuIdObtenerJson(int menu_id)
         {
             string mensaje = "";
