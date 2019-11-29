@@ -8,7 +8,7 @@
             return;
         }
         responseSimple({
-            url: "IntranetMenu/IntranetMenuListarJson",
+            url: "IntranetMenu/IntranetMenuListarTodoJson",
             refresh: false,
             callBackSuccess: function (response) {
                 var totalMenus = response.data.length;

@@ -21,8 +21,10 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetElementoEntidad> lista = new List<IntranetElementoEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT elem_id, elem_titulo, elem_descripcion, elem_contenido, elem_orden
-                                , elem_estado, fk_seccion, fk_tipo_elemento
+                                , elem_estado, fk_seccion, fk_tipo_elemento,tipo_elemento.tipo_nombre
 	                            FROM intranet.int_elemento
+                                join intranet.int_tipo_elemento on
+                                intranet.int_elemento.fk_tipo_elemento=intranet.int_tipo_elemento.tipo_id
                                 order by elem_orden;";
             try
             {
@@ -47,6 +49,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     elem_estado = ManejoNulos.ManageNullStr(dr["elem_estado"]),
                                     fk_seccion = ManejoNulos.ManageNullInteger(dr["fk_seccion"]),
                                     fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
+                                    
                                 };
 
                                 lista.Add(Elemento);
@@ -69,8 +72,10 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetElementoEntidad> lista = new List<IntranetElementoEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT elem_id, elem_titulo, elem_descripcion, elem_contenido, elem_orden
-                                , elem_estado, fk_seccion, fk_tipo_elemento
+                                , elem_estado, fk_seccion, fk_tipo_elemento,tipo_nombre
 	                            FROM intranet.int_elemento
+                                join intranet.int_tipo_elemento on
+                                intranet.int_elemento.fk_tipo_elemento=intranet.int_tipo_elemento.tipo_id
                                 where fk_seccion = @p0 
                                 order by elem_orden;";
             try
@@ -97,6 +102,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     elem_estado = ManejoNulos.ManageNullStr(dr["elem_estado"]),
                                     fk_seccion = ManejoNulos.ManageNullInteger(dr["fk_seccion"]),
                                     fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
+                                    tipo_nombre = ManejoNulos.ManageNullStr(dr["tipo_nombre"])
                                 };
 
                                 lista.Add(Elemento);

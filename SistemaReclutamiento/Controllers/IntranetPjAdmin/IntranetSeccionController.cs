@@ -48,5 +48,96 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
+        [HttpPost]
+        public ActionResult IntranetSeccionEditarJson(IntranetSeccionEntidad intranetSeccion)
+        {
+            string errormensaje = "";
+            bool respuestaConsulta = false;
+            string mensajeConsola = "";
+            claseError error = new claseError();
+            try
+            {
+                var seccionTupla = intranetSeccionbl.IntranetSeccionEditarEstadoJson(intranetSeccion);
+                error = seccionTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    respuestaConsulta = seccionTupla.intranetSeccionEditado;
+                    errormensaje = "Se Editó Correctamente";
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    errormensaje = "Error, no se Puede Editar";
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
+        public ActionResult IntranetSeccionInsertarJson(IntranetSeccionEntidad intranetSeccion)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            int idIntranetSeccionInsertado = 0;
+            claseError error = new claseError();
+            try
+            {
+                var seccionTupla = intranetSeccionbl.IntranetSeccionInsertarJson(intranetSeccion);
+                error = seccionTupla.error;
+
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Se Registró Correctamente";
+                    respuesta = true;
+                    idIntranetSeccionInsertado = seccionTupla.idIntranetSeccionInsertado;
+                }
+                else
+                {
+                    mensaje = "No se Pudo insertar el Menu";
+                    mensajeConsola = error.Value;
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetMenuInsertado = idIntranetSeccionInsertado, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult IntranetSeccionEliminarJson(int sec_id)
+        {
+            string errormensaje = "";
+            bool respuestaConsulta = false;
+            claseError error = new claseError();
+            string mensajeConsola = "";
+            try
+            {
+                var seccionTupla = intranetSeccionbl.IntranetSeccionEliminarJson(sec_id);
+                error = seccionTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    respuestaConsulta = seccionTupla.intranetSeccionEliminado;
+                    errormensaje = "Seccion Eliminada";
+                }
+                else
+                {
+                    errormensaje = "Error, no se Puede Eliminar";
+                    mensajeConsola = error.Value;
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string elem_estado { get; set; }
         public int fk_seccion { get; set; }
         public int fk_tipo_elemento { get; set; }
+        public string tipo_nombre { get; set; }
     }
 }

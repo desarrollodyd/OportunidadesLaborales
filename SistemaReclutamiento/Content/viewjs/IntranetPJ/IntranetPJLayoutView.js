@@ -63,7 +63,7 @@
                     appendActividades += '<h3 class="blocktitle">ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '<span><a href="#">MAS</a></span></h3>                            <div class="getcat" > <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
-                        var imagen = (actividad.act_imagen != "") ? '/subido/' + actividad.act_imagen:"";
+                        var imagen = (actividad.act_imagen != "") ? '/png/' + actividad.act_imagen:"";
                         appendActividades += '<li><a href="javascript:void(0);"><img src="' + basePath + '/Content/intranet/images'+imagen+'" />                                <p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
                     });
                     appendActividades += '</ul></div >';

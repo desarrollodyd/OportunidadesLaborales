@@ -197,7 +197,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"SELECT act.act_id, act.act_descripcion, act.act_imagen, 
                                  act.act_estado, act.act_fecha
 	                                FROM intranet.int_actividades as act 
-	                                where act.act_estado='A'
                                     order by act.act_fecha desc";
             try
             {
