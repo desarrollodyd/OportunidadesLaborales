@@ -63,7 +63,8 @@
                     appendActividades += '<h3 class="blocktitle">ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '<span><a href="#">MAS</a></span></h3>                            <div class="getcat" > <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
-                        appendActividades += '<li><a href="#"><img src="' + basePath + '/Content/intranet/images/png/actividad.png" />                                <p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
+                        var imagen = (actividad.act_imagen != "") ? '/subido/' + actividad.act_imagen:"";
+                        appendActividades += '<li><a href="javascript:void(0);"><img src="' + basePath + '/Content/intranet/images'+imagen+'" />                                <p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
                     });
                     appendActividades += '</ul></div >';
                     $("#actividadesMes").append(appendActividades);
@@ -169,7 +170,7 @@
                                                 appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>'; 
                                             }
                                             else {
-                                                appendsDerecha += '<a href="#"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
                                             }
 
                                         });
@@ -241,16 +242,16 @@
                                                                                 '</div>'+
                                                                                 '<div class="imgslide">'+
                                                 '<img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="" title="" class="slidefeatured">'+
-                                                                                '</div>'+
-                                                                                    '<div class="catf-caption">'+
-                                                                                        '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
-                                                                                        '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>'+
-                                                                                    '</div>'+
+                                                '</div>' +
+                                                                                    //'<div class="catf-caption">'+
+                                                                                    //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
+                                                                                    //    '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>'+
+                                                                                    //'</div>'+
                                                                                 '</div>'+
                                                                             '</div>'+
                                                                         '</div>'+
                                                                     '</div>'+
-                                                            '</li >';
+                                                            '</li>';
 
                                         });
 
@@ -276,10 +277,11 @@
                                     var appendDetalleElementoheader = "";
                                     var appendDetalleElementobody = "";
                                     if (detalleElementolista.length > 0) {
+                                        var i = 0;
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (index == 0) {
-                                                appendDetalleElementoheader += '<div class="featured">' +
-                                                    '<div class="thumb">' +
+                                                appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
+                                                    '<div class="thumb foto_cuadro_izquiera">' +
                                                     ' <img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
@@ -288,25 +290,27 @@
                                                     '</div>' +
                                                     ' </div>' +
                                                     '<div class="excerpt">' +
-                                                    '<p class="meta-date">December 23,2012</p>' +
                                                     '<div class="desc">' +
-                                                    '<p class="pcats">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>' +
-                                                    '<a href="#"><i class="fa fa-external-link"></i> LEER MAS </a>' +
+                                                    '<p class="pcats" style="padding-left: 0px !important;padding-right: 0px !important;">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>' +
+                                                    '<a href="javascript:void(0);"><i class="fa fa-external-link"></i> LEER MAS </a>' +
                                                     '</div>' +
                                                     '</div>' +
                                                     '</div>';
                                             }
                                             else {
-
-                                                appendDetalleElementobody += '<li>' +
-                                                    '<div class="octhumb">' +
-                                                    '<a href="#"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>' +
-                                                    '</div>' +
-                                                    '<div class="desc">' +
-                                                    '<a href="#">' + detalleelemento.detel_descripcion + '</a>' +
-                                                    '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>' +
-                                                    '</div>' +
-                                                    '</li>';
+                                                i++;
+                                                if (i < 4) {
+                                                    appendDetalleElementobody += '<li>' +
+                                                        '<div class="octhumb">' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>' +
+                                                        '</div>' +
+                                                        '<div class="desc">' +
+                                                        '<a href="javascript:void(0);">' + detalleelemento.detel_descripcion + '</a>' +
+                                                        '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>' +
+                                                        '</div>' +
+                                                        '</li>';
+                                                }
+                                                
                                             }
                                         });
                                     }
@@ -337,7 +341,7 @@
                                                 appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="#"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
                                             }
 
                                         });
@@ -371,7 +375,7 @@
                                                 appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsDerecha += '<a href="#"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
                                             }
 
                                         });
@@ -404,7 +408,7 @@
                                                 appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="#"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
                                             }
 
                                         });
@@ -520,13 +524,22 @@
                             });
                         });
                     }
-
+                   
                 }
             }
         });
     };
     var _componentes = function () {
 
+        $(document).on('click','a.foto_cuadro_derecha', function () {
+            console.log("ascr")
+            
+            var imgderecha = $(this);
+            var imgder = imgderecha.find("img").attr('src');
+            var imgizquierda = $("div.foto_cuadro_izquiera").find("img").attr('src');
+            $("div.foto_cuadro_izquiera").find("img").attr('src', imgder);
+            imgderecha.find("img").attr('src',imgizquierda);
+        });
 
     };
     //
