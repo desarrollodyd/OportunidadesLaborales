@@ -595,6 +595,7 @@
                     $.each(elementos, function (index, elemento) {
 
                         if (elemento.fk_tipo_elemento == 1) {
+                            console.log("34")
                             appendElementos += '<header>' +
                                 '<div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>' +
                                 '<h1>' + elemento.emod_titulo + '</h1>' +
@@ -1016,7 +1017,7 @@
                     $("#contenido_modal").html(appendSeccion);
                    
                     $.pgwModal({
-                        target: '#contenido_modal',
+                        target: '#modalContent',
                         title: 'CORPORACION PJ',
                         maxWidth: 800
                     });
