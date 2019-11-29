@@ -4395,8 +4395,8 @@ h3.blocktitle {
     }
 
     .nav-bar li img.logo {
-        width: 210px;
-        height: 190px;
+        width: 100px;
+        height: 92px;
         position: absolute;
         left: 50%;
         right: 50%;
@@ -4731,21 +4731,23 @@ ul.listreview li .ctitle {
 }
 .space_ {
     padding: 4px;
-    border: 1px solid #dedede;
+    border: 4px solid #797878;
+    height: 240px;
 }
 
 .tilesli {
     padding: 4px !important;
 }
 
-.tilesli div.itemblog {
-    background-color: #ffffff;
-    border: 1px solid #dedede;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    cursor: pointer;
-}
+    .tilesli div.itemblog {
+        background-color: #ffffff;
+        border: 2px solid #797878;
+        border-radius: 2px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        cursor: pointer;
+        height: 224px;
+    }
 
 
     .tilesli div.thumb {
@@ -4759,9 +4761,9 @@ h2.ntitle {
     overflow: hidden;
 }
 
-[class*="column"] + [class*="column"]:last-child {
+/*[class*="column"] + [class*="column"]:last-child {
     float: left !important;
-}
+}*/
 
 #singlepost .postmeta .meta-date {
     width: 100%; 
@@ -4795,4 +4797,8 @@ h2.ntitle {
 
 .ui-pnotify-title{
     font-size:14px;
+}
+
+.itemblog .excerpt {
+    text-align:center;
 }
