@@ -202,6 +202,7 @@
             console.log(menu_id);
             if (menu_id != "" || menu_id > 0) {
                 messageConfirmation({
+                    content: '¿Esta seguro de ELIMINAR este Menú?',
                     callBackSAceptarComplete: function () {
                         responseSimple({
                             url: "IntranetMenu/IntranetMenuEliminarJson",
@@ -244,6 +245,7 @@
             });
             if (arrayMenus.length > 0) {
                 messageConfirmation({
+                    content: '¿Esta seguro de ELIMINAR todos los Menús Seleccionados?',
                     callBackSAceptarComplete: function () {
                         var dataForm = { listaMenuEliminar: arrayMenus };
                         responseSimple({

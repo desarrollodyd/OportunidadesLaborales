@@ -94,7 +94,7 @@
                             "render": function (value) {
                                 var span = '';
                                 var act_id = value;
-                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="red btn-eliminar"                                href = "#" data - id="' + act_id + '" > <i class="ace-icon fa fa-trash-o bigger-130"></i></a ></div >                                    <div class="hidden-md hidden-lg">                                        <div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown"                                            data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i> </button>                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">                                                <li><a href="#" class="tooltip-error btn-eliminar" data-id="' + act_id + '" data-rel="tooltip"                                                    title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a> </li>                                            </ul>                                        </div>                                    </div>';
+                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + act_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + act_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-id="' + act_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + act_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + act_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + act_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
                                 return span;
                             }
                         }
@@ -200,6 +200,7 @@
                         $("#divCV").hide();
                         $("#spancv").html("");
                         $("#spancv").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        $("#img_ubicacion").val("");
                         var actividad = response.data;
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");
@@ -235,6 +236,7 @@
             console.log(act_id);
             if (act_id != "" || act_id > 0) {
                 messageConfirmation({
+                    content: '¿Esta seguro de ELIMINAR esta Actividad?',
                     callBackSAceptarComplete: function () {
                         responseSimple({
                             url: "IntranetActividades/IntranetActividadesEliminarJson",
@@ -311,6 +313,7 @@
           
             if (arrayActividades.length > 0) {
                 messageConfirmation({
+                    content: '¿Esta seguro de ELIMINAR todas las Actividades Seleccionadas?',
                     callBackSAceptarComplete: function () {
                         var dataForm = { listaActividadesEliminar: arrayActividades };
                         responseSimple({

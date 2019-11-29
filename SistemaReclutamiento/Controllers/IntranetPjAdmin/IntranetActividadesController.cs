@@ -145,21 +145,51 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
+            IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
             try
             {
+                var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
+                error = actividadesBusquedatupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
+                    if (intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
+                    {
+                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
+                        error = ActividadesTupla.error;
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                            errormensaje = "Actividades Eliminado";
+                        }
+                        else
+                        {
+                            errormensaje = "Error, no se Puede Eliminar";
+                            mensajeConsola = error.Value;
+                        }
+                    }
+                    else {
+                        //Eliminar Archivo Primero
+                        var nombreArchivo = intranetActividadesBusqueda.act_imagen;
+                        var fullPath = Server.MapPath("~/Content/intranet/images/png/"+nombreArchivo);
+                        if (System.IO.File.Exists(fullPath)) {
+                            System.IO.File.Delete(fullPath);
+                        }
+                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
+                        error = ActividadesTupla.error;
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                            errormensaje = "Actividades Eliminado";
+                        }
+                        else
+                        {
+                            errormensaje = "Error, no se Puede Eliminar";
+                            mensajeConsola = error.Value;
+                        }
+                    }
+                }
 
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
-                error = ActividadesTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                    errormensaje = "Actividades Eliminado";
-                }
-                else
-                {
-                    errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
-                }
+               
             }
             catch (Exception exp)
             {
@@ -275,7 +305,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 try
                 {
 
-                    if (intranetActividad.img_ubicacion == "")
+                    if (intranetActividad.img_ubicacion == "" && intranetActividad.img_ubicacion!=null)
                     {
                         intranetActividad.act_imagen = intranetActividad.img_ubicacion;
                         var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
@@ -325,7 +355,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         }
                         else
                         {
-                            intranetActividad.act_imagen = "";
+                            intranetActividad.act_imagen = intranetActividad.img_ubicacion;
                         }
                         var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
                         error = actividadTupla.error;
@@ -360,28 +390,61 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string mensajeConsola = "";
             bool respuestaConsulta = false;
             claseError error = new claseError();
+            IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
             try
             {
                 for (int i = 0; i <= listaActividadesEliminar.Length - 1; i++)
                 {
-                    var actividadTupla = intranetActividadesbl.IntranetActividadesEliminarJson(listaActividadesEliminar[i]);
-                    error = actividadTupla.error;
+                    var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(listaActividadesEliminar[i]);
+                    error = actividadesBusquedatupla.error;
                     if (error.Key.Equals(string.Empty))
                     {
-                        respuestaConsulta = actividadTupla.intranetActividadesEliminado;
-                        errormensaje = "Actividad Eliminada";
-                    }
-                    else
-                    {
-                        errormensaje = "Error, no se Puede Eliminar";
-                        mensajeConsola = error.Value;
+                        intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
+                        if (intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
+                        {
+                            var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
+                            error = ActividadesTupla.error;
+                            if (error.Key.Equals(string.Empty))
+                            {
+                                respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                                errormensaje = "Actividades Eliminado";
+                            }
+                            else
+                            {
+                                errormensaje = "Error, no se Puede Eliminar";
+                                mensajeConsola = error.Value;
+                            }
+                        }
+                        else
+                        {
+                            //Eliminar Archivo Primero
+                            var nombreArchivo = intranetActividadesBusqueda.act_imagen;
+                            var fullPath = Server.MapPath("~/Content/intranet/images/png/" + nombreArchivo);
+                            if (System.IO.File.Exists(fullPath))
+                            {
+                                System.IO.File.Delete(fullPath);
+                            }
+                            var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
+                            error = ActividadesTupla.error;
+                            if (error.Key.Equals(string.Empty))
+                            {
+                                respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                                errormensaje = "Actividades Eliminado";
+                            }
+                            else
+                            {
+                                errormensaje = "Error, no se Puede Eliminar";
+                                mensajeConsola = error.Value;
+                            }
+                        }
                     }
                 }
                 respuestaConsulta = true;
             }
             catch (Exception ex)
             {
-
+                errormensaje = "Error, no se Puede Eliminar, " + ex.Message;
+                respuestaConsulta = false;
             }
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });

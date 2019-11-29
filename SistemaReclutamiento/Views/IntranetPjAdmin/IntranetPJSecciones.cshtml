@@ -1,6 +1,7 @@
-﻿
+﻿@using System.Web.Script.Serialization
 @{
     Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+    String Menu = new JavaScriptSerializer().Serialize(ViewBag.Menu);
 }
 
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -9,7 +10,7 @@
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="#">Inicio</a>
         </li>
-        <li class="active">Panel Actividades</li>
+        <li class="active">Panel Secciones</li>
     </ul><!-- /.breadcrumb -->
 </div>
 
@@ -17,12 +18,21 @@
 
     <div class="page-header">
         <h1>
-            Listado de Actividades
+            Listado de Secciones
             <small>
                 <i class="ace-icon fa fa-angle-double-right"></i>
 
             </small>
+
         </h1>
+        <div class="col-md-12 col-xs-12">
+            <div class="form-group">
+                <label>Seleccione Menu</label>
+                <select class="form-control" name="men_id" id="cboMenus" style="width:100%">
+                    <option value="">Seleccione</option>
+                </select>
+            </div>
+        </div>
     </div><!-- /.page-header -->
 
     <div class="row">
@@ -32,13 +42,13 @@
                 <div class="pull-right tableTools-container"><button class="btn btn-sm btn-success" id="btn_nuevo"><i class="fa fa-file"></i> Nuevo</button> <button class="btn btn-sm btn-danger" id="btn_eliminar_varios"><i class="fa fa-trash-o"></i> Eliminar</button></div>
             </div>
             <div class="table-header">
-                Actividades con estado Inactivo no seran visibles en la pagina principal
+                Secciones con estado Inactivo no seran visibles en la pagina principal
             </div>
 
             <!-- div.table-responsive -->
             <!-- div.dataTables_borderWrap -->
             <div>
-                <table id="actividadesListado" class="table datatable-actividadeslistado table-striped table-bordered table-hover">
+                <table id="menusListado" class="table datatable-menulistado table-striped table-bordered table-hover">
                     <tbody>
                         <tr>
                             <td colspan="6">
@@ -60,63 +70,43 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="nf"><span id="tituloModalActividades"></span> Actividad</h4>
+                <h4 class="modal-title" id="nf"><span id="tituloModalSeccion"></span> Menu</h4>
             </div>
-            <div class="modal-body" id="">
+            <div class="modal-body">
                 <div class="row">
-                    <form class="" id="form_actividades" method="post">
-                        <input type="hidden" name="act_id" id="act_id" value="" />
-                        <input type="hidden" name="img_ubicacion" id="img_ubicacion" value="" />
+                    <form class="" id="form_menus">
+                        <input type="hidden" name="menu_id" id="menu_id" value="" />
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label>Titulo Actividad</label>
-                                <input type="text" name="act_descripcion" id="act_descripcion" class="form-control" placeholder="Titulo Actividad" />
+                                <label>Titulo</label>
+                                <input type="text" name="menu_titulo" id="menu_titulo" class="form-control" placeholder="Titulo" />
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label>Fecha Actividad</label>
-                                <div class='input-group date' id='myDatepicker1'>
-                                    <input type='text' class="form-control" name="act_fecha" id="act_fecha" data-inputmask="'mask': '99/99/9999'" placeholder="Fecha de Inicio" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
+                                <label>URI</label>
+                                <input type="text" name="menu_url" id="menu_url" class="form-control" placeholder="URI" />
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label>Adjuntar Icono (Opcional)</label>
-                                <label class="btn btn-warning" for="act_imagen">
-                                    <span id="spancv"><i class="fa fa-upload"></i>  Subir Icono</span>
-                                    <input id="act_imagen" name="act_imagen" type="file" class="form-control" style="display:none;" />
-                                </label>
-
-
-
-                                @*<label id="tituloIcono">Adjuntar Icono (Opcional)</label>
-                <label class="" for="act_imagen">
-                    <input id="act_imagen" name="act_imagen" type="file" class="form-control" />
-                </label>
-                <span id="spanImagen"></span>*@
+                                <label>Orden</label>
+                                <input type="number" name="menu_orden" id="menu_orden" min="1" class="form-control" value="1" />
                             </div>
                         </div>
-
-                        <div class="col-md-12" style="display:none" id="divCV">
-                           
-                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
-                                <label class="col-md-12 col-xs-12">Icono Actual</label>
-                                <a id="frm_cv" href="#" class="atch-thumb" style="width:100%;">
-                                    <i class="glyphicon glyphicon-save-file" style="font-size:120px;"></i>
-                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="cvnombre"></span></div>
-                                    <div class="file-name" style="width:100%;text-align:left"><i class="fa fa-calendar"></i> <span id="cvfecha">*****</span></div>
-                                </a>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>¿Se abrira en una pestaña nueva?</label>
+                                <select class="form-control" name="menu_blank" id="menu_blank">
+                                    <option value=false selected>No</option>
+                                    <option value=true>Si</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select class="form-control" name="act_estado" id="act_estado">
+                                <select class="form-control" name="menu_estado" id="menu_estado">
                                     <option value="A" selected>Activo</option>
                                     <option value="I">Inactivo</option>
                                 </select>
@@ -137,6 +127,10 @@
 
 @section js
 {
-    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJActividades.js"></script>
+    <script type="text/javascript">
+        menu = (@Html.Raw(Menu));
+    </script>
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJSecciones.js"></script>
 }
+
 
