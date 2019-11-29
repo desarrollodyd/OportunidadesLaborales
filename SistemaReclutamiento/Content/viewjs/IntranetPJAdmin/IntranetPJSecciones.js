@@ -93,7 +93,8 @@
                             messageResponse({
                                 text: "Error Al Cargar Datos",
                                 type: "error"
-                            })
+                            });
+                            
                         }
                        
                     }
