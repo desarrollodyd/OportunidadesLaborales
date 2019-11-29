@@ -53,10 +53,10 @@
                             "render": function (value) {
                                 var img = '';
                                 if (value != "") {
-                                    img += '<img src="' + basePath + '/Content/intranet/images/png/' + value + '" / style="width:50px;height:50px;">';
+                                    img += '<img src="' + basePath + 'Content/intranet/images/png/' + value + '" / style="width:50px;height:50px;">';
                                 }
                                 else {
-                                    img = '<img src="' + basePath + '/Content/intranet/images/png/actividad.png" style="width:50px;height:50px;"/>';
+                                    img = '<img src="' + basePath + 'Content/intranet/images/png/actividad.png" style="width:50px;height:50px;"/>';
                                 }
                                 return img;
                             },
@@ -207,7 +207,7 @@
                             $("#cvnombre").text("Nombre: "+nombre_arr[0].substring(0, 28) + "." + nombre_arr[1]);
                             $("#cvfecha").text("Fecha Subida: "+moment(actividad.act_fecha).format("DD-MM-YYYY"));
                             $("#divCV").show();
-                            $("#icono_actual").attr("src", basePath + "/Content/intranet/images/png/" + actividad.act_imagen);
+                            $("#icono_actual").attr("src", basePath + "Content/intranet/images/png/" + actividad.act_imagen);
                             $("#img_ubicacion").val(actividad.act_imagen);
                         }
                         
