@@ -239,7 +239,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             claseError error = new claseError();
             int tamanioMaximo = 4194304;
             string extension = "";
-            var ruta = Request.Url.Scheme + "://" + (Request.Url.Authority) + Request.ApplicationPath;
+            //var ruta = Request.Url.Scheme + "://" + (Request.Url.Authority) + Request.ApplicationPath;
             if (intranetActividad.act_id == 0)
             {
                 //Insertar
@@ -252,11 +252,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             extension = Path.GetExtension(file.FileName);
                             if (extension == ".jpg" || extension == ".png") {
                                 var nombreArchivo = ("Actividad_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                                if (!Directory.Exists(ruta+"/Content/intranet/images/png/"))
+                                if (!Directory.Exists("~/Content/intranet/images/png/"))
                                 {
-                                    System.IO.Directory.CreateDirectory(ruta+"/Content/intranet/images/png/");
+                                    System.IO.Directory.CreateDirectory("~/Content/intranet/images/png/");
                                 }
-                                file.SaveAs(Server.MapPath(ruta+"/Content/intranet/images/png/" + nombreArchivo));
+                                file.SaveAs(Server.MapPath("~/Content/intranet/images/png/" + nombreArchivo));
                                 intranetActividad.act_imagen = nombreArchivo;
                             }
                             else
