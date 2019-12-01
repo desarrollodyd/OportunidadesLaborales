@@ -2368,9 +2368,6 @@
     <Content Include="Content\vendors\gauge.js\dist\gauge.min.js" />
     <Content Include="Content\vendors\gauge.js\favicon.ico" />
     <Content Include="Content\vendors\gauge.js\index.html" />
-    <Content Include="Content\vendors\google-code-prettify\bin\prettify.min.css" />
-    <Content Include="Content\vendors\google-code-prettify\bin\prettify.min.js" />
-    <Content Include="Content\vendors\google-code-prettify\bin\run_prettify.min.js" />
     <Content Include="Content\vendors\google-code-prettify\CHANGES.html" />
     <Content Include="Content\vendors\google-code-prettify\examples\quine.html" />
     <Content Include="Content\vendors\google-code-prettify\README-zh-Hans.html" />
@@ -5068,6 +5065,7 @@
     <Folder Include="archivos\cv\" />
     <Folder Include="archivos\perfil\" />
     <Folder Include="Content\backupbd\" />
+    <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
     <Folder Include="Views\IntranetActividades\" />
