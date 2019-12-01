@@ -137,7 +137,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 error = seccionesMenu.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    intranetSeccion = seccionesMenu.intranetSeccionListaxMenuID;
+                    intranetSeccion = seccionesMenu.intranetSeccionListaxMenuID.Where(x=>x.sec_estado=="A").ToList();
                     if (intranetSeccion.Count > 0)
                     {
                         //secciones
