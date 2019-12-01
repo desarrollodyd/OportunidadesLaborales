@@ -349,6 +349,10 @@
     <Content Include="Content\intranet\images\png\Actividad_20191128133717.png" />
     <Content Include="Content\intranet\images\png\Actividad_20191128133726.png" />
     <Content Include="Content\intranet\images\png\Actividad_20191128180310.png" />
+    <Content Include="Content\intranet\images\png\Actividad_20191129144321.png" />
+    <Content Include="Content\intranet\images\png\Actividad_20191129144337.png" />
+    <Content Include="Content\intranet\images\png\Actividad_20191129144347.png" />
+    <Content Include="Content\intranet\images\png\Actividad_20191129144_337.png" />
     <Content Include="Content\intranet\images\png\calendar.png" />
     <Content Include="Content\intranet\images\prettyPhoto\default\default_thumb.png" />
     <Content Include="Content\intranet\images\prettyPhoto\default\loader.gif" />
@@ -372,12 +376,15 @@
     <Content Include="Content\intranet\images\subido\comu4.png" />
     <Content Include="Content\intranet\images\subido\comu5.png" />
     <Content Include="Content\intranet\images\subido\comu6.png" />
+    <Content Include="Content\intranet\images\subido\descanso.png" />
+    <Content Include="Content\intranet\images\subido\essalud.png" />
     <Content Include="Content\intranet\images\subido\gestion.png" />
     <Content Include="Content\intranet\images\subido\img1.png" />
     <Content Include="Content\intranet\images\subido\img2.png" />
     <Content Include="Content\intranet\images\subido\img3.png" />
     <Content Include="Content\intranet\images\subido\img4.png" />
     <Content Include="Content\intranet\images\subido\img5.png" />
+    <Content Include="Content\intranet\images\subido\imgvidaley.png" />
     <Content Include="Content\intranet\images\subido\manufactura.png" />
     <Content Include="Content\intranet\images\subido\mpartes.png" />
     <Content Include="Content\intranet\images\subido\organigrama.png" />

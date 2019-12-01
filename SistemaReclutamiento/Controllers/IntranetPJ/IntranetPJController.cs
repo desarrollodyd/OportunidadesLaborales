@@ -185,7 +185,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                                         itemDetalleElementosModal.fk_elemento_modal,
                                                                         itemDetalleElementosModal.detelm_orden,
                                                                         itemDetalleElementosModal.detelm_posicion,
-                                                                        itemDetalleElementosModal.fk_seccion_elemento,
                                                                     });
                                                                 }
                                                             }

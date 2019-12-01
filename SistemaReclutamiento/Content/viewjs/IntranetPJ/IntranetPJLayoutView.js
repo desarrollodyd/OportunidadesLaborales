@@ -50,7 +50,7 @@
                     appendCumpleanios += '<h3 class="blocktitle">CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' <span><a href="#">MAS</a></span></h3><div class="getcat"><ul class="catlist" >';
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
-                        appendCumpleanios += '<li><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate() + 1) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        appendCumpleanios += '<li class="_cumple"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate() + 1) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -339,7 +339,8 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (detalleelemento.detel_posicion == "R") {
-                                                appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                appendsDerecha += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                     '<div class="ctitle wt' + (index + 2) + '" > ' + detalleelemento.detel_descripcion + ' </div ></li > ';
                                             }
                                             else {
                                                 appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
@@ -373,7 +374,8 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (detalleelemento.detel_posicion == "L") {
-                                                appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                appendsIzquierda += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                    '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
                                                 appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
@@ -406,7 +408,8 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (detalleelemento.detel_posicion == "R") {
-                                                appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                appendsDerecha += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                    '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
                                                 appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
@@ -442,15 +445,18 @@
                                         iz = 1, ce = 1, r = 1;
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (detalleelemento.detel_posicion == "L") {
-                                                appendsIzquierda += '<li><div class="ctitle wt' + iz + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                appendsIzquierda += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                    '<div class="ctitle wt' + iz + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                                 iz++;
                                             }
                                             if (detalleelemento.detel_posicion == "C") {
-                                                appendsCentro += '<li><div class="ctitle wt' + ce + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                appendsCentro += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                    '<div class="ctitle wt' + ce + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                                 ce++;
                                             }
                                             if (detalleelemento.detel_posicion == "R") {
-                                                appendsDerecha += '<li><div class="ctitle wt' + r + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                                appendsDerecha += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                    '<div class="ctitle wt' + r + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                                 r++;
                                             }
                                         });
@@ -1021,14 +1027,19 @@
                         title: 'CORPORACION PJ',
                         maxWidth: 800
                     });
-                }
-               
-                
+                }                
             }
             console.log(my_object.length); 
         });
         
-
+        $(document).on('click', 'li._cumple', function () {
+            var nombrecumpleaniero = $(this).find("h2.wtitle").html();
+            $.pgwModal({
+                target: '#modalCumple',
+                title:'Cumpleaños de '+ nombrecumpleaniero,
+                maxWidth: 800
+            });
+        });
     };
     //
     // Return objects assigned to module

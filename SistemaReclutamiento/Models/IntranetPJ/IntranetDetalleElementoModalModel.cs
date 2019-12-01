@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoModalEntidad> lista = new List<IntranetDetalleElementoModalEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detelm_id, detelm_descripcion, detelm_nombre, 
-                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal, fk_seccion_elemento,detelm_orden,detelm_posicion
+                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal,detelm_orden,detelm_posicion
 	                                FROM intranet.int_detalle_elemento_modal;";
             try
             {
@@ -45,7 +45,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     detelm_ubicacion = ManejoNulos.ManageNullStr(dr["detelm_ubicacion"]),
                                     detelm_estado = ManejoNulos.ManageNullStr(dr["detelm_estado"]),
                                     fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]),
-                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
                                     detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]),
                                     detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]),
                                 };
@@ -70,7 +69,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoModalEntidad> lista = new List<IntranetDetalleElementoModalEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detelm_id, detelm_descripcion,detelm_nombre, 
-                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal, fk_seccion_elemento,detelm_orden,detelm_posicion
+                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal,detelm_orden,detelm_posicion
 	                                FROM intranet.int_detalle_elemento_modal 
                                     where fk_elemento_modal=@p0;";
             try
@@ -95,7 +94,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     detelm_ubicacion = ManejoNulos.ManageNullStr(dr["detelm_ubicacion"]),
                                     detelm_estado = ManejoNulos.ManageNullStr(dr["detelm_estado"]),
                                     fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]),
-                                    fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
                                     detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]),
                                     detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]),
 
@@ -144,7 +142,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetdetalleElementoModal.detelm_ubicacion = ManejoNulos.ManageNullStr(dr["detelm_ubicacion"]);
                                 intranetdetalleElementoModal.detelm_estado = ManejoNulos.ManageNullStr(dr["detelm_estado"]);
                                 intranetdetalleElementoModal.fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]);
-                                intranetdetalleElementoModal.fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]);
+                              
                                 intranetdetalleElementoModal.detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]);
                                 intranetdetalleElementoModal.detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]);
                             }
@@ -181,7 +179,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_ubicacion));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
-                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_seccion_elemento));
+  
                     idIntranetDetalleElementoModalInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -215,7 +213,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_id));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
-                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_seccion_elemento));
+
                     query.ExecuteNonQuery();
                     response = true;
                 }
