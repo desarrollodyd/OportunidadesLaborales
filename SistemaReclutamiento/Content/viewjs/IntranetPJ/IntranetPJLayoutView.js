@@ -50,7 +50,8 @@
                     appendCumpleanios += '<h3 class="blocktitle">CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' <span><a href="#">MAS</a></span></h3><div class="getcat"><ul class="catlist" >';
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
-                        appendCumpleanios += '<li class="_cumple"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate() + 1) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
+                        appendCumpleanios += '<li class="_cumple"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -76,7 +77,8 @@
                     var appendNoticias = '';
                     $.each(listaNoticias, function (index, noticia) {
                         var fechaNoticiaBD = new Date(moment(noticia.Item1).format('YYYY-MM-DD'));
-                        var fechaNoticia = (fechaNoticiaBD.getDate() + 1) + " de " + meses[fechaNoticiaBD.getMonth()];
+                        fechaNoticiaBD.setMinutes(fechaNoticiaBD.getMinutes() + fechaNoticiaBD.getTimezoneOffset());
+                        var fechaNoticia = (fechaNoticiaBD.getDate()) + " de " + meses[fechaNoticiaBD.getMonth()];
                         var comentarioExtra = noticia.Item3;
                         appendNoticias += '<li><span>' + fechaNoticia + '</span><a href="#">' + comentarioExtra + noticia.Item2 + '</a></li>';
                     })
