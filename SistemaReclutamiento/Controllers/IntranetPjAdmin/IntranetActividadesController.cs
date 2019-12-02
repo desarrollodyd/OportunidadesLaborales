@@ -1,8 +1,10 @@
 ﻿using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -14,6 +16,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
     {
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         claseError error = new claseError();
+        string PathActividadesIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
+        RutaImagenes rutaImagenes = new RutaImagenes();
         // GET: IntranetActividades
         public ActionResult Index()
         {
@@ -63,6 +67,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 actividad = actividadesTupla.intranetActividades;
                 if (error.Key.Equals(string.Empty))
                 {
+                    actividad.img_ubicacion = actividad.act_imagen;
+                    actividad.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Actividades/", actividad.act_imagen);
                     mensaje = "Obteniendo Informacion de la Actividad Seleccionada";
                     respuesta = true;
                 }
@@ -146,6 +152,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             bool respuestaConsulta = false;
             string mensajeConsola = "";
             IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
+            string rutaEliminar = "";
             try
             {
                 var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
@@ -170,9 +177,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     else {
                         //Eliminar Archivo Primero
                         var nombreArchivo = intranetActividadesBusqueda.act_imagen;
-                        var fullPath = Server.MapPath("~/Content/intranet/images/png/"+nombreArchivo);
-                        if (System.IO.File.Exists(fullPath)) {
-                            System.IO.File.Delete(fullPath);
+                        rutaEliminar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
+                        //var fullPath = Server.MapPath("~/Content/intranet/images/png/"+nombreArchivo);
+                        if (System.IO.File.Exists(rutaEliminar)) {
+                            System.IO.File.Delete(rutaEliminar);
                         }
                         var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
                         error = ActividadesTupla.error;
@@ -209,8 +217,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarTodoJson();
                 error = ActividadesTupla.error;
                 listaActividades = ActividadesTupla.intranetActividadesLista;
+               
+                if (!Directory.Exists(PathActividadesIntranet + "/Actividades/")) {
+                    Directory.CreateDirectory(PathActividadesIntranet + "/Actividades/");
+                }
                 if (error.Key.Equals(string.Empty))
                 {
+                    foreach (var m in listaActividades) {
+                        m.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Actividades/", m.act_imagen);
+                    }
                     mensaje = "Listando Actividadess";
                     respuesta = true;
                 }
@@ -239,6 +254,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             claseError error = new claseError();
             int tamanioMaximo = 4194304;
             string extension = "";
+            string rutaInsertar = "";
+            string rutaAnterior = "";
             //var ruta = Request.Url.Scheme + "://" + (Request.Url.Authority) + Request.ApplicationPath;
             if (intranetActividad.act_id == 0)
             {
@@ -252,11 +269,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             extension = Path.GetExtension(file.FileName);
                             if (extension == ".jpg" || extension == ".png") {
                                 var nombreArchivo = ("Actividad_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                                if (!Directory.Exists("~/Content/intranet/images/png/"))
+                                rutaInsertar = Path.Combine(PathActividadesIntranet + "/Actividades/",nombreArchivo);
+                                if (!Directory.Exists(PathActividadesIntranet+"/Actividades/"))
                                 {
-                                    System.IO.Directory.CreateDirectory("~/Content/intranet/images/png/");
+                                    System.IO.Directory.CreateDirectory(PathActividadesIntranet + "/Actividades/");
                                 }
-                                file.SaveAs(Server.MapPath("~/Content/intranet/images/png/" + nombreArchivo));
+                                file.SaveAs(rutaInsertar);
                                 intranetActividad.act_imagen = nombreArchivo;
                             }
                             else
@@ -331,12 +349,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                 extension = Path.GetExtension(file.FileName);
                                 if (extension == ".jpg" || extension == ".png")
                                 {
+
                                     var nombreArchivo = ("Actividad_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                                    if (!Directory.Exists("~/Content/intranet/images/png/"))
+                                    rutaInsertar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
+                                    rutaAnterior = Path.Combine(PathActividadesIntranet + "/Actividades/" + intranetActividad.img_ubicacion);
+                                    if (!Directory.Exists(PathActividadesIntranet+"/Actividades/"))
                                     {
-                                        System.IO.Directory.CreateDirectory("~/Content/intranet/images/png/");
+                                        System.IO.Directory.CreateDirectory(PathActividadesIntranet+"/Actividades/");
                                     }
-                                    file.SaveAs(Server.MapPath("~/Content/intranet/images/png/" + nombreArchivo));
+                                    if (System.IO.File.Exists(rutaAnterior))
+                                    {
+                                            System.IO.File.Delete(rutaAnterior);
+                                    }
+                                    file.SaveAs(rutaInsertar);
                                     intranetActividad.act_imagen = nombreArchivo;
                                 }
                                 else
@@ -392,6 +417,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             bool respuestaConsulta = false;
             claseError error = new claseError();
             IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
+            string rutaEliminar = "";
             try
             {
                 for (int i = 0; i <= listaActividadesEliminar.Length - 1; i++)
@@ -420,10 +446,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         {
                             //Eliminar Archivo Primero
                             var nombreArchivo = intranetActividadesBusqueda.act_imagen;
-                            var fullPath = Server.MapPath("~/Content/intranet/images/png/" + nombreArchivo);
-                            if (System.IO.File.Exists(fullPath))
+                            //var fullPath = Server.MapPath("~/Content/intranet/images/png/" + nombreArchivo);
+                            rutaEliminar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
+                            if (System.IO.File.Exists(rutaEliminar))
                             {
-                                System.IO.File.Delete(fullPath);
+                                System.IO.File.Delete(rutaEliminar);
                             }
                             var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
                             error = ActividadesTupla.error;

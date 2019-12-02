@@ -252,5 +252,33 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
             return (intranetMenuEliminado: response, error: error);
         }
+        public (int intranetMenuTotal, claseError error) IntranetMenuObtenerTotalRegistrosJson() {
+            int intranetMenuTotal = 0;
+            claseError error = new claseError();
+            string consulta = @"select count(*) as total from intranet.int_menu";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                intranetMenuTotal = ManejoNulos.ManageNullInteger(dr["totla"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetMenuTotal: intranetMenuTotal, error: error);
+        }
     }
 }

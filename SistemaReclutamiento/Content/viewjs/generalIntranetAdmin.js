@@ -645,12 +645,16 @@ function simpleDataTable(obj) {
         tableOrdering: true,
         tableInfo: true,
         tableLengthChange: true,
-        tableHeaderCheck: false
+        tableHeaderCheck: false,
+        rowReorder: false,
+        columnDefs:[],
     }
 
     var opciones = $.extend({}, defaults, obj);
+
     var objt = "_objetoDatatable";
-    this[objt + '_' + opciones.tableNameVariable] = $(opciones.table).DataTable({
+    var table = obj + '_' + opciones.tableNameVariable;
+    table = $(opciones.table).DataTable({
         "bDestroy": true,
         "scrollCollapse": true,
         "scrollX": false,
@@ -661,8 +665,10 @@ function simpleDataTable(obj) {
         "ordering": opciones.tableOrdering,
         "info": opciones.tableInfo,
         "lengthChange": opciones.tableLengthChange,
+        "rowReorder": opciones.rowReorder,
         data: opciones.tableColumnsData,
         columns: opciones.tableColumns,
+        columnDefs: opciones.columnDefs,
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
@@ -678,6 +684,7 @@ function simpleDataTable(obj) {
             //}
         }
     });
+    return table;
 }
 
 function simpleAjaxDataTable(obj) {

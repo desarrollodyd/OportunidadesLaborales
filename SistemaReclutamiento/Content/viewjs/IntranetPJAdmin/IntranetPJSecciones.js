@@ -21,10 +21,11 @@
             if (menu_id != "") {
                 var dataForm = { menu_id: menu_id };
                 responseSimple({
-                    url: "IntranetSeccion/IntranetSeccionListarxMenuIDJson",
+                    url: "IntranetSeccion/IntranetSeccionListarTodoxMenuIDJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
+                        console.log(response.data);
                         if (response.data.length > 0) {
                             $("#btn_nuevo").prop('disabled', false);
                             $("#btn_eliminar_varios").prop('disabled', false);
@@ -55,6 +56,10 @@
                                         title: "Id"
                                     },
                                     {
+                                        data: "menu_titulo",
+                                        title: "Menu"
+                                    },
+                                    {
                                         data: "sec_orden",
                                         title: "Orden"
                                     },
@@ -81,7 +86,8 @@
                                         "render": function (value) {
                                             var span = '';
                                             var sec_id = value;
-                                            var span = '<div class="hidden-sm hidden-xs action-buttons" > <a class="red btn-eliminar" href="#" data-id="' + sec_id + '" > <i class="ace-icon fa fa-trash-o bigger-130"></i></a ></div > <div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i> </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + sec_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a> </li></ul></div></div>';
+                                            var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li></ul></div></div>';
+                                            //var span = '<div class="hidden-sm hidden-xs action-buttons" > <a class="red btn-eliminar" href="#" data-id="' + sec_id + '" > <i class="ace-icon fa fa-trash-o bigger-130"></i></a ></div > <div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i> </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + sec_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a> </li></ul></div></div>';
                                             return span;
                                         }
                                     }
@@ -242,6 +248,11 @@
                 })
             }
         });
+
+        $(document).on("click", ".btn_editar_detalle", function (e) {
+            var elem_id = $(this).data("id");
+            console.log(elem_id);
+        });
     };
 
     var _metodos = function () {
@@ -307,7 +318,8 @@ function MostrarDetalle(row) {
             table += '<td>' + (value.elem_estado=='A'?'Activo':'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';
             table += '<td>' + value.tipo_nombre + '</td>';
-            table += '<td><a href="#" class="tooltip-info" data-id="' + value.elem_id + '" data-rel="tooltip" title="Eliminar"><span class="blue" ><i class="ace-icon fa fa-trash-o bigger-130"></i></span ></a></td></tr>';
+            table += '<td><a href="#" class="tooltip-warning btn_editar_detalle" data-id="'+value.elem_id+'" data-rel="tooltip" title="Editar"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span ></a></td></tr>';
+            //table += '<td><a href="#" class="tooltip-info" data-id="' + value.elem_id + '" data-rel="tooltip" title="Eliminar"><span class="blue" ><i class="ace-icon fa fa-trash-o bigger-130"></i></span ></a></td></tr>';
         });
         table += '</table>';
         

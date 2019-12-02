@@ -11,5 +11,7 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public int sec_orden { get; set; }
         public string sec_estado { get; set; }
         public int fk_menu { get; set; }
+        //variables para menu
+        public string menu_titulo { get; set; }
     }
 }

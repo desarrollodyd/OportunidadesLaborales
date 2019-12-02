@@ -49,6 +49,37 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
+        public ActionResult IntranetSeccionListarTodoxMenuIDJson(int menu_id)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<IntranetSeccionEntidad> listaSecciones = new List<IntranetSeccionEntidad>();
+            claseError error = new claseError();
+            try
+            {
+                var seccionTupla = intranetSeccionbl.IntranetSeccionListarTodoxMenuIDJson(menu_id);
+                error = seccionTupla.error;
+                listaSecciones = seccionTupla.intranetSeccionListaTodoxMenuID;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Secciones";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar las Secciones";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaSecciones.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
         public ActionResult IntranetSeccionEditarJson(IntranetSeccionEntidad intranetSeccion)
         {
             string errormensaje = "";
