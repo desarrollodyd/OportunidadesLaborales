@@ -22,7 +22,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             string consulta = @"SELECT detel_id, detel_descripcion, detel_nombre, 
                                 detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion
-	                                FROM intranet.int_detalle_elemento;";
+	                                FROM intranet.int_detalle_elemento
+                                 order by detel_orden asc;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -72,7 +73,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"SELECT detel_id, detel_descripcion,detel_nombre, 
                                 detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion
 	                                FROM intranet.int_detalle_elemento 
-                                    where fk_elemento=@p0;";
+                                    where fk_elemento=@p0
+                                    order by detel_orden asc";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

@@ -145,16 +145,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         {
                             var ListaElementos = new List<dynamic>();
                             var elementos = intraElementobl.IntranetElementoListarxSeccionIDJson(itemSt.sec_id);
-                            if (elementos.intranetElementoListaxSeccionID.Count > 0)
+                            List<IntranetElementoEntidad> intranetElementos = new List<IntranetElementoEntidad>();
+                            intranetElementos = elementos.intranetElementoListaxSeccionID.Where(x=>x.elem_estado=="A").ToList();
+                            error = elementos.error;
+                            if (intranetElementos.Count > 0)
                             {
                                 //elementos
-                                foreach (var itemElementos in elementos.intranetElementoListaxSeccionID)
+                                foreach (var itemElementos in intranetElementos)
                                 {
                                     var ListaDetalleElemento = new List<dynamic>();
                                     var detalleelementos = intraDetalleElementobl.IntranetDetalleElementoListarxElementoIDJson(itemElementos.elem_id);
-                                    if (detalleelementos.intranetDetalleElementoListaxElementoID.Count > 0) {
+                                    List<IntranetDetalleElementoEntidad> intranetDetElementos = new List<IntranetDetalleElementoEntidad>();
+                                    intranetDetElementos = detalleelementos.intranetDetalleElementoListaxElementoID.Where(x => x.detel_estado == "A").ToList();
+                                    error = elementos.error;
+                                    if (intranetDetElementos.Count > 0) {
                                         //detalle elementos
-                                        foreach (var itemDetalleElemento in detalleelementos.intranetDetalleElementoListaxElementoID)
+                                        foreach (var itemDetalleElemento in intranetDetElementos)
                                         {
                                             var seccion_elemento = new List<dynamic>();
                                             if (itemDetalleElemento.fk_seccion_elemento>0)
@@ -164,16 +170,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                 {
                                                     var Lista_elemento_modal = new List<dynamic>();
                                                     var elementosModal = intranetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(seccion_ele.intranetSeccionElemento.sele_id);
-                                                    if (elementosModal.intranetElementoModalListaxseccionelementoID.Count > 0)
+                                                    List<IntranetElementoModalEntidad> intranetElementoModal = new List<IntranetElementoModalEntidad>();
+                                                    intranetElementoModal = elementosModal.intranetElementoModalListaxseccionelementoID.Where(x => x.emod_estado == "A").ToList();
+                                                    error = elementos.error;
+                                                    if (intranetElementoModal.Count > 0)
                                                     {
                                                         //elemento modal
-                                                        foreach (var itemElementosModal in elementosModal.intranetElementoModalListaxseccionelementoID)
+                                                        foreach (var itemElementosModal in intranetElementoModal)
                                                         {
                                                             var ListaDetalleElementoModal = new List<dynamic>();
                                                             var detalleelementosModal = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(itemElementosModal.emod_id);
-                                                            if (detalleelementosModal.intranetDetalleElementoModalListaxElementoID.Count > 0)
+                                                            List<IntranetDetalleElementoModalEntidad> intranetDetElementoModal = new List<IntranetDetalleElementoModalEntidad>();
+                                                            intranetDetElementoModal = detalleelementosModal.intranetDetalleElementoModalListaxElementoID.Where(x => x.detelm_estado == "A").ToList();
+                                                            error = elementos.error;
+                                                            if (intranetDetElementoModal.Count > 0)
                                                             {
-                                                                foreach (var itemDetalleElementosModal in detalleelementosModal.intranetDetalleElementoModalListaxElementoID)
+                                                                foreach (var itemDetalleElementosModal in intranetDetElementoModal)
                                                                 {
                                                                     ListaDetalleElementoModal.Add(new
                                                                     {
