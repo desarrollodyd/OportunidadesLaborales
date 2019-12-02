@@ -51,5 +51,32 @@ namespace SistemaReclutamiento.Utilitarios
                 }
             }
         }
+        public string ImagenIntranetActividades(string ruta, string name) {
+            string pathImagenActividades = @"" + ruta + "/" + name;
+            string pathImagenporDefecto =@""+ ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString()+"/Actividades/actividad.png";
+            string base64String = "";
+            if (name != null && name != "" && ruta != null && ruta != "")
+            {
+                if (System.IO.File.Exists(pathImagenActividades))
+                {
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(pathImagenActividades);
+                    base64String = Convert.ToBase64String(imagebytes);
+                }
+                else
+                {
+                    //byte[] imagebytes = System.IO.File.ReadAllBytes(pathImagenporDefecto);
+                    //string base64String = Convert.ToBase64String(imagebytes);
+                    //return base64String;
+                    base64String=string.Empty;
+                }
+            }
+            else {
+                //byte[] imagebytes = System.IO.File.ReadAllBytes(pathImagenporDefecto);
+                //string base64String = Convert.ToBase64String(imagebytes);
+                //return base64String;
+                base64String= string.Empty;
+            }
+            return base64String;
+        }
     }
 }

@@ -53,7 +53,9 @@
                             "render": function (value) {
                                 var img = '';
                                 if (value != "") {
-                                    img += '<img src="' + basePath + 'Content/intranet/images/png/' + value + '" / style="width:50px;height:50px;">';
+                                    //$("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
+                                    img += '<img src="data:image/gif;base64,' + value + '" style="width:50px;height:50px;" />';
+                                    //img += '<img src="' + basePath + 'Content/intranet/images/png/' + value + '" / style="width:50px;height:50px;">';
                                 }
                                 else {
                                     img = '<img src="' + basePath + 'Content/intranet/images/png/actividad.png" style="width:50px;height:50px;"/>';
@@ -153,33 +155,35 @@
             }
         })
         $(document).on("click", ".btn-detalle", function () {
-            var menu_id = $(this).data("id");
-            console.log(menu_id);
-            var dataForm = { menu_id: menu_id };
+            var act_id = $(this).data("id");
+            var dataForm = { act_id: act_id };
             responseSimple({
-                url: "IntranetMenu/IntranetMenuIdObtenerJson",
+                url: "IntranetActividades/IntranetActividadesIdObtenerJson",
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
-                    console.log(response);
                     //llenando datos en inputs
                     if (response.respuesta) {
-                        var menu = response.data;
-                        $("#menu_titulo").val(menu.menu_titulo);
-                        $("#menu_url").val(menu.menu_url);
-                        $("#menu_orden").val(menu.menu_orden);
-                        $("#menu_estado").val(menu.menu_estado);
-                        menu.menu_blank == false ? $("#menu_blank").val("false") : $("#menu_blank").val("true");
+                        var actividad = response.data;
+                        $("#act_id").val(actividad.act_id);
+                        $("#tituloModalActividades").text("Detalle ");
+                        $("#img_ubicacion").val(actividad.act_ubicacion);
+                        $("#spancv").html("");
+                        $("#spancv").append('<i class="fa fa-upload"></i>  Subir Icono');
 
-                        $("#menu_id").val(menu.menu_id);
+                        $("#act_descripcion").prop('disabled', true);
+                        $("#act_fecha").prop('disabled', true);
+                        $("#act_imagen").prop('disabled', true);
+                        $("#act_estado").prop('disabled', true);
 
-                        $("#menu_titulo").prop('disabled', true);
-                        $("#menu_url").prop('disabled', true);
-                        $("#menu_orden").prop('disabled', true);
-                        $("#menu_estado").prop('disabled', true);
-                        $("#menu_blank").prop('disabled', true);
+                        $("#act_descripcion").val(actividad.act_descripcion);
+                        $("#act_fecha").val(moment(actividad.act_fecha).format("DD-MM-YYYY"));
+                        $("#act_imagen").val(actividad.img_ubicacion);
+                        $("#act_estado").val(actividad.act_estado);
+                        $("#tituloIcono").text("Adjuntar Icono (Opcional)");
                         $(".btn-guardar").hide();
 
+                        $("#divCV").hide();
                         $("#modalFormulario").modal("show");
                     }
                 }
@@ -204,11 +208,12 @@
                         var actividad = response.data;
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");
-                            $("#cvnombre").text("Nombre: "+nombre_arr[0].substring(0, 28) + "." + nombre_arr[1]);
+                            $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
                             $("#cvfecha").text("Fecha Subida: "+moment(actividad.act_fecha).format("DD-MM-YYYY"));
                             $("#divCV").show();
-                            $("#icono_actual").attr("src", basePath + "Content/intranet/images/png/" + actividad.act_imagen);
-                            $("#img_ubicacion").val(actividad.act_imagen);
+
+                            $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
+                            $("#img_ubicacion").val(actividad.img_ubicacion);
                         }
                         
                         $("#tituloModalActividades").text("Editar");

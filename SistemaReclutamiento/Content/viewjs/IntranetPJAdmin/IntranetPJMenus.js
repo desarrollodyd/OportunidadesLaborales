@@ -12,12 +12,19 @@
             refresh: false,
             callBackSuccess: function (response) {
                 var totalMenus = response.data.length;
-                simpleDataTable({
+                var table=simpleDataTable({
                     uniform: false,
                     tableNameVariable: "menusListado",
                     table: ".datatable-menulistado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
+                    rowReorder: {
+                        selector: 'tr',
+                        dataSrc:'menu_orden'
+                    },
+                    //columnDefs: [
+                    //    { targets: 2, visible: true }
+                    //],
                     tableColumns: [
                         {
                             data: "menu_id",
@@ -77,7 +84,8 @@
 
                     ]
                 })
-                          }
+                rowReorder(table);
+            }
         });
     };
     var _componentes = function () {
@@ -269,6 +277,7 @@
            
         })
 
+       
     };
 
     var _metodos = function () {
@@ -322,6 +331,35 @@
     }
 }();
 
+function rowReorder(table) {
+    
+    table.on('row-reorder', function (e, diff, edit) {
+        let arrayPosicionesIniciales = [];
+        var arrayPosicionesFinales = [];
+        console.log(diff);
+        console.log(edit);
+        var res = '';
+        var resanterior = '';
+        for (var i = 0, ien = diff.length; i < ien; i++) {
+            resanterior += diff[i].oldData + '=';
+            res += diff[i].newData + '=';
+        }
+        res = res.substring(0, res.length - 1);
+        console.log(resanterior);
+        console.log(res);
+        //var result = 'Reorder comenzo en la fila: ' + edit.triggerRow.data()[1] + '<br>';
+
+        //for (var i = 0, ien = diff.length; i < ien; i++) {
+        //    var rowData = table.row(diff[i].node).data();
+
+        //    result += rowData[1] + ' se actualizo a la posicion :' +
+        //        diff[i].newData + ' (era ' + diff[i].oldData + ')<br>';
+        //}
+
+        ////$('#result').html('Event result:<br>' + result);
+        //console.log(result);
+    });
+}
 // Initialize module
 // ------------------------------
 
