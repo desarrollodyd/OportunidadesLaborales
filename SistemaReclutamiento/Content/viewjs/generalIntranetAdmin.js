@@ -647,14 +647,13 @@ function simpleDataTable(obj) {
         tableLengthChange: true,
         tableHeaderCheck: false,
         rowReorder: false,
-        columnDefs:[],
+        columnDefs: [],
+        tableHeaderCheckIndex:0
     }
 
     var opciones = $.extend({}, defaults, obj);
-
     var objt = "_objetoDatatable";
-    var table = obj + '_' + opciones.tableNameVariable;
-    table = $(opciones.table).DataTable({
+    this[objt + '_' + opciones.tableNameVariable] = $(opciones.table).DataTable({
         "bDestroy": true,
         "scrollCollapse": true,
         "scrollX": false,
@@ -672,7 +671,7 @@ function simpleDataTable(obj) {
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
-                $(api.column(0).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all">');
+                $(api.column(opciones.tableHeaderCheckIndex).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all">');
             }
             //if (opciones.uniform) {
             //    // Info
@@ -684,7 +683,6 @@ function simpleDataTable(obj) {
             //}
         }
     });
-    return table;
 }
 
 function simpleAjaxDataTable(obj) {
