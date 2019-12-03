@@ -284,6 +284,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 });
         }
 
+        public ActionResult Mapa(string tipo)
+        {
+            
+            ViewBag.tipo = tipo;
+            return View("~/Views/IntranetPJ/IntranetPJMapa.cshtml");
+        }
+
 
         public ActionResult somopj()
         {

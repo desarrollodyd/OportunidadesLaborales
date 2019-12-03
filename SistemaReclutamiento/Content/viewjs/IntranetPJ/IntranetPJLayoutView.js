@@ -47,7 +47,7 @@
                 if (dataCumpleanios.length > 0) {
                     $("#cumpleaniosIntranet").html("");
                     var appendCumpleanios = '';
-                    appendCumpleanios += '<h3 class="blocktitle">CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' <span><a href="#">MAS</a></span></h3><div class="getcat"><ul class="catlist" >';
+                    appendCumpleanios += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat"><ul class="catlist" >';
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
                         diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
@@ -61,7 +61,7 @@
                 if (dataActividades.length > 0) {
                     $("#actividadesMes").html("");
                     var appendActividades = '';
-                    appendActividades += '<h3 class="blocktitle">ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '<span><a href="#">MAS</a></span></h3>                            <div class="getcat" > <ul class="catlist">';
+                    appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat" > <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
                         var imagen = (actividad.act_imagen != "") ? '/png/' + actividad.act_imagen:"";
@@ -1041,6 +1041,11 @@
                 title:'Cumpleaños de '+ nombrecumpleaniero,
                 maxWidth: 800
             });
+        });
+
+        $(document).on('click', 'ul#locales li', function () {
+            var tipo = $(this).data("tipo");
+            redirect({ site:'intranetPJ/mapa?tipo='+tipo,time:0})
         });
     };
     //
