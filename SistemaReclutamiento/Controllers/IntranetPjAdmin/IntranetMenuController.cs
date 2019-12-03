@@ -169,14 +169,25 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje,mensajeconsola=mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetMenuEliminarJson(int menu_id)
+        public ActionResult IntranetMenuEliminarJson(int menu_id,int menu_orden)
         {
             string errormensaje = "";
             bool respuestaConsulta = false;
+            int totalRegistros = 0;
             claseError error = new claseError();
             string mensajeConsola = "";
             try
             {
+                //var totalTupla = intranetMenubl.IntranetMenuObtenerTotalRegistrosJson();
+                //error = totalTupla.error;
+                //if (error.Key.Equals(string.Empty)) {
+                //    totalRegistros = totalTupla.intranetMenuTotal;
+                //    if (menu_orden < totalRegistros) {
+                //        for (int i = 0; i <= (totalRegistros - menu_orden); i++) {
+
+                //        }
+                //    }
+                //}
                 var menuTupla = intranetMenubl.IntranetMenuEliminarJson(menu_id);
                 error = menuTupla.error;
                 if (error.Key.Equals(string.Empty)) {
@@ -202,28 +213,39 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string accion = "";
             bool respuesta = false;
             int idIntranetMenuInsertado = 0;
+            int totalRegistros = 0;
             claseError error = new claseError();
             if (intranetMenu.menu_id == 0)
             {
                 //Insertar
                 try
                 {
-                    var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
-                    error = menuTupla.error;
-
+                    var totalMenuTupla = intranetMenubl.IntranetMenuObtenerTotalRegistrosJson();
+                    error = totalMenuTupla.error;
                     if (error.Key.Equals(string.Empty))
                     {
-                        mensaje = "Se Registró Correctamente";
-                        respuesta = true;
-                        idIntranetMenuInsertado = menuTupla.idIntranetMenuInsertado;
-                        accion = "Insertado";
+                        totalRegistros = totalMenuTupla.intranetMenuTotal;
+                        intranetMenu.menu_orden = totalRegistros + 1;
+                        var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
+                        error = menuTupla.error;
+
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            mensaje = "Se Registró Correctamente";
+                            respuesta = true;
+                            idIntranetMenuInsertado = menuTupla.idIntranetMenuInsertado;
+                            accion = "Insertado";
+                        }
+                        else
+                        {
+                            mensaje = "No se Pudo insertar el Menu";
+                            mensajeConsola = error.Value;
+                        }
                     }
-                    else
-                    {
+                    else {
                         mensaje = "No se Pudo insertar el Menu";
                         mensajeConsola = error.Value;
                     }
-
                 }
                 catch (Exception exp)
                 {
@@ -288,6 +310,31 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
 
             return Json(new { respuesta = respuestaConsulta , mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
+        public ActionResult IntranetMenuEditarOrdenJson(IntranetMenuEntidad[] arrayMenus) {
+            IntranetMenuEntidad intranetMenu = new IntranetMenuEntidad();
+            claseError error = new claseError();
+            bool response = false;
+            string errormensaje = "";
+            int tamanio = arrayMenus.Length;
+            foreach (var m in arrayMenus) {
+                intranetMenu.menu_id = m.menu_id;
+                intranetMenu.menu_orden = m.menu_orden;
+                var reordenadoTupla = intranetMenubl.IntranetMenuEditarOrdenJson(intranetMenu);
+                error = reordenadoTupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    response = reordenadoTupla.intranetMenuReordenado;
+                    errormensaje = "Editado";
+                }
+                else
+                {
+                    response = false;
+                    errormensaje = "No se Pudo Editar";
+                    return Json(new { respuesta = response, mensaje =errormensaje , mensajeconsola = "" });
+                }
+            }
+            return Json(new {tamaniomenu= tamanio,respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
         }
     }
 }

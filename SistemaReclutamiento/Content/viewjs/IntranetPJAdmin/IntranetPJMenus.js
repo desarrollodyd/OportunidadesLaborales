@@ -1,7 +1,5 @@
-﻿var PanelMenus = function () {
-    var _funcionCheckBox = function () {
-
-    }
+﻿
+var PanelMenus = function () {
     var _ListarMenus = function () {
         if (!$().DataTable) {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
@@ -12,29 +10,37 @@
             refresh: false,
             callBackSuccess: function (response) {
                 var totalMenus = response.data.length;
-                var table=simpleDataTable({
+              
+                simpleDataTable({
                     uniform: false,
                     tableNameVariable: "menusListado",
                     table: ".datatable-menulistado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
-                    rowReorder: {
-                        selector: 'tr',
-                        dataSrc:'menu_orden'
-                    },
-                    //columnDefs: [
-                    //    { targets: 2, visible: true }
-                    //],
+                    tableHeaderCheckIndex: 2,
+                    columnDefs: [
+                        { orderable: true, className: 'reorder', targets: [0, 1], visible: false },
+                        { orderable: false, targets: '_all' }
+                    ],
                     tableColumns: [
+                        {
+                            data: "menu_orden",
+                            title: "Orden",
+                        },
+                        {
+                            data: "menu_id",
+                            title: "ID",
+                        },
                         {
                             data: "menu_id",
                             title: "",
+                            className:"text-center",
                             "bSortable": false,
                             "render": function (value) {
                                 var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
                                 return check;
                             },
-                            width: "50px",
+                            width: "100px",
                         },
                         {
                             data: "menu_id",
@@ -43,6 +49,7 @@
                         {
                             data: "menu_orden",
                             title: "Orden",
+                            name:"menu_orden",
                           
                         },
                         {
@@ -74,17 +81,17 @@
                         {
                             data: "menu_id",
                             title: "Acciones",
-                            "render": function (value) {
+                            "render": function (value,type,oData) {
                                 var span = '';
                                 var menu_id = value;
-                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + menu_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + menu_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + menu_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
+                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-orden="'+oData.menu_orden+'" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + menu_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + menu_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-orden="'+oData.menu_orden+'" data-id="' + menu_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
                                 return span;
                             }
                         }
 
                     ]
                 })
-                rowReorder(table);
+                _rowReordering();
             }
         });
     };
@@ -121,11 +128,7 @@
                         console.log(response);
                         var respuesta = response.respuesta;
                         if (respuesta) {
-                            //limpiar_form({ contenedor: "#form_menus" });
-                            //_objetoForm_form_menus.resetForm();
-                            PanelMenus.init_ListarMenus();
-                            //refresh(true);
-                            $("#modalFormulario").modal("hide");
+                            refresh(true);
                         }
                     }
                 });
@@ -207,29 +210,33 @@
 
         $(document).on("click", ".btn-eliminar", function (e) {
             var menu_id = $(this).data("id");
-            console.log(menu_id);
-            if (menu_id != "" || menu_id > 0) {
-                messageConfirmation({
-                    content: '¿Esta seguro de ELIMINAR este Menú?',
-                    callBackSAceptarComplete: function () {
-                        responseSimple({
-                            url: "IntranetMenu/IntranetMenuEliminarJson",
-                            data: JSON.stringify({ menu_id: menu_id }),
-                            refresh: false,
-                            callBackSuccess: function (response) {
-                                PanelMenus.init_ListarMenus();
-                                //refresh(true);
-                            }
-                        });
-                    }
-                });
-            }
-            else {
-                messageResponse({
-                    text: "Error no se encontro ID",
-                    type: "error"
-                })
-            }
+            var menu_orden = $(this).data("orden");
+            var celda = $("tr>td:nth-child(2)");
+            console.log(celda);
+            //if (menu_id != "" || menu_id > 0) {
+            //    messageConfirmation({
+            //        content: '¿Esta seguro de ELIMINAR este Menú?',
+            //        callBackSAceptarComplete: function () {
+            //            responseSimple({
+            //                url: "IntranetMenu/IntranetMenuEliminarJson",
+            //                data: JSON.stringify({
+            //                    menu_id: menu_id,
+            //                    menu_orden:menu_orden
+            //                }),
+            //                refresh: false,
+            //                callBackSuccess: function (response) {
+            //                    refresh(true);
+            //                }
+            //            });
+            //        }
+            //    });
+            //}
+            //else {
+            //    messageResponse({
+            //        text: "Error no se encontro ID",
+            //        type: "error"
+            //    })
+            //}
         });
 
         //checkAll
@@ -261,8 +268,7 @@
                             data: JSON.stringify(dataForm),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                PanelMenus.init_ListarMenus();
-                                //refresh(true);
+                                refresh(true);
                             }
                         })
                     }
@@ -274,8 +280,9 @@
                     type: "error"
                 })
             }
-           
-        })
+
+        });
+       
 
        
     };
@@ -294,11 +301,7 @@
                 {
                     required: true,
 
-                },
-                menu_orden: {
-                    required:true,
                 }
-
             },
             messages: {
                 menu_titulo:
@@ -309,10 +312,53 @@
                 {
                     required: 'Campo Obligatorio',
                 }
-
             }
         });
 
+    };
+    var _rowReordering = function () {
+        if ($.fn.DataTable.isDataTable(".datatable-menulistado")) {
+            $(".datatable-menulistado").dataTable().fnDestroy();
+        }
+        var table = $('.datatable-menulistado').DataTable({
+            rowReorder: {
+                selector:'tr>td:nth-child(2),tr>td:nth-child(3), tr>td:nth-child(4)'
+            },
+            columnDefs: [
+                { orderable: true, className: 'reorder', targets: [0,1],visible:false },
+                { orderable: false, targets: '_all' }
+            ],
+        });
+        table.on('row-reorder', function (e, diff, edit) {
+            block_general("body");
+            let arrayOrdenesMenus = [];
+            for (var i = 0, ien = diff.length; i < ien; i++) {
+                var rowData = table.row(diff[i].node).data();
+                var obj = {
+                    menu_orden: diff[i].newData,
+                    menu_id: rowData[1]
+                };
+                arrayOrdenesMenus.push(obj);
+            }
+            var dataform = {
+                arrayMenus: arrayOrdenesMenus,
+            }
+            if (arrayOrdenesMenus.length > 0) {
+                responseSimple({
+                    url: "IntranetMenu/IntranetMenuEditarOrdenJson",
+                    data: JSON.stringify(dataform),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        $(".datatable-menulistado").dataTable().fnDestroy();
+                        _ListarMenus();
+                        unblock("body");
+                    }
+                })
+            }
+            else {
+                unblock("body");
+            }
+        });
     };
 
     //
@@ -320,7 +366,7 @@
     //
     return {
         init: function () {
-           _ListarMenus();
+            _ListarMenus();
             _componentes();
             _metodos();
 
@@ -331,32 +377,63 @@
     }
 }();
 
+function getVal(res) {
+    var atmp = res.split('=');
+    var newId = '';
+    var newArr = [];
+    for (var i = 0, j = atmp.length; i < j; i++) {
+        newId = $('.datatable-menulistado').find("tr:eq(" + atmp[i] + ") input[type='hidden']").val();
+        console.log(newId);
+        if (newId != '')
+            newArr[atmp[i]] = newId;
+    }
+    console.log(newArr)
+
+    //var urlStr = '<?php echo base_url('admin/managecategories/reorderCategories');?>';
+    //$.ajax({
+    //    data: { new_: newArr },
+    //    url: urlStr,
+    //    cache: false,
+    //    method: 'POST',
+    //    success: function (data) {
+    //        console.log(data);
+    //    },
+    //    error: function (error) {
+    //        console.log(error);
+    //    }
+    //});
+}
+
 function rowReorder(table) {
     
     table.on('row-reorder', function (e, diff, edit) {
-        let arrayPosicionesIniciales = [];
-        var arrayPosicionesFinales = [];
-        console.log(diff);
-        console.log(edit);
-        var res = '';
-        var resanterior = '';
-        for (var i = 0, ien = diff.length; i < ien; i++) {
-            resanterior += diff[i].oldData + '=';
-            res += diff[i].newData + '=';
-        }
-        res = res.substring(0, res.length - 1);
-        console.log(resanterior);
-        console.log(res);
+
+        //let arrayPosicionesIniciales = [];
+        //var arrayPosicionesFinales = [];
+        //console.log(diff);
+        //console.log(edit);
+        //var res = '';
+        //var resanterior = '';
+        //for (var i = 0, ien = diff.length; i < ien; i++) {
+        //    resanterior += diff[i].oldData + '=';
+        //    res += diff[i].newData + '=';
+        //}
+        //res = res.substring(0, res.length - 1);
+        //console.log(resanterior);
+        //console.log(res);
+        //table.order([0, 'asc']);
         //var result = 'Reorder comenzo en la fila: ' + edit.triggerRow.data()[1] + '<br>';
 
         //for (var i = 0, ien = diff.length; i < ien; i++) {
         //    var rowData = table.row(diff[i].node).data();
 
-        //    result += rowData[1] + ' se actualizo a la posicion :' +
+        //    result += rowData[3] + ' se actualizo a la posicion :' +
         //        diff[i].newData + ' (era ' + diff[i].oldData + ')<br>';
         //}
+   
+        console.log(edit.dataSrc);
 
-        ////$('#result').html('Event result:<br>' + result);
+        $('#result').html('Event result:<br>' + result);
         //console.log(result);
     });
 }
