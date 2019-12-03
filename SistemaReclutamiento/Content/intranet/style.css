@@ -4153,6 +4153,13 @@ body{
 
 
 /*/////////////////////////////////////////////////changessss//////////////*/
+
+body {
+    /* background: #f9f9f9 url(images/patterns/5.png) repeat; */
+    background: #e4e4e4;
+}
+
+
 #mainbar img.logo {
     background: white;
     width: 52px;
@@ -4344,10 +4351,11 @@ h3.blocktitle {
     }
 
     #cat2news .thumb {
-        height: 173px !important;
+        height: 221px !important;
     }
     #cat2news .featured img {
         height: 173px;
+        width: 100%;
     }
 
     #cat2news .title-carousel {
@@ -4461,6 +4469,16 @@ h3.blocktitle {
     .thumb img {
         width: 45%;
     }
+
+    #singlepost .loverate {
+        height: 80px;
+        width: 50px;
+        margin-top: -15px;
+    }
+
+    .cuadro_logo {
+        display:none;
+    }
 }
 
 ul.catlist {
@@ -4515,7 +4533,8 @@ ul.catlist h2.wtitle {
 }
 
 #cat2news .title-carousel {
-    margin-top: 174px;
+    margin-top: 201px;
+    background: rgba(0, 0, 0, 0.87);
 }
 
 #cat2news p.pcats {
@@ -4850,4 +4869,40 @@ h2.ntitle {
 #contenido_cumple_modal #singlepost header h1 {
     font-size: 20px;
     min-height: 50px;
+}
+
+.cuadro_logo {
+    width: 95%;
+    height: 164px;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d6d6d6;
+    text-align: center;
+}
+
+    .cuadro_logo img {
+        max-width: 100%;
+        height: 100%;
+    }
+
+    li{
+        cursor:pointer;
+    }
+
+ul.listreview li .cc {
+    width: 54px;
+    height: 20px; 
+}
+
+.img_title {
+    width: 26px;
+    height: 30px;
+    margin-top: 9px;
+    float: left;
+    margin-right: 6px;
+}
+
+h3.blocktitle:first-child {
+   
+    /*border-top:none;*/
 }
