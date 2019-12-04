@@ -23,7 +23,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
         IntranetSaludoCumpleaniosModel intranetSaludoCumpleaniosbl = new IntranetSaludoCumpleaniosModel();
-
+        IntranetCPJLocalModel intranetCPJLocalbl = new IntranetCPJLocalModel();
         // GET: IntranetPJ
         public ActionResult Index(int? menu)
         {
@@ -80,6 +80,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             string mensajeerrorBD = "";
             string mensaje = "";
             bool respuesta = false;
+            //Cantidad de Salas y Apuestas Deportivas
+            IntranetCPJLocalEntidad intranetCPJlocal = new IntranetCPJLocalEntidad();
+            int cantidadSalas = 0;
+            int cantidadApuestasDeportivas = 0;
             try {
                 //listando menus
                 var menuTupla = intranetMenubl.IntranetMenuListarJson();
@@ -280,7 +284,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
 
                 respuesta = true;
                 mensaje = "Listando Data";
-                //listando
+                //listando Cantidad de Salas y Apuestas Deportivas
+                var cantidadTupla = intranetCPJLocalbl.IntranetCPJLocalListarCantidadLocalesJson();
+                error = cantidadTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    cantidadSalas = cantidadTupla.intranetLocalCantidadSalas;
+                    cantidadApuestasDeportivas = cantidadTupla.intranetLocalCantidadApuestasDeportivas;
+                }
+                else {
+                    mensajeerrorBD += "Error al Listar Cantidad de Salas y Apuestas Deportivas" + error.Value+"\n";
+                }
             }
             catch (Exception ex) {
                 mensaje = ex.Message;
@@ -296,7 +310,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     mensaje = mensaje,
                     listaNoticias = listaNoticiasDesordenado,
                     dataSecciones = ListaSeccion.ToList(),
-                    mensajeerrorBD = mensajeerrorBD
+                    mensajeerrorBD = mensajeerrorBD,
+                    cantidadSalas=cantidadSalas,
+                    cantidadApuestasDeportivas=cantidadApuestasDeportivas
                 });
         }
 
@@ -324,6 +340,34 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         public ActionResult misherramientaspj()
         {
             return View();
+        }
+        [HttpPost]
+        public ActionResult ListarLocalesporTipoJson(string tipo, string nombre="") {
+            string _tipo = tipo;
+            string _nombre = nombre.ToLower();
+            List<IntranetCPJLocalEntidad> intranetLocalLista = new List<IntranetCPJLocalEntidad>();
+            claseError error = new claseError();
+            bool response = false;
+            string errormensaje = "";
+            try {
+                var listaTupla = intranetCPJLocalbl.IntranetCPJLocalListarporNombreJson(_tipo,_nombre);
+                error = listaTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetLocalLista = listaTupla.intranetCPJLocalesLista;
+                    response = true;
+                    errormensaje = "Listando Locales";
+                }
+                else {
+                    response = false;
+                    errormensaje = error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = "No se Pudieron Listar los Locales"+ ex.Message;
+                response = false;
+            }
+            return Json(new { data=intranetLocalLista.ToList(),respuesta=response,mensaje=errormensaje});
         }
     }
 }

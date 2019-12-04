@@ -335,6 +335,7 @@
     <Content Include="Content\intranet\images\png\Actividad_20191129144347.png" />
     <Content Include="Content\intranet\images\png\Actividad_20191129144_337.png" />
     <Content Include="Content\intranet\images\png\calendar.png" />
+    <Content Include="Content\intranet\images\png\marker.png" />
     <Content Include="Content\intranet\images\prettyPhoto\default\default_thumb.png" />
     <Content Include="Content\intranet\images\prettyPhoto\default\loader.gif" />
     <Content Include="Content\intranet\images\prettyPhoto\default\sprite.png" />
@@ -3241,6 +3242,8 @@
     <Content Include="Content\vendors\nprogress\nprogress.js" />
     <Content Include="Content\vendors\nprogress\support\extras.css" />
     <Content Include="Content\vendors\nprogress\support\style.css" />
+    <Content Include="Content\vendors\openlayers\ol.css" />
+    <Content Include="Content\vendors\openlayers\ol.js" />
     <Content Include="Content\vendors\parsleyjs\bower_components\bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="Content\vendors\parsleyjs\bower_components\bootstrap\dist\css\bootstrap-theme.min.css" />
     <Content Include="Content\vendors\parsleyjs\bower_components\bootstrap\dist\css\bootstrap.css" />
@@ -3900,6 +3903,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
+    <Content Include="Content\viewjs\IntranetPJ\IntranetPJMapaView.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
@@ -4870,6 +4874,7 @@
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetAplicativoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetCPJLocalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetDetalleElementoModalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetElementoModalEntidad.cs" />
@@ -4917,6 +4922,7 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetCPJLocalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetDetalleElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />

@@ -20,6 +20,9 @@
                 var dataActividades = response.dataActividades;
                 var listaNoticias = response.listaNoticias;
                 var secciones = response.dataSecciones;
+                //Salas y ApuestasDeportivas
+                $("#cantidadApuestasDeportivas").text(response.cantidadApuestasDeportivas);
+                $("#cantidadSalas").text(response.cantidadSalas);
                 //Creacion de Menus
                 if (dataMenus.length > 0) {
                     $("#menuIntranet").html("");

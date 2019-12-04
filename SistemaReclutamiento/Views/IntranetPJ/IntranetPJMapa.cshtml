@@ -1,18 +1,60 @@
 ﻿@{
     ViewBag.Title = "";
     Layout = "~/Views/Shared/_LayoutIntranetPJ.cshtml";
+
 }
 @using System.Activities.Expressions
 @using System.Web.Script.Serialization
 @using System.Web.UI.WebControls
+@{ 
+    string tipo =new JavaScriptSerializer().Serialize(ViewBag.tipo);
+}
 
 
-<h2>IntranetPJMapa</h2>
+<link rel="stylesheet" href="~/Content/vendors/openlayers/ol.css" type="text/css">
+<style>
+    .map {
+        height: 400px;
+        width: 100%;
+    }
+    #scroll {
+        height: 250px;
+        overflow: scroll;
+    }
+</style>
+<script src="~/Content/vendors/openlayers/ol.js"></script>
 
+<div class="col-md-12 col-xs-12">
+    <form class="" id="busquedaLocales">
+        <input type="hidden" name="tipo" id="tipo" value=""/>
+        <div class="form-group">
+            <label for="nombre">Buscar</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese Búsqueda">
+        </div>
+    </form>
+    <button type="submit" class="btn btn-primary btn-buscar">Buscar</button>
+</div>
+<div id="scroll">
+    <h4>Resultados:</h4>
+    <br />
+    <ul id="resultados">
+    </ul>
+</div>
+<!-- Olayer Maps -->
+<div id="seccion-mapa">
+    <div id="map" class="map"></div>
+    <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+    </div>
+</div>
 @section js
 {
+
     <script type="text/javascript">
-    menu_id = 0;
+        menu_id = 0;
+        tipo = (@Html.Raw(tipo));
     </script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJMapaView.js"></script>
 }
