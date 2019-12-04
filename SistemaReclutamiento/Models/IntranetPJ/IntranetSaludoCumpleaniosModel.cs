@@ -59,6 +59,51 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetSaludoCumpleanioLista: lista, error: error);
         }
+
+        public (List<IntranetSaludoCumpleanioEntidad> intranetSaludoCumpleanioLista, claseError error) IntranetSaludoCumpleanioActivosListarJson()
+        {
+            List<IntranetSaludoCumpleanioEntidad> lista = new List<IntranetSaludoCumpleanioEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT sld_id, sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona
+	                            FROM intranet.int_saludos_cumpleanio
+                                where sld_estado='A'
+                                    order by sld_fecha_envio;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var SaludoCumpleanio = new IntranetSaludoCumpleanioEntidad
+                                {
+
+                                    sld_id = ManejoNulos.ManageNullInteger(dr["sld_id"]),
+                                    sld_cuerpo = ManejoNulos.ManageNullStr(dr["sld_cuerpo"]),
+                                    sld_estado = ManejoNulos.ManageNullStr(dr["sld_estado"]),
+                                    sld_fecha_envio = ManejoNulos.ManageNullDate(dr["sld_fecha_envio"]),
+                                    fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]),
+                                };
+
+                                lista.Add(SaludoCumpleanio);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetSaludoCumpleanioLista: lista, error: error);
+        }
         public (IntranetSaludoCumpleanioEntidad intranetSaludoCumpleanio, claseError error) IntranetSaludoCumpleanioIdObtenerJson(int sld_id)
         {
             IntranetSaludoCumpleanioEntidad intranetSaludoCumpleanio = new IntranetSaludoCumpleanioEntidad();

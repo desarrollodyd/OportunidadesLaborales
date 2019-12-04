@@ -22,7 +22,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         IntranetSeccionElementoModel intranetSeccionImagenbl = new IntranetSeccionElementoModel();
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();
         PersonaModel personabl = new PersonaModel();
-        
+        IntranetSaludoCumpleaniosModel intranetSaludoCumpleaniosbl = new IntranetSaludoCumpleaniosModel();
+
         // GET: IntranetPJ
         public ActionResult Index(int? menu)
         {
@@ -66,6 +67,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetSeccionEntidad> intranetSeccion = new List<IntranetSeccionEntidad>();
             List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
             List<IntranetActividadesEntidad> intranetActividades = new List<IntranetActividadesEntidad>();
+            List<IntranetSaludoCumpleanioEntidad> intraSaludos = new List<IntranetSaludoCumpleanioEntidad>();
 
             List<PersonaEntidad> listaPersona = new List<PersonaEntidad>();
             claseError error = new claseError();
@@ -90,6 +92,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 else {
                     mensajeerrorBD += "Error en Menus: " + error.Value+"\n";
                 }
+
+                var mensajesCumpleanios = intranetSaludoCumpleaniosbl.IntranetSaludoCumpleanioActivosListarJson();
+                error = mensajesCumpleanios.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intraSaludos = mensajesCumpleanios.intranetSaludoCumpleanioLista;
+
+                }
+                else
+                {
+                    mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+                }
+
                 //listando actividades
                 var actividadesTupla = intranetActividadesbl.IntranetActividadesListarJson();
                 error = actividadesTupla.error;
@@ -276,6 +291,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     dataMenus = intranetMenu.ToList(),
                     dataActividades = intranetActividades.ToList(),
                     dataCumpleanios = listaPersona,
+                    dataSaludos = intraSaludos.ToList(),
                     respuesta = respuesta,
                     mensaje = mensaje,
                     listaNoticias = listaNoticiasDesordenado,
