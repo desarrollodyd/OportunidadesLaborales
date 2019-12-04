@@ -15,11 +15,11 @@
             refresh: false,
             callBackSuccess: function (response) {
                 var dataMenus = response.dataMenus;
+                var dataSaludos = response.dataSaludos;
                 var dataCumpleanios = response.dataCumpleanios;
                 var dataActividades = response.dataActividades;
                 var listaNoticias = response.listaNoticias;
                 var secciones = response.dataSecciones;
-
                 //Creacion de Menus
                 if (dataMenus.length > 0) {
                     $("#menuIntranet").html("");
@@ -27,7 +27,7 @@
                     var appendMenuLateral = "";
                     var appendMenuPrincipal = "";
                     $.each(dataMenus, function (index, menu) {
-                        appendMenuLateral += '<li><a href="' + menu.menu_url + '">' + menu.menu_titulo + '</a></li>';
+                        appendMenuLateral += '<li><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id +'">' + menu.menu_titulo + '</a></li>';
                         var clase = "";
                         if (menuInicio == 0) {
                             clase = (index == 0) ? "active" : "";
@@ -41,6 +41,22 @@
                     });
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
+                }
+
+                if (dataSaludos.length > 0) {
+                    $("#saludos_li").html("");
+                    var appendSaludos = "";
+                    $.each(dataSaludos, function (index, saludo) {
+                        appendSaludos += '<li>'+
+                            '<div class="cthumb">'+
+                                '<a href="#"><img src="~/Content/intranet/images/user1.jpg" alt=""></a>'+
+                            '<div>'+
+                            '<div class="dcomment">'+
+                                    '<a href="#">'+saludo.sld_cuerpo+'</a>'+
+                            '</div>'+
+                                        '</li>';
+                    });
+                    $("#saludos_li").html(appendSaludos);
                 }
 
                 //Creacion de Aside para Cumpleaños
@@ -89,7 +105,7 @@
 
                 //listado secciones
                 if (secciones.length > 0) {
-                    console.log(secciones)
+                    //console.log(secciones)
                     $("#content").html("");
                     var appendSeccion = "";
                     slider = false;
@@ -597,13 +613,12 @@
                 slider = false;
                 silertrans = false;
                 if (elementos.length > 0) {
-                    console.log(elementos);
+                    
                     var appendElementos = "";
 
                     $.each(elementos, function (index, elemento) {
 
                         if (elemento.fk_tipo_elemento == 1) {
-                            console.log("34")
                             appendElementos += '<header>' +
                                 '<div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>' +
                                 '<h1>' + elemento.emod_titulo + '</h1>' +
