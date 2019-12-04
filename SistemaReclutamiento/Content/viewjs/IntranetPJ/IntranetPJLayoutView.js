@@ -42,15 +42,15 @@
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
                 }
-
+                console.log(dataSaludos)
                 if (dataSaludos.length > 0) {
                     $("#saludos_li").html("");
                     var appendSaludos = "";
                     $.each(dataSaludos, function (index, saludo) {
                         appendSaludos += '<li>'+
                             '<div class="cthumb">'+
-                                '<a href="#"><img src="~/Content/intranet/images/user1.jpg" alt=""></a>'+
-                            '<div>'+
+                            '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/barba.png" alt=""></a>'+
+                            '</div>'+
                             '<div class="dcomment">'+
                                     '<a href="#">'+saludo.sld_cuerpo+'</a>'+
                             '</div>'+

@@ -4906,3 +4906,27 @@ h3.blocktitle:first-child {
    
     /*border-top:none;*/
 }
+
+
+#saludos_li img{
+    height:43px;
+}
+
+.img_saludo{
+    background-color:#fff;
+}
+
+ul#saludos_li > li > div.cthumb a:hover {
+    background: #fff;
+    border: 2px solid #ff0000;
+}
+
+ul.listcomment li .cthumb {
+    width: 70px;
+    height: 70px;
+    /* overflow: hidden; */
+    float: left;
+    margin-right: 10px;
+    border: 3px solid #d22a2a;
+    background-color: white;
+}
