@@ -45,7 +45,7 @@
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
                 }
-                console.log(dataSaludos)
+                //console.log(dataSaludos)
                 if (dataSaludos.length > 0) {
                     $("#saludos_li").html("");
                     var appendSaludos = "";
@@ -55,7 +55,7 @@
                             '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/barba.png" alt=""></a>'+
                             '</div>'+
                             '<div class="dcomment">'+
-                            '<a href="#">De: mario isas, Para: carla gallegos, ' + saludo.sld_cuerpo + '</a>' +
+                            '<a href="#"><span style="font-size:11px;">De:</span> ' + saludo.per_saluda + ' ' + saludo.apelpat_per_saluda + ', <span style="font-size:11px;">Para:</span> ' + saludo.per_saludada + ' ' + saludo.apelpat_per_saludada +',<br> <span style="font-size:11px;">Mensaje: </span>' + saludo.sld_cuerpo + '</a>' +
                             '<div class="fecha_registro_saludo">10-11-2019</div>'+
                             '</div>'+
                                         '</li>';
@@ -1066,6 +1066,14 @@
             var tipo = $(this).data("tipo");
             redirect({ site:'intranetPJ/mapa?tipo='+tipo,time:0})
         });
+
+
+        $(document).on('click', 'div.img_face', function () {
+            var div = $(this);
+            $("div.img_face").removeClass("select_img");
+            div.addClass("select_img");
+        });
+
     };
     //
     // Return objects assigned to module

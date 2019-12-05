@@ -4971,3 +4971,20 @@ div.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible{
     border: 2px solid #e4e4e4;
     padding: 2px;
 }
+
+.img_face {
+    margin: 3px;
+    cursor: pointer;
+}
+
+    .img_face img:hover {
+        border: 2px solid #867f7f;
+        width: 34px;
+        height: 28px;
+    }
+
+.select_img img {
+    width:34px;
+    height:28px;
+    border: 2px solid #867f7f;
+}

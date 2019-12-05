@@ -60,7 +60,7 @@
                     var span = '';
                     $("#span_total_puntos").html(puntos.length);
                     $.each(puntos, function (index, value) {
-                        span += '<li><h6 style="margin-bottom: 4px;margin-top: 4px;">' + (index + 1) + '.- ' + value.loc_nombre + '</h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                        span += '<li><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
                     })
                     $("#resultados").html(span);
                 }
@@ -86,7 +86,7 @@
                             var span = '';
                             $("#span_total_puntos").html(puntos.length);
                             $.each(puntos, function (index, value) {
-                                span += '<li><h6 style="margin-bottom: 4px;margin-top: 4px;">' + (index + 1) + '.- ' + value.loc_nombre + '</h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                                span += '<li><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
                             })
                             $("#resultados").html(span);
                         }
