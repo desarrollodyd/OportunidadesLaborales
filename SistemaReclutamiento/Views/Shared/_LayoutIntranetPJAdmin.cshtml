@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@*@using SistemaReclutamiento.Models;
+@using SistemaReclutamiento.Entidades;
+@using SistemaReclutamiento.Utilitarios;
+@{
+    string nombre = "";
+    if (Session["usu_full"] == null || Session["per_full"] == null)
+    {
+        Response.Redirect("/IntranetPjAdmin/IntranetLogin");
+    }
+    else
+    {
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
+        PersonaEntidad persona = (PersonaEntidad)Session["per_full"];
+        nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
+    }
+}*@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>

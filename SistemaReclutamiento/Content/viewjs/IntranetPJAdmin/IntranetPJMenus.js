@@ -5,12 +5,13 @@ var PanelMenus = function () {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
             return;
         }
+        if ($.fn.DataTable.isDataTable("#menusListado")) {
+            $("#menusListado").DataTable().clear();
+        }
         responseSimple({
             url: "IntranetMenu/IntranetMenuListarTodoJson",
             refresh: false,
             callBackSuccess: function (response) {
-                var totalMenus = response.data.length;
-              
                 simpleDataTable({
                     uniform: false,
                     tableNameVariable: "menusListado",
@@ -91,7 +92,6 @@ var PanelMenus = function () {
 
                     ]
                 })
-                $('#menulistado').dataTable().fnClearTable(); 
                 _rowReordering();
             }
         });
@@ -129,7 +129,9 @@ var PanelMenus = function () {
                         console.log(response);
                         var respuesta = response.respuesta;
                         if (respuesta) {
-                            refresh(true);
+                            PanelMenus.init_ListarMenus();
+                            $("#modalFormulario").modal("hide");
+                            //refresh(true);
                         }
                     }
                 });
@@ -214,30 +216,30 @@ var PanelMenus = function () {
             var menu_orden = $(this).data("orden");
             var celda = $("tr>td:nth-child(2)");
             console.log(celda);
-            //if (menu_id != "" || menu_id > 0) {
-            //    messageConfirmation({
-            //        content: '¿Esta seguro de ELIMINAR este Menú?',
-            //        callBackSAceptarComplete: function () {
-            //            responseSimple({
-            //                url: "IntranetMenu/IntranetMenuEliminarJson",
-            //                data: JSON.stringify({
-            //                    menu_id: menu_id,
-            //                    menu_orden:menu_orden
-            //                }),
-            //                refresh: false,
-            //                callBackSuccess: function (response) {
-            //                    refresh(true);
-            //                }
-            //            });
-            //        }
-            //    });
-            //}
-            //else {
-            //    messageResponse({
-            //        text: "Error no se encontro ID",
-            //        type: "error"
-            //    })
-            //}
+            if (menu_id != "" || menu_id > 0) {
+                messageConfirmation({
+                    content: '¿Esta seguro de ELIMINAR este Menú?',
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: "IntranetMenu/IntranetMenuEliminarJson",
+                            data: JSON.stringify({
+                                menu_id: menu_id,
+                                menu_orden:menu_orden
+                            }),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                refresh(true);
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                messageResponse({
+                    text: "Error no se encontro ID",
+                    type: "error"
+                })
+            }
         });
 
         //checkAll
@@ -318,10 +320,10 @@ var PanelMenus = function () {
 
     };
     var _rowReordering = function () {
-        if ($.fn.DataTable.isDataTable(".datatable-menulistado")) {
-            $(".datatable-menulistado").dataTable().fnDestroy();
+        if ($.fn.DataTable.isDataTable("#menusListado")) {
+            $("#menusListado").DataTable().destroy();
         }
-        var table = $(".datatable-menulistado").DataTable({
+        var table = $("#menusListado").DataTable({
             rowReorder: {
                 selector:'tr>td:nth-child(2),tr>td:nth-child(3), tr>td:nth-child(4)'
             },
@@ -330,6 +332,9 @@ var PanelMenus = function () {
                 { orderable: false, targets: '_all' }
             ],
         });
+        table
+            .order([[4, 'asc']])
+            .draw(false);
         table.on('row-reorder', function (e, diff, edit) {
             block_general("body");
             let arrayOrdenesMenus = [];
@@ -350,12 +355,10 @@ var PanelMenus = function () {
                     data: JSON.stringify(dataform),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        $('#menulistado').dataTable().fnClearTable(); 
-                        //$('#menulistado').empty();
-                        //table.destroy();
-                        _ListarMenus();
-                        CloseMessages();
-                        unblock("body");
+                        refresh(true);
+                        //PanelMenus.init_ListarMenus();
+                        //CloseMessages();
+                        //unblock("body");
                     }
                 })
             }
@@ -380,67 +383,6 @@ var PanelMenus = function () {
         }
     }
 }();
-
-function getVal(res) {
-    var atmp = res.split('=');
-    var newId = '';
-    var newArr = [];
-    for (var i = 0, j = atmp.length; i < j; i++) {
-        newId = $('.datatable-menulistado').find("tr:eq(" + atmp[i] + ") input[type='hidden']").val();
-        console.log(newId);
-        if (newId != '')
-            newArr[atmp[i]] = newId;
-    }
-    console.log(newArr)
-
-    //var urlStr = '<?php echo base_url('admin/managecategories/reorderCategories');?>';
-    //$.ajax({
-    //    data: { new_: newArr },
-    //    url: urlStr,
-    //    cache: false,
-    //    method: 'POST',
-    //    success: function (data) {
-    //        console.log(data);
-    //    },
-    //    error: function (error) {
-    //        console.log(error);
-    //    }
-    //});
-}
-
-function rowReorder(table) {
-    
-    table.on('row-reorder', function (e, diff, edit) {
-
-        //let arrayPosicionesIniciales = [];
-        //var arrayPosicionesFinales = [];
-        //console.log(diff);
-        //console.log(edit);
-        //var res = '';
-        //var resanterior = '';
-        //for (var i = 0, ien = diff.length; i < ien; i++) {
-        //    resanterior += diff[i].oldData + '=';
-        //    res += diff[i].newData + '=';
-        //}
-        //res = res.substring(0, res.length - 1);
-        //console.log(resanterior);
-        //console.log(res);
-        //table.order([0, 'asc']);
-        //var result = 'Reorder comenzo en la fila: ' + edit.triggerRow.data()[1] + '<br>';
-
-        //for (var i = 0, ien = diff.length; i < ien; i++) {
-        //    var rowData = table.row(diff[i].node).data();
-
-        //    result += rowData[3] + ' se actualizo a la posicion :' +
-        //        diff[i].newData + ' (era ' + diff[i].oldData + ')<br>';
-        //}
-   
-        console.log(edit.dataSrc);
-
-        $('#result').html('Event result:<br>' + result);
-        //console.log(result);
-    });
-}
 // Initialize module
 // ------------------------------
 

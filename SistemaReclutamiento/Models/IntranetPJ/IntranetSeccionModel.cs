@@ -298,5 +298,31 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
             return (intranetSeccionEliminado: response, error: error);
         }
+        public (bool intranetSeccionReordenado, claseError error) IntranetSeccionEditarOrdenJson(IntranetSeccionEntidad intranetSeccion)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.int_seccion
+	                            SET sec_orden=@p0
+	                            WHERE sec_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(intranetSeccion.sec_orden));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetSeccion.sec_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetSeccionReordenado: response, error: error);
+        }
     }
 }

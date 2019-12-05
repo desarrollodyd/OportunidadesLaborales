@@ -1,6 +1,19 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @using SistemaReclutamiento.Utilitarios;
+@{
+    string nombre = "";
+    if (Session["usu_full"] == null || Session["per_full"] == null)
+    {
+        Response.Redirect("/IntranetPJ/IntranetLogin");
+    }
+    else
+    {
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
+        PersonaEntidad persona = (PersonaEntidad)Session["per_full"];
+        nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
+    }
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,10 +71,11 @@
                         <div class="nine columns">
                             <ul class="sf-menu sf-menu_" id="tobar">
                                 <li class="current">
-                                    <a class="" href="#"> Corporacion PJ te da la Bienvenida .... </a>
+                                    <a class="" href="#"> Corporacion PJ te da la Bienvenida @nombre</a>
                                 </li>
-
+                                <li><a href="#" id="btnCerrarSesion"><i class="fa fa-sign-out pull-right"></i> Salir</a></li>
                             </ul>
+                            
                         </div>
                         <div class="three columns">
                             <ul class="sf-menu sf-menu_" id="topsearch">
@@ -383,7 +397,23 @@
     <script src="~/Content/vendors/moment/moment.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
-
+    <script>
+        $("#btnCerrarSesion").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: basePath + "IntranetPJ/IntranetPJCerrarSesionLoginJson",
+                success: function (response) {
+                    var resp = response.respuesta;
+                    var msj = response.mensaje;
+                    if (resp) {
+                        window.location.replace(basePath + "IntranetPJ/IntranetLogin");
+                    } else {
+                        alert(msj);
+                    }
+                }
+            });
+        });
+    </script>
     @RenderSection("js", required: false)
 </body>
 </html>

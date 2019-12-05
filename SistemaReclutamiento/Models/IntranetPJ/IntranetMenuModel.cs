@@ -201,8 +201,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_menu
-	                            SET menu_titulo=@p1, menu_url=@p2, menu_orden=@p3, menu_estado=@p4, menu_blank=@p5
-	                            WHERE menu_id=@p6;";
+	                            SET menu_titulo=@p1, menu_url=@p2, menu_estado=@p3, menu_blank=@p4
+	                            WHERE menu_id=@p5;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -211,10 +211,9 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetMenu.menu_titulo));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetMenu.menu_url));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetMenu.menu_orden));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetMenu.menu_estado));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManegeNullBool(intranetMenu.menu_blank));
-                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetMenu.menu_id));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetMenu.menu_estado));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManegeNullBool(intranetMenu.menu_blank));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetMenu.menu_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

@@ -24,6 +24,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         PersonaModel personabl = new PersonaModel();
         IntranetSaludoCumpleaniosModel intranetSaludoCumpleaniosbl = new IntranetSaludoCumpleaniosModel();
         IntranetCPJLocalModel intranetCPJLocalbl = new IntranetCPJLocalModel();
+        //Acceso
+        IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
+        UsuarioModel usuariobl = new UsuarioModel();
         // GET: IntranetPJ
         public ActionResult Index(int? menu)
         {
@@ -368,6 +371,87 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 response = false;
             }
             return Json(new { data=intranetLocalLista.ToList(),respuesta=response,mensaje=errormensaje});
+        }
+        public ActionResult IntranetLogin() {
+            return View("~/Views/IntranetPJ/IntranetPJLogin.cshtml");
+        }
+        [HttpPost]
+        public ActionResult IntranetLoginValdidarCredencialesJson(string usu_login,string usu_password)
+        {
+            bool respuesta = false;
+            string errormensaje = "";
+            string mensajeConsola = "";
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
+            claseError error = new claseError();
+            string pendiente = "";
+            try
+            {
+                var usuarioTupla = usuarioAccesobl.UsuarioIntranetValidarCredenciales(usu_login.ToLower());
+                error = usuarioTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    usuario = usuarioTupla.intranetUsuarioEncontrado;
+                    if (usuario.usu_id > 0)
+                    {
+                        if (usuario.usu_estado == "A")
+                        {
+                            if (usuario.usu_tipo == "EMPLEADO")
+                            {
+                                if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
+                                {
+                                    Session["usu_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                                    persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                                    Session["per_full"] = persona;
+                                    respuesta = true;
+                                    errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                                }
+                            }
+                            else
+                            {
+                                errormensaje = "Usuario no Pertenece a CPJ";
+                            }
+                        }
+                        else
+                        {
+                            errormensaje = "Usuario no se Encuentra Activo";
+                        }
+                    }
+                    else
+                    {
+                        errormensaje = "Usuario no Encontrado";
+                    }
+                }
+                else {
+                    errormensaje = "Ha ocurrido un problema";
+                    mensajeConsola = error.Value;
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + "";
+                mensajeConsola = error.Value;
+            }
+
+            return Json(new { mensajeconsola=mensajeConsola,respuesta = respuesta, mensaje = errormensaje, estado = pendiente/*, usuario=usuario*/ });
+        }
+        [HttpPost]
+        public ActionResult IntranetPJCerrarSesionLoginJson()
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            try
+            {
+
+                Session["usu_full"] = null;
+                Session["per_full"] = null;
+                respuestaConsulta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
     }
 }

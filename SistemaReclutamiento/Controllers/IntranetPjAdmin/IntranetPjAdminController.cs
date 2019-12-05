@@ -1,4 +1,5 @@
-﻿using SistemaReclutamiento.Entidades.IntranetPJ;
+﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
 using SistemaReclutamiento.Utilitarios;
@@ -12,8 +13,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
     public class IntranetPjAdminController : Controller
     {
-        IntranetUsuarioModel usuariobl = new IntranetUsuarioModel();
+        IntranetUsuarioModel usuarioIntranetbl = new IntranetUsuarioModel();
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
+        IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
+        UsuarioModel usuariobl = new UsuarioModel();
+        PersonaModel personabl = new PersonaModel();
         // GET: IntranetPjAdmin
         public ActionResult Index()
         {
@@ -60,62 +64,70 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return View("~/Views/IntranetPJAdmin/IntranetPJSecciones.cshtml");
         }
         #region Region Acceso a Mantenimiento Intranet PJ
+        public ActionResult IntranetSGCLogin()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJAdminLogin.cshtml");
+        }
         [HttpPost]
-        public ActionResult IntranetPJValidarLoginJson(string usu_login, string usu_password)
+        public ActionResult IntranetPJSGCValidarLoginJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
             string errormensaje = "";
-            IntranetUsuarioEntidad usuario = new IntranetUsuarioEntidad();
+            string mensajeConsola = "";
+            UsuarioEntidad usuario = new UsuarioEntidad();
+            PersonaEntidad persona = new PersonaEntidad();
             claseError error = new claseError();
+            string pendiente = "";
             try
             {
-                var usuarioTupla = usuariobl.IntranetUsuarioValidarCredenciales(usu_login.ToLower());
+                var usuarioTupla = usuarioAccesobl.UsuarioIntranetSGCValidarCredenciales(usu_login.ToLower());
                 error = usuarioTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    usuario = usuarioTupla.usuario;
+                    usuario = usuarioTupla.intranetUsuarioSGCEncontrado;
                     if (usuario.usu_id > 0)
                     {
-                        if (usuario.usu_password.Equals(Seguridad.EncriptarSHA512(usu_password.Trim())))
+                        if (usuario.usu_estado == "A")
                         {
-                            if (usuario.usu_estado.Equals('A'))
+                            if (usuario.usu_tipo == "EMPLEADO")
                             {
-                                IntranetUsuarioEntidad usuarioSession = new IntranetUsuarioEntidad();
-                                usuarioSession.usu_id = usuario.usu_id;
-                                usuarioSession.usu_nombre = usuario.usu_nombre;
-                                usuarioSession.usu_tipo = usuario.usu_tipo;
-                                usuarioSession.usu_estado = usuario.usu_estado;
-                                Session["usu_full"] = usuarioSession;
-                                respuesta = true;
-                                errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                                if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
+                                {
+                                    Session["usu_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                                    persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
+                                    Session["per_full"] = persona;
+                                    respuesta = true;
+                                    errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                                }
                             }
                             else
                             {
-                                errormensaje = "Su cuenta se encuentra desactivada";
+                                errormensaje = "Usuario no Pertenece a CPJ";
                             }
                         }
                         else
                         {
-                            errormensaje = "La contraseña ingresada con coincide con con el usuario ingresado";
+                            errormensaje = "Usuario no se Encuentra Activo";
                         }
                     }
                     else
                     {
-                        errormensaje = "No se encuentra el usuario ingresado";
+                        errormensaje = "Usuario no Encontrado";
                     }
                 }
                 else
                 {
-                    respuesta = false;
-                    errormensaje = error.Value;
+                    errormensaje = "Ha ocurrido un problema";
+                    mensajeConsola = error.Value;
                 }
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + "";
+                mensajeConsola = error.Value;
             }
 
-            return Json(new { respuesta = respuesta, mensaje = errormensaje, /*, usuario=usuario*/ });
+            return Json(new { mensajeconsola = mensajeConsola, respuesta = respuesta, mensaje = errormensaje, estado = pendiente/*, usuario=usuario*/ });
         }
     #endregion
     }
