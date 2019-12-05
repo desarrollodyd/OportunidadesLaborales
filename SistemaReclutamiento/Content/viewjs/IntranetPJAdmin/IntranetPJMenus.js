@@ -91,6 +91,7 @@ var PanelMenus = function () {
 
                     ]
                 })
+                $('#menulistado').dataTable().fnClearTable(); 
                 _rowReordering();
             }
         });
@@ -320,7 +321,7 @@ var PanelMenus = function () {
         if ($.fn.DataTable.isDataTable(".datatable-menulistado")) {
             $(".datatable-menulistado").dataTable().fnDestroy();
         }
-        var table = $('.datatable-menulistado').DataTable({
+        var table = $(".datatable-menulistado").DataTable({
             rowReorder: {
                 selector:'tr>td:nth-child(2),tr>td:nth-child(3), tr>td:nth-child(4)'
             },
@@ -349,8 +350,11 @@ var PanelMenus = function () {
                     data: JSON.stringify(dataform),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        $(".datatable-menulistado").dataTable().fnDestroy();
+                        $('#menulistado').dataTable().fnClearTable(); 
+                        //$('#menulistado').empty();
+                        //table.destroy();
                         _ListarMenus();
+                        CloseMessages();
                         unblock("body");
                     }
                 })
