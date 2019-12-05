@@ -46,8 +46,22 @@
                             }
                         },
                         {
-                            data: "fk_persona",
-                            title: "Persona"
+                            data: "sld_id",
+                            title: "Persona que Saludó",
+                            "render": function (value, type, row) {
+                                var span = "";
+                                span += row.apelpat_per_saluda + ' ' + row.apelmat_per_saluda + ', ' + row.per_saluda;
+                                return span;
+                            }
+                        },
+                        {
+                            data: "sld_id",
+                            title: "Persona que fue Saludada",
+                            "render": function (value, type, row) {
+                                var span = "";
+                                span += row.apelpat_per_saludada + ' ' + row.apelmat_per_saludada + ', ' + row.per_saludada;
+                                return span;
+                            }
                         },
                         {
                             data: "sld_estado",

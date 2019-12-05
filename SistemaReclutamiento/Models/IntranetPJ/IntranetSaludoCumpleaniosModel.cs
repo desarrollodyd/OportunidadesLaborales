@@ -20,9 +20,15 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             List<IntranetSaludoCumpleanioEntidad> lista = new List<IntranetSaludoCumpleanioEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT sld_id, sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona
-	                            FROM intranet.int_saludos_cumpleanio
-                                    order by sld_fecha_envio;";
+            string consulta = @"SELECT sal.sld_id, sal.sld_cuerpo, sal.sld_estado, sal.sld_fecha_envio, 
+		                        per.per_nombre as per_saluda, per.per_apellido_pat as apelpat_per_saluda, per.per_apellido_mat as apelmat_per_saluda,
+		                        per2.per_nombre as per_saludada, per2.per_apellido_pat as apelpat_per_saludada,per2.per_apellido_mat as apelmat_per_saludada
+	                            FROM intranet.int_saludos_cumpleanio as sal join marketing.cpj_persona as per
+	                            on sal.fk_persona_que_saluda=per.per_id
+	                            join marketing.cpj_persona  as per2
+	                            on sal.fk_persona_saludada=per2.per_id
+	                            order by sld_fecha_envio desc
+	                            ;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -42,7 +48,13 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     sld_cuerpo = ManejoNulos.ManageNullStr(dr["sld_cuerpo"]),
                                     sld_estado = ManejoNulos.ManageNullStr(dr["sld_estado"]),
                                     sld_fecha_envio = ManejoNulos.ManageNullDate(dr["sld_fecha_envio"]),
-                                    fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]),
+                                    per_saluda = ManejoNulos.ManageNullStr(dr["per_saluda"]),
+                                    apelpat_per_saluda = ManejoNulos.ManageNullStr(dr["apelpat_per_saluda"]),
+                                    apelmat_per_saluda = ManejoNulos.ManageNullStr(dr["apelmat_per_saluda"]),
+                                    per_saludada = ManejoNulos.ManageNullStr(dr["per_saludada"]),
+                                    apelpat_per_saludada = ManejoNulos.ManageNullStr(dr["apelpat_per_saludada"]),
+                                    apelmat_per_saludada = ManejoNulos.ManageNullStr(dr["apelmat_per_saludada"]),
+
                                 };
 
                                 lista.Add(SaludoCumpleanio);
@@ -64,10 +76,15 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             List<IntranetSaludoCumpleanioEntidad> lista = new List<IntranetSaludoCumpleanioEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT sld_id, sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona
-	                            FROM intranet.int_saludos_cumpleanio
-                                where sld_estado='A'
-                                    order by sld_fecha_envio;";
+            string consulta = @"SELECT sal.sld_id, sal.sld_cuerpo, sal.sld_estado, sal.sld_fecha_envio, 
+		                        per.per_nombre as per_saluda, per.per_apellido_pat as apelpat_per_saluda, per.per_apellido_mat as apelmat_per_saluda,
+		                        per2.per_nombre as per_saludada, per2.per_apellido_pat as apelpat_per_saludada,per2.per_apellido_mat as apelmat_per_saludada
+	                            FROM intranet.int_saludos_cumpleanio as sal join marketing.cpj_persona as per
+	                            on sal.fk_persona_que_saluda=per.per_id
+	                            join marketing.cpj_persona  as per2
+	                            on sal.fk_persona_saludada=per2.per_id
+                                where sal.sld_estado='A'
+	                            order by sld_fecha_envio desc;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -87,7 +104,12 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     sld_cuerpo = ManejoNulos.ManageNullStr(dr["sld_cuerpo"]),
                                     sld_estado = ManejoNulos.ManageNullStr(dr["sld_estado"]),
                                     sld_fecha_envio = ManejoNulos.ManageNullDate(dr["sld_fecha_envio"]),
-                                    fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]),
+                                    per_saluda = ManejoNulos.ManageNullStr(dr["per_saluda"]),
+                                    apelpat_per_saluda = ManejoNulos.ManageNullStr(dr["apelpat_per_saluda"]),
+                                    apelmat_per_saluda = ManejoNulos.ManageNullStr(dr["apelmat_per_saluda"]),
+                                    per_saludada = ManejoNulos.ManageNullStr(dr["per_saludada"]),
+                                    apelpat_per_saludada = ManejoNulos.ManageNullStr(dr["apelpat_per_saludada"]),
+                                    apelmat_per_saludada = ManejoNulos.ManageNullStr(dr["apelmat_per_saludada"]),
                                 };
 
                                 lista.Add(SaludoCumpleanio);
@@ -128,7 +150,12 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetSaludoCumpleanio.sld_cuerpo = ManejoNulos.ManageNullStr(dr["sld_cuerpo"]);
                                 intranetSaludoCumpleanio.sld_estado = ManejoNulos.ManageNullStr(dr["sld_estado"]);
                                 intranetSaludoCumpleanio.sld_fecha_envio = ManejoNulos.ManageNullDate(dr["sld_fecha_envio"]);
-                                intranetSaludoCumpleanio.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
+                                intranetSaludoCumpleanio.per_saluda = ManejoNulos.ManageNullStr(dr["per_saluda"]);
+                                intranetSaludoCumpleanio.apelpat_per_saluda = ManejoNulos.ManageNullStr(dr["apelpat_per_saluda"]);
+                                intranetSaludoCumpleanio.apelmat_per_saluda = ManejoNulos.ManageNullStr(dr["apelmat_per_saluda"]);
+                                intranetSaludoCumpleanio.per_saludada = ManejoNulos.ManageNullStr(dr["per_saludada"]);
+                                intranetSaludoCumpleanio.apelpat_per_saludada = ManejoNulos.ManageNullStr(dr["apelpat_per_saludada"]);
+                                intranetSaludoCumpleanio.apelmat_per_saludada = ManejoNulos.ManageNullStr(dr["apelmat_per_saludada"]);
                             }
                         }
                     }
@@ -147,8 +174,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetSaludoCumpleanioInsertado = 0;
             string consulta = @"
                             INSERT INTO intranet.int_saludos_cumpleanio(
-	                        sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona)
-	                        VALUES ( @p0, @p1, @p2, @p3);
+	                        sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona_que_saluda,fk_personsa_saludada)
+	                        VALUES ( @p0, @p1, @p2, @p3,@p4);
                             returning sld_id;";
             claseError error = new claseError();
             try
@@ -160,7 +187,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetSaludoCumpleanio.sld_cuerpo));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetSaludoCumpleanio.sld_estado));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(intranetSaludoCumpleanio.sld_fecha_envio));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetSaludoCumpleanio.fk_persona));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetSaludoCumpleanio.fk_persona_que_saluda));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(intranetSaludoCumpleanio.fk_persona_saludada));
                     idIntranetSaludoCumpleanioInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
