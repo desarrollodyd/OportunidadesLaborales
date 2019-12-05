@@ -55,7 +55,8 @@
                             '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/barba.png" alt=""></a>'+
                             '</div>'+
                             '<div class="dcomment">'+
-                                    '<a href="#">'+saludo.sld_cuerpo+'</a>'+
+                            '<a href="#">De: mario isas, Para: carla gallegos, ' + saludo.sld_cuerpo + '</a>' +
+                            '<div class="fecha_registro_saludo">10-11-2019</div>'+
                             '</div>'+
                                         '</li>';
                     });

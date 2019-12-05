@@ -6,39 +6,60 @@
 @using System.Activities.Expressions
 @using System.Web.Script.Serialization
 @using System.Web.UI.WebControls
-@{ 
-    string tipo =new JavaScriptSerializer().Serialize(ViewBag.tipo);
+@{
+    string tipo = new JavaScriptSerializer().Serialize(ViewBag.tipo);
 }
 
+@section AddToHead
+{
 
-<link rel="stylesheet" href="~/Content/vendors/openlayers/ol.css" type="text/css">
-<style>
-    .map {
-        height: 400px;
-        width: 100%;
-    }
-    #scroll {
-        height: 250px;
-        overflow: scroll;
-    }
-</style>
-<script src="~/Content/vendors/openlayers/ol.js"></script>
+    <link rel="stylesheet" href="~/Content/vendors/openlayers/ol.css" type="text/css">
+    <style>
+        .map {
+            height: 400px;
+            width: 100%;
+        }
 
-<div class="col-md-12 col-xs-12">
-    <form class="" id="busquedaLocales">
-        <input type="hidden" name="tipo" id="tipo" value=""/>
-        <div class="form-group">
-            <label for="nombre">Buscar</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese Búsqueda">
+        #scroll {
+            height: 250px;
+            overflow: scroll;
+        }
+    </style>
+
+}
+
+<section id="singlepost">
+    <header>
+        <div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>
+        <h1>BUSCAR POR DEPARTAMENTO</h1>
+        <div class="postmeta">
+            <div class="meta-date">REGISTROS DE LOCALES </div>
         </div>
-    </form>
-    <button type="submit" class="btn btn-primary btn-buscar">Buscar</button>
-</div>
+
+    </header>
+</section>
+
+<article>
+    <div class="post-content">
+        <form class="" id="busquedaLocales">
+            <div class=" collapsable">
+                <div class="eight columns">
+                    <input type="hidden" name="tipo" id="tipo" value="" />
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese Búsqueda">
+                </div>
+                <div class="four columns">
+                    <button type="submit" class="btn btn-primary btn-buscar radius alert button">Buscar</button>
+                </div>
+            </div>
+        </form>
+       
+    </div>
+</article>
+
 <div id="scroll">
     <h4>Resultados:</h4>
     <br />
-    <ul id="resultados">
-    </ul>
+    <ul id="resultados"></ul>
 </div>
 <!-- Olayer Maps -->
 <div id="seccion-mapa">
@@ -55,6 +76,7 @@
         menu_id = 0;
         tipo = (@Html.Raw(tipo));
     </script>
+    <script src="~/Content/vendors/openlayers/ol.js"></script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJMapaView.js"></script>
 }

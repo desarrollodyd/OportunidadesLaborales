@@ -3842,11 +3842,11 @@ ul.listcomment li a{
 ul.listcomment li a:hover{
 	background:#FFFFFF;
 	color: #000000;
-		-webkit-transform: scale(1.05);
+		/*-webkit-transform: scale(1.05);
 		-moz-transform: scale(1.05);
 		-o-transform: scale(1.05);
 		-ms-transform: scale(1.05);
-		transform: scale(1.05);
+		transform: scale(1.05);*/
 }
 /* 6.9 ==================== widget contact ========================= */
 .dcontact p{ 
@@ -4912,8 +4912,9 @@ h3.blocktitle:first-child {
     height:43px;
 }
 
-.img_saludo{
-    background-color:#fff;
+.img_saludo {
+    background-color: #fff;
+    height: 65px;
 }
 
 ul#saludos_li > li > div.cthumb a:hover {
@@ -4929,4 +4930,9 @@ ul.listcomment li .cthumb {
     margin-right: 10px;
     border: 3px solid #d22a2a;
     background-color: white;
+}
+
+.fecha_registro_saludo {
+    color: #f50505;
+    margin-left: 8px;
 }
