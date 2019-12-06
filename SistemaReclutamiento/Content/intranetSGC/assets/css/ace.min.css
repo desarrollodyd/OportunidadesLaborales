@@ -22927,3 +22927,7 @@ input.typeahead.scrollable ~ .tt-menu {
 .no-skin .sidebar.menu-min .nav-list > li > a > .menu-text {
     background-color: #0e0e0e;
 }
+
+table tbody tr:hover {
+    cursor: move;
+}

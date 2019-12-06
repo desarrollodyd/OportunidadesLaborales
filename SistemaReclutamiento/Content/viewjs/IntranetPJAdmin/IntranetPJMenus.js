@@ -5,37 +5,29 @@ var PanelMenus = function () {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
             return;
         }
-        if ($.fn.DataTable.isDataTable("#menusListado")) {
-            $("#menusListado").DataTable().clear();
-        }
+        //if ($.fn.DataTable.isDataTable("#menusListado")) {
+        //    $("#menusListado").DataTable().clear();
+        //}
         responseSimple({
             url: "IntranetMenu/IntranetMenuListarTodoJson",
             refresh: false,
             callBackSuccess: function (response) {
                 simpleDataTable({
                     uniform: false,
-                    tableNameVariable: "menusListado",
-                    table: ".datatable-menulistado",
+                    tableNameVariable: "datatable_menulistado",
+                    table: "#menusListado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
-                    tableHeaderCheckIndex: 2,
+                    tableHeaderCheckIndex: 0,
+                    rowReorder: true,
                     columnDefs: [
-                        { orderable: true, className: 'reorder', targets: [0, 1], visible: false },
-                        { orderable: false, targets: '_all' }
+                        { orderable: true, targets: [0, 1, 2, 3, 4, 5] }
                     ],
                     tableColumns: [
                         {
-                            data: "menu_orden",
-                            title: "Orden",
-                        },
-                        {
-                            data: "menu_id",
-                            title: "ID",
-                        },
-                        {
                             data: "menu_id",
                             title: "",
-                            className:"text-center",
+                            className: "text-center",
                             "bSortable": false,
                             "render": function (value) {
                                 var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
@@ -50,8 +42,8 @@ var PanelMenus = function () {
                         {
                             data: "menu_orden",
                             title: "Orden",
-                            name:"menu_orden",
-                          
+                            name: "menu_orden",
+
                         },
                         {
                             data: "menu_titulo",
@@ -82,17 +74,18 @@ var PanelMenus = function () {
                         {
                             data: "menu_id",
                             title: "Acciones",
-                            "render": function (value,type,oData) {
+                            "render": function (value, type, oData) {
                                 var span = '';
                                 var menu_id = value;
-                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-orden="'+oData.menu_orden+'" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + menu_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + menu_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-orden="'+oData.menu_orden+'" data-id="' + menu_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
+                                var span = '<div class="hidden-sm hidden-xs action-buttons"><a class="blue btn-detalle" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-search-plus bigger-130"></i></a><a class="green btn-editar" href="#" data-id="' + menu_id + '"><i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="red btn-eliminar" href="#" data-orden="' + oData.menu_orden + '" data-id="' + menu_id + '"><i class="ace-icon fa fa-trash-o bigger-130"></i></a></div><div class="hidden-md hidden-lg" ><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>   </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-info btn-detalle" data-id="' + menu_id + '" data-rel="tooltip" title="View"><span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span></a></li><li><a href="#" class="tooltip-success btn-editar" data-id="' + menu_id + '" data-rel="tooltip" title="Edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li><li><a href="#" class="tooltip-error btn-eliminar" data-orden="' + oData.menu_orden + '" data-id="' + menu_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a>            </li></ul></div></div>';
                                 return span;
                             }
                         }
 
                     ]
-                })
-                _rowReordering();
+                });
+                PanelMenus.init_ordenar();
+                //_rowReordering();
             }
         });
     };
@@ -117,6 +110,7 @@ var PanelMenus = function () {
 
             $("#modalFormulario").modal("show");
         });
+
         $(document).on('click', ".btn-guardar", function (e) {
             $("#form_menus").submit();
             if (_objetoForm_form_menus.valid()) {
@@ -142,6 +136,7 @@ var PanelMenus = function () {
                 })
             }
         })
+
         $(document).on("click", ".btn-detalle", function () {
             var menu_id = $(this).data("id");
             console.log(menu_id);
@@ -209,7 +204,6 @@ var PanelMenus = function () {
                 }
             })
         })
-
 
         $(document).on("click", ".btn-eliminar", function (e) {
             var menu_id = $(this).data("id");
@@ -284,9 +278,7 @@ var PanelMenus = function () {
                 })
             }
 
-        });
-       
-
+        });  
        
     };
 
@@ -319,6 +311,24 @@ var PanelMenus = function () {
         });
 
     };
+
+    var _ordenar = function () {
+        _objetoDatatable_datatable_menulistado.on('row-reorder', function (e, diff, edit) {
+            var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
+
+            for (var i = 0, ien = diff.length; i < ien; i++) {
+                var rowData = _objetoDatatable_datatable_menulistado.row(diff[i].node).data();
+
+                result += rowData[1] + ' updated to be in position ' +
+                    diff[i].newData + ' (was ' + diff[i].oldData + ')<br>';
+            }
+
+            $('#result').html('Event result:<br>' + result);
+        });
+
+    };
+
+
     var _rowReordering = function () {
         if ($.fn.DataTable.isDataTable("#menusListado")) {
             $("#menusListado").DataTable().destroy();
@@ -380,6 +390,9 @@ var PanelMenus = function () {
         },
         init_ListarMenus: function () {
             _ListarMenus();
+        },
+        init_ordenar: function () {
+            _ordenar();
         }
     }
 }();
