@@ -71,7 +71,7 @@
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
                         diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
-                        appendCumpleanios += '<li class="_cumple"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -1055,11 +1055,25 @@
         
         $(document).on('click', 'li._cumple', function () {
             var nombrecumpleaniero = $(this).find("h2.wtitle").html();
+            var per_id = $(this).data("id");
+            $('#fk_persona_saludada').val(per_id);
             $.pgwModal({
                 target: '#modalCumple',
                 title:'Cumpleaños de '+ nombrecumpleaniero,
                 maxWidth: 800
             });
+        });
+        $(document).on('click', '.btn_enviar_saludo', function () {
+            var filepath = $(".select_img>img").attr('src');
+            var imagen = filepath.replace(/^.*[\\\/]/, '');
+            var fk_persona_que_saluda = persona.per_id;
+            var fk_persona_saludada = $('#fk_persona_saludada').val();
+            //var mensaje = document.getElementById("mensaje").value;
+            var mensaje = $('textarea:input[name=mensaje]').val();;
+            console.log(imagen);
+            console.log(fk_persona_que_saluda);
+            console.log(fk_persona_saludada);
+            console.log(mensaje);
         });
 
         $(document).on('click', 'ul#locales li', function () {

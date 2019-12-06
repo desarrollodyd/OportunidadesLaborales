@@ -8,6 +8,8 @@
 @using System.Web.UI.WebControls
 @{
     string tipo = new JavaScriptSerializer().Serialize(ViewBag.tipo);
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
 }
 
 @section AddToHead
@@ -87,6 +89,8 @@
     <script type="text/javascript">
         menu_id = 0;
         tipo = (@Html.Raw(tipo));
+        persona = (@Html.Raw(persona));
+        usuario = (@Html.Raw(usuario));
     </script>
     <script src="~/Content/vendors/openlayers/ol.js"></script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>

@@ -78,6 +78,40 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
+        public ActionResult IntranetSaludoCumpleanioInsertarJson(IntranetSaludoCumpleanioEntidad intranetSaludoCumpleanio)
+        {
+            string errormensaje = "";
+            bool respuestaConsulta = false;
+            string mensajeConsola = "";
+            int intranetSaludoCumpleaniosInsertado=0;
+            claseError error = new claseError();
+            try
+            {
+                //envio de correo
+
+                var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioInsertarJson(intranetSaludoCumpleanio);
+                error = saludoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetSaludoCumpleaniosInsertado = saludoTupla.idIntranetSaludoCumpleanioInsertado;
+                    respuestaConsulta = true;
+                    errormensaje = "Se Guardó Correctamente";
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    errormensaje = "Error, no se Puede Insertar";
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
         public ActionResult IntranetSaludoCumpleanioEliminarJson(int sld_id)
         {
             string errormensaje = "";

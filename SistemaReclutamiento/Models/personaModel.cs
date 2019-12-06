@@ -392,6 +392,7 @@ namespace SistemaReclutamiento.Models
             claseError error = new claseError();
             List<PersonaEntidad> personaLista = new List<PersonaEntidad>();
             string consulta = @"select 
+                                    per_id,
                                     per_nombre,
                                     per_apellido_pat,
                                     per_correoelectronico,
@@ -422,6 +423,7 @@ namespace SistemaReclutamiento.Models
                             {
                                 var persona = new PersonaEntidad
                                 {
+                                    per_id = ManejoNulos.ManageNullInteger(dr["per_id"]),
                                     per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
                                     per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
                                     per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]),

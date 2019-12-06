@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public DateTime sld_fecha_envio { get; set; }
         public int fk_persona_que_saluda { get; set; }
         public int fk_persona_saludada { get; set; }
+        public string sld_avatar { get; set; }
         //nombres
         public string per_saluda{ get; set; }
         public string apelpat_per_saluda { get; set; }

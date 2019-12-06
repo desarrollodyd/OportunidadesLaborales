@@ -5,7 +5,7 @@
     string nombre = "";
     if (Session["usu_full"] == null || Session["per_full"] == null)
     {
-        Response.Redirect("/IntranetPJ/IntranetLogin");
+        Response.Redirect("/IntranetPJ/Login");
     }
     else
     {
@@ -347,6 +347,7 @@
                     <h1>Este 1ro de Octubre celebraremos el cumpleaños de nuestro colaborador Mario sega, acompáñanos a celebrarlo y saludarlo.</h1>
                 </header>
                 <article>
+                    <input type="hidden" name="fk_persona_saludada" id="fk_persona_saludada" value="" />
                     <p>
                         <strong>Àrea:</strong> Alimentos y Bebidas<br />
                         <strong>Puesto:</strong> Coordinador de Alimentos y Bebidas<br />
@@ -354,23 +355,22 @@
                     </p>
 
                     <div class="commentform" style="padding-left:20px;padding-right:20px;">
-                        <strong style="margin-bottom:8px;float:left;width:100%">Enviale un Saludo :</strong>
-                        <div style="width: 100%;height: 30px;clear: both;">
-                            <div class="img_face select_img" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/serio.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/labios.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/lentes.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/sonriente.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/sonrisa.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/guinio.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/mono.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/dientes.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/diablo.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/barba.png" /></div>
-                            <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/angel.png" /></div>
-                        </div>
-                       
-                        <textarea rows="4" style="width:100%;margin-top:5px;"> </textarea>
-                        <button type="button" class="radius alert button">ENVIAR SALUDO</button>
+                            <strong style="margin-bottom:8px;float:left;width:100%">Enviale un Saludo :</strong>
+                            <div style="width: 100%;height: 30px;clear: both;">
+                                <div class="img_face select_img" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/serio.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/labios.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/lentes.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/sonriente.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/sonrisa.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/guinio.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/mono.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/dientes.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/diablo.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/barba.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/angel.png" /></div>
+                            </div>
+                            <textarea rows="4" id="mensaje" name="mensaje" style="width:100%;margin-top:5px;"> </textarea>
+                        <button type="button" class="radius alert button btn_enviar_saludo">ENVIAR SALUDO</button>
                     </div>
                     <div class="clear"></div>
                 </article>
@@ -415,7 +415,7 @@
                     var resp = response.respuesta;
                     var msj = response.mensaje;
                     if (resp) {
-                        window.location.replace(basePath + "IntranetPJ/IntranetLogin");
+                        window.location.replace(basePath + "IntranetPJ/Login");
                     } else {
                         alert(msj);
                     }

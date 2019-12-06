@@ -8,7 +8,7 @@
             if (_objetoForm_frmLogin.valid()) {
                 var dataForm = $('#login-form').serializeFormJSON();
                 responseSimple({
-                    url: "IntranetPjAdmin/IntranetPJSGCValidarLoginJson",
+                    url: "IntranetPJAdmin/IntranetPJAdminValidarCredencialesJson",
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
