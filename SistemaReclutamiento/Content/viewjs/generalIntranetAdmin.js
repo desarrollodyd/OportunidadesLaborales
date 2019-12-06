@@ -660,6 +660,7 @@ function simpleDataTable(obj) {
         "autoWidth": false,
         "bProcessing": true,
         "bDeferRender": true,
+        "responsive": true,
         "paging": opciones.tablePaging,
         "ordering": opciones.tableOrdering,
         "info": opciones.tableInfo,

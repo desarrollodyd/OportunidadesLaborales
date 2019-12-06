@@ -18,12 +18,19 @@ var PanelMenus = function () {
                     table: "#menusListado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
-                    tableHeaderCheckIndex: 0,
-                    rowReorder: true,
-                    columnDefs: [
-                        { orderable: true, targets: [0, 1, 2, 3, 4, 5] }
-                    ],
+                    tableHeaderCheckIndex: 1,
+                    rowReorder: {
+                        selector: 'tr'
+                    },
+
                     tableColumns: [
+                        {
+                            data: "menu_orden",
+                            title: "Orden",
+                            className: 'reorder',
+                            name: "menu_orden",
+                            visible: false
+                        },
                         {
                             data: "menu_id",
                             title: "",
@@ -38,6 +45,7 @@ var PanelMenus = function () {
                         {
                             data: "menu_id",
                             title: "ID",
+                            "bSortable": false,
                         },
                         {
                             data: "menu_orden",
@@ -47,15 +55,18 @@ var PanelMenus = function () {
                         },
                         {
                             data: "menu_titulo",
-                            title: "Titulo"
+                            title: "Titulo",
+                            "bSortable": false,
                         },
                         {
                             data: "menu_url",
-                            title: "URI"
+                            title: "URI",
+                            "bSortable": false,
                         },
                         {
                             data: "menu_estado",
                             title: "Estado",
+                            "bSortable": false,
                             "render": function (value) {
                                 var estado = value;
                                 var mensaje_estado = "";
@@ -74,6 +85,7 @@ var PanelMenus = function () {
                         {
                             data: "menu_id",
                             title: "Acciones",
+                            "bSortable": false,
                             "render": function (value, type, oData) {
                                 var span = '';
                                 var menu_id = value;
@@ -314,6 +326,7 @@ var PanelMenus = function () {
 
     var _ordenar = function () {
         _objetoDatatable_datatable_menulistado.on('row-reorder', function (e, diff, edit) {
+            console.log(edit)
             var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
 
             for (var i = 0, ien = diff.length; i < ien; i++) {
@@ -338,7 +351,7 @@ var PanelMenus = function () {
                 selector:'tr>td:nth-child(2),tr>td:nth-child(3), tr>td:nth-child(4)'
             },
             columnDefs: [
-                { orderable: true, className: 'reorder', targets: [0,1],visible:false },
+                { orderable: true, className: 'reorder', targets: [0],visible:false },
                 { orderable: false, targets: '_all' }
             ],
         });

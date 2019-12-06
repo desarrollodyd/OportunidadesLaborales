@@ -522,7 +522,7 @@ pre.prettyprint {
 }
 
 .red {
-    color: #DD5A43 !important
+    color: #ec2a08 !important
 }
 
 .red2 {
@@ -14224,7 +14224,7 @@ tr.detail-row {
 }
 
 .login-layout {
-    background-color: #1D2024
+    background-color: #000000
 }
 
     .login-layout .main-container:before {
@@ -22928,6 +22928,43 @@ input.typeahead.scrollable ~ .tt-menu {
     background-color: #0e0e0e;
 }
 
+
+/*////////////////////////////////////////////changes*/
+
 table tbody tr:hover {
     cursor: move;
+}
+
+
+
+.login-layout .widget-box .widget-main {
+    background: #ffffff;
+}
+
+.login-box .toolbar {
+    background: #da2a2a;
+    border-top: 2px solid #da2a2a;
+    min-height: 36px;
+}
+
+.black {
+    color: #000000 !important;
+}
+
+.header {
+    border-bottom: 1px solid #000;
+}
+
+.login-layout .widget-box {
+    background-color: #da2a2a;
+}
+
+@media only screen and (max-width: 540px) {
+    .login-layout .widget-box {
+        padding: 6px;
+    }
+}
+
+label {
+    display: inline;
 }
