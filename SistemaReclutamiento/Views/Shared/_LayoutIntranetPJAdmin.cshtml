@@ -1,11 +1,11 @@
-﻿@*@using SistemaReclutamiento.Models;
+﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @using SistemaReclutamiento.Utilitarios;
 @{
     string nombre = "";
     if (Session["usu_full"] == null || Session["per_full"] == null)
     {
-        Response.Redirect("/IntranetPjAdmin/IntranetLogin");
+        Response.Redirect("/IntranetPJAdmin/Login");
     }
     else
     {
@@ -13,7 +13,7 @@
         PersonaEntidad persona = (PersonaEntidad)Session["per_full"];
         nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
     }
-}*@
+}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,7 +93,8 @@
                             <img class="nav-user-photo" src="~/Content/intranetSGC/assets/images/avatars/user.jpg" alt="Jason's Photo" />
                             <span class="user-info">
                                 <small>Bienvenido,</small>
-                                Administrador
+                                @*Administrador*@
+                                @nombre
                             </span>
 
                             <i class="ace-icon fa fa-caret-down"></i>
@@ -110,7 +111,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="#">
+                                <a href="#" id="btnCerrarSesion">
                                     <i class="ace-icon fa fa-power-off"></i>
                                     Salir
                                 </a>
@@ -248,6 +249,23 @@
     <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
+    <script>
+        $("#btnCerrarSesion").click(function () {
+            $.ajax({
+                type: 'POST',
+                url: basePath + "IntranetPJAdmin/IntranetPJAdminCerrarSesionLoginJson",
+                success: function (response) {
+                    var resp = response.respuesta;
+                    var msj = response.mensaje;
+                    if (resp) {
+                        window.location.replace(basePath + "IntranetPJAdmin/Login");
+                    } else {
+                        alert(msj);
+                    }
+                }
+            });
+        });
+    </script>
     @RenderSection("js", required: false)
 
 </body>

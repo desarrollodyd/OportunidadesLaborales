@@ -372,7 +372,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             }
             return Json(new { data=intranetLocalLista.ToList(),respuesta=response,mensaje=errormensaje});
         }
-        public ActionResult IntranetLogin() {
+        public ActionResult Login() {
             return View("~/Views/IntranetPJ/IntranetPJLogin.cshtml");
         }
         [HttpPost]

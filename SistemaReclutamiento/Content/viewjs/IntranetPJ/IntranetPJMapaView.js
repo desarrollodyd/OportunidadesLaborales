@@ -1,4 +1,5 @@
 ﻿var MapaVista = function () {
+    var map = '';
     var _crearMapa = function (puntos) {
         $("#map").html("");
         var centro = (puntos.length > 0) ?
@@ -6,7 +7,7 @@
             :
             { longitud: -77.0282400, latitud: -12.0431800 };
         //El centro sera el primer elemento del array, en caso este vacio sera un punto de LIMA
-        var map = new ol.Map({
+        map = new ol.Map({
             target: 'map',
             layers: [
                 new ol.layer.Tile({
@@ -17,7 +18,7 @@
                 projection: "EPSG:4326",
                 //center: [parseFloat(response.data[0].loc_longitud), parseFloat(response.data[0].loc_latitud)],
                 center: [centro.longitud, centro.latitud],
-                zoom: 14,
+                zoom: 16,
                 minzoom: 1,
                 maxzoom: 18
             })
@@ -60,7 +61,7 @@
                     var span = '';
                     $("#span_total_puntos").html(puntos.length);
                     $.each(puntos, function (index, value) {
-                        span += '<li><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                        span += '<li class="cambiarCentro" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
                     })
                     $("#resultados").html(span);
                 }
@@ -86,7 +87,7 @@
                             var span = '';
                             $("#span_total_puntos").html(puntos.length);
                             $.each(puntos, function (index, value) {
-                                span += '<li><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                                span += '<li class="centro" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
                             })
                             $("#resultados").html(span);
                         }
@@ -102,6 +103,20 @@
 
         $(document).on("click", "#btn_hide_show", function () {
             $('#scroll').toggle('slow');
+        });
+        $(document).on("click", ".cambiarCentro", function () {
+            var latitud = $(this).data("latitud");
+            var longitud = $(this).data("longitud");
+          
+            map.setView(new ol.View({
+                projection: "EPSG:4326",
+                //center: [parseFloat(response.data[0].loc_longitud), parseFloat(response.data[0].loc_latitud)],
+                center: [longitud, latitud],
+                zoom: 16,
+                minzoom: 1,
+                maxzoom: 18
+            }));
+            //map.getView().setCenter(ol.proj.transform([longitud, latitud], 'EPSG:4326', 'EPSG:3857'));
         });
     };
     var _metodos = function () {

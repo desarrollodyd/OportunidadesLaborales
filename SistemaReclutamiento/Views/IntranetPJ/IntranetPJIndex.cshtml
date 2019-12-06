@@ -9,6 +9,8 @@
 @using System.Web.UI.WebControls
 @{
     String menu_id = new JavaScriptSerializer().Serialize(ViewBag.menu_id);
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
 }
 
 @*<section id="singlepost">
@@ -149,7 +151,9 @@
 @section js
 {
     <script type="text/javascript">
-    menu_id = (@Html.Raw(menu_id));
+        menu_id = (@Html.Raw(menu_id));
+        persona = (@Html.Raw(persona));
+        usuario = (@Html.Raw(usuario));
     </script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
 }

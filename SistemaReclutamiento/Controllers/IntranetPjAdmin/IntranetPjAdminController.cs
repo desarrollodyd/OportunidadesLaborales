@@ -64,12 +64,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return View("~/Views/IntranetPJAdmin/IntranetPJSecciones.cshtml");
         }
         #region Region Acceso a Mantenimiento Intranet PJ
-        public ActionResult IntranetSGCLogin()
+        public ActionResult Login()
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJAdminLogin.cshtml");
         }
         [HttpPost]
-        public ActionResult IntranetPJSGCValidarLoginJson(string usu_login, string usu_password)
+        public ActionResult IntranetPJAdminValidarCredencialesJson(string usu_login, string usu_password)
         {
             bool respuesta = false;
             string errormensaje = "";
@@ -129,6 +129,23 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
             return Json(new { mensajeconsola = mensajeConsola, respuesta = respuesta, mensaje = errormensaje, estado = pendiente/*, usuario=usuario*/ });
         }
-    #endregion
+        [HttpPost]
+        public ActionResult IntranetPJAdminCerrarSesionLoginJson()
+        {
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            try
+            {
+                Session["usu_full"] = null;
+                Session["per_full"] = null;
+                respuestaConsulta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        #endregion
     }
 }

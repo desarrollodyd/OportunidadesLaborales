@@ -174,8 +174,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetSaludoCumpleanioInsertado = 0;
             string consulta = @"
                             INSERT INTO intranet.int_saludos_cumpleanio(
-	                        sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona_que_saluda,fk_personsa_saludada)
-	                        VALUES ( @p0, @p1, @p2, @p3,@p4);
+	                        sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona_que_saluda,fk_personsa_saludada,sld_avatar)
+	                        VALUES ( @p0, @p1, @p2, @p3,@p4,@p5);
                             returning sld_id;";
             claseError error = new claseError();
             try
@@ -189,6 +189,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(intranetSaludoCumpleanio.sld_fecha_envio));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetSaludoCumpleanio.fk_persona_que_saluda));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(intranetSaludoCumpleanio.fk_persona_saludada));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetSaludoCumpleanio.sld_avatar));
                     idIntranetSaludoCumpleanioInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
