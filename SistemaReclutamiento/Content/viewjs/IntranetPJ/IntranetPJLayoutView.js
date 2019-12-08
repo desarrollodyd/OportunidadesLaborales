@@ -45,14 +45,14 @@
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
                 }
-                //console.log(dataSaludos)
+                console.log(dataSaludos)
                 if (dataSaludos.length > 0) {
                     $("#saludos_li").html("");
                     var appendSaludos = "";
                     $.each(dataSaludos, function (index, saludo) {
                         appendSaludos += '<li>'+
                             '<div class="cthumb">'+
-                            '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/barba.png" alt=""></a>'+
+                            '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/' + saludo.sld_avatar+'" alt=""></a>'+
                             '</div>'+
                             '<div class="dcomment">'+
                             '<a href="#"><span style="font-size:11px;">De:</span> ' + saludo.per_saluda + ' ' + saludo.apelpat_per_saluda + ', <span style="font-size:11px;">Para:</span> ' + saludo.per_saludada + ' ' + saludo.apelpat_per_saludada +',<br> <span style="font-size:11px;">Mensaje: </span>' + saludo.sld_cuerpo + '</a>' +

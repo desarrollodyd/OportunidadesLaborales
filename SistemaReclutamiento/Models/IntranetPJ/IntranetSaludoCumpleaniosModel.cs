@@ -76,7 +76,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             List<IntranetSaludoCumpleanioEntidad> lista = new List<IntranetSaludoCumpleanioEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT sal.sld_id, sal.sld_cuerpo, sal.sld_estado, sal.sld_fecha_envio, 
+            string consulta = @"SELECT sal.sld_id, sal.sld_cuerpo, sal.sld_estado, sal.sld_fecha_envio,sal.sld_avatar, 
 		                        per.per_nombre as per_saluda, per.per_apellido_pat as apelpat_per_saluda, per.per_apellido_mat as apelmat_per_saluda,
 		                        per2.per_nombre as per_saludada, per2.per_apellido_pat as apelpat_per_saludada,per2.per_apellido_mat as apelmat_per_saludada
 	                            FROM intranet.int_saludos_cumpleanio as sal join marketing.cpj_persona as per
@@ -110,6 +110,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     per_saludada = ManejoNulos.ManageNullStr(dr["per_saludada"]),
                                     apelpat_per_saludada = ManejoNulos.ManageNullStr(dr["apelpat_per_saludada"]),
                                     apelmat_per_saludada = ManejoNulos.ManageNullStr(dr["apelmat_per_saludada"]),
+                                    sld_avatar = ManejoNulos.ManageNullStr(dr["sld_avatar"]),
                                 };
 
                                 lista.Add(SaludoCumpleanio);

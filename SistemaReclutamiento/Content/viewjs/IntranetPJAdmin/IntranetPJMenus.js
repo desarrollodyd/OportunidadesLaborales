@@ -5,9 +5,7 @@ var PanelMenus = function () {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
             return;
         }
-        //if ($.fn.DataTable.isDataTable("#menusListado")) {
-        //    $("#menusListado").DataTable().clear();
-        //}
+
         responseSimple({
             url: "IntranetMenu/IntranetMenuListarTodoJson",
             refresh: false,
@@ -20,9 +18,9 @@ var PanelMenus = function () {
                     tableHeaderCheck: true,
                     tableHeaderCheckIndex: 1,
                     rowReorder: {
-                        selector: 'tr'
+                        selector: 'td.reorder',
+                        dataSrc: 'menu_orden',
                     },
-
                     tableColumns: [
                         {
                             data: "menu_orden",
@@ -40,28 +38,34 @@ var PanelMenus = function () {
                                 var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
                                 return check;
                             },
-                            width: "100px",
+                            width: "50px",
                         },
                         {
                             data: "menu_id",
                             title: "ID",
                             "bSortable": false,
+                            className: 'reorder',
+                            visible: true,
+                            width: "50px",
                         },
                         {
                             data: "menu_orden",
                             title: "Orden",
                             name: "menu_orden",
-
+                            className: 'reorder',
+                            width: "80px",
                         },
                         {
                             data: "menu_titulo",
                             title: "Titulo",
                             "bSortable": false,
+                            className: 'reorder align-left',
                         },
                         {
                             data: "menu_url",
                             title: "URI",
                             "bSortable": false,
+                            className: 'reorder',
                         },
                         {
                             data: "menu_estado",
@@ -97,7 +101,6 @@ var PanelMenus = function () {
                     ]
                 });
                 PanelMenus.init_ordenar();
-                //_rowReordering();
             }
         });
     };
@@ -127,8 +130,15 @@ var PanelMenus = function () {
             $("#form_menus").submit();
             if (_objetoForm_form_menus.valid()) {
                 var dataForm = $('#form_menus').serializeFormJSON();
+                var url = "";
+                if ($("#menu_id").val() == 0) {
+                    url = "IntranetMenu/IntranetMenuNuevoJson";
+                }
+                else {
+                    url = "IntranetMenu/IntranetMenuEditarJson";
+                }
                 responseSimple({
-                    url: "IntranetMenu/IntranetMenuGuardarJson",
+                    url: url,
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
@@ -219,9 +229,6 @@ var PanelMenus = function () {
 
         $(document).on("click", ".btn-eliminar", function (e) {
             var menu_id = $(this).data("id");
-            var menu_orden = $(this).data("orden");
-            var celda = $("tr>td:nth-child(2)");
-            console.log(celda);
             if (menu_id != "" || menu_id > 0) {
                 messageConfirmation({
                     content: '¿Esta seguro de ELIMINAR este Menú?',
@@ -229,12 +236,12 @@ var PanelMenus = function () {
                         responseSimple({
                             url: "IntranetMenu/IntranetMenuEliminarJson",
                             data: JSON.stringify({
-                                menu_id: menu_id,
-                                menu_orden:menu_orden
+                                menu_id: menu_id
                             }),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                refresh(true);
+                                //refresh(true);
+                                PanelMenus.init_ListarMenus();
                             }
                         });
                     }
@@ -277,7 +284,8 @@ var PanelMenus = function () {
                             data: JSON.stringify(dataForm),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                refresh(true);
+                                //refresh(true);
+                                PanelMenus.init_ListarMenus();
                             }
                         })
                     }
@@ -325,50 +333,24 @@ var PanelMenus = function () {
     };
 
     var _ordenar = function () {
+        _objetoDatatable_datatable_menulistado.off('row-reorder');
         _objetoDatatable_datatable_menulistado.on('row-reorder', function (e, diff, edit) {
-            console.log(edit)
-            var result = 'Reorder started on row: ' + edit.triggerRow.data()[1] + '<br>';
-
+            //console.log(edit.triggerRow.data().menu_titulo)
+            let arrayOrdenesMenus = [];
+            var result = '<div style="font-size:12px">Cambio empezo con: <strong>' + edit.triggerRow.data().menu_titulo + '</strong><br></div>';
+            console.log(diff.length);
             for (var i = 0, ien = diff.length; i < ien; i++) {
                 var rowData = _objetoDatatable_datatable_menulistado.row(diff[i].node).data();
-
-                result += rowData[1] + ' updated to be in position ' +
-                    diff[i].newData + ' (was ' + diff[i].oldData + ')<br>';
-            }
-
-            $('#result').html('Event result:<br>' + result);
-        });
-
-    };
-
-
-    var _rowReordering = function () {
-        if ($.fn.DataTable.isDataTable("#menusListado")) {
-            $("#menusListado").DataTable().destroy();
-        }
-        var table = $("#menusListado").DataTable({
-            rowReorder: {
-                selector:'tr>td:nth-child(2),tr>td:nth-child(3), tr>td:nth-child(4)'
-            },
-            columnDefs: [
-                { orderable: true, className: 'reorder', targets: [0],visible:false },
-                { orderable: false, targets: '_all' }
-            ],
-        });
-        table
-            .order([[4, 'asc']])
-            .draw(false);
-        table.on('row-reorder', function (e, diff, edit) {
-            block_general("body");
-            let arrayOrdenesMenus = [];
-            for (var i = 0, ien = diff.length; i < ien; i++) {
-                var rowData = table.row(diff[i].node).data();
+                //console.log(rowData.menu_id + "-" + diff[i].newData);
                 var obj = {
                     menu_orden: diff[i].newData,
-                    menu_id: rowData[1]
+                    menu_id: rowData.menu_id
                 };
                 arrayOrdenesMenus.push(obj);
+                result += '<div style="font-size:12px"><strong>'+rowData.menu_titulo + '</strong> Pos. Actual: ' +
+                    diff[i].newData + ' (Desde Pos. ' + diff[i].oldData + ')<br></div>';
             }
+
             var dataform = {
                 arrayMenus: arrayOrdenesMenus,
             }
@@ -378,17 +360,19 @@ var PanelMenus = function () {
                     data: JSON.stringify(dataform),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        refresh(true);
-                        //PanelMenus.init_ListarMenus();
-                        //CloseMessages();
-                        //unblock("body");
+                        if (response.respuesta) {
+                            messageResponse({
+                                text: result,
+                                type: "warning"
+                            });
+                        }
+                       
                     }
                 })
             }
-            else {
-                unblock("body");
-            }
+            
         });
+
     };
 
     //

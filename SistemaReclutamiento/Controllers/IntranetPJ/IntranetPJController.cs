@@ -398,6 +398,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         {
                             if (usuario.usu_tipo == "EMPLEADO")
                             {
+                                var contrasenia = Seguridad.EncriptarSHA512(usu_password.Trim());
                                 if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
                                 {
                                     Session["usu_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
@@ -405,6 +406,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                     Session["per_full"] = persona;
                                     respuesta = true;
                                     errormensaje = "Bienvenido, " + usuario.usu_nombre;
+                                }
+                                else{
+                                    errormensaje = "Contraseña no Coincide";
                                 }
                             }
                             else
