@@ -34,6 +34,7 @@
                             data: "act_id",
                             title: "ID",
                             width: "70px",
+                            className: 'align-center',
                         },
                         {
                             data: "act_descripcion",

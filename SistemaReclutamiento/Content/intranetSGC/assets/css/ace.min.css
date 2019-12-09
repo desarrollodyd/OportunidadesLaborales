@@ -22931,7 +22931,7 @@ input.typeahead.scrollable ~ .tt-menu {
 
 /*////////////////////////////////////////////changes*/
 
-table tbody tr:hover {
+table tbody tr>td.reorder:hover {
     cursor: move;
 }
 

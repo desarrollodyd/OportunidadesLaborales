@@ -5,9 +5,11 @@ using SistemaReclutamiento.Models.IntranetPJ;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
@@ -28,6 +30,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
         UsuarioModel usuariobl = new UsuarioModel();
         // GET: IntranetPJ
+
+        RutaImagenes rutaImagenes = new RutaImagenes();
+        string PathActividadesIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         public ActionResult Index(int? menu)
         {
             claseError error = new claseError();
@@ -69,6 +74,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             //listar menus, cumpleaños, actividades, informacion de la Empresa, comentarios y Seccion PJ NEWS para el layout
             List<IntranetSeccionEntidad> intranetSeccion = new List<IntranetSeccionEntidad>();
             List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
+            List<IntranetActividadesEntidad> intranetActividades_ = new List<IntranetActividadesEntidad>();
             List<IntranetActividadesEntidad> intranetActividades = new List<IntranetActividadesEntidad>();
             List<IntranetSaludoCumpleanioEntidad> intraSaludos = new List<IntranetSaludoCumpleanioEntidad>();
 
@@ -117,11 +123,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 error = actividadesTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    intranetActividades = actividadesTupla.intranetActividadesLista;
-                    if (intranetActividades.Count > 0)
+                    intranetActividades_ = actividadesTupla.intranetActividadesLista;
+                    if (intranetActividades_.Count > 0)
                     {
-                        foreach (var m in intranetActividades)
+                        foreach (var m in intranetActividades_)
                         {
+                            if (m.act_imagen != "")
+                            {
+                                m.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\Actividades\\", m.act_imagen);
+                            }
+                            
+                            intranetActividades.Add(m);
                             listaNoticias.Add(Tuple.Create( m.act_fecha,  m.act_descripcion, "Actividad: "));
                         }
                     }
@@ -184,6 +196,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                         //detalle elementos
                                         foreach (var itemDetalleElemento in intranetDetElementos)
                                         {
+                                            if (itemDetalleElemento.detel_nombre != "")
+                                            {
+                                                itemDetalleElemento.detel_nombre  = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElemento.detel_nombre+"."+ itemDetalleElemento.detel_extension);
+                                            }
+
                                             var seccion_elemento = new List<dynamic>();
                                             if (itemDetalleElemento.fk_seccion_elemento>0)
                                             {
@@ -209,13 +226,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                             {
                                                                 foreach (var itemDetalleElementosModal in intranetDetElementoModal)
                                                                 {
+                                                                    if (itemDetalleElementosModal.detelm_nombre != "")
+                                                                    {
+                                                                        itemDetalleElementosModal.detelm_nombre = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElementosModal.detelm_nombre + "." + itemDetalleElementosModal.detelm_extension);
+                                                                    }
                                                                     ListaDetalleElementoModal.Add(new
                                                                     {
                                                                         itemDetalleElementosModal.detelm_id,
                                                                         itemDetalleElementosModal.detelm_descripcion,
                                                                         itemDetalleElementosModal.detelm_nombre,
-                                                                        itemDetalleElementosModal.detelm_extension,
-                                                                        itemDetalleElementosModal.detelm_ubicacion,
                                                                         itemDetalleElementosModal.fk_elemento_modal,
                                                                         itemDetalleElementosModal.detelm_orden,
                                                                         itemDetalleElementosModal.detelm_posicion,
@@ -248,8 +267,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                 itemDetalleElemento.detel_id,
                                                 itemDetalleElemento.detel_descripcion,
                                                 itemDetalleElemento.detel_nombre,
-                                                itemDetalleElemento.detel_extension,
-                                                itemDetalleElemento.detel_ubicacion,
                                                 itemDetalleElemento.fk_elemento,
                                                 itemDetalleElemento.fk_seccion_elemento,
                                                 itemDetalleElemento.detel_orden,
@@ -303,20 +320,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 mensaje = ex.Message;
                 respuesta = false;
             }
-            return Json(
-                new {
-                    dataMenus = intranetMenu.ToList(),
-                    dataActividades = intranetActividades.ToList(),
-                    dataCumpleanios = listaPersona,
-                    dataSaludos = intraSaludos.ToList(),
-                    respuesta = respuesta,
-                    mensaje = mensaje,
-                    listaNoticias = listaNoticiasDesordenado,
-                    dataSecciones = ListaSeccion.ToList(),
-                    mensajeerrorBD = mensajeerrorBD,
-                    cantidadSalas=cantidadSalas,
-                    cantidadApuestasDeportivas=cantidadApuestasDeportivas
-                });
+
+
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var resultData = new
+            {
+                dataMenus = intranetMenu.ToList(),
+                dataActividades = intranetActividades.ToList(),
+                dataCumpleanios = listaPersona,
+                dataSaludos = intraSaludos.ToList(),
+                respuesta = respuesta,
+                mensaje = mensaje,
+                listaNoticias = listaNoticiasDesordenado,
+                dataSecciones = ListaSeccion.ToList(),
+                mensajeerrorBD = mensajeerrorBD,
+                cantidadSalas = cantidadSalas,
+                cantidadApuestasDeportivas = cantidadApuestasDeportivas
+            };
+            var result = new ContentResult
+            {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return result;
+
         }
 
         public ActionResult Mapa(string tipo)

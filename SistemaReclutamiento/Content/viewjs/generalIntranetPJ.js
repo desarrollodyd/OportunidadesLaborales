@@ -2,26 +2,26 @@
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {
         messageResponse({
-            message: errorThrow,
+            text: errorThrow,
             type: "error"
         });
     },
     statusCode: {
         404: function () {
             messageResponse({
-                message: "No Se encuentra la Direccion.(404)",
+                text: "No Se encuentra la Direccion.(404)",
                 type: "error"
             });
         },
         405: function () {
             messageResponse({
-                message: "Metodo no Permitido.(GET,POST,PUT,DELETE)(405)",
+                text: "Metodo no Permitido.(GET,POST,PUT,DELETE)(405)",
                 type: "error"
             });
         },
         500: function () {
             messageResponse({
-                message: "Error Interno.(500)",
+                text: "Error Interno.(500)",
                 type: "error"
             });
         }
