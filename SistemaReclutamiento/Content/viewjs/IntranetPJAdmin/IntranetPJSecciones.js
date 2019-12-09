@@ -168,7 +168,6 @@
         });
 
         $(document).on('click', ".btn-guardar", function (e) {
-            console.log("click");
             $("#form_secciones").submit();
             if (_objetoForm_form_secciones.valid()) {
                 var dataForm = $('#form_secciones').serializeFormJSON();
@@ -305,6 +304,7 @@ function MostrarDetalle(row) {
     var table = '';
     if (row.length > 0) {
         table += '<table class="table table-bordered table-sm"><tr class="thead-dark">';
+        table += '<th>Detalle</th>';
         table += '<th>ID</th>';
         table += '<th>titulo</th>';
         table += '<th>Estado</th>';
@@ -313,7 +313,8 @@ function MostrarDetalle(row) {
         table += '<th>Acciones</th></tr>';
         $.each(row, function (index, value) {
             console.log(value);
-            table += '<tr><td>' + value.elem_id + '</td>';
+            table += '<tr><td>' + '<a href="#" class="tooltip-info detalle-elemento" data-id="' + value.elem_id + '" data-rel="tooltip"title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+            table += '<td>' + value.elem_id + '</td>';
             table += '<td>' + value.elem_titulo + '</td>';
             table += '<td>' + (value.elem_estado=='A'?'Activo':'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';

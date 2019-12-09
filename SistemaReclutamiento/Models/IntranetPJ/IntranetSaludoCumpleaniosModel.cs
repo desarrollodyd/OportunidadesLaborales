@@ -175,8 +175,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetSaludoCumpleanioInsertado = 0;
             string consulta = @"
                             INSERT INTO intranet.int_saludos_cumpleanio(
-	                        sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona_que_saluda,fk_personsa_saludada,sld_avatar)
-	                        VALUES ( @p0, @p1, @p2, @p3,@p4,@p5);
+	                        sld_cuerpo, sld_estado, sld_fecha_envio, fk_persona_que_saluda,fk_persona_saludada,sld_avatar)
+	                        VALUES ( @p0, @p1, @p2, @p3,@p4,@p5)
                             returning sld_id;";
             claseError error = new claseError();
             try

@@ -42,6 +42,7 @@
                         appendMenuPrincipal += '<li class="' + clase + '"><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id+'" data-id="' + menu.menu_id + '" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
                         //noticia.push(menu.menu_titulo)
                     });
+                    appendMenuLateral += '<li><a href="#" class="btnCerrarSesion">Cerrar Sesion</a></li>';
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
                 }
@@ -71,7 +72,7 @@
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
                         diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
-                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -1057,24 +1058,57 @@
             var nombrecumpleaniero = $(this).find("h2.wtitle").html();
             var per_id = $(this).data("id");
             $('#fk_persona_saludada').val(per_id);
+            $("#fk_persona_que_saluda").val(persona.per_id);
+            $("#direccion_envio").val($(this).data("direccionenvio"));
             $.pgwModal({
                 target: '#modalCumple',
                 title:'Cumpleaños de '+ nombrecumpleaniero,
                 maxWidth: 800
             });
         });
+        //$(document).bind('PgwModal::Open', function () {
+        //    $(".btn_enviar_saludo").click(function () {
+        //        console.log($("#mensaje").val());
+        //    });
+        //});
         $(document).on('click', '.btn_enviar_saludo', function () {
             var filepath = $(".select_img>img").attr('src');
             var imagen = filepath.replace(/^.*[\\\/]/, '');
             var fk_persona_que_saluda = persona.per_id;
-            var fk_persona_saludada = $('#fk_persona_saludada').val();
-            //var mensaje = document.getElementById("mensaje").value;
-            var mensaje = $('textarea:input[name=mensaje]').val();;
-            console.log(imagen);
-            console.log(fk_persona_que_saluda);
-            console.log(fk_persona_saludada);
-            console.log(mensaje);
+            var fk_persona_saludada = $("#fk_persona_saludada").val();
+            var sld_cuerpo = $("#sld_cuerpo").val();
+            var direccion_envio = $("#direccion_envio").val();
+            var dataForm = {
+                sld_avatar: imagen,
+                fk_persona_que_saluda:fk_persona_que_saluda,
+                fk_persona_saludada: fk_persona_saludada,
+                sld_cuerpo: sld_cuerpo,
+                direccion_envio: direccion_envio
+            };
+            if (sld_cuerpo !== ""){
+                responseSimple({
+                    url: "IntranetSaludosCumpleanios/IntranetSaludoCumpleanioInsertarJson",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        console.log("adsasd");
+                    }
+                })
+            }
+            else {
+                messageResponse({
+                    text: "El mensaje no puede estar vacio",
+                    type: "error"
+                });
+            }
         });
+    
+        //$(document).on('keyup','#mensaje_saludo2',function (e) {
+        //    var text_length = $('#mensaje_saludo2').val();
+        //    console.log(text_length);
+        //    e.preventDefault();
+        //});
+    
 
         $(document).on('click', 'ul#locales li', function () {
             var tipo = $(this).data("tipo");
