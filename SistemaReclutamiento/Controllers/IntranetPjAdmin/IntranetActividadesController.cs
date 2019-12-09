@@ -53,6 +53,46 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
             return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
+
+        [HttpPost]
+        public ActionResult IntranetActividadesListarTodoJson()
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<IntranetActividadesEntidad> listaActividades = new List<IntranetActividadesEntidad>();
+            try
+            {
+                var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarTodoJson();
+                error = ActividadesTupla.error;
+                listaActividades = ActividadesTupla.intranetActividadesLista;
+
+                if (!Directory.Exists(PathActividadesIntranet + "/Actividades/"))
+                {
+                    Directory.CreateDirectory(PathActividadesIntranet + "/Actividades/");
+                }
+                if (error.Key.Equals(string.Empty))
+                {
+                    foreach (var m in listaActividades)
+                    {
+                        m.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Actividades/", m.act_imagen);
+                    }
+                    mensaje = "Listando Actividadess";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar las Actividadess";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
         [HttpPost]
         public ActionResult IntranetActividadesIdObtenerJson(int act_id)
         {
@@ -85,27 +125,70 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
             return Json(new { data = actividad, respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
+
         [HttpPost]
-        public ActionResult IntranetActividadesInsertarJson(IntranetActividadesEntidad intranetActividades)
+        public ActionResult IntranetActividadesNuevoJson(IntranetActividadesEntidad intranetActividad)
         {
+            HttpPostedFileBase file = Request.Files[0];
+            int tamanioMaximo = 4194304;
+            string extension = "";
+            string rutaInsertar = "";
             string mensaje = "";
             string mensajeConsola = "";
             bool respuesta = false;
-            int idIntranetActividadesInsertado = 0;
+            int idIntranetActividadInsertado = 0;
+
             try
             {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesInsertarJson(intranetActividades);
-                error = ActividadesTupla.error;
+                //IMAGEN
+                if (file.ContentLength > 0 && file != null)
+                {
+                    if (file.ContentLength <= tamanioMaximo)
+                    {
+                        extension = Path.GetExtension(file.FileName);
+                        if (extension == ".jpg" || extension == ".png")
+                        {
+                            var nombreArchivo = ("Actividad_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
+                            rutaInsertar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
+                            if (!Directory.Exists(PathActividadesIntranet + "/Actividades/"))
+                            {
+                                System.IO.Directory.CreateDirectory(PathActividadesIntranet + "/Actividades/");
+                            }
+                            file.SaveAs(rutaInsertar);
+                            intranetActividad.act_imagen = nombreArchivo;
+                        }
+                        else
+                        {
+                            mensaje = "Solo se admiten archivos jpg o png.";
+                            respuesta = false;
+                            return Json(new { respuesta = respuesta, mensaje = mensaje });
+                        }
+                    }
+                    else
+                    {
+                        mensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
+                        respuesta = false;
+                        return Json(new { respuesta = respuesta, mensaje = mensaje });
+                    }
+
+                }
+                else
+                {
+                    intranetActividad.act_imagen = "";
+                }
+
+                var actividadTupla = intranetActividadesbl.IntranetActividadesInsertarJson(intranetActividad);
+                error = actividadTupla.error;
 
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
-                    idIntranetActividadesInsertado = ActividadesTupla.idIntranetActividadesInsertado;
+                    idIntranetActividadInsertado = actividadTupla.idIntranetActividadesInsertado;
                 }
                 else
                 {
-                    mensaje = "No se Pudo insertar las Actividades";
+                    mensaje = "No se Pudo insertar la Actividad";
                     mensajeConsola = error.Value;
                 }
 
@@ -115,164 +198,59 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 mensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetActividadesInsertado = idIntranetActividadesInsertado, mensajeconsola = mensajeConsola });
+            return Json(new { respuesta = respuesta, mensaje = mensaje , mensajeconsola = mensajeConsola });
         }
         [HttpPost]
-        public ActionResult IntranetActividadesEditarJson(IntranetActividadesEntidad intranetActividades)
-        {
-            string errormensaje = "";
-            bool respuestaConsulta = false;
-            string mensajeConsola = "";
-            try
-            {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividades);
-                error = ActividadesTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    respuestaConsulta = ActividadesTupla.intranetActividadesEditado;
-                    errormensaje = "Se Editó Correctamente";
-                }
-                else
-                {
-                    mensajeConsola = error.Value;
-                    errormensaje = "Error, no se Puede Editar";
-                }
-            }
-            catch (Exception exp)
-            {
-                errormensaje = exp.Message + " ,Llame Administrador";
-            }
-
-            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
-        }
-        [HttpPost]
-        public ActionResult IntranetActividadesEliminarJson(int act_id)
-        {
-            string errormensaje = "";
-            bool respuestaConsulta = false;
-            string mensajeConsola = "";
-            IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
-            string rutaEliminar = "";
-            try
-            {
-                var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
-                error = actividadesBusquedatupla.error;
-                if (error.Key.Equals(string.Empty)) {
-                    intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
-                    if (intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
-                    {
-                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
-                        error = ActividadesTupla.error;
-                        if (error.Key.Equals(string.Empty))
-                        {
-                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                            errormensaje = "Actividades Eliminado";
-                        }
-                        else
-                        {
-                            errormensaje = "Error, no se Puede Eliminar";
-                            mensajeConsola = error.Value;
-                        }
-                    }
-                    else {
-                        //Eliminar Archivo Primero
-                        var nombreArchivo = intranetActividadesBusqueda.act_imagen;
-                        rutaEliminar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
-                        //var fullPath = Server.MapPath("~/Content/intranet/images/png/"+nombreArchivo);
-                        if (System.IO.File.Exists(rutaEliminar)) {
-                            System.IO.File.Delete(rutaEliminar);
-                        }
-                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
-                        error = ActividadesTupla.error;
-                        if (error.Key.Equals(string.Empty))
-                        {
-                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                            errormensaje = "Actividades Eliminado";
-                        }
-                        else
-                        {
-                            errormensaje = "Error, no se Puede Eliminar";
-                            mensajeConsola = error.Value;
-                        }
-                    }
-                }
-
-               
-            }
-            catch (Exception exp)
-            {
-                errormensaje = exp.Message + ",Llame Administrador";
-            }
-            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
-        }
-        [HttpPost]
-        public ActionResult IntranetActividadesListarTodoJson()
-        {
-            string mensaje = "";
-            string mensajeConsola = "";
-            bool respuesta = false;
-            List<IntranetActividadesEntidad> listaActividades = new List<IntranetActividadesEntidad>();
-            try
-            {
-                var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarTodoJson();
-                error = ActividadesTupla.error;
-                listaActividades = ActividadesTupla.intranetActividadesLista;
-               
-                if (!Directory.Exists(PathActividadesIntranet + "/Actividades/")) {
-                    Directory.CreateDirectory(PathActividadesIntranet + "/Actividades/");
-                }
-                if (error.Key.Equals(string.Empty))
-                {
-                    foreach (var m in listaActividades) {
-                        m.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Actividades/", m.act_imagen);
-                    }
-                    mensaje = "Listando Actividadess";
-                    respuesta = true;
-                }
-                else
-                {
-                    mensajeConsola = error.Value;
-                    mensaje = "No se Pudieron Listar las Actividadess";
-                }
-
-            }
-            catch (Exception exp)
-            {
-                mensaje = exp.Message + ",Llame Administrador";
-            }
-            return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
-        }
-        [HttpPost]
-        public ActionResult IntranetActividadGuardarJson(IntranetActividadesEntidad intranetActividad)
+        public ActionResult IntranetActividadesEditarJson(IntranetActividadesEntidad intranetActividad)
         {
             HttpPostedFileBase file = Request.Files[0];
-            string mensaje = "";
-            string mensajeConsola = "";
-            string accion = "";
-            bool respuesta = false;
-            int idIntranetActividadInsertado = 0;
-            claseError error = new claseError();
             int tamanioMaximo = 4194304;
             string extension = "";
             string rutaInsertar = "";
             string rutaAnterior = "";
-            //var ruta = Request.Url.Scheme + "://" + (Request.Url.Authority) + Request.ApplicationPath;
-            if (intranetActividad.act_id == 0)
+            string errormensaje = "";
+            bool respuesta = false;
+            string mensaje = "";
+            string mensajeConsola = "";
+            try
             {
-                //Insertar
-                try
+
+                if (intranetActividad.img_ubicacion == "" && intranetActividad.img_ubicacion != null)
                 {
-                    //IMAGEN
+                    intranetActividad.act_imagen = intranetActividad.img_ubicacion;
+                    var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
+                    error = actividadTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        respuesta = actividadTupla.intranetActividadesEditado;
+                        mensaje = "Se Editó la Actividad Correctamente";
+                    }
+                    else
+                    {
+                        mensajeConsola = error.Value;
+                        mensaje = "Error, no se Puede Editar";
+                    }
+                }
+                else
+                {
                     if (file.ContentLength > 0 && file != null)
                     {
-                        if (file.ContentLength <= tamanioMaximo) {
+                        if (file.ContentLength <= tamanioMaximo)
+                        {
                             extension = Path.GetExtension(file.FileName);
-                            if (extension == ".jpg" || extension == ".png") {
+                            if (extension == ".jpg" || extension == ".png")
+                            {
+
                                 var nombreArchivo = ("Actividad_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                                rutaInsertar = Path.Combine(PathActividadesIntranet + "/Actividades/",nombreArchivo);
-                                if (!Directory.Exists(PathActividadesIntranet+"/Actividades/"))
+                                rutaInsertar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
+                                rutaAnterior = Path.Combine(PathActividadesIntranet + "/Actividades/" + intranetActividad.img_ubicacion);
+                                if (!Directory.Exists(PathActividadesIntranet + "/Actividades/"))
                                 {
                                     System.IO.Directory.CreateDirectory(PathActividadesIntranet + "/Actividades/");
+                                }
+                                if (System.IO.File.Exists(rutaAnterior))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
                                 }
                                 file.SaveAs(rutaInsertar);
                                 intranetActividad.act_imagen = nombreArchivo;
@@ -290,125 +268,82 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             respuesta = false;
                             return Json(new { respuesta = respuesta, mensaje = mensaje });
                         }
-
-                    }
-                    else {
-                        intranetActividad.act_imagen = "";
-                    }
-                    var actividadTupla = intranetActividadesbl.IntranetActividadesInsertarJson(intranetActividad);
-                    error = actividadTupla.error;
-
-                    if (error.Key.Equals(string.Empty))
-                    {
-                        mensaje = "Se Registró Correctamente";
-                        respuesta = true;
-                        idIntranetActividadInsertado = actividadTupla.idIntranetActividadesInsertado;
-                        accion = "Insertado";
                     }
                     else
                     {
-                        mensaje = "No se Pudo insertar la Actividad";
+                        intranetActividad.act_imagen = intranetActividad.img_ubicacion;
+                    }
+
+                    var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
+                    error = actividadTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        respuesta = actividadTupla.intranetActividadesEditado;
+                        mensaje = "Se Editó la Actividad Correctamente";
+                    }
+                    else
+                    {
+                        mensajeConsola = error.Value;
+                        mensaje = "Error, no se Puede Editar";
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuesta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult IntranetActividadesEliminarJson(int act_id)
+        {
+            string errormensaje = "";
+            bool respuestaConsulta = false;
+            string mensajeConsola = "";
+            IntranetActividadesEntidad intranetActividadesBusqueda = new IntranetActividadesEntidad();
+            string rutaEliminar = "";
+            try
+            {
+                var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
+                error = actividadesBusquedatupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
+                    if (!intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
+                    {
+                        //Eliminar Archivo Primero
+                        var nombreArchivo = intranetActividadesBusqueda.act_imagen;
+                        rutaEliminar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
+                        //var fullPath = Server.MapPath("~/Content/intranet/images/png/"+nombreArchivo);
+                        if (System.IO.File.Exists(rutaEliminar))
+                        {
+                            System.IO.File.Delete(rutaEliminar);
+                        }
+                    }
+
+                    var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
+                    error = ActividadesTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                        errormensaje = "Actividad Eliminado";
+                    }
+                    else
+                    {
+                        errormensaje = "Error, no se Puede Eliminar";
                         mensajeConsola = error.Value;
                     }
-
-                }
-                catch (Exception exp)
-                {
-                    mensaje = exp.Message + " ,Llame Administrador";
                 }
 
             }
-            else
+            catch (Exception exp)
             {
-                //Editar
-                try
-                {
-
-                    if (intranetActividad.img_ubicacion == "" && intranetActividad.img_ubicacion!=null)
-                    {
-                        intranetActividad.act_imagen = intranetActividad.img_ubicacion;
-                        var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
-                        error = actividadTupla.error;
-                        if (error.Key.Equals(string.Empty))
-                        {
-                            respuesta = actividadTupla.intranetActividadesEditado;
-                            mensaje = "Se Editó la Actividad Correctamente";
-                            accion = "Editado";
-                        }
-                        else
-                        {
-                            mensajeConsola = error.Value;
-                            mensaje = "Error, no se Puede Editar";
-                        }
-                    }
-                    else {
-                        if (file.ContentLength > 0 && file != null)
-                        {
-                            if (file.ContentLength <= tamanioMaximo)
-                            {
-                                extension = Path.GetExtension(file.FileName);
-                                if (extension == ".jpg" || extension == ".png")
-                                {
-
-                                    var nombreArchivo = ("Actividad_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
-                                    rutaInsertar = Path.Combine(PathActividadesIntranet + "/Actividades/", nombreArchivo);
-                                    rutaAnterior = Path.Combine(PathActividadesIntranet + "/Actividades/" + intranetActividad.img_ubicacion);
-                                    if (!Directory.Exists(PathActividadesIntranet+"/Actividades/"))
-                                    {
-                                        System.IO.Directory.CreateDirectory(PathActividadesIntranet+"/Actividades/");
-                                    }
-                                    if (System.IO.File.Exists(rutaAnterior))
-                                    {
-                                            System.IO.File.Delete(rutaAnterior);
-                                    }
-                                    file.SaveAs(rutaInsertar);
-                                    intranetActividad.act_imagen = nombreArchivo;
-                                }
-                                else
-                                {
-                                    mensaje = "Solo se admiten archivos jpg o png.";
-                                    respuesta = false;
-                                    return Json(new { respuesta = respuesta, mensaje = mensaje });
-                                }
-                            }
-                            else
-                            {
-                                mensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
-                                respuesta = false;
-                                return Json(new { respuesta = respuesta, mensaje = mensaje });
-                            }
-
-                        }
-                        else
-                        {
-                            intranetActividad.act_imagen = intranetActividad.img_ubicacion;
-                        }
-                        var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
-                        error = actividadTupla.error;
-                        if (error.Key.Equals(string.Empty))
-                        {
-                            respuesta = actividadTupla.intranetActividadesEditado;
-                            mensaje = "Se Editó la Actividad Correctamente";
-                            accion = "Editado";
-                        }
-                        else
-                        {
-                            mensajeConsola = error.Value;
-                            mensaje = "Error, no se Puede Editar";
-                        }
-
-                    }
-                    
-                }
-                catch (Exception exp)
-                {
-                    mensaje = exp.Message + " ,Llame Administrador";
-                }
+                errormensaje = exp.Message + ",Llame Administrador";
             }
-
-
-            return Json(new { respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola, accion = accion });
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
+        
         [HttpPost]
         public ActionResult IntranetActividadesEliminarVariosJson(int[] listaActividadesEliminar)
         {
@@ -427,22 +362,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     if (error.Key.Equals(string.Empty))
                     {
                         intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
-                        if (intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
-                        {
-                            var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
-                            error = ActividadesTupla.error;
-                            if (error.Key.Equals(string.Empty))
-                            {
-                                respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                                errormensaje = "Actividades Eliminado";
-                            }
-                            else
-                            {
-                                errormensaje = "Error, no se Puede Eliminar";
-                                mensajeConsola = error.Value;
-                            }
-                        }
-                        else
+                        if (!intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
                         {
                             //Eliminar Archivo Primero
                             var nombreArchivo = intranetActividadesBusqueda.act_imagen;
@@ -452,22 +372,24 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             {
                                 System.IO.File.Delete(rutaEliminar);
                             }
-                            var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
-                            error = ActividadesTupla.error;
-                            if (error.Key.Equals(string.Empty))
-                            {
-                                respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
-                                errormensaje = "Actividades Eliminado";
-                            }
-                            else
-                            {
-                                errormensaje = "Error, no se Puede Eliminar";
-                                mensajeConsola = error.Value;
-                            }
                         }
+
+                        var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
+                        error = ActividadesTupla.error;
+                        if (error.Key.Equals(string.Empty))
+                        {
+                            respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
+                            errormensaje = "Actividades Eliminado";
+                        }
+                        else
+                        {
+                            errormensaje = "Error, no se Puede Eliminar";
+                            mensajeConsola = error.Value;
+                        }
+
                     }
                 }
-                respuestaConsulta = true;
+                
             }
             catch (Exception ex)
             {

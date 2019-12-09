@@ -1,27 +1,25 @@
 ﻿var basePath = $("#BasePath").val();
 $.ajaxSetup({
     error: function (xmlHttpRequest, textStatus, errorThrow) {
-        messageResponse({
-            message: errorThrow,
-            type: "error"
-        });
+        unblock("body");
+        console.error(errorThrow)
     },
     statusCode: {
         404: function () {
             messageResponse({
-                message: "No Se encuentra la Direccion.(404)",
+                text: "No Se encuentra la Direccion.(404)",
                 type: "error"
             });
         },
         405: function () {
             messageResponse({
-                message: "Metodo no Permitido.(GET,POST,PUT,DELETE)(405)",
+                text: "Metodo no Permitido.(GET,POST,PUT,DELETE)(405)",
                 type: "error"
             });
         },
         500: function () {
             messageResponse({
-                message: "Error Interno.(500)",
+                text: "Error Interno.(500)",
                 type: "error"
             });
         }
@@ -226,10 +224,7 @@ function responseSimple(obj) {
                 }
             }
         },
-        error: function (xmlHttpRequest, textStatus, errorThrow) {
-            unblock("body");
-            console.warn('Message :', errorThrow);
-        }
+
     });
 }
 
@@ -319,10 +314,6 @@ function responseFileSimple(obj) {
             };
 
         },
-        error: function (xmlHttpRequest, textStatus, errorThrow) {
-            unblock("body");
-            console.warn('Message :', xmlHttpRequest);
-        }
     });
 }
 
@@ -717,9 +708,6 @@ function simpleAjaxDataTable(obj) {
             opciones.tableColumnsData = response.data;
             simpleDataTable(opciones);
         },
-        error: function (xmlHttpRequest, textStatus, errorThrow) {
-            console.warn('Message :', xmlHttpRequest.responseJSON.message);
-        }
     });
 }
 

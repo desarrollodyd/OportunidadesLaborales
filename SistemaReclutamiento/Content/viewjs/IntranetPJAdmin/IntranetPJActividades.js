@@ -1,16 +1,8 @@
 ﻿var PanelActividades = function () {
     var hoy = new Date();
-    var fecha_hoy = moment(hoy).format('YYYY-MM-DD');
-    var _funcionCheckBox = function () {
+    var fecha_hoy = moment(hoy).format('DD-MM-YYYY hh:mm A');
 
-    }
     var _ListarActividades = function () {
-      
-        $('#myDatepicker1').datetimepicker({
-            format: 'YYYY-MM-DD',
-            ignoreReadonly: true,
-            allowInputToggle: true,
-        });
 
         if (!$().DataTable) {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
@@ -24,7 +16,7 @@
                 simpleDataTable({
                     uniform: false,
                     tableNameVariable: "actividadesListado",
-                    table: ".datatable-actividadeslistado",
+                    table: "#actividadesListado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
                     tableColumns: [
@@ -41,6 +33,7 @@
                         {
                             data: "act_id",
                             title: "ID",
+                            width: "70px",
                         },
                         {
                             data: "act_descripcion",
@@ -58,19 +51,30 @@
                                     //img += '<img src="' + basePath + 'Content/intranet/images/png/' + value + '" / style="width:50px;height:50px;">';
                                 }
                                 else {
-                                    img = '<img src="' + basePath + 'Content/intranet/images/png/actividad.png" style="width:50px;height:50px;"/>';
+                                    img = '<img src="' + basePath + 'Content/intranet/images/png/actividad.png" style="width:40px;height:40px;"/>';
                                 }
                                 return img;
                             },
-                            width:"50px",
+                            width:"80px",
                         },
                         {
                             data: "act_fecha",
-                            title: "Fecha Actividad",
+                            title: "Fecha",
                             "render": function (value) {
-                                var fecha = moment(value).format('YYYY-MM-DD');
+                                var fecha = moment(value).format('DD-MM-YYYY');
                                 return fecha;
-                            }
+                            },
+                            width: "120px",
+                        },
+
+                        {
+                            data: "act_fecha",
+                            title: "Hora",
+                            "render": function (value) {
+                                var fecha = moment(value).format('hh:mm A');
+                                return fecha;
+                            },
+                            width: "110px",
                         },
                         {
                             data: "act_estado",
@@ -108,6 +112,12 @@
     };
     var _componentes = function () {
 
+        $('#myDatepicker1').datetimepicker({
+            format: 'DD-MM-YYYY hh:mm A',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+        });
+
         $(document).on("click", "#btn_nuevo", function (e) {
             $("#act_id").val(0);
             $("#tituloModalActividades").text("Nueva");
@@ -130,16 +140,25 @@
             $("#divCV").hide();
             $("#modalFormulario").modal("show");
         });
+
+        $(document).off('click', ".btn-guardar")
         $(document).on('click', ".btn-guardar", function (e) {
             $("#form_actividades").submit();
             if (_objetoForm_form_actividades.valid()) {
                 var dataForm = new FormData(document.getElementById("form_actividades"));
+                var url = "";
+                if ($("#act_id").val() == 0) {
+                    url = "IntranetActividades/IntranetActividadesNuevoJson";
+                }
+                else {
+                    url = "IntranetActividades/IntranetActividadesEditarJson";
+                }
                 responseFileSimple({
-                    url: "IntranetActividades/IntranetActividadGuardarJson",
+                    url: url,
                     data: dataForm,
                     refresh: false,
                     callBackSuccess: function (response) {
-                        console.log(response);
+                        //console.log(response);
                         var respuesta = response.respuesta;
                         if (respuesta) {
                             PanelActividades.init_ListarActividades();
@@ -177,7 +196,7 @@
                         $("#act_estado").prop('disabled', true);
 
                         $("#act_descripcion").val(actividad.act_descripcion);
-                        $("#act_fecha").val(moment(actividad.act_fecha).format("DD-MM-YYYY"));
+                        $("#act_fecha").val(moment(actividad.act_fecha).format("DD-MM-YYYY hh:mm A"));
                         $("#act_imagen").val(actividad.img_ubicacion);
                         $("#act_estado").val(actividad.act_estado);
                         $("#tituloIcono").text("Adjuntar Icono (Opcional)");
@@ -209,7 +228,7 @@
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");
                             $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
-                            $("#cvfecha").text("Fecha Subida: "+moment(actividad.act_fecha).format("DD-MM-YYYY"));
+                            $("#cvfecha").text("Fecha Subida: "+moment(actividad.act_fecha).format("DD-MM-YYYY hh:mm A"));
                             $("#divCV").show();
 
                             $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
@@ -220,7 +239,7 @@
                         $("#tituloIcono").text("Cambiar de Icono");
 
                         $("#act_descripcion").val(actividad.act_descripcion);
-                        $("#act_fecha").val(moment(actividad.act_fecha).format('YYYY-MM-DD'));
+                        $("#act_fecha").val(moment(actividad.act_fecha).format('DD-MM-YYYY hh:mm A'));
                         $("#act_estado").val(actividad.act_estado);
                         $("#act_id").val(actividad.act_id);
                         
