@@ -93,6 +93,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
             return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
+
         [HttpPost]
         public ActionResult IntranetActividadesIdObtenerJson(int act_id)
         {
