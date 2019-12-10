@@ -8,8 +8,8 @@
 @using System.Web.UI.WebControls
 @{
     string tipo = new JavaScriptSerializer().Serialize(ViewBag.tipo);
-    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
-    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
+    String persona = new JavaScriptSerializer().Serialize(Session["perIntranet_full"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usuIntranet_full"]);
 }
 
 @section AddToHead

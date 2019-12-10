@@ -14,6 +14,7 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public int fk_persona_que_saluda { get; set; }
         public int fk_persona_saludada { get; set; }
         public string sld_avatar { get; set; }
+        public string direccion_envio { get; set; }
         //nombres
         public string per_saluda{ get; set; }
         public string apelpat_per_saluda { get; set; }

@@ -93,9 +93,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             {
                                 if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
                                 {
-                                    Session["usu_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
+                                    Session["usuSGC_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                                     persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
-                                    Session["per_full"] = persona;
+                                    Session["perSGC_full"] = persona;
                                     respuesta = true;
                                     errormensaje = "Bienvenido, " + usuario.usu_nombre;
                                 }
@@ -136,8 +136,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             bool respuestaConsulta = false;
             try
             {
-                Session["usu_full"] = null;
-                Session["per_full"] = null;
+                Session["usuSGC_full"] = null;
+                Session["perSGC_full"] = null;
                 respuestaConsulta = true;
             }
             catch (Exception exp)

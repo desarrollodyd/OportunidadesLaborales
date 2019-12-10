@@ -1,6 +1,8 @@
-﻿using SistemaReclutamiento.Entidades.IntranetPJ;
+﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,10 +87,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string mensajeConsola = "";
             int intranetSaludoCumpleaniosInsertado=0;
             claseError error = new claseError();
+            Correo correo_enviar = new Correo();
+            string asunto_correo = "";
+            string cuerpo_correo = "";
+            PersonaEntidad persona = (PersonaEntidad)Session["perIntranet_full"]; ;
             try
             {
-                //envio de correo
-
+                intranetSaludoCumpleanio.sld_fecha_envio = DateTime.Now;
+                intranetSaludoCumpleanio.sld_estado = "A";
                 var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioInsertarJson(intranetSaludoCumpleanio);
                 error = saludoTupla.error;
                 if (error.Key.Equals(string.Empty))
@@ -96,6 +102,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     intranetSaludoCumpleaniosInsertado = saludoTupla.idIntranetSaludoCumpleanioInsertado;
                     respuestaConsulta = true;
                     errormensaje = "Se Guardó Correctamente";
+                    try
+                    {
+                        //envio de correo
+                        asunto_correo = persona.per_nombre.ToUpper() +" "+
+                        persona.per_apellido_pat.ToUpper() +" "+ persona.per_apellido_mat.ToUpper() +
+                        " te desea un Feliz Cumpleaños";
+                        cuerpo_correo = intranetSaludoCumpleanio.sld_cuerpo;
+                        correo_enviar.EnviarCorreo(
+                            "s3kzimbra@gmail.com",
+                            asunto_correo,
+                            cuerpo_correo
+                            );
+                    }
+                    catch (Exception ex) {
+                        errormensaje = ex.Message;
+                    }
                 }
                 else
                 {

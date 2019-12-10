@@ -3,14 +3,14 @@
 @using SistemaReclutamiento.Utilitarios;
 @{
     string nombre = "";
-    if (Session["usu_full"] == null || Session["per_full"] == null)
+    if (Session["usuSGC_full"] == null || Session["perSGC_full"] == null)
     {
         Response.Redirect("/IntranetPJAdmin/Login");
     }
     else
     {
-        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
-        PersonaEntidad persona = (PersonaEntidad)Session["per_full"];
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
+        PersonaEntidad persona = (PersonaEntidad)Session["perSGC_full"];
         nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
     }
 }

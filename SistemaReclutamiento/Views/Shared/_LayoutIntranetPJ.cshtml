@@ -3,14 +3,14 @@
 @using SistemaReclutamiento.Utilitarios;
 @{
     string nombre = "";
-    if (Session["usu_full"] == null || Session["per_full"] == null)
+    if (Session["usuIntranet_full"] == null || Session["perIntranet_full"] == null)
     {
         Response.Redirect("/IntranetPJ/Login");
     }
     else
     {
-        UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
-        PersonaEntidad persona = (PersonaEntidad)Session["per_full"];
+        UsuarioEntidad usuario = (UsuarioEntidad)Session["usuIntranet_full"];
+        PersonaEntidad persona = (PersonaEntidad)Session["perIntranet_full"];
         nombre = persona.per_nombre + " " + persona.per_apellido_pat + " " + persona.per_apellido_mat;
     }
 }
@@ -73,7 +73,7 @@
                                 <li class="current">
                                     <a class="" href="#"> Corporacion PJ te da la Bienvenida: @nombre</a>
                                 </li>
-                                <li style="background: black;margin-top: 1px;"><a href="#" id="btnCerrarSesion"><i class="fa fa-sign-out"></i> Salir</a></li>
+                                <li style="background: black;margin-top: 1px;"><a href="#" class="btnCerrarSesion"><i class="fa fa-sign-out"></i> Salir</a></li>
                             </ul>
                             
                         </div>
@@ -347,13 +347,18 @@
                     <h1>Este 1ro de Octubre celebraremos el cumpleaños de nuestro colaborador Mario sega, acompáñanos a celebrarlo y saludarlo.</h1>
                 </header>
                 <article>
-                    <input type="hidden" name="fk_persona_saludada" id="fk_persona_saludada" value="" />
+                    
                     <p>
                         <strong>Àrea:</strong> Alimentos y Bebidas<br />
                         <strong>Puesto:</strong> Coordinador de Alimentos y Bebidas<br />
                         <strong>Oficina :</strong>Lima - Piso 3<br />
                     </p>
                     <div class="commentform" style="padding-left:20px;padding-right:20px;">
+                        <form id="formSaludoCumpleanios">
+                            <input type="hidden" name="fk_persona_saludada" id="fk_persona_saludada" value="" />
+                            <input type="hidden" name="fk_persona_que_saluda" id="fk_persona_que_saluda" value="" />
+                            <input type="hidden" name="direccion_envio" id="direccion_envio" value="" />
+                            direccioncorreo
                             <strong style="margin-bottom:8px;float:left;width:100%">Enviale un Saludo :</strong>
                             <div style="width: 100%;height: 30px;clear: both;">
                                 <div class="img_face select_img" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/serio.png" /></div>
@@ -368,7 +373,8 @@
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/barba.png" /></div>
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/angel.png" /></div>
                             </div>
-                            <textarea rows="4" id="mensaje" name="mensaje" style="width:100%;margin-top:5px;"> </textarea>
+                            <textarea rows="4" id="sld_cuerpo" name="sld_cuerpo" style="width:100%;margin-top:5px;">Mensaje de Feliz Cumpleaños</textarea>
+                        </form>
                         <button type="button" class="radius alert button btn_enviar_saludo">ENVIAR SALUDO</button>
                     </div>
                     <div class="clear"></div>
@@ -406,7 +412,7 @@
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
     <script>
-        $("#btnCerrarSesion").click(function () {
+        $(document).on('click', '.btnCerrarSesion', function () {
             $.ajax({
                 type: 'POST',
                 url: basePath + "IntranetPJ/IntranetPJCerrarSesionLoginJson",
@@ -420,7 +426,7 @@
                     }
                 }
             });
-        });
+        })
     </script>
     @RenderSection("js", required: false)
 </body>
