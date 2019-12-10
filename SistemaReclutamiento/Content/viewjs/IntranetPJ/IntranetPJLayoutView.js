@@ -80,13 +80,13 @@
 
                 //Creacion de Aside Para Actividades
                 if (dataActividades.length > 0) {
+                    console.log(dataActividades)
                     $("#actividadesMes").html("");
                     var appendActividades = '';
-                    appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat" > <ul class="catlist">';
+                    appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
-                        var imagen = (actividad.act_imagen != "") ? '/png/' + actividad.act_imagen:"";
-                        appendActividades += '<li><a href="javascript:void(0);"><img src="' + basePath + '/Content/intranet/images'+imagen+'" />                                <p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
+                        appendActividades += '<li><a href="javascript:void(0);"><img src="data:image/gif;base64,' + actividad.act_imagen + '" /><p class="meta-date">' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A')+'</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
                     });
                     appendActividades += '</ul></div >';
                     $("#actividadesMes").append(appendActividades);
@@ -174,13 +174,11 @@
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendElementos += '<article>' +
                                                 '<div class="imgpost th">' +
-                                                '<img src = "' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt = "">' +
+                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt = "">' +
                                                 '</div>' +
                                                 '</article>';
-
                                         });
                                     }
-                                    
                                 }
 
                                 if (elemento.fk_tipo_elemento == 8) {
@@ -194,7 +192,7 @@
                                                     "<div class='ctitle wt" + (index + 2) +"'>" + detalleelemento.detel_descripcion + " </div></li>"; 
                                             }
                                             else {
-                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
                                             }
 
                                         });
@@ -228,7 +226,7 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendslider += '<div class="contentBox">'+
-                                                '<img src = "' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt = "Field" />'+
+                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt = "Field" />'+
                                                     '<div class="overlay">'+
                                                         '<div class="title-carousel">'+
                                                             '<a href="javascript:void(0);">'+
@@ -265,7 +263,7 @@
                                                                                     '<div class="fdate">15<br /><span>Dec</span></div>'+
                                                                                 '</div>'+
                                                                                 '<div class="imgslide">'+
-                                                '<img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="" title="" class="slidefeatured">'+
+                                                '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt="" title="" class="slidefeatured">'+
                                                 '</div>' +
                                                                                     //'<div class="catf-caption">'+
                                                                                     //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
@@ -306,7 +304,7 @@
                                             if (index == 0) {
                                                 appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                                     '<div class="thumb foto_cuadro_izquiera">' +
-                                                    ' <img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt="">' +
+                                                    ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
                                                     '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
@@ -326,7 +324,7 @@
                                                 if (i < 4) {
                                                     appendDetalleElementobody += '<li>' +
                                                         '<div class="octhumb">' +
-                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
                                                         '</div>' +
                                                         '<div class="desc">' +
                                                         '<a href="javascript:void(0);">' + detalleelemento.detel_descripcion + '</a>' +
@@ -366,7 +364,7 @@
                                                      '<div class="ctitle wt' + (index + 2) + '" > ' + detalleelemento.detel_descripcion + ' </div ></li > ';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
                                             }
 
                                         });
@@ -401,7 +399,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
                                             }
 
                                         });
@@ -435,7 +433,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
                                             }
 
                                         });
@@ -525,7 +523,7 @@
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="thumb">' +
-                                                '<a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detel_ubicacion + '' + detalleelemento.detel_nombre + '.' + detalleelemento.detel_extension + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
@@ -676,7 +674,7 @@
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendElementos += '<article>' +
                                         '<div class="imgpost th">' +
-                                        '<img src = "' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt = "">' +
+                                        '<img src = "data: image / gif; base64, ' + detalleelemento.detelm_nombre +'" alt = "">' +
                                         '</div>' +
                                         '</article>';
 
@@ -696,7 +694,7 @@
                                             "<div class='ctitle wt" + (index + 2) + "'>" + detalleelemento.detelm_descripcion + " </div></li>";
                                     }
                                     else {
-                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt=""></a>';
+                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
                                     }
 
                                 });
@@ -730,7 +728,7 @@
                             if (detalleElementolista.length > 0) {
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendslider += '<div class="contentBox">' +
-                                        '<img src = "' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt = "Field" />' +
+                                        '<img src = "data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt = "Field" />' +
                                         '<div class="overlay">' +
                                         '<div class="title-carousel">' +
                                         '<a href="javascript:void(0);">' +
@@ -767,7 +765,7 @@
                                         '<div class="fdate">15<br /><span>Dec</span></div>' +
                                         '</div>' +
                                         '<div class="imgslide">' +
-                                        '<img src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt="" title="" class="slidefeatured">' +
+                                        '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt="" title="" class="slidefeatured">' +
                                         '</div>' +
                                         //'<div class="catf-caption">'+
                                         //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
@@ -808,7 +806,7 @@
                                     if (index == 0) {
                                         appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                             '<div class="thumb foto_cuadro_izquiera">' +
-                                            ' <img src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt="">' +
+                                            ' <img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt="">' +
                                             '<div class="overlay">' +
                                             '<div class="title-carousel">' +
                                             '<div class="ticarousel"> ' + detalleelemento.detelm_descripcion + '</div>' +
@@ -828,7 +826,7 @@
                                         if (i < 4) {
                                             appendDetalleElementobody += '<li>' +
                                                 '<div class="octhumb">' +
-                                                '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="desc">' +
                                                 '<a href="javascript:void(0);">' + detalleelemento.detelm_descripcion + '</a>' +
@@ -867,7 +865,7 @@
                                         appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt=""></a>';
+                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
                                     }
 
                                 });
@@ -901,7 +899,7 @@
                                         appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt=""></a>';
+                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
                                     }
 
                                 });
@@ -934,7 +932,7 @@
                                         appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt=""></a>';
+                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
                                     }
 
                                 });
@@ -1021,7 +1019,7 @@
                                         '<div class="itemblog">' +
                                         '<div class="clear"></div>' +
                                         '<div class="thumb">' +
-                                        '<a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images' + detalleelemento.detelm_ubicacion + '' + detalleelemento.detelm_nombre + '.' + detalleelemento.detelm_extension + '" alt=""></a>' +
+                                        '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>' +
                                         '</div>' +
                                         '<div class="clear"></div>' +
                                         '<div class="excerpt">' +
@@ -1063,7 +1061,7 @@
             $.pgwModal({
                 target: '#modalCumple',
                 title:'Cumpleaños de '+ nombrecumpleaniero,
-                maxWidth: 800
+                maxWidth: 800,
             });
         });
         //$(document).bind('PgwModal::Open', function () {

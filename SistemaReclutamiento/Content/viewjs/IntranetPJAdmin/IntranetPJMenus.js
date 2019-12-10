@@ -71,6 +71,7 @@ var PanelMenus = function () {
                             data: "menu_estado",
                             title: "Estado",
                             "bSortable": false,
+                            className: 'reorder',
                             "render": function (value) {
                                 var estado = value;
                                 var mensaje_estado = "";

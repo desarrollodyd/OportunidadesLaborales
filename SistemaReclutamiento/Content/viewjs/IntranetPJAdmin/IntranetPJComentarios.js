@@ -31,6 +31,7 @@
                         {
                             data: "sld_id",
                             title: "ID",
+                            className: 'align-center',
                         },
                         {
                             data: "sld_cuerpo",
@@ -38,10 +39,10 @@
 
                         },
                         {
-                            data: "sld_fecha]_envio",
+                            data: "sld_fecha_envio",
                             title: "Fecha",
                             "render": function (value) {
-                                var fecha = moment(value).format('YYYY-MM-DD');
+                                var fecha = moment(value).format('DD-MM-YYYY');
                                 return fecha;
                             }
                         },
