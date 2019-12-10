@@ -49,6 +49,35 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return Json(new { data = listaDetalleElemento.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
+        public ActionResult IntranetDetalleElementoListarxElementoIDJson(int elem_id) {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<IntranetDetalleElementoEntidad> listaDetalleElemento = new List<IntranetDetalleElementoEntidad>();
+            try
+            {
+                var DetalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(elem_id);
+                error = DetalleElementoTupla.error;
+                listaDetalleElemento = DetalleElementoTupla.intranetDetalleElementoListaxElementoID;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Detalle Elemento";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar los Detalles";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaDetalleElemento.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
         public ActionResult IntranetDetalleElementoInsertarJson(IntranetDetalleElementoEntidad intranetImagen)
         {
             string mensaje = "";

@@ -4848,7 +4848,9 @@
     <Compile Include="Controllers\IntranetPjAdmin\IntranetActividadesController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetAplicativoController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetDetalleElementoController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetDetalleElementoModalController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetElementoController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetElementoModalController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetMenuController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSaludosCumpleaniosController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSeccionController.cs" />
@@ -5041,6 +5043,8 @@
     <Folder Include="log\" />
     <Folder Include="Views\IntranetActividades\" />
     <Folder Include="Views\IntranetAplicativo\" />
+    <Folder Include="Views\IntranetDetalleElementoModal\" />
+    <Folder Include="Views\IntranetElementoModal\" />
     <Folder Include="Views\IntranetElemento\" />
     <Folder Include="Views\IntranetImagen\" />
     <Folder Include="Views\IntranetMenu\" />

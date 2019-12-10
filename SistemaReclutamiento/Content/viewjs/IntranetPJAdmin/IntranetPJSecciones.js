@@ -25,7 +25,6 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        console.log(response.data);
                         if (response.data.length > 0) {
                             $("#btn_nuevo").prop('disabled', false);
                             $("#btn_eliminar_varios").prop('disabled', false);
@@ -87,7 +86,6 @@
                                             var span = '';
                                             var sec_id = value;
                                             var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li></ul></div></div>';
-                                            //var span = '<div class="hidden-sm hidden-xs action-buttons" > <a class="red btn-eliminar" href="#" data-id="' + sec_id + '" > <i class="ace-icon fa fa-trash-o bigger-130"></i></a ></div > <div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i> </button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-error btn-eliminar" data-id="' + sec_id + '" data-rel="tooltip" title="Delete"><span class="red"><i class="ace-icon fa fa-trash-o bigger-120"></i></span></a> </li></ul></div></div>';
                                             return span;
                                         }
                                     }
@@ -176,7 +174,6 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        console.log(response);
                         var respuesta = response.respuesta;
                         if (respuesta) {
                             //limpiar_form({ contenedor: "#form_menus" });
@@ -252,6 +249,150 @@
             var elem_id = $(this).data("id");
             console.log(elem_id);
         });
+        $(document).on("click", ".detalle-elemento", function (e) {
+            var elem_id = $(this).data("id");
+            var elemento = $(this);
+            var row = $('tr.elemento' + elem_id);
+            var rowlength = $('tr.elemento' + elem_id + ' td').length;
+            var rownext = row.next('tr');
+            var htmlTags = '';
+            var dataForm = {
+                elem_id: elem_id
+            };
+            if ($(this).hasClass('detalle-oculto')) {
+                elemento.removeClass('detalle-oculto');
+
+                responseSimple({
+                    url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        var data = response.data;
+                        if (data.length > 0) {
+                            htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Detalle de Elemento</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
+                            htmlTags += '<th>Detalle</th>';
+                            htmlTags += '<th>ID</th>';
+                            htmlTags += '<th>Descripcion</th>';
+                            htmlTags += '<th>Nombre</th>';
+                            htmlTags += '<th>Orden</th>';
+                            htmlTags += '<th>Estado</th>';
+                            htmlTags += '<th>Acciones</th></tr>';
+                            $.each(data, function (index, value) {
+
+                                htmlTags += '<tr class="det-elemento' + value.detel_id + '"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                htmlTags += '<td>' + value.detel_id + '</td>';
+                                htmlTags += '<td>' + value.detel_descripcion + '</td>';
+                                htmlTags += '<td>' + value.detel_nombre + '</td>';
+                                htmlTags += '<td>' + value.detel_orden + '</td>';
+                                htmlTags += '<td>' + value.detel_estado + '</td>';
+                                htmlTags += '<td>'+((value.fk_seccion_elemento>0)?'Abre un Modal':'No abre Nada')+'</td></tr>';
+                            })
+                            htmlTags += '</table></td></tr></fieldset>';
+                            row.after(htmlTags);
+                        }
+                    },
+                })
+            } else {
+                elemento.addClass('detalle-oculto');
+                rownext.remove();
+            }
+            
+        });
+        $(document).on("click", ".elemento-modal", function (e) {
+            var detel_id = $(this).data("elemento");
+            var fk_seccion_elemento = $(this).data("id");
+            var elemento = $(this);
+            var row = $('tr.det-elemento' + detel_id);
+            var rowlength = $('tr.det-elemento' + detel_id + ' td').length;
+            var rownext = row.next('tr');
+            var htmlTags = '';
+            var dataForm = {
+                fk_seccion_elemento: fk_seccion_elemento
+            };
+            if ($(this).hasClass('detalle-oculto')) {
+                elemento.removeClass('detalle-oculto');
+                responseSimple({
+                    url: 'IntranetElementoModal/IntranetElementoModalListarxSeccionElementoJson',
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        console.log(response.data);
+                        var data = response.data;
+                        if (data.length > 0) {
+                            htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Elemento Modal</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
+                            htmlTags += '<th>Detalle</th>';
+                            htmlTags += '<th>ID</th>';
+                            htmlTags += '<th>Titulo</th>';
+                            htmlTags += '<th>Tipo Elemento</th>';
+                            htmlTags += '<th>Orden</th>';
+                            htmlTags += '<th>Estado</th>';
+                            htmlTags += '<th>Acciones</th></tr>';
+                            $.each(data, function (index, value) {
+
+                                htmlTags += '<tr class="elem-modal' + value.emod_id + '"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                htmlTags += '<td>' + value.emod_id + '</td>';
+                                htmlTags += '<td>' + value.emod_titulo + '</td>';
+                                htmlTags += '<td>' + value.tipo_nombre + '</td>';
+                                htmlTags += '<td>' + value.emod_orden + '</td>';
+                                htmlTags += '<td>' + value.emod_estado + '</td>';
+                                htmlTags += '<td></td></tr>';
+                            })
+                            htmlTags += '</table></td></tr></fieldset>';
+                            row.after(htmlTags);
+                        }
+                    }
+                });
+            }
+            else {
+                elemento.addClass('detalle-oculto');
+                rownext.remove();
+            }
+        });
+        $(document).on('click', '.detalle-elemento-modal', function () {
+            var emod_id = $(this).data("id");
+            var elemento = $(this);
+            var row = $('tr.elem-modal' + emod_id);
+            var rowlength = $('tr.elem-modal' + emod_id + ' td').length;
+            var rownext = row.next('tr');
+            var htmlTags = '';
+            var dataForm = {
+                fk_elemento_modal: emod_id
+            };
+            if ($(this).hasClass('detalle-oculto')) {
+                elemento.removeClass('detalle-oculto');
+                responseSimple({
+                    url: 'IntranetDetalleElementoModal/IntranetDetalleElementoModalListarxElementoModalJson',
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        console.log(response.data);
+                        var data = response.data;
+                        if (data.length > 0) {
+                            htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Detalle Elemento Modal</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
+                            htmlTags += '<th>ID</th>';
+                            htmlTags += '<th>Titulo</th>';
+                            htmlTags += '<th>Orden</th>';
+                            htmlTags += '<th>Estado</th>';
+                            htmlTags += '<th>Acciones</th></tr>';
+                            $.each(data, function (index, value) {
+
+                                htmlTags += '<td>' + value.detelm_id + '</td>';
+                                htmlTags += '<td>' + value.detelm_descripcion + '</td>';
+                                htmlTags += '<td>' + value.detelm_orden + '</td>';
+                                htmlTags += '<td>' + value.detelm_estado + '</td>';
+                                htmlTags += '<td></td></tr>';
+                            })
+                            htmlTags += '</table></td></tr></fieldset>';
+                            row.after(htmlTags);
+                        }
+                    }
+                });
+            }
+            else {
+                elemento.addClass('detalle-oculto');
+                rownext.remove();
+            }
+        });
     };
 
     var _metodos = function () {
@@ -280,7 +421,6 @@
                 {
                     required: 'Campo Obligatorio',
                 }
-
             }
         });
     };
@@ -312,15 +452,13 @@ function MostrarDetalle(row) {
         table += '<th>Tipo</th>';
         table += '<th>Acciones</th></tr>';
         $.each(row, function (index, value) {
-            console.log(value);
-            table += '<tr><td>' + '<a href="#" class="tooltip-info detalle-elemento" data-id="' + value.elem_id + '" data-rel="tooltip"title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+            table += '<tr class="elemento' + value.elem_id + '"><td data-id="' + value.elem_id + '" class="detalle-elemento detalle-oculto">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
             table += '<td>' + value.elem_id + '</td>';
             table += '<td>' + value.elem_titulo + '</td>';
             table += '<td>' + (value.elem_estado=='A'?'Activo':'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';
             table += '<td>' + value.tipo_nombre + '</td>';
-            table += '<td><a href="#" class="tooltip-warning btn_editar_detalle" data-id="'+value.elem_id+'" data-rel="tooltip" title="Editar"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span ></a></td></tr>';
-            //table += '<td><a href="#" class="tooltip-info" data-id="' + value.elem_id + '" data-rel="tooltip" title="Eliminar"><span class="blue" ><i class="ace-icon fa fa-trash-o bigger-130"></i></span ></a></td></tr>';
+            table += '<td><a href="#" class="tooltip-warning btn_detalle_elemento" data-id="'+value.elem_id+'" data-rel="tooltip" title="Editar"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span ></a></td></tr>';
         });
         table += '</table>';
         
