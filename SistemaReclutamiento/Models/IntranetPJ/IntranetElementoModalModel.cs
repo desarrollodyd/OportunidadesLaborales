@@ -69,10 +69,16 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetElementoModalEntidad> lista = new List<IntranetElementoModalEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT emod_id, emod_titulo, emod_descripcion, emod_contenido, 
-                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado
-	                            FROM intranet.int_elemento_modal   
-                                where fk_seccion_elemento = @p0
+                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado,tipo_nombre
+	                            FROM intranet.int_elemento_modal join intranet.int_tipo_elemento 
+								on intranet.int_elemento_modal.fk_tipo_elemento=intranet.int_tipo_elemento.tipo_id
+                                where fk_seccion_elemento=@p0
                                 order by emod_orden;";
+            //string consulta = @"SELECT emod_id, emod_titulo, emod_descripcion, emod_contenido, 
+            //                    emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado
+            //                 FROM intranet.int_elemento_modal   
+            //                    where fk_seccion_elemento = @p0
+            //                    order by emod_orden;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -97,6 +103,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
                                     fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
                                     emod_estado = ManejoNulos.ManageNullStr(dr["emod_estado"]),
+                                    tipo_nombre=ManejoNulos.ManageNullStr(dr["tipo_nombre"]),
                                 };
 
                                 lista.Add(ElementoModal);
