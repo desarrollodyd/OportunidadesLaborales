@@ -1,6 +1,22 @@
 ﻿var PanelSecciones = function () {
 
     var _ListarSecciones = function () {
+        selectResponse({
+            url: "IntranetTipoElemento/IntranetTipoElementoListarJson",
+            select: "cboTipoElemento",
+            campoID: "tipo_id",
+            CampoValor: "tipo_nombre",
+            select2: true,
+            allOption: false
+        });
+        selectResponse({
+            url: "IntranetTipoElemento/IntranetTipoElementoListarJson",
+            select: "cboTipoElementoModal",
+            campoID: "tipo_id",
+            CampoValor: "tipo_nombre",
+            select2: true,
+            allOption: false
+        });
         $("#btn_nuevo").prop('disabled', true);
         $("#btn_eliminar_varios").prop('disabled', true);
         if (menu.length > 0) {
@@ -16,6 +32,7 @@
         }
     };
     var _componentes = function () {
+ 
         $(document).on("change", "#cboMenus", function () {
             var menu_id = $(this).val();
             if (menu_id != "") {
@@ -25,7 +42,6 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        if (response.data.length > 0) {
                             $("#btn_nuevo").prop('disabled', false);
                             $("#btn_eliminar_varios").prop('disabled', false);
                             $("#id_menu").val(menu_id);
@@ -85,22 +101,13 @@
                                         "render": function (value) {
                                             var span = '';
                                             var sec_id = value;
-                                            var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a></li></ul></div></div>';
+                                            var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar-seccion" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="green btn-nuevo-elemento" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-folder bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a><a href="#" class="tooltip-success btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip" title="Nuevo Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a></li></ul></div></div>';
                                             return span;
                                         }
                                     }
 
                                 ]
                             })
-                        }
-                        else {
-                            messageResponse({
-                                text: "Error Al Cargar Datos",
-                                type: "error"
-                            });
-                            
-                        }
-                       
                     }
                 })
             }
@@ -144,16 +151,13 @@
 
         $(document).on("click", "#btn_nuevo", function (e) {
             if ($("#cboMenus").val() != "") {
-                $("#menu_id").val(0);
+                $("#sec_id").val(0);
+                var menu_seleccionado = $('#cboMenus').val();
+                $("#fk_menu").val(menu_seleccionado);
                 $("#tituloModalSeccion").text("Nueva ");
-                $("#sec_orden").prop('disabled', false);
                 $("#sec_estado").prop('disabled', false);
-
-                $("#sec_orden").val(1);
                 $("#sec_estado").val("A");
-
                 $(".btn-guardar").show();
-
                 $("#modalFormularioSeccion").modal("show");
             }
             else {
@@ -164,7 +168,6 @@
             }
            
         });
-
         $(document).on('click', ".btn-guardar", function (e) {
             $("#form_secciones").submit();
             if (_objetoForm_form_secciones.valid()) {
@@ -190,6 +193,23 @@
                     type: "error"
                 })
             }
+        });
+        $(document).on('click', '.btn-guardar-seccion', function () {
+            $("#form_seccion").submit();
+            var dataForm = $('#form_seccion').serializeFormJSON();
+            var url = '';
+            if ($("#sec_id").val() == 0) {
+                url = 'IntranetSeccion/IntranetSeccionInsertarJson';
+            }
+            responseSimple({
+                url: url,
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    PanelSecciones.init_ListarSecciones();
+                    $("#modalFormularioSeccion").modal("hide");
+                },
+            })
         });
 
         $(document).on("change", ".select-estado-seccion", function () {
@@ -255,13 +275,20 @@
             var row = $('tr.elemento' + elem_id);
             var rowlength = $('tr.elemento' + elem_id + ' td').length;
             var rownext = row.next('tr');
+            console.log($(this));
+            console.log(row);
+            console.log(rownext);
             var htmlTags = '';
             var dataForm = {
                 elem_id: elem_id
             };
-            if ($(this).hasClass('detalle-oculto')) {
-                elemento.removeClass('detalle-oculto');
-
+            if (row.hasClass('detalle-oculto')) {
+                row.removeClass('detalle-oculto');
+                console.log(rownext);
+                //if (!rownext.hasClass('detalle-oculto')) {
+                //    rownext.remove();
+                //}
+            
                 responseSimple({
                     url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
                     data: JSON.stringify(dataForm),
@@ -293,8 +320,10 @@
                     },
                 })
             } else {
-                elemento.addClass('detalle-oculto');
-                rownext.remove();
+                row.addClass('detalle-oculto');
+                if (!rownext.hasClass('detalle-oculto')) {
+                    rownext.remove();
+                }
             }
             
         });
@@ -393,6 +422,64 @@
                 rownext.remove();
             }
         });
+
+        $(document).on('click', '.btn_editar_elemento', function () {
+            $("#modalFormularioElemento").modal("show");
+        });
+        $(document).on('click', '.btn-nuevo-elemento', function () {
+            var sec_id = $(this).data('id');
+            $("#fk_seccion").val(sec_id);
+            $("#elem_id").val(0);
+            $("#modalFormularioElemento").modal("show");
+        });
+        $(document).on('click', '.btn-guardar-elemento', function () {
+            $("#form_elemento").submit();
+            var dataForm = $('#form_elemento').serializeFormJSON();
+            var url = '';
+            if ($("#elem_id").val() == 0) {
+                url = 'IntranetElemento/IntranetElementoInsertarJson';
+            }
+            responseSimple({
+                url: url,
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    PanelSecciones.init_ListarSecciones();
+                    $("#modalFormularioElemento").modal("hide");
+                }
+            });
+        });
+        $(document).on('click', '.btn-nuevo-detalle-elemento', function () {
+            var elem_id = $(this).data("id");
+            var tipo_elemento = $(this).data("tipo");
+            $("#fk_elemento").val(elem_id);
+            $("#detel_id").val(0);
+            $(".detel-imagen").show();
+            $(".detel-nombre").show();
+            $(".detel-posicion").show();
+            if (tipo_elemento == 5 || tipo_elemento==6) {
+                $("#fk_seccion_elemento").val(0);
+                $(".detel-imagen").hide();
+                $(".detel-nombre").hide();
+                $(".detel-posicion").hide();
+            }
+            //Abren Modales fk_seccion_elemento en int_detalle_elemento debe tener un id
+            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
+                //va a abrir modal
+                $("#fk_seccion_elemento").val(1);
+                $(".detel-imagen").hide();
+            }
+            else {
+                $("#fk_seccion_elemento").val(0);
+                $(".detel-posicion").hide();
+            }
+            $("#modalFormularioDetalleElemento").modal("show");
+        })
+        $(document).on('click', '.btn-guardar-detalle-elemento', function () {
+            $("#form_detalle_elemento").submit();
+            var dataForm = $("#form_detalle_elemento").serializeFormJSON();
+            console.log(dataForm);
+        });
     };
 
     var _metodos = function () {
@@ -443,7 +530,7 @@
 function MostrarDetalle(row) {
     var table = '';
     if (row.length > 0) {
-        table += '<table class="table table-bordered table-sm"><tr class="thead-dark">';
+        table += '<table class="table table-bordered table-sm"><tr><th colspan="7"><legend>Elementos</legend></th></tr><tr class="thead-dark">';
         table += '<th>Detalle</th>';
         table += '<th>ID</th>';
         table += '<th>titulo</th>';
@@ -452,13 +539,25 @@ function MostrarDetalle(row) {
         table += '<th>Tipo</th>';
         table += '<th>Acciones</th></tr>';
         $.each(row, function (index, value) {
-            table += '<tr class="elemento' + value.elem_id + '"><td data-id="' + value.elem_id + '" class="detalle-elemento detalle-oculto">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+            var fk_tipo_elemento = value.fk_tipo_elemento;
+            var spanTipoElemento = '';
+            var spanDetalleElemento = '';
+            if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
+                spanTipoElemento = '';
+                spanDetalleElemento = '<tr><td></td>';
+            }
+            else {
+                spanTipoElemento = '<a href="#" class="tooltip-success btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a>';
+                spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+            }
+
+            table += spanDetalleElemento;
             table += '<td>' + value.elem_id + '</td>';
             table += '<td>' + value.elem_titulo + '</td>';
             table += '<td>' + (value.elem_estado=='A'?'Activo':'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';
             table += '<td>' + value.tipo_nombre + '</td>';
-            table += '<td><a href="#" class="tooltip-warning btn_detalle_elemento" data-id="'+value.elem_id+'" data-rel="tooltip" title="Editar"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span ></a></td></tr>';
+            table += '<td><a href="#" class="tooltip-warning btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a>' + spanTipoElemento + '</td></tr>';
         });
         table += '</table>';
         

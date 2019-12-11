@@ -25,7 +25,7 @@
             </small>
 
         </h1>
-   
+
     </div><!-- /.page-header -->
 
     <div class="row">
@@ -45,7 +45,7 @@
             <div class="table-header">
                 Secciones con estado Inactivo no seran visibles en la pagina principal
             </div>
-            <input type="hidden" id="id_menu" name="id_menu" value=""/>
+            <input type="hidden" id="id_menu" name="id_menu" value="" />
             <!-- div.table-responsive -->
             <!-- div.dataTables_borderWrap -->
             <div>
@@ -62,8 +62,7 @@
         </div>
     </div>
 </div><!-- /.page-content -->
-
-
+@* Inicio Modal Secciones *@
 <div class="modal fade" tabindex="-1" id="modalFormularioSeccion" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -75,7 +74,202 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form class="" id="form_secciones">
+                    <form class="" id="form_seccion">
+                        <input type="hidden" name="sec_id" id="sec_id" value="" />
+                        <input type="hidden" name="fk_menu" id="fk_menu" value="" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar-seccion btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* Fin Modal Secciones *@
+@* Inicion Modal Elemento *@
+<div class="modal fade" tabindex="-1" id="modalFormularioElemento" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalElemento"></span>Elemento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_elemento">
+                        <input type="hidden" name="elem_id" id="elem_id" value="" />
+                        <input type="hidden" name="fk_seccion" id="fk_seccion" value="" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Titulo</label>
+                                <input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Titulo" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Tipo de Elemento</label>
+                                <select class="form-control" name="fk_tipo_elemento" id="cboTipoElemento" style="width:100%">
+                                    <option value="">Tipo de Elemento</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="elem_estado" id="elem_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar-elemento btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* Fin Modal Elemento *@
+
+@* Inicion Modal Detalle Elemento *@
+<div class="modal fade" tabindex="-1" id="modalFormularioDetalleElemento" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalElemento"></span>Detalle Elemento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_detalle_elemento">
+                        <input type="hidden" name="fk_elemento" id="fk_elemento" value="" />
+                        <input type="hidden" name="detel_id" id="detel_id" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento" value="" />
+                        <div class="col-md-12 col-xs-12 detel-descripcion">
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <input type="text" name="detel_descripcion" id="detel_descripcion" class="form-control" placeholder="Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detel-imagen">
+                            <div class="form-group">
+                                <label>Imagen</label>
+                                <label class="btn btn-warning" for="act_imagen">
+                                    <span id="spancv"><i class="fa fa-upload"></i>  Subir Icono</span>
+                                    <input id="detel_nombre" name="detel_nombre" type="file" class="form-control" style="display:none;" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detel-posicion">
+                            <div class="form-group">
+                                <label>Posicion</label>
+                                <select id="cboPosicion" name="detel_posicion">
+                                    <option value="">Seleccione</option>
+                                    <option value="L">Izquierda</option>
+                                    <option value="C">Centro</option>
+                                    <option value="R">Derecha</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar-detalle-elemento btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* Fin Modal Detalle Elemento *@
+@* Inicion Modal Elemento Modal *@
+<div class="modal fade" tabindex="-1" id="modalFormularioElementoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalElemento"></span>Elemento Modal</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_elemento_modal">
+                        <input type="hidden" name="sec_id" id="sec_id" value="" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Orden</label>
+                                <input type="text" name="sec_orden" id="sec_orden" class="form-control" placeholder="Titulo" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Tipo de Elemento</label>
+                                <select class="form-control" name="fk_tipo_elemento" id="cboTipoElementoModal" style="width:100%">
+                                    <option value="">Tipo de Elemento</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar-elemento-modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* Fin Modal Elemento Modal *@
+@* Inicion Modal Detalle Elemento  Modal*@
+<div class="modal fade" tabindex="-1" id="modalFormularioDetalleElementoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalElemento"></span>Detalle Elemento Modal</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_detalle_elemento_modal">
                         <input type="hidden" name="sec_id" id="sec_id" value="" />
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
@@ -96,13 +290,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-guardar-seccion btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button class="btn btn-guardar-detalle-elemento-modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>
     </div>
 </div>
-
+@* Fin Modal Detalle Elemento Modal *@
 
 
 @section js

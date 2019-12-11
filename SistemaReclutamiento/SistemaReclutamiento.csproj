@@ -4854,6 +4854,7 @@
     <Compile Include="Controllers\IntranetPjAdmin\IntranetMenuController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSaludosCumpleaniosController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSeccionController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetTipoElementoController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
@@ -5050,6 +5051,7 @@
     <Folder Include="Views\IntranetMenu\" />
     <Folder Include="Views\IntranetSaludosCumpleanios\" />
     <Folder Include="Views\IntranetSeccion\" />
+    <Folder Include="Views\IntranetTipoElemento\" />
     <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>

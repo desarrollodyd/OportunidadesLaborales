@@ -118,20 +118,31 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             claseError error = new claseError();
             try
             {
-                var seccionTupla = intranetSeccionbl.IntranetSeccionInsertarJson(intranetSeccion);
-                error = seccionTupla.error;
+                var totalSeccionesTupla = intranetSeccionbl.IntranetSeccionObtenerTotalRegistrosJson();
+                error = totalSeccionesTupla.error;
+                if (error.Key.Equals(string.Empty)) {
+                    intranetSeccion.sec_orden = totalSeccionesTupla.intranetSeccionTotal + 1;
+                    var seccionTupla = intranetSeccionbl.IntranetSeccionInsertarJson(intranetSeccion);
+                    error = seccionTupla.error;
 
-                if (error.Key.Equals(string.Empty))
-                {
-                    mensaje = "Se Registró Correctamente";
-                    respuesta = true;
-                    idIntranetSeccionInsertado = seccionTupla.idIntranetSeccionInsertado;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        mensaje = "Se Registró Correctamente";
+                        respuesta = true;
+                        idIntranetSeccionInsertado = seccionTupla.idIntranetSeccionInsertado;
+                    }
+                    else
+                    {
+                        mensaje = "No se Pudo insertar el Menu";
+                        mensajeConsola = error.Value;
+                    }
                 }
                 else
                 {
-                    mensaje = "No se Pudo insertar el Menu";
+                    mensaje = "Error al Insertar la Nueva Seccion";
                     mensajeConsola = error.Value;
                 }
+                
 
             }
             catch (Exception exp)

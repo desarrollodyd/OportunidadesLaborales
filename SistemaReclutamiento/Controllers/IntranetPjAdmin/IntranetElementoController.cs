@@ -47,5 +47,50 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { data = listaElementos.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
+        [HttpPost]
+        public ActionResult IntranetElementoInsertarJson(IntranetElementoEntidad intranetElemento)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            int idIntranetElementoInsertado = 0;
+            claseError error = new claseError();
+            try
+            {
+                var totalElementosTupla = intranetElementobl.IntranetElementoObtenerTotalRegistrosxSeccionJson(intranetElemento.fk_seccion);
+                error = totalElementosTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetElemento.elem_orden = totalElementosTupla.intranetElementosTotal + 1;
+                    var seccionTupla = intranetElementobl.IntranetElementoInsertarJson(intranetElemento);
+                    error = seccionTupla.error;
+
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        mensaje = "Se Registró Correctamente";
+                        respuesta = true;
+                        idIntranetElementoInsertado = seccionTupla.idIntranetElementoInsertado;
+                    }
+                    else
+                    {
+                        mensaje = "No se Pudo insertar el Elemento";
+                        mensajeConsola = error.Value;
+                    }
+                }
+                else
+                {
+                    mensaje = "Error al Insertar el Nuevo Elemento";
+                    mensajeConsola = error.Value;
+                }
+
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetElementoInsertado = idIntranetElementoInsertado, mensajeconsola = mensajeConsola });
+        }
     }
 }

@@ -324,5 +324,35 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetSeccionReordenado: response, error: error);
         }
+        public (int intranetSeccionTotal, claseError error) IntranetSeccionObtenerTotalRegistrosJson()
+        {
+            int intranetSeccionTotal = 0;
+            claseError error = new claseError();
+            string consulta = @"select count(*) as total from intranet.int_seccion";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                intranetSeccionTotal = ManejoNulos.ManageNullInteger(dr["total"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetSeccionTotal: intranetSeccionTotal, error: error);
+        }
     }
 }
