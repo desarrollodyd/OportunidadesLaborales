@@ -167,8 +167,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetImagenInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento(
-	            detel_descripcion, detel_nombre, detel_extension, detel_ubicacion, detel_estado,fk_elemento,fk_seccion_elemento)
-	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7);
+	            detel_descripcion, detel_nombre, detel_extension, detel_ubicacion, detel_estado,fk_elemento,fk_seccion_elemento,detel_orden,detel_posicion)
+	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7,@p8,@p9)
                 returning detel_id;";
             claseError error = new claseError();
             try
@@ -184,6 +184,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElemento.fk_elemento));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElemento.fk_seccion_elemento));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_orden));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_posicion));
                     idIntranetImagenInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -254,6 +256,37 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
 
             return (intranetDetalleElementoEliminado: response, error: error);
+        }
+        public (int intranetDetalleElementoTotal, claseError error) IntranetDetalleElementoObtenerTotalRegistrosxElementoJson(int fk_elemento)
+        {
+            int intranetMenuTotal = 0;
+            claseError error = new claseError();
+            string consulta = @"select count(*) as total from intranet.int_detalle_elemento where fk_elemento=@p0";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(fk_elemento));
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                intranetMenuTotal = ManejoNulos.ManageNullInteger(dr["total"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetMenuTotal: intranetMenuTotal, error: error);
         }
     }
 }

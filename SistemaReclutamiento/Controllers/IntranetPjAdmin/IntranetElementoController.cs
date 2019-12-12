@@ -61,6 +61,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 error = totalElementosTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
+                    intranetElemento.elem_descripcion = intranetElemento.elem_titulo;
+                    intranetElemento.elem_contenido = intranetElemento.elem_titulo;
                     intranetElemento.elem_orden = totalElementosTupla.intranetElementosTotal + 1;
                     var seccionTupla = intranetElementobl.IntranetElementoInsertarJson(intranetElemento);
                     error = seccionTupla.error;

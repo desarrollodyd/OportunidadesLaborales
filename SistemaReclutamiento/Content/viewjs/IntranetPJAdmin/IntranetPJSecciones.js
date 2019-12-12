@@ -32,7 +32,7 @@
         }
     };
     var _componentes = function () {
- 
+
         $(document).on("change", "#cboMenus", function () {
             var menu_id = $(this).val();
             if (menu_id != "") {
@@ -42,72 +42,72 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
-                            $("#btn_nuevo").prop('disabled', false);
-                            $("#btn_eliminar_varios").prop('disabled', false);
-                            $("#id_menu").val(menu_id);
-                            simpleDataTable({
-                                uniform: false,
-                                tableNameVariable: "seccionesListado",
-                                table: ".datatable-seccionlistado",
-                                tableColumnsData: response.data,
-                                tableHeaderCheck: false,
-                                tableColumns: [
-                                    {
-                                        "className": 'details-control',
-                                        "orderable": false,
-                                        "data": "sec_id",
-                                        "title": "Secciones",
-                                        "defaultContent": '',
-                                        "render": function (value) {
-                                            var sec_id = value;
-                                            var span = '';
-                                            span += '<a href="#" class="tooltip-info" data-id="' + sec_id + '" data-rel="tooltip"                  title="Ver Detalle"><span class="blue" >             <i class="ace-icon fa fa-search-plus bigger-120"></       i></span ></a>';
-                                            return span;
-                                        },
-                                        width: "50px"
+                        $("#btn_nuevo").prop('disabled', false);
+                        $("#btn_eliminar_varios").prop('disabled', false);
+                        $("#id_menu").val(menu_id);
+                        simpleDataTable({
+                            uniform: false,
+                            tableNameVariable: "seccionesListado",
+                            table: ".datatable-seccionlistado",
+                            tableColumnsData: response.data,
+                            tableHeaderCheck: false,
+                            tableColumns: [
+                                {
+                                    "className": 'details-control',
+                                    "orderable": false,
+                                    "data": "sec_id",
+                                    "title": "Secciones",
+                                    "defaultContent": '',
+                                    "render": function (value) {
+                                        var sec_id = value;
+                                        var span = '';
+                                        span += '<a href="#" class="tooltip-info" data-id="' + sec_id + '" data-rel="tooltip"                  title="Ver Detalle"><span class="blue" >             <i class="ace-icon fa fa-search-plus bigger-120"></       i></span ></a>';
+                                        return span;
                                     },
-                                    {
-                                        data: "sec_id",
-                                        title: "Id"
-                                    },
-                                    {
-                                        data: "menu_titulo",
-                                        title: "Menu"
-                                    },
-                                    {
-                                        data: "sec_orden",
-                                        title: "Orden"
-                                    },
-                                    {
-                                        data: "sec_estado",
-                                        title: "Estado",
-                                        "render": function (value, type, row) {
-                                            var seleccionado = value == 'A' ? "selected" : "";
-                                            var select = '<select class="browser-default custom-select select-estado-seccion" data-id=' + row.sec_id + '>';
+                                    width: "50px"
+                                },
+                                {
+                                    data: "sec_id",
+                                    title: "Id"
+                                },
+                                {
+                                    data: "menu_titulo",
+                                    title: "Menu"
+                                },
+                                {
+                                    data: "sec_orden",
+                                    title: "Orden"
+                                },
+                                {
+                                    data: "sec_estado",
+                                    title: "Estado",
+                                    "render": function (value, type, row) {
+                                        var seleccionado = value == 'A' ? "selected" : "";
+                                        var select = '<select class="browser-default custom-select select-estado-seccion" data-id=' + row.sec_id + '>';
 
-                                            if (value == 'A') {
-                                                select += '<option value="A" selected>Activo</option><option value="I">Inactivo</option>'
-                                            }
-                                            else {
-                                                select += '<option value="A">Activo</option><option value="I" selected>Inactivo</option>'
-                                            }
-                                            select += '</select>';
-                                            return select;
+                                        if (value == 'A') {
+                                            select += '<option value="A" selected>Activo</option><option value="I">Inactivo</option>'
                                         }
-                                    },
-                                    {
-                                        data: "sec_id",
-                                        title: "Acciones",
-                                        "render": function (value) {
-                                            var span = '';
-                                            var sec_id = value;
-                                            var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar-seccion" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="green btn-nuevo-elemento" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-folder bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a><a href="#" class="tooltip-success btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip" title="Nuevo Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a></li></ul></div></div>';
-                                            return span;
+                                        else {
+                                            select += '<option value="A">Activo</option><option value="I" selected>Inactivo</option>'
                                         }
+                                        select += '</select>';
+                                        return select;
                                     }
+                                },
+                                {
+                                    data: "sec_id",
+                                    title: "Acciones",
+                                    "render": function (value) {
+                                        var span = '';
+                                        var sec_id = value;
+                                        var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar-seccion" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="green btn-nuevo-elemento" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-folder bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a><a href="#" class="tooltip-success btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip" title="Nuevo Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a></li></ul></div></div>';
+                                        return span;
+                                    }
+                                }
 
-                                ]
-                            })
+                            ]
+                        })
                     }
                 })
             }
@@ -166,34 +166,34 @@
                     type: "error"
                 })
             }
-           
+
         });
-        $(document).on('click', ".btn-guardar", function (e) {
-            $("#form_secciones").submit();
-            if (_objetoForm_form_secciones.valid()) {
-                var dataForm = $('#form_secciones').serializeFormJSON();
-                responseSimple({
-                    url: "IntranetSeccion/IntranetSeccionInsertarJson",
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        var respuesta = response.respuesta;
-                        if (respuesta) {
-                            //limpiar_form({ contenedor: "#form_menus" });
-                            //_objetoForm_form_menus.resetForm();
-                            PanelSecciones.init_ListarSecciones();
-                            //refresh(true);
-                            $("#modalFormularioSeccion").modal("hide");
-                        }
-                    }
-                });
-            } else {
-                messageResponse({
-                    text: "Complete los campos Obligatorios",
-                    type: "error"
-                })
-            }
-        });
+        //$(document).on('click', ".btn-guardar", function (e) {
+        //    $("#form_secciones").submit();
+        //    if (_objetoForm_form_secciones.valid()) {
+        //        var dataForm = $('#form_secciones').serializeFormJSON();
+        //        responseSimple({
+        //            url: "IntranetSeccion/IntranetSeccionInsertarJson",
+        //            data: JSON.stringify(dataForm),
+        //            refresh: false,
+        //            callBackSuccess: function (response) {
+        //                var respuesta = response.respuesta;
+        //                if (respuesta) {
+        //                    //limpiar_form({ contenedor: "#form_menus" });
+        //                    //_objetoForm_form_menus.resetForm();
+        //                    PanelSecciones.init_ListarSecciones();
+        //                    //refresh(true);
+        //                    $("#modalFormularioSeccion").modal("hide");
+        //                }
+        //            }
+        //        });
+        //    } else {
+        //        messageResponse({
+        //            text: "Complete los campos Obligatorios",
+        //            type: "error"
+        //        })
+        //    }
+        //});
         $(document).on('click', '.btn-guardar-seccion', function () {
             $("#form_seccion").submit();
             var dataForm = $('#form_seccion').serializeFormJSON();
@@ -267,7 +267,6 @@
 
         $(document).on("click", ".btn_editar_detalle", function (e) {
             var elem_id = $(this).data("id");
-            console.log(elem_id);
         });
         $(document).on("click", ".detalle-elemento", function (e) {
             var elem_id = $(this).data("id");
@@ -275,20 +274,12 @@
             var row = $('tr.elemento' + elem_id);
             var rowlength = $('tr.elemento' + elem_id + ' td').length;
             var rownext = row.next('tr');
-            console.log($(this));
-            console.log(row);
-            console.log(rownext);
             var htmlTags = '';
             var dataForm = {
                 elem_id: elem_id
             };
             if (row.hasClass('detalle-oculto')) {
                 row.removeClass('detalle-oculto');
-                console.log(rownext);
-                //if (!rownext.hasClass('detalle-oculto')) {
-                //    rownext.remove();
-                //}
-            
                 responseSimple({
                     url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
                     data: JSON.stringify(dataForm),
@@ -305,14 +296,24 @@
                             htmlTags += '<th>Estado</th>';
                             htmlTags += '<th>Acciones</th></tr>';
                             $.each(data, function (index, value) {
+                                var spanAgregarElementoModal = '';
+                                var spanVerDetalleElemento = '';
+                                if (value.fk_seccion_elemento > 0) {
+                                    spanAgregarElementoModal = '<a href="#" class="tooltip-success btn-nuevo-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-idfkseccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo Detalle Elemento"><span class="green"><i class="ace-icon fa fa-filter bigger-120"></i></span></a>';
 
-                                htmlTags += '<tr class="det-elemento' + value.detel_id + '"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                    spanVerDetalleElemento += '<tr class="det-elemento' + value.detel_id + '"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                }
+                                else {
+                                    spanAgregarElementoModal += '';
+                                    spanVerDetalleElemento += '<tr><td></td>';
+                                }
+                                htmlTags += spanVerDetalleElemento;
                                 htmlTags += '<td>' + value.detel_id + '</td>';
                                 htmlTags += '<td>' + value.detel_descripcion + '</td>';
                                 htmlTags += '<td>' + value.detel_nombre + '</td>';
                                 htmlTags += '<td>' + value.detel_orden + '</td>';
                                 htmlTags += '<td>' + value.detel_estado + '</td>';
-                                htmlTags += '<td>'+((value.fk_seccion_elemento>0)?'Abre un Modal':'No abre Nada')+'</td></tr>';
+                                htmlTags += '<td><a href="#" class="tooltip-warning btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a>' + spanAgregarElementoModal + '</td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -325,7 +326,7 @@
                     rownext.remove();
                 }
             }
-            
+
         });
         $(document).on("click", ".elemento-modal", function (e) {
             var detel_id = $(this).data("elemento");
@@ -345,7 +346,6 @@
                     refresh: false,
                     data: JSON.stringify(dataForm),
                     callBackSuccess: function (response) {
-                        console.log(response.data);
                         var data = response.data;
                         if (data.length > 0) {
                             htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Elemento Modal</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
@@ -394,7 +394,6 @@
                     refresh: false,
                     data: JSON.stringify(dataForm),
                     callBackSuccess: function (response) {
-                        console.log(response.data);
                         var data = response.data;
                         if (data.length > 0) {
                             htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Detalle Elemento Modal</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
@@ -449,6 +448,13 @@
                 }
             });
         });
+        $(document).on('change', '#cboOpcion', function () {
+            if ($(this).val() == 1) {
+                $(".detel-imagen").hide();
+            } else {
+                $(".detel-imagen").show();
+            }
+        })
         $(document).on('click', '.btn-nuevo-detalle-elemento', function () {
             var elem_id = $(this).data("id");
             var tipo_elemento = $(this).data("tipo");
@@ -457,14 +463,14 @@
             $(".detel-imagen").show();
             $(".detel-nombre").show();
             $(".detel-posicion").show();
-            if (tipo_elemento == 5 || tipo_elemento==6) {
-                $("#fk_seccion_elemento").val(0);
+            if (tipo_elemento == 5 || tipo_elemento == 6) {
+                $("#fk_seccion_elemento").val(2);
                 $(".detel-imagen").hide();
                 $(".detel-nombre").hide();
                 $(".detel-posicion").hide();
             }
             //Abren Modales fk_seccion_elemento en int_detalle_elemento debe tener un id
-            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
+            else if (tipo_elemento==8||tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
                 //va a abrir modal
                 $("#fk_seccion_elemento").val(1);
                 $(".detel-imagen").hide();
@@ -477,8 +483,50 @@
         })
         $(document).on('click', '.btn-guardar-detalle-elemento', function () {
             $("#form_detalle_elemento").submit();
-            var dataForm = $("#form_detalle_elemento").serializeFormJSON();
-            console.log(dataForm);
+            var dataForm = new FormData(document.getElementById("form_detalle_elemento"));
+            var url = '';
+            if ($("#detel_id").val() == 0) {
+                url = 'IntranetDetalleElemento/IntranetDetalleElementoInsertarJson';
+            }
+            responseFileSimple({
+                url: url,
+                data: dataForm,
+                refresh: false,
+                callBackSuccess: function (response) {
+                    $("#modalFormularioDetalleElemento").modal("hide");
+                    PanelSecciones.init_ListarSecciones();
+                }
+            })
+        });
+
+        $(document).on('click', '.btn-nuevo-elemento-modal', function () {
+            var fk_seccion_elemento = $(this).data('idfkseccionelemento');
+            $("#fk_seccion_elemento").val(fk_seccion_elemento);
+            $("#emod_id").val(0);
+            //Deshabilitar los tipos de elemento que abren modales
+            $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
+            $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
+            $('#cboTipoElementoModal option[value="14"]').prop('disabled', true);
+            $('#cboTipoElementoModal option[value="15"]').prop('disabled', true);
+            $('#cboTipoElementoModal option[value="16"]').prop('disabled', true);
+            $("#modalFormularioElementoModal").modal("show");
+        });
+        $(document).on('click', '.btn-guardar-elemento-modal', function () {
+            $("#form_elemento_modal").submit();
+            var dataForm = $("#form_elemento_modal").serializeFormJSON();
+            var url = '';
+            if ($("#emod_id").val() == 0) {
+                url = 'IntranetElementoModal/IntranetElementoModalInsertarJson';
+            }
+            responseSimple({
+                url: url,
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    $("#modalFormularioElementoModal").modal("hide");
+                    PanelSecciones.init_ListarSecciones();
+                },
+            });
         });
     };
 
@@ -554,13 +602,13 @@ function MostrarDetalle(row) {
             table += spanDetalleElemento;
             table += '<td>' + value.elem_id + '</td>';
             table += '<td>' + value.elem_titulo + '</td>';
-            table += '<td>' + (value.elem_estado=='A'?'Activo':'Inactivo') + '</td>';
+            table += '<td>' + (value.elem_estado == 'A' ? 'Activo' : 'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';
             table += '<td>' + value.tipo_nombre + '</td>';
             table += '<td><a href="#" class="tooltip-warning btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar"><span class="green" ><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a>' + spanTipoElemento + '</td></tr>';
         });
         table += '</table>';
-        
+
     }
     return table;
 }

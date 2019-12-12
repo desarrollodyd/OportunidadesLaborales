@@ -159,10 +159,21 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form class="" id="form_detalle_elemento">
+                    <form class="" id="form_detalle_elemento" method="post">
                         <input type="hidden" name="fk_elemento" id="fk_elemento" value="" />
                         <input type="hidden" name="detel_id" id="detel_id" value="" />
                         <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento" value="" />
+
+                        <div class="col-md-12 col-xs-12 detel-posicion">
+                            <div class="form-group">
+                                <label>Imagen o Boton con Texto</label>
+                                <select id="cboOpcion" name="opcion">
+                                    <option value="1">Boton con Texto</option>
+                                    <option value="2">Imagen</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="col-md-12 col-xs-12 detel-descripcion">
                             <div class="form-group">
                                 <label>Contenido</label>
@@ -172,17 +183,13 @@
                         <div class="col-md-12 col-xs-12 detel-imagen">
                             <div class="form-group">
                                 <label>Imagen</label>
-                                <label class="btn btn-warning" for="act_imagen">
-                                    <span id="spancv"><i class="fa fa-upload"></i>  Subir Icono</span>
-                                    <input id="detel_nombre" name="detel_nombre" type="file" class="form-control" style="display:none;" />
-                                </label>
+                                <input id="detel_nombre" name="detel_nombre" type="file" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12 detel-posicion">
                             <div class="form-group">
                                 <label>Posicion</label>
                                 <select id="cboPosicion" name="detel_posicion">
-                                    <option value="">Seleccione</option>
                                     <option value="L">Izquierda</option>
                                     <option value="C">Centro</option>
                                     <option value="R">Derecha</option>
@@ -192,7 +199,7 @@
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                <select class="form-control" name="detel_estado" id="detel_estado">
                                     <option value="A" selected>Activo</option>
                                     <option value="I">Inactivo</option>
                                 </select>
@@ -222,11 +229,12 @@
             <div class="modal-body">
                 <div class="row">
                     <form class="" id="form_elemento_modal">
-                        <input type="hidden" name="sec_id" id="sec_id" value="" />
+                        <input type="hidden" name="emod_id" id="emod_id" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento" value="" />
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label>Orden</label>
-                                <input type="text" name="sec_orden" id="sec_orden" class="form-control" placeholder="Titulo" />
+                                <label>Titulo</label>
+                                <input type="text" name="emod_titulo" id="emod_titulo" class="form-control" placeholder="Titulo" />
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12">
@@ -240,7 +248,7 @@
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                <select class="form-control" name="emod_estado" id="emod_estado">
                                     <option value="A" selected>Activo</option>
                                     <option value="I">Inactivo</option>
                                 </select>

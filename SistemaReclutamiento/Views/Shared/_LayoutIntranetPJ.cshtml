@@ -5,7 +5,7 @@
     string nombre = "";
     if (Session["usuIntranet_full"] == null || Session["perIntranet_full"] == null)
     {
-        Response.Redirect("/IntranetPJ/Login");
+        Response.Redirect("~/IntranetPJ/Login");
     }
     else
     {

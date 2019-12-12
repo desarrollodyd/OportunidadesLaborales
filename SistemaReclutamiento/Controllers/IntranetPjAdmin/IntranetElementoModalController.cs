@@ -48,5 +48,51 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { data = listaElementoModal.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
+        [HttpPost]
+        public ActionResult IntranetElementoModalInsertarJson(IntranetElementoModalEntidad intranetElementoModal)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            int idIntranetElementoModalInsertado = 0;
+            claseError error = new claseError();
+            try
+            {
+                var totalElementosTupla = intranetElementoModalbl.IntranetElementoModalObtenerTotalRegistrosxSeccionJson(intranetElementoModal.fk_seccion_elemento);
+                error = totalElementosTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetElementoModal.emod_orden = totalElementosTupla.intranetElementoModalTotal + 1;
+                    var seccionTupla = intranetElementoModalbl.IntranetElementoModalInsertarJson(intranetElementoModal);
+                    error = seccionTupla.error;
+
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        mensaje = "Se Registró Correctamente";
+                        respuesta = true;
+                        idIntranetElementoModalInsertado = seccionTupla.idIntranetElementoModalInsertado;
+                    }
+                    else
+                    {
+                        mensaje = "No se Pudo insertar el Elemento Modal";
+                        mensajeConsola = error.Value;
+                    }
+                }
+                else
+                {
+                    mensaje = "Error al Insertar el Nuevo Elemento";
+                    mensajeConsola = error.Value;
+                }
+
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetElementoModalInsertado = idIntranetElementoModalInsertado, mensajeconsola = mensajeConsola });
+        }
     }
+    
 }

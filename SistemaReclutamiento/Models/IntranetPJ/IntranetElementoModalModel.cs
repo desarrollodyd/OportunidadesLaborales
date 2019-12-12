@@ -255,5 +255,38 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
             return (intranetElementoModalEliminado: response, error: error);
         }
+        public (int intranetElementoModalTotal, claseError error) IntranetElementoModalObtenerTotalRegistrosxSeccionJson(int fk_seccion_elemento)
+        {
+            int intranetElementoModalTotal = 0;
+            claseError error = new claseError();
+            string consulta = @"select count(*) as total 
+                            from intranet.int_elemento_modal 
+                            where fk_seccion_elemento=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(fk_seccion_elemento));
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                intranetElementoModalTotal = ManejoNulos.ManageNullInteger(dr["total"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetElementoModalTotal: intranetElementoModalTotal, error: error);
+        }
     }
 }
