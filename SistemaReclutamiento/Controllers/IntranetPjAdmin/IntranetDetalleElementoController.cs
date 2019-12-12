@@ -92,6 +92,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string extension = "";
             string rutaInsertar = "";
             int idSeccionElementoInsertado = 0;
+
+
             IntranetSeccionElementoEntidad intranetSeccionElemento = new IntranetSeccionElementoEntidad();
             claseError error = new claseError();
             
