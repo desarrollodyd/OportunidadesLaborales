@@ -1,6 +1,5 @@
 ﻿var PanelSecciones = function () {
-
-    var _ListarSecciones = function () {
+    var _inicio = function () {
         selectResponse({
             url: "IntranetTipoElemento/IntranetTipoElementoListarJson",
             select: "cboTipoElemento",
@@ -23,7 +22,6 @@
             var appendMenus = '';
             var selectMenus = $("#cboMenus");
             selectMenus.html("");
-            appendMenus += '<option value="">Seleccione Menu</option>';
             $.each(menu, function (index, value) {
                 appendMenus += '<option value="' + value.menu_id + '">"' + value.menu_titulo + '"</option>';
             });
@@ -31,85 +29,92 @@
             selectMenus.select2();
         }
     };
+    var _ListarSecciones = function () {
+        var menu_id = $("#id_menu").val();
+        var dataForm = {
+            menu_id: menu_id,
+        }
+        responseSimple({
+            url: "IntranetSeccion/IntranetSeccionListarTodoxMenuIDJson",
+            data: JSON.stringify(dataForm),
+            refresh: false,
+            callBackSuccess: function (response) {
+                $("#btn_nuevo").prop('disabled', false);
+                $("#btn_eliminar_varios").prop('disabled', false);
+                simpleDataTable({
+                    uniform: false,
+                    tableNameVariable: "seccionesListado",
+                    table: "#seccionesListado",
+                    tableColumnsData: response.data,
+                    tableHeaderCheck: false,
+                    tableColumns: [
+                        {
+                            "className": 'details-control',
+                            "orderable": false,
+                            "data": "sec_id",
+                            "title": "Secciones",
+                            "defaultContent": '',
+                            "render": function (value) {
+                                var sec_id = value;
+                                var span = '';
+                                span += '<a href="#" class="tooltip-info" data-id="' + sec_id + '" data-rel="tooltip"                  title="Ver Detalle"><span class="blue" >             <i class="ace-icon fa fa-search-plus bigger-120"></       i></span ></a>';
+                                return span;
+                            },
+                            width: "50px"
+                        },
+                        {
+                            data: "sec_id",
+                            title: "Id"
+                        },
+                        {
+                            data: "menu_titulo",
+                            title: "Menu"
+                        },
+                        {
+                            data: "sec_orden",
+                            title: "Orden"
+                        },
+                        {
+                            data: "sec_estado",
+                            title: "Estado",
+                            "render": function (value, type, row) {
+                                var seleccionado = value == 'A' ? "selected" : "";
+                                var select = '<select class="browser-default custom-select select-estado-seccion" data-id=' + row.sec_id + '>';
+
+                                if (value == 'A') {
+                                    select += '<option value="A" selected>Activo</option><option value="I">Inactivo</option>'
+                                }
+                                else {
+                                    select += '<option value="A">Activo</option><option value="I" selected>Inactivo</option>'
+                                }
+                                select += '</select>';
+                                return select;
+                            }
+                        },
+                        {
+                            data: "sec_id",
+                            title: "Acciones",
+                            "render": function (value) {
+                                var span = '';
+                                var sec_id = value;
+                                var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar-seccion" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="green btn-nuevo-elemento" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-folder bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a><a href="#" class="tooltip-success btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip" title="Nuevo Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a></li></ul></div></div>';
+                                return span;
+                            }
+                        }
+
+                    ]
+                })
+            }
+        })
+        
+    };
     var _componentes = function () {
 
         $(document).on("change", "#cboMenus", function () {
             var menu_id = $(this).val();
             if (menu_id != "") {
-                var dataForm = { menu_id: menu_id };
-                responseSimple({
-                    url: "IntranetSeccion/IntranetSeccionListarTodoxMenuIDJson",
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        $("#btn_nuevo").prop('disabled', false);
-                        $("#btn_eliminar_varios").prop('disabled', false);
-                        $("#id_menu").val(menu_id);
-                        simpleDataTable({
-                            uniform: false,
-                            tableNameVariable: "seccionesListado",
-                            table: ".datatable-seccionlistado",
-                            tableColumnsData: response.data,
-                            tableHeaderCheck: false,
-                            tableColumns: [
-                                {
-                                    "className": 'details-control',
-                                    "orderable": false,
-                                    "data": "sec_id",
-                                    "title": "Secciones",
-                                    "defaultContent": '',
-                                    "render": function (value) {
-                                        var sec_id = value;
-                                        var span = '';
-                                        span += '<a href="#" class="tooltip-info" data-id="' + sec_id + '" data-rel="tooltip"                  title="Ver Detalle"><span class="blue" >             <i class="ace-icon fa fa-search-plus bigger-120"></       i></span ></a>';
-                                        return span;
-                                    },
-                                    width: "50px"
-                                },
-                                {
-                                    data: "sec_id",
-                                    title: "Id"
-                                },
-                                {
-                                    data: "menu_titulo",
-                                    title: "Menu"
-                                },
-                                {
-                                    data: "sec_orden",
-                                    title: "Orden"
-                                },
-                                {
-                                    data: "sec_estado",
-                                    title: "Estado",
-                                    "render": function (value, type, row) {
-                                        var seleccionado = value == 'A' ? "selected" : "";
-                                        var select = '<select class="browser-default custom-select select-estado-seccion" data-id=' + row.sec_id + '>';
-
-                                        if (value == 'A') {
-                                            select += '<option value="A" selected>Activo</option><option value="I">Inactivo</option>'
-                                        }
-                                        else {
-                                            select += '<option value="A">Activo</option><option value="I" selected>Inactivo</option>'
-                                        }
-                                        select += '</select>';
-                                        return select;
-                                    }
-                                },
-                                {
-                                    data: "sec_id",
-                                    title: "Acciones",
-                                    "render": function (value) {
-                                        var span = '';
-                                        var sec_id = value;
-                                        var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar-seccion" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="green btn-nuevo-elemento" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-folder bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a><a href="#" class="tooltip-success btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip" title="Nuevo Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a></li></ul></div></div>';
-                                        return span;
-                                    }
-                                }
-
-                            ]
-                        })
-                    }
-                })
+                $("#id_menu").val(menu_id);
+                PanelSecciones.init_ListarSecciones();
             }
             else {
                 messageResponse({
@@ -228,8 +233,8 @@
                         refresh: false,
                         callBackSuccess: function (response) {
                             PanelSecciones.init_ListarSecciones();
-                            $("#cboMenus").val($("#id_menu").val());
-                            $("#cboMenus").change();
+                            //$("#cboMenus").val($("#id_menu").val());
+                            //$("#cboMenus").change();
                             //refresh(true);
                         }
                     });
@@ -568,7 +573,7 @@
             _ListarSecciones();
             _componentes();
             _metodos();
-
+            _inicio();
         },
         init_ListarSecciones: function () {
             _ListarSecciones();

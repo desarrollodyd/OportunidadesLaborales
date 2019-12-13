@@ -56,7 +56,7 @@
                                 }
                                 return img;
                             },
-                            width:"80px",
+                            width: "80px",
                         },
                         {
                             data: "act_fecha",
@@ -229,13 +229,13 @@
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");
                             $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
-                            $("#cvfecha").text("Fecha Subida: "+moment(actividad.act_fecha).format("DD-MM-YYYY hh:mm A"));
+                            $("#cvfecha").text("Fecha Subida: " + moment(actividad.act_fecha).format("DD-MM-YYYY hh:mm A"));
                             $("#divCV").show();
 
                             $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
                             $("#img_ubicacion").val(actividad.img_ubicacion);
                         }
-                        
+
                         $("#tituloModalActividades").text("Editar");
                         $("#tituloIcono").text("Cambiar de Icono");
 
@@ -243,8 +243,8 @@
                         $("#act_fecha").val(moment(actividad.act_fecha).format('DD-MM-YYYY hh:mm A'));
                         $("#act_estado").val(actividad.act_estado);
                         $("#act_id").val(actividad.act_id);
-                        
-                     
+
+
                         $("#act_descripcion").prop('disabled', false);
                         $("#act_fecha").prop('disabled', false);
                         $("#act_imagen").prop('disabled', false);
@@ -307,7 +307,7 @@
                     };
                     $("#spancv").html("");
                     $("#spancv").append(icon + " " + nombre + "... ." + actualicon);
-                    $("#img_ubicacion").val(nombre + "."+actualicon);
+                    $("#img_ubicacion").val(nombre + "." + actualicon);
                     //$("#spancv").css({ 'font-size': '10px' });  
                 }
             }
@@ -336,7 +336,7 @@
             $('#actividadesListado tbody tr input[type=checkbox]:checked').each(function () {
                 arrayActividades.push($(this).data("id"));
             });
-          
+
             if (arrayActividades.length > 0) {
                 messageConfirmation({
                     content: '¿Esta seguro de ELIMINAR todas las Actividades Seleccionadas?',
@@ -396,7 +396,7 @@
                 },
                 act_fecha:
                 {
-                    required:'Campo Obligatorio',
+                    required: 'Campo Obligatorio',
                 }
 
             }

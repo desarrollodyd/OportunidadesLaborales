@@ -45,7 +45,7 @@
             <div class="table-header">
                 Secciones con estado Inactivo no seran visibles en la pagina principal
             </div>
-            <input type="hidden" id="id_menu" name="id_menu" value="" />
+            <input type="hidden" id="id_menu" name="id_menu" value="1" />
             <!-- div.table-responsive -->
             <!-- div.dataTables_borderWrap -->
             <div>
@@ -224,7 +224,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="nf"><span id="tituloModalElemento"></span>Elemento Modal</h4>
+                <h4 class="modal-title" id="nf"><span id="tituloModalElementoModal"></span>Elemento Modal</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -273,22 +273,51 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="nf"><span id="tituloModalElemento"></span>Detalle Elemento Modal</h4>
+                <h4 class="modal-title" id="nf"><span id="tituloModalDetalleElementoModal"></span>Detalle Elemento Modal</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form class="" id="form_detalle_elemento_modal">
-                        <input type="hidden" name="sec_id" id="sec_id" value="" />
-                        <div class="col-md-12 col-xs-12">
+                    <form class="" id="form_detalle_elemento_modal" method="post">
+                        <input type="hidden" name="fk_elemento_modal" id="fk_elemento_modal" value="" />
+                        <input type="hidden" name="detelm_id" id="detelm_id" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal" value="" />
+
+                        <div class="col-md-12 col-xs-12 detelm-posicion">
                             <div class="form-group">
-                                <label>Orden</label>
-                                <input type="text" name="sec_orden" id="sec_orden" class="form-control" placeholder="Titulo" />
+                                <label>Imagen o Boton con Texto</label>
+                                <select id="cboOpcionElemModal" name="opcion">
+                                    <option value="1">Boton con Texto</option>
+                                    <option value="2">Imagen</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 detelm-descripcion">
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <input type="text" name="detelm_descripcion" id="detelm_descripcion" class="form-control" placeholder="Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detelm-imagen">
+                            <div class="form-group">
+                                <label>Imagen</label>
+                                <input id="detelm_nombre" name="detelm_nombre" type="file" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detel-posicion">
+                            <div class="form-group">
+                                <label>Posicion</label>
+                                <select id="cboPosicionElemModal" name="detelm_posicion">
+                                    <option value="L">Izquierda</option>
+                                    <option value="C">Centro</option>
+                                    <option value="R">Derecha</option>
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
-                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                <select class="form-control" name="detelm_estado" id="detelm_estado">
                                     <option value="A" selected>Activo</option>
                                     <option value="I">Inactivo</option>
                                 </select>

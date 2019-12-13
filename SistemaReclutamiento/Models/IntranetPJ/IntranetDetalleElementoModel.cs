@@ -259,7 +259,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         }
         public (int intranetDetalleElementoTotal, claseError error) IntranetDetalleElementoObtenerTotalRegistrosxElementoJson(int fk_elemento)
         {
-            int intranetMenuTotal = 0;
+            int intranetDetalleElementoTotal = 0;
             claseError error = new claseError();
             string consulta = @"select count(*) as total from intranet.int_detalle_elemento where fk_elemento=@p0";
             try
@@ -275,7 +275,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                         {
                             while (dr.Read())
                             {
-                                intranetMenuTotal = ManejoNulos.ManageNullInteger(dr["total"]);
+                                intranetDetalleElementoTotal = ManejoNulos.ManageNullInteger(dr["total"]);
                             }
                         }
                     }
@@ -286,7 +286,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 error.Key = ex.Data.Count.ToString();
                 error.Value = ex.Message;
             }
-            return (intranetMenuTotal: intranetMenuTotal, error: error);
+            return (intranetDetalleElementoTotal: intranetDetalleElementoTotal, error: error);
         }
     }
 }

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
@@ -91,7 +92,24 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             {
                 mensaje = exp.Message + ",Llame Administrador";
             }
-            return Json(new { data = listaActividades.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            var resultData = new
+            {
+                data = listaActividades.ToList(),
+                respuesta = respuesta,
+                mensaje = mensaje,
+                mensajeconsola = mensajeConsola
+            };
+
+
+            var result = new ContentResult
+            {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return result;
         }
 
         [HttpPost]
