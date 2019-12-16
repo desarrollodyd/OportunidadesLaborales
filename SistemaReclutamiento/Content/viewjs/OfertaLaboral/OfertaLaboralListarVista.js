@@ -9,7 +9,7 @@
         $('#cborangoFecha').select2();
         $("#img_layout_post").attr("src", "data:image/gif;base64," + rutaImage);
         selectResponse({
-            url: "Ubigeo/UbigeoListarPaisesJson",
+            url: "Ubigeo/UbigeoListarPaisPeruJson",
             select: "cboPais",
             campoID: "ubi_pais_id",
             CampoValor: "ubi_nombre",
@@ -17,15 +17,15 @@
             allOption: false,
             placeholder: "PAIS"
         });
-        selectResponse({
-            url: "SQL/TMEMPRListarJson",
-            select: "cbocodEmpresa",
-            campoID: "CO_EMPR",
-            CampoValor: "DE_NOMB",
-            select2: true,
-            allOption: false,
-            placeholder: "Seleccione Empresa"
-        });
+        //selectResponse({
+        //    url: "SQL/TMEMPRListarJson",
+        //    select: "cbocodEmpresa",
+        //    campoID: "CO_EMPR",
+        //    CampoValor: "DE_NOMB",
+        //    select2: true,
+        //    allOption: false,
+        //    placeholder: "Seleccione Empresa"
+        //});
     };
     var _ActivarTextBox = function () {
         $('#frm-Postular input').on('change', function () {
@@ -345,25 +345,25 @@
                 $("#cboDistrito").rules('remove', 'required');
             }
         });
-        $("#cbocodEmpresa").change(function () {
-            var CO_EMPR = $("#cbocodEmpresa option:selected").val();
-            selectResponse({
-                url: "SQL/TTPUES_TRABListarJson",
-                select: "cbocodCargo",
-                data: { CO_EMPR: CO_EMPR},
-                campoID: "CO_PUES_TRAB",
-                CampoValor: "DE_PUES_TRAB",
-                select2: true,
-                allOption: false,
-                placeholder: "Seleccione Puesto"
-            });
-        });
+        //$("#cbocodEmpresa").change(function () {
+        //    var CO_EMPR = $("#cbocodEmpresa option:selected").val();
+        //    selectResponse({
+        //        url: "SQL/TTPUES_TRABListarJson",
+        //        select: "cbocodCargo",
+        //        data: { CO_EMPR: CO_EMPR},
+        //        campoID: "CO_PUES_TRAB",
+        //        CampoValor: "DE_PUES_TRAB",
+        //        select2: true,
+        //        allOption: false,
+        //        placeholder: "Seleccione Puesto"
+        //    });
+        //});
 
         $(document).on("click", ".btn_cancelar", function (e) {
             $("#ola_nombre").val("");
             $("#cborangoFecha").val("");
             selectResponse({
-                url: "Ubigeo/UbigeoListarPaisesJson",
+                url: "Ubigeo/UbigeoListarPaisPeruJson",
                 select: "cboPais",
                 campoID: "ubi_pais_id",
                 CampoValor: "ubi_nombre",
@@ -384,20 +384,20 @@
                 $('#cboDistrito').select2('destroy');
             }
 
-            selectResponse({
-                url: "SQL/TMEMPRListarJson",
-                select: "cbocodEmpresa",
-                campoID: "CO_EMPR",
-                CampoValor: "DE_NOMB",
-                select2: true,
-                allOption: false,
-                placeholder: "Seleccione Empresa"
-            });
+            //selectResponse({
+            //    url: "SQL/TMEMPRListarJson",
+            //    select: "cbocodEmpresa",
+            //    campoID: "CO_EMPR",
+            //    CampoValor: "DE_NOMB",
+            //    select2: true,
+            //    allOption: false,
+            //    placeholder: "Seleccione Empresa"
+            //});
 
-            $("#cbocodCargo").html('<option value="">Seleccione Cargo</option>');
-            if ($('#cbocodCargo').hasClass('select2-hidden-accessible')) {
-                $('#cbocodCargo').select2('destroy');
-            }
+            //$("#cbocodCargo").html('<option value="">Seleccione Cargo</option>');
+            //if ($('#cbocodCargo').hasClass('select2-hidden-accessible')) {
+            //    $('#cbocodCargo').select2('destroy');
+            //}
         });
     };
 

@@ -34,6 +34,36 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), mensaje = errormensaje });
         }
+        [HttpPost]
+        public ActionResult UbigeoListarPaisPeruJson()
+        {
+            var errormensaje = "";
+            var lista = new List<UbigeoEntidad>();
+            try
+            {
+                lista = ubigeobl.UbigeoListarPaisesJson().Where(x=>x.ubi_pais_id=="PE").ToList();
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult UbigeoListarTodoslosPaisesJson()
+        {
+            var errormensaje = "";
+            var lista = new List<UbigeoEntidad>();
+            try
+            {
+                lista = ubigeobl.UbigeoListarTodoslosPaisesJson();
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), mensaje = errormensaje });
+        }
 
         [HttpPost]
         public ActionResult UbigeoListarDepartamentosporPaisJson(string ubi_pais_id)
@@ -43,6 +73,10 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarDepartamentosporPaisJson(ubi_pais_id);
+                foreach (var m in lista) {
+                    m.ubi_nombre = m.ubi_nombre.Replace("DEPARTAMENTO", "");
+                    m.ubi_nombre.Trim();
+                }
             }
             catch (Exception exp)
             {

@@ -45,7 +45,8 @@ namespace SistemaReclutamiento.Models
                                         pos_familia_amigos,
                                         pos_fam_ami_desc,
                                         pos_trabajo_pj,
-                                        pos_trab_pj_desc
+                                        pos_trab_pj_desc,
+pos_trab_otra_empresa
 	                                        FROM gestion_talento.gdt_per_postulante
 	                                  
                                             where fk_usuario=@p0;";
@@ -88,6 +89,7 @@ namespace SistemaReclutamiento.Models
                                 postulante.pos_fam_ami_desc = ManejoNulos.ManageNullStr(dr["pos_fam_ami_desc"]);
                                 postulante.pos_trabajo_pj = ManejoNulos.ManegeNullBool(dr["pos_trabajo_pj"]);
                                 postulante.pos_trab_pj_desc = ManejoNulos.ManageNullStr(dr["pos_trab_pj_desc"]);
+                                postulante.pos_trab_otra_empresa = ManejoNulos.ManageNullStr(dr["pos_trab_otra_empresa"]);
 
                             }
                         }
@@ -127,7 +129,8 @@ namespace SistemaReclutamiento.Models
                                         pos_familia_amigos,
                                         pos_fam_ami_desc,
                                         pos_trabajo_pj,
-                                        pos_trab_pj_desc
+                                        pos_trab_pj_desc,
+pos_trab_otra_empresa
 	                                        FROM gestion_talento.gdt_per_postulante	                                  
                                             where pos_id=@p0;";
             try
@@ -169,6 +172,7 @@ namespace SistemaReclutamiento.Models
                                 postulante.pos_fam_ami_desc = ManejoNulos.ManageNullStr(dr["pos_fam_ami_desc"]);
                                 postulante.pos_trabajo_pj = ManejoNulos.ManegeNullBool(dr["pos_trabajo_pj"]);
                                 postulante.pos_trab_pj_desc = ManejoNulos.ManageNullStr(dr["pos_trab_pj_desc"]);
+                                postulante.pos_trab_otra_empresa = ManejoNulos.ManageNullStr(dr["pos_trab_otra_empresa"]);
                             }
                         }
                     }
@@ -300,7 +304,8 @@ namespace SistemaReclutamiento.Models
                         pos_familia_amigos=@p4,
                         pos_fam_ami_desc=@p5,
                         pos_trabajo_pj=@p6,
-                        pos_trab_pj_desc=@p7
+                        pos_trab_pj_desc=@p7,
+                        pos_trab_otra_empresa=@p9
  	                    WHERE pos_id=@p8;";
             try
             {
@@ -317,6 +322,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManegeNullBool(postulante.pos_trabajo_pj));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(postulante.pos_trab_pj_desc));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(postulante.pos_id));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(postulante.pos_trab_otra_empresa));
                     query.ExecuteNonQuery();
                     response = true;
                 }

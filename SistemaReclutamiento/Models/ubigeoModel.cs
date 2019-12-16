@@ -26,8 +26,9 @@ namespace SistemaReclutamiento.Models
                                 ubi_distrito_id, 
                                 ubi_nombre, 
                                 ubi_estado
-	                                FROM marketing.cpj_ubigeo
-                                where ubi_departamento_id=@p0 and ubi_estado='A';";
+	                            FROM marketing.cpj_ubigeo
+                                where ubi_departamento_id=@p0 and ubi_estado='A'
+                                order by ubi_nombre asc;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -61,6 +62,54 @@ namespace SistemaReclutamiento.Models
             }
             return lista;
         }
+
+        public List<UbigeoEntidad> UbigeoListarTodoslosPaisesJson()
+        {
+            List<UbigeoEntidad> lista = new List<UbigeoEntidad>();
+            string consulta = @"SELECT 
+                                ubi_id, 
+                                ubi_pais_id, 
+                                ubi_departamento_id, 
+                                ubi_provincia_id, 
+                                ubi_distrito_id, 
+                                ubi_nombre, 
+                                ubi_estado
+	                                FROM marketing.cpj_ubigeo
+                                where ubi_departamento_id=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", "0");
+                    using (var dr = query.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var ubigeo = new UbigeoEntidad
+                            {
+                                ubi_id = ManejoNulos.ManageNullInteger(dr["ubi_id"]),
+                                ubi_departamento_id = ManejoNulos.ManageNullStr(dr["ubi_departamento_id"]),
+                                ubi_distrito_id = ManejoNulos.ManageNullStr(dr["ubi_distrito_id"]),
+                                ubi_estado = ManejoNulos.ManageNullStr(dr["ubi_estado"]),
+                                ubi_pais_id = ManejoNulos.ManageNullStr(dr["ubi_pais_id"]),
+                                ubi_provincia_id = ManejoNulos.ManageNullStr(dr["ubi_provincia_id"]),
+                                ubi_nombre = ManejoNulos.ManageNullStr(dr["ubi_nombre"])
+                            };
+                            lista.Add(ubigeo);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+            }
+            return lista;
+        }
+
         public List<UbigeoEntidad> UbigeoListarDepartamentosporPaisJson(string id_pais) {
             List<UbigeoEntidad> lista = new List<UbigeoEntidad>();
             string consulta = @"SELECT 
@@ -75,7 +124,8 @@ namespace SistemaReclutamiento.Models
                                 where ubi_pais_id=@p0
                                 and ubi_provincia_id='0'
                                 and ubi_distrito_id='0'
-                                and ubi_departamento_id<>'0';";
+                                and ubi_departamento_id<>'0'
+                                order by ubi_nombre asc;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -125,7 +175,8 @@ namespace SistemaReclutamiento.Models
                                 where ubi_pais_id=@p0
                                 and ubi_provincia_id<>'0'
                                 and ubi_distrito_id='0'
-                                and ubi_departamento_id=@p1;";
+                                and ubi_departamento_id=@p1
+                                order by ubi_nombre asc;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -176,7 +227,8 @@ namespace SistemaReclutamiento.Models
                                 where ubi_pais_id=@p0
                                 and ubi_provincia_id=@p1
                                 and ubi_distrito_id<>'0'
-                                and ubi_departamento_id=@p2;";
+                                and ubi_departamento_id=@p2
+                                order by ubi_nombre asc;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

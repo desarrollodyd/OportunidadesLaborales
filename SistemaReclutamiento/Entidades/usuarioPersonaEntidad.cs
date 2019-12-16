@@ -19,7 +19,7 @@ namespace SistemaReclutamiento.Entidades
         public string per_apellido_pat { get; set; }
         public string per_apellido_mat { get; set; }
         public string per_correoelectronico { get; set; }
-        public DateTime per_fechanacimiento { get; set; }  
+        public DateTime per_fechanacimiento { get; set; }
         public string per_telefono { get; set; }
         public string per_celular { get; set; }
         public string per_sexo { get; set; }
@@ -53,6 +53,7 @@ namespace SistemaReclutamiento.Entidades
         public string pos_fam_ami_desc { get; set; }
         public bool pos_trabajo_pj { get; set; }
         public string pos_trab_pj_desc { get; set; }
+        public string pos_trab_otra_empresa {get;set;}
         //En que BD se encuentra el postulante en el formulario de Registro
         public string busqueda { get; set; }
     }

@@ -418,7 +418,8 @@ function selectResponse(obj) {
         selectVal: null,
         select2: false,
         allOption: false,
-        placeholder:"Seleccione"
+        placeholder: "Seleccione",
+        data_first:null
     }
 
     var opciones = $.extend({}, defaults, obj);
@@ -453,6 +454,9 @@ function selectResponse(obj) {
             if (datos.length > 0) {
                 if (opciones.allOption) {
                     $("#" + opciones.select).append('<option value="0">Todos</option>');
+                }
+                if (opciones.data_first != null) {
+                    $("#" + opciones.select).append('<option value="' + opciones.data_first.id + '" ' + (opciones.data_first.selected==true?'selected':'') + '>' + opciones.data_first.text + '</option>');
                 }
                 $.each(datos, function (index, value) {
                     var selected = "";

@@ -32,5 +32,7 @@ namespace SistemaReclutamiento.Entidades
         public string pos_fam_ami_desc { get; set; }
         public bool pos_trabajo_pj { get; set; }
         public string pos_trab_pj_desc { get; set; }
+
+        public string pos_trab_otra_empresa { get; set; }
     }
 }

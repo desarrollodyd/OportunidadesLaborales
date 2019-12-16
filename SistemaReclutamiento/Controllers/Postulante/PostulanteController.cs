@@ -123,7 +123,7 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = ex.Message;
                 return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
             }
-            postulante.pos_url_perfil = persona.pos_url_perfil;
+            //postulante.pos_url_perfil = persona.pos_url_perfil;
             postulante.pos_referido = persona.pos_referido;
             postulante.pos_nombre_referido = persona.pos_nombre_referido;
             postulante.pos_id = postulante.pos_id;
@@ -131,6 +131,7 @@ namespace SistemaReclutamiento.Controllers
             postulante.pos_fam_ami_desc = ManejoNulos.ManageNullStr( persona.pos_fam_ami_desc);
             postulante.pos_trabajo_pj = persona.pos_trabajo_pj;
             postulante.pos_trab_pj_desc = ManejoNulos.ManageNullStr(persona.pos_trab_pj_desc);
+            postulante.pos_trab_otra_empresa = ManejoNulos.ManageNullStr(persona.pos_trab_otra_empresa);
             try
             {
                 if (respuestaConsulta)

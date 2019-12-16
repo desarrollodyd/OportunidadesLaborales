@@ -103,7 +103,7 @@
                     var data = response.data;
                     var mensaje = response.mensaje;
                     selectResponse({
-                        url: "Ubigeo/UbigeoListarPaisesJson",
+                        url: "Ubigeo/UbigeoListarTodoslosPaisesJson",
                         select: "cboNacionalidad",
                         campoID: "ubi_pais_id",
                         CampoValor: "ubi_nombre",
@@ -118,7 +118,7 @@
         }
         else {
             selectResponse({
-                url: "Ubigeo/UbigeoListarPaisesJson",
+                url: "Ubigeo/UbigeoListarTodoslosPaisesJson",
                 select: "cboNacionalidad",
                 campoID: "ubi_pais_id",
                 CampoValor: "ubi_nombre",
@@ -129,7 +129,7 @@
 
         if (ubigeo.ubi_id > 0) {
             selectResponse({
-                url: "Ubigeo/UbigeoListarPaisesJson",
+                url: "Ubigeo/UbigeoListarPaisPeruJson",
                 select: "cboPais",
                 campoID: "ubi_pais_id",
                 CampoValor: "ubi_nombre",
@@ -174,7 +174,7 @@
         }
         else {
             selectResponse({
-                url: "Ubigeo/UbigeoListarPaisesJson",
+                url: "Ubigeo/UbigeoListarPaisPeruJson",
                 select: "cboPais",
                 campoID: "ubi_pais_id",
                 CampoValor: "ubi_nombre",

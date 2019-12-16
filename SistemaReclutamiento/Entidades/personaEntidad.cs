@@ -26,7 +26,6 @@ namespace SistemaReclutamiento.Entidades
         public DateTime per_fecha_act { get; set; }
         public int fk_cargo { get; set; }
         public string per_foto { get; set; }
-       
         //Datos de ubigeo
         public string ubi_id { get; set; }
         public string ubi_pais_id { get; set; }
