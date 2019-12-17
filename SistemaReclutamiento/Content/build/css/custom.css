@@ -328,7 +328,8 @@ html , body{
 }
 .nav_menu {
     float: left;
-    background: linear-gradient(#ad0707, #f50000), #500202;
+    /*background: linear-gradient(#ad0707, #f50000), #500202;*/
+    background:#ad0707;
     border-bottom: 1px solid #D9DEE4;
     margin-bottom: 10px;
     width: 100%;
@@ -797,7 +798,7 @@ a:focus {
 }
 .nav.side-menu > li.current-page,
 .nav.side-menu > li.active {
-    border-right: 5px solid #da6c6c;
+    border-right: 5px solid #ad0707;
 }
 .nav li.current-page {
     background: rgba(255, 255, 255, 0.05)
@@ -810,7 +811,8 @@ a:focus {
 }
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
-    background: linear-gradient(#ad0707, #f50000), #500202;
+    /*background: linear-gradient(#ad0707, #f50000), #500202;*/
+    background: #ad0707;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0
 }
 .navbar-brand,

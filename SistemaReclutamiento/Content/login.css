@@ -1207,4 +1207,9 @@ input.validation-invalid-label {
 .error p {
     color: #f00 !important;
 }
+.centrar {
+    position: absolute;
+    left: 32%;
+    /*right: 20%;*/
+}
 

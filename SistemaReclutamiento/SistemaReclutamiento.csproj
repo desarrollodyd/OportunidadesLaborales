@@ -4870,6 +4870,7 @@
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\Postulante\PostgradoController.cs" />
     <Compile Include="Controllers\Postulante\PostulanteController.cs" />
+    <Compile Include="Controllers\Postulante\PostulanteFavoritosController.cs" />
     <Compile Include="Controllers\Proveedor\ProveedorController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
@@ -4896,6 +4897,7 @@
     <Compile Include="Entidades\Postulante\EstIdiomaEntidad.cs" />
     <Compile Include="Entidades\Postulante\ExperienciaEntidad.cs" />
     <Compile Include="Entidades\Postulante\IdiomaEntidad.cs" />
+    <Compile Include="Entidades\Postulante\PostulanteFavoritosEntidad.cs" />
     <Compile Include="Entidades\Proveedor\CPCARTEntidad.cs" />
     <Compile Include="Entidades\Proveedor\CPPAGOEntidad.cs" />
     <Compile Include="Entidades\Proveedor\MenuEntidad.cs" />
@@ -4944,6 +4946,7 @@
     <Compile Include="Models\Postulante\EstIdiomaModel.cs" />
     <Compile Include="Models\Postulante\ExperienciaModel.cs" />
     <Compile Include="Models\Postulante\IdiomaModel.cs" />
+    <Compile Include="Models\Postulante\PostulanteFavoritosModel.cs" />
     <Compile Include="Models\Proveedor\MenuModel.cs" />
     <Compile Include="Models\Proveedor\MesaPartesCIAModel.cs" />
     <Compile Include="Models\Proveedor\ModuloModel.cs" />
@@ -5042,17 +5045,6 @@
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
-    <Folder Include="Views\IntranetActividades\" />
-    <Folder Include="Views\IntranetAplicativo\" />
-    <Folder Include="Views\IntranetDetalleElementoModal\" />
-    <Folder Include="Views\IntranetElementoModal\" />
-    <Folder Include="Views\IntranetElemento\" />
-    <Folder Include="Views\IntranetImagen\" />
-    <Folder Include="Views\IntranetMenu\" />
-    <Folder Include="Views\IntranetSaludosCumpleanios\" />
-    <Folder Include="Views\IntranetSeccion\" />
-    <Folder Include="Views\IntranetTipoElemento\" />
-    <Folder Include="Views\SQL\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

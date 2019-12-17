@@ -49,7 +49,6 @@
             refresh: false,
             callBackSuccess: function (response) {
                 CloseMessages();
-                console.log(response);
                 var data = response.data;
                 var respuesta = response.respuesta;
                 $("#ofertasContenido>.row").html("");
@@ -69,8 +68,8 @@
                                                                 '<div class="col-xs-12 bottom text-center">'+
                                                                      '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">'+
                                                                           '<p class="ratings" style="text-align: center;">'+
-                            '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY')+'</a>'+
-                                                                              '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>'+
+                            '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
+                            '<a class="favoritos" data-id="' + value.ola_id + '" href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
                                                                           '</p>'+
                                                                      '</div>'+
                                                                 '</div>'+
@@ -105,7 +104,6 @@
                     url: "Postulante/PostulantePostularJson",
                     data: JSON.stringify(data),
                     callBackSuccess: function (response) {
-                        console.log(response.data);
                     }
             });
             
@@ -174,7 +172,28 @@
                 }
             });
         });
-        
+        $(document).on('click', ".favoritos", function () {
+            var ola_id = $(this).data('id');
+            var dataForm = {
+                ola_id: ola_id,
+            };
+            var clase_fa = $(this).find("span");
+            if (clase_fa.hasClass("fa-star-o")) {
+                responseSimple({
+                    url: 'PostulanteFavoritos/PostulanteFavoritosInsertaJson',
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                        }
+                    },
+                })
+            }
+            else {
+                console.log("ya esta");
+            }
+       
+        });
 
     };
     var _componentes = function () {
@@ -186,7 +205,6 @@
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
-                    console.log(response);
                     CloseMessages();
                     var data = response.data;
                     var respuesta = response.respuesta;
@@ -208,7 +226,7 @@
                                 '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">' +
                                 '<p class="ratings" style="text-align: center;">' +
                                 '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
-                                '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
+                                '<a  class="favoritos" data-id="' + value.ola_id + '"href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
                                 '</p>' +
                                 '</div>' +
                                 '</div>' +
