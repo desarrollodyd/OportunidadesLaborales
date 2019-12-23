@@ -418,7 +418,7 @@ function selectResponse(obj) {
         selectVal: null,
         select2: false,
         allOption: false,
-        placeholder: "Seleccione",
+        placeholder: "SELECCIONE",
         data_first:null
     }
 
@@ -478,7 +478,6 @@ function selectResponse(obj) {
                 if (opciones.select2) {
                     $("#" + opciones.select).select2();
                 }
-                
             } else {
                 $("#" + opciones.select).removeAttr("disabled");
                 messageResponse({

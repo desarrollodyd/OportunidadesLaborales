@@ -1,6 +1,6 @@
 ﻿var PanelActividades = function () {
     var hoy = new Date();
-    var fecha_hoy = moment(hoy).format('DD-MM-YYYY hh:mm A');
+    var fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
 
     var _ListarActividades = function () {
 
@@ -62,7 +62,7 @@
                             data: "act_fecha",
                             title: "Fecha",
                             "render": function (value) {
-                                var fecha = moment(value).format('DD-MM-YYYY');
+                                var fecha = moment(value).format('YYYY-MM-DD');
                                 return fecha;
                             },
                             width: "120px",
@@ -114,7 +114,7 @@
     var _componentes = function () {
 
         $('#myDatepicker1').datetimepicker({
-            format: 'DD-MM-YYYY hh:mm A',
+            format: 'YYYY-MM-DD hh:mm A',
             ignoreReadonly: true,
             allowInputToggle: true,
         });
@@ -183,27 +183,32 @@
                 refresh: false,
                 callBackSuccess: function (response) {
                     //llenando datos en inputs
+                    console.log(response);
                     if (response.respuesta) {
                         var actividad = response.data;
+                        if (actividad.act_imagen != "") {
+                            var nombre_arr = actividad.act_imagen.split(".");
+                            $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
+                            $("#cvfecha").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
+                            $("#divCV").show();
+
+                            $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
+                            $("#img_ubicacion").val(actividad.img_ubicacion);
+                        }
+
+                        $("#tituloModalActividades").text("Detalle");
+                     
+                        $("#act_descripcion").val(actividad.act_descripcion);
+                        $("#act_fecha").val(moment(actividad.act_fecha).format('YYYY-MM-DD hh:mm A'));
+                        $("#act_estado").val(actividad.act_estado);
                         $("#act_id").val(actividad.act_id);
-                        $("#tituloModalActividades").text("Detalle ");
-                        $("#img_ubicacion").val(actividad.act_ubicacion);
-                        $("#spancv").html("");
-                        $("#spancv").append('<i class="fa fa-upload"></i>  Subir Icono');
+
 
                         $("#act_descripcion").prop('disabled', true);
                         $("#act_fecha").prop('disabled', true);
                         $("#act_imagen").prop('disabled', true);
                         $("#act_estado").prop('disabled', true);
-
-                        $("#act_descripcion").val(actividad.act_descripcion);
-                        $("#act_fecha").val(moment(actividad.act_fecha).format("DD-MM-YYYY hh:mm A"));
-                        $("#act_imagen").val(actividad.img_ubicacion);
-                        $("#act_estado").val(actividad.act_estado);
-                        $("#tituloIcono").text("Adjuntar Icono (Opcional)");
                         $(".btn-guardar").hide();
-
-                        $("#divCV").hide();
                         $("#modalFormulario").modal("show");
                     }
                 }
@@ -229,7 +234,7 @@
                         if (actividad.act_imagen != "") {
                             var nombre_arr = actividad.act_imagen.split(".");
                             $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
-                            $("#cvfecha").text("Fecha Subida: " + moment(actividad.act_fecha).format("DD-MM-YYYY hh:mm A"));
+                            $("#cvfecha").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
                             $("#divCV").show();
 
                             $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
@@ -240,7 +245,7 @@
                         $("#tituloIcono").text("Cambiar de Icono");
 
                         $("#act_descripcion").val(actividad.act_descripcion);
-                        $("#act_fecha").val(moment(actividad.act_fecha).format('DD-MM-YYYY hh:mm A'));
+                        $("#act_fecha").val(moment(actividad.act_fecha).format('YYYY-MM-DD hh:mm A'));
                         $("#act_estado").val(actividad.act_estado);
                         $("#act_id").val(actividad.act_id);
 

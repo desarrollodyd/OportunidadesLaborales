@@ -34,7 +34,7 @@ namespace SistemaReclutamiento.Models.Postulante
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(postulanteFavoritos.fk_oferta_laboral));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(postulanteFavoritos.posfav_estado));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManegeNullBool(postulanteFavoritos.posfav_notificar));
-                    //query.ExecuteNonQuery();
+                    query.ExecuteNonQuery();
                     response = true;
                 }
             }

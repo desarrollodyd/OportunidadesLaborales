@@ -10,6 +10,9 @@
                 $('.progress_wide>span>i').append(response.data + "%")
             }
         });
+        $('select option').each(function () {
+            $(this).text($(this).text().toUpperCase());
+        });
     }
     var _inicio = function () {
         $('#cbocondicionPostgrado').select2();

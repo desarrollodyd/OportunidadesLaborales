@@ -28,7 +28,7 @@ namespace SistemaReclutamiento.Controllers.Postulante
             postulanteFavoritos.posfav_notificar = true;
             bool idPostulanteFavoritoInsertado = false;
             string errormensaje = "";
-            bool response = false;
+            bool response = false; 
             claseError error = new claseError();
             try {
                 var favoritosTupla = postulanteFavoritosbl.IntranetPostulanteFavoritosInsertarJson(postulanteFavoritos);

@@ -767,7 +767,7 @@ a:focus {
     border-radius: 50%
 }
 .nav-md ul.nav.child_menu li:after {
-    border-left: 1px solid #880404;
+    border-left: 1px solid #425668;
     bottom: 0;
     content: "";
     left: 27px;
@@ -801,13 +801,15 @@ a:focus {
     border-right: 5px solid #ad0707;
 }
 .nav li.current-page {
-    background: rgba(255, 255, 255, 0.05)
+    background: #f89797;
+    /*background: rgba(255, 255, 255, 0.05)*/
 }
 .nav li li li.current-page {
-    background: none
+    background: none;
 }
 .nav li li.current-page a {
-    color: #000
+    color: #000;
+    /*background: #f89797;*/
 }
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
