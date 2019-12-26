@@ -3911,6 +3911,7 @@
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Login\LoginProveedor.js" />
     <Content Include="Content\viewjs\menuProveedor.js" />
+    <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarFavoritosVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\CambiarPasswordVista.js" />
@@ -5030,6 +5031,7 @@
     <Content Include="Views\Shared\_LoginIntranetPJ.cshtml" />
     <Content Include="Views\IntranetPJ\IntranetPJLogin.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJAdminLogin.cshtml" />
+    <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisFavoritosVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

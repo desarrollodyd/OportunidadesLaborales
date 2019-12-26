@@ -42,6 +42,13 @@
                 if (respuesta) {
                     
                     $.each(data, function (index, value) {
+                        var span = '';
+                        if (value.es_favorito) {
+                            span += 'fa fa-star';
+                        }
+                        else {
+                            span += 'fa fa-star-o';
+                        }
                         $("#ofertasContenido").append('<div class="col-md-4 col-sm-4 col-xs-12"><div class="profile_details">' +
                             '<div class="well profile_view">' +
                             '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">' +
@@ -55,8 +62,8 @@
                             '<div class="col-xs-12 bottom text-center">' +
                             '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">' +
                             '<p class="ratings" style="text-align: center;">' +
-                            '<a>Publicado el'+moment(value.ola_fecha_pub).format('DD/MM/YYYY')+'</a>' +
-                            '<a href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
+                            '<a>Publicado el' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
+                            '<a href="#" style="float: right;"><span class="' + span + '" style="color:#fff000"></span></a>' +
                             '</p>' +
                             '</div>' +
                             '</div>' +

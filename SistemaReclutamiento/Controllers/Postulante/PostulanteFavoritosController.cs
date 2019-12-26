@@ -55,5 +55,34 @@ namespace SistemaReclutamiento.Controllers.Postulante
             }
             return Json(new { respuesta = response, mensaje = errormensaje, data = idPostulanteFavoritoInsertado });
         }
+        [HttpPost]
+        public ActionResult PostulanteFavoritosEliminarJson(int ola_id) {
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            int fk_oferta_laboral = ola_id;
+            int fk_postulante = postulante.pos_id;
+            bool postulanteFavoritoEliminado = false;
+            string errormensaje = "";
+            bool response = false;
+            claseError error = new claseError();
+            try
+            {
+                var postulanteFavoritosTupla = postulanteFavoritosbl.IntranetPostulanteFavoritosEliminarJson(fk_postulante, fk_oferta_laboral);
+                error = postulanteFavoritosTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = true;
+                    errormensaje = "Quitado de Favoritos";
+                    postulanteFavoritoEliminado = postulanteFavoritosTupla.idIntranetPostulanteFavoritosEliminado;
+                }
+                else {
+                    errormensaje = "No se puede quitar de favoritos";
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+
+            return Json(new { respuesta = response, mensaje = errormensaje, data = postulanteFavoritoEliminado });
+        }
     }
 }

@@ -54,6 +54,13 @@
                 $("#ofertasContenido>.row").html("");
                 if (respuesta) {
                     $.each(data, function (index, value) {
+                        var span = '';
+                        if (value.es_favorito) {
+                            span += 'fa fa-star';
+                        }
+                        else {
+                            span += 'fa fa-star-o';
+                        }
                         $("#ofertasContenido>.row").append('<div class=col-md-4 col-sm-4 col-xs-12"><div class="profile_details">'+
                                                             '<div class="well profile_view">'+
                                                                '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">'+
@@ -69,7 +76,7 @@
                                                                      '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">'+
                                                                           '<p class="ratings" style="text-align: center;">'+
                             '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
-                            '<a class="favoritos" data-id="' + value.ola_id + '" href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
+                            '<a class="favoritos" data-id="' + value.ola_id + '" href="#" style="float: right;"><span class="' + span + '" style="color:#fff000"></span></a>' +
                                                                           '</p>'+
                                                                      '</div>'+
                                                                 '</div>'+
@@ -185,12 +192,24 @@
                     data: JSON.stringify(dataForm),
                     callBackSuccess: function (response) {
                         if (response.respuesta) {
+                            clase_fa.removeClass('fa-star-o');
+                            clase_fa.addClass('fa-star');
                         }
                     },
                 })
             }
             else {
-                console.log("ya esta");
+                responseSimple({
+                    url: 'PostulanteFavoritos/PostulanteFavoritosEliminarJson',
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            clase_fa.removeClass('fa-star');
+                            clase_fa.addClass('fa-star-o');
+                        }
+                    },
+                })
             }
        
         });
@@ -211,6 +230,13 @@
                     $("#ofertasContenido>.row").html("");
                     if (respuesta) {
                         $.each(data, function (index, value) {
+                            var span = '';
+                            if (value.es_favorito) {
+                                span += 'fa fa-star';
+                            }
+                            else {
+                                span += 'fa fa-star-o';
+                            }
                             $("#ofertasContenido>.row").append('<div class=col-md-4 col-sm-4 col-xs-12"><div class="profile_details">' +
                                 '<div class="well profile_view">' +
                                 '<div class="col-md-12 col-sm-12 col-xs-12" style="text-align: center;">' +
@@ -226,7 +252,7 @@
                                 '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">' +
                                 '<p class="ratings" style="text-align: center;">' +
                                 '<a>Publicado el ' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
-                                '<a  class="favoritos" data-id="' + value.ola_id + '"href="#" style="float: right;"><span class="fa fa-star-o"></span></a>' +
+                                '<a  class="favoritos" data-id="' + value.ola_id + '"href="#" style="float: right;"><span class="' + span + '" style="color:#fff000"></span></a>' +
                                 '</p>' +
                                 '</div>' +
                                 '</div>' +

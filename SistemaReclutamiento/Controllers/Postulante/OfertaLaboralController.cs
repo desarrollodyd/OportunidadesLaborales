@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Utilitarios;
+using SistemaReclutamiento.Models.Postulante;
+using SistemaReclutamiento.Entidades.Postulante;
 
 namespace SistemaReclutamiento.Controllers
 {
@@ -15,6 +17,7 @@ namespace SistemaReclutamiento.Controllers
         OfertaLaboralModel ofertaLaboralbl = new OfertaLaboralModel();
         DetPreguntaOLAModel detpreguntabl = new DetPreguntaOLAModel();
         DetRespuestaOLAModel detrespuestabl = new DetRespuestaOLAModel();
+        PostulanteFavoritosModel postulantefavoritosbl = new PostulanteFavoritosModel();
         // GET: OfertaLaboral
         public ActionResult OfertaLaboralListarVista()
         {
@@ -24,23 +27,46 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
-
+        public ActionResult OfertaLaboralListarMisFavoritosVista()
+        {
+            return View();
+        }
         [HttpPost]
         public ActionResult OfertaLaboralIndexListarJson()
         {
             claseError error = new claseError();
             // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            PostulanteFavoritosEntidad postulanteFavorito = new PostulanteFavoritosEntidad();
             bool respuestaConsulta = false;
             string errormensaje = "";
             var lista = new List<OfertaLaboralEntidad>();
+            var listaFavoritos = new List<PostulanteFavoritosEntidad>();
             try
             {
+                //Listado de Ofertas
                 var tuplalista = ofertaLaboralbl.OfertaLaboralListarVistaIndexJson(postulante.pos_id);
                 lista = tuplalista.lista;
                 error = tuplalista.error;
                 if (!error.Key.Equals(string.Empty)) {
                     return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                //verificar si son Favoritos
+                var tuplaFavoritos = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
+                listaFavoritos = tuplaFavoritos.lista;
+                error = tuplaFavoritos.error;
+                if (!error.Key.Equals(string.Empty)) {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                foreach (var m in lista) {
+                    //listadoXObjeto.Any(x => x.atributoObjeto == xDatoBuscado)
+                    if (listaFavoritos.Any(x => x.fk_oferta_laboral == m.ola_id))
+                    {
+                        m.es_favorito = true;
+                    }
+                    else {
+                        m.es_favorito = false;
+                    }
                 }
                 errormensaje = "Listando Ofertas";
                 respuestaConsulta = true;
@@ -57,7 +83,9 @@ namespace SistemaReclutamiento.Controllers
         {
             claseError error = new claseError();
             // string ola_cod_cargo = Convert.ToString(Request.Form["ola_cod_cargo"]); 
+            PostulanteFavoritosEntidad postulanteFavorito = new PostulanteFavoritosEntidad();
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            var listaFavoritos = new List<PostulanteFavoritosEntidad>();
             UbigeoModel ubigeobl = new UbigeoModel();
             UbigeoEntidad ubigeo = new UbigeoEntidad();
             DateTime fecha_fin = DateTime.Now;
@@ -110,12 +138,34 @@ namespace SistemaReclutamiento.Controllers
             reporte.pos_id = postulante.pos_id;
             try
             {
+                //Listando Ofertas
                 var tuplalista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
                 lista = tuplalista.lista;
                 error = tuplalista.error;
                 if (!error.Key.Equals(string.Empty))
                 {
                     return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                //Ver si son Favoritos
+                //verificar si son Favoritos
+                var tuplaFavoritos = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
+                listaFavoritos = tuplaFavoritos.lista;
+                error = tuplaFavoritos.error;
+                if (!error.Key.Equals(string.Empty))
+                {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                foreach (var m in lista)
+                {
+                    //listadoXObjeto.Any(x => x.atributoObjeto == xDatoBuscado)
+                    if (listaFavoritos.Any(x => x.fk_oferta_laboral == m.ola_id))
+                    {
+                        m.es_favorito = true;
+                    }
+                    else
+                    {
+                        m.es_favorito = false;
+                    }
                 }
                 errormensaje = "Listando Ofertas";
                 respuestaConsulta = true;
@@ -140,6 +190,7 @@ namespace SistemaReclutamiento.Controllers
             string errormensaje = "";
             reporte.busqueda = string.Empty;
             var lista = new List<OfertaLaboralEntidad>();
+            var listaFavoritos = new List<PostulanteFavoritosEntidad>();
             if (reporte.ubi_pais_id != string.Empty && reporte.ubi_pais_id != null)
             {
                 if (reporte.ubi_departamento_id != string.Empty && reporte.ubi_departamento_id != null)
@@ -190,6 +241,27 @@ namespace SistemaReclutamiento.Controllers
                 if (!error.Key.Equals(string.Empty))
                 {
                     return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                //Ver si son Favoritos
+                //verificar si son Favoritos
+                var tuplaFavoritos = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
+                listaFavoritos = tuplaFavoritos.lista;
+                error = tuplaFavoritos.error;
+                if (!error.Key.Equals(string.Empty))
+                {
+                    return Json(new { mensaje = error.Value, respuesta = false });
+                }
+                foreach (var m in lista)
+                {
+                    //listadoXObjeto.Any(x => x.atributoObjeto == xDatoBuscado)
+                    if (listaFavoritos.Any(x => x.fk_oferta_laboral == m.ola_id))
+                    {
+                        m.es_favorito = true;
+                    }
+                    else
+                    {
+                        m.es_favorito = false;
+                    }
                 }
                 errormensaje = "Listando Postulaciones";
                 respuestaConsulta = true;
@@ -272,6 +344,32 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { data = detallepregunta,oferta=ofertaLaboral, mensaje = errormensaje, respuesta = response });
+        }
+        [HttpPost]
+        public ActionResult OfertaLaboralListarMisFavoritosJson() {
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            List<PostulanteFavoritosEntidad> favoritos = new List<PostulanteFavoritosEntidad>();
+            List<OfertaLaboralEntidad> ofertas = new List<OfertaLaboralEntidad>();
+
+            claseError error = new claseError();
+            var errormensaje = "";
+            var response = false;
+            try {
+                //Listamos los favoritos
+                var favoritosTupla = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
+                error = favoritosTupla.error;
+                if (error.Value.Equals(string.Empty)) {
+                    favoritos = favoritosTupla.lista;
+                }
+                else
+                {
+                    return Json(new { mensaje = error.Value, respuesta = response });
+                }
+            } catch (Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { data = ofertas, mensaje = errormensaje, respuesta = response });
         }
     }
 }
