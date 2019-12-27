@@ -40,6 +40,7 @@
     {
         @RenderSection("AddToHead", required: false)
     }
+ 
 </head>
 <body>
     <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
@@ -340,7 +341,7 @@
         </footer>
     </div>
 
-    <div id="modalCumple" style="display: none;">
+    <div id="modalCumple" class="modal_cumple">
         <div id="contenido_cumple_modal">
             <section id="singlepost">
                 <header>

@@ -63,7 +63,7 @@
                             '<div class="cold-md-12 col-xs-12 col-sm-12 emphasis">' +
                             '<p class="ratings" style="text-align: center;">' +
                             '<a>Publicado el' + moment(value.ola_fecha_pub).format('DD/MM/YYYY') + '</a>' +
-                            '<a href="#" style="float: right;"><span class="' + span + '" style="color:#fff000"></span></a>' +
+                            '<a class="favoritos" data-id="' + value.ola_id + '" href="#" style="float: right;"><span class="' + span + '" style="color:#fff000"></span></a>' +
                             '</p>' +
                             '</div>' +
                             '</div>' +
@@ -289,6 +289,42 @@
             //    $('#cbocodCargo').select2('destroy');
             //}
         });
+        /*Favoritos*/
+        $(document).on('click', ".favoritos", function () {
+            var ola_id = $(this).data('id');
+            var dataForm = {
+                ola_id: ola_id,
+            };
+            var clase_fa = $(this).find("span");
+            if (clase_fa.hasClass("fa-star-o")) {
+                responseSimple({
+                    url: 'PostulanteFavoritos/PostulanteFavoritosInsertaJson',
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            clase_fa.removeClass('fa-star-o');
+                            clase_fa.addClass('fa-star');
+                        }
+                    },
+                })
+            }
+            else {
+                responseSimple({
+                    url: 'PostulanteFavoritos/PostulanteFavoritosEliminarJson',
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            clase_fa.removeClass('fa-star');
+                            clase_fa.addClass('fa-star-o');
+                        }
+                    },
+                })
+            }
+
+        });
+        /*End Favoritos*/
     };
 
     var _metodos = function () {

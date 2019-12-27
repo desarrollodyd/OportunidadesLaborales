@@ -134,7 +134,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                             }
                             
                             intranetActividades.Add(m);
-                            listaNoticias.Add(Tuple.Create( m.act_fecha,  m.act_descripcion, "Actividad: "));
+                            listaNoticias.Add(Tuple.Create( m.act_fecha,  m.act_descripcion.ToUpper(), "ACTIVIDAD: "));
                         }
                     }
                 }
@@ -151,7 +151,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     if (listaPersona.Count > 0) {
                         foreach (var m in listaPersona) {
                             string descripcionNoticia = m.per_nombre + " " + m.per_apellido_pat + " " + m.per_apellido_mat;
-                            listaNoticias.Add(Tuple.Create(m.per_fechanacimiento, descripcionNoticia, "Cumpleaños: "));
+                            listaNoticias.Add(Tuple.Create(m.per_fechanacimiento, descripcionNoticia.ToUpper(), "CUMPLEAÑOS: "));
                         }
                     }
                 }

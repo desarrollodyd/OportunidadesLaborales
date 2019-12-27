@@ -46,7 +46,6 @@
                     $("#menuIntranet").html(appendMenuLateral);
                     $("#barnav").html(appendMenuPrincipal);
                 }
-                console.log(dataSaludos)
                 if (dataSaludos.length > 0) {
                     $("#saludos_li").html("");
                     var appendSaludos = "";
@@ -80,7 +79,6 @@
 
                 //Creacion de Aside Para Actividades
                 if (dataActividades.length > 0) {
-                    console.log(dataActividades)
                     $("#actividadesMes").html("");
                     var appendActividades = '';
                     appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
@@ -99,7 +97,7 @@
                     $.each(listaNoticias, function (index, noticia) {
                         var fechaNoticiaBD = new Date(moment(noticia.Item1).format('YYYY-MM-DD'));
                         fechaNoticiaBD.setMinutes(fechaNoticiaBD.getMinutes() + fechaNoticiaBD.getTimezoneOffset());
-                        var fechaNoticia = (fechaNoticiaBD.getDate()) + " de " + meses[fechaNoticiaBD.getMonth()];
+                        var fechaNoticia = (fechaNoticiaBD.getDate()) + " DE " + meses[fechaNoticiaBD.getMonth()];
                         var comentarioExtra = noticia.Item3;
                         appendNoticias += '<li><span>' + fechaNoticia + '</span><a href="#">' + comentarioExtra + noticia.Item2 + '</a></li>';
                     })
@@ -120,7 +118,6 @@
                         var appendElementos = "";
                         if (elementos.length > 0) {
                             $.each(elementos, function (index, elemento) {
-
                                 if (elemento.fk_tipo_elemento == 1) {
                                     appendElementos += '<header>' +
                                         '<div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>' +
@@ -604,7 +601,6 @@
         });
 
         $(document).on('click', 'li.modal_o', function () {
-
             var dataseccion = $(this).data("sece");
             var formattedJson = JSON.stringify(dataseccion);
             var my_object = JSON.parse(formattedJson);
@@ -1049,7 +1045,6 @@
                     });
                 }                
             }
-            console.log(my_object.length); 
         });
         
         $(document).on('click', 'li._cumple', function () {
@@ -1058,6 +1053,8 @@
             $('#fk_persona_saludada').val(per_id);
             $("#fk_persona_que_saluda").val(persona.per_id);
             $("#direccion_envio").val($(this).data("direccionenvio"));
+            $("#modalCumple").css('display', 'block');
+            //$('#modalCumple').show();
             $.pgwModal({
                 target: '#modalCumple',
                 title:'Cumpleaños de '+ nombrecumpleaniero,
@@ -1069,6 +1066,11 @@
         //        console.log($("#mensaje").val());
         //    });
         //});
+        //window.onclick = function (event) {
+        //    if (event.target == $("#modalCumple")) {
+        //        $("#modalCumple").css('display', 'none');
+        //    }
+        //}
         $(document).on('click', '.btn_enviar_saludo', function () {
             var filepath = $(".select_img>img").attr('src');
             var imagen = filepath.replace(/^.*[\\\/]/, '');
@@ -1101,8 +1103,8 @@
             }
         });
     
-        //$(document).on('keyup','#mensaje_saludo2',function (e) {
-        //    var text_length = $('#mensaje_saludo2').val();
+        //$(document).on('keyup','#sld_cuerpo',function (e) {
+        //    var text_length = $('#sld_cuerpo').val();
         //    console.log(text_length);
         //    e.preventDefault();
         //});

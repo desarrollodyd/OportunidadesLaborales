@@ -179,6 +179,10 @@
                 }
             });
         });
+       
+
+    };
+    var _componentes = function () {
         $(document).on('click', ".favoritos", function () {
             var ola_id = $(this).data('id');
             var dataForm = {
@@ -211,12 +215,8 @@
                     },
                 })
             }
-       
+
         });
-
-    };
-    var _componentes = function () {
-
         $(document).on("click", ".btn_filtrar", function (e) {
             var dataForm = $('#frmOfertaLaboral-form').serializeFormJSON();
             responseSimple({

@@ -1098,7 +1098,7 @@ input.button:focus {
 }
 
 select {
-    color: #757575 !important;
+    color: #fff !important;
 }
 
 option {
@@ -1229,5 +1229,20 @@ input.validation-invalid-label {
 
 :-ms-input-placeholder { /* Internet Explorer 10+ */
     color: #fff;
+}
+.form-control-feedback {
+    position: absolute;
+    padding: 12px 0 0 0;
+    pointer-events: none;
+    /**/
+    /*padding: .8em 2em 0px 0;*/
+    background: transparent;
+    border: 0;
+    color: #fff !important;
+    opacity:1;
+    /**/
+}
+.input {
+    padding-left: 10px !important;
 }
 

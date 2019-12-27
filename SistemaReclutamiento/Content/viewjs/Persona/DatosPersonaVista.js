@@ -15,6 +15,7 @@
         $('select option').each(function () {
             $(this).text($(this).text().toUpperCase());
         });
+        $("#cboPais").prop("disabled", true);
     }
     var _inicio = function () {
         //$('#porcentajeProgreso').css('width', 80 + '%');
@@ -33,13 +34,14 @@
         $("#per_apellido_mat").val(persona.per_apellido_mat);
         $("#per_numdoc").val(persona.per_numdoc);
         $('#per_fechanacimiento').datetimepicker({
-            format: 'DD/MM/YYYY',
+            format: 'YYYY/MM/DD',
             ignoreReadonly: true,
             allowInputToggle: true
         });
-        var fecha = moment(persona.per_fechanacimiento).format('DD/MM/YYYY');
-        if (fecha != "31/12/1752") {
-            $("#per_fechanacimiento").val(moment(persona.per_fechanacimiento).format('DD/MM/YYYY'));
+        var fecha = moment(persona.per_fechanacimiento).format('YYYY/MM/DD');
+        console.log(fecha);
+        if (fecha != "0000/12/31") {
+            $("#per_fechanacimiento").val(moment(persona.per_fechanacimiento).format('YYYY/MM/DD'));
         }
         $("#per_telefono").val(persona.per_telefono);
 
@@ -139,7 +141,8 @@
                 CampoValor: "ubi_nombre",
                 selectVal: ubigeo.ubi_pais_id,
                 select2: true,
-                allOption: false
+                allOption: false,
+                disabled:false,
             });
             selectResponse({
                 url: "Ubigeo/UbigeoListarDepartamentosporPaisJson",
@@ -173,8 +176,6 @@
                 select2: true,
                 allOption: false
             });
-
-          
         }
         else {
             selectResponse({
@@ -183,7 +184,8 @@
                 campoID: "ubi_pais_id",
                 CampoValor: "ubi_nombre",
                 select2: true,
-                allOption: false
+                allOption: false,
+                disabled:false,
             });
         }
     };

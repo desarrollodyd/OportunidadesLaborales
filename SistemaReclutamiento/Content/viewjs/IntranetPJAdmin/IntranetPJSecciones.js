@@ -291,6 +291,7 @@
                     refresh: false,
                     callBackSuccess: function (response) {
                         var data = response.data;
+                        console.log(data);
                         if (data.length > 0) {
                             htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Detalle de Elemento</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
                             htmlTags += '<th>Detalle</th>';
@@ -304,7 +305,7 @@
                                 var spanAgregarElementoModal = '';
                                 var spanVerDetalleElemento = '';
                                 if (value.fk_seccion_elemento > 0) {
-                                    spanAgregarElementoModal = '<a href="#" class="tooltip-success btn-nuevo-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-idfkseccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo Detalle Elemento"><span class="green"><i class="ace-icon fa fa-filter bigger-120"></i></span></a>';
+                                    spanAgregarElementoModal = '<a href="#" class="tooltip-success btn-nuevo-elemento-modal" data-seccionelemento="' + value.fk_seccion_elemento + '" data-idfkseccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo Detalle Elemento"><span class="green"><i class="ace-icon fa fa-filter bigger-120"></i></span></a>';
 
                                     spanVerDetalleElemento += '<tr class="det-elemento' + value.detel_id + '"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
                                 }

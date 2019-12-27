@@ -349,7 +349,8 @@ namespace SistemaReclutamiento.Controllers
         public ActionResult OfertaLaboralListarMisFavoritosJson() {
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
             List<PostulanteFavoritosEntidad> favoritos = new List<PostulanteFavoritosEntidad>();
-            List<OfertaLaboralEntidad> ofertas = new List<OfertaLaboralEntidad>();
+            List<OfertaLaboralEntidad> listaofertas = new List<OfertaLaboralEntidad>();
+            OfertaLaboralEntidad oferta = new OfertaLaboralEntidad();
 
             claseError error = new claseError();
             var errormensaje = "";
@@ -365,11 +366,31 @@ namespace SistemaReclutamiento.Controllers
                 {
                     return Json(new { mensaje = error.Value, respuesta = response });
                 }
+                //Listar Ofertas que sean favoritas
+                foreach (var m in favoritos) {
+                    var ofertaTupla = ofertaLaboralbl.OfertaLaboralIdObtenerJson(m.fk_oferta_laboral);
+                    error = ofertaTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        listaofertas.Add(ofertaTupla.ofertalaboral);
+                    }
+                    else {
+                        return Json(new { mensaje = error.Value, respuesta = response });
+                    }
+                }
+                //verificar si ya ha postulado a esa oferta
+                var postulacionesTupla = ofertaLaboralbl.PostulanteListarPostulacionesJson(postulante.pos_id);
+                foreach (var m in listaofertas) {
+                    if (postulacionesTupla.Any(x => x.ola_id == m.ola_id)) {
+                        m.ya_postulo = true;
+                    }
+                }
+                response = true;
             } catch (Exception ex)
             {
                 errormensaje = ex.Message;
             }
-            return Json(new { data = ofertas, mensaje = errormensaje, respuesta = response });
+            return Json(new { data = listaofertas, mensaje = errormensaje, respuesta = response });
         }
     }
 }
