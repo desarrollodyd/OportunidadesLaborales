@@ -61,13 +61,13 @@
         $("#cboSexo").val(persona.per_sexo);
         $("#cbotipoDocumento").val(persona.per_tipodoc);
         $("#pos_celular").val(postulante.pos_celular);
-        $("#cbocondicionViv").val(postulante.pos_condicion_viv);
+        $("#cbocondicionViv").val(postulante.pos_condicion_viv.toUpperCase());
         $("#pos_direccion").val(postulante.pos_direccion);
         $("#pos_url_perfil").val(postulante.pos_url_perfil);
-        $("#cbotipoCalle").val(postulante.pos_tipo_calle);
+        $("#cbotipoCalle").val(postulante.pos_tipo_calle.toUpperCase());
         $("#pos_numero_casa").val(postulante.pos_numero_casa);
-        $("#cbotipoCasa").val(postulante.pos_tipo_casa);
-        $("#cboestadoCivil").val(postulante.pos_estado_civil);
+        $("#cbotipoCasa").val(postulante.pos_tipo_casa.toUpperCase());
+        $("#cboestadoCivil").val(postulante.pos_estado_civil.toUpperCase());
         $("#cboBrevete").val(String(postulante.pos_brevete));
         $('#cbotipoDocumento').select2();
         $('#cboNacionalidad').select2();
