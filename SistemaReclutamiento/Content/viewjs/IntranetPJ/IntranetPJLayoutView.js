@@ -71,7 +71,8 @@
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
                         diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
-                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        var diaCumpleaniosModal = diaCumpleanios.getDate() + " de " + meses[diahoy.getMonth()];
+                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '" data-diacumple="' + diaCumpleaniosModal + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -84,7 +85,7 @@
                     appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
-                        appendActividades += '<li><a href="javascript:void(0);"><img src="data:image/gif;base64,' + actividad.act_imagen + '" /><p class="meta-date">' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A')+'</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
+                        appendActividades += '<li><a href="javascript:void(0);"><img src="data:image/gif;base64,' + actividad.act_imagen + '" class="img_title" /><p class="meta-date" >' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A')+'</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
                     });
                     appendActividades += '</ul></div >';
                     $("#actividadesMes").append(appendActividades);
@@ -1050,10 +1051,13 @@
         $(document).on('click', 'li._cumple', function () {
             var nombrecumpleaniero = $(this).find("h2.wtitle").html();
             var per_id = $(this).data("id");
+            var diaCumpleanios = $(this).data("diacumple");
+            var span = "Este " + diaCumpleanios + " celebraremos el cumpleaños de nuestro colaborador " + nombrecumpleaniero + ", acompáñanos a celebrarlo y saludarlo.";
             $('#fk_persona_saludada').val(per_id);
             $("#fk_persona_que_saluda").val(persona.per_id);
             $("#direccion_envio").val($(this).data("direccionenvio"));
-            $("#modalCumple").css('display', 'block');
+            $("#tituloCumpleanios").text(span);
+            //$("#modalCumple").css('display', 'block');
             //$('#modalCumple').show();
             $.pgwModal({
                 target: '#modalCumple',

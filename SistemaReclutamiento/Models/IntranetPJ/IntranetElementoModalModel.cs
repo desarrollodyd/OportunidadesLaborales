@@ -169,7 +169,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"INSERT INTO intranet.int_elemento_modal(
 	                            emod_titulo, emod_descripcion, emod_contenido, emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado)
 	                            VALUES ( @p0, @p1, @p2, @p3, @p5, @p6, @p7)
-                                            returning elem_id;";
+                                            returning emod_id;";
             claseError error = new claseError();
             try
             {

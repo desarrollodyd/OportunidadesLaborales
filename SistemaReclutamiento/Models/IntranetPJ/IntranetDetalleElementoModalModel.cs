@@ -163,8 +163,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetDetalleElementoModalInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento_Modal(
-	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal,fk_seccion_elemento)
-	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7);
+	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal)
+	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5)
                 returning detelm_id;";
             claseError error = new claseError();
             try
@@ -177,8 +177,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_nombre));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_extension));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_ubicacion));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
-                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
   
                     idIntranetDetalleElementoModalInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
@@ -250,6 +250,38 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
 
             return (intranetDetalleElementoModalEliminado: response, error: error);
+        }
+
+        public (int intranetDetalleElementoModalTotal, claseError error) IntranetDetalleElementoModalObtenerTotalRegistrosxElementoJson(int fk_elemento_modal)
+        {
+            int intranetDetalleElementoModalTotal = 0;
+            claseError error = new claseError();
+            string consulta = @"select count(*) as total from intranet.int_detalle_elemento_modal where fk_elemento_modal=@p0";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(fk_elemento_modal));
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                intranetDetalleElementoModalTotal = ManejoNulos.ManageNullInteger(dr["total"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetDetalleElementoModalTotal: intranetDetalleElementoModalTotal, error: error);
         }
     }
 }
