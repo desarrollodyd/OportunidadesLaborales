@@ -26,6 +26,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         PersonaModel personabl = new PersonaModel();
         IntranetSaludoCumpleaniosModel intranetSaludoCumpleaniosbl = new IntranetSaludoCumpleaniosModel();
         IntranetCPJLocalModel intranetCPJLocalbl = new IntranetCPJLocalModel();
+        SQLModel sqlbl = new SQLModel();
         //Acceso
         IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
         UsuarioModel usuariobl = new UsuarioModel();
@@ -485,6 +486,30 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult IntranetObtenerAreadeTrabajoxUsuarioJson(string dni) {
+            PersonaSqlEntidad personasql = new PersonaSqlEntidad();
+            claseError error = new claseError();
+            var errormensaje = "";
+            bool respuestaConsulta = false;
+            try {
+                var personaSQLTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(dni);
+                error = personaSQLTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    personasql = personaSQLTupla.persona;
+                    errormensaje = "Obteniendo Datos";
+                    respuestaConsulta = true;
+                }
+                else {
+                    errormensaje = error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+            return Json(new { data=personasql, respuesta = respuestaConsulta, mensaje = errormensaje });
         }
     }
 }

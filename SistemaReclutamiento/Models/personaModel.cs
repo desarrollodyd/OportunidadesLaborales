@@ -193,9 +193,10 @@ namespace SistemaReclutamiento.Models
                                 per_correoelectronico,  
                                 per_estado,   
                                 per_tipodoc,
-                                per_fecha_reg                              
+                                per_fecha_reg,
+                                fk_ubigeo
                                 )
-	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7)                                    
+	                            VALUES (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8)                                    
                                 returning per_id;";
             try
             {
@@ -211,6 +212,8 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p5", persona.per_estado);
                     query.Parameters.AddWithValue("@p6", persona.per_tipodoc);
                     query.Parameters.AddWithValue("@p7", persona.per_fecha_reg);
+                    query.Parameters.AddWithValue("@p8", persona.fk_ubigeo);
+
                     idPersonaInsertada = Int32.Parse(query.ExecuteScalar().ToString());
                
                     //response = true;
@@ -398,7 +401,8 @@ namespace SistemaReclutamiento.Models
                                     per_correoelectronico,
                                     per_apellido_mat,
                                     per_fechanacimiento ,
-									per_tipo
+									per_tipo,
+                                    per_numdoc
                                     from marketing.cpj_persona 
                                     where 
 									extract(day from per_fechanacimiento)>=extract(day from(select current_date))
@@ -429,6 +433,7 @@ namespace SistemaReclutamiento.Models
                                     per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]),
                                     per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]),
                                     per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]),
+                                    per_numdoc=ManejoNulos.ManageNullStr(dr["per_numdoc"])
                                 };
                                 personaLista.Add(persona);
                             }

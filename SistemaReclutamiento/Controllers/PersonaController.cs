@@ -149,6 +149,7 @@ namespace SistemaReclutamiento.Controllers
                     persona.per_estado = "P";
                     persona.per_tipodoc = datos.per_tipodoc;
                     persona.per_fecha_reg = DateTime.Now;
+                    persona.fk_ubigeo = 174;
                     respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
                     if (respuestaPersonaInsertada != 0)
                     {
@@ -254,6 +255,7 @@ namespace SistemaReclutamiento.Controllers
                     persona.per_estado = "P";
                     persona.per_tipodoc = datos.per_tipodoc;
                     persona.per_fecha_reg = DateTime.Now;
+                    persona.fk_ubigeo = 174;
                     respuestaPersonaInsertada = personabl.PersonaInsertarJson(persona);
                     if (respuestaPersonaInsertada != 0)
                     {

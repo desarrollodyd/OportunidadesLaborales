@@ -15,7 +15,6 @@
         $('select option').each(function () {
             $(this).text($(this).text().toUpperCase());
         });
-        $("#cboPais").prop("disabled", true);
     }
     var _inicio = function () {
         //$('#porcentajeProgreso').css('width', 80 + '%');
@@ -140,9 +139,10 @@
                 campoID: "ubi_pais_id",
                 CampoValor: "ubi_nombre",
                 selectVal: ubigeo.ubi_pais_id,
-                select2: true,
+                select2: false,
                 allOption: false,
-                disabled:false,
+                disabled: false,
+                readonly: true,
             });
             selectResponse({
                 url: "Ubigeo/UbigeoListarDepartamentosporPaisJson",
@@ -185,7 +185,8 @@
                 CampoValor: "ubi_nombre",
                 select2: true,
                 allOption: false,
-                disabled:false,
+                disabled: false,
+                readonly: true,
             });
         }
     };

@@ -72,7 +72,7 @@
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
                         diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
                         var diaCumpleaniosModal = diaCumpleanios.getDate() + " de " + meses[diahoy.getMonth()];
-                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '" data-diacumple="' + diaCumpleaniosModal + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '" data-diacumple="' + diaCumpleaniosModal + '" data-numdoc="' + cumpleanios.per_numdoc + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -1047,8 +1047,17 @@
                 }                
             }
         });
-        
+        // Get the modal
+        var modal = document.getElementById("modalCumple");
+
+        // Get the button that opens the modal
+        //var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
         $(document).on('click', 'li._cumple', function () {
+           
+            var per_numdoc = $(this).data("numdoc");
             var nombrecumpleaniero = $(this).find("h2.wtitle").html();
             var per_id = $(this).data("id");
             var diaCumpleanios = $(this).data("diacumple");
@@ -1057,24 +1066,25 @@
             $("#fk_persona_que_saluda").val(persona.per_id);
             $("#direccion_envio").val($(this).data("direccionenvio"));
             $("#tituloCumpleanios").text(span);
-            //$("#modalCumple").css('display', 'block');
-            //$('#modalCumple').show();
-            $.pgwModal({
-                target: '#modalCumple',
-                title:'Cumpleaños de '+ nombrecumpleaniero,
-                maxWidth: 800,
-            });
+            modal.style.display = "block";
+            modal.style.zIndex = 10000;
+            //responseSimple("")
+            ////$("#modalCumple").css('display', 'block');
+            ////$('#modalCumple').show();
+            //$.pgwModal({
+            //    target: '#modalCumple',
+            //    title:'Cumpleaños de '+ nombrecumpleaniero,
+            //    maxWidth: 800,
+            //});
         });
-        //$(document).bind('PgwModal::Open', function () {
-        //    $(".btn_enviar_saludo").click(function () {
-        //        console.log($("#mensaje").val());
-        //    });
-        //});
-        //window.onclick = function (event) {
-        //    if (event.target == $("#modalCumple")) {
-        //        $("#modalCumple").css('display', 'none');
-        //    }
-        //}
+        $(document).on('click', 'span.close', function () {
+            modal.style.display = "none";
+        })
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        } 
         $(document).on('click', '.btn_enviar_saludo', function () {
             var filepath = $(".select_img>img").attr('src');
             var imagen = filepath.replace(/^.*[\\\/]/, '');

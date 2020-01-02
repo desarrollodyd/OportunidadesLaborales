@@ -420,7 +420,8 @@ function selectResponse(obj) {
         allOption: false,
         placeholder: "SELECCIONE",
         data_first: null,
-        disabled:false,
+        disabled: false,
+        readonly:false,
     }
 
     var opciones = $.extend({}, defaults, obj);
@@ -481,6 +482,12 @@ function selectResponse(obj) {
                 }
                 if (opciones.disabled) {
                     $("#" + opciones.select).prop('disabled',true);
+                }
+                if (opciones.readonly) {
+                    //$S1.attr("readonly", "readonly");
+                    //$("#" + opciones.select).select2('destroy');
+                    //$("#" + opciones.select).select2("readonly", true);
+                    $("#" + opciones.select).attr("readonly", "readonly");
                 }
             } else {
                 $("#" + opciones.select).removeAttr("disabled");

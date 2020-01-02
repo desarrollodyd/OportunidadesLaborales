@@ -1,4 +1,5 @@
-﻿using SistemaReclutamiento.Entidades.Proveedor;
+﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.Proveedor;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
@@ -298,6 +299,74 @@ namespace SistemaReclutamiento.Models
             }
 
             return (subtotalSoles,subtotalDolares, error);
+        }
+        
+        
+        //Consulta para modal de Cumpleaños Intranet
+        public (PersonaSqlEntidad persona, claseError error) PersonaSQLObtenerInformacionPuestoTrabajoJson(string dni) {
+            PersonaSqlEntidad persona = new PersonaSqlEntidad();
+            claseError error = new claseError();
+            string consulta = @"Select top 1 
+                    emp.CO_TRAB, 
+                    emp.NO_TRAB, 
+                    emp.NO_APEL_PATE, 
+                    emp.NO_APEL_MATE, 
+                    emp.TI_SITU,
+                    empresa.DE_NOMB,
+                    unidad.DE_UNID, 
+                    sede.DE_SEDE,  
+                    gerencia.DE_DEPA, 
+                    area.DE_AREA,  
+                    grupo.DE_GRUP_OCUP,
+                    puesto.DE_PUES_TRAB
+                    from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB
+                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                    inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+                    inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+                    inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+                    inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+                    inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+                    inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+                    where emp.CO_TRAB=@p0
+                    order by periodo.NU_ANNO desc;";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", dni);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+
+                            {
+                                persona.CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]);
+                                persona.NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]);
+                                persona.NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]);
+                                persona.NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]);
+                                persona.TI_SITU = ManejoNulos.ManageNullStr(dr["TI_SITU"]);
+                                persona.DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]);
+                                persona.DE_UNID = ManejoNulos.ManageNullStr(dr["DE_UNID"]);
+                                persona.DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]);
+                                persona.DE_DEPA = ManejoNulos.ManageNullStr(dr["DE_DEPA"]);
+                                persona.DE_AREA = ManejoNulos.ManageNullStr(dr["DE_AREA"]);
+                                persona.DE_GRUP_OCUP = ManejoNulos.ManageNullStr(dr["DE_GRUP_OCUP"]);
+                                persona.DE_PUES_TRAB = ManejoNulos.ManageNullStr(dr["DE_PUES_TRAB"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+
+            return (persona:persona,error:error);
         }
     }
 }
