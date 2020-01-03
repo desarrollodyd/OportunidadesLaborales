@@ -125,7 +125,7 @@ namespace SistemaReclutamiento.Models
                                 and ubi_provincia_id='0'
                                 and ubi_distrito_id='0'
                                 and ubi_departamento_id<>'0'
-                                order by ubi_nombre asc;";
+                                ;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

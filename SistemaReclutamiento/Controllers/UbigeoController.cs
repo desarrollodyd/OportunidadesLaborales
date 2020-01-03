@@ -27,6 +27,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarPaisesJson();
+                lista = lista.OrderBy(m => m.ubi_nombre).ToList();
             }
             catch (Exception exp)
             {
@@ -42,6 +43,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarPaisesJson().Where(x=>x.ubi_pais_id=="PE").ToList();
+                lista = lista.OrderBy(m => m.ubi_nombre).ToList();
             }
             catch (Exception exp)
             {
@@ -57,6 +59,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarTodoslosPaisesJson();
+                lista = lista.OrderBy(m => m.ubi_nombre).ToList();
             }
             catch (Exception exp)
             {
@@ -73,10 +76,12 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarDepartamentosporPaisJson(ubi_pais_id);
+                
                 foreach (var m in lista) {
-                    m.ubi_nombre = m.ubi_nombre.Replace("DEPARTAMENTO", "");
+                    m.ubi_nombre = m.ubi_nombre.Replace("DEPARTAMENTO ", "");
                     m.ubi_nombre.Trim();
                 }
+                lista = lista.OrderBy(m => m.ubi_nombre).ToList();
             }
             catch (Exception exp)
             {
@@ -93,6 +98,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarProvinciasporDepartamentoJson(ubi_pais_id,ubi_departamento_id);
+                lista = lista.OrderBy(m => m.ubi_nombre).ToList();
             }
             catch (Exception exp)
             {
@@ -109,6 +115,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 lista = ubigeobl.UbigeoListarDistritosporProvinciaJson(ubi_pais_id, ubi_departamento_id,ubi_provincia_id);
+                lista = lista.OrderBy(m => m.ubi_nombre).ToList();
             }
             catch (Exception exp)
             {

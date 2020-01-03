@@ -118,8 +118,14 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             IntranetDetalleElementoModalEntidad intranetdetalleElementoModal = new IntranetDetalleElementoModalEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT detelm_id, detelm_descripcion, detelm_nombre, 
-                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal, fk_seccion_elemento
+            string consulta = @"SELECT detelm_id, 
+detelm_descripcion, detelm_nombre, detelm_extension,
+detelm_ubicacion, detelm_estado, fk_elemento_modal, 
+detelm_orden, detelm_posicion
+	FROM intranet.int_detalle_elemento_modal where detelm_id=@p0;";
+
+            string consulta2 = @"SELECT detelm_id, detelm_descripcion, detelm_nombre, 
+                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal
 	                                FROM intranet.int_detalle_elemento_modal where detelm_id=@p0;";
             try
             {
@@ -142,7 +148,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetdetalleElementoModal.detelm_ubicacion = ManejoNulos.ManageNullStr(dr["detelm_ubicacion"]);
                                 intranetdetalleElementoModal.detelm_estado = ManejoNulos.ManageNullStr(dr["detelm_estado"]);
                                 intranetdetalleElementoModal.fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]);
-                              
                                 intranetdetalleElementoModal.detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]);
                                 intranetdetalleElementoModal.detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]);
                             }
@@ -282,6 +287,32 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 error.Value = ex.Message;
             }
             return (intranetDetalleElementoModalTotal: intranetDetalleElementoModalTotal, error: error);
+        }
+        public (bool intranetDetalleElementoModalEliminado, claseError error) IntranetDetalleElementoModalEliminarxElementoModalJson(int fk_elemento_modal)
+        {
+            bool response = false;
+            string consulta = @"DELETE FROM intranet.int_detalle_elemento_modal
+	                            WHERE fk_elemento_modal=@p0;";
+            claseError error = new claseError();
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(fk_elemento_modal));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+
+            return (intranetDetalleElementoModalEliminado: response, error: error);
         }
     }
 }

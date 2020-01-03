@@ -97,7 +97,9 @@
                             "render": function (value) {
                                 var span = '';
                                 var sec_id = value;
-                                var span = '   <div class="hidden-sm hidden-xs action-buttons"><a class="green btn-editar-seccion" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-pencil bigger-130"></i></a><a class="green btn-nuevo-elemento" href = "#" data-id="' + sec_id + '"> <i class="ace-icon fa fa-folder bigger-130"></i></a></div><div class="hidden-md hidden-lg"><div class="inline pos-rel"><button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto"><i class="ace-icon fa fa-caret-down icon-only bigger-120"></i></button><ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close"><li><a href="#" class="tooltip-success btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title="edit"><span class="green"><i class="ace-icon fa fa-pencil-square-o bigger-120"></i></span></a><a href="#" class="tooltip-success btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip" title="Nuevo Elemento"><span class="green"><i class="ace-icon fa fa-folder bigger-120"></i></span></a></li></ul></div></div>';
+                                var span =
+                                    
+                                    '<a href = "#" class="btn btn-white btn-primary btn-sm btn-round btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title ="Editar">Editar</a> <a href="#"class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip"title="Nuevo Elemento">Nuevo</a>';
                                 return span;
                             }
                         }
@@ -319,7 +321,7 @@
                                 htmlTags += '<td>' + value.detel_nombre + '</td>';
                                 htmlTags += '<td>' + value.detel_orden + '</td>';
                                 htmlTags += '<td>' + value.detel_estado + '</td>';
-                                htmlTags += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>' + spanAgregarElementoModal + '</td></tr>';
+                                htmlTags += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>' + spanAgregarElementoModal + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento" data-id="' + value.detel_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -385,7 +387,7 @@
                                 htmlTags += '<td>' + value.tipo_nombre + '</td>';
                                 htmlTags += '<td>' + value.emod_orden + '</td>';
                                 htmlTags += '<td>' + value.emod_estado + '</td>';
-                                htmlTags += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>' + spanTipoElemento + '</td></tr>';
+                                htmlTags += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>' + spanTipoElemento + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -431,7 +433,7 @@
                                 htmlTags += '<td>' + value.detelm_descripcion + '</td>';
                                 htmlTags += '<td>' + value.detelm_orden + '</td>';
                                 htmlTags += '<td>' + value.detelm_estado + '</td>';
-                                htmlTags += '<td><a class="btn btn-white btn-primary btn-sm btn-round" data-id="' + value.deltem_id + '">Editar</a> <a class="btn btn-white btn-danger btn-sm btn-round" data-id="' + value.detelm_id + '">Eliminar</a></td></tr>';
+                                htmlTags += '<td><a class="btn btn-white btn-primary btn-sm btn-round btn-editar-detalle-elemento-modal" data-id="' + value.detelm_id + '">Editar</a> <a class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento-modal" data-id="' + value.detelm_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -521,6 +523,10 @@
                 }
             })
         });
+        $(document).on('click', '.btn-eliminar-detalle-elemento', function () {
+            var detel_id = $(this).data("id");
+            console.log(detel_id);
+        })
 
         //Botones para abrir modal de Nuevo Elemento Modal y evento para agregar un Nuevo elemento al Modal
         $(document).on('click', '.btn-nuevo-elemento-modal', function () {
@@ -552,13 +558,26 @@
                 },
             });
         });
+        $(document).on('click', '.btn-eliminar-elemento-modal', function () {
+            var emod_id = $(this).data("id");
+            var dataForm = {
+                emod_id: emod_id,
+            }
+            responseSimple({
+                url: 'IntranetElementoModal/IntranetElementoModalEliminarJson',
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    $(".elemento-modal").trigger('click');
+                    $(".elemento-modal").trigger('click');
+                }
+            })
+        });
 
         //Botones para agregar un nuevo Detalle de Elemento al Modal(caso listas de texto, citas o Imagenes) y evento para guardar ese detalle
         $(document).on('click', '.btn-nuevo-detalle-elemento-modal', function () {
             var emod_id = $(this).data("id");
             var tipo_elemento = $(this).data("tipo");
-            console.log(emod_id);
-            console.log(tipo_elemento);
             $("#fk_elemento_modal").val(emod_id);
             $("#detelm_id").val(0);
             $(".detelm-imagen").show();
@@ -578,7 +597,7 @@
             
         })
         $(document).on('click', '.btn-guardar-detalle-elemento-modal', function () {
-            $("#form_detalle_elemento_modal").submit();
+            //$("#form_detalle_elemento_modal").submit();
             var dataForm = new FormData(document.getElementById("form_detalle_elemento_modal"));
             var url = '';
             if ($("#detel_id").val() == 0) {
@@ -589,8 +608,44 @@
                 data: dataForm,
                 refresh: false,
                 callBackSuccess: function (response) {
-                    $("#modalFormularioDetalleElemento").modal("hide");
-                    PanelSecciones.init_ListarSecciones();
+                    console.log(response);
+                    if (response.respuesta) {
+                        $("#modalFormularioDetalleElementoModal").modal("hide");
+                    }
+                    $(".detalle-elemento-modal").trigger('click');
+                    $(".detalle-elemento-modal").trigger('click');
+                   
+                    //PanelSecciones.init_ListarSecciones();
+                }
+            })
+        })
+        $(document).on('click', '.btn-editar-detalle-elemento-modal', function () {
+            var detelm_id = $(this).data("id");
+            var dataForm = {
+                detelm_id:detelm_id,
+            }
+            responseSimple({
+                url: 'IntranetDetalleElementoModal/IntranetDetalleElementoModalIdObtenerJson',
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    console.log(response);
+                }
+            })
+            //$("#modalFormularioDetalleElementoModal").modal("show");
+        })
+        $(document).on('click', '.btn-eliminar-detalle-elemento-modal', function () {
+            var detelm_id = $(this).data("id");
+            var dataForm = {
+                detelm_id: detelm_id,
+            }
+            responseSimple({
+                url: 'IntranetDetalleElementoModal/IntranetDetalleElementoModalEliminarJson',
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    $(".detalle-elemento-modal").trigger('click');
+                    $(".detalle-elemento-modal").trigger('click');
                 }
             })
         })

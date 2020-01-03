@@ -75,7 +75,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     if (file.ContentLength <= tamanioMaximo)
                     {
                         extension = Path.GetExtension(file.FileName);
-                        if (extension == ".jpg" || extension == ".png"||extension==".jpeg")
+                        if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                         {
                             string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                             var nombre = (nombreArchivo + extension);
@@ -199,7 +199,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         respuesta = false;
                         return Json(new { respuesta = respuesta, mensaje = mensaje });
                     }
-             
+
                 }
                 catch (Exception ex)
                 {
@@ -233,6 +233,57 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
 
             return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetDetalleElementoInsertado = idIntranetDetalleElementoModalInsertado, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
+        public ActionResult IntranetDetalleElementoModalEliminarJson(int detelm_id)
+        {
+            string mensaje = "";
+            bool respuesta = false;
+            claseError error = new claseError();
+            try
+            {
+                var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarJson(detelm_id);
+                error = intranetDetalleElementoModalTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    respuesta = intranetDetalleElementoModalTupla.intranetDetalleElementoModalEliminado;
+                    mensaje = "Eliminado";
+                }
+                else
+                {
+                    mensaje = error.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta = respuesta, mensaje = mensaje });
+        }
+        [HttpPost]
+        public ActionResult IntranetDetalleElementoModalIdObtenerJson(int detelm_id) {
+            string mensaje = "";
+            bool response = false;
+            IntranetDetalleElementoModalEntidad intranetDetalleElementoModal = new IntranetDetalleElementoModalEntidad();
+            claseError error = new claseError();
+            try
+            {
+                var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalIdObtenerJson(detelm_id);
+                error = intranetDetalleElementoModalTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetDetalleElementoModal = intranetDetalleElementoModalTupla.intranetDetalleElementoModal;
+                    response = true;
+                }
+                else {
+                    mensaje = error.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new{ data= intranetDetalleElementoModal ,respuesta=response,mensaje=mensaje });
         }
     }
 }

@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
     {
         // GET: IntranetElementoModal
         IntranetElementoModalModel intranetElementoModalbl = new IntranetElementoModalModel();
+        IntranetDetalleElementoModalModel intranetDetalleElementoModalbl = new IntranetDetalleElementoModalModel();
         claseError error = new claseError();
         public ActionResult Index()
         {
@@ -92,6 +93,38 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
 
             return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetElementoModalInsertado = idIntranetElementoModalInsertado, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
+        public ActionResult IntranetElementoModalEliminarJson(int emod_id) {
+            string mensaje = "";
+            bool response = false;
+            claseError error = new claseError();
+            try {
+                var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarxElementoModalJson(emod_id);
+                error = intranetDetalleElementoModalTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    //Se eliminaron los detalles, ahora eliminamos el elemento modal
+                    var intranetElementoModalTupla = intranetElementoModalbl.IntranetElementoModalEliminarJson(emod_id);
+                    error = intranetElementoModalTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        response = true;
+                        mensaje = "Se Elimino Correctamente";
+                    }
+                    else
+                    {
+                        mensaje = error.Value;
+                    }
+                }
+                else {
+                    mensaje = error.Value;
+                }
+            }
+            catch (Exception ex){
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta=response,mensaje=mensaje });
         }
     }
     

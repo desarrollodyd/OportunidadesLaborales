@@ -1066,8 +1066,27 @@
             $("#fk_persona_que_saluda").val(persona.per_id);
             $("#direccion_envio").val($(this).data("direccionenvio"));
             $("#tituloCumpleanios").text(span);
-            modal.style.display = "block";
-            modal.style.zIndex = 10000;
+            var dataForm = {
+                dni: per_numdoc,
+            }
+            responseSimple({
+                url:"IntranetPJ/IntranetObtenerAreadeTrabajoxUsuarioJson",
+                data: JSON.stringify(dataForm),
+                refresh:false,
+                callBackSuccess: function (response) {
+                    if (response.respuesta) {
+                        var data = response.data;
+                        console.log(data);
+                        var span = "";
+                        $("#informacion_puesto").html("");
+                        span += "<strong>Área:</strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA )+ "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina :</strong>" + ((data.DE_SEDE == null) ? "" : data.DE_SEDE)+ "<br/>"
+                        $("#informacion_puesto").html(span);
+                    }
+                    modal.style.display = "block";
+                    modal.style.zIndex = 10000;
+                }
+            })
+           
             //responseSimple("")
             ////$("#modalCumple").css('display', 'block');
             ////$('#modalCumple').show();
