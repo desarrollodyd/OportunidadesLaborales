@@ -99,7 +99,7 @@
                                 var sec_id = value;
                                 var span =
                                     
-                                    '<a href = "#" class="btn btn-white btn-primary btn-sm btn-round btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title ="Editar">Editar</a> <a href="#"class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip"title="Nuevo Elemento">Nuevo</a>';
+                                    '<a href = "#" class="btn btn-white btn-primary btn-sm btn-round btn-editar-seccion" data-id="' + sec_id + '" data-rel="tooltip" title ="Editar">Editar</a> <a href="#"class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip"title="Nuevo Elemento">Nuevo</a> <a href="#"class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-seccion" data-id="' + sec_id + '" data-rel="tooltip"title="Eliminar Seccion">Eliminar</a>';
                                 return span;
                             }
                         }
@@ -213,7 +213,12 @@
                 refresh: false,
                 data: JSON.stringify(dataForm),
                 callBackSuccess: function (response) {
-                    PanelSecciones.init_ListarSecciones();
+                    if (response.respuesta) {
+                        $("#cboMenus").val($("#id_menu").val());
+                        $("#cboMenus").change();
+                        //PanelSecciones.init_ListarSecciones();
+                    }
+                    
                     $("#modalFormularioSeccion").modal("hide");
                 },
             })
@@ -246,7 +251,7 @@
 
         });
 
-        $(document).on("click", ".btn-eliminar", function (e) {
+        $(document).on("click", ".btn-eliminar-seccion", function (e) {
             var sec_id = $(this).data("id");
             if (sec_id != "" || sec_id > 0) {
                 messageConfirmation({
@@ -257,7 +262,9 @@
                             data: JSON.stringify({ sec_id: sec_id }),
                             refresh: false,
                             callBackSuccess: function (response) {
-                                PanelComentarios.init_ListarComentarios();
+                                if (response.respuesta) {
+                                    PanelSecciones.init_ListarSecciones();
+                                }
                                 //refresh(true);
                             }
                         });
@@ -471,6 +478,23 @@
                 }
             });
         });
+        $(document).on('click', '.btn_eliminar_elemento', function () {
+            var elem_id = $(this).data("id");
+            var dataForm = {
+                elem_id: elem_id,
+            }
+            responseSimple({
+                url: 'IntranetElemento/IntranetElementoElementoEliminarJson',
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callbackSuccess: function (response) {
+                    if (response.respuesta) {
+                        $(".details-control").trigger('click');
+                        $(".details-control").trigger('click');
+                    }
+                },
+            })
+        });
         $(document).on('change', '#cboOpcion', function () {
             if ($(this).val() == 1) {
                 $(".detel-imagen").hide();
@@ -478,6 +502,7 @@
                 $(".detel-imagen").show();
             }
         })
+
 
         //Botones para abrir modal de nuevo detalle Elemento (Caso listas de texto, citas, imagenes) y evento para agregar un nuevo Detalle de Elemento
         $(document).on('click', '.btn-nuevo-detalle-elemento', function () {
@@ -507,7 +532,7 @@
             $("#modalFormularioDetalleElemento").modal("show");
         })
         $(document).on('click', '.btn-guardar-detalle-elemento', function () {
-            $("#form_detalle_elemento").submit();
+            //$("#form_detalle_elemento").submit();
             var dataForm = new FormData(document.getElementById("form_detalle_elemento"));
             var url = '';
             if ($("#detel_id").val() == 0) {
@@ -518,14 +543,31 @@
                 data: dataForm,
                 refresh: false,
                 callBackSuccess: function (response) {
-                    $("#modalFormularioDetalleElemento").modal("hide");
-                    PanelSecciones.init_ListarSecciones();
+                    if (response.respuesta) {
+                        $("#modalFormularioDetalleElemento").modal("hide");
+                    }
+                    $(".detalle-elemento").trigger('click');
+                    $(".detalle-elemento").trigger('click');
+                    //PanelSecciones.init_ListarSecciones();
                 }
             })
         });
         $(document).on('click', '.btn-eliminar-detalle-elemento', function () {
             var detel_id = $(this).data("id");
-            console.log(detel_id);
+            var dataForm = {
+                detel_id: detel_id,
+            }
+            responseSimple({
+                url: 'IntranetDetalleElemento/IntranetDetalleElementoEliminarJson',
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    if (response.respuesta) {
+                        $(".detalle-elemento").trigger('click');
+                        $(".detalle-elemento").trigger('click');
+                    }
+                },
+            })
         })
 
         //Botones para abrir modal de Nuevo Elemento Modal y evento para agregar un Nuevo elemento al Modal
@@ -542,7 +584,7 @@
             $("#modalFormularioElementoModal").modal("show");
         });
         $(document).on('click', '.btn-guardar-elemento-modal', function () {
-            $("#form_elemento_modal").submit();
+            //$("#form_elemento_modal").submit();
             var dataForm = $("#form_elemento_modal").serializeFormJSON();
             var url = '';
             if ($("#emod_id").val() == 0) {
@@ -553,8 +595,12 @@
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
-                    $("#modalFormularioElementoModal").modal("hide");
-                    PanelSecciones.init_ListarSecciones();
+                    if (response.respuesta) {
+                        $("#modalFormularioElementoModal").modal("hide");
+                    }
+                    $(".elemento-modal").trigger('click');
+                    $(".elemento-modal").trigger('click');
+                    //PanelSecciones.init_ListarSecciones();
                 },
             });
         });
@@ -568,8 +614,10 @@
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
-                    $(".elemento-modal").trigger('click');
-                    $(".elemento-modal").trigger('click');
+                    if (response.respuesta) {
+                        $(".elemento-modal").trigger('click');
+                        $(".elemento-modal").trigger('click');
+                    }
                 }
             })
         });
@@ -578,19 +626,26 @@
         $(document).on('click', '.btn-nuevo-detalle-elemento-modal', function () {
             var emod_id = $(this).data("id");
             var tipo_elemento = $(this).data("tipo");
+
             $("#fk_elemento_modal").val(emod_id);
             $("#detelm_id").val(0);
             $(".detelm-imagen").show();
             $(".detelm-nombre").show();
             $(".detelm-posicion").show();
+            debugger;
             if (tipo_elemento == 5 || tipo_elemento == 6) {
-                $("#fk_seccion_elemento_modal").val(2);
+                $("#fk_seccion_elemento_modal_").val(2);
                 $(".detelm-imagen").hide();
                 $(".detelm-nombre").hide();
                 $(".detelm-posicion").hide();
             }
+            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
+                //va a abrir modal
+                $("#fk_seccion_elemento_modal_").val(1);
+                $(".detel-imagen").hide();
+            }
             else {
-                $("#fk_seccion_elemento_modal").val(0);
+                $("#fk_seccion_elemento_modal_").val(0);
                 $(".detelm-posicion").hide();
             }
             $("#modalFormularioDetalleElementoModal").modal("show");
@@ -608,7 +663,6 @@
                 data: dataForm,
                 refresh: false,
                 callBackSuccess: function (response) {
-                    console.log(response);
                     if (response.respuesta) {
                         $("#modalFormularioDetalleElementoModal").modal("hide");
                     }
@@ -711,13 +765,24 @@ function MostrarDetalle(row) {
             var fk_tipo_elemento = value.fk_tipo_elemento;
             var spanTipoElemento = '';
             var spanDetalleElemento = '';
+            var spanEditarElemento = '';
+            var spanEliminarElemento = '';
             if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
                 spanTipoElemento = '';
                 spanDetalleElemento = '<tr><td></td>';
+                spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
+                spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
+            }
+            else if (fk_tipo_elemento == 8 || fk_tipo_elemento == 13 || fk_tipo_elemento == 14 || fk_tipo_elemento == 15 || fk_tipo_elemento == 16) {
+                spanTipoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
+                spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+                spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
             else {
                 spanTipoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
                 spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+                spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
+                spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
 
             table += spanDetalleElemento;
@@ -726,7 +791,7 @@ function MostrarDetalle(row) {
             table += '<td>' + (value.elem_estado == 'A' ? 'Activo' : 'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';
             table += '<td>' + value.tipo_nombre + '</td>';
-            table += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>' + spanTipoElemento + '</td></tr>';
+            table += '<td>' + spanEditarElemento + spanTipoElemento + spanEliminarElemento + '</td></tr>';
         });
         table += '</table>';
 

@@ -180,12 +180,34 @@
                                 <input type="text" name="detel_descripcion" id="detel_descripcion" class="form-control" placeholder="Nombre" />
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 detel-imagen">
+                        @*<div class="col-md-12 col-xs-12 detel-imagen">
                             <div class="form-group">
                                 <label>Imagen</label>
                                 <input id="detel_nombre" name="detel_nombre" type="file" class="form-control" />
                             </div>
+                         </div>*@
+                        <div class="col-md-12 col-xs-12 detelm-imagen">
+                            <div class="form-group">
+                                <label>Imagen</label>
+                                <label class="btn btn-warning" for="detel_nombre">
+                                    <span id="spancv"><i class="fa fa-upload"></i>  Subir Icono</span>
+                                    <input id="detel_nombre" name="detel_nombre" type="file" class="form-control" style="display:none;" />
+                                </label>
+                            </div>
                         </div>
+                        <div class="col-md-12" style="display:none" id="divCV">
+
+                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
+                                <label class="col-md-12 col-xs-12">Imagen Actual</label>
+                                <a id="frm_cv" href="#" class="atch-thumb" style="width:100%;">
+                                    <img id="icono_actual" style="width:100px;height:100px" />
+                                    @*<i class="glyphicon glyphicon-save-file" style="font-size:120px;"></i>*@
+                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="cvnombre"></span></div>
+                                    <div class="file-name" style="width:100%;text-align:left"><i class="fa fa-calendar"></i> <span id="cvfecha">*****</span></div>
+                                </a>
+                            </div>
+                        </div>
+
                         <div class="col-md-12 col-xs-12 detel-posicion">
                             <div class="form-group">
                                 <label>Posicion</label>
@@ -280,7 +302,7 @@
                     <form class="" id="form_detalle_elemento_modal" method="post">
                         <input type="hidden" name="fk_elemento_modal" id="fk_elemento_modal" value="" />
                         <input type="hidden" name="detelm_id" id="detelm_id" value="" />
-                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal_" value="" />
                         <div class="col-md-12 col-xs-12 detelm-posicion">
                             <div class="form-group">
                                 <label>Imagen o Boton con Texto</label>
@@ -300,7 +322,21 @@
                         <div class="col-md-12 col-xs-12 detelm-imagen">
                             <div class="form-group">
                                 <label>Imagen</label>
-                                <input id="detelm_nombre" name="detelm_nombre" type="file" class="form-control" />
+                                <label class="btn btn-warning" for="detelm_nombre">
+                                    <span id="spancv"><i class="fa fa-upload"></i>  Subir Icono</span>
+                                    <input id="detelm_nombre" name="detelm_nombre" type="file" class="form-control" style="display:none;" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="display:none" id="divCV">
+                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
+                                <label class="col-md-12 col-xs-12">Imagen Actual</label>
+                                <a id="frm_cv" href="#" class="atch-thumb" style="width:100%;">
+                                    <img id="icono_actual" style="width:100px;height:100px" />
+                                    @*<i class="glyphicon glyphicon-save-file" style="font-size:120px;"></i>*@
+                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="cvnombre"></span></div>
+                                    <div class="file-name" style="width:100%;text-align:left"><i class="fa fa-calendar"></i> <span id="cvfecha">*****</span></div>
+                                </a>
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12 detel-posicion">

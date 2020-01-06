@@ -67,7 +67,7 @@
                 if (dataCumpleanios.length > 0) {
                     $("#cumpleaniosIntranet").html("");
                     var appendCumpleanios = '';
-                    appendCumpleanios += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat"><ul class="catlist" >';
+                    appendCumpleanios += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat"><ul class="catlist">';
                     $.each(dataCumpleanios, function (index, cumpleanios) {
                         var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
                         diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
@@ -77,6 +77,11 @@
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
                 }
+                else {
+                    $("#cumpleaniosIntranet").html("");
+                    $("#cumpleaniosIntranet").hmtl('<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat"><ul class="catlist" >');
+                    $("#cumpleaniosIntranet").appen('<li><p><h2 class="wtitle">No se encontraron Cumpleaños</h2></p></li></ul></div>');
+                }
 
                 //Creacion de Aside Para Actividades
                 if (dataActividades.length > 0) {
@@ -85,12 +90,16 @@
                     appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
-                        appendActividades += '<li><a href="javascript:void(0);"><img src="data:image/gif;base64,' + actividad.act_imagen + '" class="img_title" /><p class="meta-date" >' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A')+'</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
+                        appendActividades += '<li><a href="javascript:void(0);"><img src="data:image/gif;base64,' + actividad.act_imagen + '" class="img_title" /><p class="meta-date" >' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A') + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
                     });
                     appendActividades += '</ul></div >';
                     $("#actividadesMes").append(appendActividades);
                 }
-
+                else {
+                    $("#actividadesMes").html("");
+                    $("#actividadesMes").html('<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">')
+                    $("#actividadesMes").append('<li><p><h2 class="wtitle">No hay Actividades Registradas</h2></p></li></ul></div>')
+                }
                 //Listado en Seccion de Noticias
                 if (listaNoticias.length > 0) {
                     $("#ticker01").html("");
@@ -104,7 +113,6 @@
                     })
                     $("#ticker01").html(appendNoticias);
                     $("ul#ticker01").liScroll().css({ 'opacity': 1 });
-                  
                 }
 
                 //listado secciones

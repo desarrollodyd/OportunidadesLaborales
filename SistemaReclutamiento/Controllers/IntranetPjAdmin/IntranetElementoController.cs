@@ -94,5 +94,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
             return Json(new { respuesta = respuesta, mensaje = mensaje, idIntranetElementoInsertado = idIntranetElementoInsertado, mensajeconsola = mensajeConsola });
         }
+        [HttpPost]
+        public ActionResult IntranetElementoElementoEliminarJson(int elem_id)
+        {
+            string errormensaje = "";
+            bool respuestaConsulta = false;
+            string mensajeConsola = "";
+            claseError error = new claseError();
+            try
+            {
+                var IntranetElementoTupla = intranetElementobl.IntranetElementoEliminarJson(elem_id);
+                error = IntranetElementoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    respuestaConsulta = IntranetElementoTupla.intranetElementoEliminado;
+                    errormensaje = "Elemento Eliminado";
+                }
+                else
+                {
+                    errormensaje = "Error, no se Puede Eliminar";
+                    mensajeConsola = error.Value;
+                }
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
     }
 }
