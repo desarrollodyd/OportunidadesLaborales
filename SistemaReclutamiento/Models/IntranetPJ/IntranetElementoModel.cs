@@ -121,7 +121,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         }
 
 
-        public (IntranetElementoEntidad intranetElemento, claseError error) IntranetElementoIdObtenerJson(int Elemento_id)
+        public (IntranetElementoEntidad intranetElemento, claseError error) IntranetElementoIdObtenerJson(int elemento_id)
         {
             IntranetElementoEntidad intranetElemento = new IntranetElementoEntidad();
             claseError error = new claseError();
@@ -135,7 +135,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", Elemento_id);
+                    query.Parameters.AddWithValue("@p0", elemento_id);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -230,7 +230,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetElementoEditado: response, error: error);
         }
-        public (bool intranetElementoEliminado, claseError error) IntranetElementoEliminarJson(int Elemento_id)
+        public (bool intranetElementoEliminado, claseError error) IntranetElementoEliminarJson(int elemento_id)
         {
             bool response = false;
             string consulta = @"DELETE FROM intranet.int_elemento
@@ -243,7 +243,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
 
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(Elemento_id));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(elemento_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

@@ -1,6 +1,7 @@
 ﻿using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,6 +18,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         IntranetSeccionElementoModel intranetSeccionElementobl = new IntranetSeccionElementoModel();
         claseError error = new claseError();
         string pathArchivosIntranet= ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
+        RutaImagenes rutaImagenes = new RutaImagenes();
         // GET: IntranetImagen
         public ActionResult Index()
         {
@@ -282,22 +284,64 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         [HttpPost]
         public ActionResult IntranetDetalleElementoEditarJson(IntranetDetalleElementoEntidad detalleElemento)
         {
+            HttpPostedFileBase file = Request.Files[0];
+            int tamanioMaximo = 4194304;
+            string extension = "";
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
+            string rutaInsertar = "";
+            string rutaAnterior = "";
+            IntranetDetalleElementoEntidad intranetDetalleelemento= new IntranetDetalleElementoEntidad();
             try
             {
-                var ImagenTupla = intranetDetalleElementonbl.IntranetDetalleElementoEditarJson(detalleElemento);
-                error = ImagenTupla.error;
+                //Es imagen
+                if (detalleElemento.detel_nombre_imagen != "" && detalleElemento.detel_nombre_imagen != null) {
+                    //selecciono una imagen para editar
+                    if (file.ContentLength > 0 && file != null)
+                    {
+                        if (file.ContentLength <= tamanioMaximo)
+                        {
+                            extension = Path.GetExtension(file.FileName);
+                            if (extension == ".jpg" || extension == ".png" || extension == ".jpeg") {
+                                string nombreArchivo = ("Elemento_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
+                                var nombre = (nombreArchivo + extension);
+
+                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
+                                rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + detalleElemento.detel_nombre_imagen);
+                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                {
+                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                }
+                                if (System.IO.File.Exists(rutaAnterior))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
+                                }
+                                file.SaveAs(rutaInsertar);
+                                detalleElemento.detel_nombre = nombreArchivo;
+                                extension = extension.Replace(".", "");
+                                detalleElemento.detel_extension = extension;
+                            }
+                        }
+                        else {
+                            errormensaje = "El archivo supera el tamaño maximo permitido";
+                            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+                        }
+                    }
+                }
+                if (detalleElemento.fk_seccion_elemento == 2) {
+                    detalleElemento.fk_seccion_elemento = 0;
+                }
+                detalleElemento.detel_ubicacion = "";
+                var intranetDetalleElementotupla = intranetDetalleElementonbl.IntranetDetalleElementoEditarJson(detalleElemento);
+                error = intranetDetalleElementotupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    respuestaConsulta = ImagenTupla.intranetDetalleElementoEditado;
-                    errormensaje = "Se Editó Correctamente";
+                    respuestaConsulta = intranetDetalleElementotupla.intranetDetalleElementoEditado;
+                    errormensaje = "Editado";
                 }
-                else
-                {
-                    mensajeConsola = error.Value;
-                    errormensaje = "Error, no se Puede Editar";
+                else {
+                    errormensaje = error.Value;
                 }
             }
             catch (Exception exp)
@@ -305,7 +349,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+            return Json(new { data= intranetDetalleelemento, respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
         [HttpPost]
         public ActionResult IntranetDetalleElementoEliminarJson(int detel_id)
@@ -333,6 +377,38 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 errormensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
+        }
+        [HttpPost]
+        public ActionResult intranetDetalleElementoIdObtenerJson(int detel_id) {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            IntranetDetalleElementoEntidad detalleElemento = new IntranetDetalleElementoEntidad();
+            try
+            {
+                var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(detel_id);
+                error = detalleElementoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    detalleElemento = detalleElementoTupla.intranetDetalleElemento;
+                    detalleElemento.detel_nombre_imagen = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detalleElemento.detel_nombre + "." + detalleElemento.detel_extension);
+                    //actividad.img_ubicacion = actividad.act_imagen;
+                    //actividad.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Actividades/", actividad.act_imagen);
+                    mensaje = "Obteniendo Data";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudo Obtener La Informacion";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = detalleElemento, respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
         }
     }
 }

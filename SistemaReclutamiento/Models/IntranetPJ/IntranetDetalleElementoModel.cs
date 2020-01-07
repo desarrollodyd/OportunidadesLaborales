@@ -122,8 +122,11 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             IntranetDetalleElementoEntidad intranetImagen = new IntranetDetalleElementoEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT detel_id, detel_descripcion, detel_nombre, 
-                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento
+            string consulta = @"SELECT detel_id, 
+                                detel_descripcion, detel_nombre, detel_extension, 
+                                detel_ubicacion, 
+                                detel_estado, fk_elemento,
+                                fk_seccion_elemento, detel_orden, detel_posicion
 	                                FROM intranet.int_detalle_elemento where detel_id=@p0;";
             try
             {
@@ -204,7 +207,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento
-	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  detel_estado=@p5,fk_elemento=@p7,@fk_seccion_elemento=@p8
+	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  detel_estado=@p5,fk_elemento=@p7,fk_seccion_elemento=@p8
 	                    WHERE detel_id=@p6;";
             try
             {

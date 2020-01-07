@@ -122,5 +122,56 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });
         }
+        [HttpPost]
+        public ActionResult IntranetElementoIdObtenerJson(int elem_id) {
+            string errormensaje = "";
+            bool response = false;
+            claseError error = new claseError();
+            IntranetElementoEntidad intranetElemento = new IntranetElementoEntidad();
+            try
+            {
+                var intranetElementoTupla = intranetElementobl.IntranetElementoIdObtenerJson(elem_id);
+                error = intranetElementoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    intranetElemento = intranetElementoTupla.intranetElemento;
+                    errormensaje = "Obteniendo Data";
+                    response = true;
+                }
+                else {
+                    errormensaje = error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message+ "Consulte con Administrador";
+            }
+            return Json(new {respuesta=response,mensaje=errormensaje,data=intranetElemento });
+        }
+        [HttpPost]
+        public ActionResult IntranetElementoEditarJson(IntranetElementoEntidad intranetElemento) {
+            string errormensaje = "";
+            bool response = false;
+            claseError error = new claseError();
+            try {
+                intranetElemento.elem_descripcion = intranetElemento.elem_titulo;
+                intranetElemento.elem_contenido = intranetElemento.elem_titulo;
+                var intranetElementoTupla = intranetElementobl.IntranetElementoEditarJson(intranetElemento);
+                error = intranetElementoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = intranetElementoTupla.intranetElementoEditado;
+                    errormensaje = "Elemento Editado";
+                }
+                else {
+                    errormensaje = error.Value;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { respuesta = response, mensaje = errormensaje });
+        }
     }
 }

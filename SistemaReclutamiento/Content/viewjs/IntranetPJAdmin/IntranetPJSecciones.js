@@ -175,32 +175,7 @@
             }
 
         });
-        //$(document).on('click', ".btn-guardar", function (e) {
-        //    $("#form_secciones").submit();
-        //    if (_objetoForm_form_secciones.valid()) {
-        //        var dataForm = $('#form_secciones').serializeFormJSON();
-        //        responseSimple({
-        //            url: "IntranetSeccion/IntranetSeccionInsertarJson",
-        //            data: JSON.stringify(dataForm),
-        //            refresh: false,
-        //            callBackSuccess: function (response) {
-        //                var respuesta = response.respuesta;
-        //                if (respuesta) {
-        //                    //limpiar_form({ contenedor: "#form_menus" });
-        //                    //_objetoForm_form_menus.resetForm();
-        //                    PanelSecciones.init_ListarSecciones();
-        //                    //refresh(true);
-        //                    $("#modalFormularioSeccion").modal("hide");
-        //                }
-        //            }
-        //        });
-        //    } else {
-        //        messageResponse({
-        //            text: "Complete los campos Obligatorios",
-        //            type: "error"
-        //        })
-        //    }
-        //});
+     
         $(document).on('click', '.btn-guardar-seccion', function () {
             $("#form_seccion").submit();
             var dataForm = $('#form_seccion').serializeFormJSON();
@@ -279,9 +254,6 @@
             }
         });
 
-        $(document).on("click", ".btn_editar_detalle", function (e) {
-            var elem_id = $(this).data("id");
-        });
         //Mostrar Detalle de Elemento si lo tuviera
         $(document).on("click", ".detalle-elemento", function (e) {
             var elem_id = $(this).data("id");
@@ -313,12 +285,16 @@
                             $.each(data, function (index, value) {
                                 var spanAgregarElementoModal = '';
                                 var spanVerDetalleElemento = '';
+                                var spanEditarDetalleElemento='';
                                 if (value.fk_seccion_elemento > 0) {
-                                    spanAgregarElementoModal = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento-modal" data-seccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
-
+                                    spanAgregarElementoModal += '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento-modal" data-seccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
                                     spanVerDetalleElemento += '<tr class="det-elemento' + value.detel_id + '"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                    spanEditarDetalleElemento+='';
+                              
                                 }
                                 else {
+                                    spanEditarDetalleElemento+='<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>';
+
                                     spanAgregarElementoModal += '';
                                     spanVerDetalleElemento += '<tr><td></td>';
                                 }
@@ -328,7 +304,7 @@
                                 htmlTags += '<td>' + value.detel_nombre + '</td>';
                                 htmlTags += '<td>' + value.detel_orden + '</td>';
                                 htmlTags += '<td>' + value.detel_estado + '</td>';
-                                htmlTags += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>' + spanAgregarElementoModal + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento" data-id="' + value.detel_id + '">Eliminar</a></td></tr>';
+                                htmlTags += '<td>' +spanEditarDetalleElemento + spanAgregarElementoModal + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento" data-id="' + value.detel_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -457,6 +433,7 @@
         //Botones para abrir modal de nuevo elemento y evento para guardar nuevo elemento
         $(document).on('click', '.btn-nuevo-elemento', function () {
             var sec_id = $(this).data('id');
+            $("#div_tipo_elemento").show();
             $("#fk_seccion").val(sec_id);
             $("#elem_id").val(0);
             $("#modalFormularioElemento").modal("show");
@@ -467,6 +444,9 @@
             var url = '';
             if ($("#elem_id").val() == 0) {
                 url = 'IntranetElemento/IntranetElementoInsertarJson';
+            }
+            else{
+                url='IntranetElemento/IntranetElementoEditarJson';
             }
             responseSimple({
                 url: url,
@@ -495,6 +475,31 @@
                 },
             })
         });
+        $(document).on('click','.btn_editar_elemento',function(){
+            var elem_id=$(this).data('id');
+            var dataForm={
+                elem_id:elem_id,
+            }
+            responseSimple({
+                url:'IntranetElemento/IntranetElementoIdObtenerJson',
+                data:JSON.stringify(dataForm),
+                refresh:false,
+                callBackSuccess:function(response){
+                    if(response.respuesta){
+                        var elemento=response.data;
+                        $("#div_tipo_elemento").hide();
+                        $("#fk_seccion").val(elemento.fk_seccion);
+                        $("#elem_id").val(elemento.elem_id);
+                        $("#elem_titulo").val(elemento.elem_titulo);
+                        $("#elem_estado").val(elemento.elem_estado);
+                        $("#cboTipoElemento").val(elemento.fk_tipo_elemento);
+                        $("#elem_orden").val(elemento.elem_orden);
+                        $("#modalFormularioElemento").modal("show");
+                    }
+                }
+            })
+        })
+        //Imagen o boton con Texto, si es boton con texto, input de imagen debe ocultarse
         $(document).on('change', '#cboOpcion', function () {
             if ($(this).val() == 1) {
                 $(".detel-imagen").hide();
@@ -513,11 +518,13 @@
             $(".detel-imagen").show();
             $(".detel-nombre").show();
             $(".detel-posicion").show();
+            $("#detel_nombre_imagen").val("");
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento").val(2);
                 $(".detel-imagen").hide();
                 $(".detel-nombre").hide();
                 $(".detel-posicion").hide();
+                $(".detel-opcion").hide();
             }
             //Abren Modales fk_seccion_elemento en int_detalle_elemento debe tener un id
             else if (tipo_elemento==8||tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
@@ -528,6 +535,7 @@
             else {
                 $("#fk_seccion_elemento").val(0);
                 $(".detel-posicion").hide();
+                $(".detel-opcion").hide();
             }
             $("#modalFormularioDetalleElemento").modal("show");
         })
@@ -537,6 +545,9 @@
             var url = '';
             if ($("#detel_id").val() == 0) {
                 url = 'IntranetDetalleElemento/IntranetDetalleElementoInsertarJson';
+            }
+            else{
+                url='IntranetDetalleElemento/IntranetDetalleElementoEditarJson';
             }
             responseFileSimple({
                 url: url,
@@ -548,7 +559,6 @@
                     }
                     $(".detalle-elemento").trigger('click');
                     $(".detalle-elemento").trigger('click');
-                    //PanelSecciones.init_ListarSecciones();
                 }
             })
         });
@@ -568,6 +578,51 @@
                     }
                 },
             })
+        })
+
+        $(document).on('click','.btn_editar_detalle_elemento',function(){
+            var detel_id=$(this).data('id');
+            var dataForm={
+                detel_id:detel_id,
+            }
+            responseSimple({
+                url:'IntranetDetalleElemento/IntranetDetalleElementoIdObtenerJson',
+                refresh:false,
+                data:JSON.stringify(dataForm),
+                callBackSuccess:function(response){
+                    var data=response.data;
+                    if(response.respuesta){
+                        $("#divdetel").hide();
+                        $('#detel_id').val(data.detel_id);
+                        $('#fk_elemento').val(data.fk_elemento)
+                        $("#spandetel").html("");
+                        $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        if(data.detel_extension!=""){
+                            $("#detel_nombre_imagen_modal").text("Nombre: " + data.detel_nombre+"."+data.detel_extension);
+                            $("#detel_nombre_imagen").val(data.detel_nombre+"."+data.detel_extension);
+                            // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
+                            $("#icono_actual_detel").attr("src", "data:image/gif;base64," + data.detel_nombre_imagen);
+                            $("#divdetel").show();
+                            $(".detel-imagen").show();
+                            $(".detel-nombre").show();
+                            $(".detel-posicion").hide();
+                            $(".detel-opcion").hide();
+                        }
+                        else{
+                            $(".detel-imagen").hide();
+                            $(".detel-nombre").hide();
+                            $(".detel-posicion").hide();
+                            $(".detel-opcion").hide();
+                        }
+                        $("#tituloModalDetalleElemento").text("Editar ");
+                        $("#detel_descripcion").val(data.detel_descripcion);
+                        $("#detel_estado").val(data.detel_estado);
+
+                        $('#modalFormularioDetalleElemento').modal('show');
+                    }
+                },
+            })
+            
         })
 
         //Botones para abrir modal de Nuevo Elemento Modal y evento para agregar un Nuevo elemento al Modal
@@ -703,6 +758,77 @@
                 }
             })
         })
+
+        //Change en Imagenes
+        //imagen de Detalle Elemento
+        $(document).on("change", "#detel_nombre", function () {
+            var _image = $('#detel_nombre')[0].files[0];
+            if (_image != null) {
+                var image_arr = _image.name.split(".");
+                var extension = image_arr[1].toLowerCase();
+                //console.log(extension);
+                if (extension != "jpg" && extension != "png") {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato jpg o png',
+                        type: "warning"
+                    });
+                }
+                else {
+                    var nombre = image_arr[0].substring(0, 11);
+                    var actualicon = image_arr[1].toLowerCase();
+                    var icon = "";
+                    if (actualicon == "png" || actualicon == "jpg") {
+                        icon = '<i class="fa fa-file-word-o"></i>';
+                    }
+                    else {
+                        icon = '<i class="fa fa-file-pdf-o"></i>';
+                    };
+                    $("#spandetel").html("");
+                    $("#spandetel").append(icon + " " + nombre + "... ." + actualicon);
+                    //$("#img_ubicacion").val(nombre + "." + actualicon);
+                    $("#spandetel").css({ 'font-size': '10px' });  
+                }
+            }
+            else {
+                $("#spandetel").html("");
+                $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Icono');
+            }
+        })
+
+        //imagen de Detalle Elemento Modal
+        $(document).on("change", "#detelm_nombre", function () {
+            var _image = $('#detelm_nombre')[0].files[0];
+            if (_image != null) {
+                var image_arr = _image.name.split(".");
+                var extension = image_arr[1].toLowerCase();
+                //console.log(extension);
+                if (extension != "jpg" && extension != "png") {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato jpg o png',
+                        type: "warning"
+                    });
+                }
+                else {
+                    var nombre = image_arr[0].substring(0, 11);
+                    var actualicon = image_arr[1].toLowerCase();
+                    var icon = "";
+                    if (actualicon == "png" || actualicon == "jpg") {
+                        icon = '<i class="fa fa-file-word-o"></i>';
+                    }
+                    else {
+                        icon = '<i class="fa fa-file-pdf-o"></i>';
+                    };
+                    $("#spandetelm").html("");
+                    $("#spandetelm").append(icon + " " + nombre + "... ." + actualicon);
+                    $("#detel_nombre_imagen").val(nombre + "." + actualicon);
+                    $("#spandetelm").css({ 'font-size': '10px' });  
+                }
+            }
+            else {
+                $("#spandetelm").html("");
+                $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
+            }
+        })
     };
 
     var _metodos = function () {
@@ -763,25 +889,25 @@ function MostrarDetalle(row) {
         table += '<th>Acciones</th></tr>';
         $.each(row, function (index, value) {
             var fk_tipo_elemento = value.fk_tipo_elemento;
-            var spanTipoElemento = '';
+            var spanNuevoElemento = '';
             var spanDetalleElemento = '';
             var spanEditarElemento = '';
             var spanEliminarElemento = '';
             if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
-                spanTipoElemento = '';
+                spanNuevoElemento = '';
                 spanDetalleElemento = '<tr><td></td>';
                 spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                 spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
             else if (fk_tipo_elemento == 8 || fk_tipo_elemento == 13 || fk_tipo_elemento == 14 || fk_tipo_elemento == 15 || fk_tipo_elemento == 16) {
-                spanTipoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
+                spanNuevoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
                 spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
                 spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
             else {
-                spanTipoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
+                spanNuevoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
                 spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
-                spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
+                // spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                 spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
 
@@ -791,7 +917,7 @@ function MostrarDetalle(row) {
             table += '<td>' + (value.elem_estado == 'A' ? 'Activo' : 'Inactivo') + '</td>';
             table += '<td>' + value.elem_orden + '</td>';
             table += '<td>' + value.tipo_nombre + '</td>';
-            table += '<td>' + spanEditarElemento + spanTipoElemento + spanEliminarElemento + '</td></tr>';
+            table += '<td>' + spanEditarElemento +spanNuevoElemento + spanEliminarElemento + '</td></tr>';
         });
         table += '</table>';
 
