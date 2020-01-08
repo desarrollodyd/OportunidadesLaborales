@@ -354,13 +354,16 @@
                                 var fk_tipo_elemento = value.fk_tipo_elemento;
                                 var spanTipoElemento = '';
                                 var spanDetalleElemento = '';
+                                var spanEditarElementoModal='';
                                 if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
-                                    spanTipoElemento = '';
-                                    spanDetalleElemento = '<tr><td></td>';
+                                    spanTipoElemento += '';
+                                    spanDetalleElemento += '<tr><td></td>';
+                                    spanEditarElementoModal+='<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                                 }
                                 else {
-                                    spanTipoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
+                                    spanTipoElemento += '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
                                     spanDetalleElemento += '<tr class="elem-modal' + value.emod_id + '"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                    spanEditarElementoModal+='';
                                 }
 
                                 //htmlTags += '<tr class="elem-modal' + value.emod_id + '"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
@@ -370,7 +373,7 @@
                                 htmlTags += '<td>' + value.tipo_nombre + '</td>';
                                 htmlTags += '<td>' + value.emod_orden + '</td>';
                                 htmlTags += '<td>' + value.emod_estado + '</td>';
-                                htmlTags += '<td><a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>' + spanTipoElemento + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '">Eliminar</a></td></tr>';
+                                htmlTags += '<td>' +spanEditarElementoModal+ spanTipoElemento + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -645,6 +648,9 @@
             if ($("#emod_id").val() == 0) {
                 url = 'IntranetElementoModal/IntranetElementoModalInsertarJson';
             }
+            else{
+                url='IntranetElementoModal/IntranetElementoModalEditarJson';
+            }
             responseSimple({
                 url: url,
                 data: JSON.stringify(dataForm),
@@ -676,7 +682,29 @@
                 }
             })
         });
-
+        $(document).on('click','.btn_editar_elemento_modal',function(){
+            var emod_id=$(this).data('id');
+            var dataForm={
+                emod_id:emod_id,
+            }
+            responseSimple({
+                url:'IntranetElementoModal/IntranetElementoModalIdObtenerJson',
+                refresh:false,
+                data:JSON.stringify(dataForm),
+                callBackSuccess:function(response){
+                    if(response.respuesta){
+                        var data=response.data;
+                        $("#div_tipo_elemento_modal").hide();
+                        $("#emod_titulo").val(data.emod_titulo);
+                        $("#fk_seccion_elemento_modal").val(data.fk_seccion_elemento);
+                        $("#emod_id").val(data.emod_id);
+                        $("#emod_estado").val(data.emod_estado);
+                        $("#cboTipoElementoModal").val(data.fk_tipo_elemento)
+                        $("#modalFormularioElementoModal").modal('show');
+                    }
+                }
+            })
+        });
         //Botones para agregar un nuevo Detalle de Elemento al Modal(caso listas de texto, citas o Imagenes) y evento para guardar ese detalle
         $(document).on('click', '.btn-nuevo-detalle-elemento-modal', function () {
             var emod_id = $(this).data("id");
@@ -738,10 +766,12 @@
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
-                    console.log(response);
+                    if(response.respuesta){
+                        
+                        $("#modalFormularioDetalleElementoModal").modal('show');
+                    }
                 }
             })
-            //$("#modalFormularioDetalleElementoModal").modal("show");
         })
         $(document).on('click', '.btn-eliminar-detalle-elemento-modal', function () {
             var detelm_id = $(this).data("id");

@@ -126,6 +126,56 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta=response,mensaje=mensaje });
         }
+        [HttpPost]
+        public ActionResult IntranetElementoModalIdObtenerJson(int emod_id) {
+            string errormensaje = "";
+            bool response = false;
+            claseError error = new claseError();
+            IntranetElementoModalEntidad elementoModal = new IntranetElementoModalEntidad();
+            try
+            {
+                var elementoModaltupla = intranetElementoModalbl.IntranetElementoModalIdObtenerJson(emod_id);
+                error = elementoModaltupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    elementoModal = elementoModaltupla.intranetElementoModal;
+                    response = true;
+                    errormensaje = "Obteniendo Data";
+                }
+                else {
+                    errormensaje = error.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message + ",Llame al Administrador";
+            }
+            return Json(new { data = elementoModal, respuesta = response, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult IntranetElementoModalEditarJson(IntranetElementoModalEntidad intranetElementoModal) {
+            string errormensaje = "";
+            bool response = false;
+            claseError error = new claseError();
+            try
+            {
+                intranetElementoModal.emod_contenido = intranetElementoModal.emod_titulo;
+                intranetElementoModal.emod_descripcion = intranetElementoModal.emod_titulo;
+                var intranetElementModalTupla = intranetElementoModalbl.IntranetElementoModalEditarJson(intranetElementoModal);
+                error = intranetElementModalTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = intranetElementModalTupla.intranetElementoModalEditado;
+                }
+                else {
+                    errormensaje = error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message+",Llame al Administrador";
+            }
+            return Json(new { respuesta = response, mensaje = errormensaje });
+        }
     }
     
 }

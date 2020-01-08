@@ -124,10 +124,11 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             IntranetElementoModalEntidad intranetElementoModal = new IntranetElementoModalEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT emod_id, emod_titulo, emod_descripcion, emod_contenido, 
-                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, emod_estado
-	                            FROM intranet.int_elemento_modal  
-                                where emod_orden=@p0;";
+            string consulta = @"SELECT emod_id, 
+                                emod_titulo, emod_descripcion, emod_contenido,
+                                emod_orden, fk_seccion_elemento, fk_tipo_elemento, 
+                                emod_estado
+	                                FROM intranet.int_elemento_modal where emod_id=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
