@@ -715,12 +715,13 @@
             $(".detelm-imagen").show();
             $(".detelm-nombre").show();
             $(".detelm-posicion").show();
-            debugger;
+            $(".detelm-opcion").show();
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento_modal_").val(2);
                 $(".detelm-imagen").hide();
                 $(".detelm-nombre").hide();
                 $(".detelm-posicion").hide();
+                $(".detelm-opcion").hide();
             }
             else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
                 //va a abrir modal
@@ -729,6 +730,7 @@
             }
             else {
                 $("#fk_seccion_elemento_modal_").val(0);
+                $(".detelm-opcion").hide();
                 $(".detelm-posicion").hide();
             }
             $("#modalFormularioDetalleElementoModal").modal("show");
@@ -738,14 +740,19 @@
             //$("#form_detalle_elemento_modal").submit();
             var dataForm = new FormData(document.getElementById("form_detalle_elemento_modal"));
             var url = '';
-            if ($("#detel_id").val() == 0) {
+            if ($("#detelm_id").val() == 0) {
                 url = 'IntranetDetalleElementoModal/IntranetDetalleElementoModalInsertarJson';
+            }
+            else{
+                url='IntranetDetalleElementoModal/IntranetDetalleElementoModalEditarJson';
             }
             responseFileSimple({
                 url: url,
                 data: dataForm,
                 refresh: false,
                 callBackSuccess: function (response) {
+                    
+                    console.log(response);
                     if (response.respuesta) {
                         $("#modalFormularioDetalleElementoModal").modal("hide");
                     }
@@ -766,8 +773,34 @@
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
+                    console.log(response.data);
                     if(response.respuesta){
-                        
+                        var data=response.data;
+                        $("#divdetelm").hide();
+                        $('#detelm_id').val(data.detelm_id);
+                        $('#fk_elemento_modal').val(data.fk_elemento_modal)
+                        $("#spandetelm").html("");
+                        $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        if(data.detelm_extension!=""){
+                            $("#detelm_nombre_imagen_modal").text("Nombre: " + data.detelm_nombre+"."+data.detelm_extension);
+                            $("#detelm_nombre_imagen").val(data.detelm_nombre+"."+data.detelm_extension);
+                            // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
+                            $("#icono_actual_detelm").attr("src", "data:image/gif;base64," + data.detelm_nombre_imagen);
+                            $("#divdetelm").show();
+                            $(".detelm-imagen").show();
+                            $(".detelm-nombre").show();
+                            $(".detelm-posicion").hide();
+                            $(".detelm-opcion").hide();
+                        }
+                        else{
+                            $(".detelm-imagen").hide();
+                            $(".detelm-nombre").hide();
+                            $(".detelm-posicion").hide();
+                            $(".detelm-opcion").hide();
+                        }
+                        $("#tituloModalDetalleElementoModal").text("Editar ");
+                        $("#detelm_descripcion").val(data.detelm_descripcion);
+                        $("#detelm_estado").val(data.detelm_estado);
                         $("#modalFormularioDetalleElementoModal").modal('show');
                     }
                 }

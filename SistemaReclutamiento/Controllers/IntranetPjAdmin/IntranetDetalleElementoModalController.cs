@@ -1,6 +1,7 @@
 ﻿using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,6 +18,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         IntranetDetalleElementoModalModel intranetDetalleElementoModalbl = new IntranetDetalleElementoModalModel();
         string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         claseError error = new claseError();
+        RutaImagenes rutaImagenes = new RutaImagenes();
         public ActionResult Index()
         {
             return View();
@@ -273,7 +275,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 if (error.Key.Equals(string.Empty))
                 {
                     intranetDetalleElementoModal = intranetDetalleElementoModalTupla.intranetDetalleElementoModal;
+                    intranetDetalleElementoModal.detelm_nombre_imagen = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre + "." + intranetDetalleElementoModal.detelm_extension);
                     response = true;
+                    mensaje = "Obteniendo Data";
                 }
                 else {
                     mensaje = error.Value;
@@ -284,6 +288,76 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new{ data= intranetDetalleElementoModal ,respuesta=response,mensaje=mensaje });
+        }
+        [HttpPost]
+        public ActionResult IntranetDetalleElementoModalEditarJson(IntranetDetalleElementoModalEntidad intranetDetalleElementoModal) {
+            HttpPostedFileBase file = Request.Files[0];
+            int tamanioMaximo = 4194304;
+            string extension = "";
+            string errormensaje = "";
+            bool response = false;
+            string rutaInsertar = "";
+            string rutaAnterior = "";
+            try
+            {
+                //Es imagen
+                if (intranetDetalleElementoModal.detelm_nombre_imagen != "" && intranetDetalleElementoModal.detelm_nombre_imagen != null)
+                {
+                    //selecciono una imagen para editar
+                    if (file.ContentLength > 0 && file != null)
+                    {
+                        if (file.ContentLength <= tamanioMaximo)
+                        {
+                            extension = Path.GetExtension(file.FileName);
+                            if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
+                            {
+                                string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
+                                var nombre = (nombreArchivo + extension);
+
+                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
+                                rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + intranetDetalleElementoModal.detelm_nombre_imagen);
+                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                {
+                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                }
+                                if (System.IO.File.Exists(rutaAnterior))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
+                                }
+                                file.SaveAs(rutaInsertar);
+                                intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
+                                extension = extension.Replace(".", "");
+                                intranetDetalleElementoModal.detelm_extension = extension;
+                            }
+                        }
+                        else
+                        {
+                            errormensaje = "El archivo supera el tamaño maximo permitido";
+                            return Json(new { respuesta = false, mensaje = errormensaje });
+                        }
+                    }
+                }
+                if (intranetDetalleElementoModal.fk_seccion_elemento == 2)
+                {
+                    intranetDetalleElementoModal.fk_seccion_elemento = 0;
+                }
+                intranetDetalleElementoModal.detelm_ubicacion = "";
+                var intranetDetalleElementotupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEditarJson(intranetDetalleElementoModal);
+                error = intranetDetalleElementotupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = intranetDetalleElementotupla.intranetDetalleElementoModalEditado;
+                    errormensaje = "Editado";
+                }
+                else
+                {
+                    errormensaje = error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+            return Json(new { data=intranetDetalleElementoModal,mensaje = errormensaje, respuesta = response });
         }
     }
 }

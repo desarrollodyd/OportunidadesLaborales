@@ -203,7 +203,7 @@ detelm_orden, detelm_posicion
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento_modal
-	                    SET  detelm_descripcion=@p0, detelm_nombre=@p1, detelm_extension=@p2, detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7,@fk_seccion_elemento=@p8
+	                    SET  detelm_descripcion=@p0, detelm_nombre=@p1, detelm_extension=@p2, detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7
 	                    WHERE detelm_id=@p6;";
             try
             {
