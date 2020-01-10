@@ -134,7 +134,11 @@ namespace SistemaReclutamiento.Controllers
                         string password_encriptado = Seguridad.EncriptarSHA512(usu_password.Trim());
                         if(usuario.usu_tipo.Equals("PROVEEDOR"))
                         {
-                            return Json(new { respuesta = false, mensaje = "No tienen Acceso a este Sistemas", estado = ""/*, usuario=usuario*/ });
+                            return Json(new { respuesta = false, mensaje = "No tiene Acceso a este Sistema", estado = ""/*, usuario=usuario*/ });
+                        }
+                        if (usuario.usu_tipo.Equals("EMPLEADO"))
+                        {
+                            return Json(new { respuesta = false, mensaje = "No tiene Acceso a este Sistema", estado = ""/*, usuario=usuario*/ });
                         }
                         if (usuario.usu_contrasenia == password_encriptado)
                         {

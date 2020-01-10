@@ -1,7 +1,6 @@
 ﻿@using System.Web.Script.Serialization
 @{
     Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
-    String Menu = new JavaScriptSerializer().Serialize(ViewBag.Menu);
 }
 
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -376,9 +375,6 @@
 
 @section js
 {
-    <script type="text/javascript">
-        menu = (@Html.Raw(Menu));
-    </script>
     <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJSecciones.js"></script>
 }
 
