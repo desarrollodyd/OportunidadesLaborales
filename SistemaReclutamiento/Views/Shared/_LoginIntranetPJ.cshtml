@@ -1,113 +1,134 @@
-﻿<!DOCTYPE html>
+﻿@using SistemaReclutamiento.Models;
+@using SistemaReclutamiento.Entidades;
+@{
+    UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
+
+    if (usuario != null)
+    {
+        Response.Redirect("~/Persona/DatosPersonaVista");
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
-
-<!-- Mirrored from ace.jeka.by/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 02 Nov 2019 00:54:23 GMT -->
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
-    <title>Login - Intranet PJ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="~/Content/images/icon.png">
-    <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <title>CORPORACION PJ</title>
 
-    <!-- text fonts -->
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/fonts.googleapis.com.css" />
-
-    <!-- ace styles -->
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace.min.css" />
-
-    <!--[if lte IE 9]>
-        <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-part2.min.css" />
-    <![endif]-->
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-rtl.min.css" />
-
-    <!--[if lte IE 9]>
-      <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-ie.min.css" />
-    <![endif]-->
-    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-    <!--[if lte IE 8]>
-    <script src="~/Content/intranetSGC/assets/js/html5shiv.min.js"></script>
-    <script src="~/Content/intranetSGC/assets/js/respond.min.js"></script>
-
-    <![endif]-->
+    <!-- Bootstrap -->
+    <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/icomoon/styles.min.css" rel="stylesheet" />
+    <!-- NProgress -->
+    <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="~/Content/vendors/animate.css/animate.min.css" rel="stylesheet">
     <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
     <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
     <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="~/Content/login.css" rel="stylesheet" />
+    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
 </head>
 
-<body class="login-layout">
-    <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
-    <div class="main-container">
-        <div class="main-content">
-            <div class="row">
-                <div class="col-sm-10 col-sm-offset-1">
-                    @RenderBody()
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.main-content -->
-    </div><!-- /.main-container -->
-    <!-- basic scripts -->
-    <!--[if !IE]> -->
-    <script src="~/Content/intranetSGC/assets/js/jquery-2.1.4.min.js"></script>
+<body>
+    <div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
+    <div class="login">
+        @RenderBody()
+    </div>
+
+    <script src="~/Content/vendors/jquery/dist/jquery.min.js"></script>
+    <script src="~/Content/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
     <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
     <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
-    <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
-
-    <!-- <![endif]-->
-    <!--[if IE]>
-    <script src="~/Content/intranetSGC/assets/js/jquery-1.11.3.min.js"></script>
-    <![endif]-->
-    <script type="text/javascript">
-        if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/intranetSGC/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-    </script>
-
-    <!-- inline scripts related to this page -->
-    <script type="text/javascript">
-        jQuery(function ($) {
-            $(document).on('click', '.toolbar a[data-target]', function (e) {
-                e.preventDefault();
-                var target = $(this).data('target');
-                $('.widget-box.visible').removeClass('visible');//hide others
-                $(target).addClass('visible');//show target
-            });
-        });
-
-
-
-        //you don't need this, just used for changing background
-        jQuery(function ($) {
-            $('#btn-login-dark').on('click', function (e) {
-                $('body').attr('class', 'login-layout');
-                $('#id-text2').attr('class', 'white');
-                $('#id-company-text').attr('class', 'blue');
-
-                e.preventDefault();
-            });
-            $('#btn-login-light').on('click', function (e) {
-                $('body').attr('class', 'login-layout light-login');
-                $('#id-text2').attr('class', 'grey');
-                $('#id-company-text').attr('class', 'blue');
-
-                e.preventDefault();
-            });
-            $('#btn-login-blur').on('click', function (e) {
-                $('body').attr('class', 'login-layout blur-login');
-                $('#id-text2').attr('class', 'white');
-                $('#id-company-text').attr('class', 'light-blue');
-
-                e.preventDefault();
-            });
-
-        });
-    </script>
-
-
+    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
+    <script src="~/Content/viewjs/general.js"></script>
     @RenderSection("js", required: false)
-</body>
 
-<!-- Mirrored from ace.jeka.by/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 02 Nov 2019 00:54:23 GMT -->
+    <script>
+        $(function () {
+            var tab = $('.tabs h3 a');
+            tab.on('click', function (event) {
+                event.preventDefault();
+                tab.removeClass('active');
+                $(this).addClass('active');
+                tab_content = $(this).attr('href');
+                $('div[id$="tab-content"]').removeClass('active');
+                $(tab_content).addClass('active');
+            });
+        });
+
+        // SLIDESHOW
+        $(function () {
+            $('#slideshow > div:gt(0)').hide();
+            setInterval(function () {
+                $('#slideshow > div:first')
+                    .fadeOut(1000)
+                    .next()
+                    .fadeIn(1000)
+                    .end()
+                    .appendTo('#slideshow');
+            }, 3850);
+        });
+
+        // CUSTOM JQUERY FUNCTION FOR SWAPPING CLASSES
+        (function ($) {
+            'use strict';
+            $.fn.swapClass = function (remove, add) {
+                this.removeClass(remove).addClass(add);
+                return this;
+            };
+        }(jQuery));
+
+        // SHOW/HIDE PANEL ROUTINE (needs better methods)
+        // I'll optimize when time permits.
+        $(function () {
+            $('.agree,.forgot, #toggle-terms, .log-in, .sign-up').on('click', function (event) {
+                event.preventDefault();
+                var terms = $('.terms'),
+                    recovery = $('.recovery'),
+                    close = $('#toggle-terms'),
+                    arrow = $('.tabs-content .fa');
+                if ($(this).hasClass('agree') || $(this).hasClass('log-in') || ($(this).is('#toggle-terms')) && terms.hasClass('open')) {
+                    if (terms.hasClass('open')) {
+                        terms.swapClass('open', 'closed');
+                        close.swapClass('open', 'closed');
+                        arrow.swapClass('active', 'inactive');
+                    } else {
+                        if ($(this).hasClass('log-in')) {
+                            return;
+                        }
+                        terms.swapClass('closed', 'open').scrollTop(0);
+                        close.swapClass('closed', 'open');
+                        arrow.swapClass('inactive', 'active');
+                    }
+                }
+                else if ($(this).hasClass('forgot') || $(this).hasClass('sign-up') || $(this).is('#toggle-terms')) {
+                    if (recovery.hasClass('open')) {
+                        recovery.swapClass('open', 'closed');
+                        close.swapClass('open', 'closed');
+                        arrow.swapClass('active', 'inactive');
+                    } else {
+                        if ($(this).hasClass('sign-up')) {
+                            return;
+                        }
+                        recovery.swapClass('closed', 'open');
+                        close.swapClass('closed', 'open');
+                        arrow.swapClass('inactive', 'active');
+                    }
+                }
+            });
+        });
+
+    </script>
+
+</body>
 </html>
+
