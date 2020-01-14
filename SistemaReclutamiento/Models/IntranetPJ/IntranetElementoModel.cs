@@ -202,7 +202,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_elemento
-	                            SET elem_titulo=@p0, elem_descripcion=@p1, elem_contenido=@p2, elem_orden=@p3,
+	                            SET elem_titulo=@p0, elem_descripcion=@p1, elem_contenido=@p2,
                                 elem_estado=@p5, fk_seccion=@p6, fk_tipo_elemento=@p7
 	                            WHERE elem_id=@p8;";
             try
@@ -214,7 +214,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetElemento.elem_titulo));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetElemento.elem_descripcion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetElemento.elem_contenido));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetElemento.elem_orden));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetElemento.elem_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetElemento.fk_seccion));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetElemento.fk_tipo_elemento));

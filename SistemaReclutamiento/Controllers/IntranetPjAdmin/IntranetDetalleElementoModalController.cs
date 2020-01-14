@@ -70,58 +70,69 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             //verificar si es imagen o abre un modal si fk_seccion_elemento==0 es imagen
             if (intranetDetalleElementoModal.fk_seccion_elemento == 0)
             {
-                HttpPostedFileBase file = Request.Files[0];
-                tamanioMaximo = 4194304;
-                if (file.ContentLength > 0 && file != null)
+                var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalObtenerTotalRegistrosxElementoJson(intranetDetalleElementoModal.fk_elemento_modal);
+                error = totalDetallesTupla.error;
+                if (error.Key.Equals(string.Empty))
                 {
-                    if (file.ContentLength <= tamanioMaximo)
+                    intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalTotal + 1;
+                    HttpPostedFileBase file = Request.Files[0];
+                    tamanioMaximo = 4194304;
+                    if (file.ContentLength > 0 && file != null)
                     {
-                        extension = Path.GetExtension(file.FileName);
-                        if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
+                        if (file.ContentLength <= tamanioMaximo)
                         {
-                            string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
-                            var nombre = (nombreArchivo + extension);
-                            rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
-                            if (!Directory.Exists(pathArchivosIntranet + "/"))
+                            extension = Path.GetExtension(file.FileName);
+                            if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                             {
-                                System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
-                            }
-                            file.SaveAs(rutaInsertar);
-                            intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
-                            //intranetDetalleElementoModal.detelm_extension = (extension == ".jpg" ? "jpg" : "png");
-                            if (extension == ".jpg")
-                            {
-                                intranetDetalleElementoModal.detelm_extension = "jpg";
-                            }
-                            else if (extension == ".png")
-                            {
-                                intranetDetalleElementoModal.detelm_extension = "png";
+                                string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
+                                var nombre = (nombreArchivo + extension);
+                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
+                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                {
+                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                }
+                                file.SaveAs(rutaInsertar);
+                                intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
+                                //intranetDetalleElementoModal.detelm_extension = (extension == ".jpg" ? "jpg" : "png");
+                                if (extension == ".jpg")
+                                {
+                                    intranetDetalleElementoModal.detelm_extension = "jpg";
+                                }
+                                else if (extension == ".png")
+                                {
+                                    intranetDetalleElementoModal.detelm_extension = "png";
+                                }
+                                else
+                                {
+                                    intranetDetalleElementoModal.detelm_extension = "jpeg";
+                                }
                             }
                             else
                             {
-                                intranetDetalleElementoModal.detelm_extension = "jpeg";
+                                mensaje = "Solo se admiten archivos jpg o png.";
+                                respuesta = false;
+                                return Json(new { respuesta = respuesta, mensaje = mensaje });
                             }
                         }
                         else
                         {
-                            mensaje = "Solo se admiten archivos jpg o png.";
+                            mensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
                             respuesta = false;
                             return Json(new { respuesta = respuesta, mensaje = mensaje });
                         }
+
                     }
                     else
                     {
-                        mensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
+                        mensaje = "Error al Subir el Archivo.";
                         respuesta = false;
                         return Json(new { respuesta = respuesta, mensaje = mensaje });
                     }
-
                 }
-                else
-                {
-                    mensaje = "Error al Subir el Archivo.";
+                else {
+                    mensaje = error.Value;
                     respuesta = false;
-                    return Json(new { respuesta = respuesta, mensaje = mensaje });
+                    return Json(new { respuesta,mensaje });
                 }
             }
             //Lista de Texto

@@ -168,8 +168,8 @@ detelm_orden, detelm_posicion
             int idIntranetDetalleElementoModalInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento_Modal(
-	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal)
-	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5)
+	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal, detelm_orden)
+	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5,@p6)
                 returning detelm_id;";
             claseError error = new claseError();
             try
@@ -184,6 +184,7 @@ detelm_orden, detelm_posicion
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_ubicacion));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_orden));
   
                     idIntranetDetalleElementoModalInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();

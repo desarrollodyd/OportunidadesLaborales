@@ -66,7 +66,7 @@
                             "render": function (value) {
                                 var sec_id = value;
                                 var span = '';
-                                span += '<a href="#" class="tooltip-info" data-id="' + sec_id + '" data-rel="tooltip"                  title="Ver Detalle"><span class="blue" >             <i class="ace-icon fa fa-search-plus bigger-120"></       i></span ></a>';
+                                span += '<a href="javascript:void(0);" class="tooltip-info" data-id="' + sec_id + '" data-rel="tooltip"                  title="Ver Detalle"><span class="blue" >             <i class="ace-icon fa fa-search-plus bigger-120"></       i></span ></a>';
                                 return span;
                             },
                             width: "50px"
@@ -105,7 +105,7 @@
                             "render": function (value) {
                                 var span = '';
                                 var sec_id = value;
-                                var span ='<a href="#"class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip"title="Nuevo Elemento">Nuevo Elemento</a> <a href="#"class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-seccion" data-id="' + sec_id + '" data-rel="tooltip"title="Eliminar Seccion">Eliminar</a>';
+                                var span ='<a href="javascript:void(0);"class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento" data-id="' + sec_id + '" data-rel="tooltip"title="Nuevo Elemento">Nuevo Elemento</a> <a href="javascript:void(0);"class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-seccion" data-id="' + sec_id + '" data-rel="tooltip"title="Eliminar Seccion">Eliminar</a>';
                                 return span;
                             }
                         }
@@ -288,13 +288,13 @@
                                 var spanVerDetalleElemento = '';
                                 var spanEditarDetalleElemento='';
                                 if (value.fk_seccion_elemento > 0) {
-                                    spanAgregarElementoModal += '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento-modal" data-seccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
-                                    spanVerDetalleElemento += '<tr class="det-elemento' + value.detel_id + ' detalle-oculto"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal elemento-modal'+value.fk_seccion_elemento+'"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
-                                    spanEditarDetalleElemento+='';
+                                    spanAgregarElementoModal += '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento-modal" data-seccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo">Nuevo Elem. Modal</a>';
+                                    spanVerDetalleElemento += '<tr class="det-elemento' + value.detel_id + ' detalle-oculto"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal elemento-modal'+value.fk_seccion_elemento+'"><a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                    spanEditarDetalleElemento+='<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>';
                               
                                 }
                                 else {
-                                    spanEditarDetalleElemento+='<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>';
+                                    spanEditarDetalleElemento+='<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-rel="tooltip" title="Editar Detalle Elemento">Editar</a>';
 
                                     spanAgregarElementoModal += '';
                                     spanVerDetalleElemento += '<tr><td></td>';
@@ -305,7 +305,7 @@
                                 htmlTags += '<td>' + value.detel_nombre + '</td>';
                                 htmlTags += '<td>' + value.detel_orden + '</td>';
                                 htmlTags += '<td>' + value.detel_estado + '</td>';
-                                htmlTags += '<td>' +spanEditarDetalleElemento + spanAgregarElementoModal + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento" data-id="' + value.detel_id + '">Eliminar</a></td></tr>';
+                                htmlTags += '<td>' +spanEditarDetalleElemento + spanAgregarElementoModal + '<a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento" data-fkelemento= "'+value.fk_elemento+'" data-id="' + value.detel_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -357,11 +357,11 @@
                                 if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
                                     spanTipoElemento += '';
                                     spanDetalleElemento += '<tr><td></td>';
-                                    spanEditarElementoModal+='<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>';
+                                    spanEditarElementoModal+='<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                                 }
                                 else {
-                                    spanTipoElemento += '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
-                                    spanDetalleElemento += '<tr class="elem-modal' + value.emod_id + ' detalle-oculto"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-elemento-modal'+value.emod_id+'"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
+                                    spanTipoElemento += '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
+                                    spanDetalleElemento += '<tr class="elem-modal' + value.emod_id + ' detalle-oculto"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-elemento-modal'+value.emod_id+'"><a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
                                     spanEditarElementoModal+='';
                                 }
 
@@ -372,7 +372,7 @@
                                 htmlTags += '<td>' + value.tipo_nombre + '</td>';
                                 htmlTags += '<td>' + value.emod_orden + '</td>';
                                 htmlTags += '<td>' + value.emod_estado + '</td>';
-                                htmlTags += '<td>' +spanEditarElementoModal+ spanTipoElemento + '<a href="#" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '" data-fkseccionelemento="'+value.fk_seccion_elemento+'">Eliminar</a></td></tr>';
+                                htmlTags += '<td>' +spanEditarElementoModal+ spanTipoElemento + '<a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '" data-fkseccionelemento="'+value.fk_seccion_elemento+'">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -418,7 +418,7 @@
                                 htmlTags += '<td>' + value.detelm_descripcion + '</td>';
                                 htmlTags += '<td>' + value.detelm_orden + '</td>';
                                 htmlTags += '<td>' + value.detelm_estado + '</td>';
-                                htmlTags += '<td><a class="btn btn-white btn-primary btn-sm btn-round btn-editar-detalle-elemento-modal" data-id="' + value.detelm_id + '">Editar</a> <a class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento-modal" data-emodid="'+emod_id+'" data-id="' + value.detelm_id + '">Eliminar</a></td></tr>';
+                                htmlTags += '<td><a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn-editar-detalle-elemento-modal" data-id="' + value.detelm_id + '">Editar</a> <a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento-modal" data-emodid="'+emod_id+'" data-id="' + value.detelm_id + '">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -471,17 +471,24 @@
             var dataForm = {
                 elem_id: elem_id,
             }
-            responseSimple({
-                url: 'IntranetElemento/IntranetElementoElementoEliminarJson',
-                refresh: false,
-                data: JSON.stringify(dataForm),
-                callbackSuccess: function (response) {
-                    if (response.respuesta) {
-                        $(".details-control").trigger('click');
-                        $(".details-control").trigger('click');
-                    }
-                },
-            })
+            messageConfirmation({
+                content: '¿Esta seguro de ELIMINAR este Elemento?',
+                callBackSAceptarComplete: function () {
+                    responseSimple({
+                        url: 'IntranetElemento/IntranetElementoElementoEliminarJson',
+                        refresh: false,
+                        data: JSON.stringify(dataForm),
+                        callbackSuccess: function (response) {
+                            if (response.respuesta) {
+                                $(".details-control").trigger('click');
+                                $(".details-control").trigger('click');
+                            }
+                        },
+                    })
+                }
+            });
+
+            
         });
         $(document).on('click','.btn_editar_elemento',function(){
             var elem_id=$(this).data('id');
@@ -523,13 +530,21 @@
             var tipo_elemento = $(this).data("tipo");
             $("#fk_elemento").val(elem_id);
             $("#detel_id").val(0);
+            $("#tituloModalDetalleElemento").text("Nuevo ");
+            $("#detel_descripcion").val("");
+            $("#detel_estado").val("A");
+
             $(".detel-imagen").show();
             $(".detel-nombre").show();
             $(".detel-posicion").show();
+            $(".detel-opcion").show();
+            $(".detel-estado").show();
+            // $(".detel-descripcion").show();
             $("#detel_nombre_imagen").val("");
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento").val(2);
                 $(".detel-imagen").hide();
+                $("#divdetel").hide();
                 $(".detel-nombre").hide();
                 $(".detel-posicion").hide();
                 $(".detel-opcion").hide();
@@ -539,6 +554,7 @@
                 //va a abrir modal
                 $("#fk_seccion_elemento").val(1);
                 $(".detel-imagen").hide();
+                $("#divdetel").hide();
             }
             else if(tipo_elemento==11){
                 $("#fk_seccion_elemento").val(1);
@@ -550,10 +566,12 @@
                 $(".detel-posicion").hide();
                 $(".detel-opcion").hide();
             }
+
             $("#modalFormularioDetalleElemento").modal("show");
         })
         $(document).on('click', '.btn-guardar-detalle-elemento', function () {
             //$("#form_detalle_elemento").submit();
+            var elem_id=$("#fk_elemento").val();
             var dataForm = new FormData(document.getElementById("form_detalle_elemento"));
             var url = '';
             if ($("#detel_id").val() == 0) {
@@ -570,27 +588,34 @@
                     if (response.respuesta) {
                         $("#modalFormularioDetalleElemento").modal("hide");
                     }
-                    $(".detalle-elemento").trigger('click');
-                    $(".detalle-elemento").trigger('click');
+                    $(".detalle-elemento"+elem_id).trigger('click');
+                    $(".detalle-elemento"+elem_id).trigger('click');
                 }
             })
         });
         $(document).on('click', '.btn-eliminar-detalle-elemento', function () {
+            var fk_elemento=$(this).data("fkelemento");
             var detel_id = $(this).data("id");
             var dataForm = {
                 detel_id: detel_id,
             }
-            responseSimple({
-                url: 'IntranetDetalleElemento/IntranetDetalleElementoEliminarJson',
-                refresh: false,
-                data: JSON.stringify(dataForm),
-                callBackSuccess: function (response) {
-                    if (response.respuesta) {
-                        $(".detalle-elemento").trigger('click');
-                        $(".detalle-elemento").trigger('click');
-                    }
-                },
-            })
+            messageConfirmation({
+                content: '¿Esta seguro de ELIMINAR este Detalle?',
+                callBackSAceptarComplete: function () {
+                    responseSimple({
+                        url: 'IntranetDetalleElemento/IntranetDetalleElementoEliminarJson',
+                        refresh: false,
+                        data: JSON.stringify(dataForm),
+                        callBackSuccess: function (response) {
+                            if (response.respuesta) {
+                                $(".detalle-elemento"+fk_elemento).trigger('click');
+                                $(".detalle-elemento"+fk_elemento).trigger('click');
+                            }
+                        },
+                    })
+                }
+            });
+           
         })
 
         $(document).on('click','.btn_editar_detalle_elemento',function(){
@@ -643,6 +668,8 @@
             var fk_seccion_elemento = $(this).data('seccionelemento');
             $("#fk_seccion_elemento_modal").val(fk_seccion_elemento);
             $("#emod_id").val(0);
+            $("#div_tipo_elemento_modal").show();
+            $("#emod_titulo").val("");
             //Deshabilitar los tipos de elemento que abren modales
             $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
             $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
@@ -684,17 +711,23 @@
             var dataForm = {
                 emod_id: emod_id,
             }
-            responseSimple({
-                url: 'IntranetElementoModal/IntranetElementoModalEliminarJson',
-                data: JSON.stringify(dataForm),
-                refresh: false,
-                callBackSuccess: function (response) {
-                    if (response.respuesta) {
-                        $(".elemento-modal"+fk_seccion_elemento).trigger('click');
-                        $(".elemento-modal"+fk_seccion_elemento).trigger('click');
-                    }
+            messageConfirmation({
+                content: '¿Esta seguro de ELIMINAR este Elemento Modal?',
+                callBackSAceptarComplete: function () {
+                    responseSimple({
+                        url: 'IntranetElementoModal/IntranetElementoModalEliminarJson',
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            if (response.respuesta) {
+                                $(".elemento-modal"+fk_seccion_elemento).trigger('click');
+                                $(".elemento-modal"+fk_seccion_elemento).trigger('click');
+                            }
+                        }
+                    })
                 }
-            })
+            });
+            
         });
         $(document).on('click','.btn_editar_elemento_modal',function(){
             var emod_id=$(this).data('id');
@@ -708,12 +741,36 @@
                 callBackSuccess:function(response){
                     if(response.respuesta){
                         var data=response.data;
-                        $("#div_tipo_elemento_modal").hide();
+                        if(data.fk_tipo_elemento==1||data.fk_tipo_elemento==2||data.fk_tipo_elemento==3||data.fk_tipo_elemento==4){
+                            $("#div_tipo_elemento_modal").show();
+                            $("#cboTipoElementoModal").select2('destroy');
+                            $("#fk_seccion_elemento_modal").val(data.fk_seccion_elemento);
+                            $("#cboTipoElementoModal").select2();
+                            $('#cboTipoElementoModal option[value="5"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="6"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="7"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="9"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="10"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="11"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="12"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="14"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="15"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="16"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="17"]').prop('disabled', true);
+                            $('#cboTipoElementoModal option[value="18"]').prop('disabled', true);
+                        }
+                        else{
+                            $("#div_tipo_elemento_modal").hide();
+                            $("#fk_seccion_elemento_modal").val(data.fk_seccion_elemento);
+                        }
                         $("#emod_titulo").val(data.emod_titulo);
-                        $("#fk_seccion_elemento_modal").val(data.fk_seccion_elemento);
                         $("#emod_id").val(data.emod_id);
                         $("#emod_estado").val(data.emod_estado);
+                       
                         $("#cboTipoElementoModal").val(data.fk_tipo_elemento)
+           
                         $("#modalFormularioElementoModal").modal('show');
                     }
                 }
@@ -826,15 +883,21 @@
             var dataForm = {
                 detelm_id: detelm_id,
             }
-            responseSimple({
-                url: 'IntranetDetalleElementoModal/IntranetDetalleElementoModalEliminarJson',
-                data: JSON.stringify(dataForm),
-                refresh: false,
-                callBackSuccess: function (response) {
-                    $(".detalle-elemento-modal"+emod_id).trigger('click');
-                    $(".detalle-elemento-modal"+emod_id).trigger('click');
+            messageConfirmation({
+                content: '¿Esta seguro de ELIMINAR este Detalle de Elemento Modal?',
+                callBackSAceptarComplete: function () {
+                    responseSimple({
+                        url: 'IntranetDetalleElementoModal/IntranetDetalleElementoModalEliminarJson',
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            $(".detalle-elemento-modal"+emod_id).trigger('click');
+                            $(".detalle-elemento-modal"+emod_id).trigger('click');
+                        }
+                    })
                 }
-            })
+            });
+            
         })
 
         //Change en Imagenes
@@ -949,19 +1012,19 @@ function MostrarDetalle(row) {
             if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
                 spanNuevoElemento = '';
                 spanDetalleElemento = '<tr><td></td>';
-                spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
-                spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
+                spanEditarElemento = '<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
+                spanEliminarElemento = '<a  href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
             else if (fk_tipo_elemento == 8 || fk_tipo_elemento == 13 || fk_tipo_elemento == 14 || fk_tipo_elemento == 15 || fk_tipo_elemento == 16) {
-                spanNuevoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
-                spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
-                spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
+                spanNuevoElemento = '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
+                spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento detalle-elemento'+value.elem_id+'">' + '<a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+                spanEliminarElemento = '<a  href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
             else {
-                spanNuevoElemento = '<a href="#" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo</a>';
-                spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento ">' + '<a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
+                spanNuevoElemento = '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
+                spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento detalle-elemento'+value.elem_id+'">' + '<a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
                 // spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
-                spanEliminarElemento = '<a  href="#" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
+                spanEliminarElemento = '<a  href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
 
             table += spanDetalleElemento;

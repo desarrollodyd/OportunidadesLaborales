@@ -202,7 +202,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_elemento_modal
-	                        SET  emod_titulo=@p0, emod_descripcion=@p1, emod_contenido=@p2, emod_orden=@p3,
+	                        SET  emod_titulo=@p0, emod_descripcion=@p1, emod_contenido=@p2,
                          fk_seccion_elemento=@p5, fk_tipo_elemento=@p6, emod_estado=@p7
 	                        WHERE emod_id=@p8;";
             try
@@ -214,7 +214,6 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetElementoModal.emod_titulo));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetElementoModal.emod_descripcion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetElementoModal.emod_contenido));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_orden));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_seccion_elemento));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_tipo_elemento));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(intranetElementoModal.emod_estado));
