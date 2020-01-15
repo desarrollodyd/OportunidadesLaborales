@@ -168,8 +168,8 @@ detelm_orden, detelm_posicion
             int idIntranetDetalleElementoModalInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento_Modal(
-	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal, detelm_orden)
-	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5,@p6)
+	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal, detelm_orden, detelm_posicion)
+	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5,@p6,@p7)
                 returning detelm_id;";
             claseError error = new claseError();
             try
@@ -185,6 +185,7 @@ detelm_orden, detelm_posicion
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_orden));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_posicion));
   
                     idIntranetDetalleElementoModalInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
@@ -204,7 +205,7 @@ detelm_orden, detelm_posicion
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento_modal
-	                    SET  detelm_descripcion=@p0, detelm_nombre=@p1, detelm_extension=@p2, detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7
+	                    SET  detelm_descripcion=@p0, detelm_nombre=@p1, detelm_extension=@p2, detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=@p8
 	                    WHERE detelm_id=@p6;";
             try
             {
@@ -219,6 +220,7 @@ detelm_orden, detelm_posicion
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_id));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_posicion));
 
                     query.ExecuteNonQuery();
                     response = true;

@@ -209,10 +209,26 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12 col-xs-12 detel-url">
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input type="text" name="detel_url" id="detel_url" class="form-control" placeholder="Url" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detel-blank">
+                            <div class="form-group">
+                                <label>¿Se abrira en una ventana nueva?</label>
+                                <select class="form-control" name="detel_blank" id="detel_blank">
+                                    <option value=false selected>No</option>
+                                    <option value=true>Si</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-md-12 col-xs-12 detel-posicion">
                             <div class="form-group">
                                 <label>Posicion</label>
                                 <select id="cboPosicion" name="detel_posicion">
+                                    <option value="">Seleccione</option>
                                     <option value="L">Izquierda</option>
                                     <option value="C">Centro</option>
                                     <option value="R">Derecha</option>
@@ -345,6 +361,7 @@
                             <div class="form-group">
                                 <label>Posicion</label>
                                 <select id="cboPosicionElemModal" name="detelm_posicion">
+                                    <option value="">Seleccione</option>
                                     <option value="L">Izquierda</option>
                                     <option value="C">Centro</option>
                                     <option value="R">Derecha</option>

@@ -272,6 +272,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                 itemDetalleElemento.fk_seccion_elemento,
                                                 itemDetalleElemento.detel_orden,
                                                 itemDetalleElemento.detel_posicion,
+                                                itemDetalleElemento.detel_blank,
+                                                itemDetalleElemento.detel_url,
                                                 seccion_elemento = seccion_elemento 
                                             });
                                         }

@@ -315,7 +315,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         if (file.ContentLength <= tamanioMaximo)
                         {
                             extension = Path.GetExtension(file.FileName);
-                            if (extension == ".jpg" || extension == ".png" || extension == ".jpeg") {
+                            if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
+                            {
                                 string nombreArchivo = ("Elemento_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                 var nombre = (nombreArchivo + extension);
 
@@ -335,10 +336,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                 detalleElemento.detel_extension = extension;
                             }
                         }
-                        else {
+                        else
+                        {
                             errormensaje = "El archivo supera el tamaño maximo permitido";
                             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
                         }
+                    }
+                    else {
+                        string[] word = detalleElemento.detel_nombre_imagen.Split('.');
+                        detalleElemento.detel_nombre = word[0];
+                        detalleElemento.detel_extension = word[1];
                     }
                 }
                 if (detalleElemento.fk_seccion_elemento == 2) {

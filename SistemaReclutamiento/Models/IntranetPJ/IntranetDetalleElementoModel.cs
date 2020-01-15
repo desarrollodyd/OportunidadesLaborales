@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoEntidad> lista = new List<IntranetDetalleElementoEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detel_id, detel_descripcion, detel_nombre, 
-                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion
+                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion,detel_url,detel_blank
 	                                FROM intranet.int_detalle_elemento
                                  order by detel_orden asc;";
             try
@@ -49,6 +49,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
                                     detel_orden = ManejoNulos.ManageNullInteger(dr["detel_orden"]),
                                     detel_posicion = ManejoNulos.ManageNullStr(dr["detel_posicion"]),
+                                    detel_url = ManejoNulos.ManageNullStr(dr["detel_url"]),
+                                    detel_blank = ManejoNulos.ManegeNullBool(dr["detel_blank"]),
                                 };
 
                                 lista.Add(Imagen);
@@ -71,7 +73,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoEntidad> lista = new List<IntranetDetalleElementoEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detel_id, detel_descripcion,detel_nombre, 
-                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion
+                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion,detel_blank,detel_url
 	                                FROM intranet.int_detalle_elemento 
                                     where fk_elemento=@p0
                                     order by detel_orden asc";
@@ -100,6 +102,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]),
                                     detel_orden = ManejoNulos.ManageNullInteger(dr["detel_orden"]),
                                     detel_posicion = ManejoNulos.ManageNullStr(dr["detel_posicion"]),
+                                    detel_blank = ManejoNulos.ManegeNullBool(dr["detel_blank"]),
+                                    detel_url = ManejoNulos.ManageNullStr(dr["detel_url"]),
 
                                 };
 
@@ -126,8 +130,11 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 detel_descripcion, detel_nombre, detel_extension, 
                                 detel_ubicacion, 
                                 detel_estado, fk_elemento,
-                                fk_seccion_elemento, detel_orden, detel_posicion
-	                                FROM intranet.int_detalle_elemento where detel_id=@p0;";
+                                fk_seccion_elemento, detel_orden, detel_posicion, detel_url,detel_blank,fk_tipo_elemento
+	                                FROM intranet.int_detalle_elemento
+									join intranet.int_elemento on
+									intranet.int_detalle_elemento.fk_elemento=intranet.int_elemento.elem_id
+									where detel_id=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -152,6 +159,9 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetImagen.fk_seccion_elemento = ManejoNulos.ManageNullInteger(dr["fk_seccion_elemento"]);
                                 intranetImagen.detel_orden = ManejoNulos.ManageNullInteger(dr["detel_orden"]);
                                 intranetImagen.detel_posicion = ManejoNulos.ManageNullStr(dr["detel_posicion"]);
+                                intranetImagen.detel_url = ManejoNulos.ManageNullStr(dr["detel_url"]);
+                                intranetImagen.detel_blank = ManejoNulos.ManegeNullBool(dr["detel_blank"]);
+                                intranetImagen.fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]);
                             }
                         }
                     }
@@ -170,8 +180,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetImagenInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento(
-	            detel_descripcion, detel_nombre, detel_extension, detel_ubicacion, detel_estado,fk_elemento,fk_seccion_elemento,detel_orden,detel_posicion)
-	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7,@p8,@p9)
+	            detel_descripcion, detel_nombre, detel_extension, detel_ubicacion, detel_estado,fk_elemento,fk_seccion_elemento,detel_orden,detel_posicion,detel_url,detel_blank)
+	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7,@p8,@p9,@p10,@p11)
                 returning detel_id;";
             claseError error = new claseError();
             try
@@ -189,6 +199,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElemento.fk_seccion_elemento));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_orden));
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_posicion));
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_url));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManegeNullBool(intranetDetalleElemento.detel_blank));
                     idIntranetImagenInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -207,7 +219,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento
-	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  detel_estado=@p5,fk_elemento=@p7,fk_seccion_elemento=@p8
+	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@p10
 	                    WHERE detel_id=@p6;";
             try
             {
@@ -222,7 +234,9 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_estado));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_id));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElemento.fk_elemento));
-                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetDetalleElemento.fk_seccion_elemento));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_posicion));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_url));
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManegeNullBool(intranetDetalleElemento.detel_blank));
                     query.ExecuteNonQuery();
                     response = true;
                 }

@@ -307,10 +307,11 @@
                                     if (detalleElementolista.length > 0) {
                                         var i = 0;
                                         $.each(detalleElementolista, function (index, detalleelemento) {
+                                            console.log(detalleelemento);
                                             if (index == 0) {
                                                 appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                                     '<div class="thumb foto_cuadro_izquiera">' +
-                                                    ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt="">' +
+                                                    ' <a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
                                                     '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
@@ -330,7 +331,7 @@
                                                 if (i < 4) {
                                                     appendDetalleElementobody += '<li>' +
                                                         '<div class="octhumb">' +
-                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
                                                         '</div>' +
                                                         '<div class="desc">' +
                                                         '<a href="javascript:void(0);">' + detalleelemento.detel_descripcion + '</a>' +
@@ -529,7 +530,7 @@
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="thumb">' +
-                                                '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
@@ -978,7 +979,7 @@
                                         ce++;
                                     }
                                     if (detalleelemento.detelm_posicion == "R") {
-                                        appendsDerecha += '<li><div class="ctitle wt' + r + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
+                                        appendsDerecha += '<li><div class="ctitle wt' + r + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                         r++;
                                     }
                                 });
@@ -1162,6 +1163,11 @@
             $("div.img_face").removeClass("select_img");
             div.addClass("select_img");
         });
+        $(document).on('click','.abrir_pagina',function(){
+            var otra_pagina=$(this).data("blank");
+            var url=$(this).data("url");
+            console.log(otra_pagina,url);
+        })
 
     };
     //

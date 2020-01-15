@@ -281,12 +281,26 @@
                             htmlTags += '<th>Descripcion</th>';
                             htmlTags += '<th>Nombre</th>';
                             htmlTags += '<th>Orden</th>';
+                            htmlTags += '<th>Posicion</th>'
                             htmlTags += '<th>Estado</th>';
                             htmlTags += '<th>Acciones</th></tr>';
                             $.each(data, function (index, value) {
                                 var spanAgregarElementoModal = '';
                                 var spanVerDetalleElemento = '';
                                 var spanEditarDetalleElemento='';
+                                var posicion='';
+                                if(value.detel_posicion=='L'){
+                                    posicion='Izquierda';
+                                }
+                                else if(value.detel_posicion=='C'){
+                                    posicion='Centro';
+                                }
+                                else if(value.detel_posicion=='R'){
+                                    posicion='Derecha';
+                                }
+                                else{
+                                    posicion='';
+                                }
                                 if (value.fk_seccion_elemento > 0) {
                                     spanAgregarElementoModal += '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-elemento-modal" data-seccionelemento="' + value.fk_seccion_elemento + '" data-rel="tooltip" title="Nuevo">Nuevo Elem. Modal</a>';
                                     spanVerDetalleElemento += '<tr class="det-elemento' + value.detel_id + ' detalle-oculto"><td data-elemento="' + value.detel_id + '" data-id="' + value.fk_seccion_elemento + '" class="elemento-modal elemento-modal'+value.fk_seccion_elemento+'"><a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
@@ -304,6 +318,7 @@
                                 htmlTags += '<td>' + value.detel_descripcion + '</td>';
                                 htmlTags += '<td>' + value.detel_nombre + '</td>';
                                 htmlTags += '<td>' + value.detel_orden + '</td>';
+                                htmlTags += '<td>' + posicion + '</td>';
                                 htmlTags += '<td>' + value.detel_estado + '</td>';
                                 htmlTags += '<td>' +spanEditarDetalleElemento + spanAgregarElementoModal + '<a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento" data-fkelemento= "'+value.fk_elemento+'" data-id="' + value.detel_id + '">Eliminar</a></td></tr>';
                             })
@@ -351,16 +366,16 @@
                             $.each(data, function (index, value) {
                                 /*Ver si tiene Detalle para Agregar*/
                                 var fk_tipo_elemento = value.fk_tipo_elemento;
-                                var spanTipoElemento = '';
+                                var spanAgregarElemento = '';
                                 var spanDetalleElemento = '';
                                 var spanEditarElementoModal='';
                                 if (fk_tipo_elemento == 1 || fk_tipo_elemento == 2 || fk_tipo_elemento == 3 || fk_tipo_elemento == 4) {
-                                    spanTipoElemento += '';
+                                    spanAgregarElemento += '';
                                     spanDetalleElemento += '<tr><td></td>';
                                     spanEditarElementoModal+='<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                                 }
                                 else {
-                                    spanTipoElemento += '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
+                                    spanAgregarElemento += '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
                                     spanDetalleElemento += '<tr class="elem-modal' + value.emod_id + ' detalle-oculto"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-elemento-modal'+value.emod_id+'"><a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
                                     spanEditarElementoModal+='';
                                 }
@@ -372,7 +387,7 @@
                                 htmlTags += '<td>' + value.tipo_nombre + '</td>';
                                 htmlTags += '<td>' + value.emod_orden + '</td>';
                                 htmlTags += '<td>' + value.emod_estado + '</td>';
-                                htmlTags += '<td>' +spanEditarElementoModal+ spanTipoElemento + '<a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '" data-fkseccionelemento="'+value.fk_seccion_elemento+'">Eliminar</a></td></tr>';
+                                htmlTags += '<td>' +spanEditarElementoModal+ spanAgregarElemento + '<a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-elemento-modal" data-id="' + value.emod_id + '" data-fkseccionelemento="'+value.fk_seccion_elemento+'">Eliminar</a></td></tr>';
                             })
                             htmlTags += '</table></td></tr></fieldset>';
                             row.after(htmlTags);
@@ -405,18 +420,33 @@
                     data: JSON.stringify(dataForm),
                     callBackSuccess: function (response) {
                         var data = response.data;
+                      
                         if (data.length > 0) {
                             htmlTags += '<tr><td colspan="' + rowlength + '"><fieldset><legend>Detalle Elemento Modal</legend></fieldset><table class="table table-bordered table-sm"><tr class="thead-dark">';
                             htmlTags += '<th>ID</th>';
                             htmlTags += '<th>Titulo</th>';
                             htmlTags += '<th>Orden</th>';
+                            htmlTags+='<th>Posicion</th>';
                             htmlTags += '<th>Estado</th>';
                             htmlTags += '<th>Acciones</th></tr>';
                             $.each(data, function (index, value) {
-
+                                var posicion='';
+                                if(value.detelm_posicion=='L'){
+                                    posicion='Izquierda';
+                                }
+                                else if(value.detelm_posicion=='C'){
+                                    posicion='Centro';
+                                }
+                                else if(value.detelm_posicion=='R'){
+                                    posicion='Derecha';
+                                }
+                                else {
+                                    posicion='';
+                                }
                                 htmlTags += '<td>' + value.detelm_id + '</td>';
                                 htmlTags += '<td>' + value.detelm_descripcion + '</td>';
                                 htmlTags += '<td>' + value.detelm_orden + '</td>';
+                                htmlTags+='<td>'+posicion+'</td>';
                                 htmlTags += '<td>' + value.detelm_estado + '</td>';
                                 htmlTags += '<td><a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn-editar-detalle-elemento-modal" data-id="' + value.detelm_id + '">Editar</a> <a href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn-eliminar-detalle-elemento-modal" data-emodid="'+emod_id+'" data-id="' + value.detelm_id + '">Eliminar</a></td></tr>';
                             })
@@ -452,19 +482,29 @@
             else{
                 url='IntranetElemento/IntranetElementoEditarJson';
             }
-            responseSimple({
-                url: url,
-                refresh: false,
-                data: JSON.stringify(dataForm),
-                callBackSuccess: function (response) {
-                    // PanelSecciones.init_ListarSecciones();
-                    if(response.respuesta){
-                        $(".details-control").trigger('click');
-                        $(".details-control").trigger('click');
+            var fk_tipo_elemento=$("#cboTipoElemento").val();
+            if(fk_tipo_elemento!=''){
+                responseSimple({
+                    url: url,
+                    refresh: false,
+                    data: JSON.stringify(dataForm),
+                    callBackSuccess: function (response) {
+                        // PanelSecciones.init_ListarSecciones();
+                        if(response.respuesta){
+                            $(".details-control").trigger('click');
+                            $(".details-control").trigger('click');
+                        }
+                        $("#modalFormularioElemento").modal("hide");
                     }
-                    $("#modalFormularioElemento").modal("hide");
-                }
-            });
+                });
+            }
+            else{
+                messageResponse({
+                    text:"Debe Seleccionar un Tipo de Elemento",
+                    type:"error",
+                })
+            }
+            
         });
         $(document).on('click', '.btn_eliminar_elemento', function () {
             var elem_id = $(this).data("id");
@@ -522,7 +562,14 @@
                 $(".detel-imagen").show();
             }
         })
-
+        $(document).on('change','#cboOpcionElemModal',function(){
+            if($(this).val()==1){
+                $(".detelm-imagen").hide();
+            }
+            else{
+                $(".detelm-imagen").show();
+            }
+        })
 
         //Botones para abrir modal de nuevo detalle Elemento (Caso listas de texto, citas, imagenes) y evento para agregar un nuevo Detalle de Elemento
         $(document).on('click', '.btn-nuevo-detalle-elemento', function () {
@@ -539,6 +586,8 @@
             $(".detel-posicion").show();
             $(".detel-opcion").show();
             $(".detel-estado").show();
+            $(".detel-url").show();
+            $(".detel-blank").show();
             // $(".detel-descripcion").show();
             $("#detel_nombre_imagen").val("");
             if (tipo_elemento == 5 || tipo_elemento == 6) {
@@ -548,23 +597,48 @@
                 $(".detel-nombre").hide();
                 $(".detel-posicion").hide();
                 $(".detel-opcion").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
             }
             //Abren Modales fk_seccion_elemento en int_detalle_elemento debe tener un id
-            else if (tipo_elemento==8||tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
+            else if (tipo_elemento==8||tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
                 //va a abrir modal
                 $("#fk_seccion_elemento").val(1);
                 $(".detel-imagen").hide();
                 $("#divdetel").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+            }
+            else if(tipo_elemento==16){
+                $("#fk_seccion_elemento").val(1);
+                $(".detel-imagen").hide();
+                $("#divdetel").hide();
+                $(".detel-opcion").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
             }
             else if(tipo_elemento==11){
                 $("#fk_seccion_elemento").val(1);
                 $(".detel-posicion").hide();
                 $(".detel-opcion").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+                $("#detel_posicion").val("");
+            }
+            else if(tipo_elemento==12||tipo_elemento==17){
+                $("#fk_seccion_elemento").val(0);
+                $(".detel-posicion").hide();
+                $("#detel_posicion").val("");
+                $(".detel-opcion").hide();
+
             }
             else {
                 $("#fk_seccion_elemento").val(0);
                 $(".detel-posicion").hide();
+                $("#detel_posicion").val("");
                 $(".detel-opcion").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
             }
 
             $("#modalFormularioDetalleElemento").modal("show");
@@ -629,6 +703,7 @@
                 data:JSON.stringify(dataForm),
                 callBackSuccess:function(response){
                     var data=response.data;
+                    console.log(data);
                     if(response.respuesta){
                         $("#divdetel").hide();
                         $('#detel_id').val(data.detel_id);
@@ -644,14 +719,29 @@
                             $(".detel-imagen").show();
                             $(".detel-nombre").show();
                             $(".detel-posicion").hide();
+                            $("#detel_posicion").val();
                             $(".detel-opcion").hide();
+                            if(data.fk_tipo_elemento==12||data.fk_tipo_elemento==17){
+                                $(".detel-url").show();
+                                $(".detel-blank").show();
+                            }
+                            else{
+                                $(".detel-url").hide();
+                                $(".detel-blank").hide();
+                            }
                         }
                         else{
                             $(".detel-imagen").hide();
                             $(".detel-nombre").hide();
                             $(".detel-posicion").hide();
                             $(".detel-opcion").hide();
+                            $(".detel-url").hide();
+                            $(".detel-blank").hide();
                         }
+                        if(data.detel_posicion!=''&&data.detelm_extension==""){
+                            $(".detel-posicion").show();
+                        }
+                        $("#detel_posicion").val(data.detel_posicion);
                         $("#tituloModalDetalleElemento").text("Editar ");
                         $("#detel_descripcion").val(data.detel_descripcion);
                         $("#detel_estado").val(data.detel_estado);
@@ -671,11 +761,11 @@
             $("#div_tipo_elemento_modal").show();
             $("#emod_titulo").val("");
             //Deshabilitar los tipos de elemento que abren modales
-            $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
-            $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
-            $('#cboTipoElementoModal option[value="14"]').prop('disabled', true);
-            $('#cboTipoElementoModal option[value="15"]').prop('disabled', true);
-            $('#cboTipoElementoModal option[value="16"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="14"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="15"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="16"]').prop('disabled', true);
             $("#modalFormularioElementoModal").modal("show");
             
         });
@@ -691,19 +781,29 @@
             else{
                 url='IntranetElementoModal/IntranetElementoModalEditarJson';
             }
-            responseSimple({
-                url: url,
-                data: JSON.stringify(dataForm),
-                refresh: false,
-                callBackSuccess: function (response) {
-                    if (response.respuesta) {
-                        $("#modalFormularioElementoModal").modal("hide");
-                    }
-                    $(".elemento-modal"+fk_seccion_elemento).trigger('click');
-                    $(".elemento-modal"+fk_seccion_elemento).trigger('click');
-                    //PanelSecciones.init_ListarSecciones();
-                },
-            });
+            var fk_tipo_elemento_modal=$("#cboTipoElementoModal").val();
+            if(fk_tipo_elemento_modal!=""){
+                responseSimple({
+                    url: url,
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            $("#modalFormularioElementoModal").modal("hide");
+                        }
+                        $(".elemento-modal"+fk_seccion_elemento).trigger('click');
+                        $(".elemento-modal"+fk_seccion_elemento).trigger('click');
+                        //PanelSecciones.init_ListarSecciones();
+                    },
+                });
+            }
+            else{
+                messageResponse({
+                    text:"Debe Seleccionar un Tipo de Elemento",
+                    type:"error",
+                })
+            }
+            
         });
         $(document).on('click', '.btn-eliminar-elemento-modal', function () {
             var fk_seccion_elemento=$(this).data("fkseccionelemento");
@@ -749,15 +849,15 @@
                             $('#cboTipoElementoModal option[value="5"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="6"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="7"]').prop('disabled', true);
-                            $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
+                            // $('#cboTipoElementoModal option[value="8"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="9"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="10"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="11"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="12"]').prop('disabled', true);
-                            $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
-                            $('#cboTipoElementoModal option[value="14"]').prop('disabled', true);
-                            $('#cboTipoElementoModal option[value="15"]').prop('disabled', true);
-                            $('#cboTipoElementoModal option[value="16"]').prop('disabled', true);
+                            // $('#cboTipoElementoModal option[value="13"]').prop('disabled', true);
+                            // $('#cboTipoElementoModal option[value="14"]').prop('disabled', true);
+                            // $('#cboTipoElementoModal option[value="15"]').prop('disabled', true);
+                            // $('#cboTipoElementoModal option[value="16"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="17"]').prop('disabled', true);
                             $('#cboTipoElementoModal option[value="18"]').prop('disabled', true);
                         }
@@ -794,10 +894,17 @@
                 $(".detelm-posicion").hide();
                 $(".detelm-opcion").hide();
             }
-            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15 || tipo_elemento == 16) {
+            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
                 //va a abrir modal
                 $("#fk_seccion_elemento_modal_").val(1);
-                $(".detel-imagen").hide();
+                $(".detelm-imagen").hide();
+                $("#divdetelm").hide();
+            }
+            else if(tipo_elemento==16){
+                $("#fk_seccion_elemento_modal_").val(1);
+                $(".detelm-imagen").hide();
+                $("#divdetelm").hide();
+                $(".detelm-opcion").hide();
             }
             else {
                 $("#fk_seccion_elemento_modal_").val(0);
@@ -869,6 +976,10 @@
                             $(".detelm-posicion").hide();
                             $(".detelm-opcion").hide();
                         }
+                        if(data.detelm_posicion!=''&&data.detelm_extension==""){
+                            $(".detelm-posicion").show();
+                        }
+                        $("#detelm-posicion").val(data.detelm_posicion);
                         $("#tituloModalDetalleElementoModal").text("Editar ");
                         $("#detelm_descripcion").val(data.detelm_descripcion);
                         $("#detelm_estado").val(data.detelm_estado);
