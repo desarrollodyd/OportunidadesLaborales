@@ -433,6 +433,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                 var contrasenia = Seguridad.EncriptarSHA512(usu_password.Trim());
                                 if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
                                 {
+                                    //creacion de Token usuario y dni ira en el token separado de un punto
                                     Session["usuIntranet_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                                     persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                                     Session["perIntranet_full"] = persona;

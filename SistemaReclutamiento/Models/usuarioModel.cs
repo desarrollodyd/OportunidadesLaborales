@@ -592,5 +592,33 @@ namespace SistemaReclutamiento.Models
             return usuario;
         }
         #endregion
+
+        #region UsuarioItranet
+        public (bool tokenInsertado,claseError error) IntranetInsertarTokenJson(string token, int usu_id)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE seguridad.seg_usuario
+	            SET usu_token=@p0, usu_fecha_exp_token=@p1
+                WHERE usu_id=@p3; ";
+            DateTime fechaExpToken = DateTime.Now.AddHours(12);
+            try
+            {
+                using(var con=new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta,con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(token));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(fechaExpToken));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(usu_id));
+                }
+            }
+            catch (Exception ex) {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (tokenInsertado: response, error: error);
+        }
+        #endregion
     }
 }

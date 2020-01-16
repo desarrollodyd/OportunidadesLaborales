@@ -20,5 +20,6 @@ namespace SistemaReclutamiento.Entidades
         public bool usu_enviado { get; set; }
         public string usu_clave_temp { get; set; }  
         public string usu_tipo { get; set; }
+        public string usu_token { get; set; }
     }
 }
