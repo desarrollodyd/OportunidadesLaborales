@@ -307,11 +307,10 @@
                                     if (detalleElementolista.length > 0) {
                                         var i = 0;
                                         $.each(detalleElementolista, function (index, detalleelemento) {
-                                            console.log(detalleelemento);
                                             if (index == 0) {
-                                                appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
+                                                appendDetalleElementoheader += '<div class="featured abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                                     '<div class="thumb foto_cuadro_izquiera">' +
-                                                    ' <a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
+                                                    ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
                                                     '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
@@ -320,8 +319,8 @@
                                                     ' </div>' +
                                                     '<div class="excerpt">' +
                                                     '<div class="desc">' +
-                                                    '<p class="pcats" style="padding-left: 0px !important;padding-right: 0px !important;">uc option voluptaria ex, nec habeo viris ei. Ne qui tota legendos, nam at debitis tractatos.</p>' +
-                                                    '<a href="javascript:void(0);"><i class="fa fa-external-link"></i> LEER MAS </a>' +
+                                                    '<p class="pcats" style="padding-left: 0px !important;padding-right: 0px !important;"> ACCEDER A : '+detalleelemento.detel_descripcion+'</p>' +
+                                   
                                                     '</div>' +
                                                     '</div>' +
                                                     '</div>';
@@ -331,11 +330,11 @@
                                                 if (i < 4) {
                                                     appendDetalleElementobody += '<li>' +
                                                         '<div class="octhumb">' +
-                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" ><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
                                                         '</div>' +
                                                         '<div class="desc">' +
-                                                        '<a href="javascript:void(0);">' + detalleelemento.detel_descripcion + '</a>' +
-                                                        '<h4><a href="#"> 5 YouTube Exercises to Strengthen Your Core</a></h4>' +
+                                                        '<a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'">' + detalleelemento.detel_descripcion + '</a>' +
+                                                        '<h4><a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"> ACCEDER A : '+detalleelemento.detel_descripcion+'</a></h4>' +
                                                         '</div>' +
                                                         '</li>';
                                                 }
@@ -1164,9 +1163,23 @@
             div.addClass("select_img");
         });
         $(document).on('click','.abrir_pagina',function(){
+            console.log("click");
             var otra_pagina=$(this).data("blank");
             var url=$(this).data("url");
-            console.log(otra_pagina,url);
+            if(url!=""){
+                if(otra_pagina){
+                    window.open(url,'_blank','');
+                }
+                else{
+                    window.location.href=url;
+                }
+            }
+            else{
+                messageResponse({
+                    text:'No se Ha declarado la Url para este Sitio',
+                    type:'error',
+                })
+            }
         })
 
     };
@@ -1180,6 +1193,7 @@
         }
     }
 }();
+
 // Initialize module
 // ------------------------------
 document.addEventListener('DOMContentLoaded', function () {
