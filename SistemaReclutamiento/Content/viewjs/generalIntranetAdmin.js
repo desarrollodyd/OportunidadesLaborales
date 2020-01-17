@@ -408,7 +408,8 @@ function selectResponse(obj) {
         selectVal: null,
         select2: false,
         allOption: false,
-        placeholder: "Seleccione"
+        placeholder: "Seleccione",
+        closeMessages:false,
     }
 
     var opciones = $.extend({}, defaults, obj);
@@ -438,6 +439,9 @@ function selectResponse(obj) {
         success: function (response) {
             var datos = response.data;
             var mensaje = response.mensaje;
+            if(opciones.closeMessages){
+                CloseMessages();
+            }
             $("#" + opciones.select).html("");
             $("#" + opciones.select).append('<option value="">' + opciones.placeholder + '</option>');
             if (datos.length > 0) {
@@ -639,9 +643,9 @@ function simpleDataTable(obj) {
         tableHeaderCheck: false,
         rowReorder: false,
         columnDefs: [],
-        tableHeaderCheckIndex:0
+        tableHeaderCheckIndex:0,
+        rowCallback:false,
     }
-
     var opciones = $.extend({}, defaults, obj);
     var objt = "_objetoDatatable";
     this[objt + '_' + opciones.tableNameVariable] = $(opciones.table).DataTable({
@@ -660,6 +664,7 @@ function simpleDataTable(obj) {
         data: opciones.tableColumnsData,
         columns: opciones.tableColumns,
         columnDefs: opciones.columnDefs,
+        rowCallback:opciones.rowCallback,
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
