@@ -614,6 +614,7 @@
             $("#detel_nombre").val("");
             // $(".detel-descripcion").show();
             $("#detel_nombre_imagen").val("");
+            debugger;
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento").val(2);
                 $(".detel-imagen").hide();
@@ -634,7 +635,7 @@
                 $("#divdetel").hide();
                 $(".detel-url").hide();
                 $(".detel-blank").hide();
-                
+                $('#cboPosicion option[value="C"]').prop('disabled', true);
             }
             else if(tipo_elemento==16){
                 $("#fk_seccion_elemento").val(1);
@@ -643,7 +644,7 @@
                 $(".detel-opcion").hide();
                 $(".detel-url").hide();
                 $(".detel-blank").hide();
-            
+                $('#cboPosicion option[value="C"]').prop('disabled', false);
             }
             else if(tipo_elemento==11){
                 $("#fk_seccion_elemento").val(1);

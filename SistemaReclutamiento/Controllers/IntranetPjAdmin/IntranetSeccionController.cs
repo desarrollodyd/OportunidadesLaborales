@@ -118,7 +118,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             claseError error = new claseError();
             try
             {
-                var totalSeccionesTupla = intranetSeccionbl.IntranetSeccionObtenerTotalRegistrosJson();
+                var totalSeccionesTupla = intranetSeccionbl.IntranetSeccionObtenerTotalRegistrosJson(intranetSeccion.fk_menu);
                 error = totalSeccionesTupla.error;
                 if (error.Key.Equals(string.Empty)) {
                     intranetSeccion.sec_orden = totalSeccionesTupla.intranetSeccionTotal + 1;

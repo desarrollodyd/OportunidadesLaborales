@@ -324,17 +324,18 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetSeccionReordenado: response, error: error);
         }
-        public (int intranetSeccionTotal, claseError error) IntranetSeccionObtenerTotalRegistrosJson()
+        public (int intranetSeccionTotal, claseError error) IntranetSeccionObtenerTotalRegistrosJson(int fk_menu)
         {
             int intranetSeccionTotal = 0;
             claseError error = new claseError();
-            string consulta = @"select count(*) as total from intranet.int_seccion";
+            string consulta = @"select count(*) as total from intranet.int_seccion where fk_menu=@p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(fk_menu));
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

@@ -79,8 +79,9 @@
                 }
                 else {
                     $("#cumpleaniosIntranet").html("");
-                    $("#cumpleaniosIntranet").hmtl('<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat"><ul class="catlist" >');
-                    $("#cumpleaniosIntranet").appen('<li><p><h2 class="wtitle">No se encontraron Cumpleaños</h2></p></li></ul></div>');
+                    var appendCumpleanios='';
+                    appendCumpleanios+='<ul class="catlist"><li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/cake.png"><div class="spannumber"></div><p class="meta-date"></p><h2 class="wtitle">No se encontraron mas cumpleaños hasta fin de mes</h2></a></li></ul>';
+                    $("#cumpleaniosIntranet").append(appendCumpleanios);
                 }
 
                 //Creacion de Aside Para Actividades
@@ -97,8 +98,10 @@
                 }
                 else {
                     $("#actividadesMes").html("");
-                    $("#actividadesMes").html('<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">')
-                    $("#actividadesMes").append('<li><p><h2 class="wtitle">No hay Actividades Registradas</h2></p></li></ul></div>')
+                    var appendActividades='';
+                    appendActividades+='<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
+                    appendActividades+='<li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/><p class="meta-date"></p><h2 class="wtitle">No hay Actividades Registradas</h2></a></li></ul></div>';
+                    $("#actividadesMes").append(appendActividades);
                 }
                 //Listado en Seccion de Noticias
                 if (listaNoticias.length > 0) {
