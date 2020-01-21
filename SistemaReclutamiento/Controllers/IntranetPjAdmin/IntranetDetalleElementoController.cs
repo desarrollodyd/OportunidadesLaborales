@@ -308,7 +308,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             try
             {
                 //Es imagen
-                if (detalleElemento.detel_nombre_imagen != "" && detalleElemento.detel_nombre_imagen != null) {
+                if (detalleElemento.detel_nombre_imagen != "" && detalleElemento.detel_nombre_imagen != null)
+                {
                     //selecciono una imagen para editar
                     if (file.ContentLength > 0 && file != null)
                     {
@@ -342,11 +343,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
                         }
                     }
-                    else {
+                    else
+                    {
                         string[] word = detalleElemento.detel_nombre_imagen.Split('.');
                         detalleElemento.detel_nombre = word[0];
                         detalleElemento.detel_extension = word[1];
                     }
+                }
+                else {
+                    detalleElemento.detel_nombre = detalleElemento.detel_descripcion;
                 }
                 if (detalleElemento.fk_seccion_elemento == 2) {
                     detalleElemento.fk_seccion_elemento = 0;

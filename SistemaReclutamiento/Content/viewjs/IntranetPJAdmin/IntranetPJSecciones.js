@@ -487,7 +487,7 @@
             $("#div_tipo_elemento").show();
             $("#fk_seccion").val(sec_id);
             $("#elem_id").val(0);
-            
+            $(".elem-orden").hide();
             $("#modalFormularioElemento").modal("show");
         });
         $(document).on('click', '.btn-guardar-elemento', function () {
@@ -570,6 +570,7 @@
                         $("#elem_estado").val(elemento.elem_estado);
                         $("#cboTipoElemento").val(elemento.fk_tipo_elemento);
                         $("#elem_orden").val(elemento.elem_orden);
+                        $(".elem-orden").show();
                         $("#modalFormularioElemento").modal("show");
                     }
                 }
@@ -609,12 +610,13 @@
             $(".detel-estado").show();
             $(".detel-url").show();
             $(".detel-blank").show();
+            $(".detel-orden").show();
             $("#detel_nombre_imagen_modal").text("");
             $("#detel_nombre_imagen").val("");
             $("#detel_nombre").val("");
+            $("#cboPosicion").val("");
             // $(".detel-descripcion").show();
             $("#detel_nombre_imagen").val("");
-            debugger;
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento").val(2);
                 $(".detel-imagen").hide();
@@ -664,12 +666,11 @@
             else {
                 $("#fk_seccion_elemento").val(0);
                 $(".detel-posicion").hide();
-                $("#detel_posicion").val("");
                 $(".detel-opcion").hide();
                 $(".detel-url").hide();
                 $(".detel-blank").hide();
             }
-
+            $(".detel-orden").hide();
             $("#modalFormularioDetalleElemento").modal("show");
         })
         $(document).on('click', '.btn-guardar-detalle-elemento', function () {
@@ -770,14 +771,15 @@
                             $("#detel_nombre_imagen").val("");
                             $("#detel_url").val("");
                         }
-                        if(data.detel_posicion!=''&&data.detelm_extension==""){
+                        if(data.detel_posicion!=''||data.detel_extension!=""){
                             $(".detel-posicion").show();
                         }
-                        $("#detel_posicion").val(data.detel_posicion);
+                        $("#detel_orden").val(data.detel_orden);
+                        $("#cboPosicion").val(data.detel_posicion);
                         $("#tituloModalDetalleElemento").text("Editar ");
                         $("#detel_descripcion").val(data.detel_descripcion);
                         $("#detel_estado").val(data.detel_estado);
-
+                        $(".detel-orden").show();
                         $('#modalFormularioDetalleElemento').modal('show');
                     }
                 },
@@ -1064,9 +1066,9 @@
                 var image_arr = _image.name.split(".");
                 var extension = image_arr[1].toLowerCase();
                 //console.log(extension);
-                if (extension != "jpg" && extension != "png") {
+                if (extension != "jpg" && extension != "png"&&extension!="jpeg") {
                     messageResponse({
-                        text: 'Sólo Se Permite formato jpg o png',
+                        text: 'Sólo Se Permite formato jpg, png ó jpeg',
                         type: "warning"
                     });
                 }
@@ -1074,7 +1076,7 @@
                     var nombre = image_arr[0].substring(0, 11);
                     var actualicon = image_arr[1].toLowerCase();
                     var icon = "";
-                    if (actualicon == "png" || actualicon == "jpg") {
+                    if (actualicon == "png" || actualicon == "jpg"||actualicon=='jpeg') {
                         icon = '<i class="fa fa-file-word-o"></i>';
                     }
                     else {
@@ -1099,9 +1101,9 @@
                 var image_arr = _image.name.split(".");
                 var extension = image_arr[1].toLowerCase();
                 //console.log(extension);
-                if (extension != "jpg" && extension != "png") {
+                if (extension != "jpg" && extension != "png"&&extension!="jpeg") {
                     messageResponse({
-                        text: 'Sólo Se Permite formato jpg o png',
+                        text: 'Sólo Se Permite formato jpg, png ó jpeg',
                         type: "warning"
                     });
                 }
@@ -1109,7 +1111,7 @@
                     var nombre = image_arr[0].substring(0, 11);
                     var actualicon = image_arr[1].toLowerCase();
                     var icon = "";
-                    if (actualicon == "png" || actualicon == "jpg") {
+                    if (actualicon == "png" || actualicon == "jpg"||actualicon=="jpeg") {
                         icon = '<i class="fa fa-file-word-o"></i>';
                     }
                     else {
@@ -1126,10 +1128,13 @@
                 $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
             }
         })
+        $(document).on('input','.input-number',function(){
+            this.value = this.value.replace(/[^0-9]/g,'');
+        })
     };
 
     var _metodos = function () {
-        
+      
     };
 
     //

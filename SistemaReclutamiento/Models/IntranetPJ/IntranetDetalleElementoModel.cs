@@ -219,7 +219,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento
-	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@p10
+	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  
+detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@p10, detel_orden=@p11
 	                    WHERE detel_id=@p6;";
             try
             {
@@ -237,6 +238,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_posicion));
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_url));
                     query.Parameters.AddWithValue("@p10", ManejoNulos.ManegeNullBool(intranetDetalleElemento.detel_blank));
+                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_orden));
                     query.ExecuteNonQuery();
                     response = true;
                 }

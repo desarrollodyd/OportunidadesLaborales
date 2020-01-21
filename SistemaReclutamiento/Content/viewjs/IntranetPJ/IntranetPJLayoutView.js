@@ -571,7 +571,7 @@
 
                     if (silertrans) {
 
-                        $(".slidercontent").smoothDivScroll({
+                        $("#slidercontent").smoothDivScroll({
                             touchScrolling: true
                         });
 

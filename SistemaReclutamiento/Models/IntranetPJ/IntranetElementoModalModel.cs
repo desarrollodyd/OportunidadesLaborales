@@ -203,7 +203,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             bool response = false;
             string consulta = @"UPDATE intranet.int_elemento_modal
 	                        SET  emod_titulo=@p0, emod_descripcion=@p1, emod_contenido=@p2,
-                         fk_seccion_elemento=@p5, fk_tipo_elemento=@p6, emod_estado=@p7
+                         fk_seccion_elemento=@p5, fk_tipo_elemento=@p6, emod_estado=@p7, emod_orden=@p9
 	                        WHERE emod_id=@p8;";
             try
             {
@@ -218,6 +218,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetElementoModal.fk_tipo_elemento));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(intranetElementoModal.emod_estado));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_id));
+                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_orden));
                     query.ExecuteNonQuery();
                     response = true;
                 }
