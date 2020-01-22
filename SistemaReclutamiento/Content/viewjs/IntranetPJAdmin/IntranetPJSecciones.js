@@ -488,6 +488,7 @@
             $("#fk_seccion").val(sec_id);
             $("#elem_id").val(0);
             $(".elem-orden").hide();
+            $("#elem-orden").val("");
             $("#modalFormularioElemento").modal("show");
         });
         $(document).on('click', '.btn-guardar-elemento', function () {
@@ -611,6 +612,7 @@
             $(".detel-url").show();
             $(".detel-blank").show();
             $(".detel-orden").show();
+            $("#detel_orden").val("");
             $("#detel_nombre_imagen_modal").text("");
             $("#detel_nombre_imagen").val("");
             $("#detel_nombre").val("");
@@ -794,6 +796,8 @@
             $("#emod_id").val(0);
             $("#div_tipo_elemento_modal").show();
             $("#emod_titulo").val("");
+            $(".emod-orden").hide();
+            $("#emod_orden").val("");
             $("#cboTipoElementoModal").select2('destroy');
             $("#cboTipoElementoModal").select2();
             $('#cboTipoElementoModal option[value="5"]').prop('disabled', false);
@@ -915,7 +919,8 @@
                         $("#emod_titulo").val(data.emod_titulo);
                         $("#emod_id").val(data.emod_id);
                         $("#emod_estado").val(data.emod_estado);
-                       
+                        $(".emod_orden").show();
+                        $("#emod_orden").val(data.emod_orden);
                         $("#cboTipoElementoModal").val(data.fk_tipo_elemento)
            
                         $("#modalFormularioElementoModal").modal('show');
@@ -934,6 +939,7 @@
             $(".detelm-nombre").show();
             $(".detelm-posicion").show();
             $(".detelm-opcion").show();
+           
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento_modal_").val(2);
                 $(".detelm-imagen").hide();
@@ -958,6 +964,8 @@
                 $(".detelm-opcion").hide();
                 $(".detelm-posicion").hide();
             }
+            $(".detelm-orden").hide();
+            $("#detelm_orden").val("");
             $("#modalFormularioDetalleElementoModal").modal("show");
             
         })
@@ -1026,6 +1034,8 @@
                         if(data.detelm_posicion!=''&&data.detelm_extension==""){
                             $(".detelm-posicion").show();
                         }
+                        $(".detelm-orden").show();
+                        $("#detelm_orden").val(data.detelm_orden);
                         $("#detelm-posicion").val(data.detelm_posicion);
                         $("#tituloModalDetalleElementoModal").text("Editar ");
                         $("#detelm_descripcion").val(data.detelm_descripcion);
