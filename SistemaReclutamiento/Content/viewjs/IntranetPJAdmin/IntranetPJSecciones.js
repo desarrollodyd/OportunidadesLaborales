@@ -395,7 +395,7 @@
                                 else {
                                     spanAgregarElemento += '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento-modal" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.emod_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
                                     spanDetalleElemento += '<tr class="elem-modal' + value.emod_id + ' detalle-oculto"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-elemento-modal'+value.emod_id+'"><a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
-                                    spanEditarElementoModal+='';
+                                    spanEditarElementoModal+='<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento_modal" data-id="' + value.emod_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                                 }
 
                                 //htmlTags += '<tr class="elem-modal' + value.emod_id + '"><td data-id="' + value.emod_id + '" class="detalle-elemento-modal detalle-oculto"><a href="#" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a></td>';
@@ -919,7 +919,7 @@
                         $("#emod_titulo").val(data.emod_titulo);
                         $("#emod_id").val(data.emod_id);
                         $("#emod_estado").val(data.emod_estado);
-                        $(".emod_orden").show();
+                        $(".emod-orden").show();
                         $("#emod_orden").val(data.emod_orden);
                         $("#cboTipoElementoModal").val(data.fk_tipo_elemento)
            
@@ -1190,11 +1190,12 @@ function MostrarDetalle(row) {
                 spanNuevoElemento = '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
                 spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento detalle-elemento'+value.elem_id+'">' + '<a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
                 spanEliminarElemento = '<a  href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-fkseccion="'+value.fk_seccion+'" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
+                spanEditarElemento = '<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
             }
             else {
                 spanNuevoElemento = '<a href="javascript:void(0);" class="btn btn-white btn-success btn-sm btn-round btn-nuevo-detalle-elemento" data-tipo="' + value.fk_tipo_elemento + '" data-id="' + value.elem_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento">Nuevo Detalle</a>';
                 spanDetalleElemento += '<tr class="elemento' + value.elem_id + ' detalle-oculto"><td data-id="' + value.elem_id + '" class="detalle-elemento detalle-elemento'+value.elem_id+'">' + '<a href="javascript:void(0);" class="tooltip-info "  data-rel="tooltip" title="Ver Detalle"><span class="blue" ><i class="ace-icon fa fa-search-plus bigger-120"></i></span ></a>' + '</td>';
-                // spanEditarElemento = '<a href="#" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
+                spanEditarElemento = '<a href="javascript:void(0);" class="btn btn-white btn-primary btn-sm btn-round btn_editar_elemento" data-id="' + value.elem_id + '" data-rel="tooltip" title="Editar">Editar</a>';
                 spanEliminarElemento = '<a  href="javascript:void(0);" class="btn btn-white btn-danger btn-sm btn-round btn_eliminar_elemento" data-fkseccion="'+value.fk_seccion+'" data-id="' + value.elem_id + '" data-rel="tooltip" title="eliminar">Eliminar</a>';
             }
 

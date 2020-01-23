@@ -4884,6 +4884,7 @@
     <Compile Include="Entidades\IntranetPJ\IntranetElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetElementoModalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetDetalleElementoEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetFooterEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSaludoCumpleanioEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionElementoEntidad.cs" />
@@ -4933,6 +4934,7 @@
     <Compile Include="Models\IntranetPJ\IntranetElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetDetalleElementoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetFooterModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAccesoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetSaludoCumpleaniosModel.cs" />

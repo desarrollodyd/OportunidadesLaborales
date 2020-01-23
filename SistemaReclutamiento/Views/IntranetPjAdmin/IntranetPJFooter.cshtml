@@ -1,0 +1,47 @@
+
+@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Pie de Pagina</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+
+    <div class="page-header">
+        <h1>
+             Pie de Pagina
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="clearfix">
+                <div class="pull-right tableTools-container"><button class="btn btn-sm btn-success" id="btn_nuevo"><i class="fa fa-file"></i> Nuevo</button> <button class="btn btn-sm btn-danger" id="btn_eliminar_varios"><i class="fa fa-trash-o"></i> Eliminar</button></div>
+            </div>
+            <div class="table-header">
+                Actividades con estado Inactivo no seran visibles en la pagina principal
+            </div>
+
+            <!-- div.table-responsive -->
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFooter.js"></script>
+}
+
