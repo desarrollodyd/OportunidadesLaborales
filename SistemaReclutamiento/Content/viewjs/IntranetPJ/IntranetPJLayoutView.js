@@ -264,7 +264,7 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendslider += "<li class='modal_o' data-sece='"+ JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'")+"'>"+
-                                                                '<div class="row">'+
+                                                                '<div class="row" style="margin-right:0px !important;margin-left:0px !important;">'+
                                                                     '<div class="twelve columns">'+
                                                                         '<div class="itemcatslide">'+
                                                                             '<div class="catf">'+
@@ -765,7 +765,7 @@
                             if (detalleElementolista.length > 0) {
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendslider += '<li data-orbit-slide="headline-' + (index + 1) + '" style="width:100%">' +
-                                        '<div class="row">' +
+                                        '<div class="row" style="padding-right:0px !important;padding-left:0px !important;">' +
                                         '<div class="twelve columns">' +
                                         '<div class="itemcatslide">' +
                                         '<div class="catf">' +

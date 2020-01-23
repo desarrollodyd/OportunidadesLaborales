@@ -381,6 +381,7 @@
     <Content Include="Content\intranet\js\themeswitch.js" />
     <Content Include="Content\intranet\js\venobox.js" />
     <Content Include="Content\intranet\style.css" />
+    <Content Include="Content\intranet\style2.css" />
     <Content Include="Content\login.css" />
     <Content Include="Content\proveedorCSS.css" />
     <Content Include="Content\Site.css" />
@@ -4831,6 +4832,8 @@
     <Content Include="Content\intranetSGC\assets\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Content\intranetSGC\assets\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Content\intranetSGC\assets\fonts\glyphicons-halflings-regulard41d.eot" />
+    <Content Include="Content\intranet\font\Corbert-Medium.otf" />
+    <Content Include="Content\intranet\font\moon_get-Heavy.ttf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
