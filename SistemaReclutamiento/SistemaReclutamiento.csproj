@@ -4852,6 +4852,7 @@
     <Compile Include="Controllers\IntranetPjAdmin\IntranetDetalleElementoModalController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetElementoController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetElementoModalController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetFooterController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetMenuController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSaludosCumpleaniosController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSeccionController.cs" />
@@ -5049,6 +5050,7 @@
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
+    <Folder Include="Views\IntranetFooter\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />
