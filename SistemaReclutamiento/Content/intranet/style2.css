@@ -1693,6 +1693,12 @@ html[xmlns] .slides,.no-js .slides > li:first-child{display:block}
     font-family: 'Intranet Cpj';
 	src: url("font/moon_get-Heavy.ttf")format("ttf");
 }
+
+@font-face {
+    font-family: 'Intranet Cpj delgado';
+    src: url("font/Corbert-Medium.ttf")format("otf");
+}
+
 body{
 	font-family: 'Intranet Cpj';
 	font-size: 14px;
@@ -3943,7 +3949,7 @@ ul.listcomment li a:hover{
 
 
 
-img.slidefeatured{height: 450px;width: 100%;}
+img.slidefeatured{height: 340px;width: 100%;}
 .catf{width:45%;}
 .listcat{width:24%;}
 .topcat{width:30%;}
@@ -4277,7 +4283,7 @@ ul#logos.nav-bar > li.logos:hover {
 
 .catslide {
     margin-top: 0px;
-    min-height: 476px;
+    min-height: 374px;
     margin-bottom: 1px;
     padding: 10px;
     background: #000000;
@@ -4285,7 +4291,8 @@ ul#logos.nav-bar > li.logos:hover {
 
 .slider {
     margin-bottom: 0;
-    height: 455px !important;
+    /*height: 455px !important;*/
+    height: 347px !important;
 }
 
 .catslide ul {
