@@ -47,11 +47,11 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (idIntranetFooterInsertado: idIntranetFooterInsertado, error: error);
         }
-        public (bool intranetFooterEliminado, claseError error) IntranetFooterEliminarJson(int foot_id)
+        public (bool intranetFooterEliminado, claseError error) IntranetFooterEliminarJson(string foot_posicion)
         {
             bool response = false;
             string consulta = @"DELETE FROM intranet.int_footer
-	                                WHERE foot_id=@p0;";
+	                                WHERE foot_posicion=@p0;";
             claseError error = new claseError();
             try
             {
@@ -60,7 +60,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
 
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(foot_id));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(foot_posicion));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -113,6 +113,43 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                 error.Value = ex.Message;
             }
             return (listaFooters: lista, error: error);
+        }
+        public (IntranetFooterEntidad footer, claseError error) IntranetFooterIdObtenerJson(int foot_id) {
+            IntranetFooterEntidad intranetFooter = new IntranetFooterEntidad();
+            claseError error = new claseError();
+            string consulta = @"SELECT foot_id, foot_descripcion, foot_estado, foot_imagen, foot_posicion
+	                                FROM intranet.int_footer
+                                     where foot_id=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", foot_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+
+                                intranetFooter.foot_id = ManejoNulos.ManageNullInteger(dr["foot_id"]);
+                                intranetFooter.foot_descripcion = ManejoNulos.ManageNullStr(dr["foot_descripcion"]);
+                                intranetFooter.foot_imagen = ManejoNulos.ManageNullStr(dr["foot_imagen"]);
+                                intranetFooter.foot_estado = ManejoNulos.ManageNullStr(dr["foot_estado"]);
+                                intranetFooter.foot_posicion = ManejoNulos.ManageNullStr(dr["foot_posicion"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (footer: intranetFooter, error: error);
         }
     }
 }

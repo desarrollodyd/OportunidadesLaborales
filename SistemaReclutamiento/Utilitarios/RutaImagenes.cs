@@ -78,5 +78,27 @@ namespace SistemaReclutamiento.Utilitarios
             }
             return base64String;
         }
+        public string ImagenIntranetFooter(string ruta, string name)
+        {
+            string pathImagenFooter = @"" + ruta + "/" + name;
+            string base64String = "";
+            if (name != null && name != "" && ruta != null && ruta != "")
+            {
+                if (System.IO.File.Exists(pathImagenFooter))
+                {
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(pathImagenFooter);
+                    base64String = Convert.ToBase64String(imagebytes);
+                }
+                else
+                {
+                    base64String = string.Empty;
+                }
+            }
+            else
+            {
+                base64String = string.Empty;
+            }
+            return base64String;
+        }
     }
 }

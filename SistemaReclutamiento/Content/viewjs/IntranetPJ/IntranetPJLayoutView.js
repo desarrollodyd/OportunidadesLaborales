@@ -20,6 +20,7 @@
                 var dataActividades = response.dataActividades;
                 var listaNoticias = response.listaNoticias;
                 var secciones = response.dataSecciones;
+                var dataFooter=response.dataFooter;
                 //Salas y ApuestasDeportivas
                 $("#cantidadApuestasDeportivas").text(response.cantidadApuestasDeportivas);
                 $("#cantidadSalas").text(response.cantidadSalas);
@@ -61,6 +62,21 @@
                                         '</li>';
                     });
                     $("#saludos_li").html(appendSaludos);
+                }
+                if(dataFooter.length>0){
+                    $.each(dataFooter,function(inde,footer){
+                        var append='';
+                        if(footer.foot_posicion=='I'){
+                            $("#titulo_izquierda").html(footer.foot_descripcion);
+                            append+='<img style="width:100%;height:260px;" src="data:image/gif;base64,'+footer.foot_imagen+'"></img>';
+                            $("#foto_izquierda").append(append);
+                        }
+                        else{
+                            $("#titulo_derecha").html(footer.foot_descripcion);
+                            append+='<img style="width:100%;height:260px;" src="data:image/gif;base64,'+footer.foot_imagen+'"></img>';
+                            $("#foto_derecha").append(append);
+                        }
+                    })
                 }
 
                 //Creacion de Aside para Cumpleaños
