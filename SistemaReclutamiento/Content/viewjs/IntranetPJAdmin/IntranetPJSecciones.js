@@ -489,6 +489,25 @@
             $("#elem_id").val(0);
             $(".elem-orden").hide();
             $("#elem-orden").val("");
+
+            //bloquear algunas selecciones
+            $("#cboTipoElemento").select2('destroy');
+            $("#cboTipoElemento").select2();
+            $('#cboTipoElemento option[value="5"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="6"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="7"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="8"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="9"]').prop('disabled', true);
+            $('#cboTipoElemento option[value="10"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="11"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="12"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="13"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="14"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="15"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="16"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="17"]').prop('disabled', false);
+            $('#cboTipoElemento option[value="18"]').prop('disabled', true);
+            //
             $("#modalFormularioElemento").modal("show");
         });
         $(document).on('click', '.btn-guardar-elemento', function () {
@@ -617,6 +636,9 @@
             $("#detel_nombre_imagen").val("");
             $("#detel_nombre").val("");
             $("#cboPosicion").val("");
+            $("#cboOpcion").val("1");
+            $("#spandetel").html("");
+            $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Icono');
             // $(".detel-descripcion").show();
             $("#detel_nombre_imagen").val("");
             if (tipo_elemento == 5 || tipo_elemento == 6) {
@@ -804,16 +826,16 @@
             $('#cboTipoElementoModal option[value="6"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="7"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="8"]').prop('disabled', false);
-            $('#cboTipoElementoModal option[value="9"]').prop('disabled', false);
-            $('#cboTipoElementoModal option[value="10"]').prop('disabled', false);
-            $('#cboTipoElementoModal option[value="11"]').prop('disabled', false);
+            $('#cboTipoElementoModal option[value="9"]').prop('disabled', true);
+            $('#cboTipoElementoModal option[value="10"]').prop('disabled', true);
+            $('#cboTipoElementoModal option[value="11"]').prop('disabled', true);
             $('#cboTipoElementoModal option[value="12"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="13"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="14"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="15"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="16"]').prop('disabled', false);
             $('#cboTipoElementoModal option[value="17"]').prop('disabled', false);
-            $('#cboTipoElementoModal option[value="18"]').prop('disabled', false);
+            $('#cboTipoElementoModal option[value="18"]').prop('disabled', true);
 
             $("#modalFormularioElementoModal").modal("show");
             
@@ -939,7 +961,14 @@
             $(".detelm-nombre").show();
             $(".detelm-posicion").show();
             $(".detelm-opcion").show();
-           
+            $("#spandetelm").html("");
+            $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
+            // $("#cboTipoElementoModal").select2('destroy');
+            // $("#cboTipoElementoModal").select2();
+            // $('#cboTipoElementoModal option[value="9"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="11"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="10"]').prop('disabled', true);
+            // $('#cboTipoElementoModal option[value="18"]').prop('disabled', true);
             if (tipo_elemento == 5 || tipo_elemento == 6) {
                 $("#fk_seccion_elemento_modal_").val(2);
                 $(".detelm-imagen").hide();
@@ -1008,7 +1037,6 @@
                 refresh: false,
                 callBackSuccess: function (response) {
                     if(response.respuesta){
-                        debugger;
                         var data=response.data;
                         $("#divdetelm").hide();
                         $('#detelm_id').val(data.detelm_id);

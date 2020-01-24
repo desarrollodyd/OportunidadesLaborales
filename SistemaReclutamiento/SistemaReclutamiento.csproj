@@ -3900,6 +3900,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminIndex.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFooter.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
@@ -4834,6 +4835,8 @@
     <Content Include="Content\intranetSGC\assets\fonts\glyphicons-halflings-regulard41d.eot" />
     <Content Include="Content\intranet\font\Corbert-Medium.otf" />
     <Content Include="Content\intranet\font\moon_get-Heavy.ttf" />
+    <Content Include="fonts\Corbert-Medium.otf" />
+    <Content Include="fonts\moon_get-Heavy.ttf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -5038,6 +5041,7 @@
     <Content Include="Views\IntranetPJ\IntranetPJLogin.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJAdminLogin.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisFavoritosVista.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJFooter.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
