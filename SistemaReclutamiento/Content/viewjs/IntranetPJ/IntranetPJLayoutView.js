@@ -30,7 +30,7 @@
                     var appendMenuLateral = "";
                     var appendMenuPrincipal = "";
                     $.each(dataMenus, function (index, menu) {
-                        appendMenuLateral += '<li><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id +'">' + menu.menu_titulo + '</a></li>';
+                        appendMenuLateral += '<li><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id + '">' + menu.menu_titulo + '</a></li>';
                         var clase = "";
                         if (menuInicio == 0) {
                             clase = (index == 0) ? "active" : "";
@@ -39,7 +39,7 @@
                             clase = (menu.menu_id == menuInicio) ? "active" : "";
                         }
 
-                        appendMenuPrincipal += '<li class="' + clase + '"><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id+'" data-id="' + menu.menu_id + '" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
+                        appendMenuPrincipal += '<li class="' + clase + '"><a href="' + basePath + 'intranetPJ/index?menu=' + menu.menu_id + '" data-id="' + menu.menu_id + '" class="sf-with-ul">' + menu.menu_titulo + '</a><ul></ul></li>';
                         //noticia.push(menu.menu_titulo)
                     });
                     appendMenuLateral += '<li><a href="#" class="btnCerrarSesion">Cerrar Sesion</a></li>';
@@ -50,15 +50,15 @@
                     $("#saludos_li").html("");
                     var appendSaludos = "";
                     $.each(dataSaludos, function (index, saludo) {
-                        appendSaludos += '<li>'+
-                            '<div class="cthumb">'+
-                            '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/' + saludo.sld_avatar+'" alt=""></a>'+
-                            '</div>'+
-                            '<div class="dcomment">'+
-                            '<a href="#"><span style="font-size:11px;">De:</span> ' + saludo.per_saluda + ' ' + saludo.apelpat_per_saluda + ', <span style="font-size:11px;">Para:</span> ' + saludo.per_saludada + ' ' + saludo.apelpat_per_saludada +',<br> <span style="font-size:11px;">Mensaje: </span>' + saludo.sld_cuerpo + '</a>' +
-                            '<div class="fecha_registro_saludo">10-11-2019</div>'+
-                            '</div>'+
-                                        '</li>';
+                        appendSaludos += '<li>' +
+                            '<div class="cthumb">' +
+                            '<a href="#" class="img_saludo"><img src="' + basePath + 'Content/intranet/images/faces/' + saludo.sld_avatar + '" alt=""></a>' +
+                            '</div>' +
+                            '<div class="dcomment">' +
+                            '<a href="#"><span style="font-size:11px;">De:</span> ' + saludo.per_saluda + ' ' + saludo.apelpat_per_saluda + ', <span style="font-size:11px;">Para:</span> ' + saludo.per_saludada + ' ' + saludo.apelpat_per_saludada + ',<br> <span style="font-size:11px;">Mensaje: </span>' + saludo.sld_cuerpo + '</a>' +
+                            '<div class="fecha_registro_saludo">10-11-2019</div>' +
+                            '</div>' +
+                            '</li>';
                     });
                     $("#saludos_li").html(appendSaludos);
                 }
@@ -79,8 +79,8 @@
                 }
                 else {
                     $("#cumpleaniosIntranet").html("");
-                    var appendCumpleanios='';
-                    appendCumpleanios+='<ul class="catlist"><li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/cake.png"><div class="spannumber"></div><p class="meta-date"></p><h2 class="wtitle">No se encontraron mas cumpleaños hasta fin de mes</h2></a></li></ul>';
+                    var appendCumpleanios = '';
+                    appendCumpleanios += '<ul class="catlist"><li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/cake.png"><div class="spannumber"></div><p class="meta-date"></p><h2 class="wtitle">No se encontraron mas cumpleaños hasta fin de mes</h2></a></li></ul>';
                     $("#cumpleaniosIntranet").append(appendCumpleanios);
                 }
 
@@ -98,9 +98,9 @@
                 }
                 else {
                     $("#actividadesMes").html("");
-                    var appendActividades='';
-                    appendActividades+='<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
-                    appendActividades+='<li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/><p class="meta-date"></p><h2 class="wtitle">No hay Actividades Registradas</h2></a></li></ul></div>';
+                    var appendActividades = '';
+                    appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
+                    appendActividades += '<li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/><p class="meta-date"></p><h2 class="wtitle">No hay Actividades Registradas</h2></a></li></ul></div>';
                     $("#actividadesMes").append(appendActividades);
                 }
                 //Listado en Seccion de Noticias
@@ -140,14 +140,14 @@
                                 if (elemento.fk_tipo_elemento == 2) {
                                     appendElementos += '<header>' +
                                         '<div class="postmeta">' +
-                                        '<div class="meta-date">' + elemento.elem_titulo+'</div>' +
+                                        '<div class="meta-date">' + elemento.elem_titulo + '</div>' +
                                         '</div>' +
                                         '</header>';
                                 }
 
                                 if (elemento.fk_tipo_elemento == 3) {
-                                    appendElementos += 
-                                        '<p> ' + elemento.elem_titulo+'</p>';
+                                    appendElementos +=
+                                        '<p> ' + elemento.elem_titulo + '</p>';
 
                                 }
 
@@ -183,7 +183,7 @@
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendElementos += '<article>' +
                                                 '<div class="imgpost th">' +
-                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt = "">' +
+                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt = "">' +
                                                 '</div>' +
                                                 '</article>';
                                         });
@@ -197,29 +197,29 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (detalleelemento.detel_posicion == "L") {
-                                                appendsIzquierda += "<li class='modal_o' data-sece='"+ JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'")+"'>" +
-                                                    "<div class='ctitle wt" + (index + 2) +"'>" + detalleelemento.detel_descripcion + " </div></li>"; 
+                                                appendsIzquierda += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                    "<div class='ctitle wt" + (index + 2) + "'>" + detalleelemento.detel_descripcion + " </div></li>";
                                             }
                                             else {
-                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
 
-                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">'+
-                                            '<div class="six columns" >'+
-                                                '<div class="widget lreview">'+
-                                                    '<ul class="listreview">'+
-                                            appendsIzquierda+
-                                                   ' </ul>'+
-                                                '</div>'+
-                                             '</div >'+
-                                            '<div class="six columns">'+
+                                        appendElementos += '<div class="post-content" style="padding-bottom:0px"><div class="row">' +
+                                            '<div class="six columns" >' +
+                                            '<div class="widget lreview">' +
+                                            '<ul class="listreview">' +
+                                            appendsIzquierda +
+                                            ' </ul>' +
+                                            '</div>' +
+                                            '</div >' +
+                                            '<div class="six columns">' +
                                             '<div class="sponsor">' +
-                                            appendsDerecha+
-                                                '</div>'+
-                                            '</div>'+
-                                        '</div></div>';
+                                            appendsDerecha +
+                                            '</div>' +
+                                            '</div>' +
+                                            '</div></div>';
                                     }
 
                                 }
@@ -234,23 +234,23 @@
                                     var appendslider = "";
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
-                                            appendslider += '<div class="contentBox">'+
-                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt = "Field" />'+
-                                                    '<div class="overlay">'+
-                                                        '<div class="title-carousel">'+
-                                                            '<a href="javascript:void(0);">'+
-                                                '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>'+
-                                                            '</a>'+
-                                                        '</div>'+
-                                                    '</div>'+
-                                            '</div>';
+                                            appendslider += '<div class="contentBox">' +
+                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt = "Field" />' +
+                                                '<div class="overlay">' +
+                                                '<div class="title-carousel">' +
+                                                '<a href="javascript:void(0);">' +
+                                                '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
+                                                '</a>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>';
 
                                         });
 
-                                        appendElementos += '<article><div class="post-content" ><div class="row">'+
-                                            '<div class="twelve columns">'+
-                                            '<div id="slidercontent" class="mixedContent onlyimgblank slidercontent" style="padding-left: 10px;padding-right: 10px;">' +
-                                            appendslider+
+                                        appendElementos += '<article><div class="post-content" ><div class="row">' +
+                                            '<div class="twelve columns">' +
+                                            '<div id="mixedContent" class="mixedContent onlyimgblank slidercontent" style="padding-left: 10px;padding-right: 10px;">' +
+                                            appendslider +
                                             '</div>' +
                                             '</div>' +
                                             '</div></div></article>';
@@ -263,39 +263,39 @@
                                     var appendslider = "";
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
-                                            appendslider += "<li class='modal_o' data-sece='"+ JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'")+"'>"+
-                                                                '<div class="row" style="margin-right:0px !important;margin-left:0px !important;">'+
-                                                                    '<div class="twelve columns">'+
-                                                                        '<div class="itemcatslide">'+
-                                                                            '<div class="catf">'+
-                                                                                '<div class="catf-format">'+
-                                                                                    '<div class="fdate">15<br /><span>Dec</span></div>'+
-                                                                                '</div>'+
-                                                                                '<div class="imgslide">'+
-                                                '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt="" title="" class="slidefeatured">'+
+                                            appendslider += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
+                                                '<div class="row" style="margin-right:0px !important;margin-left:0px !important;">' +
+                                                '<div class="twelve columns">' +
+                                                '<div class="itemcatslide">' +
+                                                '<div class="catf">' +
+                                                '<div class="catf-format">' +
+                                                '<div class="fdate">15<br /><span>Dec</span></div>' +
                                                 '</div>' +
-                                                                                    //'<div class="catf-caption">'+
-                                                                                    //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
-                                                                                    //    '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>'+
-                                                                                    //'</div>'+
-                                                                                '</div>'+
-                                                                            '</div>'+
-                                                                        '</div>'+
-                                                                    '</div>'+
-                                                            '</li>';
+                                                '<div class="imgslide">' +
+                                                '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt="" title="" class="slidefeatured">' +
+                                                '</div>' +
+                                                //'<div class="catf-caption">'+
+                                                //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
+                                                //    '<span class="meta"><a href="#">MOVIE</a> / 20 Comments / 5 Rate </span>'+
+                                                //'</div>'+
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</li>';
 
                                         });
 
                                         appendElementos += '<article>' +
                                             '<div class="post-content">' +
                                             '<div class="">' +
-                                                                '<div class="twelve columns">'+
-                                                                    '<div class="catslide">'+
-                                                                        '<ul class="slider" data-orbit>' +
-                                                                            appendslider+
-                                                                        '</ul>' +
-                                                                    '</div>' +
-                                                                '</div>' +
+                                            '<div class="twelve columns">' +
+                                            '<div class="catslide">' +
+                                            '<ul class="slider" data-orbit>' +
+                                            appendslider +
+                                            '</ul>' +
+                                            '</div>' +
+                                            '</div>' +
                                             '</div>' +
                                             '</div>' +
                                             '<div class="clear"></div>' +
@@ -311,9 +311,9 @@
                                         var i = 0;
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (index == 0) {
-                                                appendDetalleElementoheader += '<div class="featured abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
+                                                appendDetalleElementoheader += '<div class="featured abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                                     '<div class="thumb foto_cuadro_izquiera">' +
-                                                    ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt="">' +
+                                                    ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
                                                     '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
@@ -322,8 +322,8 @@
                                                     ' </div>' +
                                                     '<div class="excerpt">' +
                                                     '<div class="desc">' +
-                                                    '<p class="pcats" style="padding-left: 0px !important;padding-right: 0px !important;"> ACCEDER A : '+detalleelemento.detel_descripcion+'</p>' +
-                                   
+                                                    '<p class="pcats" style="padding-left: 0px !important;padding-right: 0px !important;"> ACCEDER A : ' + detalleelemento.detel_descripcion + '</p>' +
+
                                                     '</div>' +
                                                     '</div>' +
                                                     '</div>';
@@ -333,15 +333,15 @@
                                                 if (i < 4) {
                                                     appendDetalleElementobody += '<li>' +
                                                         '<div class="octhumb">' +
-                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" ><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" ><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
                                                         '</div>' +
                                                         '<div class="desc">' +
-                                                        '<a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'">' + detalleelemento.detel_descripcion + '</a>' +
-                                                        '<h4><a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"> ACCEDER A : '+detalleelemento.detel_descripcion+'</a></h4>' +
+                                                        '<a href="javascript:void(0);" class="abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '">' + detalleelemento.detel_descripcion + '</a>' +
+                                                        '<h4><a href="javascript:void(0);" class="abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '"> ACCEDER A : ' + detalleelemento.detel_descripcion + '</a></h4>' +
                                                         '</div>' +
                                                         '</li>';
                                                 }
-                                                
+
                                             }
                                         });
                                     }
@@ -349,14 +349,14 @@
 
                                     appendElementos += '<article>' +
                                         '<div class="post-content">' +
-                                        '<section id="cat2news">'+
-                                            appendDetalleElementoheader+
-                                             '<div class="othercat">'+
-                                                    '<ul class="oc-horizon">'+
-                                                        appendDetalleElementobody+
-                                                    '</ul>'+
-                                            '</div>'+
-                                        '</section>'+
+                                        '<section id="cat2news">' +
+                                        appendDetalleElementoheader +
+                                        '<div class="othercat">' +
+                                        '<ul class="oc-horizon">' +
+                                        appendDetalleElementobody +
+                                        '</ul>' +
+                                        '</div>' +
+                                        '</section>' +
                                         '</div>' +
                                         '<div class="clear"></div>' +
                                         '</article >';
@@ -370,10 +370,10 @@
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (detalleelemento.detel_posicion == "R") {
                                                 appendsDerecha += "<li class='modal_o' data-sece='" + JSON.stringify(detalleelemento.seccion_elemento).replace(/'/g, "\\'") + "'>" +
-                                                     '<div class="ctitle wt' + (index + 2) + '" > ' + detalleelemento.detel_descripcion + ' </div ></li > ';
+                                                    '<div class="ctitle wt' + (index + 2) + '" > ' + detalleelemento.detel_descripcion + ' </div ></li > ';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -408,7 +408,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -442,7 +442,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -460,7 +460,7 @@
                                             ' </ul>' +
                                             '</div>' +
                                             '</div>' +
-                                            
+
                                             '</div></div>';
                                     }
 
@@ -527,12 +527,12 @@
 
                                                 float_ = 'style="float:left;"';
                                             }
-                                            appendimageneslistasimple += ' <div class="three tilesli columns" ' + float_+'>' +
+                                            appendimageneslistasimple += ' <div class="three tilesli columns" ' + float_ + '>' +
                                                 '<div class="space_" >' +
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="thumb">' +
-                                                '<a href="javascript:void(0);" class="abrir_pagina" data-blank="'+detalleelemento.detel_blank+'" data-url="'+detalleelemento.detel_url+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre +'" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
@@ -545,7 +545,7 @@
 
                                         appendElementos += '<article>' +
                                             '<div class="post-content">' +
-                                            appendimageneslistasimple+
+                                            appendimageneslistasimple +
                                             '</div>' +
                                             '<div class="clear"></div>' +
                                             '</article>';
@@ -570,46 +570,23 @@
                     }
 
                     if (silertrans) {
-
-                        $("#slidercontent").smoothDivScroll({
-                            touchScrolling: true
-                        });
-
-                        $(".contentBox .overlay").mouseover(function () {
-                            $(this).prev().css({
-                                opacity: 1,
-                                WebkitTransition: 'opacity 1s ease-in-out',
-                                MozTransition: 'opacity 1s ease-in-out',
-                                MsTransition: 'opacity 1s ease-in-out',
-                                OTransition: 'opacity 1s ease-in-out',
-                                transition: 'opacity 1s ease-in-out'
-                            });
-                        });
-                        $(".contentBox .overlay").mouseleave(function () {
-                            $(this).prev().css({
-                                opacity: 0.5,
-                                WebkitTransition: 'opacity 1s ease-in-out',
-                                MozTransition: 'opacity 1s ease-in-out',
-                                MsTransition: 'opacity 1s ease-in-out',
-                                OTransition: 'opacity 1s ease-in-out',
-                                transition: 'opacity 1s ease-in-out'
-                            });
-                        });
+                        LayoutVista.divscrool();
+                        
                     }
-                   
+
                 }
             }
         });
     };
     var _componentes = function () {
 
-        $(document).on('click','a.foto_cuadro_derecha', function () {
+        $(document).on('click', 'a.foto_cuadro_derecha', function () {
 
             var imgderecha = $(this);
             var imgder = imgderecha.find("img").attr('src');
             var imgizquierda = $("div.foto_cuadro_izquiera").find("img").attr('src');
             $("div.foto_cuadro_izquiera").find("img").attr('src', imgder);
-            imgderecha.find("img").attr('src',imgizquierda);
+            imgderecha.find("img").attr('src', imgizquierda);
         });
 
         $(document).on('click', 'li.modal_o', function () {
@@ -624,7 +601,7 @@
                 slider = false;
                 silertrans = false;
                 if (elementos.length > 0) {
-                    
+
                     var appendElementos = "";
 
                     $.each(elementos, function (index, elemento) {
@@ -682,7 +659,7 @@
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendElementos += '<article>' +
                                         '<div class="imgpost th">' +
-                                        '<img src = "data: image / gif; base64, ' + detalleelemento.detelm_nombre +'" alt = "">' +
+                                        '<img src = "data: image / gif; base64, ' + detalleelemento.detelm_nombre + '" alt = "">' +
                                         '</div>' +
                                         '</article>';
 
@@ -702,7 +679,7 @@
                                             "<div class='ctitle wt" + (index + 2) + "'>" + detalleelemento.detelm_descripcion + " </div></li>";
                                     }
                                     else {
-                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
+                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -736,7 +713,7 @@
                             if (detalleElementolista.length > 0) {
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendslider += '<div class="contentBox">' +
-                                        '<img src = "data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt = "Field" />' +
+                                        '<img src = "data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt = "Field" />' +
                                         '<div class="overlay">' +
                                         '<div class="title-carousel">' +
                                         '<a href="javascript:void(0);">' +
@@ -773,7 +750,7 @@
                                         '<div class="fdate">15<br /><span>Dec</span></div>' +
                                         '</div>' +
                                         '<div class="imgslide">' +
-                                        '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt="" title="" class="slidefeatured">' +
+                                        '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt="" title="" class="slidefeatured">' +
                                         '</div>' +
                                         //'<div class="catf-caption">'+
                                         //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
@@ -814,7 +791,7 @@
                                     if (index == 0) {
                                         appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                             '<div class="thumb foto_cuadro_izquiera">' +
-                                            ' <img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt="">' +
+                                            ' <img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt="">' +
                                             '<div class="overlay">' +
                                             '<div class="title-carousel">' +
                                             '<div class="ticarousel"> ' + detalleelemento.detelm_descripcion + '</div>' +
@@ -834,7 +811,7 @@
                                         if (i < 4) {
                                             appendDetalleElementobody += '<li>' +
                                                 '<div class="octhumb">' +
-                                                '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="desc">' +
                                                 '<a href="javascript:void(0);">' + detalleelemento.detelm_descripcion + '</a>' +
@@ -873,7 +850,7 @@
                                         appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
+                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -907,7 +884,7 @@
                                         appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
+                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -940,7 +917,7 @@
                                         appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>';
+                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -1027,7 +1004,7 @@
                                         '<div class="itemblog">' +
                                         '<div class="clear"></div>' +
                                         '<div class="thumb">' +
-                                        '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre +'" alt=""></a>' +
+                                        '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>' +
                                         '</div>' +
                                         '<div class="clear"></div>' +
                                         '<div class="excerpt">' +
@@ -1049,13 +1026,13 @@
                     })
                     appendSeccion += '<section id="singlepost">' + appendElementos + '</section><div class="separador"></div>';
                     $("#contenido_modal").html(appendSeccion);
-                   
+
                     $.pgwModal({
                         target: '#modalContent',
                         title: 'CORPORACION PJ',
                         maxWidth: 800
                     });
-                }                
+                }
             }
         });
         // Get the modal
@@ -1067,7 +1044,7 @@
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
         $(document).on('click', 'li._cumple', function () {
-           
+
             var per_numdoc = $(this).data("numdoc");
             var nombrecumpleaniero = $(this).find("h2.wtitle").html();
             var per_id = $(this).data("id");
@@ -1081,23 +1058,23 @@
                 dni: per_numdoc,
             }
             responseSimple({
-                url:"IntranetPJ/IntranetObtenerAreadeTrabajoxUsuarioJson",
+                url: "IntranetPJ/IntranetObtenerAreadeTrabajoxUsuarioJson",
                 data: JSON.stringify(dataForm),
-                refresh:false,
+                refresh: false,
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
                         var data = response.data;
                         console.log(data);
                         var span = "";
                         $("#informacion_puesto").html("");
-                        span += "<strong>Área:</strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA )+ "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina :</strong>" + ((data.DE_SEDE == null) ? "" : data.DE_SEDE)+ "<br/>"
+                        span += "<strong>Área:</strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA) + "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina :</strong>" + ((data.DE_SEDE == null) ? "" : data.DE_SEDE) + "<br/>"
                         $("#informacion_puesto").html(span);
                     }
                     modal.style.display = "block";
                     modal.style.zIndex = 10000;
                 }
             })
-           
+
             //responseSimple("")
             ////$("#modalCumple").css('display', 'block');
             ////$('#modalCumple').show();
@@ -1114,7 +1091,7 @@
             if (event.target == modal) {
                 modal.style.display = "none";
             }
-        } 
+        }
         $(document).on('click', '.btn_enviar_saludo', function () {
             var filepath = $(".select_img>img").attr('src');
             var imagen = filepath.replace(/^.*[\\\/]/, '');
@@ -1124,12 +1101,12 @@
             var direccion_envio = $("#direccion_envio").val();
             var dataForm = {
                 sld_avatar: imagen,
-                fk_persona_que_saluda:fk_persona_que_saluda,
+                fk_persona_que_saluda: fk_persona_que_saluda,
                 fk_persona_saludada: fk_persona_saludada,
                 sld_cuerpo: sld_cuerpo,
                 direccion_envio: direccion_envio
             };
-            if (sld_cuerpo !== ""){
+            if (sld_cuerpo !== "") {
                 responseSimple({
                     url: "IntranetSaludosCumpleanios/IntranetSaludoCumpleanioInsertarJson",
                     data: JSON.stringify(dataForm),
@@ -1146,17 +1123,17 @@
                 });
             }
         });
-    
+
         //$(document).on('keyup','#sld_cuerpo',function (e) {
         //    var text_length = $('#sld_cuerpo').val();
         //    console.log(text_length);
         //    e.preventDefault();
         //});
-    
+
 
         $(document).on('click', 'ul#locales li', function () {
             var tipo = $(this).data("tipo");
-            redirect({ site:'intranetPJ/mapa?tipo='+tipo,time:0})
+            redirect({ site: 'intranetPJ/mapa?tipo=' + tipo, time: 0 })
         });
 
 
@@ -1165,22 +1142,22 @@
             $("div.img_face").removeClass("select_img");
             div.addClass("select_img");
         });
-        $(document).on('click','.abrir_pagina',function(){
+        $(document).on('click', '.abrir_pagina', function () {
             console.log("click");
-            var otra_pagina=$(this).data("blank");
-            var url=$(this).data("url");
-            if(url!=""){
-                if(otra_pagina){
-                    window.open(url,'_blank','');
+            var otra_pagina = $(this).data("blank");
+            var url = $(this).data("url");
+            if (url != "") {
+                if (otra_pagina) {
+                    window.open(url, '_blank', '');
                 }
-                else{
-                    window.location.href=url;
+                else {
+                    window.location.href = url;
                 }
             }
-            else{
+            else {
                 messageResponse({
-                    text:'No se Ha declarado la Url para este Sitio',
-                    type:'error',
+                    text: 'No se Ha declarado la Url para este Sitio',
+                    type: 'error',
                 })
             }
         })
@@ -1189,11 +1166,42 @@
     //
     // Return objects assigned to module
     //
+    var _smoot = function () {
+        $(".slidercontent").smoothDivScroll({
+            touchScrolling: true,
+        });
+        console.log("assii")
+        $(".contentBox .overlay").mouseover(function () {
+            $(this).prev().css({
+                opacity: 1,
+                WebkitTransition: 'opacity 1s ease-in-out',
+                MozTransition: 'opacity 1s ease-in-out',
+                MsTransition: 'opacity 1s ease-in-out',
+                OTransition: 'opacity 1s ease-in-out',
+                transition: 'opacity 1s ease-in-out'
+            });
+        });
+        $(".contentBox .overlay").mouseleave(function () {
+            $(this).prev().css({
+                opacity: 0.5,
+                WebkitTransition: 'opacity 1s ease-in-out',
+                MozTransition: 'opacity 1s ease-in-out',
+                MsTransition: 'opacity 1s ease-in-out',
+                OTransition: 'opacity 1s ease-in-out',
+                transition: 'opacity 1s ease-in-out'
+            });
+        });
+    };
+
     return {
         init: function () {
             _Layout();
             _componentes();
+        },
+        divscrool:function() {
+            _smoot();
         }
+
     }
 }();
 

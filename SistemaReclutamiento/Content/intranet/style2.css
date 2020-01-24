@@ -2607,11 +2607,12 @@ ul.nav-carousel li:first-child > a:before{
 	line-height: 44px;
 }
 .title-carousel {
-	margin-top: 20px;
-	padding: 10px;
-	bottom: 30px;
-	position: absolute;
-	width: 270px;
+    margin-top: 20px;
+    padding: 10px;
+    bottom: 30px;
+    position: absolute;
+    width: 270px;
+    min-height: 50px;
 }
 .title-carousel a .ticarousel:hover{
 	color: #FFFFFF;
@@ -2619,7 +2620,8 @@ ul.nav-carousel li:first-child > a:before{
 .ticarousel{
 	border-left: 3px solid #FF0000;
 	padding: 10px;
-	margin-left: 10px;
+	margin-left: 0px;
+    font-size:12px;
 }
 
 #mixedContent .overlay:hover >  .title-carousel > a .ticarousel{ 
@@ -2669,10 +2671,10 @@ ul.nav-carousel li:first-child > a:before{
 	float: left;
 	display: block;
 	height: 172px;
-	width: 291px;
+	width: 290px;
 	border: solid 0px #ccc;
 	margin: 0px 1px;
-	background: #000000;
+	/*background: #000000;*/
 	/* If you don't want the images in the scroller to be selectable, try the following
 	   block of code. It's just a nice feature that prevent the images from
 	   accidentally becoming selected/inverted when the user interacts with the scroller. */
@@ -2684,7 +2686,7 @@ ul.nav-carousel li:first-child > a:before{
 }
 #mixedContent .contentBox img {
 	margin-bottom: 10px;
-	width: 100%;
+	width: 75%;
 	opacity: 0.5;
 }
 #mixedContent .overlay:hover > .contentBox img{
@@ -4732,7 +4734,7 @@ blockquote {
 
 .onlyimgblank .title-carousel {
     background-color: rgba(0, 0, 0, 0.8);
-    bottom: 12px;
+    bottom: 8px;
 }
 
 ul.listreview li .ctitle {
