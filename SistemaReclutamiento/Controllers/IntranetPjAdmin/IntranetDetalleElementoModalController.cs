@@ -129,10 +129,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         return Json(new { respuesta = respuesta, mensaje = mensaje });
                     }
                 }
-                else {
+                else
+                {
                     mensaje = error.Value;
                     respuesta = false;
-                    return Json(new { respuesta,mensaje });
+                    return Json(new { respuesta, mensaje });
                 }
             }
             //Lista de Texto
@@ -217,6 +218,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 catch (Exception ex)
                 {
                     mensaje = ex.Message;
+                    respuesta = false;
+                    return Json(new { respuesta = respuesta, mensaje = mensaje });
+                }
+            }
+            else {
+                var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalObtenerTotalRegistrosxElementoJson(intranetDetalleElementoModal.fk_elemento_modal);
+                if (totalDetallesTupla.error.Key.Equals(string.Empty))
+                {
+                    intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalTotal + 1;
+                }
+                else {
+                    mensaje = totalDetallesTupla.error.Value;
                     respuesta = false;
                     return Json(new { respuesta = respuesta, mensaje = mensaje });
                 }

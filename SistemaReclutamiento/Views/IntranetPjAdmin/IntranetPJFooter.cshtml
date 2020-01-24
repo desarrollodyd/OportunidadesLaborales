@@ -1,0 +1,95 @@
+
+@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Pie de Pagina</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+
+    <div class="page-header">
+        <h1>
+             Pie de Pagina
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+
+            </small>
+        </h1>
+    </div><!-- /.page-header -->
+
+    
+    <div class="col-md-12">
+        <div class="row">
+            
+            <div class="col-md-12 col-xs-12">
+                <div class="page-header">
+                    <h1>
+                        Lado Izquierdo
+                        <small>
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+
+                        </small>
+                    </h1>
+                </div><!-- /.page-header -->
+                <button class="btn btn-guardar-footer-izquierda btn-primary"><i class="fa fa-save"></i> Guardar Imagen</button>
+                <form class="" id="form_footer_izquierda">
+                    <input type="hidden" name="foot_posicion" value="I">
+                    <input type="hidden" id="ruta_anterior_izquierda" name="ruta_anterior" value="">
+                    <input type="hidden" id="estado_izquierda" name="foot_estado" value="">
+                <div class="col-md-12 col-xs-12">
+                    <div class="form-group">
+                        <label>Imagen Izquierda</label>
+                        <input id="file_izquierda" name="foot_imagen" type="file" />
+                        <hr>
+                        <div class="col-md-6" id="preview_izquierda" style="width:400px;height:200px;overflow:hidden;"><h1>Preview</h1>    </div>
+                        <div class="col-md-6" id="imagen_actual_derecha" style="width:400px;height:200px;overflow:hidden"> <h1>actual</h1> </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+           <div class="col-md-12 col-xs-12">
+            <div class="page-header">
+                <h1>
+                    Lado Derecho
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+
+                    </small>
+                </h1>
+            </div><!-- /.page-header -->
+                <button class="btn btn-guardar-footer-derecha btn-primary"><i class="fa fa-save"></i> Guardar Imagen</button>
+                <form class="" id="form_footer_derecha">
+                    <input type="hidden" id="ruta_anterior_derecha" name="ruta_anterior" value="">
+                    <input type="hidden" id="estado_derecha" name="foot_estado" value="">
+                    <input type="hidden" name="foot_posicion" value="D">
+                <div class="col-md-12 col-xs-12">
+                    <div class="form-group">
+                        <label>Imagen Derecha</label>
+                        <input id="file_derecha" name="foot_imagen" type="file" />
+                        <hr>
+                        <div class="col-md-6" id="preview_derecha" style="width:400px;height:200px;"></div>
+                        <div class="col-md-6" id="imagen_actual_derecha" style="width:400px;height:200px;"></div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        
+        
+    </div>
+    </div>
+   
+</div><!-- /.page-content -->
+
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFooter.js"></script>
+}
+

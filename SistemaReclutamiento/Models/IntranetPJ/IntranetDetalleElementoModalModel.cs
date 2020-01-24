@@ -206,7 +206,7 @@ detelm_orden, detelm_posicion
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento_modal
 	                    SET  detelm_descripcion=@p0, detelm_nombre=@p1, detelm_extension=@p2, 
-detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=@p8,@detelm_orden=@p9
+detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=@p8,detelm_orden=@p9
 	                    WHERE detelm_id=@p6;";
             try
             {
