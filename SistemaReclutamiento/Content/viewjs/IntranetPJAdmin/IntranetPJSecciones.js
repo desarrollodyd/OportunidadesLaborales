@@ -773,7 +773,7 @@
                             $("#detel_nombre_imagen").val("");
                             $("#detel_url").val("");
                         }
-                        if(data.detel_posicion!=''||data.detel_extension!=""){
+                        if(data.detel_posicion!=''&&data.detel_extension==""){
                             $(".detel-posicion").show();
                         }
                         $("#detel_orden").val(data.detel_orden);
@@ -1008,12 +1008,14 @@
                 refresh: false,
                 callBackSuccess: function (response) {
                     if(response.respuesta){
+                        debugger;
                         var data=response.data;
                         $("#divdetelm").hide();
                         $('#detelm_id').val(data.detelm_id);
                         $('#fk_elemento_modal').val(data.fk_elemento_modal)
                         $("#spandetelm").html("");
                         $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        $(".detelm-orden").show();
                         if(data.detelm_extension!=""){
                             $("#detelm_nombre_imagen_modal").text("Nombre: " + data.detelm_nombre+"."+data.detelm_extension);
                             $("#detelm_nombre_imagen").val(data.detelm_nombre+"."+data.detelm_extension);
@@ -1034,7 +1036,7 @@
                         if(data.detelm_posicion!=''&&data.detelm_extension==""){
                             $(".detelm-posicion").show();
                         }
-                        $(".detelm-orden").show();
+                       
                         $("#detelm_orden").val(data.detelm_orden);
                         $("#detelm-posicion").val(data.detelm_posicion);
                         $("#tituloModalDetalleElementoModal").text("Editar ");

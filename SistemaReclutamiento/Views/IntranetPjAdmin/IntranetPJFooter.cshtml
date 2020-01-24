@@ -25,42 +25,84 @@
         </h1>
     </div><!-- /.page-header -->
 
-    <div class="row">
-        <div class="col-xs-12">
-
-            <div class="clearfix">
-                <div class="pull-right tableTools-container"><button class="btn btn-sm btn-success" id="btn_nuevo"><i class="fa fa-file"></i> Nuevo</button> <button class="btn btn-sm btn-danger" id="btn_eliminar_varios"><i class="fa fa-trash-o"></i> Eliminar</button></div>
-            </div>
-            <div class="table-header">
-                Actividades con estado Inactivo no seran visibles en la pagina principal
-            </div>
-
-            <!-- div.table-responsive -->
-        </div>
-    </div>
-    <div class="row">
-
-         <form class="" id="form_footer_derecha">
-            <input type="hidden" name="emod_id" id="emod_id" value="" />
-            <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal" value="" />
+    
+    <div class="col-md-12">
+        <div class="row">
             <div class="col-md-12 col-xs-12">
-                <div class="form-group">
-                    <label>Titulo</label>
-                    <input id="file" type="file" />
-                </div>
+            <div class="panel panel-default">
+            <div class="panel-heading">
+                    <h2>
+                        Lado Izquierdo
+                    </h2>
             </div>
-            <div class="col-md-12 col-xs-12">
-                <div class="form-group">
-                    <label>Vista Previa</label>
-                    <div id="vista_previa">
-                        <img id="imagen_derecha" style="display:block;">
+            <div class="panel-body">
+                <button class="btn btn-guardar-footer-izquierda btn-primary"><i class="fa fa-save"></i> Guardar Lado Izquierdo</button>
+                 <hr/>
+                <form class="" id="form_footer_izquierda">
+                    <input type="hidden" name="foot_posicion" value="I">
+                    <input type="hidden" id="ruta_anterior_izquierda" name="ruta_anterior" value="">
+                    <input type="hidden" id="estado_izquierda" name="foot_estado" value="">
+                     <div class="col-md-12 col-xs-12">
+                        <div class="form-group">
+                            <label>Titulo</label>
+                            <input type="text" name="foot_descripcion" id="foot_descripcion_izquierda" class="form-control" placeholder="Titulo" />
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12">
+                        <div class="form-group">
+                            <label>Imagen Izquierda</label>
+                            <input id="file_izquierda" name="foot_imagen" type="file" />
+                            <hr>
+                            <div class="col-md-6" id="preview_izquierda" style="height:260px; border-style:solid;"> <h1>Prev - Vista</h1>   </div>
+                            <div class="col-md-6" id="imagen_actual_izquierda" style="height:260px; border-style:solid;"> <h1>Actual</h1></div>
+                        </div>
+                    </div>
+                   
+                </form>
+            </div>
+            </div>
+            </div>
+
+
+           <div class="col-md-12 col-xs-12">
+            <div class="panel panel-default">
+            <div class="panel-heading">
+                    <h2>
+                        Lado Derecho
+                    </h2>
+            </div>
+            <div class="panel-body">
+                <button class="btn btn-guardar-footer-derecha btn-primary"><i class="fa fa-save"></i> Guardar Lado Derecho</button>
+                <hr/>
+                <form class="" id="form_footer_derecha">
+                    <input type="hidden" id="ruta_anterior_derecha" name="ruta_anterior" value="">
+                    <input type="hidden" id="estado_derecha" name="foot_estado" value="">
+                    <input type="hidden" name="foot_posicion" value="D">
+                <div class="col-md-12 col-xs-12">
+                    <div class="form-group">
+                        <label>Titulo</label>
+                        <input type="text" name="foot_descripcion" id="foot_descripcion_derecha" class="form-control" placeholder="Titulo" />
                     </div>
                 </div>
+                <div class="col-md-12 col-xs-12">
+                    <div class="form-group">
+                        <label>Imagen Derecha</label>
+                        <input id="file_derecha" name="foot_imagen" type="file" />
+                        <hr>
+                        
+                        <div class="col-md-4" id="preview_derecha" style="height:260px;border-style:solid;"><h1>Pre - Vista</h1> </div>
+                        
+                        <div class="col-md-4" id="imagen_actual_derecha" style="height:260px;border-style:solid;"> <h1>Actual</h1> </div>
+                    </div>
+                </div>
+            
+                </form>
             </div>
-        </form>
-        
-        
+            </div>
+            </div>
     </div>
+    </div>
+   
 </div><!-- /.page-content -->
 
 @section js

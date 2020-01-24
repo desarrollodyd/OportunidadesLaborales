@@ -26,6 +26,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         PersonaModel personabl = new PersonaModel();
         IntranetSaludoCumpleaniosModel intranetSaludoCumpleaniosbl = new IntranetSaludoCumpleaniosModel();
         IntranetCPJLocalModel intranetCPJLocalbl = new IntranetCPJLocalModel();
+        IntranetFooterModel intranetFooterbl = new IntranetFooterModel();
         SQLModel sqlbl = new SQLModel();
         //Acceso
         IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
@@ -78,6 +79,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetActividadesEntidad> intranetActividades_ = new List<IntranetActividadesEntidad>();
             List<IntranetActividadesEntidad> intranetActividades = new List<IntranetActividadesEntidad>();
             List<IntranetSaludoCumpleanioEntidad> intraSaludos = new List<IntranetSaludoCumpleanioEntidad>();
+            List<IntranetFooterEntidad> intranetFooter = new List<IntranetFooterEntidad>();
 
             List<PersonaEntidad> listaPersona = new List<PersonaEntidad>();
             claseError error = new claseError();
@@ -95,6 +97,22 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             int cantidadSalas = 0;
             int cantidadApuestasDeportivas = 0;
             try {
+                //Listando Footers
+                var footerTupla = intranetFooterbl.IntranetFooterObtenerFootersJson();
+                if (footerTupla.error.Key.Equals(string.Empty))
+                {
+                    intranetFooter = footerTupla.listaFooters.ToList();
+                    if (intranetFooter.Count > 0)
+                    {
+                        foreach (var m in intranetFooter)
+                        {
+                            m.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", m.foot_imagen);
+                        }
+                    }
+                }
+                else {
+                    mensajeerrorBD += "Error en Footers: " + error.Value+"\n";
+                }
                 //listando menus
                 var menuTupla = intranetMenubl.IntranetMenuListarJson();
                 error = menuTupla.error;
@@ -340,7 +358,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 dataSecciones = ListaSeccion.ToList(),
                 mensajeerrorBD = mensajeerrorBD,
                 cantidadSalas = cantidadSalas,
-                cantidadApuestasDeportivas = cantidadApuestasDeportivas
+                cantidadApuestasDeportivas = cantidadApuestasDeportivas,
+                dataFooter= intranetFooter
             };
             var result = new ContentResult
             {

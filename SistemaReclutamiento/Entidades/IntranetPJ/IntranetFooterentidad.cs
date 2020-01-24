@@ -12,5 +12,6 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string foot_estado { get; set; }
         public string foot_imagen { get; set; }
         public string foot_posicion { get; set; }
+        public string ruta_anterior { get; set; }
     }
 }
