@@ -41,32 +41,34 @@ var PanelFooter = function () {
         })        
     };
     var _componentes = function () {
-        $(document).on('change','#file_izquierda',function(e){
-            let reader=new FileReader();
-            reader.onload=function(){
-                let preview=document.getElementById('preview_izquierda'),
-                image=document.createElement('img');
-                image.src=reader.result;
-                image.style.width="100%";
-                image.style.height="100%";
-                preview.innerHTML='';
+        $(document).on('change', '#file_izquierda', function (e) {
+            let reader = new FileReader();
+            reader.onload = function () {
+                let preview = document.getElementById('imagen_actual_izquierda'),
+                    image = document.createElement('img');
+                image.src = reader.result;
+                image.style.width = "100%";
+                image.style.height = "100%";
+                preview.innerHTML = '';
                 preview.append(image);
             }
             reader.readAsDataURL(e.target.files[0]);
-        })
-        $(document).on('change','#file_derecha',function(e){
-            let reader=new FileReader();
-            reader.onload=function(){
-                let preview=document.getElementById('preview_derecha'),
-                image=document.createElement('img');
-                image.src=reader.result;
-                image.style.width="100%";
-                image.style.height="100%";
-                preview.innerHTML='';
+        });
+
+        $(document).on('change', '#file_derecha', function (e) {
+            let reader = new FileReader();
+            reader.onload = function () {
+                let preview = document.getElementById('imagen_actual_derecha'),
+                    image = document.createElement('img');
+                image.src = reader.result;
+                image.style.width = "100%";
+                image.style.height = "100%";
+                preview.innerHTML = '';
                 preview.append(image);
             }
             reader.readAsDataURL(e.target.files[0]);
-        })
+        });
+
         $(document).on('click','.btn-guardar-footer-izquierda',function(){
             $("#form_footer_izquierda").submit();
             if (_objetoForm_form_footer_izquierda.valid()) {
@@ -87,8 +89,8 @@ var PanelFooter = function () {
                             image.style.height="100%";
                             preview.innerHTML='';
                             preview.append(image);
-                            let preview2=document.getElementById('preview_izquierda');
-                            preview2.innerHTML="<h1>Pre - Vista</h1>";
+                            //let preview2=document.getElementById('preview_izquierda');
+                            //preview2.innerHTML="<h1>Pre - Vista</h1>";
                             $("#ruta_anterior_izquierda").val(value.ruta_anterior);
                             $("#estado_izquierda").val(value.foot_estado);
                             $("#foot_descripcion_izquierda").val(value.foot_descripcion);
@@ -122,8 +124,8 @@ var PanelFooter = function () {
                             image.style.height="100%";
                             preview.innerHTML='';
                             preview.append(image);
-                            let preview2=document.getElementById('preview_derecha');
-                            preview2.innerHTML="<h1>Pre - Vista</h1>";
+                            //let preview2=document.getElementById('preview_derecha');
+                            //preview2.innerHTML="<h1>Pre - Vista</h1>";
                             $("#ruta_anterior_derecha").val(value.ruta_anterior);
                             $("#estado_derecha").val(value.foot_estado);
                             $("#foot_descripcion_derecha").val(value.foot_descripcion);

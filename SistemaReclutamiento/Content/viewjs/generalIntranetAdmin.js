@@ -651,11 +651,13 @@ function simpleDataTable(obj) {
     this[objt + '_' + opciones.tableNameVariable] = $(opciones.table).DataTable({
         "bDestroy": true,
         "scrollCollapse": true,
-        "scrollX": false,
+        "scrollX": true,
         "autoWidth": false,
         "bProcessing": true,
         "bDeferRender": true,
         "responsive": true,
+
+        "fixedColumns": true,
         "paging": opciones.tablePaging,
         "ordering": opciones.tableOrdering,
         "info": opciones.tableInfo,
@@ -680,6 +682,8 @@ function simpleDataTable(obj) {
             //}
         }
     });
+    listaDatatable.push({ tabla: objt + '_' + opciones.tableNameVariable });
+    localStorage.setItem('tablas_', JSON.stringify(listaDatatable));
 }
 
 function simpleAjaxDataTable(obj) {
@@ -735,3 +739,23 @@ function simpleAjaxDataTable(obj) {
 //});
 
 /*End Datatables*/
+$(document).on("click", "ul.ulnav li", function () {
+    var index = $(this).index();
+    localStorage.setItem('menuSelected', index);
+});
+
+var menuSeleccionado = localStorage.getItem('menuSelected');
+$("ul.ulnav li").removeClass("active");
+$("ul.ulnav li").eq(menuSeleccionado).addClass("active");
+
+listaDatatable = [];
+
+$(document).on("click", "#sidebar-collapse", function () {
+    var lista = localStorage.getItem('tablas_');
+    var objeto = JSON.parse(lista);
+
+    $.each(objeto, function (i, item) {
+        eval(item.tabla).draw();
+    });
+
+});

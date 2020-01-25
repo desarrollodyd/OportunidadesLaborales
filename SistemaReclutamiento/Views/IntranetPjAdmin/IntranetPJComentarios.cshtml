@@ -9,49 +9,39 @@
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="#">Inicio</a>
         </li>
-        <li class="active">Panel Comentarios</li>
+        <li class="active">Panel Saludo Cumpleaños</li>
     </ul><!-- /.breadcrumb -->
 </div>
 
 <div class="page-content">
-
-    <div class="page-header">
-        <h1>
-            Listado de Saludos Registrados
-            <small>
-                <i class="ace-icon fa fa-angle-double-right"></i>
-
-            </small>
-        </h1>
-    </div><!-- /.page-header -->
-
     <div class="row">
         <div class="col-xs-12">
-
-            <div class="clearfix">
-                <div class="pull-right tableTools-container"><button class="btn btn-sm btn-danger" id="btn_eliminar_varios"><i class="fa fa-trash-o"></i> Eliminar</button></div>
-            </div>
-            <div class="table-header">
-                Comentarios con estado Inactivo no seran visibles en la pagina principal
-            </div>
-
-            <!-- div.table-responsive -->
-            <!-- div.dataTables_borderWrap -->
-            <div>
-                <table id="comentariosListado" class="table datatable-comentariolistado table-striped table-bordered table-hover">
-                    <tbody>
-                        <tr>
-                            <td colspan="6">
-                                <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="widget-box">
+                <div class="widget-header widget-header-flat widget-header-small">
+                    <h4 class="widget-title">Listado Saludo Cumpleaños</h4>
+                    <span class="widget-toolbar">
+                        <a href="#" class="btn btn-sm btn-danger btn-minier" data-action="settings" id="btn_eliminar_varios"><i class="ace-icon fa fa-trash-o"></i> Eliminar</a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div>
+                            <table id="comentariosListado" class="table table-condensed datatable-comentariolistado table-striped table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div><!-- /.page-content -->
-
 
 <div class="modal fade" tabindex="-1" id="modalFormulario" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">

@@ -59,20 +59,21 @@
     <![endif]-->
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/rowreorder/1.2.6/css/rowReorder.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/rowReorder.dataTables.min.css" rel="stylesheet" />
+
     <style>
         /*#seccionesListado > tbody > tr > td {
         padding-left:25px;
         }*/
-        table.table > tbody > tr > td {
+        /*table.table > tbody > tr > td {
             padding-left:30px;
-        }
+        }*/
     </style>
 </head>
 
 <body class="no-skin">
     <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
-    <div id="navbar" class="navbar navbar-default ace-save-state">
+    <div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top">
         <div class="navbar-container ace-save-state" id="navbar-container">
             <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
                 <span class="sr-only">Toggle sidebar</span>
@@ -136,12 +137,12 @@
             try { ace.settings.loadState('main-container') } catch (e) { }
         </script>
 
-        <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+        <div id="sidebar" class="sidebar responsive ace-save-state sidebar-fixed">
             <script type="text/javascript">
                 try { ace.settings.loadState('sidebar') } catch (e) { }
             </script>
 
-            <ul class="nav nav-list">
+            <ul class="nav nav-list ulnav">
                 <li class="active">
                     <a href="~/IntranetPjAdmin/Index">
                         <i class="menu-icon fa fa-cogs"></i>
@@ -177,13 +178,13 @@
                 </li>
                 <li class="">
                     <a href="~/IntranetPjAdmin/PanelComentarios">
-                        <i class="menu-icon fa fa-desktop"></i>
+                        <i class="menu-icon fa fa-envelope-o"></i>
                         <span class="menu-text"> Comentarios </span>
                     </a>
 
                     <b class="arrow"></b>
                 </li>
-                 <li class="">
+                <li class="">
                     <a href="~/IntranetPjAdmin/PanelFooter">
                         <i class="menu-icon fa fa-desktop"></i>
                         <span class="menu-text"> Pie de Pagina </span>
@@ -258,9 +259,10 @@
     <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
     <!-- ace scripts -->
-    <script src="https://cdn.datatables.net/rowreorder/1.2.6/js/dataTables.rowReorder.min.js"></script>
-    <script src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+
+    <script src="~/Content/intranetSGC/assets/js/dataTables.rowReorder.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/dataTables.editor.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/dataTables.select.min.js"></script>
     <script src="~/Content/intranetSGC/assets/js/ace-elements.min.js"></script>
     <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>

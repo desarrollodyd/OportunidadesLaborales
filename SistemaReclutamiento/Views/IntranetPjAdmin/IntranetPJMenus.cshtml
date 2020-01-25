@@ -14,134 +14,31 @@
 </div>
 
 <div class="page-content">
-
-    <div class="page-header">
-        <h1>
-            Listado de Menus
-            <small>
-                <i class="ace-icon fa fa-angle-double-right"></i>
-
-            </small>
-        </h1>
-        <div id="result"></div>
-    </div><!-- /.page-header -->
-    <div id="result"></div>
     <div class="row">
         <div class="col-xs-12">
-
-            <div class="clearfix">
-                <div class="pull-right tableTools-container"><button class="btn btn-sm btn-success" id="btn_nuevo"><i class="fa fa-file"></i> Nuevo</button> <button class="btn btn-sm btn-danger" id="btn_eliminar_varios"><i class="fa fa-trash-o"></i> Eliminar</button></div>
-            </div>
-            <div class="table-header">
-                Menus con estado Inactivo no seran visibles en la pagina principal
-            </div>
-
-            <!-- div.table-responsive -->
-            <!-- div.dataTables_borderWrap -->
-            <div>
-                <table id="menusListado" class="table datatable-menulistado table-striped table-bordered table-hover">
-                    <tbody>
-                        <tr>
-                            <td colspan="6">
-                                <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    @*<thead>
-            <tr>
-                <th class="center">
-                    <label class="pos-rel">
-                        <input type="checkbox" class="ace" />
-                        <span class="lbl"></span>
-                    </label>
-                </th>
-                <th>domain</th>
-                <th>price</th>
-                <th class="hidden-480">clicks</th>
-
-                <th>
-                    <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-                    update
-                </th>
-                <th class="hidden-480">status</th>
-
-                <th></th>
-            </tr>
-        </thead>
-
-                    <tbody>
-
-            <tr>
-                <td class="center">
-                    <label class="pos-rel">
-                        <input type="checkbox" class="ace" />
-                        <span class="lbl"></span>
-                    </label>
-                </td>
-
-                <td>
-                    <a href="#">once.com</a>
-                </td>
-                <td>$20</td>
-                <td class="hidden-480">1,400</td>
-                <td>apr 04</td>
-
-                <td class="hidden-480">
-                    <span class="label label-sm label-info arrowed arrowed-righ">sold</span>
-                </td>
-
-                <td>
-                    <div class="hidden-sm hidden-xs action-buttons">
-                        <a class="blue" href="#">
-                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                        </a>
-
-                        <a class="green" href="#">
-                            <i class="ace-icon fa fa-pencil bigger-130"></i>
-                        </a>
-
-                        <a class="red" href="#">
-                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                        </a>
-                    </div>
-
-                    <div class="hidden-md hidden-lg">
-                        <div class="inline pos-rel">
-                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                            </button>
-
-                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                <li>
-                                    <a href="#" class="tooltip-info" data-rel="tooltip" title="view">
-                                        <span class="blue">
-                                            <i class="ace-icon fa fa-search-plus bigger-120"></i>
-                                        </span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="tooltip-success" data-rel="tooltip" title="edit">
-                                        <span class="green">
-                                            <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                                        </span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="tooltip-error" data-rel="tooltip" title="delete">
-                                        <span class="red">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </span>
-                                    </a>
-                                </li>
-                            </ul>
+            <div class="widget-box">
+                <div class="widget-header widget-header-flat widget-header-small">
+                    <h4 class="widget-title">Listado Menus</h4>
+                    <span class="widget-toolbar">
+                        <a href="#" class="btn btn-sm btn-success btn-minier" data-action="settings" id="btn_nuevo"><i class="ace-icon fa fa-file"></i> Nuevo</a>
+                        <a href="#" class="btn btn-sm btn-danger btn-minier" data-action="settings" id="btn_eliminar_varios"><i class="ace-icon fa fa-trash-o"></i> Eliminar</a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div>
+                            <table id="menusListado" class="table table-condensed datatable-menulistado table-striped table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </td>
-            </tr>
-        </tbody>*@
-                </table>
+                </div>
             </div>
         </div>
     </div>
@@ -174,11 +71,11 @@
                             </div>
                         </div>
                         @*<div class="col-md-12 col-xs-12">
-                            <div class="form-group">
-                                <label>Orden</label>
-                                <input type="number" name="menu_orden" id="menu_orden" min="1" class="form-control" value="1" />
-                            </div>
-                        </div>*@
+                                <div class="form-group">
+                                    <label>Orden</label>
+                                    <input type="number" name="menu_orden" id="menu_orden" min="1" class="form-control" value="1" />
+                                </div>
+                            </div>*@
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>¿Se abrira en una pestaña nueva?</label>

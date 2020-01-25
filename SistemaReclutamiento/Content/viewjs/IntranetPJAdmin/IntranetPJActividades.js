@@ -125,7 +125,7 @@
             $("#img_ubicacion").val("");
             $("#spancv").html("");
             $("#spancv").append('<i class="fa fa-upload"></i>  Subir Icono');
-
+            _objetoForm_form_actividades.resetForm();
             $("#act_descripcion").prop('disabled', false);
             $("#act_fecha").prop('disabled', false);
             $("#act_imagen").prop('disabled', false);
@@ -177,6 +177,7 @@
         $(document).on("click", ".btn-detalle", function () {
             var act_id = $(this).data("id");
             var dataForm = { act_id: act_id };
+            _objetoForm_form_actividades.resetForm();
             responseSimple({
                 url: "IntranetActividades/IntranetActividadesIdObtenerJson",
                 data: JSON.stringify(dataForm),
@@ -217,6 +218,7 @@
 
         $(document).on("click", ".btn-editar", function () {
             var act_id = $(this).data("id");
+            _objetoForm_form_actividades.resetForm();
             var dataForm = { act_id: act_id };
             responseSimple({
                 url: "IntranetActividades/IntranetActividadesIdObtenerJson",
@@ -261,7 +263,6 @@
             })
         })
 
-
         $(document).on("click", ".btn-eliminar", function (e) {
             var act_id = $(this).data("id");
             console.log(act_id);
@@ -288,6 +289,7 @@
                 })
             }
         });
+
         $(document).on("change", "#act_imagen", function () {
             var _image = $('#act_imagen')[0].files[0];
             if (_image != null) {

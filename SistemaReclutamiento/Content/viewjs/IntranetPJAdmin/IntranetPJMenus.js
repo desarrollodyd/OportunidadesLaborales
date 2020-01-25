@@ -32,7 +32,7 @@ var PanelMenus = function () {
                         {
                             data: "menu_id",
                             title: "",
-                            className: "text-center",
+                            className: "",
                             "bSortable": false,
                             "render": function (value) {
                                 var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
@@ -44,7 +44,7 @@ var PanelMenus = function () {
                             data: "menu_id",
                             title: "ID",
                             "bSortable": false,
-                            className: 'reorder',
+                            className: 'reorder align-left',
                             visible: true,
                             width: "50px",
                         },
@@ -115,7 +115,7 @@ var PanelMenus = function () {
             $("#menu_orden").prop('disabled', false);
             $("#menu_estado").prop('disabled', false);
             $("#menu_blank").prop('disabled', false);
-
+            _objetoForm_form_menus.resetForm();
             $("#menu_titulo").val("");
             $("#menu_url").val("");
             $("#menu_orden").val(1);
@@ -163,6 +163,7 @@ var PanelMenus = function () {
         $(document).on("click", ".btn-detalle", function () {
             var menu_id = $(this).data("id");
             console.log(menu_id);
+            _objetoForm_form_menus.resetForm();
             var dataForm = { menu_id: menu_id };
             responseSimple({
                 url: "IntranetMenu/IntranetMenuIdObtenerJson",
@@ -197,6 +198,7 @@ var PanelMenus = function () {
 
         $(document).on("click", ".btn-editar", function () {
             var menu_id = $(this).data("id");
+            _objetoForm_form_menus.resetForm();
             var dataForm = { menu_id: menu_id };
             responseSimple({
                 url: "IntranetMenu/IntranetMenuIdObtenerJson",
@@ -337,21 +339,25 @@ var PanelMenus = function () {
         _objetoDatatable_datatable_menulistado.off('row-reorder');
         _objetoDatatable_datatable_menulistado.on('row-reorder', function (e, diff, edit) {
             //console.log(edit.triggerRow.data().menu_titulo)
+
             let arrayOrdenesMenus = [];
             var result = '<div style="font-size:12px">Cambio empezo con: <strong>' + edit.triggerRow.data().menu_titulo + '</strong><br></div>';
-            console.log(diff.length);
+            
             for (var i = 0, ien = diff.length; i < ien; i++) {
                 var rowData = _objetoDatatable_datatable_menulistado.row(diff[i].node).data();
+               
                 //console.log(rowData.menu_id + "-" + diff[i].newData);
+                var posicionnew = (diff[i].newPosition + 1);
+                var posicionold = (diff[i].oldPosition + 1)
                 var obj = {
-                    menu_orden: diff[i].newData,
+                    menu_orden: posicionnew,
                     menu_id: rowData.menu_id
                 };
                 arrayOrdenesMenus.push(obj);
                 result += '<div style="font-size:12px"><strong>'+rowData.menu_titulo + '</strong> Pos. Actual: ' +
-                    diff[i].newData + ' (Desde Pos. ' + diff[i].oldData + ')<br></div>';
+                    posicionnew + ' (Desde Pos. ' + posicionold + ')<br></div>';
             }
-
+            //console.log(arrayOrdenesMenus);
             var dataform = {
                 arrayMenus: arrayOrdenesMenus,
             }

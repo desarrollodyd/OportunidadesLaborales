@@ -29,6 +29,13 @@
                 })
             }
         });
+
+        $(document).keypress(function (event) {
+            var keycode = event.keyCode || event.which;
+            if (keycode == '13') {
+                $(".btn_ingresar").click();
+            }
+        });
     };
 
     var _metodos = function () {
