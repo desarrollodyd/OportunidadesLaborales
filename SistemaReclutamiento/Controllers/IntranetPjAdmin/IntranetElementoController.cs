@@ -17,7 +17,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             return View();
         }
-        public ActionResult IntranetElementoListarxMenuIDJson(int sec_id)
+        public ActionResult IntranetElementoListarxSeccionIDJson(int sec_id)
         {
             string mensaje = "";
             string mensajeConsola = "";

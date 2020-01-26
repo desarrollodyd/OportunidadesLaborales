@@ -242,6 +242,7 @@
     <Content Include="Content\intranetSGC\assets\js\holder.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery-2.1.4.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery-additional-methods.min.js" />
+    <Content Include="Content\intranetSGC\assets\js\jquery-sortable.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery-typeahead.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery-ui.custom.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery-ui.min.js" />
@@ -3906,6 +3907,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFooter.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones1.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLoginView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJMapaView.js" />
@@ -5045,6 +5047,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJAdminLogin.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisFavoritosVista.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJFooter.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJSecciones1.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5060,7 +5063,6 @@
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
-    <Folder Include="Views\IntranetFooter\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

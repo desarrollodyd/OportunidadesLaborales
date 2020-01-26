@@ -208,5 +208,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { tamanioseccion = tamanio, respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
         }
+
     }
 }

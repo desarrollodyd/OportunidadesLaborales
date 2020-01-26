@@ -160,7 +160,7 @@
                         sec_id: sec_id
                     };
                     responseSimple({
-                        url: "IntranetElemento/IntranetElementoListarxMenuIDJson",
+                        url: "IntranetElemento/IntranetElementoListarxSeccionIDJson",
                         data: JSON.stringify(dataForm),
                         refresh: false,
                         callBackSuccess: function (response) {

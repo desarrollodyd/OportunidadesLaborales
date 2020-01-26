@@ -67,6 +67,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             
             return View("~/Views/IntranetPJAdmin/IntranetPJSecciones.cshtml");
         }
+
+        #region seccion1
+
+        public ActionResult PanelSecciones1()
+        {
+            return View("~/Views/IntranetPjAdmin/IntranetPJSecciones1.cshtml");
+        }
+        #endregion
+
+
         #region Region Acceso a Mantenimiento Intranet PJ
         public ActionResult Login()
         {

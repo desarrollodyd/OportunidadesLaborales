@@ -12,6 +12,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
     public class IntranetMenuController : Controller
     {
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
+        IntranetSeccionModel intranetSeccionbl = new IntranetSeccionModel();
         claseError error = new claseError();
         // GET: IntranetMenu
         public ActionResult Index()
@@ -48,6 +49,56 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
             return Json(new { data = listaMenus.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola=mensajeConsola });
         }
+
+        [HttpPost]
+        public ActionResult IntranetMenuSeccionListarJson()
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<IntranetMenuEntidad> listaMenus = new List<IntranetMenuEntidad>();
+            List<IntranetSeccionEntidad> listaSecciones = new List<IntranetSeccionEntidad>();
+            var datos = new List<dynamic>();
+            try
+            {
+                var menuTupla = intranetMenubl.IntranetMenuListarJson();
+                error = menuTupla.error;
+                listaMenus = menuTupla.intranetMenuLista;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Menus";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar los Menus";
+                }
+
+                foreach (var term in listaMenus)
+                {
+                    var seccionTupla = intranetSeccionbl.IntranetSeccionListarTodoxMenuIDJson(term.menu_id);
+                    error = seccionTupla.error;
+                    listaSecciones = seccionTupla.intranetSeccionListaTodoxMenuID;
+                    datos.Add(new
+                    {
+                        term.menu_id,
+                        term.menu_orden,
+                        term.menu_titulo,
+                        secciones = listaSecciones
+                    }); ;
+                }
+
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = datos.ToList(), respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
+
+
         [HttpPost]
         public ActionResult IntranetMenuListarTodoJson()
         {
