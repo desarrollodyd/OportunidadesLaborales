@@ -15,17 +15,20 @@
                 console.log(response);
                 simpleDataTable({
                     uniform: false,
-                    tableNameVariable: "actividadesListado",
+                    tableNameVariable: "datatable_actividadesListado",
                     table: "#actividadesListado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
+                    tableHeaderCheckIndex: 0,
+                    headerCheck: "chk_actividades",
                     tableColumns: [
                         {
                             data: "act_id",
                             title: "",
                             "bSortable": false,
+                            className: 'align-center',
                             "render": function (value) {
-                                var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
+                                var check = '<input type="checkbox" class="form-check-input-styled-info actividadesListado" data-id="' + value + '" name="chk[]">';
                                 return check;
                             },
                             width: "50px",
@@ -33,7 +36,7 @@
                         {
                             data: "act_id",
                             title: "ID",
-                            width: "70px",
+                            width: "50px",
                             className: 'align-center',
                         },
                         {
@@ -324,19 +327,6 @@
             }
         })
 
-        //checkAll
-        $(document).on("click", ".chk_all", function (e) {
-            console.log("click all");
-            $(this).closest('table').find('tbody :checkbox')
-                .prop('checked', this.checked)
-                .closest('tr').toggleClass('selected', this.checked);
-        })
-
-        $(document).on("click", "tbody :checkbox", function (e) {
-            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
-
-            $(this).closest('table').find('.chk_all').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
-        })
         //Boton Eliminar Varios Menus
         $(document).on("click", "#btn_eliminar_varios", function (e) {
             let arrayActividades = [];
@@ -370,6 +360,17 @@
 
         })
 
+        $(document).on("click", ".chk_actividades", function (e) {
+            $('#actividadesListado').find('tbody :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
+        })
+
+        $(document).on("click", "#actividadesListado  tbody :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+
+            $('.chk_actividades').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+        })
     };
 
     var _metodos = function () {

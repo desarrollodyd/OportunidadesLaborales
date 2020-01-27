@@ -644,7 +644,8 @@ function simpleDataTable(obj) {
         rowReorder: false,
         columnDefs: [],
         tableHeaderCheckIndex:0,
-        rowCallback:false,
+        rowCallback: false,
+        headerCheck: "chk_all"
     }
     var opciones = $.extend({}, defaults, obj);
     var objt = "_objetoDatatable";
@@ -670,7 +671,7 @@ function simpleDataTable(obj) {
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
-                $(api.column(opciones.tableHeaderCheckIndex).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all">');
+                $(api.column(opciones.tableHeaderCheckIndex).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info ' + opciones.headerCheck + '">');
             }
             //if (opciones.uniform) {
             //    // Info

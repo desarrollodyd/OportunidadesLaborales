@@ -13,17 +13,20 @@
             callBackSuccess: function (response) {
                 simpleDataTable({
                     uniform: false,
-                    tableNameVariable: "comentariosListado",
-                    table: ".datatable-comentariolistado",
+                    tableNameVariable: "datatable_comentarioListado",
+                    table: "#comentarioListado",
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
+                    tableHeaderCheckIndex: 0,
+                    headerCheck: "chk_comentario",
                     tableColumns: [
                         {
                             data: "sld_id",
                             title: "",
+                            className: 'align-center',
                             "bSortable": false,
                             "render": function (value) {
-                                var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
+                                var check = '<input type="checkbox" class="form-check-input-styled-info comentarioListado" data-id="' + value + '" name="chk[]">';
                                 return check;
                             },
                             width: "50px",
@@ -32,6 +35,7 @@
                             data: "sld_id",
                             title: "ID",
                             className: 'align-center',
+                            width: "50px",
                         },
                         {
                             data: "sld_cuerpo",
@@ -150,22 +154,21 @@
         });
 
         //checkAll
-        $(document).on("click", ".chk_all", function (e) {
-            console.log("click all");
-            $(this).closest('table').find('tbody :checkbox')
+        $(document).on("click", ".chk_comentario", function (e) {
+            $('#comentarioListado').find('tbody :checkbox')
                 .prop('checked', this.checked)
                 .closest('tr').toggleClass('selected', this.checked);
         })
 
-        $(document).on("click", "tbody :checkbox", function (e) {
+        $(document).on("click", "#comentarioListado tbody :checkbox", function (e) {
             $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
 
-            $(this).closest('table').find('.chk_all').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+            $('.chk_comentario').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
         })
         //Boton Eliminar Varios Menus
         $(document).on("click", "#btn_eliminar_varios", function (e) {
             let arrayComentarios = [];
-            $('#comentariosListado tbody tr input[type=checkbox]:checked').each(function () {
+            $('#comentarioListado tbody tr input[type=checkbox]:checked').each(function () {
                 arrayComentarios.push($(this).data("id"));
             });
             if (arrayComentarios.length > 0) {

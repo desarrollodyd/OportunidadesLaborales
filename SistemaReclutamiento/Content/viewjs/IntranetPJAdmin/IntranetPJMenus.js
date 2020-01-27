@@ -17,6 +17,7 @@ var PanelMenus = function () {
                     tableColumnsData: response.data,
                     tableHeaderCheck: true,
                     tableHeaderCheckIndex: 1,
+                    headerCheck: "chk_menu",
                     rowReorder: {
                         selector: 'td.reorder',
                         dataSrc: 'menu_orden',
@@ -32,10 +33,10 @@ var PanelMenus = function () {
                         {
                             data: "menu_id",
                             title: "",
-                            className: "",
+                            className: 'align-center',
                             "bSortable": false,
                             "render": function (value) {
-                                var check = '<input type="checkbox" class="form-check-input-styled-info chk_id_rol datatable-roles" data-id="' + value + '" name="chk[]">';
+                                var check = '<input type="checkbox" class="form-check-input-styled-info menusListado" data-id="' + value + '" name="chk[]">';
                                 return check;
                             },
                             width: "50px",
@@ -44,7 +45,7 @@ var PanelMenus = function () {
                             data: "menu_id",
                             title: "ID",
                             "bSortable": false,
-                            className: 'reorder align-left',
+                            className: 'reorder align-center',
                             visible: true,
                             width: "50px",
                         },
@@ -259,17 +260,17 @@ var PanelMenus = function () {
         });
 
         //checkAll
-        $(document).on("click", ".chk_all", function (e) {
+        $(document).on("click", ".chk_menu", function (e) {
             console.log("click all");
-            $(this).closest('table').find('tbody :checkbox')
+            $('#menusListado').find('tbody :checkbox')
                 .prop('checked', this.checked)
                 .closest('tr').toggleClass('selected', this.checked);
         })
 
-        $(document).on("click", "tbody :checkbox", function (e) {
+        $(document).on("click", "#menusListado tbody :checkbox", function (e) {
             $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
 
-            $(this).closest('table').find('.chk_all').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+            $('.chk_menu').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
         })
         //Boton Eliminar Varios Menus
         $(document).on("click", "#btn_eliminar_varios", function (e) {
