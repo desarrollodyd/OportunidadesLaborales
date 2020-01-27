@@ -639,6 +639,7 @@
             $("#cboOpcion").val("1");
             $("#spandetel").html("");
             $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Icono');
+            $("#divdetel").hide();
             // $(".detel-descripcion").show();
             $("#detel_nombre_imagen").val("");
             if (tipo_elemento == 5 || tipo_elemento == 6) {
@@ -963,6 +964,7 @@
             $(".detelm-opcion").show();
             $("#spandetelm").html("");
             $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
+            $("#divdetelm").hide();
             // $("#cboTipoElementoModal").select2('destroy');
             // $("#cboTipoElementoModal").select2();
             // $('#cboTipoElementoModal option[value="9"]').prop('disabled', true);

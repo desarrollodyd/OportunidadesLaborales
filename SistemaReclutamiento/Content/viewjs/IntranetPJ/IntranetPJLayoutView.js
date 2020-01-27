@@ -285,7 +285,7 @@
                                                 '<div class="itemcatslide">' +
                                                 '<div class="catf">' +
                                                 '<div class="catf-format">' +
-                                                '<div class="fdate">15<br /><span>Dec</span></div>' +
+                                                //'<div class="fdate">15<br /><span>Dec</span></div>' +
                                                 '</div>' +
                                                 '<div class="imgslide">' +
                                                 '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt="" title="" class="slidefeatured">' +
@@ -763,7 +763,7 @@
                                         '<div class="itemcatslide">' +
                                         '<div class="catf">' +
                                         '<div class="catf-format">' +
-                                        '<div class="fdate">15<br /><span>Dec</span></div>' +
+                                        //'<div class="fdate">15<br /><span>Dec</span></div>' +
                                         '</div>' +
                                         '<div class="imgslide">' +
                                         '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt="" title="" class="slidefeatured">' +

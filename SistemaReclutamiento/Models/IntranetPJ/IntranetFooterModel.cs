@@ -151,5 +151,33 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (footer: intranetFooter, error: error);
         }
+
+        public (int IntranetFooterEditado,claseError error) IntrantetFooterEditarporPosicionJson(string foot_posicion,string foot_descripcion){
+            claseError error = new claseError();
+            string consulta = @"UPDATE intranet.int_footer
+                            SET foot_descripcion=@p0
+                            WHERE foot_posicion=@p1
+                            returning foot_id;";
+            int idIFooterEditado=0;
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(foot_descripcion));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(foot_posicion));
+                    idIFooterEditado = Int32.Parse(query.ExecuteScalar().ToString());
+                    // query.ExecuteNonQuery();
+                    // response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (IntranetFooterEditado: idIFooterEditado, error: error);
+        }
     }
 }

@@ -148,12 +148,12 @@ var PanelFooter = function () {
             rules: {
                 foot_posicion:
                 {
-                    required: true,
+                    required: false,
 
                 },
                 foot_imagen:
                 {
-                    required: true,
+                    required: false,
 
                 }
 
@@ -176,12 +176,12 @@ var PanelFooter = function () {
             rules: {
                 foot_posicion:
                 {
-                    required: true,
+                    required: false,
 
                 },
                 foot_imagen:
                 {
-                    required: true,
+                    required: false,
 
                 }
 

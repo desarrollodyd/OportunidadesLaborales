@@ -124,9 +124,6 @@ detelm_ubicacion, detelm_estado, fk_elemento_modal,
 detelm_orden, detelm_posicion
 	FROM intranet.int_detalle_elemento_modal where detelm_id=@p0;";
 
-            string consulta2 = @"SELECT detelm_id, detelm_descripcion, detelm_nombre, 
-                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal
-	                                FROM intranet.int_detalle_elemento_modal where detelm_id=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

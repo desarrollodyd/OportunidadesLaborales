@@ -93,7 +93,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             int tamanioMaximo=0;
             string extension = "";
             string rutaInsertar = "";
-            int idSeccionElementoInsertado = 0;
 
 
             IntranetSeccionElementoEntidad intranetSeccionElemento = new IntranetSeccionElementoEntidad();

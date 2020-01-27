@@ -3,6 +3,8 @@ using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +16,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         // GET: IntranetElementoModal
         IntranetElementoModalModel intranetElementoModalbl = new IntranetElementoModalModel();
         IntranetDetalleElementoModalModel intranetDetalleElementoModalbl = new IntranetDetalleElementoModalModel();
+        string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         claseError error = new claseError();
         public ActionResult Index()
         {
@@ -99,7 +102,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string mensaje = "";
             bool response = false;
             claseError error = new claseError();
+            string rutaAnterior = "";
             try {
+                //Eliminar Imagenes de Detalle de Elemento Modal
+                List<IntranetDetalleElementoModalEntidad> detalleElementoModal = new List<IntranetDetalleElementoModalEntidad>();
+                var listaDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(emod_id);
+                detalleElementoModal = listaDetallesTupla.intranetDetalleElementoModalListaxElementoID;
+                foreach (var m in detalleElementoModal) {
+                    rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + m.detelm_nombre+"."+m.detelm_extension);
+                }
                 var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarxElementoModalJson(emod_id);
                 error = intranetDetalleElementoModalTupla.error;
                 if (error.Key.Equals(string.Empty))

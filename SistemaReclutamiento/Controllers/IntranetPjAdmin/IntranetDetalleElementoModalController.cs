@@ -266,8 +266,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string mensaje = "";
             bool respuesta = false;
             claseError error = new claseError();
+              String rutaEliminar="";
             try
             {
+                //buscar Imagen para eliminar
+                var imagenTupla=intranetDetalleElementoModalbl.IntranetDetalleElementoModalIdObtenerJson(detelm_id);
+                if(imagenTupla.error.Key.Equals(string.Empty)){
+                    rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + imagenTupla.intranetDetalleElementoModal.detelm_nombre+"."+imagenTupla.intranetDetalleElementoModal.detelm_extension);
+                        if (System.IO.File.Exists(rutaEliminar))
+                    {
+                        System.IO.File.Delete(rutaEliminar);
+                    }
+                }
+                //Eliminar de BD
                 var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarJson(detelm_id);
                 error = intranetDetalleElementoModalTupla.error;
                 if (error.Key.Equals(string.Empty))

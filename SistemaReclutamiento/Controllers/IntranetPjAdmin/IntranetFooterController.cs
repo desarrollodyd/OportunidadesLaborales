@@ -36,7 +36,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 intranetFooter.foot_estado = "A";
-                //inserta imagen, eliminar si hubiera alguna
                 if (file.ContentLength > 0 && file != null)
                 {
                     if (file.ContentLength <= tamanioMaximo)
@@ -70,44 +69,61 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         errormensaje = "La imagen sobrepasa el tamaño maximo permitido (4mb)";
                         return Json(new { mensaje = errormensaje, respuesta = response });
                     }
-                }
-                else {
-                    errormensaje = "Debe seleccionar una Imagen";
-                    return Json(new { mensaje = errormensaje, respuesta = response });
-                }
-                //Eliminar registro de BD
-                var footerEliminadoTupla = intranetFooterbl.IntranetFooterEliminarJson(intranetFooter.foot_posicion);
-                if (footerEliminadoTupla.error.Key.Equals(string.Empty))
-                {
-                    var intranetFooterTupla = intranetFooterbl.IntranetFooterInsertarJson(intranetFooter);
-                    error = intranetFooterTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                     //Eliminar registro de BD
+                    var footerEliminadoTupla = intranetFooterbl.IntranetFooterEliminarJson(intranetFooter.foot_posicion);
+                    if (footerEliminadoTupla.error.Key.Equals(string.Empty))
                     {
-                        if (intranetFooterTupla.idIntranetFooterInsertado > 0)
+                        var intranetFooterTupla = intranetFooterbl.IntranetFooterInsertarJson(intranetFooter);
+                        error = intranetFooterTupla.error;
+                        if (error.Key.Equals(string.Empty))
                         {
-                            var footerTupla = intranetFooterbl.IntranetFooterIdObtenerJson(intranetFooterTupla.idIntranetFooterInsertado);
-                            if (footerTupla.error.Key.Equals(string.Empty)) {
-                                response = true;
-                                errormensaje = "Insertado";
-                                footer = footerTupla.footer;
-                                footer.ruta_anterior = footer.foot_imagen;
-                                footer.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", footer.foot_imagen);
+                            if (intranetFooterTupla.idIntranetFooterInsertado > 0)
+                            {
+                                var footerTupla = intranetFooterbl.IntranetFooterIdObtenerJson(intranetFooterTupla.idIntranetFooterInsertado);
+                                if (footerTupla.error.Key.Equals(string.Empty)) {
+                                    response = true;
+                                    errormensaje = "Insertado";
+                                    footer = footerTupla.footer;
+                                    footer.ruta_anterior = footer.foot_imagen;
+                                    footer.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", footer.foot_imagen);
+                                }
+                            
                             }
-                          
+                            else
+                            {
+                                errormensaje = "No se Pudo Insertar";
+                            }
                         }
                         else
                         {
-                            errormensaje = "No se Pudo Insertar";
+                            errormensaje = error.Value;
                         }
                     }
-                    else
-                    {
-                        errormensaje = error.Value;
+                    else {
+                        errormensaje = "No se Pudo Insertar Imagen";
                     }
                 }
                 else {
-                    errormensaje = "No se Pudo Insertar Imagen";
+                    //Editar Sin Imagen
+                    var footerTupla=intranetFooterbl.IntrantetFooterEditarporPosicionJson(intranetFooter.foot_posicion,intranetFooter.foot_descripcion);
+                    if(footerTupla.error.Key.Equals(string.Empty)){
+
+                        if(footerTupla.IntranetFooterEditado>0){
+                            var footerIdTupla = intranetFooterbl.IntranetFooterIdObtenerJson(footerTupla.IntranetFooterEditado);
+                                if (footerIdTupla.error.Key.Equals(string.Empty)) {
+                                    response = true;
+                                    errormensaje = "Insertado";
+                                    footer = footerIdTupla.footer;
+                                    footer.ruta_anterior = footer.foot_imagen;
+                                    footer.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", footer.foot_imagen);
+                                }
+                        }
+                    }
+                    else{
+                        errormensaje=footerTupla.error.Value;
+                    }
                 }
+               
                 
             }
             catch (Exception ex) {
