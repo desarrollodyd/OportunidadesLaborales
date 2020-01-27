@@ -3951,7 +3951,7 @@ ul.listcomment li a:hover{
 
 
 
-img.slidefeatured{height: 340px;width: 100%;}
+img.slidefeatured{height: 400px;width: 100%;}
 .catf{width:45%;}
 .listcat{width:24%;}
 .topcat{width:30%;}
@@ -4294,7 +4294,7 @@ ul#logos.nav-bar > li.logos:hover {
 .slider {
     margin-bottom: 0;
     /*height: 455px !important;*/
-    height: 347px !important;
+    height: 410px !important;
 }
 
 .catslide ul {

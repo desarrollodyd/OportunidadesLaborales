@@ -23014,3 +23014,17 @@ ol.example li.placeholder {
         position: absolute;
         /** Define arrowhead **/
     }
+
+.table-detail {
+    border-left: 6px solid #81b3db;
+}
+
+.blackheader {
+    background-color: black;
+    color: #fff;
+    border-top: 1px solid #fff;
+}
+
+    .blackheader > button.close {
+        color: #fff;
+    }
