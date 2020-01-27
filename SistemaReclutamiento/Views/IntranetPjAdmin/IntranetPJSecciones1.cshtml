@@ -68,6 +68,40 @@
 
 
 
+<div class="modal fade" tabindex="-1" id="modalFormularioSeccion" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"><span id="tituloModalSeccion">Nueva </span> Sección</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_seccion">
+                        <input type="hidden" name="sec_id" id="sec_id" value="" />
+                        <input type="hidden" name="fk_menu" id="fk_menu" value="" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="sec_estado" id="sec_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn_guardar_seccion btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section js
 {
     <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJSecciones1.js"></script>
