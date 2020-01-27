@@ -31,7 +31,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 listaElementos = ElementoTupla.intranetElementoListaxSeccionID;
                 if (error.Key.Equals(string.Empty))
                 {
-                    mensaje = "Listando Elementoes";
+                    mensaje = "Listando Elementos";
                     respuesta = true;
                 }
                 else

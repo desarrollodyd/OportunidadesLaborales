@@ -75,7 +75,6 @@ var PanelContenido = function () {
         });
     };
 
-
     var _componentes = function () {
         $(document).on('click', '.cabecera-seccion', function () {
             var sec_id = $(this).data("id");
@@ -93,17 +92,168 @@ var PanelContenido = function () {
                             var rows = response.data;
                             var tr = "";
                             $.each(rows, function (index, value) {
-                                tr += '<tr data-id="' + value.elem_id + '"><td>' + value.elem_orden + '</td><td>' + value.tipo_nombre + '</td><td>' + value.elem_titulo + '</td><td>' + value.elem_id + '</td></tr>';
+                                var boton = '<a class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.elem_id + ' href="javascript:void(0);"><i class="ace-icon fa fa-pencil"></i> Editar</a>' +
+                                    ' <a class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.elem_id + ' href="javascript:void(0);"><i class="ace-icon fa fa-trash"></i> Eliminar</a>';
+
+                                var clase_estado = 'success';
+                                var estado = "Activo";
+                                if (value.elem_estado == "I") {
+                                    clase_estado = 'danger';
+                                    estado = "Inactivo";
+                                };
+
+                                var detalle = '<div class="action-buttons">'+
+                                    '<a data-id="' + value.elem_id + '" href="javascript:void(0);" class="blue bigger-140 btn_detalle_elemento show-details-btn" title = "Detalle">'+
+                                        '<i class="ace-icon fa fa-angle-double-up"></i>'+
+                                        '<span class="sr-only">Detalle</span>'+
+									'</a>'+
+                                '</div>';
+                                tr += '<tr data-id="' + value.elem_id + '" data-orden="' + value.elem_orden + '"><td class="center">' + detalle+'</td><td>' + value.tipo_nombre + '</td><td>' + value.elem_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado +'</span></td><td>' + boton + '</td></tr>';
                             });
-                            tr = '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 6%;">Orden</th><th style="width: 18%;">Tipo</th><th>Titulo</th><th>Acciones</th></tr></thead><tbody>'+tr+'</tbody></table>';
+
+                            
+
+                            tr = '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>'+tr+'</tbody></table>';
                             $("#seccion_lista_elemento_" + sec_id).html(tr);
                         }
                     })
                 }
             }
-            
         });
-       
+
+        $(document).on('click', '.btn_detalle_elemento', function (e) {
+            e.preventDefault();
+            var elemento_id = $(this).data("id");
+            var act_tr = $(this).closest("tr");
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+            if ($('#tr_elemento_contenido_' + elemento_id).hasClass("open")) {
+                $('#tr_elemento_contenido_' + elemento_id).removeClass("open");
+            }
+            else {
+                $('#tr_elemento_contenido_' + elemento_id).remove();
+                $('<tr id="tr_elemento_contenido_' + elemento_id + '" class="detail-row open"><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">Cargando Data ...</div></td></tr>').insertAfter(act_tr);
+
+                var dataForm = {
+                    elem_id: elemento_id
+                };
+                responseSimple({
+                    url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        var rows = response.data;
+                        var tr = "";
+                        $.each(rows, function (index, value) {
+                            var boton = '<a class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.detel_id + ' href="javascript:void(0);"><i class="ace-icon fa fa-pencil"></i> Editar</a>' +
+                                ' <a class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.detel_id + ' href="javascript:void(0);"><i class="ace-icon fa fa-trash"></i> Eliminar</a>';
+
+                            var clase_estado = 'success';
+                            var estado = "Activo";
+                            if (value.detel_estado == "I") {
+                                clase_estado = 'danger';
+                                estado = "Inactivo";
+                            };
+                            var posicion = '';
+                            if (value.detel_posicion == 'L') {
+                                posicion = 'Izquierda';
+                            }
+                            else if (value.detel_posicion == 'C') {
+                                posicion = 'Centro';
+                            }
+                            else if (value.detel_posicion == 'R') {
+                                posicion = 'Derecha';
+                            }
+                            else {
+                                posicion = '';
+                            };
+
+                            var detalle = '<div class="action-buttons">' +
+                                '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento+'" href="javascript:void(0);" class="blue bigger-140 btn_detalle_elemento_modal show-details-btn" title = "Detalle">' +
+                                '<i class="ace-icon fa fa-angle-double-up"></i>' +
+                                '<span class="sr-only">Detalle</span>' +
+                                '</a>' +
+                                '</div>';
+
+                            tr += '<tr  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden + '"><td class="center">' + detalle+'</td><td>' + value.detel_descripcion + '</td><td>' + value.detel_nombre + '.' + value.detel_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                        });
+
+                        var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
+                            '<div class="col-md-2 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento" data-id="' + elemento_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento"> <i class="fa fa-file"></i> Nuevo</button></div>' +
+                            '</div>';
+
+
+                        tr = boton_nuevo +'<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Descripcion</th><th>Nombre</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
+                        if (rows.length > 0) {
+                            $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
+                        }
+                        else {
+                            $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td>');
+                        }
+                        
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.btn_detalle_elemento_modal', function (e) {
+            e.preventDefault();
+            var detalle_elemento_id = $(this).data("id");
+            var fk_seccion_elemento = $(this).data("seccion");
+            var act_tr = $(this).closest("tr");
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+            if ($('#tr_elemento_contenido_modal_' + detalle_elemento_id).hasClass("open")) {
+                $('#tr_elemento_contenido_modal_' + detalle_elemento_id).removeClass("open");
+            }
+            else {
+                $('#tr_elemento_contenido_modal_' + detalle_elemento_id).remove();
+                $('<tr id="tr_elemento_contenido_modal_' + detalle_elemento_id + '" class="detail-row open"><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">Cargando Data ...</div></td></tr>').insertAfter(act_tr);
+
+                var dataForm = {
+                    fk_seccion_elemento: fk_seccion_elemento
+                };
+
+                responseSimple({
+                    url: "IntranetElementoModal/IntranetElementoModalListarxSeccionElementoJson",
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        var rows = response.data;
+                        var tr = "";
+                        $.each(rows, function (index, value) {
+                            var boton = '<a class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.emod_id + ' href="javascript:void(0);"><i class="ace-icon fa fa-pencil"></i> Editar</a>' +
+                                ' <a class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.emod_id + ' href="javascript:void(0);"><i class="ace-icon fa fa-trash"></i> Eliminar</a>';
+
+                            var clase_estado = 'success';
+                            var estado = "Activo";
+                            if (value.emod_estado == "I") {
+                                clase_estado = 'danger';
+                                estado = "Inactivo";
+                            };
+
+                            var detalle = '<div class="action-buttons">' +
+                                '<a data-id="' + value.emod_id + '" href="javascript:void(0);" class="blue bigger-140 btn_elemento_modal show-details-btn" title = "Detalle">' +
+                                '<i class="ace-icon fa fa-angle-double-up"></i>' +
+                                '<span class="sr-only">Detalle</span>' +
+                                '</a>' +
+                                '</div>';
+                            tr += '<tr data-id="' + value.emod_id + '" data-orden="' + value.emod_orden + '"><td class="center">' + detalle + '</td><td>' + value.tipo_nombre + '</td><td>' + value.emod_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                        });
+
+                        var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
+                            '<div class="col-md-2 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_elemento_modal" data-seccion="' + fk_seccion_elemento+'" data-id="' + detalle_elemento_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento"> <i class="fa fa-file"></i> Nuevo</button></div>' +
+                            '</div>';
+
+                        tr = boton_nuevo + '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
+                        if (rows.length > 0) {
+                            $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
+                        }
+                        else {
+                            $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td>');
+                        }
+                    }
+                });
+            }
+        });
 
     };
 
