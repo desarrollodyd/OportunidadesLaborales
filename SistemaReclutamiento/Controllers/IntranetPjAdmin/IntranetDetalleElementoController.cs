@@ -16,6 +16,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
     {
         IntranetDetalleElementoModel intranetDetalleElementonbl = new IntranetDetalleElementoModel();
         IntranetSeccionElementoModel intranetSeccionElementobl = new IntranetSeccionElementoModel();
+        IntranetElementoModalModel intanetElementoModalbl = new IntranetElementoModalModel();
+        IntranetDetalleElementoModalModel intranetDetalleElementoModalbl = new IntranetDetalleElementoModalModel();
         claseError error = new claseError();
         string pathArchivosIntranet= ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         RutaImagenes rutaImagenes = new RutaImagenes();
@@ -380,20 +382,60 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
+            //Listas para Eliminar
+            List<IntranetDetalleElementoModalEntidad> listaDetalleElementoModal = new List<IntranetDetalleElementoModalEntidad>();
+            List<IntranetElementoModalEntidad> listaElementoModal = new List<IntranetElementoModalEntidad>();
+            IntranetSeccionElementoEntidad seccionElemento = new IntranetSeccionElementoEntidad();
+            string rutaEliminar = "";
             try
             {
-                var ImagenTupla = intranetDetalleElementonbl.IntranetDetalleElementoEliminarJson(detel_id);
-                error = ImagenTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    respuestaConsulta = ImagenTupla.intranetDetalleElementoEliminado;
-                    errormensaje = "Imagen Eliminada";
+                var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(detel_id);
+                if (detalleElementoTupla.error.Key.Equals(string.Empty)) {
+                    int fk_seccion_elemento = detalleElementoTupla.intranetDetalleElemento.fk_seccion_elemento;
+                    if ( fk_seccion_elemento> 0) {
+                        //Buscar todos los elementos modales que tengan ese fk_seccion elemento
+                        var listaElementosTupla = intanetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(fk_seccion_elemento);
+                        if (listaElementosTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaElementoModal = listaElementosTupla.intranetElementoModalListaxseccionelementoID;
+                            if (listaElementoModal.Count > 0) {
+                                //Buscar todos los detalles de Elemento Modal por Elemento modal
+                                foreach (var m in listaElementoModal) {
+                                    var detalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(m.emod_id);
+                                    if (detalleElementoModalTupla.error.Key.Equals(string.Empty)) {
+                                        listaDetalleElementoModal = detalleElementoModalTupla.intranetDetalleElementoModalListaxElementoID;
+                                        if (listaDetalleElementoModal.Count > 0) {
+                                            foreach (var k in listaDetalleElementoModal) {
+                                                //Eliminar imagenes si las hubiera
+                                                if (k.detelm_extension != "") {
+                                                    rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + k.detelm_nombre + "." + k.detelm_extension);
+                                                    if (System.IO.File.Exists(rutaEliminar))
+                                                    {
+                                                        System.IO.File.Delete(rutaEliminar);
+                                                    }
+                                                }
+                                                //
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-                else
-                {
-                    errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
-                }
+                
+                //var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoEliminarJson(detel_id);
+                //error = detalleElementoTupla.error;
+                //if (error.Key.Equals(string.Empty))
+                //{
+                //    respuestaConsulta = detalleElementoTupla.intranetDetalleElementoEliminado;
+                //    errormensaje = "Imagen Eliminada";
+                //}
+                //else
+                //{
+                //    errormensaje = "Error, no se Puede Eliminar";
+                //    mensajeConsola = error.Value;
+                //}
             }
             catch (Exception exp)
             {
@@ -432,6 +474,35 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 mensaje = exp.Message + ",Llame Administrador";
             }
             return Json(new { data = detalleElemento, respuesta = respuesta, mensaje = mensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult IntranetDetalleElementoEditarOrdenJson(IntranetDetalleElementoEntidad[] arrayDetElemento)
+        {
+            IntranetDetalleElementoEntidad intranetDetElemento = new IntranetDetalleElementoEntidad();
+            claseError error = new claseError();
+            bool response = false;
+            string errormensaje = "";
+            int tamanio = arrayDetElemento.Length;
+            foreach (var m in arrayDetElemento)
+            {
+                intranetDetElemento.detel_id = m.detel_id;
+                intranetDetElemento.detel_id = m.detel_id;
+                var reordenadoTupla = intranetDetalleElementonbl.IntranetDetalleElementoEditarOrdenJson(intranetDetElemento);
+                error = reordenadoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = reordenadoTupla.intranetDetElementoReordenado;
+                    errormensaje = "Editado";
+                }
+                else
+                {
+                    response = false;
+                    errormensaje = "No se Pudo Editar";
+                    return Json(new { respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
+                }
+            }
+            return Json(new { tamaniodetelemento = tamanio, respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
         }
     }
 }

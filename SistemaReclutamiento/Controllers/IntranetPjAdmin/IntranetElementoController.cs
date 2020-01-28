@@ -173,5 +173,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta = response, mensaje = errormensaje });
         }
+        [HttpPost]
+        public ActionResult IntranetElementoEditarOrdenJson(IntranetElementoEntidad[] arrayElementos)
+        {
+            IntranetElementoEntidad intranetElemento = new IntranetElementoEntidad();
+            claseError error = new claseError();
+            bool response = false;
+            string errormensaje = "";
+            int tamanio = arrayElementos.Length;
+            foreach (var m in arrayElementos)
+            {
+                intranetElemento.elem_id = m.elem_id;
+                intranetElemento.elem_orden = m.elem_orden;
+                var reordenadoTupla = intranetElementobl.IntranetElementoEditarOrdenJson(intranetElemento);
+                error = reordenadoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = reordenadoTupla.intranetElementoReordenado;
+                    errormensaje = "Editado";
+                }
+                else
+                {
+                    response = false;
+                    errormensaje = "No se Pudo Editar";
+                    return Json(new { respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
+                }
+            }
+            return Json(new { tamanioelemento = tamanio, respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
+        }
     }
 }
