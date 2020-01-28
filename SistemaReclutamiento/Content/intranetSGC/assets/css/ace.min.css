@@ -23028,3 +23028,25 @@ ol.example li.placeholder {
     .blackheader > button.close {
         color: #fff;
     }
+
+
+
+body.dragging, body.dragging * {
+    cursor: move !important;
+}
+
+.dragged {
+    position: absolute;
+    opacity: 0.5;
+    z-index: 2000;
+}
+
+div.panel-default div.placeholder {
+    position: relative;
+    /** More li styles **/
+}
+
+    div.panel-default div.placeholder:before {
+        position: absolute;
+        /** Define arrowhead **/
+    }
