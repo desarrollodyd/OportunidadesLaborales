@@ -316,5 +316,31 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
 
             return (intranetDetalleElementoModalEliminado: response, error: error);
         }
+        public (bool intranetDetElementoModalReordenado, claseError error) IntranetDetalleElementoModalEditarOrdenJson(IntranetDetalleElementoModalEntidad intranetDetalleElementoModal)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.int_detalle_elemento_modal
+	                            SET detelm_orden=@p0
+	                            WHERE detelm_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_orden));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetDetElementoModalReordenado: response, error: error);
+        }
     }
 }

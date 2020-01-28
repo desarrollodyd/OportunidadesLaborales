@@ -307,5 +307,31 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
             }
             return (intranetDetalleElementoTotal: intranetDetalleElementoTotal, error: error);
         }
+        public (bool intranetDetElementoReordenado, claseError error) IntranetDetalleElementoEditarOrdenJson(IntranetDetalleElementoEntidad intranetDetalleElemento)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.int_detalle_elemento
+	                            SET detel_orden=@p0
+	                            WHERE detel_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_orden));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetDetElementoReordenado: response, error: error);
+        }
     }
 }

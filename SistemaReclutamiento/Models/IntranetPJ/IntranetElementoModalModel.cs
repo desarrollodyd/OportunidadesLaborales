@@ -289,5 +289,31 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             return (intranetElementoModalTotal: intranetElementoModalTotal, error: error);
         }
+        public (bool intranetElemModalReordenado, claseError error) IntranetElementoModalEditarOrdenJson(IntranetElementoModalEntidad intranetElementoModal)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.int_elemento_modal
+	                            SET emod_orden=@p0
+	                            WHERE emod_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_orden));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetElementoModal.emod_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetElemModalReordenado: response, error: error);
+        }
     }
 }
