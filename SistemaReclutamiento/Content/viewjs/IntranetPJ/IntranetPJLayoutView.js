@@ -137,6 +137,9 @@
                 //listado secciones
                 if (secciones.length > 0) {
                     //console.log(secciones)
+                    if(menu_id==0){
+                        return false;
+                    }
                     $("#content").html("");
                     var appendSeccion = "";
                     slider = false;

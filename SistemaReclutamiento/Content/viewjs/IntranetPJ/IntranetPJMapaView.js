@@ -26,21 +26,27 @@
         var washingtonWebMercator;
         if (puntos.length > 0) {
             $.each(puntos, function (index, value) {
-                washingtonWebMercator = [parseFloat(value.loc_longitud), parseFloat(value.loc_latitud)];
-                $("#seccion-mapa").append('<div id="marker' + index + '" title="Marker"><img src="/Content/intranet/images/png/marker.png" /></div>');
-                $("#seccion-mapa").append('<div class="overlay" id="tittle' + index + '"><span class="">' + value.loc_nombre + '</span></div>');
-                var marker2 = new ol.Overlay({
-                    position: washingtonWebMercator,
-                    positioning: 'center-center',
-                    element: document.getElementById('marker' + index),
-                    stopEvent: false
-                });
-                map.addOverlay(marker2);
-                var tittle = new ol.Overlay({
-                    position: washingtonWebMercator,
-                    element: document.getElementById('tittle' + index)
-                });
-                map.addOverlay(tittle);
+                if(value.loc_latitud==0||value.loc_longitud==0){
+                    console.log("tienen un cero");
+                }
+                else{
+                    washingtonWebMercator = [parseFloat(value.loc_longitud), parseFloat(value.loc_latitud)];
+                    $("#seccion-mapa").append('<div id="marker' + index + '" title="Marker"><img src="/Content/intranet/images/png/marker.png" /></div>');
+                    $("#seccion-mapa").append('<div class="overlay" id="tittle' + index + '"><span class="">' + value.loc_nombre + '</span></div>');
+                    var marker2 = new ol.Overlay({
+                        position: washingtonWebMercator,
+                        positioning: 'center-center',
+                        element: document.getElementById('marker' + index),
+                        stopEvent: false
+                    });
+                    map.addOverlay(marker2);
+                    var tittle = new ol.Overlay({
+                        position: washingtonWebMercator,
+                        element: document.getElementById('tittle' + index)
+                    });
+                    map.addOverlay(tittle);
+                }
+                
             })
         }
     
@@ -54,6 +60,7 @@
             }),
             refresh: false,
             callBackSuccess: function (response) {
+                
                 $("#resultados").html("");
                 var puntos = response.data;
                 _crearMapa(puntos);
@@ -107,7 +114,9 @@
         $(document).on("click", ".cambiarCentro", function () {
             var latitud = $(this).data("latitud");
             var longitud = $(this).data("longitud");
-          
+            if(latitud==0||longitud==0){
+                return false;
+            }
             map.setView(new ol.View({
                 projection: "EPSG:4326",
                 //center: [parseFloat(response.data[0].loc_longitud), parseFloat(response.data[0].loc_latitud)],

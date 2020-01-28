@@ -10,6 +10,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using RestSharp;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Globalization;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
@@ -35,6 +39,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
 
         RutaImagenes rutaImagenes = new RutaImagenes();
         string PathActividadesIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
+
+        //API key
+        public readonly string ApiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjI3ODcxZGNlMWY2YjExMWU3ODBkNGI3ZGM4OTBkMWUzNjMwZjA2MjcwYWZiMDM1MzA2ZjVkOGY1NjBkZTJhZTE1NjE3ZDZiOWMwYTc1MGNjIn0.eyJhdWQiOiIxIiwianRpIjoiMjc4NzFkY2UxZjZiMTExZTc4MGQ0YjdkYzg5MGQxZTM2MzBmMDYyNzBhZmIwMzUzMDZmNWQ4ZjU2MGRlMmFlMTU2MTdkNmI5YzBhNzUwY2MiLCJpYXQiOjE1NDkzMDk0MDYsIm5iZiI6MTU0OTMwOTQwNiwiZXhwIjoxNTgwODQ1NDA2LCJzdWIiOiIyIiwic2NvcGVzIjpbXX0.NXx4UxwRW6adNjIW4V5SZ_M9c4J-MBsDWIkzh9FAUNq5DtayTCds3AmYq4CM8kfz7b-JFfnsdtph-twMplJCn4cVdNXmq2ieJ77OX5Kt9bUN0yCSpzaKiuXsDN4sugmJD9DtD9fdPAD-4O7qXmHPeuCHE4dio5bPF2SVSRnFgC9ZPdu66pRaQ-TNT3FyYzErIaq2zXAZomkQ-c2A4v4-IQqs9tuEuxM7xoPanNlQIBD0lzHk-vPRomBrju4ZKiGbDqNVURqJQoaN0g98pxXFSAfblGg0KZ-9JXmHEN_Td0iPmfZpPNi-FZNOIUm2SMIBzW2Ay4AUw_RB0Usb9Jjsh5VxHM80bHaMUC8glcl1HmWq3QqKdwP3q3Nias5YVHqz1IoD_0nu5Pv6UfnyR8r0ujqY0brQX4xxfz1r4RvPhv81LzRReDXXHmpT8tLObGiP4f7hzIEDdau0RkokVMNnVL0xsGBGUTNoRwksCVsiTGTNAx9nJPbRq-TKaztB8WmgwiJDgSbgBf5zTWQNRzSzKubrDsnvjVaanF_iS3xGacHO1INSwqSJvxwE--n6WkoekquPfbeyQA0XizaqT89W3-Rq60ebcLunT7JXGLXL7KpnSLrC6_8BxR87uejAEnkJG-O3mpyW6HSSxMzUQC8TKxj0RD2Llg9sDlBzhDwKwU8";
         public ActionResult Index(int? menu)
         {
             claseError error = new claseError();
@@ -325,16 +332,49 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
 
                 respuesta = true;
                 mensaje = "Listando Data";
-                //listando Cantidad de Salas y Apuestas Deportivas
+                //listando Cantidad de Salas
                 var cantidadTupla = intranetCPJLocalbl.IntranetCPJLocalListarCantidadLocalesJson();
                 error = cantidadTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
                     cantidadSalas = cantidadTupla.intranetLocalCantidadSalas;
-                    cantidadApuestasDeportivas = cantidadTupla.intranetLocalCantidadApuestasDeportivas;
+                    //cantidadApuestasDeportivas = cantidadTupla.intranetLocalCantidadApuestasDeportivas;
                 }
                 else {
                     mensajeerrorBD += "Error al Listar Cantidad de Salas y Apuestas Deportivas" + error.Value+"\n";
+                }
+                //Listando Cantidad de Apuestas Deportivas
+                try
+                {
+                    var client = new RestClient("https://api.apuestatotal.com/v2/locales");
+
+                    var request = new RestRequest(Method.GET);
+                    request.AddHeader("Authorization", "Bearer " + ApiKey);
+                    request.AddHeader("cache-control", "no-cache");
+                    request.AddHeader("Connection", "keep-alive");
+
+                    IRestResponse response = client.Execute(request);
+                    JObject json = JObject.Parse(response.Content);
+                    //var result = json["result"];
+                    dynamic jsonObj = JsonConvert.DeserializeObject(response.Content);
+                    var terminalesApi = new List<IntranetPJTerminalEntidad>();
+                    cantidadApuestasDeportivas = Convert.ToInt32(jsonObj.result.Count);
+                    //foreach (var obj in jsonObj.result)
+                    //{
+                    //    var terminal = new IntranetPJTerminalEntidad
+                    //    {
+                    //        Descripcion = obj.nombre,
+                    //        Latitud = obj.latitud,
+                    //        Longitud = obj.longitud,
+                    //        CodigoTerminal = obj.cc_id,
+                    //        EsActivo = true
+                    //    };
+                    //    terminalesApi.Add(terminal);
+                    //}
+
+                }
+                catch (Exception ex) {
+
                 }
             }
             catch (Exception ex) {
@@ -404,18 +444,77 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             bool response = false;
             string errormensaje = "";
             try {
-                var listaTupla = intranetCPJLocalbl.IntranetCPJLocalListarporNombreJson(_tipo,_nombre);
-                error = listaTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (tipo == "ApuestasDeportivas")
                 {
-                    intranetLocalLista = listaTupla.intranetCPJLocalesLista;
+                    var client = new RestClient("https://api.apuestatotal.com/v2/locales");
+
+                    var request = new RestRequest(Method.GET);
+                    request.AddHeader("Authorization", "Bearer " + ApiKey);
+                    request.AddHeader("cache-control", "no-cache");
+                    request.AddHeader("Connection", "keep-alive");
+
+                    IRestResponse responseAPI = client.Execute(request);
+                    JObject json = JObject.Parse(responseAPI.Content);
+                    //var result = json["result"];
+                    dynamic jsonObj = JsonConvert.DeserializeObject(responseAPI.Content);
+                    string latitud = "";
+                    string longitud = "";
+                    CultureInfo culture = new CultureInfo("en-US");
+                    //var terminalesApi = new List<IntranetPJTerminalEntidad>();
+                    string patternLatitud = @"^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$";
+                    string patternLongitud = @"^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$";
+                    decimal latitud_double = 0;
+                    decimal longitud_double = 0;
+                    foreach (var obj in jsonObj.result)
+                    {
+                        latitud = Convert.ToString(obj.latitud);
+                        //latitud = latitud.Replace(",", "");
+                        longitud = Convert.ToString(obj.longitud);
+                        //longitud = longitud.Replace(",", "");
+
+                        if (System.Text.RegularExpressions.Regex.IsMatch(latitud, patternLatitud))
+                        {
+                            latitud_double = Convert.ToDecimal((latitud == "" ? "0" : latitud), culture);
+                        }
+                        else {
+                            latitud_double = 0;
+                        }
+                        if (System.Text.RegularExpressions.Regex.IsMatch(longitud, patternLongitud))
+                        {
+                            longitud_double = Convert.ToDecimal((longitud == "" ? "0" : longitud), culture);
+                        }
+                        else {
+                            longitud_double = 0;
+                        }
+                        
+                        var terminal = new IntranetCPJLocalEntidad
+                        {
+                            loc_nombre = ManejoNulos.ManageNullStr(obj.nombre),
+                            loc_latitud =ManejoNulos.ManageNullDouble(latitud_double),
+                            loc_longitud = ManejoNulos.ManageNullDouble(longitud_double),
+                            loc_direccion = ManejoNulos.ManageNullStr(obj.direccion),
+                        };
+                        intranetLocalLista.Add(terminal);
+                    }
                     response = true;
-                    errormensaje = "Listando Locales";
+                    errormensaje = "Listando Apuestas Deportivas";
                 }
                 else {
-                    response = false;
-                    errormensaje = error.Value;
+                    var listaTupla = intranetCPJLocalbl.IntranetCPJLocalListarporNombreJson(_tipo, _nombre);
+                    error = listaTupla.error;
+                    if (error.Key.Equals(string.Empty))
+                    {
+                        intranetLocalLista = listaTupla.intranetCPJLocalesLista;
+                        response = true;
+                        errormensaje = "Listando Locales";
+                    }
+                    else
+                    {
+                        response = false;
+                        errormensaje = error.Value;
+                    }
                 }
+                
             }
             catch (Exception ex) {
                 errormensaje = "No se Pudieron Listar los Locales"+ ex.Message;
