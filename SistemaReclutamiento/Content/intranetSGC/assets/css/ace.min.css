@@ -17166,7 +17166,7 @@ div.dataTables_processing {
 }
 
 .select2-container--default.select2-container--focus .select2-selection {
-    border-color: #4492C9
+    border-color: #F59942
 }
 
 .select2-container--open .select2-dropdown {
@@ -23031,22 +23031,9 @@ ol.example li.placeholder {
 
 
 
-body.dragging, body.dragging * {
-    cursor: move !important;
+div.box.placeholder {
+    border: 2px dashed #CDD8E3;
+    height: 38px;
+    margin-top:2px;
+    margin-bottom:2px;
 }
-
-.dragged {
-    position: absolute;
-    opacity: 0.5;
-    z-index: 2000;
-}
-
-div.panel-default div.placeholder {
-    position: relative;
-    /** More li styles **/
-}
-
-    div.panel-default div.placeholder:before {
-        position: absolute;
-        /** Define arrowhead **/
-    }

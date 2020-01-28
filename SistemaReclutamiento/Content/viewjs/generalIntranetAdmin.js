@@ -439,9 +439,7 @@ function selectResponse(obj) {
         success: function (response) {
             var datos = response.data;
             var mensaje = response.mensaje;
-            if(opciones.closeMessages){
-                CloseMessages();
-            }
+            
             $("#" + opciones.select).html("");
             $("#" + opciones.select).append('<option value="">' + opciones.placeholder + '</option>');
             if (datos.length > 0) {
@@ -466,7 +464,7 @@ function selectResponse(obj) {
                 });
                 $("#" + opciones.select).removeAttr("disabled");
                 if (opciones.select2) {
-                    $("#" + opciones.select).select2();
+                    $("#" + opciones.select).select2({"width":"100%"});
                 }
 
             } else {
@@ -481,6 +479,9 @@ function selectResponse(obj) {
                     text: mensaje,
                     type: "success"
                 });
+            }
+            if (opciones.closeMessages) {
+                CloseMessages();
             }
         },
         complete: function () {
