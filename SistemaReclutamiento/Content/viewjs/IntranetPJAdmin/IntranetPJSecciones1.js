@@ -36,18 +36,47 @@ var PanelContenido = function () {
             placeholder: 'box placeholder',
             stop: function (event, ui) {
                 let lista_orden = [];
-                var lista = $('#tbody_elemento_' + seccion_id + ' tr')
+                var lista = $('.tbody_elemento_' + seccion_id + ' tr.sec_' + seccion_id);
                 $.each(lista, function (index, value) {
                     lista_orden.push({
-                        sec_id: $(this).data("id"),
-                        sec_orden: (index + 1)
+                        elem_id: $(this).data("id"),
+                        elem_orden: (index + 1)
                     });
-                    $(this).find("span.sec_orden").text((index + 1));
+                    $(this).find("span.elem_orden").text((index + 1));
                 });
                 console.log(lista_orden);
                 responseSimple({
-                    url: "IntranetSeccion/IntranetSeccionEditarOrdenJson",
-                    data: JSON.stringify({ arraySecciones: lista_orden }),
+                    url: "IntranetElemento/IntranetElementoEditarOrdenJson",
+                    data: JSON.stringify({ arrayElementos: lista_orden }),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            //PanelContenido.init_ListarSecciones(menu_id);
+                        }
+                    }
+                });
+            }
+        });
+    };
+
+    var _sort_detalle_elemento = function (seccion_id) {
+        $('.tbody_detalle_elemento_' + seccion_id).sortable({
+            cursor: 'move',
+            placeholder: 'box placeholder',
+            stop: function (event, ui) {
+                let lista_orden = [];
+                var lista = $('.tbody_detalle_elemento_' + seccion_id + ' tr.sec_' + seccion_id);
+                $.each(lista, function (index, value) {
+                    lista_orden.push({
+                        elem_id: $(this).data("id"),
+                        elem_orden: (index + 1)
+                    });
+                    $(this).find("span.elem_orden").text((index + 1));
+                });
+                console.log(lista_orden);
+                responseSimple({
+                    url: "IntranetElemento/IntranetElementoEditarOrdenJson",
+                    data: JSON.stringify({ arrayElementos: lista_orden }),
                     refresh: false,
                     callBackSuccess: function (response) {
                         if (response.respuesta) {
@@ -237,7 +266,7 @@ var PanelContenido = function () {
                         '<span class="sr-only">Detalle</span>' +
                         '</a>' +
                         '</div>';
-                    tr += '<tr data-id="' + value.elem_id + '" data-orden="' + value.elem_orden + '"><td class="center">' + detalle + '</td><td><span class="elem_orden label label-default label-white middle">'+(index+1)+'</span> ' + value.tipo_nombre + '</td><td>' + value.elem_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                    tr += '<tr data-id="' + value.elem_id + '" data-orden="' + value.elem_orden + '" class="sec_' + sec_id+'"><td class="center">' + detalle + '</td><td><span class="elem_orden label label-default label-white middle">'+(index+1)+'</span> ' + value.tipo_nombre + '</td><td>' + value.elem_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
                 if (rows.length == 0) {
                     tr = '<tr><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr>';
@@ -248,6 +277,70 @@ var PanelContenido = function () {
                 $("#seccion_lista_elemento_" + sec_id).html(tr);
             }
         })
+    };
+
+    var _ListarDetalleElementos = function (elemento_id) {
+        var dataForm = {
+            elem_id: elemento_id
+        };
+        responseSimple({
+            url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
+            data: JSON.stringify(dataForm),
+            refresh: false,
+            callBackSuccess: function (response) {
+                var rows = response.data;
+                var tr = "";
+                $.each(rows, function (index, value) {
+                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.detel_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.detel_id + '><i class="ace-icon fa fa-trash"></i> </button>';
+
+                    var clase_estado = 'success';
+                    var estado = "Activo";
+                    if (value.detel_estado == "I") {
+                        clase_estado = 'danger';
+                        estado = "Inactivo";
+                    };
+                    var posicion = '';
+                    if (value.detel_posicion == 'L') {
+                        posicion = 'Izquierda';
+                    }
+                    else if (value.detel_posicion == 'C') {
+                        posicion = 'Centro';
+                    }
+                    else if (value.detel_posicion == 'R') {
+                        posicion = 'Derecha';
+                    }
+                    else {
+                        posicion = '';
+                    };
+
+                    var detalle = '<div class="action-buttons">' +
+                        '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento + '" href="javascript:void(0);" class="blue bigger-140 btn_elemento_modal show-details-btn" title = "Detalle">' +
+                        '<i class="ace-icon fa fa-angle-double-up"></i>' +
+                        '<span class="sr-only">Detalle</span>' +
+                        '</a>' +
+                        '</div>';
+
+                    tr += '<tr class="elem_' + elemento_id+'"  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden + '"><td class="center">' + detalle + '</td><td><span class="detelem_orden label label-white middle label-default">'+(index+1)+'</span> ' + value.detel_descripcion + '</td><td>' + value.detel_nombre + '.' + value.detel_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                });
+
+                var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
+                    '<div class="col-md-3 col-md-offset-6 col-sm-2 col-xs-12"><button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_ordenar_detalle_elemento" data-id="' + elemento_id + '" data-rel="tooltip" title="Ordenar Detalle Elemento"><i class="ace-icon glyphicon glyphicon-list-alt"></i> Ordenar </button></div>' +
+                    '<div class="col-md-3 col-sm-5 col-xs-12"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento" data-id="' + elemento_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento"><i class="ace-icon fa fa-file"></i> Nuevo Detalle Elemento </button></div>' +
+                    
+                    '</div>';
+
+                
+                if (rows.length > 0) {
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_' + elemento_id+'">' + tr + '</tbody></table>';
+                    $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + boton_nuevo + '' + tr + '</div></div></td>');
+                }
+                else {
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
+                    $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
+                }
+            }
+        });
     };
 
     var _ListarElementosModal = function (fk_seccion_elemento, detalle_elemento_id) {
@@ -326,66 +419,7 @@ var PanelContenido = function () {
             else {
                 $('#tr_elemento_contenido_' + elemento_id).remove();
                 $('<tr id="tr_elemento_contenido_' + elemento_id + '" class="detail-row open"><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">Cargando Data ...</div></td></tr>').insertAfter(act_tr);
-
-                var dataForm = {
-                    elem_id: elemento_id
-                };
-                responseSimple({
-                    url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        var rows = response.data;
-                        var tr = "";
-                        $.each(rows, function (index, value) {
-                            var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.detel_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
-                                ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.detel_id + '><i class="ace-icon fa fa-trash"></i> </button>';
-
-                            var clase_estado = 'success';
-                            var estado = "Activo";
-                            if (value.detel_estado == "I") {
-                                clase_estado = 'danger';
-                                estado = "Inactivo";
-                            };
-                            var posicion = '';
-                            if (value.detel_posicion == 'L') {
-                                posicion = 'Izquierda';
-                            }
-                            else if (value.detel_posicion == 'C') {
-                                posicion = 'Centro';
-                            }
-                            else if (value.detel_posicion == 'R') {
-                                posicion = 'Derecha';
-                            }
-                            else {
-                                posicion = '';
-                            };
-
-                            var detalle = '<div class="action-buttons">' +
-                                '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento+'" href="javascript:void(0);" class="blue bigger-140 btn_elemento_modal show-details-btn" title = "Detalle">' +
-                                '<i class="ace-icon fa fa-angle-double-up"></i>' +
-                                '<span class="sr-only">Detalle</span>' +
-                                '</a>' +
-                                '</div>';
-
-                            tr += '<tr  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden + '"><td class="center">' + detalle+'</td><td>' + value.detel_descripcion + '</td><td>' + value.detel_nombre + '.' + value.detel_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
-                        });
-
-                        var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
-                            '<div class="col-md-3 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento" data-id="' + elemento_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento"> <i class="fa fa-file"></i> Nuevo Detalle Elemento</button></div>' +
-                            '</div>';
-
-
-                        tr = boton_nuevo +'<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
-                        if (rows.length > 0) {
-                            $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
-                        }
-                        else {
-                            $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td>');
-                        }
-                        
-                    }
-                });
+                PanelContenido.init_ListarDetalleElementos(elemento_id);
             }
         });
 
@@ -774,6 +808,9 @@ var PanelContenido = function () {
         },
         init_ListarElementos: function (seccion_id) {
             _ListarElementos(seccion_id);
+        },
+        init_ListarDetalleElementos: function (elemento_id) {
+            _ListarDetalleElementos(elemento_id);
         },
         init_ListarElementosModal: function (fk_seccion_elemento, detalle_elemento_id) {
             _ListarElementosModal(fk_seccion_elemento, detalle_elemento_id);
