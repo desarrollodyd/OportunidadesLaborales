@@ -131,10 +131,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-xs-12">
+                        <div class="col-md-12 col-xs-12 titulo_elemento">
                             <div class="form-group">
-                                <label>Titulo</label>
-                                <input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Titulo" />
+                                <label id="parrafo_elemento">Texto</label>
+                                <div id="contenido_input">
+                                    <input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Texto" />
+                                  
+                                </div>
+                                
                             </div>
                         </div>
 
@@ -152,6 +156,108 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn_guardar_elemento btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="modalFormularioDetalleElemento" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"><span id="tituloModalDetalleElemento"></span> Detalle Elemento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_detalle_elemento" method="post">
+                        <input type="hidden" name="fk_elemento" id="fk_elemento" value="" />
+                        <input type="hidden" name="detel_id" id="detel_id" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento" value="" />
+                        <input type="hidden" name="detel_orden" id="detel_orden" value="" />
+                        <input type="hidden" name="detel_nombre_imagen" id="detel_nombre_imagen" value="">
+
+                        <div class="col-md-12 col-xs-12 detel-opcion">
+                            <div class="form-group">
+                                <label>Imagen o Boton con Texto</label>
+                                <select id="cboOpcion" name="opcion" class="form-control">
+                                    <option value="1">Boton con Texto</option>
+                                    <option value="2">Imagen</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 detel-descripcion">
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <input type="text" name="detel_descripcion" id="detel_descripcion" class="form-control" placeholder="Nombre" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 detel-imagen">
+                            <div class="form-group">
+                                <label>Imagen</label>
+                                <label class="btn btn-warning" for="detel_nombre">
+                                    <span id="spandetel"><i class="fa fa-upload"></i>  Subir Icono</span>
+                                    <input id="detel_nombre" name="detel_nombre" type="file" class="form-control" style="display:none;" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="display:none" id="divdetel">
+                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
+                                <label class="col-md-12 col-xs-12">Imagen Actual</label>
+                                <a id="frm_detel" href="#" class="atch-thumb" style="width:100%;">
+                                    <img id="icono_actual_detel" style="width:100px;height:100px" />
+                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="detel_nombre_imagen_modal"></span></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 detel-url">
+                            <div class="form-group">
+                                <label>URL</label>
+                                <input type="text" name="detel_url" id="detel_url" class="form-control" placeholder="Url" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detel-blank">
+                            <div class="form-group">
+                                <label>¿Se abrira en una ventana Pestaña?</label>
+                                <select class="form-control" name="detel_blank" id="detel_blank">
+                                    <option value=false selected>No</option>
+                                    <option value=true>Si</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detel-posicion">
+                            <div class="form-group">
+                                <label>Posicion</label>
+                                <select id="cboPosicion" name="detel_posicion" class="form-control">
+                                    <option value="">Seleccione</option>
+                                    <option value="L">Izquierda</option>
+                                    <option value="C">Centro</option>
+                                    <option value="R">Derecha</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="detel_estado" id="detel_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn_guardar_detalle_elemento btn-primary"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>

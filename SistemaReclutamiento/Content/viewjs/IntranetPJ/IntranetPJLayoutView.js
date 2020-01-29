@@ -166,7 +166,7 @@
 
                                 if (elemento.fk_tipo_elemento == 3) {
                                     appendElementos +=
-                                        '<p> ' + elemento.elem_titulo + '</p>';
+                                        '<div class="divsinglepost"> ' + elemento.elem_titulo + '</div>';
 
                                 }
 
@@ -642,7 +642,7 @@
 
                         if (elemento.fk_tipo_elemento == 3) {
                             appendElementos +=
-                                '<p> ' + elemento.emod_titulo + '</p>';
+                                '<div class="divsinglepost"> ' + elemento.emod_titulo + '</div>';
 
                         }
 
