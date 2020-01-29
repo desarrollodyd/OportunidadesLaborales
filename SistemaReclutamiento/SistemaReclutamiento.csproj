@@ -295,6 +295,7 @@
     <Content Include="Content\intranet\images\cursors\cursor_arrow_right.png" />
     <Content Include="Content\intranet\images\faces\angel.png" />
     <Content Include="Content\intranet\images\faces\barba.png" />
+    <Content Include="Content\intranet\images\faces\cumpleanios.jpg" />
     <Content Include="Content\intranet\images\faces\diablo.png" />
     <Content Include="Content\intranet\images\faces\dientes.png" />
     <Content Include="Content\intranet\images\faces\guinio.png" />

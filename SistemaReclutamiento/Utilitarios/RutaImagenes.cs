@@ -100,5 +100,27 @@ namespace SistemaReclutamiento.Utilitarios
             }
             return base64String;
         }
+        public string ImagenCumpleaños(string ruta, string name)
+        {
+            string pathImagenAvatar = @"" + ruta + "/" + name;
+            string base64String = "";
+            if (name != null && name != "" && ruta != null && ruta != "")
+            {
+                if (System.IO.File.Exists(pathImagenAvatar))
+                {
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(pathImagenAvatar);
+                    base64String = Convert.ToBase64String(imagebytes);
+                }
+                else
+                {
+                    base64String = string.Empty;
+                }
+            }
+            else
+            {
+                base64String = string.Empty;
+            }
+            return base64String;
+        }
     }
 }

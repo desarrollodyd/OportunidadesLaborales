@@ -6,6 +6,10 @@ using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -82,6 +86,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         [HttpPost]
         public ActionResult IntranetSaludoCumpleanioInsertarJson(IntranetSaludoCumpleanioEntidad intranetSaludoCumpleanio)
         {
+
+            RutaImagenes rutaImagenes = new RutaImagenes();
             string errormensaje = "";
             bool respuestaConsulta = false;
             string mensajeConsola = "";
@@ -90,7 +96,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             Correo correo_enviar = new Correo();
             string asunto_correo = "";
             string cuerpo_correo = "";
-            PersonaEntidad persona = (PersonaEntidad)Session["perIntranet_full"]; ;
+            PersonaEntidad persona = (PersonaEntidad)Session["perIntranet_full"];
             try
             {
                 intranetSaludoCumpleanio.sld_fecha_envio = DateTime.Now;
@@ -104,16 +110,95 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     errormensaje = "Se Guardó Correctamente";
                     try
                     {
-                        //envio de correo
-                        asunto_correo = persona.per_nombre.ToUpper() +" "+
-                        persona.per_apellido_pat.ToUpper() +" "+ persona.per_apellido_mat.ToUpper() +
-                        " te desea un Feliz Cumpleaños";
-                        cuerpo_correo = intranetSaludoCumpleanio.sld_cuerpo;
-                        correo_enviar.EnviarCorreo(
-                            "s3kzimbra@gmail.com",
-                            asunto_correo,
-                            cuerpo_correo
-                            );
+                        ////envio de correo
+                        //asunto_correo = "Corporacion PJ te Desea un Feliz Cumpleaños";
+                        ////asunto_correo = persona.per_nombre.ToUpper() +" "+
+                        ////persona.per_apellido_pat.ToUpper() +" "+ persona.per_apellido_mat.ToUpper() +
+                        ////" te desea un Feliz Cumpleaños";
+                        //string server = Server.MapPath("~/Content/intranet/images/faces/");
+                        //string imagen = rutaImagenes.ImagenIntranetActividades(server, "angel.png");
+                        string persona_que_saluda = persona.per_nombre.ToUpper() + " " + persona.per_apellido_pat.ToUpper() + " " + persona.per_apellido_mat.ToUpper();
+                        //cuerpo_correo = "<h1>" + persona_que_saluda + "<h1><img src='data:image/gif;base64," + imagen + "'>";
+                        ////cuerpo_correo = intranetSaludoCumpleanio.sld_cuerpo;
+                        //correo_enviar.EnviarCorreo(
+                        //    intranetSaludoCumpleanio.direccion_envio,
+                        //    asunto_correo,
+                        //    cuerpo_correo,
+                        //    true
+                        //    );
+
+                        MailMessage mail = new MailMessage();
+                        mail.From = new MailAddress("s3kzimbra@gmail.com");
+                        mail.To.Add(intranetSaludoCumpleanio.direccion_envio);
+                        mail.Subject = "CPJ | TE DESEA UN FELIZ CUMPLEAÑOS";
+
+                        // Creamos la vista para clientes que
+                        // sólo pueden acceder a texto plano...
+
+                        string text = "Hola, Corporacion PJ y  " +
+                                      "te desean con mucho cariño un Feliz Cumpleaños!!.\n" +
+                                      "Ademas! " + persona_que_saluda +
+                                      "\n desea entregarte el siguiente mensaje de cumpleaños: \n" +
+                                      intranetSaludoCumpleanio.sld_cuerpo;
+
+                        AlternateView plainView =
+                        AlternateView.CreateAlternateViewFromString(text,
+                                                    Encoding.UTF8,
+                                                    MediaTypeNames.Text.Plain);
+
+
+                        // Ahora creamos la vista para clientes que 
+                        // pueden mostrar contenido HTML...
+                        string background = "\"background-image: url('cid:imagen_fondo'); width: 100%; height: 100vh;\"";
+                        string html = @"<div style="+background+" ><h1>¡Corporacion PJ Te desea Un Feliz Cumpleaños!</h1></br>" +
+                            "<h2>Ademas queremos entregarte un mensaje de " + persona_que_saluda+" para ti :<h2></br>" +
+                            "<h1>"+intranetSaludoCumpleanio.sld_cuerpo+"<h1>"+
+                                      "<img src='cid:imagen' /><div>";
+
+                        AlternateView htmlView =
+                            AlternateView.CreateAlternateViewFromString(html,
+                                                    Encoding.UTF8,
+                                                    MediaTypeNames.Text.Html);
+
+                        // Creamos el recurso a incrustar. Observad
+                        // que el ID que le asignamos (arbitrario) está
+                        // referenciado desde el código HTML como origen
+     
+
+                        LinkedResource img =
+                            new LinkedResource(Server.MapPath("~/Content/intranet/images/faces/"+intranetSaludoCumpleanio.sld_avatar),
+                                                MediaTypeNames.Image.Jpeg);
+                        img.ContentId = "imagen";
+                        img.ContentType.Name = "Avatar";
+
+
+                        LinkedResource img_fondo =
+                           new LinkedResource(Server.MapPath("~/Content/intranet/images/faces/cumpleanios.jpg"),
+                                               MediaTypeNames.Image.Jpeg);
+                        img_fondo.ContentId = "imagen_fondo";
+                        img_fondo.ContentType.Name = "Fondo";
+
+                        // Lo incrustamos en la vista HTML...
+
+                        htmlView.LinkedResources.Add(img);
+                        
+                        htmlView.LinkedResources.Add(img_fondo);
+
+                        // Por último, vinculamos ambas vistas al mensaje...
+
+                        mail.AlternateViews.Add(plainView);
+                        mail.AlternateViews.Add(htmlView);
+
+                        // Y lo enviamos a través del servidor SMTP...
+
+                        SmtpClient smtp = new SmtpClient("smtp.gmail.com", Int32.Parse("587"))
+                        {
+                            EnableSsl = Boolean.Parse("true"),
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Credentials = new NetworkCredential("s3kzimbra@gmail.com", "Sistemas.123")
+                        };
+                        smtp.Send(mail);
                     }
                     catch (Exception ex) {
                         errormensaje = ex.Message;

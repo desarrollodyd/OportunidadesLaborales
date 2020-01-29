@@ -1131,7 +1131,7 @@
                     data: JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
-                        console.log("adsasd");
+                        refresh(true);
                     }
                 })
             }
@@ -1166,7 +1166,7 @@
             var otra_pagina = $(this).data("blank");
             var url = $(this).data("url");
             if (url != "") {
-                if (otra_pagina) {
+                if (otra_pagina=="blank") {
                     window.open(url, '_blank', '');
                 }
                 else {

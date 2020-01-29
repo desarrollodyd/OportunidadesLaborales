@@ -1,4 +1,5 @@
 ﻿var MapaVista = function () {
+   
     var map = '';
     var _crearMapa = function (puntos) {
         $("#map").html("");
@@ -26,10 +27,7 @@
         var washingtonWebMercator;
         if (puntos.length > 0) {
             $.each(puntos, function (index, value) {
-                if(value.loc_latitud==0||value.loc_longitud==0){
-                    console.log("tienen un cero");
-                }
-                else{
+                if(value.loc_latitud!=0&&value.loc_longitud!=0){
                     washingtonWebMercator = [parseFloat(value.loc_longitud), parseFloat(value.loc_latitud)];
                     $("#seccion-mapa").append('<div id="marker' + index + '" title="Marker"><img src="/Content/intranet/images/png/marker.png" /></div>');
                     $("#seccion-mapa").append('<div class="overlay" id="tittle' + index + '"><span class="">' + value.loc_nombre + '</span></div>');
@@ -46,7 +44,6 @@
                     });
                     map.addOverlay(tittle);
                 }
-                
             })
         }
     
@@ -63,12 +60,18 @@
                 
                 $("#resultados").html("");
                 var puntos = response.data;
+             
                 _crearMapa(puntos);
                 if (puntos.length > 0) {
                     var span = '';
                     $("#span_total_puntos").html(puntos.length);
                     $.each(puntos, function (index, value) {
-                        span += '<li class="cambiarCentro" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                        // var objetoPuntos={
+                        //     latitud:value.loc_latitud,
+                        //     longitud:value.loc_longitud
+                        // }
+                        // arrayPuntos.push(objetoPuntos);
+                        span += '<li class="cambiarCentro item" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span class="nombres" style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
                     })
                     $("#resultados").html(span);
                 }
@@ -78,28 +81,59 @@
     var _componentes = function () {
         $(document).on("click", ".btn-buscar", function () {
             //busquedaLocales
+            let arrayPuntos = [];
             $("#busquedaLocales").submit();
             if (_objetoForm_busquedaLocales.valid()) {
-                var dataForm = $('#busquedaLocales').serializeFormJSON();
-                responseSimple({
-                    url: "IntranetPJ/ListarLocalesporTipoJson",
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        $("#resultados").html("");
-                        var puntos = response.data;
-                        $("#map").html("");
-                        _crearMapa(puntos);
-                        if (puntos.length > 0) {
-                            var span = '';
-                            $("#span_total_puntos").html(puntos.length);
-                            $.each(puntos, function (index, value) {
-                                span += '<li class="centro" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
-                            })
-                            $("#resultados").html(span);
+                if(tipo=="Salas"){
+                    var dataForm = $('#busquedaLocales').serializeFormJSON();
+                    responseSimple({
+                        url: "IntranetPJ/ListarLocalesporTipoJson",
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            $("#resultados").html("");
+                            var puntos = response.data;
+                            $("#map").html("");
+                            _crearMapa(puntos);
+                            if (puntos.length > 0) {
+                                var span = '';
+                                $("#span_total_puntos").html(puntos.length);
+                                $.each(puntos, function (index, value) {
+                                    span += '<li class="centro" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                                })
+                                $("#resultados").html(span);
+                            }
                         }
+                    });
+                }
+                else{
+                    var nombres = $('.nombres');
+                    var buscando=$("#nombre").val();
+                    var item='';
+
+                    for( var i = 0; i < nombres.length; i++ ){
+                        item = $(nombres[i]).html().toLowerCase();
+                  
+                             if( buscando.length == 0 || item.indexOf( buscando ) > -1 ){
+                                 $(nombres[i]).parents('.item').show(); 
+                                var latitud_api=$(nombres[i]).parents('.item').data('latitud');
+                                var longitud_api=$(nombres[i]).parents('.item').data('longitud');
+                                var nombre_api=$(nombres[i]).html();
+                                 var obj={
+                                     loc_latitud:latitud_api,
+                                     loc_longitud:longitud_api,
+                                     loc_nombre:nombre_api
+                                 }
+                                 arrayPuntos.push(obj);
+                             }else{
+                                  $(nombres[i]).parents('.item').hide();
+                             }
+                        
                     }
-                });
+                    console.log(arrayPuntos);
+                    _crearMapa(arrayPuntos);
+                }
+        
             } else {
                 messageResponse({
                     text: "Complete los campos Obligatorios",
@@ -115,6 +149,10 @@
             var latitud = $(this).data("latitud");
             var longitud = $(this).data("longitud");
             if(latitud==0||longitud==0){
+                messageResponse({
+                    text: "No se ha registrado una Latitud o Longitud para este punto",
+                    type: "error"
+                })
                 return false;
             }
             map.setView(new ol.View({

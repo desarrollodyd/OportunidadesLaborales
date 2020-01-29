@@ -256,6 +256,32 @@ namespace SistemaReclutamiento.Models.IntranetPJ
 
             return (intranetElementoModalEliminado: response, error: error);
         }
+        public (bool intranetElementoModalEliminado, claseError error) IntranetElementoModalEliminarxSeccionElementoJson(int fk_seccion_elemento)
+        {
+            bool response = false;
+            string consulta = @"DELETE FROM intranet.int_elemento_modal
+	                                WHERE fk_seccion_elemento=@p0;";
+            claseError error = new claseError();
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(fk_seccion_elemento));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+
+            return (intranetElementoModalEliminado: response, error: error);
+        }
         public (int intranetElementoModalTotal, claseError error) IntranetElementoModalObtenerTotalRegistrosxSeccionJson(int fk_seccion_elemento)
         {
             int intranetElementoModalTotal = 0;

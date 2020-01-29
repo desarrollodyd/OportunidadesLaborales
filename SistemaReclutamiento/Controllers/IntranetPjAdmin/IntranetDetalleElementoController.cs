@@ -414,28 +414,40 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                                         System.IO.File.Delete(rutaEliminar);
                                                     }
                                                 }
-                                                //
                                             }
                                         }
                                     }
+                                    //Eliminar Detalles de Elemento Modal por cada Elemento Modal
+                                    var detElemModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarxElementoModalJson(m.emod_id);
                                 }
                             }
                         }
+                        //Eliminar Elementos  Modales por Seccion
+                        var elemModalTupla = intanetElementoModalbl.IntranetElementoModalEliminarxSeccionElementoJson(fk_seccion_elemento);
+                        //eliminar Seccion Elemento
+                        var secElementoTupla = intranetSeccionElementobl.IntranetSeccionElementoEliminarJson(fk_seccion_elemento);
+                    }
+                    //eliminar Imagenes si hubiera
+                    if (detalleElementoTupla.intranetDetalleElemento.detel_extension != "") {
+                        rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + detalleElementoTupla.intranetDetalleElemento.detel_nombre + "." + detalleElementoTupla.intranetDetalleElemento.detel_extension);
+                        if (System.IO.File.Exists(rutaEliminar)) {
+                            System.IO.File.Delete(rutaEliminar);
+                        }
                     }
                 }
-                
-                //var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoEliminarJson(detel_id);
-                //error = detalleElementoTupla.error;
-                //if (error.Key.Equals(string.Empty))
-                //{
-                //    respuestaConsulta = detalleElementoTupla.intranetDetalleElementoEliminado;
-                //    errormensaje = "Imagen Eliminada";
-                //}
-                //else
-                //{
-                //    errormensaje = "Error, no se Puede Eliminar";
-                //    mensajeConsola = error.Value;
-                //}
+
+                var detalleElementoEliminarTupla = intranetDetalleElementonbl.IntranetDetalleElementoEliminarJson(detel_id);
+                error = detalleElementoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    respuestaConsulta = detalleElementoEliminarTupla.intranetDetalleElementoEliminado;
+                    errormensaje = "Imagen Eliminada";
+                }
+                else
+                {
+                    errormensaje = "Error, no se Puede Eliminar";
+                    mensajeConsola = error.Value;
+                }
             }
             catch (Exception exp)
             {
