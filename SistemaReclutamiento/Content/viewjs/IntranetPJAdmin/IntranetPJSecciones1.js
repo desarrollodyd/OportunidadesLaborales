@@ -59,24 +59,24 @@ var PanelContenido = function () {
         });
     };
 
-    var _sort_detalle_elemento = function (seccion_id) {
-        $('.tbody_detalle_elemento_' + seccion_id).sortable({
+    var _sort_detalle_elemento = function (elemento_id) {
+        $('.tbody_detalle_elemento_' + elemento_id).sortable({
             cursor: 'move',
             placeholder: 'box placeholder',
             stop: function (event, ui) {
                 let lista_orden = [];
-                var lista = $('.tbody_detalle_elemento_' + seccion_id + ' tr.sec_' + seccion_id);
+                var lista = $('.tbody_detalle_elemento_' + elemento_id + ' tr.elem_' + elemento_id);
                 $.each(lista, function (index, value) {
                     lista_orden.push({
-                        elem_id: $(this).data("id"),
-                        elem_orden: (index + 1)
+                        detel_id: $(this).data("id"),
+                        detel_orden: (index + 1)
                     });
-                    $(this).find("span.elem_orden").text((index + 1));
+                    $(this).find("span.detelem_orden").text((index + 1));
                 });
                 console.log(lista_orden);
                 responseSimple({
-                    url: "IntranetElemento/IntranetElementoEditarOrdenJson",
-                    data: JSON.stringify({ arrayElementos: lista_orden }),
+                    url: "IntranetDetalleElemento/IntranetDetalleElementoEditarOrdenJson",
+                    data: JSON.stringify({ arrayDetElemento: lista_orden }),
                     refresh: false,
                     callBackSuccess: function (response) {
                         if (response.respuesta) {
@@ -259,14 +259,21 @@ var PanelContenido = function () {
                         clase_estado = 'danger';
                         estado = "Inactivo";
                     };
+                    var tipo = value.fk_tipo_elemento;
+                    var clasedetalle = "blue";
+                    var clasedetalleboton = "btn_detalle_elemento";
+                    if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
+                        clasedetalle = "grey";
+                        clasedetalleboton = "";
+                    }
 
                     var detalle = '<div class="action-buttons">' +
-                        '<a data-id="' + value.elem_id + '" href="javascript:void(0);" class="blue bigger-140 btn_detalle_elemento show-details-btn" title = "Detalle">' +
+                        '<a data-id="' + value.elem_id + '" href="javascript:void(0);" class="' + clasedetalle + ' bigger-140 ' + clasedetalleboton+'" title = "Detalle">' +
                         '<i class="ace-icon fa fa-angle-double-up"></i>' +
                         '<span class="sr-only">Detalle</span>' +
                         '</a>' +
                         '</div>';
-                    tr += '<tr data-id="' + value.elem_id + '" data-orden="' + value.elem_orden + '" class="sec_' + sec_id+'"><td class="center">' + detalle + '</td><td><span class="elem_orden label label-default label-white middle">'+(index+1)+'</span> ' + value.tipo_nombre + '</td><td>' + value.elem_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                    tr += '<tr id="elemento_' + value.elem_id+'" data-id="' + value.elem_id + '" data-orden="' + value.elem_orden + '" class="sec_' + sec_id + '" data-tipo="' + value.fk_tipo_elemento + '"><td class="center">' + detalle + '</td><td><span class="elem_orden label label-default label-white middle">' + (index + 1) + '</span> ' + value.tipo_nombre + '</td><td>' + value.elem_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
                 if (rows.length == 0) {
                     tr = '<tr><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr>';
@@ -291,8 +298,8 @@ var PanelContenido = function () {
                 var rows = response.data;
                 var tr = "";
                 $.each(rows, function (index, value) {
-                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.detel_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
-                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.detel_id + '><i class="ace-icon fa fa-trash"></i> </button>';
+                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-elemento_id="' + elemento_id +'"><i class="ace-icon fa fa-pencil"></i> </button>' +
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id="' + value.detel_id + '" data-elemento_id="' + elemento_id+'"><i class="ace-icon fa fa-trash"></i> </button>';
 
                     var clase_estado = 'success';
                     var estado = "Activo";
@@ -315,7 +322,7 @@ var PanelContenido = function () {
                     };
 
                     var detalle = '<div class="action-buttons">' +
-                        '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento + '" href="javascript:void(0);" class="blue bigger-140 btn_elemento_modal show-details-btn" title = "Detalle">' +
+                        '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento + '" href="javascript:void(0);" class="blue bigger-140 btn_elemento_modal" title = "Detalle">' +
                         '<i class="ace-icon fa fa-angle-double-up"></i>' +
                         '<span class="sr-only">Detalle</span>' +
                         '</a>' +
@@ -367,13 +374,22 @@ var PanelContenido = function () {
                         estado = "Inactivo";
                     };
 
+
+                    var tipo = value.fk_tipo_elemento;
+                    var clasedetalle = "blue";
+                    var clasedetalleboton = "btn_detalle_elemento_modal";
+                    if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
+                        clasedetalle = "grey";
+                        clasedetalleboton = "";
+                    }
+
                     var detalle = '<div class="action-buttons">' +
-                        '<a data-id="' + value.emod_id + '" href="javascript:void(0);" class="blue bigger-140 btn_detalle_elemento_modal show-details-btn" title = "Detalle">' +
+                        '<a data-id="' + value.emod_id + '" href="javascript:void(0);" class="' + clasedetalle + ' bigger-140 ' + clasedetalleboton+'" title = "Detalle">' +
                         '<i class="ace-icon fa fa-angle-double-up"></i>' +
                         '<span class="sr-only">Detalle</span>' +
                         '</a>' +
                         '</div>';
-                    tr += '<tr data-id="' + value.emod_id + '" data-orden="' + value.emod_orden + '"><td class="center">' + detalle + '</td><td>' + value.tipo_nombre + '</td><td>' + value.emod_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                    tr += '<tr id="elemento_modal_' + value.emod_id +'" data-id="' + value.emod_id + '" data-orden="' + value.emod_orden + '" data-tipo="' + value.fk_tipo_elemento + '"><td class="center">' + detalle + '</td><td>' + value.tipo_nombre + '</td><td>' + value.emod_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
 
                 var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
@@ -412,6 +428,10 @@ var PanelContenido = function () {
             e.preventDefault();
             var elemento_id = $(this).data("id");
             var act_tr = $(this).closest("tr");
+            var tipo = act_tr.data("tipo");
+            if (tipo == 1 || tipo==2 || tipo==3 || tipo==6) {
+                return false;
+            }
             $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
             if ($('#tr_elemento_contenido_' + elemento_id).hasClass("open")) {
                 $('#tr_elemento_contenido_' + elemento_id).removeClass("open");
@@ -609,7 +629,52 @@ var PanelContenido = function () {
 
 
         ///////////////////////////////////////////////////////////////////////elemento
+
+        $(document).on('click', '.btn_ordenar_elemento_seccion', function (e) {
+            var seccion_id = $(this).data("id");
+            var spans = $('tbody.tbody_elemento_' + seccion_id + ' tr span.elem_orden');
+            console.log(spans)
+            $.each(spans, function (index, value) {
+                $(this).removeClass("label-default");
+                $(this).addClass("label-warning");
+            });
+            PanelContenido.init_Sort_Elemento(seccion_id);
+        });
+
+        $(document).on('change', '#fk_tipo_elemento', function (e) {
+            var estado = $("#tituloModalElemento").text();
+            if (estado == "Nuevo") {
+                var input = '<input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Titulo">';
+                var textarea = '<textarea name="elem_titulo" id="elem_titulo" class="form-control"></textarea>';
+                var tipo = $(this).val();
+                if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
+                    if (tipo == 3) {
+                        $("#parrafo_elemento").text("Parrafo");
+                        $("#contenido_input").html(textarea);
+                        $('#elem_titulo').richText({
+                            imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                            fileUpload: false, urls: false
+                        });
+                        $("a.richText-help").hide();
+                    } else {
+                        $("#parrafo_elemento").text("Texto");
+                        $("#contenido_input").html(input);
+                    };
+                    $("div.titulo_elemento").show();
+                    $("#elem_titulo").val("");
+
+                }
+                else {
+                    $("#contenido_input").html(input);
+                    $("#parrafo_elemento").text("Texto");
+                    $("div.titulo_elemento").hide();
+                    $("#elem_titulo").val($("#fk_tipo_elemento option:selected").text());
+                }
+            }
+        });
+
         $(document).on('click', '.btn_nuevo_elemento_seccion', function (e) {
+            $("#tituloModalElemento").text("Nuevo");
             var seccion_id = $(this).data("id");
             $("#fk_seccion").val(seccion_id);
             $("#elem_id").val(0);
@@ -618,11 +683,12 @@ var PanelContenido = function () {
             $("#div_texto_fk_tipo_elemento").addClass("hidden");
             $("#fk_tipo_elemento").val("").trigger('change');
             _objetoForm_form_elemento.resetForm();
-            $("#tituloModalElemento").text("Nuevo");
+           
             $("#modalFormularioElemento").modal("show");
         });
 
         $(document).on('click', '.btn_editar_elemento', function () {
+            $("#tituloModalElemento").text("Editar");
             var elem_id = $(this).data('id');
             var dataForm = {
                 elem_id: elem_id,
@@ -636,13 +702,37 @@ var PanelContenido = function () {
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
                         var elemento = response.data;
-                        
+                        var input = '<input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Titulo">';
+                        var textarea = '<textarea name="elem_titulo" id="elem_titulo" class="form-control"></textarea>';
+                        var tipo = elemento.fk_tipo_elemento;
                         $("#fk_tipo_elemento").val(elemento.fk_tipo_elemento).trigger('change');
                         $("#fk_seccion").val(elemento.fk_seccion);
                         $("#elem_id").val(elemento.elem_id);
-                        $("#elem_titulo").val(elemento.elem_titulo);
-                        $("#elem_estado").val(elemento.elem_estado);
                         $("#elem_orden").val(elemento.elem_orden);
+                        $("#elem_estado").val(elemento.elem_estado);
+                        if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
+                            if (tipo == 3) {
+                                $("#parrafo_elemento").text("Parrafo");
+                                $("#contenido_input").html(textarea);
+                                $("#elem_titulo").val(elemento.elem_titulo);
+                                $('#elem_titulo').richText({
+                                    imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                                    fileUpload: false, urls: false
+                                });
+                                $("a.richText-help").hide();
+                            } else {
+                                $("#parrafo_elemento").text("Texto");
+                                $("#contenido_input").html(input);
+                                $("#elem_titulo").val(elemento.elem_titulo);
+                            };
+                            $("div.titulo_elemento").show();
+                        }
+                        else {
+                            $("#contenido_input").html(input);
+                            $("#parrafo_elemento").text("Texto");
+                            $("div.titulo_elemento").hide();
+                            $("#elem_titulo").val(elemento.elem_titulo);
+                        }
                         $("#texto_fk_tipo_elemento").html($("#fk_tipo_elemento option:selected").text());
                         $("#modalFormularioElemento").modal("show");
                     }
@@ -713,17 +803,230 @@ var PanelContenido = function () {
             }
         });
 
-        $(document).on('click', '.btn_ordenar_elemento_seccion', function (e) {
-            var seccion_id = $(this).data("id");
-            var spans = $('tbody.tbody_elemento_' + seccion_id + ' tr span.elem_orden ');
+        ////////////////////////////////////////////////////////////////////detalleelemento
+
+        $(document).on('click', '.btn_ordenar_detalle_elemento', function (e) {
+            var elemento_id = $(this).data("id");
+            var spans = $('tbody.tbody_detalle_elemento_' + elemento_id + ' tr span.detelem_orden');
             console.log(spans)
             $.each(spans, function (index, value) {
                 $(this).removeClass("label-default");
                 $(this).addClass("label-warning");
             });
-            PanelContenido.init_Sort_Elemento(seccion_id);
+            PanelContenido.init_Sort_Detalle_Elemento(elemento_id);
         });
 
+        $(document).on("click", ".btn_eliminar_detalle_elemento", function (e) {
+            var det_elemento_id = $(this).data("id");
+            var elemento_id = $(this).data("elemento_id");
+            if (det_elemento_id != "" || det_elemento_id > 0) {
+                messageConfirmation({
+                    content: '¿Esta seguro que desea ELIMINAR este Detalle de Elemento?',
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: "IntranetDetalleElemento/IntranetDetalleElementoEliminarJson",
+                            data: JSON.stringify({ detel_id: det_elemento_id }),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                if (response.respuesta) {
+                                    PanelContenido.init_ListarDetalleElementos(elemento_id);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                messageResponse({
+                    text: "Error no se encontro ID",
+                    type: "error"
+                })
+            }
+        });
+
+        $(document).on('change', '#cboOpcion', function (e) {
+            var valor = $(this).val();
+            if (valor == 1) {
+
+            }
+            else {
+
+            }
+        });
+
+        $(document).on('click', '.btn_nuevo_detalle_elemento', function (e) {
+            var elemento_id = $(this).data("id");
+            var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
+            console.log(tipo_elemento);
+            $("#tituloModalDetalleElemento").text("Nuevo");
+            $("#fk_elemento").val(elemento_id);
+            $("#detel_id").val(0);
+            $("#detel_nombre_imagen_modal").text("");
+            $("#detel_nombre_imagen").val("");
+            $("#spandetel").html('<i class="fa fa-upload"></i>  Subir Imagen');
+            $("#cboOpcion").val("1");
+            $("#detel_descripcion").val("");
+            $("#detel_nombre").val("");
+            $("#detel_url").val("");
+            $("#detel_blank").val("false");
+            $("#cboPosicion").val("");
+            $("#detel_estado").val("A");
+
+            if (tipo_elemento == 5) {
+                $(".detel-opcion").hide();
+                $(".detel-descripcion").show();
+                $(".detel-imagen").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+                $(".detel-posicion").hide();
+                $(".detel-estado").show();
+                $("#fk_seccion_elemento").val(2);
+            }
+            else {
+                console.log("asas")
+                $("#fk_seccion_elemento").val(0);
+                $(".detel-posicion").hide();
+                $(".detel-opcion").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+            }
+            $("#modalFormularioDetalleElemento").modal("show");
+        });
+
+        $(document).on('click', '.btn_editar_detalle_elemento', function (e) {
+            var det_elemento_id = $(this).data("id");
+            $("#tituloModalDetalleElemento").text("Editar");
+
+            var dataForm = {
+                detel_id: det_elemento_id,
+            }
+            responseSimple({
+                url: 'IntranetDetalleElemento/IntranetDetalleElementoIdObtenerJson',
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    var data = response.data;
+                    console.log(data);
+                    if (response.respuesta) {
+                        $("#divdetel").hide();
+                        $('#detel_id').val(data.detel_id);
+                        $('#fk_elemento').val(data.fk_elemento)
+                        $("#spandetel").html("");
+                        $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        if (data.detel_extension != "") {
+                            $("#detel_nombre_imagen_modal").text("Nombre: " + data.detel_nombre + "." + data.detel_extension);
+                            $("#detel_nombre_imagen").val(data.detel_nombre + "." + data.detel_extension);
+                            // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
+                            $("#icono_actual_detel").attr("src", "data:image/gif;base64," + data.detel_nombre_imagen);
+                            $("#divdetel").show();
+                            $(".detel-imagen").show();
+                            $(".detel-nombre").show();
+                            $(".detel-posicion").hide();
+                            $("#detel_posicion").val();
+                            $(".detel-opcion").hide();
+                            if (data.fk_tipo_elemento == 12 || data.fk_tipo_elemento == 17) {
+                                $(".detel-url").show();
+                                $(".detel-blank").show();
+                            }
+                            else {
+                                $(".detel-url").hide();
+                                $(".detel-blank").hide();
+                            }
+                        }
+                        else {
+                            $(".detel-imagen").hide();
+                            $(".detel-nombre").hide();
+                            $(".detel-posicion").hide();
+                            $(".detel-opcion").hide();
+                            $(".detel-url").hide();
+                            $(".detel-blank").hide();
+                            $("#detel_nombre_imagen_modal").text("");
+                            $("#detel_nombre_imagen").val("");
+                            $("#detel_url").val("");
+                        }
+                        if (data.detel_posicion != '' && data.detel_extension == "") {
+                            $(".detel-posicion").show();
+                        }
+                        $("#detel_orden").val(data.detel_orden);
+                        $("#cboPosicion").val(data.detel_posicion);
+                        $("#detel_descripcion").val(data.detel_descripcion);
+                        $("#detel_estado").val(data.detel_estado);
+                        $(".detel-orden").show();
+                        $('#modalFormularioDetalleElemento').modal('show');
+                    }
+                },
+            })
+
+        });
+
+        $(document).on('click', '.btn_guardar_detalle_elemento', function () {
+            //$("#form_detalle_elemento").submit();
+            var elemento_id = $("#fk_elemento").val();
+            var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
+            if (tipo_elemento == 7) {
+                if ($("#detel_nombre").val() == "") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
+            var dataForm = new FormData(document.getElementById("form_detalle_elemento"));
+            var url = '';
+            if ($("#detel_id").val() == 0) {
+                url = 'IntranetDetalleElemento/IntranetDetalleElementoInsertarJson';
+            }
+            else {
+                url = 'IntranetDetalleElemento/IntranetDetalleElementoEditarJson';
+            }
+            responseFileSimple({
+                url: url,
+                data: dataForm,
+                refresh: false,
+                callBackSuccess: function (response) {
+                    if (response.respuesta) {
+                        PanelContenido.init_ListarDetalleElementos(elemento_id);
+                        $("#modalFormularioDetalleElemento").modal("hide");
+                    }
+                }
+            })
+        });
+
+        $(document).on("change", "#detel_nombre", function () {
+            var _image = $('#detel_nombre')[0].files[0];
+            if (_image != null) {
+                var image_arr = _image.name.split(".");
+                var extension = image_arr[1].toLowerCase();
+                //console.log(extension);
+                if (extension != "jpg" && extension != "png" && extension != "jpeg") {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato jpg, png ó jpeg',
+                        type: "warning"
+                    });
+                }
+                else {
+                    var nombre = image_arr[0].substring(0, 11);
+                    var actualicon = image_arr[1].toLowerCase();
+                    var icon = "";
+                    if (actualicon == "png" || actualicon == "jpg" || actualicon == 'jpeg') {
+                        icon = '<i class="fa fa-file-word-o"></i>';
+                    }
+                    else {
+                        icon = '<i class="fa fa-file-pdf-o"></i>';
+                    };
+                    $("#spandetel").html("");
+                    $("#spandetel").append(icon + " " + nombre + "... ." + actualicon);
+                    //$("#img_ubicacion").val(nombre + "." + actualicon);
+                    $("#spandetel").css({ 'font-size': '10px' });
+                }
+            }
+            else {
+                $("#spandetel").html("");
+                $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Imagen');
+            }
+        })
     };
 
     var _metodos = function () {
@@ -782,6 +1085,32 @@ var PanelContenido = function () {
             }
         });
 
+        validar_Form({
+            nameVariable: 'form_detalle_elemento',
+            contenedor: '#form_detalle_elemento',
+            rules: {
+                fk_tipo_elemento:
+                {
+                    required: true,
+
+                },
+                elem_estado:
+                {
+                    required: true,
+
+                }
+            },
+            messages: {
+                fk_tipo_elemento:
+                {
+                    required: 'Campo Obligatorio',
+                },
+                elem_estado:
+                {
+                    required: 'Campo Obligatorio',
+                }
+            }
+        });
     };
 
     //
@@ -799,6 +1128,9 @@ var PanelContenido = function () {
         },
         init_Sort_Elemento: function (seccion_id) {
             _sort_elemento(seccion_id);
+        },
+        init_Sort_Detalle_Elemento: function (elemento_id) {
+            _sort_detalle_elemento(elemento_id);
         },
         init_ListarMenus: function () {
             _ListarMenus();

@@ -5001,3 +5001,10 @@ div.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible{
     height:28px;
     border: 2px solid #867f7f;
 }
+
+.divsinglepost {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}

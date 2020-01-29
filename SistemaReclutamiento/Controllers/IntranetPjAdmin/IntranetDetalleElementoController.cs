@@ -487,7 +487,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             foreach (var m in arrayDetElemento)
             {
                 intranetDetElemento.detel_id = m.detel_id;
-                intranetDetElemento.detel_id = m.detel_id;
+                intranetDetElemento.detel_orden = m.detel_orden;
                 var reordenadoTupla = intranetDetalleElementonbl.IntranetDetalleElementoEditarOrdenJson(intranetDetElemento);
                 error = reordenadoTupla.error;
                 if (error.Key.Equals(string.Empty))
