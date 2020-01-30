@@ -127,7 +127,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     listaDetalleElemento = detalleElementoTupla2.intranetDetalleElementoListaxElementoID;
                     if (listaDetalleElemento.Count > 0) {
                         foreach (var j in listaDetalleElemento) {
-                            var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(j.fk_elemento);
+                            var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(j.detel_id);
                             if (detalleElementoTupla.error.Key.Equals(string.Empty))
                             {
                                 int fk_seccion_elemento = detalleElementoTupla.intranetDetalleElemento.fk_seccion_elemento;
@@ -182,25 +182,27 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         System.IO.File.Delete(rutaEliminar);
                                     }
                                 }
+                                //Eliminar Detalle de Elemento
+                                var detElementoEliminado = intranetDetalleElementonbl.IntranetDetalleElementoEliminarJson(j.detel_id);
                             }
                         }
                     }
                 }
-                
 
 
-                //var IntranetElementoTupla = intranetElementobl.IntranetElementoEliminarJson(elem_id);
-                //error = IntranetElementoTupla.error;
-                //if (error.Key.Equals(string.Empty))
-                //{
-                //    respuestaConsulta = IntranetElementoTupla.intranetElementoEliminado;
-                //    errormensaje = "Elemento Eliminado";
-                //}
-                //else
-                //{
-                //    errormensaje = "Error, no se Puede Eliminar";
-                //    mensajeConsola = error.Value;
-                //}
+
+                var IntranetElementoTupla = intranetElementobl.IntranetElementoEliminarJson(elem_id);
+                error = IntranetElementoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    respuestaConsulta = IntranetElementoTupla.intranetElementoEliminado;
+                    errormensaje = "Elemento Eliminado";
+                }
+                else
+                {
+                    errormensaje = "Error, no se Puede Eliminar";
+                    mensajeConsola = error.Value;
+                }
             }
             catch (Exception exp)
             {

@@ -488,8 +488,8 @@
             $("#fk_seccion").val(sec_id);
             $("#elem_id").val(0);
             $(".elem-orden").hide();
-            $("#elem-orden").val("");
-
+            $("#elem_orden").val("");
+            $("#elem_titulo").val("");  
             //bloquear algunas selecciones
             $("#cboTipoElemento").select2('destroy');
             $("#cboTipoElemento").select2();
@@ -635,6 +635,7 @@
             $("#detel_nombre_imagen_modal").text("");
             $("#detel_nombre_imagen").val("");
             $("#detel_nombre").val("");
+            $("#detel_url").val("");
             $("#cboPosicion").val("");
             $("#cboOpcion").val("1");
             $("#spandetel").html("");
