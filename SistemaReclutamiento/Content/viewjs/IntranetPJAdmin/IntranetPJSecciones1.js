@@ -871,6 +871,9 @@ var PanelContenido = function () {
             $("#detel_blank").val("false");
             $("#cboPosicion").val("");
             $("#detel_estado").val("A");
+            
+            $("#divdetel").hide();
+            $("#icono_actual_detel").removed();
 
             if (tipo_elemento == 5) {
                 $(".detel-opcion").hide();
