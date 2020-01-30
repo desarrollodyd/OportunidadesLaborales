@@ -846,12 +846,29 @@ var PanelContenido = function () {
 
         $(document).on('change', '#cboOpcion', function (e) {
             var valor = $(this).val();
+            var elemento_id = $("#fk_elemento").val();
+            var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
             if (valor == 1) {
-
+                $(".detel-imagen").hide();
+                if (tipo_elemento == 8 || tipo_elemento == 14) {
+                    $("#cboPosicion").val("L");
+                }
+                if (tipo_elemento == 13 || tipo_elemento == 15) {
+                    $("#cboPosicion").val("R");
+                }
+                
             }
             else {
-
+                $(".detel-imagen").show();
+                if (tipo_elemento == 8 || tipo_elemento == 14) {
+                    $("#cboPosicion").val("R");
+                }
+                if (tipo_elemento == 13 || tipo_elemento == 15) {
+                    $("#cboPosicion").val("L");
+                }
             }
+            
+           
         });
 
         $(document).on('click', '.btn_nuevo_detalle_elemento', function (e) {
@@ -864,16 +881,16 @@ var PanelContenido = function () {
             $("#detel_nombre_imagen_modal").text("");
             $("#detel_nombre_imagen").val("");
             $("#spandetel").html('<i class="fa fa-upload"></i>  Subir Imagen');
-            $("#cboOpcion").val("1");
+            $("#cboOpcion").val(1).change();
+            $("#cboPosicion").val("L");
             $("#detel_descripcion").val("");
             $("#detel_nombre").val("");
             $("#detel_url").val("");
             $("#detel_blank").val("false");
-            $("#cboPosicion").val("");
             $("#detel_estado").val("A");
             
             $("#divdetel").hide();
-            $("#icono_actual_detel").removed();
+           
 
             if (tipo_elemento == 5) {
                 $(".detel-opcion").hide();
@@ -885,8 +902,32 @@ var PanelContenido = function () {
                 $(".detel-estado").show();
                 $("#fk_seccion_elemento").val(2);
             }
+            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
+                //va a abrir modal
+                $("#fk_seccion_elemento").val(1);
+                $(".detel-imagen").hide();
+                $("#divdetel").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+                $(".detel-opcion").show();
+                $(".detel-posicion").hide();
+                if (tipo_elemento == 8 || tipo_elemento == 14) {
+                    $("#cboOpcion").val(1).change();
+                    $("#cboPosicion").val("L");
+                }
+                else {
+                    $("#cboOpcion").val(1).change();
+                    $("#cboPosicion").val("R");
+                }                   
+            } else if (tipo_elemento == 16) {
+                $("#fk_seccion_elemento").val(1);
+                $(".detel-opcion").hide();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+                $("#cboOpcion").val(1).change();
+                $(".detel-posicion").show();
+            }
             else {
-                console.log("asas")
                 $("#fk_seccion_elemento").val(0);
                 $(".detel-posicion").hide();
                 $(".detel-opcion").hide();
@@ -925,7 +966,6 @@ var PanelContenido = function () {
                             $(".detel-imagen").show();
                             $(".detel-nombre").show();
                             $(".detel-posicion").hide();
-                            $("#detel_posicion").val();
                             $(".detel-opcion").hide();
                             if (data.fk_tipo_elemento == 12 || data.fk_tipo_elemento == 17) {
                                 $(".detel-url").show();
@@ -947,7 +987,11 @@ var PanelContenido = function () {
                             $("#detel_nombre_imagen").val("");
                             $("#detel_url").val("");
                         }
-                        if (data.detel_posicion != '' && data.detel_extension == "") {
+
+                        if (data.fk_tipo_elemento == 8 || data.fk_tipo_elemento == 14 || data.fk_tipo_elemento == 13 || data.fk_tipo_elemento == 15) {
+                            $(".detel-posicion").hide();
+                        }
+                        if (data.fk_tipo_elemento == 16) {
                             $(".detel-posicion").show();
                         }
                         $("#detel_orden").val(data.detel_orden);
@@ -967,7 +1011,26 @@ var PanelContenido = function () {
             var elemento_id = $("#fk_elemento").val();
             var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
             if (tipo_elemento == 7) {
-                if ($("#detel_nombre").val() == "") {
+                if ($("#detel_nombre").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 8 || tipo_elemento == 14) {
+                if ($("#cboOpcion").val() == 1 && $("#detel_descripcion").val() == "") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                };
+                
+
+                if ($("#cboOpcion").val() == 2 && $("#detel_nombre").val() == "") {
                     messageResponse({
                         text: 'Seleccione Imagen',
                         type: "error"

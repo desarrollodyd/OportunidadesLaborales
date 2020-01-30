@@ -172,6 +172,7 @@
     <Content Include="Content\intranetSGC\assets\css\jquery-ui.min.css" />
     <Content Include="Content\intranetSGC\assets\css\jquery.gritter.min.css" />
     <Content Include="Content\intranetSGC\assets\css\prettify.min.css" />
+    <Content Include="Content\intranetSGC\assets\css\richtext.min.css" />
     <Content Include="Content\intranetSGC\assets\css\rowReorder.dataTables.min.css" />
     <Content Include="Content\intranetSGC\assets\css\select2.min.css" />
     <Content Include="Content\intranetSGC\assets\css\ui.jqgrid.min.css" />
@@ -269,6 +270,7 @@
     <Content Include="Content\intranetSGC\assets\js\jquery.mobile.custom.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.nestable.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.raty.min.js" />
+    <Content Include="Content\intranetSGC\assets\js\jquery.richtext.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.sparkline.index.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.ui.touch-punch.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.validate.min.js" />
