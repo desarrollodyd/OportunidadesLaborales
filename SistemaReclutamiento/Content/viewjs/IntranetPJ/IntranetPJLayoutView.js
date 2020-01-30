@@ -330,18 +330,18 @@
                                         var i = 0;
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             if (index == 0) {
-                                                appendDetalleElementoheader += '<div class="featured abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
+                                                appendDetalleElementoheader += '<div class="featured abrir_pagina abrir_pagina_izquierda" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                                     '<div class="thumb foto_cuadro_izquiera">' +
                                                     ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
-                                                    '<div class="ticarousel"> ' + detalleelemento.detel_descripcion + '</div>' +
+                                                    '<div class="ticarousel titulo_izquierda"> ' + detalleelemento.detel_descripcion + '</div>' +
                                                     '</div>' +
                                                     '</div>' +
                                                     ' </div>' +
                                                     '<div class="excerpt">' +
                                                     '<div class="desc">' +
-                                                    '<p class="pcats" style="padding-left: 0px !important;padding-right: 0px !important;"> ACCEDER A : ' + detalleelemento.detel_descripcion + '</p>' +
+                                                    '<p class="pcats subtitulo_izquierda" style="padding-left: 0px !important;padding-right: 0px !important;"> ACCEDER A : ' + detalleelemento.detel_descripcion + '</p>' +
 
                                                     '</div>' +
                                                     '</div>' +
@@ -352,11 +352,11 @@
                                                 if (i < 4) {
                                                     appendDetalleElementobody += '<li>' +
                                                         '<div class="octhumb">' +
-                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" ><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" data-id="'+detalleelemento.detel_id+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
                                                         '</div>' +
                                                         '<div class="desc">' +
-                                                        '<a href="javascript:void(0);" class="abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '">' + detalleelemento.detel_descripcion + '</a>' +
-                                                        '<h4><a href="javascript:void(0);" class="abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '"> ACCEDER A : ' + detalleelemento.detel_descripcion + '</a></h4>' +
+                                                        '<a href="javascript:void(0);" class="abrir_pagina titulo_derecha'+detalleelemento.detel_id+'" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '">' + detalleelemento.detel_descripcion + '</a>' +
+                                                        '<h4><a href="javascript:void(0);" class="abrir_pagina subtitulo_derecha'+detalleelemento.detel_id+'" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '"> ACCEDER A : ' + detalleelemento.detel_descripcion + '</a></h4>' +
                                                         '</div>' +
                                                         '</li>';
                                                 }
@@ -601,11 +601,39 @@
 
         $(document).on('click', 'a.foto_cuadro_derecha', function () {
 
+            // info del lado derecho
+            var data_derecha=$(this).data("id");
             var imgderecha = $(this);
             var imgder = imgderecha.find("img").attr('src');
+            var titulo_derecha=$(".titulo_derecha"+data_derecha).text();
+            var subtitulo_derecha=$(".subtitulo_derecha"+data_derecha).text();
+            var data_blank_derecha=$(".titulo_derecha"+data_derecha).data("blank");
+            var data_url_derecha=$(".titulo_derecha"+data_derecha).data("url");
+    
+            //info del lado izquiero
+
             var imgizquierda = $("div.foto_cuadro_izquiera").find("img").attr('src');
-            $("div.foto_cuadro_izquiera").find("img").attr('src', imgder);
-            imgderecha.find("img").attr('src', imgizquierda);
+            var data_blank_izquierda=$(".abrir_pagina_izquierda").data("blank");
+            var data_url_izquierda=$(".abrir_pagina_izquierda").data("url");
+            var titulo_izquierda=$(".titulo_izquierda").text();
+            var subtitulo_izquierda=$(".subtitulo_izquierda").text();
+
+            // Hacer los cambios
+             // lado derecho
+             imgderecha.find("img").attr("src",imgizquierda);
+             $(".titulo_derecha"+data_derecha).text(titulo_izquierda);
+             $(".subtitulo_derecha"+data_derecha).text(subtitulo_izquierda);
+             $(".titulo_derecha"+data_derecha).data("blank",data_blank_izquierda);
+             $(".titulo_derecha"+data_derecha).data("url",data_url_izquierda);
+            // lado izquierdo
+            $("div.foto_cuadro_izquiera").find("img").attr("src",imgder);
+            $(".abrir_pagina_izquierda").data("url",data_url_derecha);
+            $(".abrir_pagina_izquierda").data("blank",data_blank_derecha);
+            $(".titulo_izquierda").text(titulo_derecha);
+            $(".subtitulo_izquierda").text(subtitulo_derecha);
+
+            // $("div.foto_cuadro_izquiera").find("img").attr('src', imgder);
+            // imgderecha.find("img").attr('src', imgizquierda);
         });
 
         $(document).on('click', 'li.modal_o', function () {

@@ -805,6 +805,8 @@
                         $("#tituloModalDetalleElemento").text("Editar ");
                         $("#detel_descripcion").val(data.detel_descripcion);
                         $("#detel_estado").val(data.detel_estado);
+                        $("#detel_url").val(data.detel_url);
+                        $("#detel_blank").val(data.detel_blank);
                         $(".detel-orden").show();
                         $('#modalFormularioDetalleElemento').modal('show');
                     }

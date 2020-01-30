@@ -29,7 +29,7 @@
             $.each(puntos, function (index, value) {
                 if(value.loc_latitud!=0&&value.loc_longitud!=0){
                     washingtonWebMercator = [parseFloat(value.loc_longitud), parseFloat(value.loc_latitud)];
-                    $("#seccion-mapa").append('<div id="marker' + index + '" title="Marker"><img src="/Content/intranet/images/png/marker.png" /></div>');
+                    $("#seccion-mapa").append('<div id="marker' + index + '" title="Marker"><img src="'+basePath+'Content/intranet/images/png/marker.png" /></div>');
                     $("#seccion-mapa").append('<div class="overlay" id="tittle' + index + '"><span class="">' + value.loc_nombre + '</span></div>');
                     var marker2 = new ol.Overlay({
                         position: washingtonWebMercator,
@@ -71,7 +71,7 @@
                         //     longitud:value.loc_longitud
                         // }
                         // arrayPuntos.push(objetoPuntos);
-                        span += '<li class="cambiarCentro item" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span class="nombres" style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + value.ubi_nombre + '</li></ul></li>';
+                        span += '<li class="cambiarCentro item" data-latitud="' + value.loc_latitud + '" data-longitud="' + value.loc_longitud + '"><h6 style="margin-bottom: 4px;margin-top: 4px;color: #d80000;">' + (index + 1) + '.- <span class="nombres" style="border-bottom:2px solid #d80000;">' + value.loc_nombre + '</span></h6><ul style="line-height: 1.2;margin-left: 37px;"><li><strong>Dirección: </strong> ' + value.loc_direccion + '</li><li><strong>Departamento: </strong> ' + (value.ubi_nombre==null?"":value.ubi_nombre) + '</li></ul></li>';
                     })
                     $("#resultados").html(span);
                 }

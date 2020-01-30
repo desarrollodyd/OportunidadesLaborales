@@ -1,6 +1,7 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @using SistemaReclutamiento.Utilitarios;
+@using System.Globalization;
 @{
     string nombre = "";
     if (Session["usuIntranet_full"] == null || Session["perIntranet_full"] == null)
@@ -41,7 +42,7 @@
         @RenderSection("AddToHead", required: false)
     }
     <style>
-               /* The Modal (background) */
+        /* The Modal (background) */
         .modal {
             display: none; /* Hidden by default */
             position: fixed; /* Stay in place */
@@ -72,14 +73,14 @@
             font-weight: bold;
         }
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        } 
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
     </style>
- 
+
 </head>
 <body>
     <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
@@ -115,13 +116,15 @@
                                 </li>
                                 <li style="background: black;margin-top: 1px;"><a href="#" class="btnCerrarSesion"><i class="fa fa-sign-out"></i> Salir</a></li>
                             </ul>
-                            
+
                         </div>
                         <div class="three columns">
                             <ul class="sf-menu sf-menu_" id="topsearch">
                                 <li class="">
                                     <a href="#" style="border-right:0px">
-                                        @DateTime.Now.ToString("dddd"),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year
+                                        @CultureInfo.CurrentCulture.TextInfo.ToTitleCase(DateTime.Now.ToString("dddd")),  @DateTime.Now.ToString("MMMM")  @DateTime.Now.Day, @DateTime.Now.Year
+
+                                        @*@DateTime.Now.ToString("dddd, dd MMMM yyyy")*@
                                     </a>
                                 </li>
                             </ul>
@@ -316,8 +319,8 @@
                                 <h3 class="blocktitle"><span id="titulo_izquierda"></span></h3>
                                 <div class="" style="max-height: 260px; width:100%" id="foto_izquierda">
                                     @* <ul class="listcomment" id="saludos_li">
-                                    
-                                    </ul> *@
+
+                                        </ul> *@
                                 </div>
                             </div>
                         </div>
@@ -329,8 +332,8 @@
                                 <h3 class="blocktitle"><span id="titulo_derecha"></span></h3>
                                 <div class="" style="max-height: 260px; width:100%" id="foto_derecha">
                                     @* <img src="~/Content/intranet/images/logo.png" alt=""><br />
-                                    <p>Av. Manuel E. Olguin Nro. 211 Int. 303 (Edificio Omega) <br />Santiago de Surco,<br /> Lima, Perú</p>
-                                    <br /> *@
+                                        <p>Av. Manuel E. Olguin Nro. 211 Int. 303 (Edificio Omega) <br />Santiago de Surco,<br /> Lima, Perú</p>
+                                        <br /> *@
 
                                 </div>
                             </div>
@@ -385,29 +388,28 @@
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/mono.png" /></div>
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/dientes.png" /></div>
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/diablo.png" /></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px">
-                                    <img src="~/Content/intranet/images/faces/001-balloon.png" />
-                                </div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"
-<img src="~/Content/intranet/images/faces/004-monkey.png" />></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"
-<img src="~/Content/intranet/images/faces/006-birthday.png" />></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"
-<img src="~/Content/intranet/images/faces/008-monkey.png" />></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px">
-                                    <img src="~/Content/intranet/images/faces/009-candle.png" />
-                                </div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"
-<img src="~/Content/intranet/images/faces/009-monkey.png" />></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"
-<img src="~/Content/intranet/images/faces/010-monkey.png" />></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
-                                <div class="img_face" style="float:left;width:28px;height:24px"></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/001-balloon.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/004-monkey.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/006-birthday.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/008-monkey.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/009-candle.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/009-monkey.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/010-monkey.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/013-confetti.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/013-smiling-1.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/014-monkey.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/015-dance.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/021-gifts.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/023-trumpet.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/026-birthday-party.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/030-monkey.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/040-happy-9.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/044-party-hat.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/050-champagne.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/070-tired-1.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/078-tongue.png" /></div>
+                                <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/102-tongue.png" /></div>
+
                             </div>
                             <textarea rows="4" id="sld_cuerpo" name="sld_cuerpo" style="width:100%;margin-top:5px;">Mensaje de Feliz Cumpleaños</textarea>
                         </form>

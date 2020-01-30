@@ -306,10 +306,10 @@
     <Content Include="Content\intranet\images\faces\015-dance.png" />
     <Content Include="Content\intranet\images\faces\021-gifts.png" />
     <Content Include="Content\intranet\images\faces\023-trumpet.png" />
-    <Content Include="Content\intranet\images\faces\026-birthday party.png" />
+    <Content Include="Content\intranet\images\faces\026-birthday-party.png" />
     <Content Include="Content\intranet\images\faces\030-monkey.png" />
     <Content Include="Content\intranet\images\faces\040-happy-9.png" />
-    <Content Include="Content\intranet\images\faces\044-party hat.png" />
+    <Content Include="Content\intranet\images\faces\044-party-hat.png" />
     <Content Include="Content\intranet\images\faces\050-champagne.png" />
     <Content Include="Content\intranet\images\faces\070-tired-1.png" />
     <Content Include="Content\intranet\images\faces\078-tongue.png" />

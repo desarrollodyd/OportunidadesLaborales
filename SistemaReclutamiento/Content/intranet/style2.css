@@ -1711,6 +1711,12 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'Intranet Cpj';
 	margin-bottom: 14px;
 	margin-top: 14px; 
+	font-weight: 100;
+}
+h6{
+	font-size: 15px;
+	font-weight: 100;
+	font-family: "Intranet Cpj delgado";
 }
 .clear{clear:both;}
 
@@ -1896,7 +1902,10 @@ ul#logos{
 	box-shadow:none;
 }
 
-.nav-bar>li>a{ font-weight: 400 !important; }
+.nav-bar>li>a{ 
+	font-weight: 400 !important;
+	font-size: 14px !important;
+}
 ul.nav-bar{ 
 	margin-bottom: 0px;
 }
@@ -3017,8 +3026,9 @@ ul.oc-horizon li .desc h4{
 #singlepost header{ 
 	position: relative;
 }
-#singlepost .loverate a{
+#singlepost .loverate > a{
 	color: #FFFFFF;
+	font-size: 32px !important;
 }
 #singlepost .loverate:hover{ 
 	background: #000000;
@@ -3038,8 +3048,8 @@ ul.oc-horizon li .desc h4{
 #singlepost header h1{
 	padding:0px 20px;
 	font-family: 'Intranet Cpj';
-	font-weight: normal;
-	font-size: 20px;
+	font-weight: 500;
+	font-size: 30px;
 	border-left:5px solid #FF0000;
 	margin-left:20px;
 	margin-top: 20px;
@@ -3055,7 +3065,7 @@ ul.oc-horizon li .desc h4{
 #singlepost .postmeta .meta-date{ 
 	width: 50%;
 	float: left; 
-	font-size: 14px;}
+	font-size: 18px;}
 #singlepost .postmeta .share-post{ 
 	width: 50%;
 	float: right;
@@ -3528,7 +3538,7 @@ aside.sideleft{
 }
 
 .widget h3{
-	font-size: 12px;
+	font-size: 15px;
 }
 .widget a:hover{ 
 	color: #FF0000; 
@@ -3755,8 +3765,8 @@ ul.listreview li .ctitle{
 	color:#FFFFFF;
 	line-height: 50px;
 	padding: 14px 30px 14px 14px; 
-	font-weight: 600;
-	font-family: 'Intranet Cpj';
+	font-weight: 100;
+	font-family: 'Intranet Cpj delgado';
 }
 ul.listreview li.active > a,ul.listreview li:hover > a{ 
 	color: #FFFFFF !important;
@@ -3922,7 +3932,7 @@ ul.listcomment li a:hover{
 #footer h3.blocktitle span{
 	text-align: center;
 	color: #FFFFFF;
-	font-size: 14px;
+	font-size: 15px;
 	float: left;
 }
 #footer .widget{
@@ -4532,7 +4542,8 @@ p.meta-date {
 
 ul.catlist h2.wtitle {
     margin-bottom: 5px;
-    font-size:10px;
+	font-size:13px;
+	font-family: "Intranet CPJ delgado";
 }
 
 .spannumber {
@@ -4613,7 +4624,8 @@ ul.oc-horizon li {
 
 .lista_titulo {
     margin-bottom: 4px;
-    margin-left: 20px;
+	margin-left: 20px;
+	font-size: 15px;
 }
 
 .listas {
@@ -4735,7 +4747,7 @@ blockquote {
 }
 
 ul.listreview li .ctitle {
-    font-size: 10px;
+    font-size: 15px;
     color: #FFFFFF;
     line-height: 18px;
     padding: 18px 30px 18px 14px;
@@ -4891,7 +4903,7 @@ h2.ntitle {
 }
 
 #contenido_cumple_modal #singlepost header h1 {
-    font-size: 20px;
+    font-size: 19px;
     min-height: 50px;
 }
 
@@ -5008,4 +5020,36 @@ div.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible{
 
 .divsinglepost ul{
 	padding-left: 20px !important;
+}
+.excerpt>h2>a{
+	font-family: "Intranet Cpj delgado" !important;
+	
+	font-size: 13px !important;
+}
+.post-content>a,p{
+	font-family: "Intranet Cpj delgado" !important;
+	
+	font-size: 14px !important;
+}
+.desc>h4,a{
+	font-family: "Intranet Cpj delgado" !important;
+	
+	font-size: 14px !important;
+}
+.nav-bar > li > a{
+	position: relative !important;
+	padding: 0 20px !important;
+	display: block !important;
+	text-decoration: none !important;
+	font-size: 14px !important;
+	text-transform: uppercase !important;
+	font-family: 'Intranet Cpj' !important;
+	font-weight: 100 !important;
+	font-weight: 400 !important;
+}
+#tituloCumpleanios{
+	font-family: 'Intranet Cpj delgado' !important;
+}
+#span_total_puntos{
+	font-family: 'Intranet Cpj delgado';
 }

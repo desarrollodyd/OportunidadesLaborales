@@ -21,8 +21,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             claseError error = new claseError();
             int intranetLocalCantidadSalas = 0;
             int intranetLocalCantidadApuestasDeportivas = 0;
-            string consulta = @"SELECT (select count(*) from marketing.cpj_local where loc_tipo='Salas') AS cantidad_salas,
-                                (select count(*) from marketing.cpj_local where loc_tipo='ApuestasDeportivas') AS cantidad_apuesta_deportiva
+            string consulta = @"SELECT (select count(*) from marketing.cpj_local where loc_tipo='Salas' and loc_estado='A') AS cantidad_salas,
+                                (select count(*) from marketing.cpj_local where loc_tipo='ApuestasDeportivas' and loc_estado='A') AS cantidad_apuesta_deportiva
 	                                ;";
             try
             {
@@ -57,7 +57,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"select loc_nombre,loc_alias, loc_id,loc_latitud,loc_longitud,loc_direccion,fk_ubigeo,ubi_nombre
 	                                from marketing.cpj_local join marketing.cpj_ubigeo on
 	                                marketing.cpj_local.fk_ubigeo=marketing.cpj_ubigeo.ubi_id
-	                                where lower(ubi_nombre) like '%"+nombre+"%' and loc_tipo='"+tipo+"';";
+	                                where lower(ubi_nombre) like '%"+nombre+"%' and loc_tipo='"+tipo+"' and loc_estado='A';";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
