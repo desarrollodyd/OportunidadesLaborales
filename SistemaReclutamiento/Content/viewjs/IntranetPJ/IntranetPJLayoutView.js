@@ -1,7 +1,7 @@
 ﻿var LayoutVista = function () {
     var _Layout = function () {
         //console.log(menu_id);
-
+       
         var meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
             "JULIO", "AGOSTO", "SETIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"
         ];
@@ -1091,7 +1091,7 @@
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
         $(document).on('click', 'li._cumple', function () {
-
+           
             var per_numdoc = $(this).data("numdoc");
             var nombrecumpleaniero = $(this).find("h2.wtitle").html();
             var per_id = $(this).data("id");
@@ -1116,9 +1116,11 @@
                         $("#informacion_puesto").html("");
                         span += "<strong>Área:</strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA) + "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina :</strong>" + ((data.DE_SEDE == null) ? "" : data.DE_SEDE) + "<br/>"
                         $("#informacion_puesto").html(span);
+                    
                     }
                     modal.style.display = "block";
                     modal.style.zIndex = 10000;
+                    
                 }
             })
 
@@ -1140,14 +1142,14 @@
             }
         }
         $(document).on('click', '.btn_enviar_saludo', function () {
-            var filepath = $(".select_img>img").attr('src');
-            var imagen = filepath.replace(/^.*[\\\/]/, '');
+            // var filepath = $(".select_img>img").attr('src');
+            // var imagen = filepath.replace(/^.*[\\\/]/, '');
             var fk_persona_que_saluda = persona.per_id;
             var fk_persona_saludada = $("#fk_persona_saludada").val();
             var sld_cuerpo = $("#sld_cuerpo").val();
             var direccion_envio = $("#direccion_envio").val();
             var dataForm = {
-                sld_avatar: imagen,
+                // sld_avatar: imagen,
                 fk_persona_que_saluda: fk_persona_que_saluda,
                 fk_persona_saludada: fk_persona_saludada,
                 sld_cuerpo: sld_cuerpo,

@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LayoutIntranetPJ.cshtml";
+
+}
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["perIntranet_full"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usuIntranet_full"]);
+}
+
+
+<section id="singlepost">
+    
+</section>
+
+@section js
+{
+
+    <script type="text/javascript">
+        menu_id = 0;
+        persona = (@Html.Raw(persona));
+        usuario = (@Html.Raw(usuario));
+    </script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
+}

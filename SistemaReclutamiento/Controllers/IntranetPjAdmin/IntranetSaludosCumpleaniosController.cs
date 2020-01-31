@@ -153,7 +153,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         string html = @"<div style="+background+" ><h1>¡Corporacion PJ Te desea Un Feliz Cumpleaños!</h1></br>" +
                             "<h2>Ademas queremos entregarte un mensaje de " + persona_que_saluda+" para ti :<h2></br>" +
                             "<h1>"+intranetSaludoCumpleanio.sld_cuerpo+"<h1>"+
-                                      "<img src='cid:imagen' /><div>";
+                                      "<div>";
 
                         AlternateView htmlView =
                             AlternateView.CreateAlternateViewFromString(html,
@@ -163,24 +163,26 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         // Creamos el recurso a incrustar. Observad
                         // que el ID que le asignamos (arbitrario) está
                         // referenciado desde el código HTML como origen
-     
 
-                        LinkedResource img =
-                            new LinkedResource(Server.MapPath("~/Content/intranet/images/faces/"+intranetSaludoCumpleanio.sld_avatar),
-                                                MediaTypeNames.Image.Jpeg);
-                        img.ContentId = "imagen";
-                        img.ContentType.Name = "Avatar";
 
+                        //LinkedResource img =
+                        //    new LinkedResource(Server.MapPath("~/Content/intranet/images/faces/"+intranetSaludoCumpleanio.sld_avatar),
+                        //                        MediaTypeNames.Image.Jpeg);
+                        //img.ContentId = "imagen";
+                        //img.ContentType.Name = "Avatar";
+
+                        var direccion = Server.MapPath("/") + Request.ApplicationPath;
+                        
 
                         LinkedResource img_fondo =
-                           new LinkedResource(Server.MapPath("~/Content/intranet/images/faces/cumpleanios.jpg"),
+                           new LinkedResource(direccion+"/Content/intranet/images/faces/cumpleanios.jpg",
                                                MediaTypeNames.Image.Jpeg);
                         img_fondo.ContentId = "imagen_fondo";
                         img_fondo.ContentType.Name = "Fondo";
 
                         // Lo incrustamos en la vista HTML...
 
-                        htmlView.LinkedResources.Add(img);
+                        //htmlView.LinkedResources.Add(img);
                         
                         htmlView.LinkedResources.Add(img_fondo);
 
@@ -201,18 +203,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         smtp.Send(mail);
                     }
                     catch (Exception ex) {
-                        errormensaje = ex.Message;
+                        errormensaje += ex.Message;
                     }
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola += error.Value;
                     errormensaje = "Error, no se Puede Insertar";
                 }
             }
             catch (Exception exp)
             {
-                errormensaje = exp.Message + " ,Llame Administrador";
+                errormensaje += exp.Message + " ,Llame Administrador";
             }
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje, mensajeconsola = mensajeConsola });

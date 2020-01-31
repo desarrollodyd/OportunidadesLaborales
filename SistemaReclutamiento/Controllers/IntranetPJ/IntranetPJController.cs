@@ -427,13 +427,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         {
             return View();
         }
-        public ActionResult mitiempopj()
+        public ActionResult Descargas()
         {
-            return View();
+            return View("~/Views/IntranetPJ/IntranetPJDescargas.cshtml");
         }
-        public ActionResult misherramientaspj()
+        public ActionResult Agenda()
         {
-            return View();
+            return View("~/Views/IntranetPJ/IntranetPJAgenda.cshtml");
         }
         [HttpPost]
         public ActionResult ListarLocalesporTipoJson(string tipo, string nombre="") {

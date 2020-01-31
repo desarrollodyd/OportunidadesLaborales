@@ -1,8 +1,10 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
+@using SistemaReclutamiento.Utilitarios;
 @{
     UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_full"];
-
+    Seguridad seguridad = new Seguridad();
+    string fecha_archivos = Seguridad.EncriptarCadenaHASH(Convert.ToString(DateTime.Now));
     if (usuario != null)
     {
         Response.Redirect("~/Persona/DatosPersonaVista");
@@ -24,19 +26,19 @@
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <!-- Bootstrap -->
-    <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css?v=@DateTime.Now" rel="stylesheet">
+    <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css?v=@fecha_archivos" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css?v=@DateTime.Now" rel="stylesheet">
-    <link href="~/Content/vendors/icomoon/styles.min.css?v=@DateTime.Now" rel="stylesheet" />
+    <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/vendors/icomoon/styles.min.css?v=@fecha_archivos" rel="stylesheet" />
     <!-- NProgress -->
-    <link href="~/Content/vendors/nprogress/nprogress.css?v=@DateTime.Now" rel="stylesheet">
+    <link href="~/Content/vendors/nprogress/nprogress.css?v=@fecha_archivos" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="~/Content/vendors/animate.css/animate.min.css?v=@DateTime.Now" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.css?v=@DateTime.Now" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css?v=@DateTime.Now" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css?v=@DateTime.Now" rel="stylesheet">
-    <link href="~/Content/login.css?v=@DateTime.Now" rel="stylesheet" />
-    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css?v=@DateTime.Now" rel="stylesheet" />
+    <link href="~/Content/vendors/animate.css/animate.min.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/login.css?v=@fecha_archivos" rel="stylesheet" />
+    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css?v=@fecha_archivos" rel="stylesheet" />
 </head>
 
 <body>
@@ -45,15 +47,15 @@
         @RenderBody()
     </div>
 
-    <script src="~/Content/vendors/jquery/dist/jquery.min.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/bootstrap/dist/js/bootstrap.min.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js?v=@DateTime.Now"></script>
-    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js?v=@DateTime.Now"></script>
-    <script src="~/Content/viewjs/general.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/jquery/dist/jquery.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/bootstrap/dist/js/bootstrap.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js?v=@fecha_archivos"></script>
+    <script src="~/Content/viewjs/general.js?v=@fecha_archivos"></script>
     @RenderSection("js", required: false)
 
     <script>

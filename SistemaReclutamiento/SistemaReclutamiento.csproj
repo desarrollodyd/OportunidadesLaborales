@@ -403,6 +403,7 @@
     <Content Include="Content\intranet\images\subido\titowebing.png" />
     <Content Include="Content\intranet\js\app.js" />
     <Content Include="Content\intranet\js\foundation.min.js" />
+    <Content Include="Content\intranet\js\inputEmoji.js" />
     <Content Include="Content\intranet\js\jquery-ui-1.8.23.custom.min.js" />
     <Content Include="Content\intranet\js\jquery.cookie.js" />
     <Content Include="Content\intranet\js\jquery.easing.min.js" />
@@ -5066,8 +5067,8 @@
     <Content Include="Views\Shared\_LoginIntranetPJAdmin.cshtml" />
     <Content Include="Views\IntranetPJ\somopj.cshtml" />
     <Content Include="Views\IntranetPJ\politicaspj.cshtml" />
-    <Content Include="Views\IntranetPJ\mitiempopj.cshtml" />
-    <Content Include="Views\IntranetPJ\misherramientaspj.cshtml" />
+    <Content Include="Views\IntranetPJ\IntranetPJDescargas.cshtml" />
+    <None Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJMenus.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJActividades.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJComentarios.cshtml" />

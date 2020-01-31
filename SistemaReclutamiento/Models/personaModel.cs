@@ -403,13 +403,16 @@ namespace SistemaReclutamiento.Models
                                     per_fechanacimiento ,
 									per_tipo,
                                     per_numdoc
-                                    from marketing.cpj_persona 
+                                    from marketing.cpj_persona join 
+									seguridad.seg_usuario
+									on seguridad.seg_usuario.fk_persona=marketing.cpj_persona.per_id
                                     where 
 									extract(day from per_fechanacimiento)>=extract(day from(select current_date))
 									and
 	                            	extract(month from per_fechanacimiento)=extract(month from (select current_date))
 	                                and per_tipo='EMPLEADO'
 	                                and per_estado='A'
+									and usu_estado='A'
 									order by extract(day from per_fechanacimiento) asc
 									limit 8";
             try
