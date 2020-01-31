@@ -14,7 +14,8 @@
                     callBackSuccess: function (response) {
                         console.log(response);
                         if (response.respuesta) {
-                            redirect({ site: "IntranetPJAdmin/Index" });
+                            localStorage.setItem('menuSelected', 0);
+                            redirect({ site: "IntranetPJAdmin/Index", time: 1500 });
                         }
                         else {
                             $("#usu_password").val("");

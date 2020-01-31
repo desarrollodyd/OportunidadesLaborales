@@ -265,7 +265,6 @@
 </div>
 
 
-
 <div class="modal fade" tabindex="-1" id="modalFormularioElementoModal" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -273,33 +272,39 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="nf"><span id="tituloModalElementoModal"></span> Elemento Modal</h4>
+                <h4 class="modal-title"><span id="tituloModalElementoModal"></span> Elemento Modal</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <form class="" id="form_elemento_modal">
                         <input type="hidden" name="emod_id" id="emod_id" value="" />
                         <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal" value="" />
-                        <div class="col-md-12 col-xs-12">
-                            <div class="form-group">
-                                <label>Titulo</label>
-                                <input type="text" name="emod_titulo" id="emod_titulo" class="form-control" placeholder="Titulo" />
-                            </div>
-                        </div>
+                        <input type="hidden" name="detal_elem_id" id="detal_elem_id" value="" />
+                        <input type="hidden" name="emod_orden" id="emod_orden" value="" />
                         <div class="col-md-12 col-xs-12" id="div_tipo_elemento_modal">
-                            <div class="form-group">
+                            <div class="form-group" id="div_fk_tipo_elemento_modal">
                                 <label>Tipo de Elemento</label>
-                                <select class="form-control" name="fk_tipo_elemento" id="cboTipoElementoModal">
+                                <select class="form-control" name="fk_tipo_elemento" id="fk_tipo_elemento_modal">
                                     <option value="">Tipo de Elemento</option>
                                 </select>
+
+                            </div>
+                            <div class="form-group" id="div_texto_fk_tipo_elemento_modal">
+                                <label>Tipo de Elemento</label>
+                                <div class="form-control" id="texto_fk_tipo_elemento_modal"></div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 emod-orden">
+
+                        <div class="col-md-12 col-xs-12 titulo_elemento_modal">
                             <div class="form-group">
-                                <label>Orden</label>
-                                <input type="number" name="emod_orden" id="emod_orden" class="form-control input-number" placeholder="Orden" />
+                                <label id="parrafo_elemento_modal">Texto</label>
+                                <div id="contenido_input_modal">
+                                    <input type="text" name="emod_titulo" id="emod_titulo" class="form-control" placeholder="Texto" />
+                                </div>
+
                             </div>
                         </div>
+
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
@@ -313,12 +318,103 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-guardar-elemento-modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button class="btn btn_guardar_elemento_modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="modalFormularioDetalleElementoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"><span id="tituloModalDetalleElementoModal"></span>Detalle Elemento Modal</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_detalle_elemento_modal" method="post">
+                        <input type="hidden" name="fk_elemento_modal" id="fk_elemento_modal" value="" />
+                        <input type="hidden" name="detelm_id" id="detelm_id" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal_" value="" />
+                        <input type="hidden" name="detelm_nombre_imagen" id="detelm_nombre_imagen" value="">
+                        <div class="col-md-12 col-xs-12 detelm-opcion">
+                            <div class="form-group">
+                                <label>Imagen o Boton con Texto</label>
+                                <select id="cboOpcionElemModal" name="opcion">
+                                    <option value="1">Boton con Texto</option>
+                                    <option value="2">Imagen</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 detelm-descripcion">
+                            <div class="form-group">
+                                <label>Contenido</label>
+                                <input type="text" name="detelm_descripcion" id="detelm_descripcion" class="form-control" placeholder="Nombre" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detelm-imagen">
+                            <div class="form-group">
+                                <label>Imagen</label>
+                                <label class="btn btn-warning" for="detelm_nombre">
+                                    <span id="spandetelm"><i class="fa fa-upload"></i>  Subir Icono</span>
+                                    <input id="detelm_nombre" name="detelm_nombre" type="file" class="form-control" style="display:none;" />
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="display:none" id="divdetelm">
+                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
+                                <label class="col-md-12 col-xs-12">Imagen Actual</label>
+                                <a id="frm_detelm" href="#" class="atch-thumb" style="width:100%;">
+                                    <img id="icono_actual_detelm" style="width:100px;height:100px" />
+                                    @*<i class="glyphicon glyphicon-save-file" style="font-size:120px;"></i>*@
+                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="detelm_nombre_imagen_modal"></span></div>
+                                    @* <div class="file-name" style="width:100%;text-align:left"><i class="fa fa-calendar"></i> <span id="cvfecha">*****</span></div> *@
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detelm-posicion">
+                            <div class="form-group">
+                                <label>Posicion</label>
+                                <select id="cboPosicionElemModal" name="detelm_posicion">
+                                    <option value="">Seleccione</option>
+                                    <option value="L">Izquierda</option>
+                                    <option value="C">Centro</option>
+                                    <option value="R">Derecha</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 detelm-orden">
+                            <div class="form-group">
+                                <label>Orden</label>
+                                <input type="number" name="detelm_orden" id="detelm_orden" class="form-control input-number" placeholder="Orden" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="detelm_estado" id="detelm_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar-detalle-elemento-modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>
     </div>
 </div>
+
 
 @*5,8,13,14,15,16,listas  11,10,9,7 imagenes  modal
 17,12 no modal*@

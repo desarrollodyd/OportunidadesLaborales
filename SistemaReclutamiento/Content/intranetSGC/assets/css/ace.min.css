@@ -23037,3 +23037,7 @@ div.box.placeholder {
     margin-top:2px;
     margin-bottom:2px;
 }
+
+.richText-toolbar ul{
+    margin:0px !important;
+}
