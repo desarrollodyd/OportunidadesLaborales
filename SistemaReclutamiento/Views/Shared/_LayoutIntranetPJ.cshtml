@@ -22,21 +22,26 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width" />
     <title>Intranet</title>
+    <!--BORRAR CACHE-->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
+    <meta http-equiv="Pragma" content="no-cache">
     <link rel="shortcut icon" href="~/Content/images/icon.png">
-    <link rel="stylesheet" href="~/Content/intranet/style2.css">
-    <script src="~/Content/intranet/js/modernizr.foundation.js"></script>
-    <link rel="stylesheet" href="~/Content/intranet/css/venobox.css" type="text/css" media="screen" />
-    <link rel="stylesheet" href="~/Content/intranet/css/PgwModal.css" />
+    <link rel="stylesheet" href="~/Content/intranet/style2.css?v=@DateTime.Now">
+    <script src="~/Content/intranet/js/modernizr.foundation.js?v=@DateTime.Now"></script>
+    <link rel="stylesheet" href="~/Content/intranet/css/venobox.css?v=@DateTime.Now" type="text/css" media="screen" />
+    <link rel="stylesheet" href="~/Content/intranet/css/PgwModal.css?v=@DateTime.Now" />
     <!-- switch theme  remove this on live project -->
-    <link rel='stylesheet' href="~/Content/intranet/css/schemes/redori.css" id="switchyuk" type='text/css' />
+    <link rel='stylesheet' href="~/Content/intranet/css/schemes/redori.css?v=@DateTime.Now" id="switchyuk" type='text/css' />
 
     @* Archivos css *@
-    <link href="~/Content/vendors/select2/dist/css/select2.css" rel="stylesheet" />
-    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
-    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="~/Content/vendors/select2/dist/css/select2.css?v=@DateTime.Now" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css?v=@DateTime.Now" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=@DateTime.Now" rel="stylesheet" />
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css?v=@DateTime.Now" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css?v=@DateTime.Now" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css?v=@DateTime.Now" rel="stylesheet">
     @if (IsSectionDefined("AddToHead"))
     {
         @RenderSection("AddToHead", required: false)
@@ -378,7 +383,7 @@
                             <input type="hidden" name="fk_persona_que_saluda" id="fk_persona_que_saluda" value="" />
                             <input type="hidden" name="direccion_envio" id="direccion_envio" value="" />
                             <strong style="margin-bottom:8px;float:left;width:100%">Enviale un Saludo :</strong>
-                            <div style="width: 100%;height: 30px;clear: both;">
+                            <div style="width: 100%;height: 50px;clear: both;">
                                 <div class="img_face select_img" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/serio.png" /></div>
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/labios.png" /></div>
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/lentes.png" /></div>
@@ -411,7 +416,7 @@
                                 <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/102-tongue.png" /></div>
 
                             </div>
-                            <textarea rows="4" id="sld_cuerpo" name="sld_cuerpo" style="width:100%;margin-top:5px;">Mensaje de Feliz Cumpleaños</textarea>
+                            <textarea rows="4" id="sld_cuerpo" name="sld_cuerpo" style="width:100%;margin-top:20px;">Mensaje de Feliz Cumpleaños</textarea>
                         </form>
                         <button type="button" class="radius alert button btn_enviar_saludo">ENVIAR SALUDO</button>
                     </div>
@@ -426,29 +431,29 @@
 
 
     <!-- jQuery UI Widget and Effects Core -->
-    <script src="~/Content/intranet/js/foundation.min.js"></script>
-    <script src="~/Content/intranet/js/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
-    <script src="~/Content/intranet/js/jquery.easing.min.js"></script>
+    <script src="~/Content/intranet/js/foundation.min.js?v=@DateTime.Now"></script>
+    <script src="~/Content/intranet/js/jquery-ui-1.8.23.custom.min.js?v=@DateTime.Now" type="text/javascript"></script>
+    <script src="~/Content/intranet/js/jquery.easing.min.js?v=@DateTime.Now"></script>
     <!-- Latest version (3.0.6) of jQuery Mouse Wheel by Brandon Aaron -->
-    <script src="~/Content/intranet/js/jquery.mousewheel.min.js" type="text/javascript"></script>
+    <script src="~/Content/intranet/js/jquery.mousewheel.min.js?v=@DateTime.Now" type="text/javascript"></script>
     <!-- jQuery Kinectic (1.5) used for touch scrolling -->
-    <script src="~/Content/intranet/js/jquery.kinetic.js" type="text/javascript"></script>
-    <script src="~/Content/intranet/js/pushy.js"></script>
-    <script src="~/Content/intranet/js/plugins.js"></script>
-    <script src="~/Content/intranet/js/app.js"></script>
-    <script src="~/Content/intranet/js/venobox.js" type="text/javascript"></script>
-    <script src="~/Content/intranet/js/PgwModal.js" type="text/javascript"></script>
+    <script src="~/Content/intranet/js/jquery.kinetic.js?v=@DateTime.Now" type="text/javascript"></script>
+    <script src="~/Content/intranet/js/pushy.js?v=@DateTime.Now"></script>
+    <script src="~/Content/intranet/js/plugins.js?v=@DateTime.Now"></script>
+    <script src="~/Content/intranet/js/app.js?v=@DateTime.Now"></script>
+    <script src="~/Content/intranet/js/venobox.js?v=@DateTime.Now" type="text/javascript"></script>
+    <script src="~/Content/intranet/js/PgwModal.js?v=@DateTime.Now" type="text/javascript"></script>
     @* Archivos para general.js *@
     <!-- NProgress -->
-    <script src="~/Content/vendors/nprogress/nprogress.js"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js"></script>
-    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
-    <script src="~/Content/vendors/iCheck/icheck.min.js"></script>
-    <script src="~/Content/vendors/moment/moment.js"></script>
-    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
-    <script src="~/Content/viewjs/generalIntranetPJ.js"></script>
+    <script src="~/Content/vendors/nprogress/nprogress.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/iCheck/icheck.min.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/moment/moment.js?v=@DateTime.Now"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js?v=@DateTime.Now"></script>
+    <script src="~/Content/viewjs/generalIntranetPJ.js?v=@DateTime.Now"></script>
     <script>
         $(document).on('click', '.btnCerrarSesion', function () {
             $.ajax({
