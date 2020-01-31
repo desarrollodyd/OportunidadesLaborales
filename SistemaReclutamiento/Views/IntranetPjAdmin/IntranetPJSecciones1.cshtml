@@ -264,6 +264,62 @@
     </div>
 </div>
 
+
+
+<div class="modal fade" tabindex="-1" id="modalFormularioElementoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalElementoModal"></span> Elemento Modal</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_elemento_modal">
+                        <input type="hidden" name="emod_id" id="emod_id" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal" value="" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Titulo</label>
+                                <input type="text" name="emod_titulo" id="emod_titulo" class="form-control" placeholder="Titulo" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12" id="div_tipo_elemento_modal">
+                            <div class="form-group">
+                                <label>Tipo de Elemento</label>
+                                <select class="form-control" name="fk_tipo_elemento" id="cboTipoElementoModal">
+                                    <option value="">Tipo de Elemento</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 emod-orden">
+                            <div class="form-group">
+                                <label>Orden</label>
+                                <input type="number" name="emod_orden" id="emod_orden" class="form-control input-number" placeholder="Orden" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="emod_estado" id="emod_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar-elemento-modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section js
 {
     <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJSecciones1.js"></script>

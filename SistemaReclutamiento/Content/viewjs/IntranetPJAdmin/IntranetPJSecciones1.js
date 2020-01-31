@@ -290,6 +290,7 @@ var PanelContenido = function () {
         var dataForm = {
             elem_id: elemento_id
         };
+        var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
         responseSimple({
             url: "IntranetDetalleElemento/IntranetDetalleElementoListarxElementoIDJson",
             data: JSON.stringify(dataForm),
@@ -321,14 +322,39 @@ var PanelContenido = function () {
                         posicion = '';
                     };
 
+                    var tipo = $("#elemento_" + elemento_id).data("tipo");
+                    var clasedetalle = "blue";
+                    var clasedetalleboton = "btn_elemento_modal";
+                    var columan_imagen = "";
+                    var columna_ubicacion = "";
+                    if (tipo == 17 || tipo==12) {
+                        clasedetalle = "grey";
+                        clasedetalleboton = "";
+                    }
+
+                    if (tipo == 5) {
+                        columan_imagen = "hidden";
+                        columna_ubicacion = "hidden";
+                    }
+
+                    if (tipo == 16) {
+                        columan_imagen = "hidden";
+                    }
+
+                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7) {
+                        columna_ubicacion = "hidden";
+                    }
                     var detalle = '<div class="action-buttons">' +
-                        '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento + '" href="javascript:void(0);" class="blue bigger-140 btn_elemento_modal" title = "Detalle">' +
+                        '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento + '" href="javascript:void(0);" class="' + clasedetalle + ' bigger-140 ' + clasedetalleboton+'" title = "Detalle">' +
                         '<i class="ace-icon fa fa-angle-double-up"></i>' +
                         '<span class="sr-only">Detalle</span>' +
                         '</a>' +
                         '</div>';
-
-                    tr += '<tr class="elem_' + elemento_id+'"  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden + '"><td class="center">' + detalle + '</td><td><span class="detelem_orden label label-white middle label-default">'+(index+1)+'</span> ' + value.detel_descripcion + '</td><td>' + value.detel_nombre + '.' + value.detel_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                    var nombre = value.detel_nombre + '.' + value.detel_extension;
+                    if (value.detel_extension == "") {
+                        nombre = "";
+                    }
+                    tr += '<tr class="elem_' + elemento_id + '"  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden + '"><td class="center">' + detalle + '</td><td><span class="detelem_orden label label-white middle label-default">' + (index + 1) + '</span> ' + value.detel_descripcion + '</td><td class="' + columan_imagen + '">' + nombre + '</td><td class="' + columna_ubicacion + '" >' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
 
                 var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
@@ -338,12 +364,27 @@ var PanelContenido = function () {
                     '</div>';
 
                 
+                var columan_imagen = "";
+                var columna_ubicacion = "";
+                if (tipo_elemento == 5) {
+                    columan_imagen = "hidden";
+                    columna_ubicacion = "hidden";
+                }
+
+                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7) {
+                    columna_ubicacion = "hidden";
+                }
+
+                if (tipo_elemento == 16) {
+                    columan_imagen = "hidden";
+                }
+
                 if (rows.length > 0) {
-                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_' + elemento_id+'">' + tr + '</tbody></table>';
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_' + elemento_id + '">' + tr + '</tbody></table>';
                     $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + boton_nuevo + '' + tr + '</div></div></td>');
                 }
                 else {
-                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
                     $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
                 }
             }
@@ -402,7 +443,8 @@ var PanelContenido = function () {
                     $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
                 }
                 else {
-                    $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td>');
+                    var tr = boton_nuevo + '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
+                    $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr +'</div></div></td>');
                 }
             }
         });
@@ -856,7 +898,9 @@ var PanelContenido = function () {
                 if (tipo_elemento == 13 || tipo_elemento == 15) {
                     $("#cboPosicion").val("R");
                 }
-                
+                if (tipo_elemento == 5) {
+                    $("#cboPosicion").val("");
+                }
             }
             else {
                 $(".detel-imagen").show();
@@ -865,6 +909,12 @@ var PanelContenido = function () {
                 }
                 if (tipo_elemento == 13 || tipo_elemento == 15) {
                     $("#cboPosicion").val("L");
+                }
+                if (tipo_elemento == 17 || tipo_elemento==12) {
+                    $("#cboPosicion").val("");
+                }
+                if (tipo_elemento == 7 || tipo_elemento == 11) {
+                    $("#cboPosicion").val("");
                 }
             }
             
@@ -901,7 +951,22 @@ var PanelContenido = function () {
                 $(".detel-posicion").hide();
                 $(".detel-estado").show();
                 $("#fk_seccion_elemento").val(2);
+                $("#cboOpcion").val(1).change();
+                $("#cboPosicion").val("");
             }
+            if (tipo_elemento == 7 || tipo_elemento==11) {
+                $(".detel-opcion").hide();
+                $(".detel-descripcion").hide();
+                $(".detel-imagen").show();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+                $(".detel-posicion").hide();
+                $(".detel-estado").show();
+                $("#fk_seccion_elemento").val(1);
+                $("#cboOpcion").val(2).change();
+                $("#cboPosicion").val("");
+            }
+
             else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
                 //va a abrir modal
                 $("#fk_seccion_elemento").val(1);
@@ -926,6 +991,14 @@ var PanelContenido = function () {
                 $(".detel-blank").hide();
                 $("#cboOpcion").val(1).change();
                 $(".detel-posicion").show();
+            }
+            else if (tipo_elemento == 17 || tipo_elemento==12) {
+                $("#fk_seccion_elemento").val(1);
+                $(".detel-opcion").hide();
+                $(".detel-url").show();
+                $(".detel-blank").show();
+                $("#cboOpcion").val(2).change();
+                $(".detel-posicion").hide();
             }
             else {
                 $("#fk_seccion_elemento").val(0);
@@ -988,7 +1061,7 @@ var PanelContenido = function () {
                             $("#detel_url").val("");
                         }
 
-                        if (data.fk_tipo_elemento == 8 || data.fk_tipo_elemento == 14 || data.fk_tipo_elemento == 13 || data.fk_tipo_elemento == 15) {
+                        if (data.fk_tipo_elemento == 8 || data.fk_tipo_elemento == 14 || data.fk_tipo_elemento == 13 || data.fk_tipo_elemento == 15 || data.fk_tipo_elemento == 7 || data.fk_tipo_elemento==11) {
                             $(".detel-posicion").hide();
                         }
                         if (data.fk_tipo_elemento == 16) {
@@ -1010,6 +1083,17 @@ var PanelContenido = function () {
             //$("#form_detalle_elemento").submit();
             var elemento_id = $("#fk_elemento").val();
             var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
+
+            if (tipo_elemento == 5) {
+                if ($("#detel_descripcion").val() == "") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
             if (tipo_elemento == 7) {
                 if ($("#detel_nombre").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
                     messageResponse({
@@ -1039,6 +1123,26 @@ var PanelContenido = function () {
                 }
             }
 
+            if (tipo_elemento == 17 || tipo_elemento==12) {
+                if ($("#detel_descripcion").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+
+                    return false;
+                }
+
+                if ($("#detel_nombre").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+                   
+                    return false;
+                }
+                
+            }
             var dataForm = new FormData(document.getElementById("form_detalle_elemento"));
             var url = '';
             if ($("#detel_id").val() == 0) {
@@ -1093,6 +1197,20 @@ var PanelContenido = function () {
                 $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Imagen');
             }
         })
+
+        ////////////////////////////////////////////////////elemento modal
+        $(document).on('click', '.btn_nuevo_elemento_modal', function (e) {
+            var fk_seccion_elemento = $(this).data('seccionelemento');
+            $("#fk_seccion_elemento_modal").val(fk_seccion_elemento);
+            $("#emod_id").val(0);
+            $("#div_tipo_elemento_modal").show();
+            $("#emod_titulo").val("");
+            $(".emod-orden").hide();
+            $("#emod_orden").val("");
+
+            $("#modalFormularioElementoModal").modal("show");
+        });
+
     };
 
     var _metodos = function () {
