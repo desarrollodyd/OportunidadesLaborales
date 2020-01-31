@@ -88,6 +88,35 @@ var PanelContenido = function () {
         });
     };
 
+    var _sort_elemento_modal = function (detal_elem_id) {
+        $('.tbody_elemento_modal_' + detal_elem_id).sortable({
+            cursor: 'move',
+            placeholder: 'box placeholder',
+            stop: function (event, ui) {
+                let lista_orden = [];
+                var lista = $('.tbody_elemento_modal_' + detal_elem_id + ' tr.elem_modal_' + detal_elem_id);
+                $.each(lista, function (index, value) {
+                    lista_orden.push({
+                        elem_id: $(this).data("id"),
+                        elem_orden: (index + 1)
+                    });
+                    $(this).find("span.elem_modal_orden").text((index + 1));
+                });
+                console.log(lista_orden);
+                responseSimple({
+                    url: "IntranetElementoModal/IntranetElementoModalEditarOrdenJson",
+                    data: JSON.stringify({ arrayElementoModal: lista_orden }),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            //PanelContenido.init_ListarSecciones(menu_id);
+                        }
+                    }
+                });
+            }
+        });
+    };
+
     var _ListarMenus = function () {
         $("#tabmenu").html("");
         $("#tabcontenido").html("");
@@ -343,7 +372,13 @@ var PanelContenido = function () {
 
                     if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7) {
                         columna_ubicacion = "hidden";
+                        if (tipo == 11|| tipo==7) {
+                            value.detel_descripcion = "IMAGEN";
+                        }
                     }
+
+                    
+
                     var detalle = '<div class="action-buttons">' +
                         '<a data-id="' + value.detel_id + '" data-seccion="' + value.fk_seccion_elemento + '" href="javascript:void(0);" class="' + clasedetalle + ' bigger-140 ' + clasedetalleboton+'" title = "Detalle">' +
                         '<i class="ace-icon fa fa-angle-double-up"></i>' +
@@ -354,6 +389,20 @@ var PanelContenido = function () {
                     if (value.detel_extension == "") {
                         nombre = "";
                     }
+                    if ((tipo == 8 || tipo == 14 )&& value.detel_posicion=="L") {
+                        nombre = "TEXTO";
+                    }
+                    if ((tipo == 8 || tipo == 14) && value.detel_posicion == "R") {
+                        value.detel_descripcion = "IMAGEN";
+                    }
+
+                    if ((tipo == 13 || tipo == 15) && value.detel_posicion == "L") {
+                        value.detel_descripcion = "IMAGEN";
+                    }
+                    if ((tipo == 13 || tipo == 15) && value.detel_posicion == "R") {
+                        nombre = "TEXTO";
+                    }
+
                     tr += '<tr class="elem_' + elemento_id + '"  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden + '"><td class="center">' + detalle + '</td><td><span class="detelem_orden label label-white middle label-default">' + (index + 1) + '</span> ' + value.detel_descripcion + '</td><td class="' + columan_imagen + '">' + nombre + '</td><td class="' + columna_ubicacion + '" >' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
 
@@ -385,7 +434,7 @@ var PanelContenido = function () {
                 }
                 else {
                     tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
-                    $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
+                    $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
                 }
             }
         });
@@ -405,8 +454,8 @@ var PanelContenido = function () {
                 console.log(rows.length);
                 var tr = "";
                 $.each(rows, function (index, value) {
-                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.emod_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
-                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.emod_id + '><i class="ace-icon fa fa-trash"></i> </button>';
+                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.emod_id + ' data-detal_elem_id="' + detalle_elemento_id+'"><i class="ace-icon fa fa-pencil"></i> </button>' +
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.emod_id + ' data-seccion_id="' + fk_seccion_elemento + '" data-detal_elem_id="' + detalle_elemento_id +'"><i class="ace-icon fa fa-trash"></i> </button>';
 
                     var clase_estado = 'success';
                     var estado = "Activo";
@@ -430,22 +479,81 @@ var PanelContenido = function () {
                         '<span class="sr-only">Detalle</span>' +
                         '</a>' +
                         '</div>';
-                    tr += '<tr id="elemento_modal_' + value.emod_id +'" data-id="' + value.emod_id + '" data-orden="' + value.emod_orden + '" data-tipo="' + value.fk_tipo_elemento + '"><td class="center">' + detalle + '</td><td>' + value.tipo_nombre + '</td><td>' + value.emod_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                    tr += '<tr class="elem_modal_' + detalle_elemento_id + '" id="elemento_modal_' + value.emod_id + '" data-id="' + value.emod_id + '" data-orden="' + value.emod_orden + '" data-tipo="' + value.fk_tipo_elemento + '"><td class="center">' + detalle + '</td><td><span class="elem_modal_orden label label-white middle label-default">' + (index + 1) + '</span> '  + value.tipo_nombre + '</td><td>' + value.emod_titulo + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
 
                 var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
+                    '<div class="col-md-3 col-md-offset-6 col-sm-2 col-xs-12"><button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_ordenar_elemento_modal" data-id="' + detalle_elemento_id + '" data-rel="tooltip" title="Ordenar  Elemento"><i class="ace-icon glyphicon glyphicon-list-alt"></i> Ordenar </button></div>' +
                     '<div class="col-md-3 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_elemento_modal" data-seccion="' + fk_seccion_elemento + '" data-id="' + detalle_elemento_id + '" data-rel="tooltip" title="Nuevo Elemento Modal"> <i class="fa fa-file"></i> Nuevo Elemento Modal</button></div>' +
                     '</div>';
 
-                tr = boton_nuevo + '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
+                tr = boton_nuevo + '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody class="tbody_elemento_modal_' + detalle_elemento_id + '">' + tr + '</tbody></table>';
     
                 if (rows.length > 0) {
                     $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
                 }
                 else {
-                    var tr = boton_nuevo + '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
+                    var tr = boton_nuevo + '<table class="table table-bordered table-condensed table-hover"><thead><tr><th style="width: 5%;"></th><th style="width: 18%;">Tipo</th><th>Titulo</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
                     $('#tr_elemento_contenido_modal_' + detalle_elemento_id).html('<td colspan="6" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr +'</div></div></td>');
                 }
+            }
+        });
+    };
+
+    var _ListarDetalleElementosModal = function (elemento_modal_id) {
+        var dataForm = {
+            fk_elemento_modal: elemento_modal_id
+        };
+        responseSimple({
+            url: "IntranetDetalleElementoModal/IntranetDetalleElementoModalListarxElementoModalJson",
+            data: JSON.stringify(dataForm),
+            refresh: false,
+            callBackSuccess: function (response) {
+                var rows = response.data;
+                var tr = "";
+                $.each(rows, function (index, value) {
+                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento_modal" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento_modal" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-trash"></i> </button>';
+
+                    var clase_estado = 'success';
+                    var estado = "Activo";
+                    if (value.detelm_estado == "I") {
+                        clase_estado = 'danger';
+                        estado = "Inactivo";
+                    };
+                    var posicion = '';
+                    if (value.detelm_posicion == 'L') {
+                        posicion = 'Izquierda';
+                    }
+                    else if (value.detelm_posicion == 'C') {
+                        posicion = 'Centro';
+                    }
+                    else if (value.detelm_posicion == 'R') {
+                        posicion = 'Derecha';
+                    }
+                    else {
+                        posicion = '';
+                    };
+
+
+                    tr += '<tr  data-id="' + value.detelm_id + '" data-orden="' + value.detelm_orden + '"><td><span class="elem_orden label label-default label-white middle">' + (index + 1) + '</span> ' + value.detelm_descripcion + '</td><td>' + value.detelm_nombre + '.' + value.detelm_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                });
+
+                var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
+                    '<div class="col-md-3 col-md-offset-4 col-sm-2 col-xs-12"><button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_ordenar_elemento_modal" data-id="' + elemento_modal_id + '" data-rel="tooltip" title="Ordenar  Elemento"><i class="ace-icon glyphicon glyphicon-list-alt"></i> Ordenar </button></div>' +
+                    '<div class="col-md-5 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento_modal" data-id="' + elemento_modal_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento Modal"> <i class="fa fa-file"></i> Nuevo Detalle Elemento Modal</button></div>' +
+                    '</div>';
+
+
+                tr = boton_nuevo + '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
+                if (rows.length > 0) {
+                    $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
+                }
+                else {
+                    tr = boton_nuevo + '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><td colspan="5" ><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tbody></table>';
+                    $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
+                }
+
             }
         });
     };
@@ -514,59 +622,10 @@ var PanelContenido = function () {
                 $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).remove();
                 $('<tr id="tr_elemento_contenido_detalle_modal' + elemento_modal_id + '" class="detail-row open"><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">Cargando Data ...</div></td></tr>').insertAfter(act_tr);
 
-                var dataForm = {
-                    fk_elemento_modal: elemento_modal_id
-                };
-                responseSimple({
-                    url: "IntranetDetalleElementoModal/IntranetDetalleElementoModalListarxElementoModalJson",
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        var rows = response.data;
-                        var tr = "";
-                        $.each(rows, function (index, value) {
-                            var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento_modal" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
-                                ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento_modal" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-trash"></i> </button>';
 
-                            var clase_estado = 'success';
-                            var estado = "Activo";
-                            if (value.detelm_estado == "I") {
-                                clase_estado = 'danger';
-                                estado = "Inactivo";
-                            };
-                            var posicion = '';
-                            if (value.detelm_posicion == 'L') {
-                                posicion = 'Izquierda';
-                            }
-                            else if (value.detelm_posicion == 'C') {
-                                posicion = 'Centro';
-                            }
-                            else if (value.detelm_posicion == 'R') {
-                                posicion = 'Derecha';
-                            }
-                            else {
-                                posicion = '';
-                            };
+                PanelContenido.init_Sort_Detalle_Elemento_modal(elemento_modal_id);
 
 
-                            tr += '<tr  data-id="' + value.detelm_id + '" data-orden="' + value.detelm_orden + '"><td>' + value.detelm_descripcion + '</td><td>' + value.detelm_nombre + '.' + value.detelm_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
-                        });
-
-                        var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
-                            '<div class="col-md-5 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento_modal" data-id="' + elemento_modal_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento Modal"> <i class="fa fa-file"></i> Nuevo Detalle Elemento Modal</button></div>' +
-                            '</div>';
-
-
-                        tr = boton_nuevo+'<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
-                        if (rows.length > 0) {
-                            $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
-                        }
-                        else {
-                            $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).html('<td colspan="5" style="padding-left: 2%;"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td>');
-                        }
-
-                    }
-                });
             }
         });
 
@@ -686,7 +745,7 @@ var PanelContenido = function () {
         $(document).on('change', '#fk_tipo_elemento', function (e) {
             var estado = $("#tituloModalElemento").text();
             if (estado == "Nuevo") {
-                var input = '<input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Titulo">';
+                var input = '<input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Texto">';
                 var textarea = '<textarea name="elem_titulo" id="elem_titulo" class="form-control"></textarea>';
                 var tipo = $(this).val();
                 if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
@@ -744,7 +803,7 @@ var PanelContenido = function () {
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
                         var elemento = response.data;
-                        var input = '<input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Titulo">';
+                        var input = '<input type="text" name="elem_titulo" id="elem_titulo" class="form-control" placeholder="Texto">';
                         var textarea = '<textarea name="elem_titulo" id="elem_titulo" class="form-control"></textarea>';
                         var tipo = elemento.fk_tipo_elemento;
                         $("#fk_tipo_elemento").val(elemento.fk_tipo_elemento).trigger('change');
@@ -819,11 +878,11 @@ var PanelContenido = function () {
 
         $(document).on("click", ".btn_eliminar_elemento", function (e) {
             var elemento_id = $(this).data("id");
+            var seccion_id = $(this).data("seccion_id");
             if (elemento_id != "" || elemento_id > 0) {
                 messageConfirmation({
                     content: '¿Esta seguro que desea ELIMINAR este Elemento?',
                     callBackSAceptarComplete: function () {
-                        var seccion_id = $("#fk_seccion").val();
                         responseSimple({
                             url: "IntranetElemento/IntranetElementoElementoEliminarJson",
                             data: JSON.stringify({ elem_id: elemento_id }),
@@ -1199,18 +1258,194 @@ var PanelContenido = function () {
         })
 
         ////////////////////////////////////////////////////elemento modal
+
+        $(document).on('click', '.btn_ordenar_elemento_modal', function (e) {
+            var detal_elem_id = $(this).data("id");
+            var spans = $('tbody.tbody_elemento_modal_' + detal_elem_id + ' tr span.elem_modal_orden');
+            console.log(spans)
+            $.each(spans, function (index, value) {
+                $(this).removeClass("label-default");
+                $(this).addClass("label-warning");
+            });
+            PanelContenido.init_Sort_Elemento_modal(detal_elem_id);
+        });
+
+        $(document).on('change', '#fk_tipo_elemento_modal', function (e) {
+            var estado = $("#tituloModalElementoModal").text();
+            if (estado == "Nuevo") {
+                var input = '<input type="text" name="emod_titulo" id="emod_titulo" class="form-control" placeholder="Texto">';
+                var textarea = '<textarea name="emod_titulo" id="emod_titulo" class="form-control"></textarea>';
+                var tipo = $(this).val();
+                if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
+                    if (tipo == 3) {
+                        $("#parrafo_elemento_modal").text("Parrafo");
+                        $("#contenido_input_modal").html(textarea);
+                        $('#emod_titulo').richText({
+                            imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                            fileUpload: false, urls: false
+                        });
+                        $("a.richText-help").hide();
+                    } else {
+                        $("#parrafo_elemento_modal").text("Texto");
+                        $("#contenido_input_modal").html(input);
+                    };
+                    $("div.titulo_elemento_modal").show();
+                    $("#emod_titulo").val("");
+
+                }
+                else {
+                    $("#contenido_input_modal").html(input);
+                    $("#parrafo_elemento_modal").text("Texto");
+                    $("div.titulo_elemento_modal").hide();
+                    $("#emod_titulo").val($("#fk_tipo_elemento_modal option:selected").text());
+                }
+            }
+        });
+
         $(document).on('click', '.btn_nuevo_elemento_modal', function (e) {
-            var fk_seccion_elemento = $(this).data('seccionelemento');
-            $("#fk_seccion_elemento_modal").val(fk_seccion_elemento);
+            $("#tituloModalElementoModal").text("Nuevo");
+            var fk_seccion_elemento_modal = $(this).data("seccion");
+            var detal_elem_id = $(this).data("id");
+            $("#fk_seccion_elemento_modal").val(fk_seccion_elemento_modal);
+            $("#detal_elem_id").val(detal_elem_id);
             $("#emod_id").val(0);
-            $("#div_tipo_elemento_modal").show();
             $("#emod_titulo").val("");
-            $(".emod-orden").hide();
-            $("#emod_orden").val("");
+            $("#div_texto_fk_tipo_elemento_modal").removeClass("hidden");
+            $("#div_texto_fk_tipo_elemento_modal").addClass("hidden");
+            $("#fk_tipo_elemento_modal").val("").trigger('change');
+            _objetoForm_form_elemento_modal.resetForm();
 
             $("#modalFormularioElementoModal").modal("show");
         });
 
+        $(document).on('click', '.btn_editar_elemento_modal', function () {
+            $("#tituloModalElementoModal").text("Editar");
+            var emod_id = $(this).data('id');
+            var dataForm = {
+                emod_id: emod_id,
+            }
+            _objetoForm_form_elemento_modal.resetForm();
+            $("#div_fk_tipo_elemento_modal").addClass("hidden");
+            $("#div_texto_fk_tipo_elemento_modal").removeClass("hidden");
+            responseSimple({
+                url: 'IntranetElementoModal/IntranetElementoModalIdObtenerJson',
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    if (response.respuesta) {
+                        var elemento = response.data;
+                        var input = '<input type="text" name="emod_titulo" id="emod_titulo" class="form-control" placeholder="Texto">';
+                        var textarea = '<textarea name="emod_titulo" id="emod_titulo" class="form-control"></textarea>';
+                        var tipo = elemento.fk_tipo_elemento;
+                        $("#fk_tipo_elemento_modal").val(elemento.fk_tipo_elemento).trigger('change');
+                        $("#fk_seccion_elemento_modal").val(elemento.fk_seccion);
+                        $("#emod_id").val(elemento.elem_id);
+                        $("#emod_orden").val(elemento.elem_orden);
+                        $("#emod_estado").val(elemento.elem_estado);
+                        if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
+                            if (tipo == 3) {
+                                $("#parrafo_elemento_modal").text("Parrafo");
+                                $("#contenido_input_modal").html(textarea);
+                                $("#emod_titulo").val(elemento.elem_titulo);
+                                $('#emod_titulo').richText({
+                                    imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                                    fileUpload: false, urls: false
+                                });
+                                $("a.richText-help").hide();
+                            } else {
+                                $("#parrafo_elemento_modal").text("Texto");
+                                $("#contenido_input_modal").html(input);
+                                $("#emod_titulo").val(elemento.elem_titulo);
+                            };
+                            $("div.titulo_elemento_modal").show();
+                        }
+                        else {
+                            $("#contenido_input_modal").html(input);
+                            $("#parrafo_elemento_modal").text("Texto");
+                            $("div.titulo_elemento_modal").hide();
+                            $("#emod_titulo").val(elemento.elem_titulo);
+                        }
+                        $("#texto_fk_tipo_elemento_modal").html($("#fk_tipo_elemento_modal option:selected").text());
+                        $("#modalFormularioElementoModal").modal("show");
+                    }
+                }
+            })
+        });
+
+        $(document).on('click', '.btn_guardar_elemento_modal', function () {
+            $("#form_elemento_modal").submit();
+            if (_objetoForm_form_elemento_modal.valid()) {
+                var dataForm = $('#form_elemento_modal').serializeFormJSON();
+                var url = "";
+                if ($("#emod_id").val() == 0) {
+                    url = 'IntranetElementoModal/IntranetElementoModalInsertarJson';
+                }
+                else {
+                    url = 'IntranetElementoModal/IntranetElementoModalEditarJson';
+                }
+                responseSimple({
+                    url: url,
+                    data: JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        //console.log(response);
+                        var respuesta = response.respuesta;
+                        if (respuesta) {
+                            var seccion_id = $("#fk_seccion_elemento_modal").val();
+                            var detal_elem_id = $("#detal_elem_id").val();
+                            PanelContenido.init_ListarElementosModal(seccion_id, detal_elem_id);
+                            $("#modalFormularioElementoModal").modal("hide");
+                            //refresh(true);
+                        }
+                    }
+                });
+            } else {
+                messageResponse({
+                    text: "Complete los campos Obligatorios",
+                    type: "error"
+                })
+            }
+
+        });
+
+        $(document).on("click", ".btn_eliminar_elemento_modal", function (e) {
+            var emod_id = $(this).data("id");
+            var seccion_id = $(this).val("seccion_id");
+            if (emod_id != "" || emod_id > 0) {
+                messageConfirmation({
+                    content: '¿Esta seguro que desea ELIMINAR este Elemento?',
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: "IntranetElemento/IntranetElementoModalEliminarJson",
+                            data: JSON.stringify({ emod_id: emod_id }),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                if (response.respuesta) {
+                                    PanelContenido.init_ListarElementosModal(seccion_id);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                messageResponse({
+                    text: "Error no se encontro ID",
+                    type: "error"
+                })
+            }
+        });
+
+        //////////////////////////////////////////////detalle elemento modal
+
+        $(document).on('click', '.btn_nuevo_detalle_elemento_modal', function (e) {
+            $("#tituloModalDetalleElementoModal").text("Nuevo");
+            
+
+            $("#modalFormularioDetalleElementoModal").modal("show");
+        });
+
+        
     };
 
     var _metodos = function () {
@@ -1218,6 +1453,15 @@ var PanelContenido = function () {
         selectResponse({
             url: "IntranetTipoElemento/IntranetTipoElementoListarJson",
             select: "fk_tipo_elemento",
+            campoID: "tipo_id",
+            CampoValor: "tipo_nombre",
+            select2: true,
+            closeMessages: true,
+        });
+
+        selectResponse({
+            url: "IntranetTipoElemento/IntranetTipoElementoListarJson",
+            select: "fk_tipo_elemento_modal",
             campoID: "tipo_id",
             CampoValor: "tipo_nombre",
             select2: true,
@@ -1295,6 +1539,33 @@ var PanelContenido = function () {
                 }
             }
         });
+
+        validar_Form({
+            nameVariable: 'form_elemento_modal',
+            contenedor: '#form_elemento_modal',
+            rules: {
+                fk_tipo_elemento:
+                {
+                    required: true,
+
+                },
+                emod_estado:
+                {
+                    required: true,
+
+                }
+            },
+            messages: {
+                fk_tipo_elemento:
+                {
+                    required: 'Campo Obligatorio',
+                },
+                emod_estado:
+                {
+                    required: 'Campo Obligatorio',
+                }
+            }
+        });
     };
 
     //
@@ -1316,6 +1587,9 @@ var PanelContenido = function () {
         init_Sort_Detalle_Elemento: function (elemento_id) {
             _sort_detalle_elemento(elemento_id);
         },
+        init_Sort_Elemento_modal: function (detal_elemento_id) {
+            _sort_elemento_modal(detal_elemento_id);
+        },
         init_ListarMenus: function () {
             _ListarMenus();
         },
@@ -1330,7 +1604,11 @@ var PanelContenido = function () {
         },
         init_ListarElementosModal: function (fk_seccion_elemento, detalle_elemento_id) {
             _ListarElementosModal(fk_seccion_elemento, detalle_elemento_id);
-        }
+        },
+        init_Sort_Detalle_Elemento_modal: function (elemento_modal_id) {
+            _ListarDetalleElementosModal(elemento_modal_id);
+        },
+        
     }
 }();
 // Initialize module
