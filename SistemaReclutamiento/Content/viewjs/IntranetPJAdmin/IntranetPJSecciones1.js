@@ -117,6 +117,35 @@ var PanelContenido = function () {
         });
     };
 
+    var _sort_Detalle_Elemento_modal = function (elementom_id) {
+        $('.tbody_detalle_elemento_modal_' + elemento_id).sortable({
+            cursor: 'move',
+            placeholder: 'box placeholder',
+            stop: function (event, ui) {
+                let lista_orden = [];
+                var lista = $('.tbody_detalle_elemento_modal_' + elementom_id + ' tr.delem_modal_' + elementom_id);
+                $.each(lista, function (index, value) {
+                    lista_orden.push({
+                        detelm_id: $(this).data("id"),
+                        detelm_orden: (index + 1)
+                    });
+                    $(this).find("span.detelem_modal_orden").text((index + 1));
+                });
+                console.log(lista_orden);
+                responseSimple({
+                    url: "IntranetDetalleElementoModal/IntranetDetalleElementoModalEditarOrdenJson",
+                    data: JSON.stringify({ arrayDetElemento: lista_orden }),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            //PanelContenido.init_ListarSecciones(menu_id);
+                        }
+                    }
+                });
+            }
+        });
+    };
+
     var _ListarMenus = function () {
         $("#tabmenu").html("");
         $("#tabcontenido").html("");
@@ -356,7 +385,7 @@ var PanelContenido = function () {
                     var clasedetalleboton = "btn_elemento_modal";
                     var columan_imagen = "";
                     var columna_ubicacion = "";
-                    if (tipo == 17 || tipo==12) {
+                    if (tipo == 17 || tipo == 12 || tipo == 5 || tipo == 7) {
                         clasedetalle = "grey";
                         clasedetalleboton = "";
                     }
@@ -454,8 +483,8 @@ var PanelContenido = function () {
                 console.log(rows.length);
                 var tr = "";
                 $.each(rows, function (index, value) {
-                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id=' + value.emod_id + ' data-detal_elem_id="' + detalle_elemento_id+'"><i class="ace-icon fa fa-pencil"></i> </button>' +
-                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id=' + value.emod_id + ' data-seccion_id="' + fk_seccion_elemento + '" data-detal_elem_id="' + detalle_elemento_id +'"><i class="ace-icon fa fa-trash"></i> </button>';
+                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_elemento_modal" data-id=' + value.emod_id + ' data-detal_elem_id="' + detalle_elemento_id+'"><i class="ace-icon fa fa-pencil"></i> </button>' +
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_elemento_modal" data-id=' + value.emod_id + ' data-seccion_id="' + fk_seccion_elemento + '" data-detal_elem_id="' + detalle_elemento_id +'"><i class="ace-icon fa fa-trash"></i> </button>';
 
                     var clase_estado = 'success';
                     var estado = "Activo";
@@ -622,10 +651,7 @@ var PanelContenido = function () {
                 $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).remove();
                 $('<tr id="tr_elemento_contenido_detalle_modal' + elemento_modal_id + '" class="detail-row open"><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">Cargando Data ...</div></td></tr>').insertAfter(act_tr);
 
-
-                PanelContenido.init_Sort_Detalle_Elemento_modal(elemento_modal_id);
-
-
+                PanelContenido.init_ListarDetalle_Elemento_modal(elemento_modal_id);
             }
         });
 
@@ -977,7 +1003,6 @@ var PanelContenido = function () {
                 }
             }
             
-           
         });
 
         $(document).on('click', '.btn_nuevo_detalle_elemento', function (e) {
@@ -1013,7 +1038,7 @@ var PanelContenido = function () {
                 $("#cboOpcion").val(1).change();
                 $("#cboPosicion").val("");
             }
-            if (tipo_elemento == 7 || tipo_elemento==11) {
+            else if (tipo_elemento == 7 || tipo_elemento==11) {
                 $(".detel-opcion").hide();
                 $(".detel-descripcion").hide();
                 $(".detel-imagen").show();
@@ -1255,7 +1280,7 @@ var PanelContenido = function () {
                 $("#spandetel").html("");
                 $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Imagen');
             }
-        })
+        });
 
         ////////////////////////////////////////////////////elemento modal
 
@@ -1310,7 +1335,7 @@ var PanelContenido = function () {
             $("#detal_elem_id").val(detal_elem_id);
             $("#emod_id").val(0);
             $("#emod_titulo").val("");
-            $("#div_texto_fk_tipo_elemento_modal").removeClass("hidden");
+            $("#div_fk_tipo_elemento_modal").removeClass("hidden");
             $("#div_texto_fk_tipo_elemento_modal").addClass("hidden");
             $("#fk_tipo_elemento_modal").val("").trigger('change');
             _objetoForm_form_elemento_modal.resetForm();
@@ -1338,15 +1363,15 @@ var PanelContenido = function () {
                         var textarea = '<textarea name="emod_titulo" id="emod_titulo" class="form-control"></textarea>';
                         var tipo = elemento.fk_tipo_elemento;
                         $("#fk_tipo_elemento_modal").val(elemento.fk_tipo_elemento).trigger('change');
-                        $("#fk_seccion_elemento_modal").val(elemento.fk_seccion);
-                        $("#emod_id").val(elemento.elem_id);
-                        $("#emod_orden").val(elemento.elem_orden);
-                        $("#emod_estado").val(elemento.elem_estado);
+                        $("#fk_seccion_elemento_modal").val(elemento.fk_seccion_elemento);
+                        $("#emod_id").val(elemento.emod_id);
+                        $("#emod_orden").val(elemento.emod_orden);
+                        $("#emod_estado").val(elemento.emod_estado);
                         if (tipo == 1 || tipo == 2 || tipo == 3 || tipo == 4 || tipo == 6) {
                             if (tipo == 3) {
                                 $("#parrafo_elemento_modal").text("Parrafo");
                                 $("#contenido_input_modal").html(textarea);
-                                $("#emod_titulo").val(elemento.elem_titulo);
+                                $("#emod_titulo").val(elemento.emod_titulo);
                                 $('#emod_titulo').richText({
                                     imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
                                     fileUpload: false, urls: false
@@ -1355,7 +1380,7 @@ var PanelContenido = function () {
                             } else {
                                 $("#parrafo_elemento_modal").text("Texto");
                                 $("#contenido_input_modal").html(input);
-                                $("#emod_titulo").val(elemento.elem_titulo);
+                                $("#emod_titulo").val(elemento.emod_titulo);
                             };
                             $("div.titulo_elemento_modal").show();
                         }
@@ -1363,7 +1388,7 @@ var PanelContenido = function () {
                             $("#contenido_input_modal").html(input);
                             $("#parrafo_elemento_modal").text("Texto");
                             $("div.titulo_elemento_modal").hide();
-                            $("#emod_titulo").val(elemento.elem_titulo);
+                            $("#emod_titulo").val(elemento.emod_titulo);
                         }
                         $("#texto_fk_tipo_elemento_modal").html($("#fk_tipo_elemento_modal option:selected").text());
                         $("#modalFormularioElementoModal").modal("show");
@@ -1410,18 +1435,19 @@ var PanelContenido = function () {
 
         $(document).on("click", ".btn_eliminar_elemento_modal", function (e) {
             var emod_id = $(this).data("id");
-            var seccion_id = $(this).val("seccion_id");
+            var seccion_id = $(this).data("seccion_id");
+            var detal_elem_id = $(this).data("detal_elem_id");
             if (emod_id != "" || emod_id > 0) {
                 messageConfirmation({
                     content: '¿Esta seguro que desea ELIMINAR este Elemento?',
                     callBackSAceptarComplete: function () {
                         responseSimple({
-                            url: "IntranetElemento/IntranetElementoModalEliminarJson",
+                            url: "IntranetElementoModal/IntranetElementoModalEliminarJson",
                             data: JSON.stringify({ emod_id: emod_id }),
                             refresh: false,
                             callBackSuccess: function (response) {
                                 if (response.respuesta) {
-                                    PanelContenido.init_ListarElementosModal(seccion_id);
+                                    PanelContenido.init_ListarElementosModal(seccion_id, detal_elem_id);
                                 }
                             }
                         });
@@ -1438,14 +1464,356 @@ var PanelContenido = function () {
 
         //////////////////////////////////////////////detalle elemento modal
 
-        $(document).on('click', '.btn_nuevo_detalle_elemento_modal', function (e) {
-            $("#tituloModalDetalleElementoModal").text("Nuevo");
-            
+        $(document).on('click', '.btn_ordenar_detalle_elemento_modal', function (e) {
+            var elementom_id = $(this).data("id");
+            var spans = $('tbody.tbody_detalle_elemento_modal_' + elemento_id + ' tr span.detelem_modal_orden');
+            console.log(spans)
+            $.each(spans, function (index, value) {
+                $(this).removeClass("label-default");
+                $(this).addClass("label-warning");
+            });
+            PanelContenido.init_Sort_Detalle_Elemento_modal(elementom_id);
+        });
 
+        $(document).on("click", ".btn_eliminar_detalle_elemento_modal", function (e) {
+            var det_elemento_id = $(this).data("id");
+            var elementom_id = $(this).data("elemento_id");
+            if (det_elemento_id != "" || det_elemento_id > 0) {
+                messageConfirmation({
+                    content: '¿Esta seguro que desea ELIMINAR este Detalle de Elemento Modal?',
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: "IntranetDetalleElementoModal/IntranetDetalleElementoModalEliminarJson",
+                            data: JSON.stringify({ detelm_id: det_elemento_id }),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                if (response.respuesta) {
+                                    PanelContenido.init_ListarDetalleElementosModal(elementom_id);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                messageResponse({
+                    text: "Error no se encontro ID",
+                    type: "error"
+                })
+            }
+        });
+
+        $(document).on('change', '#cboOpcionElemModal', function (e) {
+            var valor = $(this).val();
+            var elemento_id = $("#fk_elemento_modal").val();
+            var tipo_elemento = $("#elemento_modal_" + elemento_id).data("tipo");
+            if (valor == 1) {
+                $(".detelm-imagen").hide();
+                if (tipo_elemento == 8 || tipo_elemento == 14) {
+                    $("#cboPosicionElemModal").val("L");
+                }
+                if (tipo_elemento == 13 || tipo_elemento == 15) {
+                    $("#cboPosicionElemModal").val("R");
+                }
+                if (tipo_elemento == 5) {
+                    $("#cboPosicionElemModal").val("");
+                }
+            }
+            else {
+                $(".detelm-imagen").show();
+                if (tipo_elemento == 8 || tipo_elemento == 14) {
+                    $("#cboPosicionElemModal").val("R");
+                }
+                if (tipo_elemento == 13 || tipo_elemento == 15) {
+                    $("#cboPosicionElemModal").val("L");
+                }
+                if (tipo_elemento == 17 || tipo_elemento == 12) {
+                    $("#cboPosicionElemModal").val("");
+                }
+                if (tipo_elemento == 7 || tipo_elemento == 11) {
+                    $("#cboPosicionElemModal").val("");
+                }
+            }
+
+        });
+
+        $(document).on('click', '.btn_nuevo_detalle_elemento_modal', function (e) {
+
+            var elemento_id = $(this).data("id");
+            var tipo_elemento = $("#elemento_modal_" + elemento_id).data("tipo");
+            console.log(tipo_elemento);
+            $("#tituloModalDetalleElementoModal").text("Nuevo");
+            $("#fk_elemento_modal").val(elemento_id);
+            $("#detelm_id").val(0);
+            $("#detelm_nombre_imagen_modal").text("");
+            $("#detelm_nombre_imagen").val("");
+            $("#spandetelm").html('<i class="fa fa-upload"></i>  Subir Imagen');
+            $("#cboOpcionElemModal").val(1).change();
+            $("#cboPosicionElemModal").val("L");
+            $("#detelm_descripcion").val("");
+            $("#detelm_nombre").val("");
+            $("#detelm_url").val("");
+            $("#detelm_blank").val("false");
+            $("#detelm_estado").val("A");
+
+            $("#divdetelm").hide();
+
+
+            if (tipo_elemento == 5) {
+                $(".detelm-opcion").hide();
+                $(".detelm-descripcion").show();
+                $(".detelm-imagen").hide();
+                $(".detelm-url").hide();
+                $(".detelm-blank").hide();
+                $(".detelm-posicion").hide();
+                $(".detelm-estado").show();
+                $("#fk_seccion_elemento_modal").val(2);
+                $("#cboOpcionElemModal").val(1).change();
+                $("#cboPosicionElemModal").val("");
+            }
+            else if (tipo_elemento == 7 || tipo_elemento == 11) {
+                $(".detelm-opcion").hide();
+                $(".detelm-descripcion").hide();
+                $(".detelm-imagen").show();
+                $(".detelm-url").hide();
+                $(".detelm-blank").hide();
+                $(".detelm-posicion").hide();
+                $(".detelm-estado").show();
+                $("#fk_seccion_elemento_modal").val(1);
+                $("#cboOpcionElemModal").val(2).change();
+                $("#cboPosicionElemModal").val("");
+            }
+
+            else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
+                //va a abrir modal
+                $("#fk_seccion_elemento_modal").val(1);
+                $(".detelm-imagen").hide();
+                $("#divdetelm").hide();
+                $(".detelm-url").hide();
+                $(".detelm-blank").hide();
+                $(".detelm-opcion").show();
+                $(".detelm-posicion").hide();
+                if (tipo_elemento == 8 || tipo_elemento == 14) {
+                    $("#cboOpcionElemModal").val(1).change();
+                    $("#cboPosicionElemModal").val("L");
+                }
+                else {
+                    $("#cboOpcionElemModal").val(1).change();
+                    $("#cboPosicionElemModal").val("R");
+                }
+            } else if (tipo_elemento == 16) {
+                $("#fk_seccion_elemento_modal").val(1);
+                $(".detelm-opcion").hide();
+                $(".detelm-url").hide();
+                $(".detelm-blank").hide();
+                $("#cboOpcionElemModal").val(1).change();
+                $(".detelm-posicion").show();
+            }
+            else if (tipo_elemento == 17 || tipo_elemento == 12) {
+                $("#fk_seccion_elemento_modal").val(1);
+                $(".detelm-opcion").hide();
+                $(".detelm-url").show();
+                $(".detelm-blank").show();
+                $("#cboOpcionElemModal").val(2).change();
+                $(".detelm-posicion").hide();
+            }
+            else {
+                $("#fk_seccion_elemento_modal").val(0);
+                $(".detelm-posicion").hide();
+                $(".detelm-opcion").hide();
+                $(".detelm-url").hide();
+                $(".detelm-blank").hide();
+            }
             $("#modalFormularioDetalleElementoModal").modal("show");
         });
 
-        
+        $(document).on('click', '.btn_editar_detalle_elemento_modal', function (e) {
+            var det_elemento_id = $(this).data("id");
+            $("#tituloModalDetalleElementoModal").text("Editar");
+
+            var dataForm = {
+                detelm_id: det_elemento_id,
+            }
+            responseSimple({
+                url: 'IntranetDetalleElementoModal/IntranetDetalleElementoModalIdObtenerJson',
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    var data = response.data;
+                    console.log(data);
+                    if (response.respuesta) {
+                        $("#divdetelm").hide();
+                        $('#detelm_id').val(data.detel_id);
+                        $('#fk_elemento_modal').val(data.fk_elemento)
+                        $("#spandetelm").html("");
+                        $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        if (data.detel_extension != "") {
+                            $("#detelm_nombre_imagen_modal").text("Nombre: " + data.detel_nombre + "." + data.detel_extension);
+                            $("#detelm_nombre_imagen").val(data.detel_nombre + "." + data.detel_extension);
+                            // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
+                            $("#icono_actual_detelm").attr("src", "data:image/gif;base64," + data.detel_nombre_imagen);
+                            $("#divdetelm").show();
+                            $(".detelm-imagen").show();
+                            $(".detelm-nombre").show();
+                            $(".detelm-posicion").hide();
+                            $(".detelm-opcion").hide();
+                            if (data.fk_tipo_elemento == 12 || data.fk_tipo_elemento == 17) {
+                                $(".detelm-url").show();
+                                $(".detelm-blank").show();
+                            }
+                            else {
+                                $(".detelm-url").hide();
+                                $(".detelm-blank").hide();
+                            }
+                        }
+                        else {
+                            $(".detelm-imagen").hide();
+                            $(".detelm-nombre").hide();
+                            $(".detelm-posicion").hide();
+                            $(".detelm-opcion").hide();
+                            $(".detelm-url").hide();
+                            $(".detelm-blank").hide();
+                            $("#detelm_nombre_imagen_modal").text("");
+                            $("#detelm_nombre_imagen").val("");
+                            $("#detelm_url").val("");
+                        }
+
+                        if (data.fk_tipo_elemento == 8 || data.fk_tipo_elemento == 14 || data.fk_tipo_elemento == 13 || data.fk_tipo_elemento == 15 || data.fk_tipo_elemento == 7 || data.fk_tipo_elemento == 11) {
+                            $(".detelm-posicion").hide();
+                        }
+                        if (data.fk_tipo_elemento == 16) {
+                            $(".detelm-posicion").show();
+                        }
+                        $("#detelm_orden").val(data.detel_orden);
+                        $("#cboPosicionElemModal").val(data.detel_posicion);
+                        $("#detelm_descripcion").val(data.detel_descripcion);
+                        $("#detelm_estado").val(data.detel_estado);
+                        $(".detelm-orden").show();
+                        $('#modalFormularioDetalleElementoModal').modal('show');
+                    }
+                },
+            })
+
+        });
+
+        $(document).on('click', '.btn_guardar_detalle_elemento_modal', function () {
+            //$("#form_detalle_elemento").submit();
+            var elemento_id = $("#fk_elemento_modal").val();
+            var tipo_elemento = $("#elemento_modal_" + elemento_id).data("tipo");
+
+            if (tipo_elemento == 5) {
+                if ($("#detelm_descripcion").val() == "") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 7) {
+                if ($("#detelm_nombre").val() == "" && $("#tituloModalDetalleElementoModal").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 8 || tipo_elemento == 14) {
+                if ($("#cboOpcionElemModal").val() == 1 && $("#detelm_descripcion").val() == "") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                };
+
+
+                if ($("#cboOpcionElemModal").val() == 2 && $("#detelm_nombre").val() == "") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 17 || tipo_elemento == 12) {
+                if ($("#detelm_descripcion").val() == "" && $("#tituloModalDetalleElementoModal").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+
+                    return false;
+                }
+
+                if ($("#detelm_nombre").val() == "" && $("#tituloModalDetalleElementoModal").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+
+                    return false;
+                }
+
+            }
+            var dataForm = new FormData(document.getElementById("form_detalle_elemento_modal"));
+            var url = '';
+            if ($("#detelm_id").val() == 0) {
+                url = 'IntranetDetalleElementoModal/IntranetDetalleElementoModalInsertarJson';
+            }
+            else {
+                url = 'IntranetDetalleElementoModal/IntranetDetalleElementoModalEditarJson';
+            }
+            responseFileSimple({
+                url: url,
+                data: dataForm,
+                refresh: false,
+                callBackSuccess: function (response) {
+                    if (response.respuesta) {
+                        PanelContenido.init_ListarDetalleElementosModal(elemento_id);
+                        $("#modalFormularioDetalleElementoModal").modal("hide");
+                    }
+                }
+            })
+        });
+
+        $(document).on("change", "#detelm_nombre", function () {
+            var _image = $('#detelm_nombre')[0].files[0];
+            if (_image != null) {
+                var image_arr = _image.name.split(".");
+                var extension = image_arr[1].toLowerCase();
+                //console.log(extension);
+                if (extension != "jpg" && extension != "png" && extension != "jpeg") {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato jpg, png ó jpeg',
+                        type: "warning"
+                    });
+                }
+                else {
+                    var nombre = image_arr[0].substring(0, 11);
+                    var actualicon = image_arr[1].toLowerCase();
+                    var icon = "";
+                    if (actualicon == "png" || actualicon == "jpg" || actualicon == 'jpeg') {
+                        icon = '<i class="fa fa-file-word-o"></i>';
+                    }
+                    else {
+                        icon = '<i class="fa fa-file-pdf-o"></i>';
+                    };
+                    $("#spandetelm").html("");
+                    $("#spandetelm").append(icon + " " + nombre + "... ." + actualicon);
+                    //$("#img_ubicacion").val(nombre + "." + actualicon);
+                    $("#spandetelm").css({ 'font-size': '10px' });
+                }
+            }
+            else {
+                $("#spandetelm").html("");
+                $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Imagen');
+            }
+        })
     };
 
     var _metodos = function () {
@@ -1590,6 +1958,9 @@ var PanelContenido = function () {
         init_Sort_Elemento_modal: function (detal_elemento_id) {
             _sort_elemento_modal(detal_elemento_id);
         },
+        init_Sort_Detalle_Elemento_modal: function (elementom_id) {
+            _sort_detalle_elemento_modal(elementom_id);
+        },
         init_ListarMenus: function () {
             _ListarMenus();
         },
@@ -1605,7 +1976,7 @@ var PanelContenido = function () {
         init_ListarElementosModal: function (fk_seccion_elemento, detalle_elemento_id) {
             _ListarElementosModal(fk_seccion_elemento, detalle_elemento_id);
         },
-        init_Sort_Detalle_Elemento_modal: function (elemento_modal_id) {
+        init_ListarDetalle_Elemento_modal: function (elemento_modal_id) {
             _ListarDetalleElementosModal(elemento_modal_id);
         },
         

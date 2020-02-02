@@ -1114,10 +1114,11 @@
                         console.log(data);
                         var span = "";
                         $("#informacion_puesto").html("");
-                        span += "<strong>Área:</strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA) + "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina :</strong>" + ((data.DE_SEDE == null) ? "" : data.DE_SEDE) + "<br/>"
+                        span += "<strong>Área:</strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA) + "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina:</strong> " + ((data.DE_SEDE == null) ? "" : data.DE_SEDE) + "<br/>"
                         $("#informacion_puesto").html(span);
                     
-                    }
+                    };
+                    $("body").addClass("openModal");
                     modal.style.display = "block";
                     modal.style.zIndex = 10000;
                     
@@ -1135,10 +1136,12 @@
         });
         $(document).on('click', 'span.close', function () {
             modal.style.display = "none";
+            $("body").removeClass("openModal");
         })
         window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
+                $("body").removeClass("openModal");
             }
         }
         $(document).on('click', '.btn_enviar_saludo', function () {

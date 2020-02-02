@@ -5031,9 +5031,8 @@ div.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible{
 	
 	font-size: 14px !important;
 }
-.desc>h4,a{
+.desc > h4, .desc >  a {
 	font-family: "Intranet Cpj delgado" !important;
-	
 	font-size: 14px !important;
 }
 .nav-bar > li > a{
@@ -5097,3 +5096,7 @@ div.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible{
 		display: inline-block;
 		*display: inline;
 	}
+
+.openModal {
+	overflow: hidden;
+}

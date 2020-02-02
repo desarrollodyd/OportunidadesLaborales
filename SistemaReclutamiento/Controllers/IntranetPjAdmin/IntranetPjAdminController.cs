@@ -113,6 +113,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                     respuesta = true;
                                     errormensaje = "Bienvenido, " + usuario.usu_nombre;
                                 }
+                                else
+                                {
+                                    errormensaje = "Contraseña no Coincide";
+                                }
                             }
                             else
                             {
