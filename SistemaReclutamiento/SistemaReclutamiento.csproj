@@ -286,17 +286,6 @@
     <Content Include="Content\intranet\css\schemes\redori.css" />
     <Content Include="Content\intranet\css\venobox.css" />
     <Content Include="Content\intranet\css\wysiwyg-editor.css" />
-    <Content Include="Content\intranet\emojis\images\blank.gif" />
-    <Content Include="Content\intranet\emojis\images\emoji_spritesheet_0.png" />
-    <Content Include="Content\intranet\emojis\images\emoji_spritesheet_1.png" />
-    <Content Include="Content\intranet\emojis\images\emoji_spritesheet_2.png" />
-    <Content Include="Content\intranet\emojis\images\emoji_spritesheet_3.png" />
-    <Content Include="Content\intranet\emojis\images\emoji_spritesheet_4.png" />
-    <Content Include="Content\intranet\emojis\jquery.emojiarea.js" />
-    <Content Include="Content\intranet\emojis\main.js" />
-    <Content Include="Content\intranet\emojis\reset.css" />
-    <Content Include="Content\intranet\emojis\style.css" />
-    <Content Include="Content\intranet\emojis\stylesheet.css" />
     <Content Include="Content\intranet\font\fontawesome-webfont9b1a.svg" />
     <Content Include="Content\intranet\images\actividad.png" />
     <Content Include="Content\intranet\images\arrow_left.gif" />
@@ -415,7 +404,6 @@
     <Content Include="Content\intranet\images\subido\titowebing.png" />
     <Content Include="Content\intranet\js\app.js" />
     <Content Include="Content\intranet\js\foundation.min.js" />
-    <Content Include="Content\intranet\js\inputEmoji.js" />
     <Content Include="Content\intranet\js\jquery-ui-1.8.23.custom.min.js" />
     <Content Include="Content\intranet\js\jquery.cookie.js" />
     <Content Include="Content\intranet\js\jquery.easing.min.js" />
@@ -427,6 +415,8 @@
     <Content Include="Content\intranet\js\pushy.js" />
     <Content Include="Content\intranet\js\themeswitch.js" />
     <Content Include="Content\intranet\js\venobox.js" />
+    <Content Include="Content\intranet\js\wysiwyg-editor.js" />
+    <Content Include="Content\intranet\js\wysiwyg.js" />
     <Content Include="Content\intranet\smiley\afraid.png" />
     <Content Include="Content\intranet\smiley\amorous.png" />
     <Content Include="Content\intranet\smiley\angel.png" />
