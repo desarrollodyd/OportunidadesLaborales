@@ -529,87 +529,87 @@
                 // Smiley-Plugin
                 smilies: {
                     title: 'Smilies',
-                    image: '<i class="fa fa-smile-o"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-smile-o"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     popup: function( $popup, $button, $editor ) {
                             var list_smilies = [
-                                    '<img src="'+basePath+'Content/Intranet/smiley/afraid.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/amorous.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/angel.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/angry.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/bored.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cold.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/confused.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cross.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/crying.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/devil.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/disappointed.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/dont-know.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/drool.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/embarrassed.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/excited.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/excruciating.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/eyeroll.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/happy.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hot.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hug-left.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hug-right.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hungry.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/invincible.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/kiss.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/lying.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/meeting.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/nerdy.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/neutral.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/party.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/pirate.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/pissed-off.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/question.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sad.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shame.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shocked.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shut-mouth.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sick.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/silent.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sleeping.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sleepy.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/stressed.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/thinking.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/tongue.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/uhm-yeah.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/wink.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/working.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/bathing.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/beer.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/boy.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/camera.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/chilli.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cigarette.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cinema.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/coffee.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/girl.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/console.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/grumpy.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/in_love.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/internet.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/lamp.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/mobile.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/mrgreen.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/musical-note.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/music.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/phone.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/plate.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/restroom.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/rose.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/search.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shopping.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/star.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/studying.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/suit.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/surfing.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/thunder.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/tv.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/typing.png" width="16" height="16" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/writing.png" width="16" height="16" alt="" />'
+                                    '<img src="'+basePath+'Content/Intranet/smiley/afraid.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/amorous.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/angel.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/angry.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/bored.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/cold.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/confused.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/cross.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/crying.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/devil.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/disappointed.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/dont-know.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/drool.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/embarrassed.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/excited.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/excruciating.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/eyeroll.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/happy.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/hot.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/hug-left.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/hug-right.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/hungry.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/invincible.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/kiss.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/lying.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/meeting.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/nerdy.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/neutral.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/party.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/pirate.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/pissed-off.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/question.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/sad.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/shame.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/shocked.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/shut-mouth.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/sick.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/silent.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/sleeping.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/sleepy.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/stressed.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/thinking.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/tongue.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/uhm-yeah.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/wink.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/working.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/bathing.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/beer.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/boy.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/camera.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/chilli.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/cigarette.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/cinema.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/coffee.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/girl.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/console.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/grumpy.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/in_love.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/internet.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/lamp.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/mobile.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/mrgreen.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/musical-note.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/music.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/phone.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/plate.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/restroom.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/rose.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/search.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/shopping.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/star.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/studying.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/suit.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/surfing.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/thunder.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/tv.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/typing.png" width="18" heigth="18" alt="" />',
+                                    '<img src="'+basePath+'Content/Intranet/smiley/writing.png" width="18" heigth="18" alt="" />'
                             ];
                             var $smilies = $('<div/>').addClass('wysiwyg-toolbar-smilies')
                                                       .attr('unselectable','on');
@@ -659,20 +659,20 @@
                 },
                 insertimage: {
                     title: 'Insert image',
-                    image: '<i class="fa fa-camera"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-camera"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     showstatic: false,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 insertlink: {
                     title: 'Insert link',
-                    image: '<i class="fa fa-external-link"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-external-link"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     showselection: false,
                      showstatic: false, 
                 },
                 // Fontanme + Fontsize Plugin
                 fontname: index == 1 ? false : {
                     title: 'Font',
-                    image: '<i class="fa fa-font"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-font"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     popup: function( $popup, $button, $editor ) {
                             var list_fontnames = {
                                     // Name : Font
@@ -705,7 +705,7 @@
                 },
                 fontsize: index == 1 ? false : {
                     title: 'Size',
-                    image: '<i class="fa fa-text-height"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-text-height"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     popup: function( $popup, $button, $editor ) {
                             var list_fontsizes = {
                                 // Name : Size
@@ -740,101 +740,101 @@
                 },
                 bold: {
                     title: 'Bold (Ctrl+B)',
-                    image: '<i class="fa fa-bold"></i> ', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-bold"></i> ', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     hotkey: 'b'
                 },
                 italic: {
                     title: 'Italic (Ctrl+I)',
-                    image: '<i class="fa fa-italic"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-italic"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     hotkey: 'i'
                 },
                 underline: {
                     title: 'Underline (Ctrl+U)',
-                    image: '<i class="fa fa-underline"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-underline"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     hotkey: 'u'
                 },
                 strikethrough: {
                     title: 'Strikethrough (Ctrl+S)',
-                    image: '<i class="fa fa-strikethrough"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-strikethrough"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     hotkey: 's'
                 },
                 forecolor: {
                     title: 'Text color',
-                    image: '<i class="fa fa-circle"></i>' // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-circle"></i>' // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                 },
                 highlight: {
                     title: 'Background color',
-                    image: '<i class="fa fa-tint"></i>' // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-tint"></i>' // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                 },
                 alignleft: index != 0 ? false : {
                     title: 'Left',
-                    image: '<i class="fa fa-align-left"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-align-left"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 aligncenter: index != 0 ? false : {
                     title: 'Center',
-                    image: '<i class="fa fa-align-center"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-align-center"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 alignright: index != 0 ? false : {
                     title: 'Right',
-                    image: '<i class="fa fa-align-right"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-align-right"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 alignjustify: index != 0 ? false : {
                     title: 'Justify',
-                    image: '<i class="fa fa-align-justify"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-align-justify"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 subscript: index == 1 ? false : {
                     title: 'Subscript',
-                    image: '<i class="fa fa-subscript"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-subscript"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: true    // wanted on selection
                 },
                 superscript: index == 1 ? false : {
                     title: 'Superscript',
-                    image: '<i class="fa fa-superscript"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-superscript"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: true    // wanted on selection
                 },
                 indent: index != 0 ? false : {
                     title: 'Indent',
-                    image: '<i class="fa fa-indent"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-indent"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 outdent: index != 0 ? false : {
                     title: 'Outdent',
-                    image: '<i class="fa fa-outdent"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-outdent"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 orderedList: index != 0 ? false : {
                     title: 'Ordered list',
-                    image: '<i class="fa fa-list-ol"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-list-ol"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 unorderedList: index != 0 ? false : {
                     title: 'Unordered list',
-                    image: '<i class="fa fa-list"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-list"></i>', // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                     //showstatic: true,    // wanted on the toolbar
                     showselection: false    // wanted on selection
                 },
                 removeformat: {
                     title: 'Remove format',
-                    image: '<i class="fa fa-eraser"></i>' // <img src="path/to/image.png" width="16" height="16" alt="" />
+                    image: '<i class="fa fa-eraser"></i>' // <img src="path/to/image.png" width="18" heigth="18" alt="" />
                 }
             },
             // Submit-Button
             submit: {
                 title: 'Submit',
-                image: '\uf00c' // <img src="path/to/image.png" width="16" height="16" alt="" />
+                image: '\uf00c' // <img src="path/to/image.png" width="18" heigth="18" alt="" />
             },
             // Other properties
             dropfileclick: 'Drop image or click',

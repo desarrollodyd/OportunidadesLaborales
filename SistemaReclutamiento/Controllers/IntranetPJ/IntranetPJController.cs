@@ -14,6 +14,7 @@ using RestSharp;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Globalization;
+using System.IO;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
@@ -632,5 +633,72 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             }
             return Json(new { data=personasql, respuesta = respuestaConsulta, mensaje = errormensaje });
         }
+        [HttpPost]
+        public ActionResult IntranetObtenerListadoArchivos() {
+            bool response = false;
+            string errormensaje = "";
+            var listaArchivos = new List<dynamic>();
+            string nombre_archivo = "";
+            try {
+                var direccion = Server.MapPath("/") + Request.ApplicationPath+"/archivos";
+                if (Directory.Exists(direccion))
+                {
+                    DirectoryInfo di = new DirectoryInfo(direccion);
+                    foreach (var m in di.GetFiles())
+                    {
+                        string[] info = m.Name.Split('.');
+                        
+                        //verificar si el nombre de archivo tenia varios puntos "."
+                        if (info.Count() > 2)
+                        {
+                            foreach (var k in info)
+                            {
+                                if (k != info.LastOrDefault())
+                                {
+                                    nombre_archivo += k + ".";
+                                }
+                            }
+                            nombre_archivo = nombre_archivo.Substring(0, nombre_archivo.Length - 1);
+                        }
+                        else {
+                            nombre_archivo = info[0];
+                        }
+                        
+                        listaArchivos.Add(new
+                        {
+                            nombre = nombre_archivo,
+                            extension = info.LastOrDefault(),
+                            nombre_completo=m.Name
+                        });
+                    }
+                    errormensaje = "Listando Data";
+                    response = true;
+                }
+                else {
+                    errormensaje = "No se encuentra el Directorio";
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+            return Json(new { data=listaArchivos.ToList(),respuesta=response,mensaje=errormensaje});
+        }
+        
+        public FileResult IntranetDescargarArchivo(string fileName="")
+        {
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/archivos/";
+            string fullName = Path.Combine(direccion, fileName);
+            byte[] fileBytes = ConvertirArchivo(fullName);
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+        byte[] ConvertirArchivo(string s) {
+            System.IO.FileStream fs = System.IO.File.OpenRead(s);
+            byte[] data = new byte[fs.Length];
+            int br = fs.Read(data, 0, data.Length);
+            if (br != fs.Length)
+                throw new System.IO.IOException(s);
+            return data;
+        }
+        
     }
 }

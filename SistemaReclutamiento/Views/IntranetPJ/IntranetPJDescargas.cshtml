@@ -13,7 +13,17 @@
 
 
 <section id="singlepost">
-    
+     <table id="Archivos-table" class="table table-bordered table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>Nro</th>
+                <th>Nombre</th>
+                <th>Extension</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tbody_Archivos"></tbody>
+    </table>
 </section>
 
 @section js
@@ -25,4 +35,5 @@
         usuario = (@Html.Raw(usuario));
     </script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJDescargas.js"></script>
 }

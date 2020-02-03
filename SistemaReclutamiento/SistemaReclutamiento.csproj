@@ -4019,6 +4019,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones1.js" />
+    <Content Include="Content\viewjs\IntranetPJ\IntranetPJDescargas.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLoginView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJMapaView.js" />
@@ -4970,6 +4971,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetActividadesController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetAplicativoController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetArchivosController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetDetalleElementoController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetDetalleElementoModalController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetElementoController.cs" />
@@ -5148,6 +5150,7 @@
     <Content Include="Views\IntranetPJ\somopj.cshtml" />
     <Content Include="Views\IntranetPJ\politicaspj.cshtml" />
     <Content Include="Views\IntranetPJ\IntranetPJDescargas.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJArchivos.cshtml" />
     <None Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJMenus.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJActividades.cshtml" />
@@ -5175,6 +5178,7 @@
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
+    <Folder Include="Views\IntranetArchivos\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />
