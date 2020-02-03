@@ -5100,3 +5100,12 @@ div.ol-attribution.ol-unselectable.ol-control.ol-uncollapsible{
 .openModal {
 	overflow: hidden;
 }
+
+.ui-pnotify-title {
+    font-family: Intranet Cpj Delgado;
+    font-weight: bolder;
+}
+
+.wysiwyg-toolbar wysiwyg-toolbar-top {
+    background-color: #e4e2e2;
+}
