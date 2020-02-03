@@ -30,7 +30,7 @@
                 if(value.loc_latitud!=0&&value.loc_longitud!=0){
                     washingtonWebMercator = [parseFloat(value.loc_longitud), parseFloat(value.loc_latitud)];
                     $("#seccion-mapa").append('<div id="marker' + index + '" title="Marker"><img src="'+basePath+'Content/intranet/images/png/marker.png" /></div>');
-                    $("#seccion-mapa").append('<div class="overlay" id="tittle' + index + '"><span class="">' + value.loc_nombre + '</span></div>');
+                    $("#seccion-mapa").append('<div class="overlay" id="tittle' + index + '"><span class="label label-danger label-white middle">' + value.loc_nombre + '</span></div>');
                     var marker2 = new ol.Overlay({
                         position: washingtonWebMercator,
                         positioning: 'center-center',
