@@ -12,8 +12,38 @@
     String usuario = new JavaScriptSerializer().Serialize(Session["usuIntranet_full"]);
 }
 
-<section id="singlepost">
 
+<section id="singlepost">
+    <header>
+        <div class="loverate"><a href="#"><i class="fa fa-phone-square"></i></a></div>
+        <h1>Agenda Contactos</h1>
+
+    </header>
+</section>
+<div class="separador"></div>
+<section id="singlepost">
+    <table class="table table-condensed table-bordered table-hover" id="agenda_table">
+        <thead>
+        <tr>
+            <th>Nombre y Apellidos</th>
+            <th>Empresa</th>
+            <th>Cargo</th>
+            <th>Ârea</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>No hay Data</td>
+                <td>No hay Data</td>
+                <td>No hay Data</td>
+                <td>No hay Data</td>
+                <td>No hay Data</td>
+                <td>No hay Data</td>
+            </tr>
+        </tbody>
+    </table>
 </section>
 @section js
 {
@@ -24,4 +54,7 @@
         usuario = (@Html.Raw(usuario));
     </script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
+    <script>
+        $("#agenda_table").DataTable();
+    </script>
 }
