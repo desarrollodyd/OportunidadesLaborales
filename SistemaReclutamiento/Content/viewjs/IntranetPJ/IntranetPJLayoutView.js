@@ -1149,7 +1149,7 @@
             // var imagen = filepath.replace(/^.*[\\\/]/, '');
             var fk_persona_que_saluda = persona.per_id;
             var fk_persona_saludada = $("#fk_persona_saludada").val();
-            var sld_cuerpo = $("#sld_cuerpo").val();
+            var sld_cuerpo = $("#text_mensaje").val();
             var direccion_envio = $("#direccion_envio").val();
             var dataForm = {
                 // sld_avatar: imagen,

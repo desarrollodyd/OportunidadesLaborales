@@ -111,21 +111,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     try
                     {
                         ////envio de correo
-                        //asunto_correo = "Corporacion PJ te Desea un Feliz Cumpleaños";
-                        ////asunto_correo = persona.per_nombre.ToUpper() +" "+
-                        ////persona.per_apellido_pat.ToUpper() +" "+ persona.per_apellido_mat.ToUpper() +
-                        ////" te desea un Feliz Cumpleaños";
-                        //string server = Server.MapPath("~/Content/intranet/images/faces/");
-                        //string imagen = rutaImagenes.ImagenIntranetActividades(server, "angel.png");
+                
                         string persona_que_saluda = persona.per_nombre.ToUpper() + " " + persona.per_apellido_pat.ToUpper() + " " + persona.per_apellido_mat.ToUpper();
-                        //cuerpo_correo = "<h1>" + persona_que_saluda + "<h1><img src='data:image/gif;base64," + imagen + "'>";
-                        ////cuerpo_correo = intranetSaludoCumpleanio.sld_cuerpo;
-                        //correo_enviar.EnviarCorreo(
-                        //    intranetSaludoCumpleanio.direccion_envio,
-                        //    asunto_correo,
-                        //    cuerpo_correo,
-                        //    true
-                        //    );
+                 
 
                         MailMessage mail = new MailMessage();
                         mail.From = new MailAddress("s3kzimbra@gmail.com");
@@ -149,8 +137,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                         // Ahora creamos la vista para clientes que 
                         // pueden mostrar contenido HTML...
-                        string background = "\"background-image: url('cid:imagen_fondo'); width: 100%; height: 100vh;\"";
-                        string html = @"<div style="+background+" ><h1>¡Corporacion PJ Te desea Un Feliz Cumpleaños!</h1></br>" +
+                        string background = "\"background-image: url('cid:imagen_fondo'); width: 100%; height: 100vh; padding-top:50px;padding-left:50px;\"";
+                        string html = @"<div style="+background+" ><div style="+"\"text-align:center;\""+"><h1>¡Corporacion PJ Te desea Un Feliz Cumpleaños!</h1></div></br>" +
                             "<h2>Ademas queremos entregarte un mensaje de " + persona_que_saluda+" para ti :<h2></br>" +
                             "<h1>"+intranetSaludoCumpleanio.sld_cuerpo+"<h1>"+
                                       "<div>";
@@ -163,14 +151,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         // Creamos el recurso a incrustar. Observad
                         // que el ID que le asignamos (arbitrario) está
                         // referenciado desde el código HTML como origen
-
-
-                        //LinkedResource img =
-                        //    new LinkedResource(Server.MapPath("~/Content/intranet/images/faces/"+intranetSaludoCumpleanio.sld_avatar),
-                        //                        MediaTypeNames.Image.Jpeg);
-                        //img.ContentId = "imagen";
-                        //img.ContentType.Name = "Avatar";
-
                         var direccion = Server.MapPath("/") + Request.ApplicationPath;
                         
 
@@ -182,7 +162,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                         // Lo incrustamos en la vista HTML...
 
-                        //htmlView.LinkedResources.Add(img);
+                       
                         
                         htmlView.LinkedResources.Add(img_fondo);
 
