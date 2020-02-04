@@ -40,6 +40,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJFooter.cshtml");
         }
+        public ActionResult PanelArchivos()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJArchivos.cshtml");
+        }
         public ActionResult PanelSecciones(int menu_id=1)
         {
             List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();

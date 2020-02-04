@@ -4014,6 +4014,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJActividades.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminIndex.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFooter.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
@@ -5011,6 +5012,7 @@
     <Compile Include="Entidades\IntranetPJ\IntranetDetalleElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetFooterEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetMenuEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetEmpresaEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetPJTerminalEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSaludoCumpleanioEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionElementoEntidad.cs" />
@@ -5060,6 +5062,7 @@
     <Compile Include="Models\IntranetPJ\IntranetElementoModalModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetDetalleElementoModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetEmpresaModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetFooterModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetMenuModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAccesoModel.cs" />

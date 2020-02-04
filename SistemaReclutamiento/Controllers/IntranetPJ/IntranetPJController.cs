@@ -663,12 +663,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         else {
                             nombre_archivo = info[0];
                         }
-                        
+                        //tamaño de archivo
+                        float length = (m.Length / 1024f) / 1024f;
+                   
                         listaArchivos.Add(new
                         {
                             nombre = nombre_archivo,
                             extension = info.LastOrDefault(),
-                            nombre_completo=m.Name
+                            nombre_completo=m.Name,
+                            tamanio= Math.Round(length, 4)
                         });
                     }
                     errormensaje = "Listando Data";

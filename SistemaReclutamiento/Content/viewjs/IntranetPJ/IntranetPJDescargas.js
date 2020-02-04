@@ -1,18 +1,48 @@
 ﻿var PanelDescargas = function () {
     var _ListarArchivos = function () {
       
+        if (!$().DataTable) {
+            console.warn('Advertencia - datatables.min.js no esta declarado.');
+            return;
+        }
         responseSimple({
             url: "IntranetPJ/IntranetObtenerListadoArchivos",
             refresh: false,
             callBackSuccess: function (response) {
                 console.log(response);
-                var span='';
                 var datos=response.data;
                 if(response.respuesta){
-                    $("#tbody_Archivos").html("");
-                    $.each(datos, function (index, value) {
-                        $("#tbody_Archivos").append('<tr><td>' + (index+1) + '</td><td>'+value.nombre+'</td><td>' + value.extension + '</td><td><button type="button" data-nombre="' + value.nombre_completo+ '" class="btn btn-danger btn-xs btn_descargar">Descargar</button></td></tr>');
-                }); 
+                   
+                    simpleDataTable({
+                        uniform: false,
+                        tableNameVariable: "datatable_archivosListado",
+                        table: "#archivosListado",
+                        tableColumnsData: datos,
+                        tableColumns: [
+                            {
+                                data: "nombre",
+                                title: "Nombre Archivo",
+                            },
+                            {
+                                data: "extension",
+                                title: "Extension",
+                            },
+                            {
+                                data: "tamanio",
+                                title: "Tamaño (MB)",
+                            },
+                            {
+                                data: "nombre_completo",
+                                title: "Acciones",
+                                "render": function (value) {
+                                    var span = '';
+                                    var nombre_archivo = value;
+                                    var span ='<a href="javascript:void(0);"class="btn btn-white btn-danger btn-sm btn-round btn_descargar" data-nombre="' + nombre_archivo + '" data-rel="tooltip"title="Descargar Archivo">Descargar</a>';
+                                    return span;
+                                }
+                            },
+                        ]
+                    })
                 }
                 
             }

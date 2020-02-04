@@ -31,5 +31,7 @@ namespace SistemaReclutamiento.Entidades
         public string NU_TLF1;
         public string NU_TLF2;
         public string NO_DIRE_MAI1;
+        public string NO_DIRE_MAI2;
+
     }
 }

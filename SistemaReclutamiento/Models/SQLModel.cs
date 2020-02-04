@@ -368,5 +368,118 @@ namespace SistemaReclutamiento.Models
 
             return (persona:persona,error:error);
         }
+
+        //Consulta para listado de cumpleaños desde GDT
+
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenerListaCumpleaniosJson(string listaEmpresas) {
+            claseError error = new claseError();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            string consulta = @"select emp.CO_TRAB,emp.NO_TRAB, emp.NO_APEL_PATE, emp.NO_APEL_MATE,FE_NACI_TRAB,
+                                emp.NO_DIRE_MAI1,empresa.CO_EMPR,empresa.DE_NOMB from
+                                TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+                                inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                                where 
+                                periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI=6
+                                and
+                                (select month(emp.FE_NACI_TRAB))=(select MONTH(getdate()))
+                                and
+                                (select day(emp.FE_NACI_TRAB))>=(select day(getdate()))
+                                and
+                                empresa.CO_EMPR in "+listaEmpresas+" order by day(emp.FE_NACI_TRAB) asc";
+            try
+            {
+                using (var con = new SqlConnection(_conexion_concar))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+
+             
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var persona = new PersonaSqlEntidad
+                                {
+                                    CO_TRAB=ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]),
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB= ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                };
+
+                                listaPersonas.Add(persona);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch(Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista:listaPersonas,error:error);
+        }
+        //Lista de personas de GDT para Agenda Intranet
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenerListaAgendaJson(string listaEmpresas)
+        {
+            claseError error = new claseError();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            string consulta = @"select emp.CO_TRAB,emp.NO_TRAB, emp.NO_APEL_PATE, 
+                            emp.NO_APEL_MATE,FE_NACI_TRAB,emp.NO_DIRE_MAI1,emp.NO_DIRE_MAI2,emp.NU_TLF1,emp.NU_TLF2 from
+                            TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+                            inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                            where 
+                            periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI=6
+                            and
+                            empresa.CO_EMPR in "+listaEmpresas+" order by emp.NO_APEL_PATE asc";
+            try
+            {
+                using (var con = new SqlConnection(_conexion_concar))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+
+
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var persona = new PersonaSqlEntidad
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                    NO_DIRE_MAI2 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI2"]),
+                                    NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
+                                    NU_TLF2 = ManejoNulos.ManageNullStr(dr["NU_TLF2"]),
+                                };
+
+                                listaPersonas.Add(persona);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista: listaPersonas, error: error);
+        }
     }
 }
