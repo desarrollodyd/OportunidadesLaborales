@@ -33,6 +33,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         IntranetCPJLocalModel intranetCPJLocalbl = new IntranetCPJLocalModel();
         IntranetFooterModel intranetFooterbl = new IntranetFooterModel();
         SQLModel sqlbl = new SQLModel();
+        IntranetEmpresaModel intranetempresabl = new IntranetEmpresaModel();
         //Acceso
         IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
         UsuarioModel usuariobl = new UsuarioModel();
@@ -701,6 +702,56 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             if (br != fs.Length)
                 throw new System.IO.IOException(s);
             return data;
+        }
+        [HttpPost]
+        public ActionResult IntranetListarAgenda() {
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            List<IntranetEmpresaEntidad> listaEmpresas = new List<IntranetEmpresaEntidad>();
+            string errormensaje = "";
+            bool response = false;
+            try
+            {
+                //Lista de Empresas desde Postgres
+                var listaEmpresasTupla = intranetempresabl.IntranetEmpresasListarJson();
+                if (listaEmpresasTupla.error.Key.Equals(string.Empty))
+                {
+                    listaEmpresas = listaEmpresasTupla.intranetEmpresasLista.Where(x=>x.emp_estado=="A").ToList();
+                    //creamos el string con la lista de empresas para el IN en sql
+                    if (listaEmpresas.Count > 0)
+                    {
+                        //Por lo menos hay una empresa registrada en int_empresa en Postgres
+                        string stringEmpresas = "";
+                        stringEmpresas += "(";
+                        foreach (var m in listaEmpresas)
+                        {
+                            stringEmpresas += m.emp_codigo + ",";
+                        }
+                        stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
+                        stringEmpresas += ")";
+                        //Listado de Agenda
+                        var listaPersonasTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas);
+                        if (listaPersonasTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaPersonas = listaPersonasTupla.lista;
+                            response = true;
+                            errormensaje = "Listando Agenda";
+                        }
+                        else {
+                            errormensaje = listaPersonasTupla.error.Value;
+                        }
+                    }
+                    else {
+                        errormensaje = "No hay Empresas";
+                    }
+                }
+                else {
+                    errormensaje = listaEmpresasTupla.error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+            return Json(new{ data=listaPersonas.ToList(),mensaje=errormensaje,respuesta=response});
         }
         
     }

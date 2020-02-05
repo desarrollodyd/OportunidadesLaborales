@@ -23,26 +23,7 @@
 <div class="separador"></div>
 <section id="singlepost">
     <table class="table table-condensed table-bordered table-hover" id="agenda_table">
-        <thead>
-        <tr>
-            <th>Nombre y Apellidos</th>
-            <th>Empresa</th>
-            <th>Cargo</th>
-            <th>Ârea</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>No hay Data</td>
-                <td>No hay Data</td>
-                <td>No hay Data</td>
-                <td>No hay Data</td>
-                <td>No hay Data</td>
-                <td>No hay Data</td>
-            </tr>
-        </tbody>
+        
     </table>
 </section>
 @section js
@@ -55,6 +36,59 @@
     </script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
     <script>
-        $("#agenda_table").DataTable();
+       
+        var pathBase = $("#BasePath").val();
+        var url = pathBase + "IntranetPJ/IntranetListarAgenda";
+
+        $('#agenda_table').DataTable({
+                "ajax": {
+                    "url" : url,
+                    "type" : "POST",
+                    "datatype" : "application/json"
+                },
+                "columns": [
+                    { 
+                        "title":"Nombre",
+                        "data" : "NO_TRAB", 
+                        "autoWidth" : true,
+                        "render":function(value, type, oData, meta){
+                            var span='';
+                            span+= oData.NO_APEL_PATE+' ' +oData.NO_APEL_MATE+ ', '+oData.NO_TRAB;
+                            return span;
+                        },
+                    },
+                    { 
+                        "title":"Empresa",
+                        "data": "DE_NOMB",
+                         "autoWidth": true 
+                    },
+
+                    
+                    {   "title":"Area",
+                        "data": "DE_AREA",
+                        "autoWidth": true 
+                     },
+                    { 
+                        "title":"Puesto",
+                        "data": "DE_PUES_TRAB", 
+                        "autoWidth": true 
+                    },
+                    { 
+                        "title":"Telef. Nro 1",
+                        "data": "NU_TLF1", 
+                        "autoWidth": true 
+                    },
+                    { 
+                        "title":"Telef. Nro 2",
+                        "data": "NU_TLF2", 
+                        "autoWidth": true 
+                    },
+                    { 
+                        "title":"Email",
+                        "data": "NO_DIRE_MAI1",
+                         "autoWidth": true 
+                    },
+                ]
+        })
     </script>
 }

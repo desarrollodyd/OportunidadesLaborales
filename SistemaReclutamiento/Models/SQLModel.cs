@@ -388,7 +388,7 @@ namespace SistemaReclutamiento.Models
                                 empresa.CO_EMPR in "+listaEmpresas+" order by day(emp.FE_NACI_TRAB) asc";
             try
             {
-                using (var con = new SqlConnection(_conexion_concar))
+                using (var con = new SqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new SqlCommand(consulta, con);
@@ -432,17 +432,21 @@ namespace SistemaReclutamiento.Models
         {
             claseError error = new claseError();
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
-            string consulta = @"select emp.CO_TRAB,emp.NO_TRAB, emp.NO_APEL_PATE, 
-                            emp.NO_APEL_MATE,FE_NACI_TRAB,emp.NO_DIRE_MAI1,emp.NO_DIRE_MAI2,emp.NU_TLF1,emp.NU_TLF2 from
-                            TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
-                            inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
-                            where 
-                            periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI=6
-                            and
-                            empresa.CO_EMPR in "+listaEmpresas+" order by emp.NO_APEL_PATE asc";
+            string consulta = @"Select emp.CO_TRAB, emp.NO_TRAB, emp.NO_APEL_PATE, emp.NO_APEL_MATE, empresa.DE_NOMB, 
+                                 area.DE_AREA,
+                                puesto.DE_PUES_TRAB, emp.NU_TLF1, emp.NU_TLF2, emp.NO_DIRE_MAI1   
+                                from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+                                inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                                inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+                                inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+                                inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+                                inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+                                inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+                                inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+                                where periodo.NU_ANNO=2018 and periodo.NU_PERI=6 and empresa.CO_EMPR in "+listaEmpresas+" order by emp.NO_APEL_PATE asc";
             try
             {
-                using (var con = new SqlConnection(_conexion_concar))
+                using (var con = new SqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new SqlCommand(consulta, con);
@@ -461,11 +465,13 @@ namespace SistemaReclutamiento.Models
                                     NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
                                     NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
                                     NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
-                                    FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]),
-                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
-                                    NO_DIRE_MAI2 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI2"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    DE_AREA = ManejoNulos.ManageNullStr(dr["DE_AREA"]),
+                                    DE_PUES_TRAB = ManejoNulos.ManageNullStr(dr["DE_PUES_TRAB"]),
                                     NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
                                     NU_TLF2 = ManejoNulos.ManageNullStr(dr["NU_TLF2"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                    
                                 };
 
                                 listaPersonas.Add(persona);
