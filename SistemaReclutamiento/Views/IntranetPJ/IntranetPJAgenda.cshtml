@@ -22,7 +22,7 @@
 </section>
 <div class="separador"></div>
 <section id="singlepost">
-    <table class="table table-condensed table-bordered table-hover" id="agenda_table">
+    <table class="table table-bordered" id="agenda_table">
         <tbody>
             <tr>
                 <td colspan="7">
@@ -46,13 +46,23 @@
         var pathBase = $("#BasePath").val();
         var url = pathBase + "IntranetPJ/IntranetListarAgenda";
 
-        $('#agenda_table').DataTable({
+        var table=$('#agenda_table').DataTable({
                 "ajax": {
                     "url" : url,
                     "type" : "POST",
                     "datatype" : "application/json"
                 },
                 "columns": [
+                    {
+                        "className":      'details-control',
+                        "orderable":      false,
+                        "data":           null,
+                        "defaultContent": '',
+                        "width":"50px",
+                        "render":function(){
+                           return '<i class="fa fa-angle-double-up"></i><span class="sr-only">Detalle</span>';
+                        }
+                    },
                     { 
                         "title":"Nombre",
                         "data" : "NO_TRAB", 
@@ -62,27 +72,6 @@
                             span+= oData.NO_APEL_PATE+' ' +oData.NO_APEL_MATE+ ', '+oData.NO_TRAB;
                             return span;
                         },
-                    },
-                    { 
-                        "title":"Empresa",
-                        "data": "DE_NOMB",
-                         "autoWidth": true 
-                    },
-
-                    
-                    {   "title":"Area",
-                        "data": "DE_AREA",
-                        "autoWidth": true 
-                     },
-                    { 
-                        "title":"Puesto",
-                        "data": "DE_PUES_TRAB", 
-                        "autoWidth": true 
-                    },
-                    { 
-                        "title":"Telef.",
-                        "data": "NU_TLF1", 
-                        "autoWidth": true 
                     },
                     { 
                         "title":"Celular",
@@ -96,5 +85,51 @@
                     },
                 ]
         })
+        $('#agenda_table tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // la fila ya esta abierra, cerrar la fila y cambiar el icono
+            row.child.hide();
+            tr.removeClass('shown');
+            tr.find('i').removeClass('fa fa-angle-double-down'); 
+            tr.find('i').addClass('fa fa-angle-double-up'); 
+            
+        }
+        else {
+            // Abrir la fila de detalle
+            row.child( detalle(row.data()) ).show();
+            tr.addClass('shown');
+            tr.find('i').removeClass('fa fa-angle-double-up'); 
+            tr.find('i').addClass('fa fa-angle-double-down');
+        }
+        } );
+        function detalle ( d ) {
+            // d es la data que llena el datatable
+            return '<table cellpadding="5" cellspacing="0" border="0" class="table table-sm table-bordered" style="padding-left:50px;">'+
+                '<tr>'+
+                    '<td colspan="4"><h6 style="font-weigth:bold;"> DATOS DE : '+d.NO_APEL_PATE+' ' +d.NO_APEL_MATE+ ', '+d.NO_TRAB+'<h3></td>'+
+                '</tr>'+
+                '<tr>'+
+                    '<td style="width:30px;">EMPRESA </td>'+
+                    '<td>'+d.DE_NOMB+'</td>'+
+                    '<td style="width:30px;">AREA</td>'+
+                    '<td>'+d.DE_AREA+'</td>'+
+                '</tr>'+
+                '<tr>'+
+                    '<td style="width:30px;">PUESTO</td>'+
+                    '<td>'+d.DE_PUES_TRAB+'</td>'+
+                    '<td style="width:30px;">CELULAR</td>'+
+                    '<td>'+d.NU_TLF2+'</td>'+
+                '</tr>'+
+                '<tr>'+
+                    '<td style="width:30px;">PUESTO</td>'+
+                    '<td>'+d.NU_TLF1+'</td>'+
+                    '<td style="width:30px;">CORREO</td>'+
+                    '<td>'+d.NO_DIRE_MAI1+'</td>'+
+                '</tr>'+
+            '</table>';
+        }
     </script>
 }

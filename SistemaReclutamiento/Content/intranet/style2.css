@@ -2330,6 +2330,7 @@ input.custom-text:focus{
 .tickercontainer .mask { /* that serves as a mask. so you get a sort of padding both left and right */
 	position: relative;
 	overflow: hidden;
+	height: 18px;
 }
 ul.newsticker { /* that's your list */
 	position: relative;

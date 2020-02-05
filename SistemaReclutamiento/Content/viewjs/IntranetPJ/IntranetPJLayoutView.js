@@ -85,10 +85,16 @@
                     var appendCumpleanios = '';
                     appendCumpleanios += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat"><ul class="catlist">';
                     $.each(dataCumpleanios, function (index, cumpleanios) {
-                        var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
-                        diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
-                        var diaCumpleaniosModal = diaCumpleanios.getDate() + " de " + meses[diahoy.getMonth()];
-                        appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '" data-diacumple="' + diaCumpleaniosModal + '" data-numdoc="' + cumpleanios.per_numdoc + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        if(index<=9){
+                            var diaCumpleanios = new Date(moment(cumpleanios.per_fechanacimiento).format('YYYY-MM-DD'));
+                            diaCumpleanios.setMinutes(diaCumpleanios.getMinutes() + diaCumpleanios.getTimezoneOffset());
+                            var diaCumpleaniosModal = diaCumpleanios.getDate() + " de " + meses[diahoy.getMonth()];
+                            appendCumpleanios += '<li class="_cumple" data-id="' + cumpleanios.per_id + '" data-direccionenvio="' + cumpleanios.per_correoelectronico + '" data-diacumple="' + diaCumpleaniosModal + '" data-numdoc="' + cumpleanios.per_numdoc + '"><a href = "javascript:void(0);" ><img src="' + basePath + 'Content/intranet/images/png/calendar.png" /><div class="spannumber">' + (diaCumpleanios.getDate()) + '</div><p class="meta-date">' + meses[diahoy.getMonth()] + ' ' + (diaCumpleanios.getDate()) + ', ' + diahoy.getFullYear() + '</p><h2 class="wtitle">' + cumpleanios.per_nombre.toUpperCase() + ' ' + cumpleanios.per_apellido_pat.toUpperCase() + ' ' + cumpleanios.per_apellido_mat.toUpperCase() + '</h2></a >    </li >';
+                        }
+                        else{
+                            return false;
+                        }
+                        
                     });
                     appendCumpleanios += '</ul></div >';
                     $("#cumpleaniosIntranet").html(appendCumpleanios);
@@ -1113,7 +1119,6 @@
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
                         var data = response.data;
-                        console.log(data);
                         var span = "";
                         $("#informacion_puesto").html("");
                         span += "<strong>Área: </strong>" + ((data.DE_AREA == null) ? "" : data.DE_AREA) + "<br/><strong> Puesto:</strong> " + ((data.DE_PUES_TRAB == null) ? "" : data.DE_PUES_TRAB) + " <br/><strong>Oficina:</strong> " + ((data.DE_SEDE == null) ? "" : data.DE_SEDE) + "<br/>"
@@ -1197,7 +1202,6 @@
             div.addClass("select_img");
         });
         $(document).on('click', '.abrir_pagina', function () {
-            console.log("click");
             var otra_pagina = $(this).data("blank");
             var url = $(this).data("url");
             if (url != "") {
