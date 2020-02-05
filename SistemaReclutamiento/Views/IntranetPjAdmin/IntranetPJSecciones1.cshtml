@@ -340,7 +340,8 @@
                     <form class="" id="form_detalle_elemento_modal" method="post">
                         <input type="hidden" name="fk_elemento_modal" id="fk_elemento_modal" value="" />
                         <input type="hidden" name="detelm_id" id="detelm_id" value="" />
-                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_elemento_modal" value="" />
+                        <input type="hidden" name="fk_seccion_elemento" id="fk_seccion_det_elemento_modal" value="" />
+                        <input type="hidden" name="detelm_orden" id="detelm_orden" />
                         <input type="hidden" name="detelm_nombre_imagen" id="detelm_nombre_imagen" value="">
                         <div class="col-md-12 col-xs-12 detelm-opcion">
                             <div class="form-group">
@@ -389,12 +390,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 detelm-orden">
-                            <div class="form-group">
-                                <label>Orden</label>
-                                <input type="number" name="detelm_orden" id="detelm_orden" class="form-control input-number" placeholder="Orden" />
-                            </div>
-                        </div>
+
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Estado</label>
@@ -408,7 +404,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-guardar-detalle-elemento-modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button class="btn btn_guardar_detalle_elemento_modal btn-primary"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>
