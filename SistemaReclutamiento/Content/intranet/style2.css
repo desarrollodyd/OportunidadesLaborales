@@ -1817,7 +1817,7 @@ ul.pagination{padding:0 20px;margin-bottom: 40px;margin-top: 30px;}
 ul.pagination li.current a {background: #FF0000;}
 ul.pagination li.current a:hover{background: #000 !important;}
 #maincontainer ul.pagination li.current a{color: #FFFFFF;}
-#maincontainer ul.pagination li a{padding: 10px 17px;}
+/*#maincontainer ul.pagination li a{padding: 10px 17px;}*/
 
 /* -------------------------------------------------------------------------------------------------
 0.2 HEADER STYLE ( top-bar, main navi, off canvas navigaiton, dropdown )
@@ -5394,13 +5394,13 @@ div.dataTables_scrollFoot table {
         .dataTable > thead > tr > th.sorting_desc:after {
             content: "\f0dd";
             top: -6px;
-            color: #307ECC
+            color: #307ECC !important
         }
 
         .dataTable > thead > tr > th.sorting_asc:after {
             content: "\f0de";
             top: 4px;
-            color: #307ECC
+            color: #307ECC !important
         }
 
     .dataTable > thead > tr > th.sorting_disabled {
@@ -5554,8 +5554,8 @@ div.dataTables_processing {
 }
 
     .pager > li.disabled > a, .pager > li.disabled > a:hover, .pagination > li.disabled > a, .pagination > li.disabled > a:hover {
-        background-color: #F9F9F9;
-        border-color: #D9D9D9;
+        background-color: #a29d9d;
+        border-color: #a29d9d;
         z-index: auto;
     }
 
@@ -5625,4 +5625,65 @@ table.dataTable {
     width: 100%;
     max-width: 100%;
     margin-bottom: 20px;
+}
+
+.table-bordered, .table-bordered > tbody > tr > td{
+    font-size:10px;
+}
+
+.table{
+    margin-bottom:0px;
+}
+ul.pagination {
+    float:right;
+}
+
+tbody td div.alert{
+    margin-bottom:0px !important
+
+}
+
+a:hover{
+    text-decoration:none;
+}
+
+.pagination > li > a {
+    color: #fff !important;
+    background-color: #0c0c0c;
+    border: 1px solid #130101;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    z-index: 3;
+    color: #fff;
+    background-color: #ff0000;
+    border-color: #ff0000;
+    cursor: default;
+}
+
+.pagination > li > a:focus, .pagination > li > a:hover, .pagination > li > span:focus, .pagination > li > span:hover {
+    z-index: 2;
+    color: #23527c;
+    background-color: #f00 !important;
+    border-color: #f00;
+}
+
+table thead, table tfoot {
+    background: #000;
+}
+
+table thead tr th, table tfoot tr td {
+    color: #fff;
+}
+
+.dataTable > thead > tr > th[class*=sort]:after {
+    color: #fff;
+}
+
+.dataTable > thead > tr > th[class*=sort]:hover {
+    color: #fff;
+}
+
+.dataTable > thead > tr > th[class*=sorting_]:hover {
+    color: #307ECC;
 }

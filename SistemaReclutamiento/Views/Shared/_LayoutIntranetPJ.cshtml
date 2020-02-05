@@ -30,6 +30,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <link rel="shortcut icon" href="~/Content/images/icon.png">
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Content/intranet/style2.css?v=@fecha_archivos">
     <script src="~/Content/intranet/js/modernizr.foundation.js?v=@fecha_archivos"></script>
     <link rel="stylesheet" href="~/Content/intranet/css/venobox.css?v=@fecha_archivos" type="text/css" media="screen" />
@@ -84,16 +85,17 @@
             font-size: 28px;
             font-weight: bold;
             margin-top: -8px;
+            opacity:1;
         }
 
-        .close:hover,
-        .close:focus {
-            color: #a09c9c;
-            text-decoration: none;
-            cursor: pointer;
-        }
+            .close:hover,
+            .close:focus {
+                color: #a09c9c;
+                text-decoration: none;
+                cursor: pointer;
+            }
 
-        .header_cumple{
+        .header_cumple {
             background-color: #000;
             padding: 9px;
             color: #fff;
@@ -435,7 +437,7 @@
                                     <div class="img_face" style="float:left;width:28px;height:24px"><img src="~/Content/intranet/images/faces/102-tongue.png" /></div>
 
                                 </div>*@
-                            <div class="col-md-12 col-xs-12" style="padding-top:33px;"></div>
+                            <div class="row" style="padding-top:7px;"></div>
                             <textarea rows="4" id="text_mensaje" name="text_mensaje" style="width:100%;margin-top:20px;" placeholder="Mensaje de Cumpleaños"></textarea>
                         </form>
                         <div style="text-align:right">
@@ -450,8 +452,11 @@
 
         </div>
     </div>
+
     <!-- jQuery UI Widget and Effects Core -->
     <script src="~/Content/intranet/js/foundation.min.js?v=@fecha_archivos" type="text/javascript"></script>
+    <script src="~/Content/intranetSGC/assets/js/bootstrap.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery-2.1.4.min.js"></script>
     <script src="~/Content/intranet/js/jquery-ui-1.8.23.custom.min.js?v=@fecha_archivos" type="text/javascript"></script>
     <script src="~/Content/intranet/js/jquery.easing.min.js?v=@fecha_archivos" type="text/javascript"></script>
     <!-- Latest version (3.0.6) of jQuery Mouse Wheel by Brandon Aaron -->
@@ -474,6 +479,7 @@
     <script src="~/Content/vendors/moment/moment.js?v=@fecha_archivos"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js?v=@fecha_archivos"></script>
     <script src="~/Content/intranetSGC/assets/js/jquery.dataTables.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.dataTables.bootstrap.min.js"></script>
     <script src="~/Content/intranet/js/wysiwyg.js" type="text/javascript"></script>
     <script src="~/Content/intranet/js/wysiwyg-editor.js"></script>
     <script src="~/Content/viewjs/generalIntranetPJ.js?v=@fecha_archivos"></script>
@@ -531,84 +537,84 @@
                         image: '<i class="fa fa-smile-o"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
                         popup: function ($popup, $button, $editor) {
                             var list_smilies = [
-                                    '<img src="'+basePath+'Content/Intranet/smiley/afraid.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/amorous.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/angel.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/angry.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/bored.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cold.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/confused.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cross.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/crying.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/devil.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/disappointed.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/dont-know.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/drool.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/embarrassed.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/excited.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/excruciating.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/eyeroll.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/happy.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hot.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hug-left.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hug-right.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/hungry.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/invincible.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/kiss.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/lying.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/meeting.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/nerdy.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/neutral.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/party.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/pirate.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/pissed-off.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/question.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sad.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shame.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shocked.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shut-mouth.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sick.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/silent.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sleeping.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/sleepy.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/stressed.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/thinking.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/tongue.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/uhm-yeah.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/wink.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/working.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/bathing.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/beer.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/boy.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/camera.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/chilli.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cigarette.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/cinema.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/coffee.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/girl.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/console.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/grumpy.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/in_love.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/internet.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/lamp.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/mobile.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/mrgreen.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/musical-note.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/music.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/phone.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/plate.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/restroom.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/rose.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/search.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/shopping.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/star.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/studying.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/suit.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/surfing.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/thunder.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/tv.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/typing.png" width="18" heigth="18" alt="" />',
-                                    '<img src="'+basePath+'Content/Intranet/smiley/writing.png" width="18" heigth="18" alt="" />'
+                                '<img src="' + basePath + 'Content/Intranet/smiley/afraid.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/amorous.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/angel.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/angry.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/bored.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/cold.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/confused.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/cross.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/crying.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/devil.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/disappointed.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/dont-know.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/drool.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/embarrassed.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/excited.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/excruciating.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/eyeroll.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/happy.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/hot.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/hug-left.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/hug-right.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/hungry.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/invincible.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/kiss.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/lying.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/meeting.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/nerdy.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/neutral.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/party.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/pirate.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/pissed-off.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/question.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/sad.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/shame.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/shocked.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/shut-mouth.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/sick.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/silent.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/sleeping.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/sleepy.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/stressed.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/thinking.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/tongue.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/uhm-yeah.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/wink.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/working.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/bathing.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/beer.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/boy.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/camera.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/chilli.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/cigarette.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/cinema.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/coffee.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/girl.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/console.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/grumpy.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/in_love.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/internet.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/lamp.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/mobile.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/mrgreen.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/musical-note.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/music.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/phone.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/plate.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/restroom.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/rose.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/search.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/shopping.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/star.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/studying.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/suit.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/surfing.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/thunder.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/tv.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/typing.png" width="18" heigth="18" alt="" />',
+                                '<img src="' + basePath + 'Content/Intranet/smiley/writing.png" width="18" heigth="18" alt="" />'
                             ];
                             var $smilies = $('<div/>').addClass('wysiwyg-toolbar-smilies')
                                 .attr('unselectable', 'on');
