@@ -651,7 +651,7 @@ var PanelContenido = function () {
                 $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).remove();
                 $('<tr id="tr_elemento_contenido_detalle_modal' + elemento_modal_id + '" class="detail-row open"><td colspan="5"><div class="alert alert-warning" style="margin-bottom:0px;">Cargando Data ...</div></td></tr>').insertAfter(act_tr);
 
-                PanelContenido.init_ListarDetalle_Elemento_modal(elemento_modal_id);
+                PanelContenido.init_ListarDetalleElementoModal(elemento_modal_id);
             }
         });
 
@@ -1567,7 +1567,7 @@ var PanelContenido = function () {
                 $(".detelm-blank").hide();
                 $(".detelm-posicion").hide();
                 $(".detelm-estado").show();
-                $("#fk_seccion_elemento_modal").val(2);
+                $("#fk_seccion_det_elemento_modal").val(2);
                 $("#cboOpcionElemModal").val(1).change();
                 $("#cboPosicionElemModal").val("");
             }
@@ -1579,14 +1579,14 @@ var PanelContenido = function () {
                 $(".detelm-blank").hide();
                 $(".detelm-posicion").hide();
                 $(".detelm-estado").show();
-                $("#fk_seccion_elemento_modal").val(1);
+                $("#fk_seccion_det_elemento_modal").val(1);
                 $("#cboOpcionElemModal").val(2).change();
                 $("#cboPosicionElemModal").val("");
             }
 
             else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
                 //va a abrir modal
-                $("#fk_seccion_elemento_modal").val(1);
+                $("#fk_seccion_det_elemento_modal").val(1);
                 $(".detelm-imagen").hide();
                 $("#divdetelm").hide();
                 $(".detelm-url").hide();
@@ -1602,7 +1602,7 @@ var PanelContenido = function () {
                     $("#cboPosicionElemModal").val("R");
                 }
             } else if (tipo_elemento == 16) {
-                $("#fk_seccion_elemento_modal").val(1);
+                $("#fk_seccion_det_elemento_modal").val(1);
                 $(".detelm-opcion").hide();
                 $(".detelm-url").hide();
                 $(".detelm-blank").hide();
@@ -1610,7 +1610,7 @@ var PanelContenido = function () {
                 $(".detelm-posicion").show();
             }
             else if (tipo_elemento == 17 || tipo_elemento == 12) {
-                $("#fk_seccion_elemento_modal").val(1);
+                $("#fk_seccion_det_elemento_modal").val(1);
                 $(".detelm-opcion").hide();
                 $(".detelm-url").show();
                 $(".detelm-blank").show();
@@ -1618,7 +1618,7 @@ var PanelContenido = function () {
                 $(".detelm-posicion").hide();
             }
             else {
-                $("#fk_seccion_elemento_modal").val(0);
+                $("#fk_seccion_det_elemento_modal").val(0);
                 $(".detelm-posicion").hide();
                 $(".detelm-opcion").hide();
                 $(".detelm-url").hide();
@@ -1643,15 +1643,15 @@ var PanelContenido = function () {
                     console.log(data);
                     if (response.respuesta) {
                         $("#divdetelm").hide();
-                        $('#detelm_id').val(data.detel_id);
-                        $('#fk_elemento_modal').val(data.fk_elemento)
+                        $('#detelm_id').val(data.detelm_id);
+                        $('#fk_elemento_modal').val(data.fk_elemento_modal)
                         $("#spandetelm").html("");
                         $("#spandetelm").append('<i class="fa fa-upload"></i>  Subir Icono');
-                        if (data.detel_extension != "") {
-                            $("#detelm_nombre_imagen_modal").text("Nombre: " + data.detel_nombre + "." + data.detel_extension);
-                            $("#detelm_nombre_imagen").val(data.detel_nombre + "." + data.detel_extension);
+                        if (data.detelm_extension != "") {
+                            $("#detelm_nombre_imagen_modal").text("Nombre: " + data.detelm_nombre + "." + data.detelm_extension);
+                            $("#detelm_nombre_imagen").val(data.detelm_nombre + "." + data.detelm_extension);
                             // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
-                            $("#icono_actual_detelm").attr("src", "data:image/gif;base64," + data.detel_nombre_imagen);
+                            $("#icono_actual_detelm").attr("src", "data:image/gif;base64," + data.detelm_nombre_imagen);
                             $("#divdetelm").show();
                             $(".detelm-imagen").show();
                             $(".detelm-nombre").show();
@@ -1684,10 +1684,10 @@ var PanelContenido = function () {
                         if (data.fk_tipo_elemento == 16) {
                             $(".detelm-posicion").show();
                         }
-                        $("#detelm_orden").val(data.detel_orden);
-                        $("#cboPosicionElemModal").val(data.detel_posicion);
-                        $("#detelm_descripcion").val(data.detel_descripcion);
-                        $("#detelm_estado").val(data.detel_estado);
+                        $("#detelm_orden").val(data.detelm_orden);
+                        $("#cboPosicionElemModal").val(data.detelm_posicion);
+                        $("#detelm_descripcion").val(data.detelm_descripcion);
+                        $("#detelm_estado").val(data.detelm_estado);
                         $(".detelm-orden").show();
                         $('#modalFormularioDetalleElementoModal').modal('show');
                     }
@@ -1774,7 +1774,7 @@ var PanelContenido = function () {
                 refresh: false,
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
-                        PanelContenido.init_ListarDetalleElementosModal(elemento_id);
+                        PanelContenido.init_ListarDetalleElementoModal(elemento_id);
                         $("#modalFormularioDetalleElementoModal").modal("hide");
                     }
                 }
@@ -1976,7 +1976,7 @@ var PanelContenido = function () {
         init_ListarElementosModal: function (fk_seccion_elemento, detalle_elemento_id) {
             _ListarElementosModal(fk_seccion_elemento, detalle_elemento_id);
         },
-        init_ListarDetalle_Elemento_modal: function (elemento_modal_id) {
+        init_ListarDetalleElementoModal: function (elemento_modal_id) {
             _ListarDetalleElementosModal(elemento_modal_id);
         },
         

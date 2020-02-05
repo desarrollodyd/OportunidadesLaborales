@@ -37,7 +37,7 @@
                                 "render": function (value) {
                                     var span = '';
                                     var nombre_archivo = value;
-                                    var span ='<a href="javascript:void(0);"class="btn btn-white btn-danger btn-sm btn-round btn_descargar" data-nombre="' + nombre_archivo + '" data-rel="tooltip"title="Descargar Archivo">Descargar</a>';
+                                    var span = '<a href="javascript:void(0);"class="button_down btn_descargar" data-nombre="' + nombre_archivo + '" data-rel="tooltip"title="Descargar Archivo"><i class="fa fa-download"></i> Descargar</a>';
                                     return span;
                                 }
                             },
