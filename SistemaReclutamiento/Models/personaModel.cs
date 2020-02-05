@@ -347,6 +347,57 @@ namespace SistemaReclutamiento.Models
             }
             return (persona:persona, error:error);
         }
+        public (List<PersonaEntidad> listaPersonas, claseError error) PersonaListarEmpleadosJson() {
+            List<PersonaEntidad> listaPersonas = new List<PersonaEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT per_nombre, per_apellido_pat, per_direccion, per_fechanacimiento,
+                                per_correoelectronico, per_tipo, per_estado, per_id, per_apellido_mat, 
+                                per_telefono, per_celular, per_tipodoc, per_numdoc, 
+                                fk_ubigeo, per_sexo, per_fecha_reg, per_fecha_act, fk_cargo, per_foto
+	                            FROM marketing.cpj_persona
+                                where per_tipo='EMPLEADO';";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion)) {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader()) {
+                        if (dr.HasRows) {
+                            while (dr.Read()) {
+                                var Persona = new PersonaEntidad
+                                {
+                                    per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
+                                    per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
+                                    per_direccion = ManejoNulos.ManageNullStr(dr["per_direccion"]),
+                                    per_fechanacimiento = ManejoNulos.ManageNullDate(dr["per_fechanacimiento"]),
+                                    per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]),
+                                    per_tipo = ManejoNulos.ManageNullStr(dr["per_tipo"]),
+                                    per_estado = ManejoNulos.ManageNullStr(dr["per_estado"]),
+                                    per_id = ManejoNulos.ManageNullInteger(dr["per_id"]),
+                                    per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]),
+                                    per_telefono = ManejoNulos.ManageNullStr(dr["per_telefono"]),
+                                    per_celular = ManejoNulos.ManageNullStr(dr["per_celular"]),
+                                    per_tipodoc = ManejoNulos.ManageNullStr(dr["per_tipodoc"]),
+                                    per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]),
+                                    fk_ubigeo = ManejoNulos.ManageNullInteger(dr["fk_ubigeo"]),
+                                    per_sexo = ManejoNulos.ManageNullStr(dr["per_sexo"]),
+                                    per_fecha_reg = ManejoNulos.ManageNullDate(dr["per_fecha_reg"]),
+                                    per_fecha_act = ManejoNulos.ManageNullDate(dr["per_fecha_act"]),
+                                    fk_cargo = ManejoNulos.ManageNullInteger(dr["fk_cargo"]),
+                                    per_foto = ManejoNulos.ManageNullStr(dr["per_foto"]),
+                                };
+                                listaPersonas.Add(Persona);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex) {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (listaPersonas: listaPersonas, error: error);
+        }
         #region Region Proveedor
         public int PersonaProveedorInsertarJson(PersonaEntidad persona)
         {

@@ -96,6 +96,7 @@
                 else {
                     $("#cumpleaniosIntranet").html("");
                     var appendCumpleanios = '';
+                    appendCumpleanios += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/cake.png" class="img_title"/> CUMPLEAÑOS DE ' + meses[diahoy.getMonth()] + ' </h3><div class="getcat">';
                     appendCumpleanios += '<ul class="catlist"><li><a href="javascript:void(0);"><img src="' + basePath + 'Content/intranet/images/cake.png"><div class="spannumber"></div><p class="meta-date"></p><h2 class="wtitle">No se encontraron mas cumpleaños hasta fin de mes</h2></a></li></ul>';
                     $("#cumpleaniosIntranet").append(appendCumpleanios);
                 }

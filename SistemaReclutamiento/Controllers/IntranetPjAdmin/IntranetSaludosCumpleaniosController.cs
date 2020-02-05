@@ -113,7 +113,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     errormensaje = "Se Guardó Correctamente";
                     try
                     {
-                        string background = "\"background-image: url('cid:imagen_fondo'); width: 100%; height: 100vh; padding-top:50px;padding-left:50px;\"";
+                        string background = "\"background-image: url('cid:imagen_fondo'); width: 100%; height: 100vh; padding-top:50px\"";
                         string persona_que_saluda = persona.per_nombre.ToUpper() + " " + persona.per_apellido_pat.ToUpper() + " " + persona.per_apellido_mat.ToUpper();
 
 
@@ -150,9 +150,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             contador++;
                         }
                         string html = @"<div style=" + background + " ><div style=" + "\"text-align:center;\"" + "><h1>¡Corporacion PJ Te desea Un Feliz Cumpleaños!</h1></div></br>" +
-                            "<h2>Ademas queremos entregarte un mensaje de " + persona_que_saluda + " para ti :<h2></br>" +
+                            "<div style=\"padding-left:25px;\"><h2>Ademas queremos entregarte un mensaje de " + persona_que_saluda + " para ti :<h2></br>" +
                             "<h1>" + cuerpo + "<h1>" +
-                                      "<div>";
+                                      "</div></div>";
                         contador = 0;
                         AlternateView htmlView =
                         AlternateView.CreateAlternateViewFromString(html,

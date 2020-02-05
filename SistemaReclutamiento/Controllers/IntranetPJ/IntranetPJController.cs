@@ -90,7 +90,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<IntranetSaludoCumpleanioEntidad> intraSaludos = new List<IntranetSaludoCumpleanioEntidad>();
             List<IntranetFooterEntidad> intranetFooter = new List<IntranetFooterEntidad>();
 
-            List<PersonaEntidad> listaPersona = new List<PersonaEntidad>();
+            //List<PersonaEntidad> listaPersona = new List<PersonaEntidad>();
             claseError error = new claseError();
 
             //Para rotulado de noticias
@@ -98,6 +98,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<Tuple<DateTime, string, string>> listaNoticiasDesordenado = new List<Tuple<DateTime, string, string>>();
             Random randNum = new Random();
             var ListaSeccion = new List<dynamic>();
+
+            //Para listado de cumpleaños
+            List<PersonaSqlEntidad> listaPersonasSQL = new List<PersonaSqlEntidad>();
+            List<IntranetEmpresaEntidad> listaEmpresas = new List<IntranetEmpresaEntidad>();
+            List<PersonaEntidad> listaPersonasPostgres = new List<PersonaEntidad>();
+            var listaPersona = new List<dynamic>();
+
             string mensajeerrorBD = "";
             string mensaje = "";
             bool respuesta = false;
@@ -170,29 +177,119 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 {
                     mensajeerrorBD += "Error en Actividades: " + error.Value + "\n";
                 }
+
                 //listando Cumpleaños
-                var cumpleaniosTupla = personabl.PersonaObtenerCumpleaniosporDia();
-                error = cumpleaniosTupla.error;
-                if (error.Key.Equals(string.Empty))
+
+                //Lista de Empresas desde Postgres
+                var listaEmpresasTupla = intranetempresabl.IntranetEmpresasListarJson();
+                if (listaEmpresasTupla.error.Key.Equals(string.Empty))
                 {
-                    listaPersona = cumpleaniosTupla.personaLista;
-                    if (listaPersona.Count > 0) {
-                        foreach (var m in listaPersona) {
-                            string descripcionNoticia = m.per_nombre + " " + m.per_apellido_pat + " " + m.per_apellido_mat;
-                            listaNoticias.Add(Tuple.Create(m.per_fechanacimiento, descripcionNoticia.ToUpper(), "CUMPLEAÑOS: "));
+                    listaEmpresas = listaEmpresasTupla.intranetEmpresasLista.Where(x => x.emp_estado == "A").ToList();
+                    //creamos el string con la lista de empresas para el IN en sql
+                    if (listaEmpresas.Count > 0)
+                    {
+                        //Por lo menos hay una empresa registrada en int_empresa en Postgres
+                        string stringEmpresas = "";
+                        stringEmpresas += "(";
+                        foreach (var m in listaEmpresas)
+                        {
+                            stringEmpresas += m.emp_codigo + ",";
                         }
+                        stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
+                        stringEmpresas += ")";
+                        //Listado de Personas SQL
+                        var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaCumpleaniosJson(stringEmpresas);
+                        if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaPersonasSQL = listaPersonasSQLTupla.lista;
+
+                            //response = true;
+                            //errormensaje = "Listando Agenda";
+                        }
+                        else
+                        {
+                            mensajeerrorBD += listaPersonasSQLTupla.error.Value;
+                        }
+                        //Listado de PErsonas SQL
+                        var listaPersonasPostgresTupla = personabl.PersonaListarEmpleadosJson();
+                        if (listaPersonasPostgresTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaPersonasPostgres = listaPersonasPostgresTupla.listaPersonas;
+                        }
+                        else
+                        {
+                            mensajeerrorBD += listaPersonasPostgresTupla.error.Value;
+                        }
+                        if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0)
+                        {
+                            foreach (var m in listaPersonasSQL)
+                            {
+                                var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).SingleOrDefault();
+                                if (contiene != null)
+                                {
+                                    string descripcionNoticia = contiene.per_nombre + " " + contiene.per_apellido_pat + " " + contiene.per_apellido_mat;
+                                    listaNoticias.Add(Tuple.Create(contiene.per_fechanacimiento, descripcionNoticia.ToUpper(), "CUMPLEAÑOS: "));
+                                    listaPersona.Add(new
+                                    {
+                                        per_id=contiene.per_id,
+                                        per_numdoc = m.CO_TRAB,
+                                        per_nombre = m.NO_TRAB,
+                                        per_apellido_pat = m.NO_APEL_PATE,
+                                        per_apellido_mat = m.NO_APEL_MATE,
+                                        per_fechanacimiento = ManejoNulos.ManageNullDate(contiene.per_fechanacimiento),
+                                        DE_NOMB = m.DE_NOMB,
+                                        DE_AREA = m.DE_AREA,
+                                        DE_PUES_TRAB = m.DE_PUES_TRAB,
+                                        per_telefono = contiene.per_telefono,
+                                        per_celular = contiene.per_celular,
+                                        per_correoelectronico = contiene.per_correoelectronico,
+                                        NU_TLF1 = m.NU_TLF1,
+                                        NU_TLF2 = m.NU_TLF2,
+                                        NO_DIRE_MAI1 = m.NO_DIRE_MAI1,
+
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        mensajeerrorBD = "No hay Empresas";
                     }
                 }
                 else
                 {
-                    mensajeerrorBD += "Error en Cumpleaños: " + error.Value + "\n";
+                    mensajeerrorBD += listaEmpresasTupla.error.Value;
                 }
+
+
+                //var cumpleaniosTupla = personabl.PersonaObtenerCumpleaniosporDia();
+                //error = cumpleaniosTupla.error;
+                //if (error.Key.Equals(string.Empty))
+                //{
+                //    listaPersona = cumpleaniosTupla.personaLista;
+                //    if (listaPersona.Count > 0)
+                //    {
+                //        foreach (var m in listaPersona)
+                //        {
+                //            string descripcionNoticia = m.per_nombre + " " + m.per_apellido_pat + " " + m.per_apellido_mat;
+                //            listaNoticias.Add(Tuple.Create(m.per_fechanacimiento, descripcionNoticia.ToUpper(), "CUMPLEAÑOS: "));
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    mensajeerrorBD += "Error en Cumpleaños: " + error.Value + "\n";
+                //}
                 //desordenando lista de noticias
                 while (listaNoticias.Count > 0)
                 {
                     int val = randNum.Next(0, listaNoticias.Count - 1);
                     listaNoticiasDesordenado.Add(listaNoticias[val]);
                     listaNoticias.RemoveAt(val);
+                    if (listaNoticiasDesordenado.Count >= 10) {
+                        break;
+                    }
                 }
                 
                 var seccionesMenu = intraSeccionBL.IntranetSeccionListarxMenuIDJson(menu_id);
@@ -376,7 +473,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
 
                 }
                 catch (Exception ex) {
-
+                    mensajeerrorBD += ex.Message;
                 }
             }
             catch (Exception ex) {
@@ -705,8 +802,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         }
         [HttpPost]
         public ActionResult IntranetListarAgenda() {
-            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            List<PersonaSqlEntidad> listaPersonasSQL = new List<PersonaSqlEntidad>();
             List<IntranetEmpresaEntidad> listaEmpresas = new List<IntranetEmpresaEntidad>();
+            List<PersonaEntidad> listaPersonasPostgres = new List<PersonaEntidad>();
+            var lista = new List<dynamic>();
             string errormensaje = "";
             bool response = false;
             try
@@ -728,16 +827,45 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         }
                         stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
                         stringEmpresas += ")";
-                        //Listado de Agenda
-                        var listaPersonasTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas);
-                        if (listaPersonasTupla.error.Key.Equals(string.Empty))
+                        //Listado de Personas SQL
+                        var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas);
+                        if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
                         {
-                            listaPersonas = listaPersonasTupla.lista;
-                            response = true;
-                            errormensaje = "Listando Agenda";
+                            listaPersonasSQL = listaPersonasSQLTupla.lista;
+
+                            //response = true;
+                            //errormensaje = "Listando Agenda";
                         }
                         else {
-                            errormensaje = listaPersonasTupla.error.Value;
+                            errormensaje += listaPersonasSQLTupla.error.Value;
+                        }
+                        //Listado de PErsonas SQL
+                        var listaPersonasPostgresTupla = personabl.PersonaListarEmpleadosJson();
+                        if (listaPersonasPostgresTupla.error.Key.Equals(string.Empty)){
+                            listaPersonasPostgres = listaPersonasPostgresTupla.listaPersonas;
+                        }
+                        else {
+                            errormensaje += listaPersonasPostgresTupla.error.Value;
+                        }
+                        if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0) {
+                            foreach (var m in listaPersonasSQL) {
+                                var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).SingleOrDefault();
+                                if (contiene!=null) {
+                                    lista.Add(new
+                                    {
+                                        CO_TRAB = m.CO_TRAB,
+                                        NO_TRAB = m.NO_TRAB,
+                                        NO_APEL_PATE = m.NO_APEL_PATE,
+                                        NO_APEL_MATE = m.NO_APEL_MATE,
+                                        DE_NOMB = m.DE_NOMB,
+                                        DE_AREA = m.DE_AREA,
+                                        DE_PUES_TRAB = m.DE_PUES_TRAB,
+                                        NU_TLF1 = contiene.per_telefono,
+                                        NU_TLF2 = contiene.per_celular,
+                                        NO_DIRE_MAI1 = contiene.per_correoelectronico,
+                                    });
+                                }
+                            }
                         }
                     }
                     else {
@@ -751,7 +879,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             catch (Exception ex) {
                 errormensaje = ex.Message;
             }
-            return Json(new{ data=listaPersonas.ToList(),mensaje=errormensaje,respuesta=response});
+            return Json(new{ data=lista.ToList(),mensaje=errormensaje,respuesta=response});
         }
         
     }
