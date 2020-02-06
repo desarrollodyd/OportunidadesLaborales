@@ -505,7 +505,7 @@
 
 
         $('#text_mensaje').each(function (index, element) {
-            $(element).wysiwyg({
+           textarea = $(element).wysiwyg({
                 classes: 'some-more-classes',
                 position: index == 0 ? 'top-selection' : (index == 1 ? 'bottom' : 'selection'),
                 buttons: {

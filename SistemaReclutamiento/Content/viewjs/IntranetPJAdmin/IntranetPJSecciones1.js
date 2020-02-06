@@ -584,29 +584,29 @@ var PanelContenido = function () {
                     if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7) {
                         columna_ubicacion = "hidden";
                         if (tipo == 11 || tipo == 7) {
-                            value.detel_descripcion = "IMAGEN";
+                            value.detelm_descripcion = "IMAGEN";
                         }
                     }
 
-                    var nombre = value.detel_nombre + '.' + value.detel_extension;
-                    if (value.detel_extension == "") {
+                    var nombre = value.detelm_nombre + '.' + value.detelm_extension;
+                    if (value.detelm_extension == "") {
                         nombre = "";
                     }
-                    if ((tipo == 8 || tipo == 14) && value.detel_posicion == "L") {
+                    if ((tipo == 8 || tipo == 14) && value.detelm_posicion == "L") {
                         nombre = "TEXTO";
                     }
-                    if ((tipo == 8 || tipo == 14) && value.detel_posicion == "R") {
-                        value.detel_descripcion = "IMAGEN";
+                    if ((tipo == 8 || tipo == 14) && value.detelm_posicion == "R") {
+                        value.detelm_descripcion = "IMAGEN";
                     }
 
-                    if ((tipo == 13 || tipo == 15) && value.detel_posicion == "L") {
-                        value.detel_descripcion = "IMAGEN";
+                    if ((tipo == 13 || tipo == 15) && value.detelm_posicion == "L") {
+                        value.detelm_descripcion = "IMAGEN";
                     }
-                    if ((tipo == 13 || tipo == 15) && value.detel_posicion == "R") {
+                    if ((tipo == 13 || tipo == 15) && value.detelm_posicion == "R") {
                         nombre = "TEXTO";
                     }
 
-                    tr += '<tr  data-id="' + value.detelm_id + '" data-orden="' + value.detelm_orden + '"><td><span class="det_elem_modal_orden label label-default label-white middle">' + (index + 1) + '</span> ' + value.detelm_descripcion + '</td><td class="' + columan_imagen + '">' + value.detelm_nombre + '.' + value.detelm_extension + '</td><td class="' + columna_ubicacion + '">' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                    tr += '<tr  data-id="' + value.detelm_id + '" data-orden="' + value.detelm_orden + '"><td><span class="det_elem_modal_orden label label-default label-white middle">' + (index + 1) + '</span> ' + value.detelm_descripcion + '</td><td class="' + columan_imagen + '">' + nombre + '</td><td class="' + columna_ubicacion + '">' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
 
                 var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
@@ -1098,7 +1098,7 @@ var PanelContenido = function () {
                 $("#cboOpcion").val(1).change();
                 $("#cboPosicion").val("");
             }
-            else if (tipo_elemento == 7 || tipo_elemento==11) {
+            else if (tipo_elemento == 7 || tipo_elemento == 11 || tipo_elemento == 9 || tipo_elemento == 10) {
                 $(".detel-opcion").hide();
                 $(".detel-descripcion").hide();
                 $(".detel-imagen").show();
@@ -1120,6 +1120,8 @@ var PanelContenido = function () {
                 $(".detel-blank").hide();
                 $(".detel-opcion").show();
                 $(".detel-posicion").hide();
+                $(".detel-descripcion").show();
+                
                 if (tipo_elemento == 8 || tipo_elemento == 14) {
                     $("#cboOpcion").val(1).change();
                     $("#cboPosicion").val("L");
@@ -1646,7 +1648,7 @@ var PanelContenido = function () {
                 $("#cboOpcionElemModal").val(1).change();
                 $("#cboPosicionElemModal").val("");
             }
-            else if (tipo_elemento == 7 || tipo_elemento == 11) {
+            else if (tipo_elemento == 7 || tipo_elemento == 11 || tipo_elemento == 9 || tipo_elemento == 10) {
                 $(".detelm-opcion").hide();
                 $(".detelm-descripcion").hide();
                 $(".detelm-imagen").show();
@@ -1668,6 +1670,7 @@ var PanelContenido = function () {
                 $(".detelm-blank").hide();
                 $(".detelm-opcion").show();
                 $(".detelm-posicion").hide();
+                $(".detelm-descripcion").show();
                 if (tipo_elemento == 8 || tipo_elemento == 14) {
                     $("#cboOpcionElemModal").val(1).change();
                     $("#cboPosicionElemModal").val("L");

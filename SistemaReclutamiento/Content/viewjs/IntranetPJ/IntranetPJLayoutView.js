@@ -200,7 +200,7 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 6) {
-
+                                    appendElementos += '<div class="divsinglepost"> <blockquote>' + elemento.elem_titulo + '</blockquote></div>';
                                 }
 
                                 if (elemento.fk_tipo_elemento == 7) {
@@ -704,7 +704,7 @@
                         }
 
                         if (elemento.fk_tipo_elemento == 6) {
-
+                            appendElementos += '<div class="divsinglepost"> <blockquote>' + elemento.elem_titulo + '</blockquote></div>';
                         }
 
                         if (elemento.fk_tipo_elemento == 7) {
