@@ -5619,7 +5619,7 @@ table.dataTable {
 }
 
     .table-bordered, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
-        border: 1px solid #ddd;
+		border: 1px solid #ddd;
     }
 
 .table {
@@ -5629,7 +5629,7 @@ table.dataTable {
 }
 
 .table-bordered, .table-bordered > tbody > tr > td{
-    font-size:10px;
+    font-size:12px;
 }
 
 .table{
@@ -5687,4 +5687,11 @@ table thead tr th, table tfoot tr td {
 
 .dataTable > thead > tr > th[class*=sorting_]:hover {
     color: #307ECC;
+}
+td.details-control{
+	text-align: center;	
+}
+tr > td.details-control > i{
+	color: rgb(255, 0, 0);
+	font-size: 16px;
 }
