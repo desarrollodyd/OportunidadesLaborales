@@ -1,4 +1,0 @@
-numero - centro
-texto - izquierda
-dinero - derecha
-fecha - centrado
