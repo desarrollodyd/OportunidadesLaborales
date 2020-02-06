@@ -116,25 +116,25 @@ var PanelContenido = function () {
             }
         });
     };
-
-    var _sort_Detalle_Elemento_modal = function (elementom_id) {
-        $('.tbody_detalle_elemento_modal_' + elemento_id).sortable({
+    
+    var _sort_detalle_elemento_modal = function (elementom_id) {
+        $('.tbody_detalle_elemento_modal_' + elementom_id).sortable({
             cursor: 'move',
             placeholder: 'box placeholder',
             stop: function (event, ui) {
                 let lista_orden = [];
-                var lista = $('.tbody_detalle_elemento_modal_' + elementom_id + ' tr.delem_modal_' + elementom_id);
+                var lista = $('.tbody_detalle_elemento_modal_' + elementom_id + ' tr');
                 $.each(lista, function (index, value) {
                     lista_orden.push({
                         detelm_id: $(this).data("id"),
                         detelm_orden: (index + 1)
                     });
-                    $(this).find("span.detelem_modal_orden").text((index + 1));
+                    $(this).find("span.det_elem_modal_orden").text((index + 1));
                 });
                 console.log(lista_orden);
                 responseSimple({
                     url: "IntranetDetalleElementoModal/IntranetDetalleElementoModalEditarOrdenJson",
-                    data: JSON.stringify({ arrayDetElemento: lista_orden }),
+                    data: JSON.stringify({ arrayDetElementoModal: lista_orden }),
                     refresh: false,
                     callBackSuccess: function (response) {
                         if (response.respuesta) {
@@ -533,6 +533,7 @@ var PanelContenido = function () {
         var dataForm = {
             fk_elemento_modal: elemento_modal_id
         };
+        var tipo_elemento = $("#elemento_modal_" + elemento_modal_id).data("tipo");
         responseSimple({
             url: "IntranetDetalleElementoModal/IntranetDetalleElementoModalListarxElementoModalJson",
             data: JSON.stringify(dataForm),
@@ -542,7 +543,7 @@ var PanelContenido = function () {
                 var tr = "";
                 $.each(rows, function (index, value) {
                     var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento_modal" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-pencil"></i> </button>' +
-                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento_modal" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-trash"></i> </button>';
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento_modal" data-elemento_id="' + elemento_modal_id+'" data-id=' + value.detelm_id + '><i class="ace-icon fa fa-trash"></i> </button>';
 
                     var clase_estado = 'success';
                     var estado = "Activo";
@@ -565,21 +566,75 @@ var PanelContenido = function () {
                     };
 
 
-                    tr += '<tr  data-id="' + value.detelm_id + '" data-orden="' + value.detelm_orden + '"><td><span class="elem_orden label label-default label-white middle">' + (index + 1) + '</span> ' + value.detelm_descripcion + '</td><td>' + value.detelm_nombre + '.' + value.detelm_extension + '</td><td>' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+
+                    var tipo = $("#elemento_modal_" + elemento_modal_id).data("tipo");
+                   
+                    var columan_imagen = "";
+                    var columna_ubicacion = "";
+
+                    if (tipo == 5) {
+                        columan_imagen = "hidden";
+                        columna_ubicacion = "hidden";
+                    }
+
+                    if (tipo == 16) {
+                        columan_imagen = "hidden";
+                    }
+
+                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7) {
+                        columna_ubicacion = "hidden";
+                        if (tipo == 11 || tipo == 7) {
+                            value.detel_descripcion = "IMAGEN";
+                        }
+                    }
+
+                    var nombre = value.detel_nombre + '.' + value.detel_extension;
+                    if (value.detel_extension == "") {
+                        nombre = "";
+                    }
+                    if ((tipo == 8 || tipo == 14) && value.detel_posicion == "L") {
+                        nombre = "TEXTO";
+                    }
+                    if ((tipo == 8 || tipo == 14) && value.detel_posicion == "R") {
+                        value.detel_descripcion = "IMAGEN";
+                    }
+
+                    if ((tipo == 13 || tipo == 15) && value.detel_posicion == "L") {
+                        value.detel_descripcion = "IMAGEN";
+                    }
+                    if ((tipo == 13 || tipo == 15) && value.detel_posicion == "R") {
+                        nombre = "TEXTO";
+                    }
+
+                    tr += '<tr  data-id="' + value.detelm_id + '" data-orden="' + value.detelm_orden + '"><td><span class="det_elem_modal_orden label label-default label-white middle">' + (index + 1) + '</span> ' + value.detelm_descripcion + '</td><td class="' + columan_imagen + '">' + value.detelm_nombre + '.' + value.detelm_extension + '</td><td class="' + columna_ubicacion + '">' + posicion + '</td><td><span class="label label-' + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
                 });
 
                 var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
-                    '<div class="col-md-3 col-md-offset-4 col-sm-2 col-xs-12"><button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_ordenar_elemento_modal" data-id="' + elemento_modal_id + '" data-rel="tooltip" title="Ordenar  Elemento"><i class="ace-icon glyphicon glyphicon-list-alt"></i> Ordenar </button></div>' +
+                    '<div class="col-md-3 col-md-offset-4 col-sm-2 col-xs-12"><button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_ordenar_detalle_elemento_modal" data-id="' + elemento_modal_id + '" data-rel="tooltip" title="Ordenar  Elemento"><i class="ace-icon glyphicon glyphicon-list-alt"></i> Ordenar </button></div>' +
                     '<div class="col-md-5 col-sm-4 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento_modal" data-id="' + elemento_modal_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento Modal"> <i class="fa fa-file"></i> Nuevo Detalle Elemento Modal</button></div>' +
                     '</div>';
 
+                var columan_imagen = "";
+                var columna_ubicacion = "";
+                if (tipo_elemento == 5) {
+                    columan_imagen = "hidden";
+                    columna_ubicacion = "hidden";
+                }
 
-                tr = boton_nuevo + '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody>' + tr + '</tbody></table>';
+                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7) {
+                    columna_ubicacion = "hidden";
+                }
+
+                if (tipo_elemento == 16) {
+                    columan_imagen = "hidden";
+                }
+
+                tr = boton_nuevo + '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_modal_' + elemento_modal_id + '">' + tr + '</tbody></table>';
                 if (rows.length > 0) {
                     $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
                 }
                 else {
-                    tr = boton_nuevo + '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th>Imagen</th><th style="width: 12%;">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><td colspan="5" ><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tbody></table>';
+                    tr = boton_nuevo + '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><td colspan="5" ><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tbody></table>';
                     $('#tr_elemento_contenido_detalle_modal' + elemento_modal_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + tr + '</div></div></td>');
                 }
 
@@ -1466,7 +1521,7 @@ var PanelContenido = function () {
 
         $(document).on('click', '.btn_ordenar_detalle_elemento_modal', function (e) {
             var elementom_id = $(this).data("id");
-            var spans = $('tbody.tbody_detalle_elemento_modal_' + elemento_id + ' tr span.detelem_modal_orden');
+            var spans = $('tbody.tbody_detalle_elemento_modal_' + elementom_id + ' tr span.det_elem_modal_orden');
             console.log(spans)
             $.each(spans, function (index, value) {
                 $(this).removeClass("label-default");
@@ -1488,7 +1543,7 @@ var PanelContenido = function () {
                             refresh: false,
                             callBackSuccess: function (response) {
                                 if (response.respuesta) {
-                                    PanelContenido.init_ListarDetalleElementosModal(elementom_id);
+                                    PanelContenido.init_ListarDetalleElementoModal(elementom_id);
                                 }
                             }
                         });
