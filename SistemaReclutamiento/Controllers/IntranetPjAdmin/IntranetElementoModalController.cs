@@ -110,6 +110,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 detalleElementoModal = listaDetallesTupla.intranetDetalleElementoModalListaxElementoID;
                 foreach (var m in detalleElementoModal) {
                     rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + m.detelm_nombre+"."+m.detelm_extension);
+                    if (System.IO.File.Exists(rutaAnterior))
+                    {
+                        System.IO.File.Delete(rutaAnterior);
+                    }
                 }
                 var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarxElementoModalJson(emod_id);
                 error = intranetDetalleElementoModalTupla.error;

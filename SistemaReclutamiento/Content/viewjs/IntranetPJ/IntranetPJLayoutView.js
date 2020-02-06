@@ -1108,7 +1108,6 @@
             $("#fk_persona_que_saluda").val(persona.per_id);
             $("#direccion_envio").val($(this).data("direccionenvio"));
             $("#tituloCumpleanios").text(span);
-            $("#text_mensaje").text("");
             var dataForm = {
                 dni: per_numdoc,
             }

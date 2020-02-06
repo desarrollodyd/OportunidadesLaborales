@@ -30,7 +30,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <link rel="shortcut icon" href="~/Content/images/icon.png">
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />*@
     <link rel="stylesheet" href="~/Content/intranet/style2.css?v=@fecha_archivos">
     <script src="~/Content/intranet/js/modernizr.foundation.js?v=@fecha_archivos"></script>
     <link rel="stylesheet" href="~/Content/intranet/css/venobox.css?v=@fecha_archivos" type="text/css" media="screen" />
@@ -455,7 +455,7 @@
 
     <!-- jQuery UI Widget and Effects Core -->
     <script src="~/Content/intranet/js/foundation.min.js?v=@fecha_archivos" type="text/javascript"></script>
-    <script src="~/Content/intranetSGC/assets/js/bootstrap.min.js"></script>
+  
     @*<script src="~/Content/intranetSGC/assets/js/jquery-2.1.4.min.js"></script>*@
     <script src="~/Content/intranet/js/jquery-ui-1.8.23.custom.min.js?v=@fecha_archivos" type="text/javascript"></script>
     <script src="~/Content/intranet/js/jquery.easing.min.js?v=@fecha_archivos" type="text/javascript"></script>
@@ -478,10 +478,11 @@
     <script src="~/Content/vendors/iCheck/icheck.min.js?v=@fecha_archivos"></script>
     <script src="~/Content/vendors/moment/moment.js?v=@fecha_archivos"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js?v=@fecha_archivos"></script>
-    <script src="~/Content/intranetSGC/assets/js/jquery.dataTables.min.js"></script>
-    <script src="~/Content/intranetSGC/assets/js/jquery.dataTables.bootstrap.min.js"></script>
-    <script src="~/Content/intranet/js/wysiwyg.js" type="text/javascript"></script>
-    <script src="~/Content/intranet/js/wysiwyg-editor.js"></script>
+      @*<script src="~/Content/intranetSGC/assets/js/bootstrap.min.js"></script>*@
+    <script src="~/Content/intranetSGC/assets/js/jquery.dataTables.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.dataTables.bootstrap.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/intranet/js/wysiwyg.js?v=@fecha_archivos" type="text/javascript"></script>
+    <script src="~/Content/intranet/js/wysiwyg-editor.js?v=@fecha_archivos"></script>
     <script src="~/Content/viewjs/generalIntranetPJ.js?v=@fecha_archivos"></script>
     <script>
         $(document).on('click', '.btnCerrarSesion', function () {
@@ -795,18 +796,7 @@
                         //showstatic: true,    // wanted on the toolbar
                         showselection: false    // wanted on selection
                     },
-                    subscript: index == 1 ? false : {
-                        title: 'Subscript',
-                        image: '<i class="fa fa-subscript"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: true    // wanted on selection
-                    },
-                    superscript: index == 1 ? false : {
-                        title: 'Superscript',
-                        image: '<i class="fa fa-superscript"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />
-                        //showstatic: true,    // wanted on the toolbar
-                        showselection: true    // wanted on selection
-                    },
+                 
                     indent: index != 0 ? false : {
                         title: 'Indent',
                         image: '<i class="fa fa-indent"></i>', // <img src="path/to/image.png" width="16" height="16" alt="" />

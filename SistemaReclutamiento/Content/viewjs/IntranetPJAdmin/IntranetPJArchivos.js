@@ -68,25 +68,35 @@
 
         $(document).off('click', ".btn-guardar")
         $(document).on('click', ".btn-guardar", function (e) {
-            $("#form_archivos").submit();
-            if (_objetoForm_form_archivos.valid()) {
-                var dataForm = new FormData(document.getElementById("form_archivos"));
-                responseFileSimple({
-                    url: "IntranetArchivos/IntranetArchivosInsertar",
-                    data: dataForm,
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        //console.log(response);
-                        var respuesta = response.respuesta;
-                        if (respuesta) {
-                            PanelArchivos.init_ListarArchivos();
-                            $("#modalFormulario").modal("hide");
+            debugger;
+            var permitido=15728640;
+            var fileSize = $('#nombre_completo')[0].files[0].size;
+            if(fileSize<permitido){
+                if (_objetoForm_form_archivos.valid()) {
+                    var dataForm = new FormData(document.getElementById("form_archivos"));
+                    responseFileSimple({
+                        url: "IntranetArchivos/IntranetArchivosInsertar",
+                        data: dataForm,
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            //console.log(response);
+                            var respuesta = response.respuesta;
+                            if (respuesta) {
+                                PanelArchivos.init_ListarArchivos();
+                                $("#modalFormulario").modal("hide");
+                            }
                         }
-                    }
-                });
-            } else {
+                    });
+                } else {
+                    messageResponse({
+                        text: "Complete los campos Obligatorios",
+                        type: "error"
+                    })
+                }
+            }
+            else{
                 messageResponse({
-                    text: "Complete los campos Obligatorios",
+                    text: "Archivo Demasiado Grande, solo se permiten archivos de hasta 15MB",
                     type: "error"
                 })
             }

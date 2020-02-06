@@ -75,7 +75,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         [HttpPost]
         public ActionResult IntranetArchivosInsertar(string nombre_completo) {
             HttpPostedFileBase file = Request.Files[0];
-            int tamanioMaximo = 4194304;
+            int tamanioMaximo = 15728640;
             string rutaInsertar = "";
             bool response = false;
             string errormensaje = "";
@@ -103,7 +103,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                     else
                     {
-                        errormensaje = "El tamaño maximo de arhivo permitido es de 4Mb.";
+                        errormensaje = "El tamaño maximo de arhivo permitido es de 15Mb.";
                         response = false;
                         return Json(new { respuesta = response, mensaje = errormensaje });
                     }

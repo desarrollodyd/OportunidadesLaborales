@@ -5154,7 +5154,6 @@
     <Content Include="Views\IntranetPJ\politicaspj.cshtml" />
     <Content Include="Views\IntranetPJ\IntranetPJDescargas.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJArchivos.cshtml" />
-    <None Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJMenus.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJActividades.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJComentarios.cshtml" />
@@ -5166,6 +5165,7 @@
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarMisFavoritosVista.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJFooter.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJSecciones1.cshtml" />
+    <Content Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
