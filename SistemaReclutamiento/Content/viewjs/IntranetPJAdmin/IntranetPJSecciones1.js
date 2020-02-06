@@ -1228,7 +1228,6 @@ var PanelContenido = function () {
                                 $(".detel-url").show();
                                 $(".detel-blank").show();
                             }
-
                             else {
                                 $(".detel-url").hide();
                                 $(".detel-blank").hide();
