@@ -251,7 +251,19 @@
                                 }
 
                                 if (elemento.fk_tipo_elemento == 9) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendContenido = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendContenido += '<article><div class="post-authorthumb th">'+
+                                                '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt= "" style="">'+
+		  					                                            '</div>' +
+                                                '<div class="post-content">' +
+                                                detalleelemento.detel_descripcion +'</div></article>'
+                                        });
 
+                                        appendElementos += '<div class="singlepost_">' + appendContenido+'</div>';
+                                    }
                                 }
 
                                 if (elemento.fk_tipo_elemento == 10) {
@@ -704,7 +716,7 @@
                         }
 
                         if (elemento.fk_tipo_elemento == 6) {
-                            appendElementos += '<div class="divsinglepost"> <blockquote>' + elemento.elem_titulo + '</blockquote></div>';
+                            appendElementos += '<div class="divsinglepost"> <blockquote>' + elemento.emod_titulo + '</blockquote></div>';
                         }
 
                         if (elemento.fk_tipo_elemento == 7) {
@@ -757,7 +769,19 @@
                         }
 
                         if (elemento.fk_tipo_elemento == 9) {
+                            var detalleElementolista = elemento.detalle_elemento_modal;
+                            var appendContenido = "";
+                            if (detalleElementolista.length > 0) {
+                                $.each(detalleElementolista, function (index, detalleelemento) {
+                                    appendContenido += '<article><div class="post-authorthumb">' +
+                                        '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt= "" style="">' +
+                                        '</div>' +
+                                        '<div class="post-content">' +
+                                        detalleelemento.detelm_descripcion + '</div></article>'
+                                });
 
+                                appendElementos += '<div class="singlepost">' + appendContenido + '</div>';
+                            }
                         }
 
                         if (elemento.fk_tipo_elemento == 10) {

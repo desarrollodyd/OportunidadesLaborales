@@ -1063,6 +1063,10 @@ var PanelContenido = function () {
         $(document).on('click', '.btn_nuevo_detalle_elemento', function (e) {
             var elemento_id = $(this).data("id");
             var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
+            $("#div_parrafo_detalleelemento").html("");
+            var input = '<input type="text" name="detel_descripcion" id="detel_descripcion" class="form-control" placeholder="Texto">';
+            var textarea = '<textarea name="detel_descripcion" id="detel_descripcion" class="form-control"></textarea>';
+            $("#div_parrafo_detalleelemento").html(input);
             console.log(tipo_elemento);
             $("#tituloModalDetalleElemento").text("Nuevo");
             $("#fk_elemento").val(elemento_id);
@@ -1098,9 +1102,29 @@ var PanelContenido = function () {
                 $("#cboOpcion").val(1).change();
                 $("#cboPosicion").val("");
             }
-            else if (tipo_elemento == 7 || tipo_elemento == 11 || tipo_elemento == 9 || tipo_elemento == 10) {
+            else if (tipo_elemento == 7 || tipo_elemento == 11 || tipo_elemento == 10) {
                 $(".detel-opcion").hide();
                 $(".detel-descripcion").hide();
+                $(".detel-imagen").show();
+                $(".detel-url").hide();
+                $(".detel-blank").hide();
+                $(".detel-posicion").hide();
+                $(".detel-estado").show();
+                $("#fk_seccion_elemento").val(1);
+                $("#cboOpcion").val(2).change();
+                $("#cboPosicion").val("");
+            }
+            else if (tipo_elemento == 9) {
+
+                $("#div_parrafo_detalleelemento").html(textarea);
+                $('#detel_descripcion').richText({
+                    imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                    fileUpload: false, urls: false
+                });
+                $("a.richText-help").hide();
+
+                $(".detel-opcion").hide();
+                $(".detel-descripcion").show();
                 $(".detel-imagen").show();
                 $(".detel-url").hide();
                 $(".detel-blank").hide();
@@ -1204,6 +1228,7 @@ var PanelContenido = function () {
                                 $(".detel-url").show();
                                 $(".detel-blank").show();
                             }
+
                             else {
                                 $(".detel-url").hide();
                                 $(".detel-blank").hide();
@@ -1227,6 +1252,21 @@ var PanelContenido = function () {
                         if (data.fk_tipo_elemento == 16) {
                             $(".detel-posicion").show();
                         }
+
+                        $("#div_parrafo_detalleelemento").html("");
+                        var input = '<input type="text" name="detel_descripcion" id="detel_descripcion" class="form-control" placeholder="Texto">';
+                        var textarea = '<textarea name="detel_descripcion" id="detel_descripcion" class="form-control"></textarea>';
+                        $("#div_parrafo_detalleelemento").html(input);
+
+                        if (data.fk_tipo_elemento == 9) {
+                            $("#div_parrafo_detalleelemento").html(textarea);
+                            $('#detel_descripcion').richText({
+                                imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                                fileUpload: false, urls: false
+                            });
+                            $("a.richText-help").hide();
+                        }
+
                         $("#detel_orden").val(data.detel_orden);
                         $("#cboPosicion").val(data.detel_posicion);
                         $("#detel_descripcion").val(data.detel_descripcion);
@@ -1251,6 +1291,25 @@ var PanelContenido = function () {
                         text: 'Contenido es obligatorio',
                         type: "error"
                     });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 9) {
+                if ($("#detel_descripcion").val() == "") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+
+                if ($("#detel_nombre").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+
                     return false;
                 }
             }
