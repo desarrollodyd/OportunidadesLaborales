@@ -1,6 +1,6 @@
 ﻿
 var PanelContenido = function () {
-
+    var urislista = [basePath + '/intranetPJ/agenda', basePath + '/intranetPJ/descargas'];
     var _sort_seccion = function (menu_id) {
         $('#accordion_' + menu_id).sortable({
             cursor: 'move',
@@ -1077,9 +1077,14 @@ var PanelContenido = function () {
             $("#detel_url").val("");
             $("#detel_blank").val("false");
             $("#detel_estado").val("A");
-            
             $("#divdetel").hide();
-           
+            $(".detel-listaDirecciones").hide();
+            $("#div_lista_uris").html("");
+            if (urislista.length>0) {
+                $.each(urislista, function (index, value) {
+                    $("#div_lista_uris").append('<div>URL: '+value+'</div>');
+                });
+            }
 
             if (tipo_elemento == 5) {
                 $(".detel-opcion").hide();
@@ -1138,6 +1143,10 @@ var PanelContenido = function () {
                 $(".detel-blank").show();
                 $("#cboOpcion").val(2).change();
                 $(".detel-posicion").hide();
+                if (urislista.length>0) {
+                    $(".detel-listaDirecciones").show();
+                }
+               
             }
             else {
                 $("#fk_seccion_elemento").val(0);
@@ -1152,7 +1161,14 @@ var PanelContenido = function () {
         $(document).on('click', '.btn_editar_detalle_elemento', function (e) {
             var det_elemento_id = $(this).data("id");
             $("#tituloModalDetalleElemento").text("Editar");
-
+            $(".detel-listaDirecciones").hide();
+            $("#div_lista_uris").html("");
+            if (urislista.length > 0) {
+                $.each(urislista, function (index, value) {
+                    $("#div_lista_uris").append('<div>URL: ' + value + '</div>');
+                });
+            };
+            $("#detel_url").val("");
             var dataForm = {
                 detel_id: det_elemento_id,
             }
@@ -1180,6 +1196,9 @@ var PanelContenido = function () {
                             $(".detel-posicion").hide();
                             $(".detel-opcion").hide();
                             if (data.fk_tipo_elemento == 12 || data.fk_tipo_elemento == 17) {
+                                if (urislista.length > 0) {
+                                    $(".detel-listaDirecciones").show();
+                                }
                                 $(".detel-url").show();
                                 $(".detel-blank").show();
                             }
@@ -1210,6 +1229,7 @@ var PanelContenido = function () {
                         $("#cboPosicion").val(data.detel_posicion);
                         $("#detel_descripcion").val(data.detel_descripcion);
                         $("#detel_estado").val(data.detel_estado);
+                        $("#detel_url").val(data.detel_url);
                         $(".detel-orden").show();
                         $('#modalFormularioDetalleElemento').modal('show');
                     }

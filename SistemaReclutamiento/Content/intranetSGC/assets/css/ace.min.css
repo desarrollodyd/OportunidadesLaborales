@@ -23027,6 +23027,7 @@ ol.example li.placeholder {
 
     .blackheader > button.close {
         color: #fff;
+        opacity:1;
     }
 
 
