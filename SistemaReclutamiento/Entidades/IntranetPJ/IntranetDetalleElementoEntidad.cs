@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Entidades.IntranetPJ
 {
     public class IntranetDetalleElementoEntidad
     {
         public int detel_id { get; set; }
+        [AllowHtml]
         public string detel_descripcion { get; set; }
         public string detel_nombre { get; set; }
         public string detel_extension { get; set; }

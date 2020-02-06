@@ -5695,3 +5695,34 @@ tr > td.details-control > i{
 	color: rgb(255, 0, 0);
 	font-size: 16px;
 }
+
+
+/*//////////////////////////////////////intran parrafo*/
+.singlepost_{
+    clear:both;
+}
+
+.singlepost_ article {
+        clear: both;
+        height: auto;
+        display: flex;
+}
+
+.singlepost_ .post-content {
+    margin-top: 34px !important;
+    width: 85% !important;
+    float: right !important;
+    padding: 20px !important;
+}
+
+.singlepost_ .post-authorthumb {
+    width: 30% !important;
+    margin: 20px 0px 20px 20px !important;
+    float: left !important;
+}
+
+    .singlepost_ img {
+        height: 167px !important;
+        width: 100% !important;
+        border: solid 4px #eae8e8 !important;
+    }
