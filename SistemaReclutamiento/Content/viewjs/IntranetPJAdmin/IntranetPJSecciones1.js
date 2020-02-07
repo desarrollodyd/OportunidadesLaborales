@@ -385,7 +385,7 @@ var PanelContenido = function () {
                     var clasedetalleboton = "btn_elemento_modal";
                     var columan_imagen = "";
                     var columna_ubicacion = "";
-                    if (tipo == 17 || tipo == 12 || tipo == 5 || tipo == 7) {
+                    if (tipo == 17 || tipo == 12 || tipo == 5 || tipo == 7 || tipo == 9) {
                         clasedetalle = "grey";
                         clasedetalleboton = "";
                     }
@@ -399,7 +399,7 @@ var PanelContenido = function () {
                         columan_imagen = "hidden";
                     }
 
-                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7) {
+                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7 || tipo == 9) {
                         columna_ubicacion = "hidden";
                         if (tipo == 11|| tipo==7) {
                             value.detel_descripcion = "IMAGEN";
@@ -449,7 +449,7 @@ var PanelContenido = function () {
                     columna_ubicacion = "hidden";
                 }
 
-                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7) {
+                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7 || tipo_elemento == 9) {
                     columna_ubicacion = "hidden";
                 }
 
@@ -458,11 +458,11 @@ var PanelContenido = function () {
                 }
 
                 if (rows.length > 0) {
-                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_' + elemento_id + '">' + tr + '</tbody></table>';
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 12%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_' + elemento_id + '">' + tr + '</tbody></table>';
                     $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' + boton_nuevo + '' + tr + '</div></div></td>');
                 }
                 else {
-                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 15%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_ubicacion + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 12%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
                     $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
                 }
             }
@@ -581,7 +581,7 @@ var PanelContenido = function () {
                         columan_imagen = "hidden";
                     }
 
-                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7) {
+                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7 || tipo == 9) {
                         columna_ubicacion = "hidden";
                         if (tipo == 11 || tipo == 7) {
                             value.detelm_descripcion = "IMAGEN";
@@ -621,7 +621,7 @@ var PanelContenido = function () {
                     columna_ubicacion = "hidden";
                 }
 
-                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7) {
+                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7 || tipo_elemento == 9) {
                     columna_ubicacion = "hidden";
                 }
 
@@ -1067,6 +1067,7 @@ var PanelContenido = function () {
             var input = '<input type="text" name="detel_descripcion" id="detel_descripcion" class="form-control" placeholder="Texto">';
             var textarea = '<textarea name="detel_descripcion" id="detel_descripcion" class="form-control"></textarea>';
             $("#div_parrafo_detalleelemento").html(input);
+
             console.log(tipo_elemento);
             $("#tituloModalDetalleElemento").text("Nuevo");
             $("#fk_elemento").val(elemento_id);
@@ -1210,7 +1211,7 @@ var PanelContenido = function () {
                         $('#detel_id').val(data.detel_id);
                         $('#fk_elemento').val(data.fk_elemento)
                         $("#spandetel").html("");
-                        $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Icono');
+                        $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Imagen');
                         if (data.detel_extension != "") {
                             $("#detel_nombre_imagen_modal").text("Nombre: " + data.detel_nombre + "." + data.detel_extension);
                             $("#detel_nombre_imagen").val(data.detel_nombre + "." + data.detel_extension);
@@ -1259,6 +1260,7 @@ var PanelContenido = function () {
 
                         if (data.fk_tipo_elemento == 9) {
                             $("#div_parrafo_detalleelemento").html(textarea);
+                            $("#detel_descripcion").val(data.detel_descripcion);
                             $('#detel_descripcion').richText({
                                 imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
                                 fileUpload: false, urls: false
@@ -1470,6 +1472,12 @@ var PanelContenido = function () {
             $("#detal_elem_id").val(detal_elem_id);
             $("#emod_id").val(0);
             $("#emod_titulo").val("");
+
+            $("#fk_tipo_elemento_modal").select2("destroy");
+            $("#fk_tipo_elemento_modal option[value='10']").remove();
+            $("#fk_tipo_elemento_modal option[value='11']").remove();
+            $("#fk_tipo_elemento_modal").select2({width:"100%"});
+
             $("#div_fk_tipo_elemento_modal").removeClass("hidden");
             $("#div_texto_fk_tipo_elemento_modal").addClass("hidden");
             $("#fk_tipo_elemento_modal").val("").trigger('change');
@@ -1676,6 +1684,12 @@ var PanelContenido = function () {
 
             var elemento_id = $(this).data("id");
             var tipo_elemento = $("#elemento_modal_" + elemento_id).data("tipo");
+
+            $("#div_parrafo_detalleelemento_modal").html("");
+            var input = '<input type="text" name="detelm_descripcion" id="detelm_descripcion" class="form-control" placeholder="Texto">';
+            var textarea = '<textarea name="detelm_descripcion" id="detelm_descripcion" class="form-control"></textarea>';
+            $("#div_parrafo_detalleelemento_modal").html(input);
+
             console.log(tipo_elemento);
             $("#tituloModalDetalleElementoModal").text("Nuevo");
             $("#fk_elemento_modal").val(elemento_id);
@@ -1718,7 +1732,26 @@ var PanelContenido = function () {
                 $("#cboOpcionElemModal").val(2).change();
                 $("#cboPosicionElemModal").val("");
             }
+            else if (tipo_elemento == 9) {
 
+                $("#div_parrafo_detalleelemento_modal").html(textarea);
+                $('#detelm_descripcion').richText({
+                    imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                    fileUpload: false, urls: false
+                });
+                $("a.richText-help").hide();
+
+                $(".detelm-opcion").hide();
+                $(".detelm-descripcion").show();
+                $(".detelm-imagen").show();
+                $(".detelm-url").hide();
+                $(".deteml-blank").hide();
+                $(".detelm-posicion").hide();
+                $(".detelm-estado").show();
+                $("#fk_seccion_det_elemento_modal").val(1);
+                $("#cboOpcionElemModal").val(2).change();
+                $("#cboPosicionElemModal").val("");
+            }
             else if (tipo_elemento == 8 || tipo_elemento == 13 || tipo_elemento == 14 || tipo_elemento == 15) {
                 //va a abrir modal
                 $("#fk_seccion_det_elemento_modal").val(1);
@@ -1820,6 +1853,23 @@ var PanelContenido = function () {
                         if (data.fk_tipo_elemento == 16) {
                             $(".detelm-posicion").show();
                         }
+
+                        $("#div_parrafo_detalleelemento_modal").html("");
+                        var input = '<input type="text" name="detelm_descripcion" id="detelm_descripcion" class="form-control" placeholder="Texto">';
+                        var textarea = '<textarea name="detelm_descripcion" id="detelm_descripcion" class="form-control"></textarea>';
+                        $("#div_parrafo_detalleelemento_modal").html(input);
+
+                        if (data.fk_tipo_elemento == 9) {
+                            $("#div_parrafo_detalleelemento_modal").html(textarea);
+                            $("#detelm_descripcion").val(data.detel_descripcion);
+                            $('#detelm_descripcion').richText({
+                                imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                                fileUpload: false, urls: false
+                            });
+                            $("a.richText-help").hide();
+                        }
+
+
                         $("#detelm_orden").val(data.detelm_orden);
                         $("#cboPosicionElemModal").val(data.detelm_posicion);
                         $("#detelm_descripcion").val(data.detelm_descripcion);
