@@ -22,7 +22,7 @@
 </section>
 <div class="separador"></div>
 <section id="singlepost">
-    <table class="table table-bordered" id="agenda_table">
+    <table class="table table-bordered" id="agenda_table" style="width:100%">
         <tbody>
             <tr>
                 <td colspan="7">
@@ -51,7 +51,8 @@
                     "url" : url,
                     "type" : "POST",
                     "datatype" : "application/json"
-                },
+            },
+            "scrollX": true,
                 "columns": [
                     {
                         "className":      'details-control',
@@ -66,7 +67,6 @@
                     { 
                         "title":"Nombre",
                         "data" : "NO_TRAB", 
-                        "autoWidth" : true,
                         "render":function(value, type, oData, meta){
                             var span='';
                             span+= oData.NO_APEL_PATE+' ' +oData.NO_APEL_MATE+ ', '+oData.NO_TRAB;
