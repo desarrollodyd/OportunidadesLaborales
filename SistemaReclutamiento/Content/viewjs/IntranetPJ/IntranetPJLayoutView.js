@@ -1132,6 +1132,10 @@
             $("#fk_persona_que_saluda").val(persona.per_id);
             $("#direccion_envio").val($(this).data("direccionenvio"));
             $("#tituloCumpleanios").text(span);
+            var text='<textarea rows="4" id="text_mensaje" name="text_mensaje" style="width:100%;margin-top:20px;" placeholder="Mensaje de Cumpleaños"></textarea>';
+            $("#text_message").html("");
+            $("#text_message").html(text);
+            crearEditor();
             var dataForm = {
                 dni: per_numdoc,
             }
