@@ -11,6 +11,7 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string tipo_nombre { get; set; }
         public string tipo_descripcion { get; set; }
         public string tipo_estado { get; set; }
+        public int tipo_orden { get; set; }
 
     }
 }

@@ -20,7 +20,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             List<IntranetTipoElementoEntidad> lista = new List<IntranetTipoElementoEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT tipo_id, tipo_nombre, tipo_descripcion, tipo_estado
+            string consulta = @"SELECT tipo_id, tipo_nombre, tipo_descripcion, tipo_estado,tipo_orden
 	                    FROM intranet.int_tipo_elemento
                                  order by tipo_id;";
             try
@@ -42,6 +42,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     tipo_descripcion = ManejoNulos.ManageNullStr(dr["tipo_descripcion"]),
                                     tipo_estado = ManejoNulos.ManageNullStr(dr["tipo_estado"]),
                                     tipo_nombre = ManejoNulos.ManageNullStr(dr["tipo_nombre"]),
+                                    tipo_orden = ManejoNulos.ManageNullInteger(dr["tipo_orden"]),
 
                                 };
 
@@ -63,7 +64,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         {
             IntranetTipoElementoEntidad intranetTipoElemento = new IntranetTipoElementoEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT tipo_id, tipo_nombre, tipo_descripcion, tipo_estado
+            string consulta = @"SELECT tipo_id, tipo_nombre, tipo_descripcion, tipo_estado, tipo_orden
 	                    FROM intranet.int_tipo_elemento
                                 where tipo_id=@p0
                             order by tipo_id;";
@@ -84,6 +85,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetTipoElemento.tipo_nombre = ManejoNulos.ManageNullStr(dr["tipo_nombre"]);
                                 intranetTipoElemento.tipo_descripcion = ManejoNulos.ManageNullStr(dr["tipo_descripcion"]);
                                 intranetTipoElemento.tipo_estado = ManejoNulos.ManageNullStr(dr["tipo_estado"]);
+                                intranetTipoElemento.tipo_orden = ManejoNulos.ManageNullInteger(dr["tipo_orden"]);
                             }
                         }
                     }
@@ -101,8 +103,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             //bool response = false;
             int idIntranetTipoElementoInsertado = 0;
             string consulta = @"
-            INSERT INTO intranet.int_TipoElemento(tipo_nombre, tipo_descripcion, tipo_estado)
-	            VALUES (@p0, @p1, @p2)
+            INSERT INTO intranet.int_TipoElemento(tipo_nombre, tipo_descripcion, tipo_estado,tipo_orden)
+	            VALUES (@p0, @p1, @p2,@p3)
                 returning tipo_id;";
             claseError error = new claseError();
             try
@@ -114,6 +116,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetTipoElemento.tipo_nombre));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(intranetTipoElemento.tipo_descripcion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(intranetTipoElemento.tipo_estado));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(intranetTipoElemento.tipo_orden));
                     idIntranetTipoElementoInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;

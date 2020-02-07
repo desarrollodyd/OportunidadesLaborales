@@ -1392,7 +1392,7 @@ var PanelContenido = function () {
                 var image_arr = _image.name.split(".");
                 var extension = image_arr[1].toLowerCase();
                 //console.log(extension);
-                if (extension != "jpg" && extension != "png" && extension != "jpeg") {
+                if (extension!= "jpg" && extension != "png" && extension != "jpeg") {
                     messageResponse({
                         text: 'Sólo Se Permite formato jpg, png ó jpeg',
                         type: "warning"

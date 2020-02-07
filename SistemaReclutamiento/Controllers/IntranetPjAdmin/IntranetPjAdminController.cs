@@ -46,30 +46,30 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         }
         public ActionResult PanelSecciones(int menu_id=1)
         {
-            List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
-            claseError error = new claseError();
-            string mensajeerrorBD = "";
-            string mensaje = "";
-            try
-            {
-                var menuTupla = intranetMenubl.IntranetMenuListarJson();
-                error = menuTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    intranetMenu = menuTupla.intranetMenuLista;
-                    ViewBag.Menu = intranetMenu;
-                }
-                else
-                {
-                    mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
-                }
-            }
-            catch (Exception ex)
-            {
-                mensaje = ex.Message;
-            }
+            //List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
+            //claseError error = new claseError();
+            //string mensajeerrorBD = "";
+            //string mensaje = "";
+            //try
+            //{
+            //    var menuTupla = intranetMenubl.IntranetMenuListarJson();
+            //    error = menuTupla.error;
+            //    if (error.Key.Equals(string.Empty))
+            //    {
+            //        intranetMenu = menuTupla.intranetMenuLista;
+            //        ViewBag.Menu = intranetMenu;
+            //    }
+            //    else
+            //    {
+            //        mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    mensaje = ex.Message;
+            //}
             
-            return View("~/Views/IntranetPJAdmin/IntranetPJSecciones.cshtml");
+            return View("~/Views/IntranetPJAdmin/IntranetPJSecciones1.cshtml");
         }
 
         #region seccion1

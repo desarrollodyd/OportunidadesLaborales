@@ -28,7 +28,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var tipoElementoTupla = intranetTipoElementobl.IntranetTipoElementoListarJson();
                 error = tipoElementoTupla.error;
-                listaTipoElementos = tipoElementoTupla.intranetTipoElementoLista;
+                listaTipoElementos = tipoElementoTupla.intranetTipoElementoLista.Where(x=>x.tipo_estado.Equals("A")).OrderBy(x=>x.tipo_orden).ToList();
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Listando Tipo de Elemento";

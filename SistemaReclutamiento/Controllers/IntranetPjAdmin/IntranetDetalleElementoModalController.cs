@@ -81,7 +81,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     {
                         if (file.ContentLength <= tamanioMaximo)
                         {
-                            extension = Path.GetExtension(file.FileName);
+                            extension = Path.GetExtension(file.FileName).ToLower(); ;
                             if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                             {
                                 string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -155,7 +155,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             {
                                 if (file.ContentLength <= tamanioMaximo)
                                 {
-                                    extension = Path.GetExtension(file.FileName);
+                                    extension = Path.GetExtension(file.FileName).ToLower() ;
                                     if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                                     {
                                         string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -343,7 +343,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     {
                         if (file.ContentLength <= tamanioMaximo)
                         {
-                            extension = Path.GetExtension(file.FileName);
+                            extension = Path.GetExtension(file.FileName).ToLower();
                             if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
                             {
                                 string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
