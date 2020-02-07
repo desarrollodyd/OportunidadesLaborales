@@ -1207,6 +1207,7 @@ var PanelContenido = function () {
                     var data = response.data;
                     console.log(data);
                     if (response.respuesta) {
+                        $("#detel_nombre").val("");
                         $("#divdetel").hide();
                         $('#detel_id').val(data.detel_id);
                         $('#fk_elemento').val(data.fk_elemento)
@@ -1811,6 +1812,7 @@ var PanelContenido = function () {
                     var data = response.data;
                     console.log(data);
                     if (response.respuesta) {
+                        $("#detelm_nombre").val("");
                         $("#divdetelm").hide();
                         $('#detelm_id').val(data.detelm_id);
                         $('#fk_elemento_modal').val(data.fk_elemento_modal)
