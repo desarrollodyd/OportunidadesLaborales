@@ -385,7 +385,7 @@ var PanelContenido = function () {
                     var clasedetalleboton = "btn_elemento_modal";
                     var columan_imagen = "";
                     var columna_ubicacion = "";
-                    if (tipo == 17 || tipo == 12 || tipo == 5 || tipo == 7 || tipo == 9) {
+                    if (tipo == 17 || tipo == 12 || tipo == 5 || tipo == 7 || tipo == 9 || tipo == 18) {
                         clasedetalle = "grey";
                         clasedetalleboton = "";
                     }
@@ -399,7 +399,7 @@ var PanelContenido = function () {
                         columan_imagen = "hidden";
                     }
 
-                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7 || tipo == 9) {
+                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7 || tipo == 9 || tipo == 18) {
                         columna_ubicacion = "hidden";
                         if (tipo == 11|| tipo==7) {
                             value.detel_descripcion = "IMAGEN";
@@ -449,7 +449,7 @@ var PanelContenido = function () {
                     columna_ubicacion = "hidden";
                 }
 
-                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7 || tipo_elemento == 9) {
+                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7 || tipo_elemento == 9 || tipo_elemento == 18) {
                     columna_ubicacion = "hidden";
                 }
 
@@ -581,7 +581,7 @@ var PanelContenido = function () {
                         columan_imagen = "hidden";
                     }
 
-                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7 || tipo == 9) {
+                    if (tipo == 17 || tipo == 12 || tipo == 11 || tipo == 7 || tipo == 9 || tipo == 18) {
                         columna_ubicacion = "hidden";
                         if (tipo == 11 || tipo == 7) {
                             value.detelm_descripcion = "IMAGEN";
@@ -621,7 +621,7 @@ var PanelContenido = function () {
                     columna_ubicacion = "hidden";
                 }
 
-                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7 || tipo_elemento == 9) {
+                if (tipo_elemento == 17 || tipo_elemento == 12 || tipo_elemento == 11 || tipo_elemento == 7 || tipo_elemento == 9 || tipo_elemento == 18) {
                     columna_ubicacion = "hidden";
                 }
 
@@ -1115,7 +1115,7 @@ var PanelContenido = function () {
                 $("#cboOpcion").val(2).change();
                 $("#cboPosicion").val("");
             }
-            else if (tipo_elemento == 9) {
+            else if (tipo_elemento == 9 || tipo_elemento == 18) {
 
                 $("#div_parrafo_detalleelemento").html(textarea);
                 $('#detel_descripcion').richText({
@@ -1259,7 +1259,7 @@ var PanelContenido = function () {
                         var textarea = '<textarea name="detel_descripcion" id="detel_descripcion" class="form-control"></textarea>';
                         $("#div_parrafo_detalleelemento").html(input);
 
-                        if (data.fk_tipo_elemento == 9) {
+                        if (data.fk_tipo_elemento == 9 || data.fk_tipo_elemento == 18) {
                             $("#div_parrafo_detalleelemento").html(textarea);
                             $("#detel_descripcion").val(data.detel_descripcion);
                             $('#detel_descripcion').richText({
@@ -1297,7 +1297,7 @@ var PanelContenido = function () {
                 }
             }
 
-            if (tipo_elemento == 9) {
+            if (tipo_elemento == 9 || tipo_elemento == 18) {
                 if ($("#detel_descripcion").val() == "") {
                     messageResponse({
                         text: 'Contenido es obligatorio',
@@ -1733,7 +1733,7 @@ var PanelContenido = function () {
                 $("#cboOpcionElemModal").val(2).change();
                 $("#cboPosicionElemModal").val("");
             }
-            else if (tipo_elemento == 9) {
+            else if (tipo_elemento == 9 || tipo_elemento == 18) {
 
                 $("#div_parrafo_detalleelemento_modal").html(textarea);
                 $('#detelm_descripcion').richText({
@@ -1861,7 +1861,7 @@ var PanelContenido = function () {
                         var textarea = '<textarea name="detelm_descripcion" id="detelm_descripcion" class="form-control"></textarea>';
                         $("#div_parrafo_detalleelemento_modal").html(input);
 
-                        if (data.fk_tipo_elemento == 9) {
+                        if (data.fk_tipo_elemento == 9 || data.fk_tipo_elemento == 18) {
                             $("#div_parrafo_detalleelemento_modal").html(textarea);
                             $("#detelm_descripcion").val(data.detel_descripcion);
                             $('#detelm_descripcion').richText({
@@ -1909,7 +1909,7 @@ var PanelContenido = function () {
                 }
             }
 
-            if (tipo_elemento == 9) {
+            if (tipo_elemento == 9 || tipo_elemento == 18) {
                 if ($("#detelm_descripcion").val() == "") {
                     messageResponse({
                         text: 'Contenido es obligatorio',

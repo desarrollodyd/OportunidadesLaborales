@@ -5733,3 +5733,38 @@ tr > td.details-control > i{
         border: 4px solid #797878 !important;
         background: #fff !important;
     }
+
+
+
+    /*//////////////////////////////////tiles*/
+.masonrystyle .lthumb {
+    width: 100%;
+    height: auto;
+}
+
+.masonrystyle .lthumb {
+    margin-bottom: 10px;
+}
+
+.tiles {
+    list-style-type: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.tiles li {
+    width: 354px;
+    background-color: #ffffff;
+    border: 1px solid #dedede;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    display: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.tiles li img {
+    display: block;
+}

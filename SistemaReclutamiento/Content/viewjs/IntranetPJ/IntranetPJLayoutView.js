@@ -151,6 +151,7 @@
                     var appendSeccion = "";
                     slider = false;
                     silertrans = false;
+                    mansonery = false;
                     $.each(secciones, function (index, seccion) {
                         var elementos = seccion.elementos;
                         var appendElementos = "";
@@ -589,6 +590,31 @@
                                             '</article>';
                                     }
                                 }
+
+                                if (elemento.fk_tipo_elemento == 18) {
+                                    var detalleElementolista = elemento.detalleElemento;
+                                    var appendContenido = "";
+                                    if (detalleElementolista.length > 0) {
+                                        $.each(detalleElementolista, function (index, detalleelemento) {
+                                            appendContenido += '<li>' +
+                                                '<div class="">' +
+                                                '<div class="itemblog">' +
+                                                '<div class="clear"></div>' +
+                                                '<div class="lthumb">' +
+                                                '<a href="data:image/gif;base64,' + detalleelemento.detel_nombre + '" data-rel="prettyPhoto"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                '</div>' +
+                                                '<div class="clear"></div>' +
+                                                '<div class="excerpt">' +
+                                                '<h2 class="ntitle"><a href="javascript:void(0);">' + detalleelemento.detel_descripcion + '</a></h2>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</div>' +
+                                                '</li>';
+                                        });
+                                        appendElementos += '<div class="masonrystyle"><ul class="tiles">' + appendContenido + '</ul></div>';
+                                    }
+                                    mansonery = true;
+                                }
                             })
                         }
 
@@ -609,9 +635,37 @@
 
                     if (silertrans) {
                         LayoutVista.divscrool();
-                        
                     }
 
+                    if (mansonery) {
+                        $('.tiles').imagesLoaded(function () {
+                            // Prepare layout options.
+                            var options = {
+                                autoResize: true, // This will auto-update the layout when the browser window is resized.
+                                container: $('.masonrystyle'), // Optional, used for some extra CSS styling
+                                offset: 20, // Optional, the distance between grid items
+                                outerOffset: 20, // Optional, the distance to the containers border
+                                itemWidth: 354 // Optional, the width of a grid item
+                            };
+
+                            // Get a reference to your grid items.
+                            var handler = $('.tiles li');
+
+                            // Call the layout function.
+                            handler.wookmark(options);
+
+                            // Capture clicks on grid items.
+                            handler.click(function () {
+                                // Randomize the height of the clicked item.
+                                var newHeight = $('img', this).height() + Math.round(Math.random() * 300 + 30);
+                                $(this).css('height', newHeight + 'px');
+
+                                // Update the layout.
+                                handler.wookmark();
+                            });
+                        });
+                        $("a[data-rel^='prettyPhoto']").prettyPhoto();
+                    }
                 }
             }
         });
