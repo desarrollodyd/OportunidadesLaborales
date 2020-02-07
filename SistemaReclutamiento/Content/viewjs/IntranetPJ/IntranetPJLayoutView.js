@@ -723,7 +723,6 @@
                 if (elementos.length > 0) {
 
                     var appendElementos = "";
-
                     $.each(elementos, function (index, elemento) {
 
                         if (elemento.fk_tipo_elemento == 1) {
@@ -1154,6 +1153,8 @@
                                     '</article>';
                             }
                         }
+
+
                     })
                     appendSeccion += '<section id="singlepost">' + appendElementos + '</section><div class="separador"></div>';
                     $("#contenido_modal").html(appendSeccion);

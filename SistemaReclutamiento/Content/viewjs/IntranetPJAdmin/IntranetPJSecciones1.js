@@ -1477,6 +1477,7 @@ var PanelContenido = function () {
             $("#fk_tipo_elemento_modal").select2("destroy");
             $("#fk_tipo_elemento_modal option[value='10']").remove();
             $("#fk_tipo_elemento_modal option[value='11']").remove();
+            $("#fk_tipo_elemento_modal option[value='18']").remove();
             $("#fk_tipo_elemento_modal").select2({width:"100%"});
 
             $("#div_fk_tipo_elemento_modal").removeClass("hidden");
