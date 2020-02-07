@@ -601,7 +601,7 @@
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="lthumb">' +
-                                                '<a href="data:image/gif;base64,' + detalleelemento.detel_nombre + '" data-rel="prettyPhoto"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
