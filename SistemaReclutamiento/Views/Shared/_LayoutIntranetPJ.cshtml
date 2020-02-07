@@ -438,7 +438,8 @@
 
                                 </div>*@
                             <div class="row" style="padding-top:7px;"></div>
-                            <textarea rows="4" id="text_mensaje" name="text_mensaje" style="width:100%;margin-top:20px;" placeholder="Mensaje de Cumpleaños"></textarea>
+                            <div id="text_message"></div>
+                            @* <textarea rows="4" id="text_mensaje" name="text_mensaje" style="width:100%;margin-top:20px;" placeholder="Mensaje de Cumpleaños"></textarea> *@
                         </form>
                         <div style="text-align:right">
                             <button type="button" class="radius alert button btn_enviar_saludo">ENVIAR SALUDO</button>
@@ -502,9 +503,7 @@
         });
 
 
-
-
-
+    function crearEditor(){
         $('#text_mensaje').each(function (index, element) {
            textarea = $(element).wysiwyg({
                 classes: 'some-more-classes',
@@ -876,6 +875,10 @@
                 });
         });
 
+    }
+
+
+        
 
 
 
