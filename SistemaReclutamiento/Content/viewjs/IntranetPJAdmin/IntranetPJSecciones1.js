@@ -1721,7 +1721,7 @@ var PanelContenido = function () {
                 $("#cboOpcionElemModal").val(1).change();
                 $("#cboPosicionElemModal").val("");
             }
-            else if (tipo_elemento == 7 || tipo_elemento == 11 || tipo_elemento == 9 || tipo_elemento == 10) {
+            else if (tipo_elemento == 7 || tipo_elemento == 11 || tipo_elemento == 10) {
                 $(".detelm-opcion").hide();
                 $(".detelm-descripcion").hide();
                 $(".detelm-imagen").show();
@@ -1905,6 +1905,25 @@ var PanelContenido = function () {
                         text: 'Seleccione Imagen',
                         type: "error"
                     });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 9) {
+                if ($("#detelm_descripcion").val() == "") {
+                    messageResponse({
+                        text: 'Contenido es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+
+                if ($("#detelm_nombre").val() == "" && $("#tituloModalDetalleElementoModal").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+
                     return false;
                 }
             }

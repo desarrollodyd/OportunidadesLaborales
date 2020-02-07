@@ -256,7 +256,7 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendContenido += '<article><div class="post-authorthumb th">'+
-                                                '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt= "" style="">'+
+                                                '<div class="intern"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt= "padding:0px" style=""></div>'+
 		  					                                            '</div>' +
                                                 '<div class="post-content">' +
                                                 detalleelemento.detel_descripcion +'</div></article>'
@@ -773,14 +773,13 @@
                             var appendContenido = "";
                             if (detalleElementolista.length > 0) {
                                 $.each(detalleElementolista, function (index, detalleelemento) {
-                                    appendContenido += '<article><div class="post-authorthumb">' +
-                                        '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt= "" style="">' +
+                                    appendContenido += '<article><div class="post-authorthumb th">' +
+                                        '<div class="intern"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt= "" style="padding:0px"></div>' +
                                         '</div>' +
                                         '<div class="post-content">' +
                                         detalleelemento.detelm_descripcion + '</div></article>'
                                 });
-
-                                appendElementos += '<div class="singlepost">' + appendContenido + '</div>';
+                                appendElementos += '<div class="singlepost_">' + appendContenido + '</div>';
                             }
                         }
 
