@@ -5,6 +5,7 @@ using SistemaReclutamiento.Models.IntranetPJ;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -20,7 +21,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
     {
         // GET: IntranetSaludosCumpleanios
         IntranetSaludoCumpleaniosModel intranetSaludoCumpleaniobl = new IntranetSaludoCumpleaniosModel();
-      
+        private string user_cumple = ConfigurationManager.AppSettings["user_cumple"].ToString();
+        private string password_cumple = ConfigurationManager.AppSettings["password_cumple"].ToString();
+        private string port_cumple = ConfigurationManager.AppSettings["port_cumple"].ToString();
+        private string host_cumple = ConfigurationManager.AppSettings["host_cumple"].ToString();
+
         public ActionResult Index()
         {
             return View();
@@ -120,7 +125,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
 
                             MailMessage mail = new MailMessage();
-                            mail.From = new MailAddress("s3kzimbra@gmail.com");
+                            mail.From = new MailAddress(user_cumple);
                             mail.To.Add(intranetSaludoCumpleanio.direccion_envio);
                             mail.Subject = "CPJ | TE DESEA UN FELIZ CUMPLEAÑOS";
 
@@ -188,12 +193,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                             mail.AlternateViews.Add(htmlView);
 
-                            SmtpClient smtp = new SmtpClient("smtp.gmail.com", Int32.Parse("587"))
+                            SmtpClient smtp = new SmtpClient(host_cumple, Int32.Parse(port_cumple))
                             {
                                 EnableSsl = Boolean.Parse("true"),
                                 DeliveryMethod = SmtpDeliveryMethod.Network,
                                 UseDefaultCredentials = false,
-                                Credentials = new NetworkCredential("s3kzimbra@gmail.com", "Sistemas.123")
+                                Credentials = new NetworkCredential(user_cumple, password_cumple)
                             };
                             smtp.Send(mail);
                             ////envio de correo

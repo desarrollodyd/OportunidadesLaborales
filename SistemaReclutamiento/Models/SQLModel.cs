@@ -379,7 +379,7 @@ namespace SistemaReclutamiento.Models
                                 TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
                                 inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
                                 where 
-                                periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI=
+                                periodo.NU_ANNO=2019 and periodo.NU_PERI=
                                 "+mes_activo+" and (select month(emp.FE_NACI_TRAB))=" +
                                 "(select MONTH(getdate())) and (select day(emp.FE_NACI_TRAB))>=(select day(getdate())) " +
                                 "and empresa.CO_EMPR in "+listaEmpresas+" order by day(emp.FE_NACI_TRAB) asc";
@@ -425,7 +425,7 @@ namespace SistemaReclutamiento.Models
             return (lista:listaPersonas,error:error);
         }
         //Lista de personas de GDT para Agenda Intranet
-        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenerListaAgendaJson(string listaEmpresas)
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenerListaAgendaJson(string listaEmpresas, int mes_activo)
         {
             claseError error = new claseError();
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
@@ -440,7 +440,7 @@ namespace SistemaReclutamiento.Models
                                 inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
                                 inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
                                 inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
-                                where periodo.NU_ANNO=2019 and empresa.CO_EMPR in "+listaEmpresas+" order by emp.NO_APEL_PATE asc";
+                                where periodo.NU_ANNO=2019 and empresa.CO_EMPR in "+listaEmpresas+ " and periodo.NU_PERI="+mes_activo+" order by emp.NO_APEL_PATE asc";
             try
             {
                 using (var con = new SqlConnection(_conexion))

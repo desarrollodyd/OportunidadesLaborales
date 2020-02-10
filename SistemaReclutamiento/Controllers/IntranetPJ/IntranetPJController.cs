@@ -830,7 +830,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
                         stringEmpresas += ")";
                         //Listado de Personas SQL
-                        var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas);
+                        var mes_anterior = DateTime.Now.Month - 1;
+                        var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas,mes_anterior);
                         if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
                         {
                             listaPersonasSQL = listaPersonasSQLTupla.lista;

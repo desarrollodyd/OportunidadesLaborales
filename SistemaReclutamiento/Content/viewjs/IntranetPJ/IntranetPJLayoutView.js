@@ -566,12 +566,12 @@
 
                                                 float_ = 'style="float:left;"';
                                             }
-                                            appendimageneslistasimple += ' <div class="three tilesli columns" ' + float_ + '>' +
+                                            appendimageneslistasimple += ' <div class="three tilesli columns abrir_pagina" ' + float_ + ' data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '">' +
                                                 '<div class="space_" >' +
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="thumb">' +
-                                                '<a href="javascript:void(0);" class="abrir_pagina" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="" ><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
