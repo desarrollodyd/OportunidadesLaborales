@@ -379,7 +379,7 @@ namespace SistemaReclutamiento.Models
                                 TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
                                 inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
                                 where 
-                                periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI=
+                                periodo.NU_ANNO=2019 and periodo.NU_PERI=
                                 "+mes_activo+" and (select month(emp.FE_NACI_TRAB))=" +
                                 "(select MONTH(getdate())) and (select day(emp.FE_NACI_TRAB))>=(select day(getdate())) " +
                                 "and empresa.CO_EMPR in "+listaEmpresas+" order by day(emp.FE_NACI_TRAB) asc";
