@@ -22,7 +22,7 @@ namespace SistemaReclutamiento.Models
         public UsuarioEntidad UsuarioObtenerxID(int id)
         {
             UsuarioEntidad usuario = new UsuarioEntidad();
-            string consulta = @"SELECT usu_id,usu_nombre,usu_estado,usu_clave_temp,fk_persona 
+            string consulta = @"SELECT usu_id,usu_nombre,usu_estado,usu_clave_temp,fk_persona, usu_token,usu_exp_token 
 	                            FROM seguridad.seg_usuario where usu_id=@p0;";
             try
             {
@@ -43,6 +43,8 @@ namespace SistemaReclutamiento.Models
                                 usuario.usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]);
                                 usuario.usu_clave_temp = ManejoNulos.ManageNullStr(dr["usu_clave_temp"]);
                                 usuario.fk_persona = ManejoNulos.ManageNullInteger(dr["fk_persona"]);
+                                usuario.usu_token = ManejoNulos.ManageNullStr(dr["usu_token"]);
+                                usuario.usu_exp_token = ManejoNulos.ManageNullStr(dr["usu_exp_token"]);
 
                             }
                         }

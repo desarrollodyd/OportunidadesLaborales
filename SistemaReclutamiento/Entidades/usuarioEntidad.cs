@@ -21,5 +21,6 @@ namespace SistemaReclutamiento.Entidades
         public string usu_clave_temp { get; set; }  
         public string usu_tipo { get; set; }
         public string usu_token { get; set; }
+        public string usu_exp_token { get; set; }
     }
 }
