@@ -820,6 +820,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     //creamos el string con la lista de empresas para el IN en sql
                     if (listaEmpresas.Count > 0)
                     {
+                        //obtener mes anterior
+                        var mes_anterior = DateTime.Now.Month - 1;
                         //Por lo menos hay una empresa registrada en int_empresa en Postgres
                         string stringEmpresas = "";
                         stringEmpresas += "(";
