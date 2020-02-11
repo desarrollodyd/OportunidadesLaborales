@@ -181,11 +181,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             claseError error = new claseError();
             try
             {
-                var totalMenuTupla = intranetMenubl.IntranetMenuObtenerTotalRegistrosJson();
-                error = totalMenuTupla.error;
-                if (error.Key.Equals(string.Empty))
-                {
-                    totalRegistros = totalMenuTupla.intranetMenuTotal;
+                var listaMenusTupla = intranetMenubl.IntranetMenuListarTodoJson();
+                if (listaMenusTupla.error.Key.Equals(string.Empty)) {
+                    totalRegistros = listaMenusTupla.intranetMenuLista.Max(x => x.menu_orden);
                     intranetMenu.menu_orden = totalRegistros + 1;
                     var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
                     error = menuTupla.error;
@@ -207,6 +205,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     mensaje = "No se Pudo insertar el Menu";
                     mensajeConsola = error.Value;
                 }
+                //var totalMenuTupla = intranetMenubl.IntranetMenuObtenerTotalRegistrosJson();
+                //error = totalMenuTupla.error;
+                //if (error.Key.Equals(string.Empty))
+                //{
+                //    totalRegistros = totalMenuTupla.intranetMenuTotal;
+                //    intranetMenu.menu_orden = totalRegistros + 1;
+                //    var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
+                //    error = menuTupla.error;
+
+                //    if (error.Key.Equals(string.Empty))
+                //    {
+                //        mensaje = "Se Registró Correctamente";
+                //        respuesta = true;
+                //        idIntranetMenuInsertado = menuTupla.idIntranetMenuInsertado;
+                //    }
+                //    else
+                //    {
+                //        mensaje = "No se Pudo insertar el Menu";
+                //        mensajeConsola = error.Value;
+                //    }
+                //}
+                //else
+                //{
+                //    mensaje = "No se Pudo insertar el Menu";
+                //    mensajeConsola = error.Value;
+                //}
 
 
             }

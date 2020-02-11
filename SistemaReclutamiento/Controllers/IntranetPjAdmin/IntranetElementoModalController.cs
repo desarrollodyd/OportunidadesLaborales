@@ -62,11 +62,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             claseError error = new claseError();
             try
             {
-                var totalElementosTupla = intranetElementoModalbl.IntranetElementoModalObtenerTotalRegistrosxSeccionJson(intranetElementoModal.fk_seccion_elemento);
+                var totalElementosTupla = intranetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(intranetElementoModal.fk_seccion_elemento);
                 error = totalElementosTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    intranetElementoModal.emod_orden = totalElementosTupla.intranetElementoModalTotal + 1;
+                    if (totalElementosTupla.intranetElementoModalListaxseccionelementoID.Count > 0)
+                    {
+                        intranetElementoModal.emod_orden = totalElementosTupla.intranetElementoModalListaxseccionelementoID.Max(x => x.emod_orden) + 1;
+                    }
+                    else {
+                        intranetElementoModal.emod_orden = 1;
+                    }
                     var seccionTupla = intranetElementoModalbl.IntranetElementoModalInsertarJson(intranetElementoModal);
                     error = seccionTupla.error;
 

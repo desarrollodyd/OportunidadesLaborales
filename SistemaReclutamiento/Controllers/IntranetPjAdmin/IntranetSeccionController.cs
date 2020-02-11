@@ -130,10 +130,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             claseError error = new claseError();
             try
             {
-                var totalSeccionesTupla = intranetSeccionbl.IntranetSeccionObtenerTotalRegistrosJson(intranetSeccion.fk_menu);
+                var totalSeccionesTupla = intranetSeccionbl.IntranetSeccionListarTodoxMenuIDJson(intranetSeccion.fk_menu);
                 error = totalSeccionesTupla.error;
                 if (error.Key.Equals(string.Empty)) {
-                    intranetSeccion.sec_orden = totalSeccionesTupla.intranetSeccionTotal + 1;
+                    intranetSeccion.sec_orden = totalSeccionesTupla.intranetSeccionListaTodoxMenuID.Max(x=>x.sec_orden) + 1;
                     var seccionTupla = intranetSeccionbl.IntranetSeccionInsertarJson(intranetSeccion);
                     error = seccionTupla.error;
 

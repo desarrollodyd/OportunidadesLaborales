@@ -70,11 +70,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             //verificar si es imagen o abre un modal si fk_seccion_elemento==0 es imagen
             if (intranetDetalleElementoModal.fk_seccion_elemento == 0)
             {
-                var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalObtenerTotalRegistrosxElementoJson(intranetDetalleElementoModal.fk_elemento_modal);
-                error = totalDetallesTupla.error;
-                if (error.Key.Equals(string.Empty))
+                var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(intranetDetalleElementoModal.fk_elemento_modal);
+                if (totalDetallesTupla.error.Key.Equals(string.Empty))
                 {
-                    intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalTotal + 1;
+                    if (totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Count > 0)
+                    {
+                        intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Max(x => x.detelm_orden) + 1;
+
+                    }
+                    else {
+                        intranetDetalleElementoModal.detelm_orden = 1;
+                    }
                     HttpPostedFileBase file = Request.Files[0];
                     tamanioMaximo = 4194304;
                     if (file.ContentLength > 0 && file != null)
@@ -129,9 +135,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         return Json(new { respuesta = respuesta, mensaje = mensaje });
                     }
                 }
-                else
-                {
-                    mensaje = error.Value;
+                else {
+                    mensaje = totalDetallesTupla.error.Value;
                     respuesta = false;
                     return Json(new { respuesta, mensaje });
                 }
@@ -141,10 +146,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 try
                 {
-                    var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalObtenerTotalRegistrosxElementoJson(intranetDetalleElementoModal.fk_elemento_modal);
+                    var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(intranetDetalleElementoModal.fk_elemento_modal);
                     if (totalDetallesTupla.error.Key.Equals(string.Empty))
                     {
-                        intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalTotal + 1;
+                        if (totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Count > 0)
+                        {
+                            intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Max(x => x.detelm_orden) + 1;
+
+                        }
+                        else
+                        {
+                            intranetDetalleElementoModal.detelm_orden = 1;
+                        }
                         //Insertar Imagen si esque hubiera
                         if (intranetDetalleElementoModal.detelm_nombre != "" && intranetDetalleElementoModal.detelm_nombre != null)
                         {
@@ -223,10 +236,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
             }
             else {
-                var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalObtenerTotalRegistrosxElementoJson(intranetDetalleElementoModal.fk_elemento_modal);
+                var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(intranetDetalleElementoModal.fk_elemento_modal);
                 if (totalDetallesTupla.error.Key.Equals(string.Empty))
                 {
-                    intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalTotal + 1;
+                    if (totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Count > 0)
+                    {
+                        intranetDetalleElementoModal.detelm_orden = totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Max(x => x.detelm_orden) + 1;
+
+                    }
+                    else {
+                        intranetDetalleElementoModal.detelm_orden = 1;
+                    }
                 }
                 else {
                     mensaje = totalDetallesTupla.error.Value;

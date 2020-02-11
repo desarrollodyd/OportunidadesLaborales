@@ -103,11 +103,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             //verificar si es imagen o abre un modal si fk_seccion_elemento==0 es imagen
             if (intranetDetalleElemento.fk_seccion_elemento == 0)
             {
-                var totalDetallesTupla = intranetDetalleElementonbl.IntranetDetalleElementoObtenerTotalRegistrosxElementoJson(intranetDetalleElemento.fk_elemento);
+                var totalDetallesTupla = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(intranetDetalleElemento.fk_elemento);
                 error = totalDetallesTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    intranetDetalleElemento.detel_orden = totalDetallesTupla.intranetDetalleElementoTotal + 1;
+                    if (totalDetallesTupla.intranetDetalleElementoListaxElementoID.Count > 0) {
+                        intranetDetalleElemento.detel_orden = totalDetallesTupla.intranetDetalleElementoListaxElementoID.Max(x => x.detel_orden) + 1;
+
+                    }
+                    else {
+                        intranetDetalleElemento.detel_orden = 1;
+                    }
                     HttpPostedFileBase file = Request.Files[0];
                     tamanioMaximo = 4194304;
                     if (file.ContentLength > 0 && file != null)
@@ -168,10 +174,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     if (error.Key.Equals(string.Empty))
                     {
                         intranetDetalleElemento.fk_seccion_elemento = seccionElementoTupla.idIntranetSeccionElementoInsertado;
-                        var totalDetallesTupla = intranetDetalleElementonbl.IntranetDetalleElementoObtenerTotalRegistrosxElementoJson(intranetDetalleElemento.fk_elemento);
+                        var totalDetallesTupla = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(intranetDetalleElemento.fk_elemento);
                         if (totalDetallesTupla.error.Key.Equals(string.Empty))
                         {
-                            intranetDetalleElemento.detel_orden = totalDetallesTupla.intranetDetalleElementoTotal + 1;
+                            if (totalDetallesTupla.intranetDetalleElementoListaxElementoID.Count > 0)
+                            {
+                                intranetDetalleElemento.detel_orden = totalDetallesTupla.intranetDetalleElementoListaxElementoID.Max(x => x.detel_orden) + 1;
+                            }
+                            else {
+                                intranetDetalleElemento.detel_orden = 1;
+                            }
                             //Insertar Imagen si esque hubiera
                             if (intranetDetalleElemento.detel_nombre != ""&&intranetDetalleElemento.detel_nombre!=null) {
                              
@@ -254,10 +266,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             //boton para abril un modal, debo de crear una seccion para el detalle elemento modal en la tabla int_seccion_elemento
             else
             {
-                var totalDetallesTupla = intranetDetalleElementonbl.IntranetDetalleElementoObtenerTotalRegistrosxElementoJson(intranetDetalleElemento.fk_elemento);
+                var totalDetallesTupla = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(intranetDetalleElemento.fk_elemento);
                 if (totalDetallesTupla.error.Key.Equals(string.Empty))
                 {
-                    intranetDetalleElemento.detel_orden = totalDetallesTupla.intranetDetalleElementoTotal + 1;
+                    if (totalDetallesTupla.intranetDetalleElementoListaxElementoID.Count > 0)
+                    {
+                        intranetDetalleElemento.detel_orden = totalDetallesTupla.intranetDetalleElementoListaxElementoID.Max(x => x.detel_orden) + 1;
+
+                    }
+                    else {
+                        intranetDetalleElemento.detel_orden = 1;
+                    }
                     intranetDetalleElemento.fk_seccion_elemento = 0;
                     intranetDetalleElemento.detel_nombre = intranetDetalleElemento.detel_descripcion;
                 }
