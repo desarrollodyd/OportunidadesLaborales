@@ -8,6 +8,8 @@ namespace SistemaReclutamiento.Entidades
     public class UsuarioPersonaEntidad
     {
         public int usu_id { get; set; }
+        public string usu_token { get; set; }
+        public DateTime usu_exp_token { get; set; }
         public int per_id { get; set; }
         public string usu_nombre { get; set; }
         public string usu_contrasenia { get; set; }

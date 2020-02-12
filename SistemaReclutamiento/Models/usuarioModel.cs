@@ -621,6 +621,52 @@ namespace SistemaReclutamiento.Models
             }
             return (tokenInsertado: response, error: error);
         }
+        public (List<UsuarioPersonaEntidad> listaUsuarios, claseError error) IntranetListarUsuariosTokenJson()
+        {
+            List<UsuarioPersonaEntidad> listaUsuarios = new List<UsuarioPersonaEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT usu_nombre,
+                                per_id, usu_id, usu_estado,
+                                usu_token, usu_exp_token,
+                                per_nombre,
+                                per_apellido_pat, per_apellido_mat, per_numdoc
+	                                FROM seguridad.seg_usuario
+	                                join marketing.cpj_persona
+	                                on seguridad.seg_usuario.fk_persona=marketing.cpj_persona.per_id
+	                                where per_tipo='EMPLEADO' and usu_tipo='EMPLEADO';";
+            try
+            {
+                using (var con = new NpgsqlConnection()) {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader()) {
+                        if (dr.HasRows) {
+                            while (dr.Read()) {
+                                var usuario = new UsuarioPersonaEntidad()
+                                {
+                                    usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]),
+                                    usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]),
+                                    per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]),
+                                    per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
+                                    per_numdoc = ManejoNulos.ManageNullStr(dr["per_numdoc"]),
+                                    per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
+                                    usu_token = ManejoNulos.ManageNullStr(dr["usu_token"]),
+                                    usu_exp_token = ManejoNulos.ManageNullDate(dr["usu_exp_token"]),
+                                    per_id = ManejoNulos.ManageNullInteger(dr["per_id"]),
+                                    usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]),
+                                };
+                                listaUsuarios.Add(usuario);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex) {
+                error.Key = Ex.Data.Count.ToString();
+                error.Value = Ex.Message;
+            }
+            return (listaUsuarios: listaUsuarios, error: error);
+        }
         #endregion
     }
 }

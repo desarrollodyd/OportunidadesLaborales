@@ -5166,6 +5166,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJFooter.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJSecciones1.cshtml" />
     <Content Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJToken.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
