@@ -71,6 +71,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             
             return View("~/Views/IntranetPJAdmin/IntranetPJSecciones1.cshtml");
         }
+        public ActionResult PanelConfiguracionToken()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJToken.cshtml");
+        }
+        public ActionResult PanelSistemas()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJSistemas.cshtml");
+        }
 
         #region seccion1
 
@@ -170,33 +178,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         }
         #endregion
 
-        #region Region Token
-        public ActionResult PanelConfiguracionToken() {
-            return View("~/Views/IntranetPJAdmin/IntranetPJToken.cshtml");
-        }
-        [HttpPost]
-        public ActionResult ListarUsuariosTokenJson() {
-            string errormensaje = "";
-            bool response = false;
-            List<UsuarioPersonaEntidad> listaUsuarios = new List<UsuarioPersonaEntidad>();
-            try {
-                var listaTupla = usuariobl.IntranetListarUsuariosTokenJson();
-                if (listaTupla.error.Key.Equals(string.Empty))
-                {
-                    listaUsuarios = listaTupla.listaUsuarios;
-                    errormensaje = "Listando Usuarios Mesa de Partes";
-                    response = true;
-                }
-                else {
-                    errormensaje = listaTupla.error.Value;
-                }
-            }
-            catch (Exception ex)
-            {
-                errormensaje = ex.Message;
-            }
-            return Json(new {data=listaUsuarios.ToList(),respuesta=response,mensaje=errormensaje });
-        }
-        #endregion
+     
+       
+    
     }
 }

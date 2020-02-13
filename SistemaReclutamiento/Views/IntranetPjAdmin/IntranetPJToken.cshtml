@@ -1,8 +1,54 @@
 ﻿
 @{
-    ViewBag.Title = "IntranetPJToken";
     Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
 }
 
-<h2>IntranetPJToken</h2>
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Token de Acceso</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget-box">
+                <div class="widget-header widget-header-flat widget-header-small">
+                    <h4 class="widget-title">Listado Usuarios</h4>
+                    <span class="widget-toolbar">
+                        <a href="#" class="btn btn-sm btn-success btn-minier" data-action="settings" id="btn_nuevo"><i class="ace-icon fa fa-file"></i> Nuevo</a>
+                        <a href="#" class="btn btn-sm btn-danger btn-minier" data-action="settings" id="btn_eliminar_varios"><i class="ace-icon fa fa-trash-o"></i> Eliminar</a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div>
+                            <table id="usuariosListado" class="table table-condensed datatable-usuarioslistado table-striped table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJToken.js"></script>
+}
+
+
+
 

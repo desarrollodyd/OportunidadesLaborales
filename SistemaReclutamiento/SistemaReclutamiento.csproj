@@ -4020,6 +4020,8 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones1.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSistemas.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJToken.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJDescargas.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLoginView.js" />
@@ -4981,7 +4983,9 @@
     <Compile Include="Controllers\IntranetPjAdmin\IntranetMenuController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSaludosCumpleaniosController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSeccionController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetSistemasController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetTipoElementoController.cs" />
+    <Compile Include="Controllers\IntranetPjAdmin\IntranetTokenController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
@@ -5017,6 +5021,7 @@
     <Compile Include="Entidades\IntranetPJ\IntranetSaludoCumpleanioEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetSeccionEntidad.cs" />
+    <Compile Include="Entidades\IntranetPJ\IntranetSistemasEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetTipoElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetUsuarioEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetPreguntaOLAEntidad.cs" />
@@ -5069,6 +5074,7 @@
     <Compile Include="Models\IntranetPJ\IntranetSaludoCumpleaniosModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetSeccionElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetSeccionModel.cs" />
+    <Compile Include="Models\IntranetPJ\IntranetSistemasModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetTipoElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetUsuarioModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />
@@ -5167,6 +5173,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJSecciones1.cshtml" />
     <Content Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJToken.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJSistemas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5183,6 +5190,8 @@
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
     <Folder Include="Views\IntranetArchivos\" />
+    <Folder Include="Views\IntranetSistemas\" />
+    <Folder Include="Views\IntranetToken\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

@@ -633,10 +633,10 @@ namespace SistemaReclutamiento.Models
 	                                FROM seguridad.seg_usuario
 	                                join marketing.cpj_persona
 	                                on seguridad.seg_usuario.fk_persona=marketing.cpj_persona.per_id
-	                                where per_tipo='EMPLEADO' and usu_tipo='EMPLEADO';";
+	                                where per_tipo='EMPLEADO' and usu_tipo='EMPLEADO' order by per_apellido_pat;";
             try
             {
-                using (var con = new NpgsqlConnection()) {
+                using (var con = new NpgsqlConnection(_conexion)) {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     using (var dr = query.ExecuteReader()) {
