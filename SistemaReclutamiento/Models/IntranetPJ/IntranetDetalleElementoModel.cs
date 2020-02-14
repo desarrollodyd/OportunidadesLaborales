@@ -313,7 +313,7 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento
 	                            SET detel_orden=@p0
-	                            WHERE detel_id=@p1;";
+	                            WHERE detel_id=@p1;"; 
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
