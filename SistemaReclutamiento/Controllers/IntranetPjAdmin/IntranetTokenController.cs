@@ -19,6 +19,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         // GET: IntranetToken
         UsuarioModel usuariobl = new UsuarioModel();
         IntranetSistemasModel sistemasbl = new IntranetSistemasModel();
+        IntranetEmpresaModel intranetempresabl = new IntranetEmpresaModel();
+        SQLModel sqlbl = new SQLModel();
         public ActionResult Index()
         {
             return View();
@@ -28,10 +30,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             string errormensaje = "";
             bool response = false;
-            List<UsuarioPersonaEntidad> listaUsuarios = new List<UsuarioPersonaEntidad>();
+            List<UsuarioPersonaEntidad> listaPersonasPostgres = new List<UsuarioPersonaEntidad>();
             List<IntranetSistemasEntidad> listaSistemas = new List<IntranetSistemasEntidad>();
+            List<IntranetEmpresaEntidad> listaEmpresas = new List<IntranetEmpresaEntidad>();
+            List<PersonaSqlEntidad> listaPersonasSQL = new List<PersonaSqlEntidad>();
             //var listaIAS = new List<dynamic>();
             List<dynamic> listaTotal = new List<dynamic>();
+            List<dynamic> lista = new List<dynamic>();
             try
             {
                 //Listar Sistemas
@@ -44,56 +49,181 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     errormensaje += sistemasTupla.error.Value;
                 }
 
-                if (listaSistemas.Count > 0) {
-                    foreach (var sistema in listaSistemas) {
-                        var client = new RestClient(sistema.sist_ruta);
-                        var request = new RestRequest(Method.POST);
-                        IRestResponse responseAPI = client.Execute(request);
-                        dynamic json = JsonConvert.DeserializeObject<List<dynamic>>(responseAPI.Content);
-                        listaTotal.Add(json);
-                    }
-                }
-                //var client = new RestClient("http://127.0.0.1/IAS/Usuario/UsuarioListadoJson");
-
-                //var request = new RestRequest(Method.POST);
-                //IRestResponse responseAPI = client.Execute(request);
-                //JObject json = JObject.Parse(responseAPI.Content);
-                //var result = json["result"];
-                //dynamic jsonObj = JsonConvert.DeserializeObject(responseAPI.Content);
-
-                //foreach (var obj in jsonObj.data) {
-                //    string NombreEmpleado = obj.NombreEmpleado;
-                //    int UsuarioID = obj.UsuarioID;
-                //    int EmpleadoID = obj.EmpleadoID;
-                //    string UsuarioNombre = obj.UsuarioNombre;
-                //    string Estado = obj.Estado;
-                //    listaIAS.Add(new
-                //    {
-                //        NombreEmpleado,
-                //        UsuarioID,
-                //        EmpleadoID,
-                //        UsuarioNombre,
-                //        Estado
-                //    });
+                //if (listaSistemas.Count > 0) {
+                //    foreach (var sistema in listaSistemas) {
+                //        var client = new RestClient(sistema.sist_ruta);
+                //        var request = new RestRequest(Method.POST);
+                //        IRestResponse responseAPI = client.Execute(request);
+                //        dynamic jsonObj = JsonConvert.DeserializeObject(responseAPI.Content);
+                //        foreach (var obj in jsonObj.data)
+                //        {
+                //            string NombreEmpleado = obj.NombreEmpleado;
+                //            int UsuarioID = obj.UsuarioID;
+                //            int EmpleadoID = obj.EmpleadoID;
+                //            string UsuarioNombre = obj.UsuarioNombre;
+                //            string Estado = obj.Estado;
+                //            string Token = obj.UsuarioToken;
+                //            lista.Add(new
+                //            {
+                //                NombreEmpleado,
+                //                UsuarioID,
+                //                EmpleadoID,
+                //                UsuarioNombre,
+                //                Estado,
+                //                Token
+                //            });
+                //        }
+                //        listaTotal.Add(lista);
+                //    }
                 //}
 
-                var listaTupla = usuariobl.IntranetListarUsuariosTokenJson();
-                if (listaTupla.error.Key.Equals(string.Empty))
+
+                //Lista de Empresas desde Postgres
+                var listaEmpresasTupla = intranetempresabl.IntranetEmpresasListarJson();
+                if (listaEmpresasTupla.error.Key.Equals(string.Empty))
                 {
-                    listaUsuarios = listaTupla.listaUsuarios;
-                    errormensaje = "Listando Usuarios Mesa de Partes";
-                    response = true;
+                    listaEmpresas = listaEmpresasTupla.intranetEmpresasLista.Where(x => x.emp_estado == "A").ToList();
+                    //creamos el string con la lista de empresas para el IN en sql
+                    if (listaEmpresas.Count > 0)
+                    {
+                        //obtener mes anterior
+                        var mes_anterior = DateTime.Now.Month - 1;
+                        //Por lo menos hay una empresa registrada en int_empresa en Postgres
+                        string stringEmpresas = "";
+                        stringEmpresas += "(";
+                        foreach (var m in listaEmpresas)
+                        {
+                            stringEmpresas += m.emp_codigo + ",";
+                        }
+                        stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
+                        stringEmpresas += ")";
+                        //Listado de Personas SQL
+                        var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas, mes_anterior);
+                        if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaPersonasSQL = listaPersonasSQLTupla.lista;
+
+                            //response = true;
+                            //errormensaje = "Listando Agenda";
+                        }
+                        else
+                        {
+                            errormensaje += listaPersonasSQLTupla.error.Value;
+                        }
+
+                        //Listado de PErsonas Postgres
+                        var listaTupla = usuariobl.IntranetListarUsuariosTokenJson();
+                        if (listaTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaPersonasPostgres = listaTupla.listaUsuarios;
+                        }
+                        else
+                        {
+                            errormensaje = listaTupla.error.Value;
+                        }
+
+                        if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0)
+                        {
+                            foreach (var m in listaPersonasSQL) {
+                                var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).FirstOrDefault();
+                                if (contiene != null)
+                                {
+                                    lista.Add(new
+                                    {
+                                        per_numdoc = m.CO_TRAB,
+                                        per_nombre = m.NO_TRAB,
+                                        per_apellido_pat = m.NO_APEL_PATE,
+                                        per_apellido_mat = m.NO_APEL_MATE,
+                                        usu_nombre = contiene.usu_nombre,
+                                        per_id = contiene.per_id,
+                                        usu_token = contiene.usu_token,
+                                        usu_exp_token = contiene.usu_exp_token,
+                                        usu_id = contiene.usu_id
+                                    });
+                                }
+                            }
+                            errormensaje = "Listando Usuarios";
+                            response = true;
+                        }
+                    }
+                    else
+                    {
+                        errormensaje = "No hay Empresas";
+                    }
                 }
                 else
                 {
-                    errormensaje = listaTupla.error.Value;
+                    errormensaje = listaEmpresasTupla.error.Value;
                 }
+
+
+              
             }
             catch (Exception ex)
             {
                 errormensaje = ex.Message;
             }
-            return Json(new { data_total= listaTotal,data = listaUsuarios.ToList(), respuesta = response, mensaje = errormensaje });
+            return Json(new { data_sistemas= listaSistemas,data = lista.ToList(), respuesta = response, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult IntranetListarUsuariosSistemasJson(List<IntranetSistemasEntidad> listaSistemas)
+        {
+            
+            List<dynamic> lista2 = new List<dynamic>();
+            List<dynamic> listaTotal = new List<dynamic>();
+            string errormensaje = "";
+            bool response = false;
+            try
+            {
+                if (listaSistemas.Count > 0)
+                {
+                    foreach (var sistema in listaSistemas)
+                    {
+                        List<dynamic> lista = new List<dynamic>();
+                        lista.Add(new
+                        {
+                            sistema.sist_id,
+                            sistema.sist_nombre,
+                            sistema.sist_ruta,
+                            sistema.sist_descripcion,
+                            sistema.sist_estado
+                        });
+                        var client = new RestClient(sistema.sist_ruta);
+                        var request = new RestRequest(Method.POST);
+                        IRestResponse responseAPI = client.Execute(request);
+                        dynamic jsonObj = JsonConvert.DeserializeObject(responseAPI.Content);
+                        foreach (var obj in jsonObj.data)
+                        {
+                            string NombreEmpleado = obj.NombreEmpleado;
+                            int UsuarioID = obj.UsuarioID;
+                            int EmpleadoID = obj.EmpleadoID;
+                            string UsuarioNombre = obj.UsuarioNombre;
+                            string Estado = obj.Estado;
+                            string Token = obj.UsuarioToken;
+                            lista.Add(new
+                            {
+                                NombreEmpleado,
+                                UsuarioID,
+                                EmpleadoID,
+                                UsuarioNombre,
+                                Estado,
+                                Token
+                            });
+                        }
+                        listaTotal.Add(lista);
+                    }
+                    errormensaje = "Listando Data";
+                    response = true;
+                }
+                else {
+                    errormensaje = "Lista de Sistemas Vacia";
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+
+            return Json(new { data = listaTotal.ToList(), mensaje=errormensaje,respuesta=response });
         }
     }
 }

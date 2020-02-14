@@ -853,7 +853,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         }
                         if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0) {
                             foreach (var m in listaPersonasSQL) {
-                                var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).SingleOrDefault();
+                                var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).FirstOrDefault();
                                 if (contiene!=null) {
                                     lista.Add(new
                                     {

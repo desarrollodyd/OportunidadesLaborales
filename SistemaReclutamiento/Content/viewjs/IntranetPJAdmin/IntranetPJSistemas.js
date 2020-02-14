@@ -90,27 +90,37 @@
         $(document).on('click', ".btn_guardar", function (e) {
             $("#form_sistemas").submit();
             if (_objetoForm_form_sistemas.valid()) {
-                var dataForm = $('#form_sistemas').serializeFormJSON();
-                var url = "";
-                if ($("#sist_id").val() == 0) {
-                    url = "IntranetSistemas/IntranetSistemaInsertarJson";
-                }
-                else {
-                    url = "IntranetSistemas/IntranetSistemaEditarJson";
-                }
-                responseSimple({
-                    url: url,
-                    data: JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        //console.log(response);
-                        var respuesta = response.respuesta;
-                        if (respuesta) {
-                            PanelSistemas.init_ListarSistemas();
-                            $("#modalFormulario").modal("hide");
-                        }
+                var urlValido=isValidURL($("#sist_ruta").val());
+                if(urlValido==true){
+                    var dataForm = $('#form_sistemas').serializeFormJSON();
+                    var url = "";
+                    if ($("#sist_id").val() == 0) {
+                        url = "IntranetSistemas/IntranetSistemaInsertarJson";
                     }
-                });
+                    else {
+                        url = "IntranetSistemas/IntranetSistemaEditarJson";
+                    }
+                    responseSimple({
+                        url: url,
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            //console.log(response);
+                            var respuesta = response.respuesta;
+                            if (respuesta) {
+                                PanelSistemas.init_ListarSistemas();
+                                $("#modalFormulario").modal("hide");
+                            }
+                        }
+                    });
+                }
+                else{
+                    messageResponse({
+                        text: "Ruta no es Valida (revise http ó https)",
+                        type: "error"
+                    })
+                }
+                
             } else {
                 messageResponse({
                     text: "Complete los campos Obligatorios",
@@ -238,6 +248,10 @@
         }
     }
 }();
+function isValidURL(string) {
+    var pattern = new RegExp('^(http|https)\:\/\/[a-z0-9\.-]+\.[a-z]{2,4}','gi');
+    return pattern.test(string);
+  };
 
 // Initialize module
 // ------------------------------

@@ -630,10 +630,10 @@ namespace SistemaReclutamiento.Models
                                 usu_token, usu_exp_token,
                                 per_nombre,
                                 per_apellido_pat, per_apellido_mat, per_numdoc
-	                                FROM seguridad.seg_usuario
-	                                join marketing.cpj_persona
-	                                on seguridad.seg_usuario.fk_persona=marketing.cpj_persona.per_id
-	                                where per_tipo='EMPLEADO' and usu_tipo='EMPLEADO' order by per_apellido_pat;";
+	                                FROM marketing.cpj_persona
+	                                join seguridad.seg_usuario
+	                                on marketing.cpj_persona.per_id=seguridad.seg_usuario.fk_persona
+	                                where per_tipo='EMPLEADO' order by per_apellido_pat;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion)) {

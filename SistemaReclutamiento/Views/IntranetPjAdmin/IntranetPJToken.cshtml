@@ -17,16 +17,17 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="widget-box">
-                <div class="widget-header widget-header-flat widget-header-small">
-                    <h4 class="widget-title">Listado Usuarios</h4>
-                    <span class="widget-toolbar">
-                        <a href="#" class="btn btn-sm btn-success btn-minier" data-action="settings" id="btn_nuevo"><i class="ace-icon fa fa-file"></i> Nuevo</a>
-                        <a href="#" class="btn btn-sm btn-danger btn-minier" data-action="settings" id="btn_eliminar_varios"><i class="ace-icon fa fa-trash-o"></i> Eliminar</a>
-                    </span>
-                </div>
+                
                 <div class="widget-body">
                     <div class="widget-main no-padding">
-                        <div>
+                        <div id="bloque_usuarios_postgres">
+                            <div class="widget-header widget-header-flat widget-header-small">
+                                <h4 class="widget-title">Listado Usuarios</h4>
+                                <span class="widget-toolbar">
+                                    <a href="#" class="btn btn-sm btn-success btn-minier" data-action="settings" id="btn_sincronizar"><i class="ace-icon fa fa-file"></i> Sincronizar</a>
+                                    @* <a href="#" class="btn btn-sm btn-danger btn-minier" data-action="settings" id="btn_eliminar_varios"><i class="ace-icon fa fa-trash-o"></i> Eliminar</a> *@
+                                </span>
+                            </div>
                             <table id="usuariosListado" class="table table-condensed datatable-usuarioslistado table-striped table-bordered table-hover">
                                 <tbody>
                                     <tr>
@@ -37,6 +38,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div id="bloque_usuarios_sistemas" style="display: none;"></div>
                     </div>
                 </div>
             </div>
