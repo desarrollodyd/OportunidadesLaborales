@@ -166,12 +166,21 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { data_sistemas= listaSistemas,data = lista.ToList(), respuesta = response, mensaje = errormensaje });
         }
         [HttpPost]
-        public ActionResult IntranetListarUsuariosSistemasJson(List<IntranetSistemasEntidad> listaSistemas)
+        public ActionResult IntranetListarUsuariosSistemasJson(List<IntranetSistemasEntidad> listaSistemas,string[] listaDNIs)
         {
             
             List<dynamic> lista2 = new List<dynamic>();
             List<dynamic> listaTotal = new List<dynamic>();
+            List<string> listaDni = listaDNIs.ToList();
+            string NombreEmpleado = "";
+            int UsuarioID = 0;
+            int EmpleadoID = 0;
+            string UsuarioNombre = "";
+            string Estado = "";
+            string Token = "";
+            string DOI = "";
             string errormensaje = "";
+            int indiceCoincidencia = 0;
             bool response = false;
             try
             {
@@ -194,21 +203,28 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         dynamic jsonObj = JsonConvert.DeserializeObject(responseAPI.Content);
                         foreach (var obj in jsonObj.data)
                         {
-                            string NombreEmpleado = obj.NombreEmpleado;
-                            int UsuarioID = obj.UsuarioID;
-                            int EmpleadoID = obj.EmpleadoID;
-                            string UsuarioNombre = obj.UsuarioNombre;
-                            string Estado = obj.Estado;
-                            string Token = obj.UsuarioToken;
-                            lista.Add(new
+
+                             NombreEmpleado = obj.NombreEmpleado;
+                             UsuarioID = obj.UsuarioID;
+                             EmpleadoID = obj.EmpleadoID;
+                             UsuarioNombre = obj.UsuarioNombre;
+                             Estado = obj.Estado;
+                             Token = obj.UsuarioToken;
+                             DOI = obj.DOI;
+                             indiceCoincidencia = listaDni.IndexOf(DOI);
+                            if (indiceCoincidencia >= 0)
                             {
-                                NombreEmpleado,
-                                UsuarioID,
-                                EmpleadoID,
-                                UsuarioNombre,
-                                Estado,
-                                Token
-                            });
+                                lista.Add(new
+                                {
+                                    NombreEmpleado,
+                                    UsuarioID,
+                                    EmpleadoID,
+                                    UsuarioNombre,
+                                    Estado,
+                                    Token
+                                });
+                            }
+                          
                         }
                         listaTotal.Add(lista);
                     }
@@ -224,6 +240,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
 
             return Json(new { data = listaTotal.ToList(), mensaje=errormensaje,respuesta=response });
+        }
+        [HttpPost]
+        public ActionResult IntranetModificarTokensporSistemaJson(List<IntranetSistemasEntidad> listasistemas, List<UsuarioPersonaEntidad> listaTokens) {
+            string errormensaje = "editando";
+            bool response = true;
+            return Json(new { listaSistemas=listasistemas,tokens=listaTokens,mensaje=errormensaje,respuesta=response});
         }
     }
 }
