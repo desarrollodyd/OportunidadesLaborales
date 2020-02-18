@@ -727,7 +727,7 @@
 
                         if (elemento.fk_tipo_elemento == 1) {
                             appendElementos += '<header>' +
-                                '<div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>' +
+                                '<div class="loverate" style="right:-1px !important;"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>' +
                                 '<h1>' + elemento.emod_titulo + '</h1>' +
                                 '</header>';
                         }

@@ -1,5 +1,5 @@
 ﻿var PanelToken = function () {
-    var listaUsuariosPorsistema;
+    var listaUsuariosPorsistema=[];
     var listaSistemas;
     var sistemas;
     var listaUsuariosPostgres;
@@ -70,29 +70,28 @@
     };
     var _componentes = function () {
         $(document).on('click','#btn_sincronizar',function(){
-
-            
             let arrayDNIs = [];
+            let arrayTokens=[];
             if(listaUsuariosPostgres.length>0){
                 
                 $.each(listaUsuariosPostgres,function(index,value){
                     arrayDNIs.push(value.per_numdoc);
+                    arrayTokens.push(value.usu_token);
                 })
             }
             var dataForm={
                 listaSistemas:listaSistemas,
                 listaDNIs:arrayDNIs
             };
-          
             responseSimple({
                 url:"IntranetToken/IntranetListarUsuariosSistemasJson",
                 refresh:false,
                 data:JSON.stringify(dataForm),
                 callBackSuccess:function(response){
                     var span='';
-                    listaUsuariosPorsistema=response.data;
+                    
                     sistemas=response.data;
-                    if(sistemas.length>0){
+                    if(response.respuesta){
                         span+=' <div class="widget-header widget-header-flat widget-header-small">'+
                         '<h4 class="widget-title">Listado Usuarios por Sistemas</h4>'+
                         '<span class="widget-toolbar">'+
@@ -101,31 +100,29 @@
                     '</div>';
                         span+='<div class="panel panel-default">';
                         $.each(sistemas,function(index,value){
-                            // var lista=value;
-                            // lista=lista.shift();   
-                            // console.log(lista);
                             span+='<div class="panel-heading"><h4 class="panel-title">'+
-                            '<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse'+index+'" aria-expanded="false">'+
-                                    '<i class="bigger-110 ace-icon fa fa-angle-right" data-icon-hide="ace-icon fa fa-angle-down" data-icon-show="ace-icon fa fa-angle-right"></i>'+
-                                    'Listado Sistema '+value[0].sist_nombre+
-                                '</a>'+
-                            '</h4>'+
-                        '</div>'+
-                        '<div class="panel-collapse collapse" id="collapse'+index+'" aria-expanded="false" style="height: 0px;">'+
-                            '<div class="panel-body" id="panel'+index+'"><table id="table'+index+'" class="table table-condensed table-striped table-bordered table-hover datatableListado'+index+'"></table>'+
+                                '<a class="accordion-toggle collapsed dibujar_tabla" data-id="'+index+'" data-toggle="collapse" data-parent="#accordion" href="#collapse'+index+'" aria-expanded="false">'+
+                                        '<i class="bigger-110 ace-icon fa fa-angle-right" data-icon-hide="ace-icon fa fa-angle-down" data-icon-show="ace-icon fa fa-angle-right"></i>'+
+                                        'Listado Sistema '+value.sist_nombre+'<div class="widget-toolbar" style="margin-top: -7px;line-height: 24px;">Total Usuarios: <span id="span_total'+index+'"'+
+                                        'class="label label-success label-white middle">'+(value.usuarios.length)+'</span></div>'+
+                                    '</a>'+
+                                '</h4>'+
                             '</div>'+
-                        '</div>';
-                       
-                            //crear acordeon por sistema
-                           
-                            //primera Lista
-                        
+                            '<div class="panel-collapse collapse" id="collapse'+index+'" aria-expanded="false" style="height: 0px;">'+
+                                '<div class="panel-body" id="panel'+index+'"><table id="table'+index+'" class="table table-condensed table-striped table-bordered table-hover datatableListado'+index+'"></table>'+
+                                '</div>'+
+                            '</div>';
                         })
                         span+='</div>';
+                        
+                        $("#bloque_usuarios_sistemas").html(span);
+                        $.each(sistemas,function(index,value){
+                            _crearDatatable(value.usuarios,index,arrayDNIs,arrayTokens);
+                        })
                         $("#bloque_usuarios_sistemas").show();
                         $("#bloque_usuarios_postgres").hide();
-                        $("#bloque_usuarios_sistemas").html(span);
-                        _crearDatatable(sistemas);
+                        
+                        //crear array para modificar token
                     }
                     else{
                         messageResponse({
@@ -138,63 +135,79 @@
         });
 
         $(document).on('click','#btn_editar_token',function(){
-            // console.log(listaSistemas);
-            // console.log(listaUsuariosPostgres);
-            // console.log(listaUsuariosPorsistema);
-            let arrayTokens = [];
-            if(listaUsuariosPostgres.length>0){
-                var obj="";
-                $.each(listaUsuariosPostgres,function(index,value){
-                    obj={
-                        per_numdoc:value.per_numdoc,
-                        per_token:value.token
-                    };
-                    arrayTokens.push(obj);
-                })
-            }
-            var dataForm={
-                listaSistemas:listaSistemas,
-                listaTokens:arrayTokens,
-            }
-            responseSimple({
-                url:'IntranetToken/IntranetModificarTokensporSistemaJson',
-                data:JSON.stringify(dataForm),
-                refresh:false,
-                callBackSuccess:function(response){
-                    console.log(response);
-                }
-            })
+            // let arrayTokens = [];
+            // if(listaUsuariosPostgres.length>0){
+            //     var obj="";
+            //     $.each(listaUsuariosPostgres,function(index,value){
+            //         obj={
+            //             per_numdoc:value.per_numdoc,
+            //             per_token:value.token
+            //         };
+            //         arrayTokens.push(obj);
+            //     })
+            // }
+            // var dataForm={
+            //     listaSistemas:listaSistemas,
+            //     listaTokens:arrayTokens,
+            // }
+            // responseSimple({
+            //     url:'IntranetToken/IntranetModificarTokensporSistemaJson',
+            //     data:JSON.stringify(dataForm),
+            //     refresh:false,
+            //     callBackSuccess:function(response){
+            //         console.log(response);
+            //     }
+            // })
+        });
+        $(document).on('click','.dibujar_tabla',function(){
+            var indice=$(this).data("id");
+            $("#table"+indice).DataTable().draw();
         });
     };
-    var _crearDatatable=function(data){
-        $.each(data,function(index,value){
-       
-            lista=value;
-            lista.shift();
-            simpleDataTable({
-                uniform: false,
-                table: "#table"+index,
-                tableNameVariable: "datatableListado"+index,
-                tableColumnsData: lista,
-                tableHeaderCheck: false,
-                tableColumns: [
-                    {
-                        data: "NombreEmpleado",
-                        title: "Empleado",
-                        width:"300px"
+    var _crearDatatable=function(data,index,arrayDNIs,arrayTokens){
+        simpleDataTable({
+            uniform: false,
+            table: "#table"+index,
+            tableNameVariable: "datatableListado"+index,
+            tableColumnsData: data,
+            tableHeaderCheck: false,
+            tableColumns: [
+                {
+                    data: "NombreEmpleado",
+                    title: "Empleado",
+                    width:"250px"
+                },
+                {
+                    data: "UsuarioNombre",
+                    title: "Usuario",
+                    width:"150px"
+                },
+                {
+                    data: "Token",
+                    title: "Token",
+                    width: "300px",
+                },
+                {
+                    data:"Token",
+                    title:"Token Postgres",
+                    width:"300px",
+                    "render":function(value,type,row){
+                        var span='';
+                        var encontrado=arrayDNIs.indexOf(row.DOI);
+                        var token="";
+                        if(encontrado>=0){
+                            token=arrayTokens[encontrado];
+                        }
+                        if(row.Token==token){
+                            span='<span class="label label-success label-white">'+token+'</span>'
+                        }
+                        else{
+                            span='<span class="label label-danger label-white">'+token+'</span>';
+                        }
+                        return span;
                     },
-                    {
-                        data: "UsuarioNombre",
-                        title: "Usuario",
-                        width:"300px"
-                    },
-                    {
-                        data: "Token",
-                        title: "Token",
-                        width: "300px",
-                    },
-                ]
-            })
+                }
+            ]
         })
     };
     var _metodos = function () {

@@ -686,6 +686,7 @@ function simpleDataTable(obj) {
     });
     listaDatatable.push({ tabla: objt + '_' + opciones.tableNameVariable });
     localStorage.setItem('tablas_', JSON.stringify(listaDatatable));
+    // listaDatatable.draw();
 }
 
 function simpleAjaxDataTable(obj) {

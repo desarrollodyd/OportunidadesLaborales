@@ -172,6 +172,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             List<dynamic> lista2 = new List<dynamic>();
             List<dynamic> listaTotal = new List<dynamic>();
             List<string> listaDni = listaDNIs.ToList();
+            List<dynamic> listaporSistema = new List<dynamic>();
             string NombreEmpleado = "";
             int UsuarioID = 0;
             int EmpleadoID = 0;
@@ -189,14 +190,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     foreach (var sistema in listaSistemas)
                     {
                         List<dynamic> lista = new List<dynamic>();
-                        lista.Add(new
-                        {
-                            sistema.sist_id,
-                            sistema.sist_nombre,
-                            sistema.sist_ruta,
-                            sistema.sist_descripcion,
-                            sistema.sist_estado
-                        });
                         var client = new RestClient(sistema.sist_ruta);
                         var request = new RestRequest(Method.POST);
                         IRestResponse responseAPI = client.Execute(request);
@@ -221,12 +214,20 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     EmpleadoID,
                                     UsuarioNombre,
                                     Estado,
-                                    Token
+                                    Token,
+                                    DOI
                                 });
                             }
                           
                         }
-                        listaTotal.Add(lista);
+                        listaTotal.Add(new {
+                            sistema.sist_id,
+                            sistema.sist_nombre,
+                            sistema.sist_ruta,
+                            sistema.sist_descripcion,
+                            sistema.sist_estado,
+                            usuarios=lista
+                        });
                     }
                     errormensaje = "Listando Data";
                     response = true;
