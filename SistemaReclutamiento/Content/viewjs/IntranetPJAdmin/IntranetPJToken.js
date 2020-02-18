@@ -1,8 +1,8 @@
 ﻿var PanelToken = function () {
-    var listaUsuariosPorsistema=[];
     var listaSistemas;
-    var sistemas;
+    var usuariosSistemas;
     var listaUsuariosPostgres;
+    var listaTokensEditar=[];
     var _ListarUsuarios = function () {
         $("#bloque_usuarios_postgres").show();
         $("#bloque_usuarios_sistemas").hide();
@@ -90,7 +90,7 @@
                 callBackSuccess:function(response){
                     var span='';
                     
-                    sistemas=response.data;
+                    usuariosSistemas=response.data;
                     if(response.respuesta){
                         span+=' <div class="widget-header widget-header-flat widget-header-small">'+
                         '<h4 class="widget-title">Listado Usuarios por Sistemas</h4>'+
@@ -99,7 +99,7 @@
                         '</span>'+
                     '</div>';
                         span+='<div class="panel panel-default">';
-                        $.each(sistemas,function(index,value){
+                        $.each(usuariosSistemas,function(index,value){
                             span+='<div class="panel-heading"><h4 class="panel-title">'+
                                 '<a class="accordion-toggle collapsed dibujar_tabla" data-id="'+index+'" data-toggle="collapse" data-parent="#accordion" href="#collapse'+index+'" aria-expanded="false">'+
                                         '<i class="bigger-110 ace-icon fa fa-angle-right" data-icon-hide="ace-icon fa fa-angle-down" data-icon-show="ace-icon fa fa-angle-right"></i>'+
@@ -116,7 +116,7 @@
                         span+='</div>';
                         
                         $("#bloque_usuarios_sistemas").html(span);
-                        $.each(sistemas,function(index,value){
+                        $.each(usuariosSistemas,function(index,value){
                             _crearDatatable(value.usuarios,index,arrayDNIs,arrayTokens);
                         })
                         $("#bloque_usuarios_sistemas").show();
@@ -165,6 +165,7 @@
         });
     };
     var _crearDatatable=function(data,index,arrayDNIs,arrayTokens){
+
         simpleDataTable({
             uniform: false,
             table: "#table"+index,
