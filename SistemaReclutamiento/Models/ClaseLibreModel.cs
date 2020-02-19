@@ -70,5 +70,16 @@ namespace SistemaReclutamiento.Models
         public string CO_PUES_TRAB { get; set; }
         public string DE_PUES_TRAB { get; set; }
     }
+    public class SEG_Usuario
+    {
+        public string NombreEmpleado { get; set; }
+        public int UsuarioID { get; set; }
+        public int EmpleadoID { get; set; }
+        public string UsuarioNombre { get; set; }
+        public string Estado { get; set; }
+        public string Token { get; set; }
+        public string DOI { get; set; }
+        public string TokenPostgres { get; set; }
+    }
 
 }

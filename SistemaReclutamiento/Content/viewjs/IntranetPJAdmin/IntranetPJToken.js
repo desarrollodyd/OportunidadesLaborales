@@ -81,7 +81,8 @@
             }
             var dataForm={
                 listaSistemas:listaSistemas,
-                listaDNIs:arrayDNIs
+                listaDNIs:arrayDNIs,
+                listaTokens:arrayTokens
             };
             responseSimple({
                 url:"IntranetToken/IntranetListarUsuariosSistemasJson",
@@ -89,13 +90,14 @@
                 data:JSON.stringify(dataForm),
                 callBackSuccess:function(response){
                     var span='';
-                    
+                    console.log(response.data);
                     usuariosSistemas=response.data;
                     if(response.respuesta){
                         span+=' <div class="widget-header widget-header-flat widget-header-small">'+
                         '<h4 class="widget-title">Listado Usuarios por Sistemas</h4>'+
                         '<span class="widget-toolbar">'+
                             '<a href="#" class="btn btn-sm btn-warning btn-minier" data-action="settings" id="btn_editar_token"><i class="ace-icon fa fa-file"></i> Modificar Tokens</a>'+
+                            '<a href="#" class="btn btn-sm btn-danger btn-minier" data-action="settings" id="btn_cancelar"><i class="ace-icon fa fa-reply"></i> Cancelar</a>'+
                         '</span>'+
                     '</div>';
                         span+='<div class="panel panel-default">';
@@ -117,7 +119,7 @@
                         
                         $("#bloque_usuarios_sistemas").html(span);
                         $.each(usuariosSistemas,function(index,value){
-                            _crearDatatable(value.usuarios,index,arrayDNIs,arrayTokens);
+                            _crearDatatable(value.usuarios,index);
                         })
                         $("#bloque_usuarios_sistemas").show();
                         $("#bloque_usuarios_postgres").hide();
@@ -135,36 +137,38 @@
         });
 
         $(document).on('click','#btn_editar_token',function(){
-            // let arrayTokens = [];
-            // if(listaUsuariosPostgres.length>0){
-            //     var obj="";
-            //     $.each(listaUsuariosPostgres,function(index,value){
-            //         obj={
-            //             per_numdoc:value.per_numdoc,
-            //             per_token:value.token
-            //         };
-            //         arrayTokens.push(obj);
-            //     })
-            // }
-            // var dataForm={
-            //     listaSistemas:listaSistemas,
-            //     listaTokens:arrayTokens,
-            // }
-            // responseSimple({
-            //     url:'IntranetToken/IntranetModificarTokensporSistemaJson',
-            //     data:JSON.stringify(dataForm),
-            //     refresh:false,
-            //     callBackSuccess:function(response){
-            //         console.log(response);
-            //     }
-            // })
+            let arrayDNIs = [];
+            let arrayTokens=[];
+            if(listaUsuariosPostgres.length>0){
+                
+                $.each(listaUsuariosPostgres,function(index,value){
+                    arrayDNIs.push(value.per_numdoc);
+                    arrayTokens.push(value.usu_token);
+                })
+            }
+            var dataForm={
+                listaTokens:arrayTokens,
+                listaDNIs:arrayDNIs,
+                listasistemas:usuariosSistemas,
+            };
+            responseSimple({
+                url:'IntranetToken/IntranetModificarTokensporSistemaJson',
+                data:JSON.stringify(dataForm),
+                refresh:false,
+                callBackSuccess:function(response){
+                    console.log(response);
+                }
+            })
         });
         $(document).on('click','.dibujar_tabla',function(){
             var indice=$(this).data("id");
             $("#table"+indice).DataTable().draw();
         });
+        $(document).on('click','#btn_cancelar',function(){
+            window.location.reload(true);
+        })
     };
-    var _crearDatatable=function(data,index,arrayDNIs,arrayTokens){
+    var _crearDatatable=function(data,index){
 
         simpleDataTable({
             uniform: false,
@@ -185,28 +189,33 @@
                 },
                 {
                     data: "Token",
-                    title: "Token",
+                    title: "Token Sistema",
                     width: "300px",
                 },
                 {
-                    data:"Token",
-                    title:"Token Postgres",
+                    data:"TokenPostgres",
+                    title:"Token Actual",
                     width:"300px",
+                },
+                {
+                    data:"DOI",
+                    title:"Estado",
+                    width:"50px",
                     "render":function(value,type,row){
+                        var tokenSistema=row.Token;
+                        var tokenPostgres=row.TokenPostgres;
                         var span='';
-                        var encontrado=arrayDNIs.indexOf(row.DOI);
-                        var token="";
-                        if(encontrado>=0){
-                            token=arrayTokens[encontrado];
+                        if(tokenPostgres==""){
+                            span='<span class="label label-danger label-white middle">Sin Token</span>';
                         }
-                        if(row.Token==token){
-                            span='<span class="label label-success label-white">'+token+'</span>'
+                        else if(tokenPostgres!=tokenSistema){
+                            span='<span class="label label-warning label-white middle">Sin Coincidencia</span>';
                         }
-                        else{
-                            span='<span class="label label-danger label-white">'+token+'</span>';
+                        else {
+                            span='<span class="label label-success label-white middle">Verificado</span>';
                         }
                         return span;
-                    },
+                    }
                 }
             ]
         })

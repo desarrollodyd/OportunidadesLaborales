@@ -44,21 +44,25 @@
         <div class="loverate"><a href="#"><i class="fa fa-exclamation-circle"></i></a></div>
         <h1>LOCALES</h1>
         <div class="postmeta">
-            <div class="meta-date">BUSCAR POR DEPARTAMENTO </div>
+            <div class="meta-date">BUSCAR POR <span id="tipoBusqueda"></span> </div>
         </div>
 
     </header>
     <div class="content">
         <div class="twelve columns listcomments">
+            <div class="twelve columns">
             <form class="" id="busquedaLocales" style="margin-bottom:0px;">
                 <div class="row collapsable">
-                    <div class="twelve columns">
+                    <div class="eleven columns">
                         <input type="hidden" name="tipo" id="tipo" value="" />
                         <input type="text" class="form-control" autocomplete="off" id="nombre" name="nombre" placeholder="Ingrese Búsqueda ">
-                        <button type="submit" class="btn btn-primary btn-buscar radius alert button btn_filtro">Buscar</button>
                     </div>
                 </div>
             </form>
+            <button class="btn btn-primary btn-buscar radius alert button btn_filtro">Buscar</button>
+           
+            </div>
+          
             <h4 class="lista_titulo" style="font-size:18px;margin-left: 0px;margin-top:0px;">
             Resultados Búsqueda: 
             <span class="alert label" style="padding: 2px;" id="span_total_puntos">0</span>

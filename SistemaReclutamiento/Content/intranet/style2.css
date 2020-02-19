@@ -1708,7 +1708,7 @@ body {
 a{ color: #FFFFFF;}
 
 h1, h2, h3, h4, h5, h6 {
-	font-family: 'Intranet Cpj';
+	font-family: 'Intranet Cpj Delgado';
 	margin-bottom: 14px;
 	margin-top: 14px; 
 	font-weight: 100;
@@ -3539,7 +3539,7 @@ aside.sideleft{
 }
 
 .widget h3{
-	font-size: 15px;
+	font-size: 20px;
 }
 .widget a:hover{ 
 	color: #FF0000; 

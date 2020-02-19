@@ -97,8 +97,8 @@ var PanelContenido = function () {
                 var lista = $('.tbody_elemento_modal_' + detal_elem_id + ' tr.elem_modal_' + detal_elem_id);
                 $.each(lista, function (index, value) {
                     lista_orden.push({
-                        elem_id: $(this).data("id"),
-                        elem_orden: (index + 1)
+                        emod_id: $(this).data("id"),
+                        emod_orden: (index + 1)
                     });
                     $(this).find("span.elem_modal_orden").text((index + 1));
                 });

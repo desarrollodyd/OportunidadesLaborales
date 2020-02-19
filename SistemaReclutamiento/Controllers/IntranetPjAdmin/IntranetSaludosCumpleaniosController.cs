@@ -125,7 +125,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
 
                             MailMessage mail = new MailMessage();
-                            mail.From = new MailAddress(user_cumple);
+                            mail.From = new MailAddress(user_cumple,"CorporacionPJ");
                             mail.To.Add(intranetSaludoCumpleanio.direccion_envio);
                             mail.Subject = "CPJ | TE DESEA UN FELIZ CUMPLEAÑOS";
 
