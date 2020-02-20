@@ -325,7 +325,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                         {
                                             if (itemDetalleElemento.detel_nombre != "")
                                             {
-                                                itemDetalleElemento.detel_nombre  = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElemento.detel_nombre+"."+ itemDetalleElemento.detel_extension);
+                                                //itemDetalleElemento.detel_nombre  = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElemento.detel_nombre+"."+ itemDetalleElemento.detel_extension);
+                                                itemDetalleElemento.detel_nombre = itemDetalleElemento.detel_hash;
                                             }
 
                                             var seccion_elemento = new List<dynamic>();
@@ -355,7 +356,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                                 {
                                                                     if (itemDetalleElementosModal.detelm_nombre != "")
                                                                     {
-                                                                        itemDetalleElementosModal.detelm_nombre = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElementosModal.detelm_nombre + "." + itemDetalleElementosModal.detelm_extension);
+                                                                        //itemDetalleElementosModal.detelm_nombre = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElementosModal.detelm_nombre + "." + itemDetalleElementosModal.detelm_extension);
+                                                                        itemDetalleElementosModal.detelm_nombre = itemDetalleElementosModal.detelm_hash;
                                                                     }
                                                                     ListaDetalleElementoModal.Add(new
                                                                     {

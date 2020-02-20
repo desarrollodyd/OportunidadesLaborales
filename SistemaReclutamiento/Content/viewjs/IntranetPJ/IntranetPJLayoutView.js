@@ -143,6 +143,7 @@
 
                 //listado secciones
                 if (secciones.length > 0) {
+                    console.log(secciones);
                     //console.log(secciones)
                     if(menu_id==0){
                         return false;
@@ -1285,6 +1286,8 @@
         $(document).on('click', '.abrir_pagina', function () {
             var otra_pagina = $(this).data("blank");
             var url = $(this).data("url");
+            console.log(otra_pagina);
+            console.log(url);
             if (url != "") {
                 if (otra_pagina=="blank") {
                     window.open(url, '_blank', '');

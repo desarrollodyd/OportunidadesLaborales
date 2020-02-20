@@ -249,9 +249,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         public ActionResult IntranetModificarTokensporSistemaJson(List<IntranetSistemasEntidad> listasistemas) {
             string errormensaje = "";
             bool response = false;
+            List<SEG_Usuario> listaUsuarios = new List<SEG_Usuario>();
+            List<dynamic> listaTotal = new List<dynamic>();
             try
             {
-
+                //if (listasistemas.Count > 0) {
+                //    foreach (var sistema in listasistemas) {
+                //        List<dynamic> lista = new List<dynamic>();
+                //        string[] word = sistema.sist_ruta.Split('/');
+                //        string ruta=word[0]+"//"+word[2]+"/"+word[3]+"/"+
+                //        listaUsuarios = sistema.usuarios;
+                //    }
+                //}
             }
             catch (Exception ex) {
                 errormensaje = ex.Message;

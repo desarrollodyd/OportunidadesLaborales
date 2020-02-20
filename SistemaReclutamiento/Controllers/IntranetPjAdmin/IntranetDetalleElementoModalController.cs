@@ -98,6 +98,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
                                 }
                                 file.SaveAs(rutaInsertar);
+                                intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                 intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
                                 //intranetDetalleElementoModal.detelm_extension = (extension == ".jpg" ? "jpg" : "png");
                                 if (extension == ".jpg")
@@ -181,6 +182,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         }
 
                                         file.SaveAs(rutaInsertar);
+                                        intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                         intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
 
                                         if (extension == ".jpg")
@@ -330,7 +332,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 if (error.Key.Equals(string.Empty))
                 {
                     intranetDetalleElementoModal = intranetDetalleElementoModalTupla.intranetDetalleElementoModal;
-                    intranetDetalleElementoModal.detelm_nombre_imagen = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre + "." + intranetDetalleElementoModal.detelm_extension);
+                    intranetDetalleElementoModal.detelm_nombre_imagen = intranetDetalleElementoModal.detelm_hash;
+                    //intranetDetalleElementoModal.detelm_nombre_imagen = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre + "." + intranetDetalleElementoModal.detelm_extension);
                     response = true;
                     mensaje = "Obteniendo Data";
                 }
@@ -380,6 +383,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     System.IO.File.Delete(rutaAnterior);
                                 }
                                 file.SaveAs(rutaInsertar);
+                                intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                 intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
                                 extension = extension.Replace(".", "");
                                 intranetDetalleElementoModal.detelm_extension = extension;
@@ -390,6 +394,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             errormensaje = "El archivo supera el tamaño maximo permitido";
                             return Json(new { respuesta = false, mensaje = errormensaje });
                         }
+                    }
+                    else {
+                        intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre_imagen);
+                        string[] word = intranetDetalleElementoModal.detelm_nombre_imagen.Split('.');
+                        intranetDetalleElementoModal.detelm_nombre = word[0];
+                        intranetDetalleElementoModal.detelm_extension = word[1];
                     }
                 }
                 if (intranetDetalleElementoModal.fk_seccion_elemento == 2)

@@ -59,8 +59,25 @@ function redirect(obj) {
 //////////////////////////////////
 function block_general(block) {
     // $.LoadingOverlay("show");
+    var customElement = $("<div>", {
+        "css"   : {
+            "font-size"     : "40px",
+            "text-align"    : "center",
+            "padding"       : "10px",
+            "color"         : "#f00",
+            "position"      : "absolute",
+            "margin-top"    :   "-200px",
+        },
+        "class" : "",
+        "text"  : "Cargando, espere por favor ..."
+    });
     $(block).LoadingOverlay("show", {
-        background: "rgba(51, 51, 51, 0.5)"
+        background      : "rgba(0, 0, 0, 1)",
+        //  image           : "img/custom.svg",
+        imageAnimation  : "1.5s fadein",
+        imageColor      : "#f00",
+        custom  : customElement
+        // background: "rgba(51, 51, 51, 0.5)"
     });
 }
 
@@ -145,8 +162,6 @@ function limpiar_form(obj) {
 }
 
 ////////////////////////////////////////////////////////////////////
-
-
 function responseSimple(obj) {
     var defaults = {
         url: null,
@@ -177,7 +192,9 @@ function responseSimple(obj) {
         contentType: "application/json",
         data: opciones.data,
         beforeSend: function () {
+            
             if (opciones.loader) {
+                $("body").css('overflow','hidden');
                 block_general("body");
             }
             if (opciones.callBackBeforeSend != null) {
@@ -186,6 +203,7 @@ function responseSimple(obj) {
         },
         complete: function () {
             if (opciones.loader) {
+                $("body").css('overflow','auto');
                 unblock("body");
             }
             if (opciones.callBackSComplete != null) {

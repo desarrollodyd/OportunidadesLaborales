@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoModalEntidad> lista = new List<IntranetDetalleElementoModalEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detelm_id, detelm_descripcion, detelm_nombre, 
-                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal,detelm_orden,detelm_posicion
+                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal,detelm_orden,detelm_posicion,detelm_hash
 	                                FROM intranet.int_detalle_elemento_modal;";
             try
             {
@@ -47,6 +47,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]),
                                     detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]),
                                     detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]),
+                                    detelm_hash = ManejoNulos.ManageNullStr(dr["detelm_hash"]),
                                 };
 
                                 lista.Add(detalle);
@@ -69,7 +70,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoModalEntidad> lista = new List<IntranetDetalleElementoModalEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detelm_id, detelm_descripcion,detelm_nombre, 
-                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal,detelm_orden,detelm_posicion
+                                detelm_extension, detelm_ubicacion, detelm_estado, fk_elemento_modal,detelm_orden,detelm_posicion,detelm_hash
 	                                FROM intranet.int_detalle_elemento_modal 
                                     where fk_elemento_modal=@p0;";
             try
@@ -96,6 +97,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]),
                                     detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]),
                                     detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]),
+                                    detelm_hash = ManejoNulos.ManageNullStr(dr["detelm_hash"]),
 
                                 };
 
@@ -121,7 +123,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             string consulta = @"SELECT detelm_id, 
 detelm_descripcion, detelm_nombre, detelm_extension,
 detelm_ubicacion, detelm_estado, fk_elemento_modal, 
-detelm_orden, detelm_posicion
+detelm_orden, detelm_posicion, detelm_hash
 	FROM intranet.int_detalle_elemento_modal where detelm_id=@p0;";
 
             try
@@ -147,6 +149,7 @@ detelm_orden, detelm_posicion
                                 intranetdetalleElementoModal.fk_elemento_modal = ManejoNulos.ManageNullInteger(dr["fk_elemento_modal"]);
                                 intranetdetalleElementoModal.detelm_orden = ManejoNulos.ManageNullInteger(dr["detelm_orden"]);
                                 intranetdetalleElementoModal.detelm_posicion = ManejoNulos.ManageNullStr(dr["detelm_posicion"]);
+                                intranetdetalleElementoModal.detelm_hash = ManejoNulos.ManageNullStr(dr["detelm_hash"]);
                             }
                         }
                     }
@@ -165,8 +168,8 @@ detelm_orden, detelm_posicion
             int idIntranetDetalleElementoModalInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento_Modal(
-	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal, detelm_orden, detelm_posicion)
-	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5,@p6,@p7)
+	            detelm_descripcion, detelm_nombre, detelm_extension, detelm_ubicacion, detelm_estado,fk_elemento_modal, detelm_orden, detelm_posicion,detelm_hash)
+	            VALUES ( @p0, @p1, @p2,@p3, @p4,@p5,@p6,@p7,@p8)
                 returning detelm_id;";
             claseError error = new claseError();
             try
@@ -183,6 +186,7 @@ detelm_orden, detelm_posicion
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_orden));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_posicion));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_hash));
   
                     idIntranetDetalleElementoModalInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
@@ -203,7 +207,7 @@ detelm_orden, detelm_posicion
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento_modal
 	                    SET  detelm_descripcion=@p0, detelm_nombre=@p1, detelm_extension=@p2, 
-detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=@p8,detelm_orden=@p9
+detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=@p8,detelm_orden=@p9, detelm_hash=@p10
 	                    WHERE detelm_id=@p6;";
             try
             {
@@ -220,6 +224,7 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.fk_elemento_modal));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_posicion));
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_orden));
+                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_hash));
 
                     query.ExecuteNonQuery();
                     response = true;
@@ -341,6 +346,32 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
                 error.Value = ex.Message;
             }
             return (intranetDetElementoModalReordenado: response, error: error);
+        }
+        public (bool intranetDetalleElementoModalEditado, claseError error) IntranetDetalleElementoModalEditarHashJson(IntranetDetalleElementoModalEntidad intranetDetalleElementoModal)
+        {
+            bool response = false;
+            claseError error = new claseError();
+            string consulta = @"UPDATE intranet.int_detalle_elemento_modal
+	                            SET detelm_hash=@p0
+	                            WHERE detelm_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetDetalleElementoModal.detelm_hash));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetDetalleElementoModal.detelm_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (response, error);
         }
     }
 }

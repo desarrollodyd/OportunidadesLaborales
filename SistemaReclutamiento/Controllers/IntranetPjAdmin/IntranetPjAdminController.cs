@@ -5,6 +5,7 @@ using SistemaReclutamiento.Models.IntranetPJ;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,8 +17,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         IntranetUsuarioModel usuarioIntranetbl = new IntranetUsuarioModel();
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();
         IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
+        IntranetDetalleElementoModel detalleelementobl = new IntranetDetalleElementoModel();
+        IntranetDetalleElementoModalModel detalleelementomodalbl = new IntranetDetalleElementoModalModel();
         UsuarioModel usuariobl = new UsuarioModel();
         PersonaModel personabl = new PersonaModel();
+        string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
+        claseError error = new claseError();
+        RutaImagenes rutaImagenes = new RutaImagenes();
         // GET: IntranetPjAdmin
         public ActionResult Index()
         {
@@ -178,8 +184,88 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         }
         #endregion
 
-     
-       
-    
+        #region Edicion de Hash para imagenes de Detalle Elemento y Detalle elemento modal
+        public ActionResult IntranetEditarHashDetallesJson() {
+            bool response = false;
+            string errormensaje = "";
+            List<IntranetDetalleElementoEntidad> listaDetalleElemento = new List<IntranetDetalleElementoEntidad>();
+            List<IntranetDetalleElementoModalEntidad> listaDetalleElementoModal = new List<IntranetDetalleElementoModalEntidad>();
+            List<IntranetDetalleElementoEntidad> listaDetalleElementoDevuelta = new List<IntranetDetalleElementoEntidad>();
+            List<IntranetDetalleElementoModalEntidad> listaDetalleElementoModalDevuelta = new List<IntranetDetalleElementoModalEntidad>();
+            int totalDetalles=0, totaldetallesEditados=0, totaldetallemodal=0, totaldetallemodalEditado = 0;
+            try
+            {
+                //Detalleelemento
+                var listadetelemtupla = detalleelementobl.IntranetDetalleElementoListarJson();
+                if (listadetelemtupla.error.Key.Equals(string.Empty))
+                {
+                    listaDetalleElemento = listadetelemtupla.intranetDetalleElementoLista.Where(x => x.detel_extension != "").ToList();
+                    totalDetalles = listaDetalleElemento.Count;
+                    if (listaDetalleElemento.Count > 0) {
+                        
+                        foreach (var detalle in listaDetalleElemento) {
+                            detalle.detel_hash= rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detalle.detel_nombre+"."+detalle.detel_extension);
+                            var detalleElementoEditado = detalleelementobl.IntranetDetalleElementoEditarHashJson(detalle);
+                            if (detalleElementoEditado.error.Key.Equals(string.Empty))
+                            {
+                                totaldetallesEditados++;
+                            }
+                            else {
+                                errormensaje += detalleElementoEditado.error.Value;
+                            }
+                        }
+                    }
+                    errormensaje += "Detalle Elemento,";
+                }
+                else
+                {
+                    errormensaje += listadetelemtupla.error.Value;
+                }
+                //DetalleElementoModal
+                var listadetelemodTupla = detalleelementomodalbl.IntranetDetalleElementoModalListarJson();
+                if (listadetelemodTupla.error.Key.Equals(string.Empty))
+                {
+                    listaDetalleElementoModal = listadetelemodTupla.intranetDetalleElementoModalLista.Where(x => x.detelm_extension != "").ToList();
+                    totaldetallemodal = listaDetalleElementoModal.Count;
+                    if (listaDetalleElementoModal.Count > 0)
+                    {
+                        foreach (var detallemodal in listaDetalleElementoModal)
+                        {
+                            detallemodal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detallemodal.detelm_nombre + "." + detallemodal.detelm_extension);
+                            var detalleElementoModalEditado = detalleelementomodalbl.IntranetDetalleElementoModalEditarHashJson(detallemodal);
+                            if (detalleElementoModalEditado.error.Key.Equals(string.Empty))
+                            {
+                                totaldetallemodalEditado++;
+                            }
+                            else
+                            {
+                                errormensaje += detalleElementoModalEditado.error.Value;
+                            }
+                        }
+                    }
+                    errormensaje += " Detalle Elemento Modal,";
+                }
+                else {
+                    errormensaje += listadetelemodTupla.error.Value;
+                }
+                response = true;
+                errormensaje += " Editados";
+
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+            //DetalleElemento
+            //DetalleElementoModal
+            return Json(new {
+                totaldetalleElemento =totalDetalles,
+                totaldetalleElementoEditado =totaldetallesEditados,
+                totaldetalleElementoModal= totaldetallemodal,
+                totalDetalleElementoModalEditados= totaldetallemodalEditado,
+                respuesta =response,
+                mensaje =errormensaje},JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
     }
 }

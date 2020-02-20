@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoEntidad> lista = new List<IntranetDetalleElementoEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detel_id, detel_descripcion, detel_nombre, 
-                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion,detel_url,detel_blank
+                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion,detel_url,detel_blank,detel_hash
 	                                FROM intranet.int_detalle_elemento
                                  order by detel_orden asc;";
             try
@@ -51,6 +51,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     detel_posicion = ManejoNulos.ManageNullStr(dr["detel_posicion"]),
                                     detel_url = ManejoNulos.ManageNullStr(dr["detel_url"]),
                                     detel_blank = ManejoNulos.ManegeNullBool(dr["detel_blank"]),
+                                    detel_hash = ManejoNulos.ManageNullStr(dr["detel_hash"]),
                                 };
 
                                 lista.Add(Imagen);
@@ -73,7 +74,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<IntranetDetalleElementoEntidad> lista = new List<IntranetDetalleElementoEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT detel_id, detel_descripcion,detel_nombre, 
-                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion,detel_blank,detel_url
+                                detel_extension, detel_ubicacion, detel_estado, fk_elemento, fk_seccion_elemento,detel_orden,detel_posicion,detel_blank,detel_url,detel_hash
 	                                FROM intranet.int_detalle_elemento 
                                     where fk_elemento=@p0
                                     order by detel_orden asc";
@@ -104,6 +105,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     detel_posicion = ManejoNulos.ManageNullStr(dr["detel_posicion"]),
                                     detel_blank = ManejoNulos.ManegeNullBool(dr["detel_blank"]),
                                     detel_url = ManejoNulos.ManageNullStr(dr["detel_url"]),
+                                    detel_hash = ManejoNulos.ManageNullStr(dr["detel_hash"]),
 
                                 };
 
@@ -130,7 +132,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 detel_descripcion, detel_nombre, detel_extension, 
                                 detel_ubicacion, 
                                 detel_estado, fk_elemento,
-                                fk_seccion_elemento, detel_orden, detel_posicion, detel_url,detel_blank,fk_tipo_elemento
+                                fk_seccion_elemento, detel_orden, detel_posicion, detel_url,detel_blank,fk_tipo_elemento,detel_hash
 	                                FROM intranet.int_detalle_elemento
 									join intranet.int_elemento on
 									intranet.int_detalle_elemento.fk_elemento=intranet.int_elemento.elem_id
@@ -162,6 +164,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 intranetImagen.detel_url = ManejoNulos.ManageNullStr(dr["detel_url"]);
                                 intranetImagen.detel_blank = ManejoNulos.ManegeNullBool(dr["detel_blank"]);
                                 intranetImagen.fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]);
+                                intranetImagen.detel_hash = ManejoNulos.ManageNullStr(dr["detel_hash"]);
                             }
                         }
                     }
@@ -180,8 +183,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             int idIntranetImagenInsertado = 0;
             string consulta = @"
             INSERT INTO intranet.int_detalle_elemento(
-	            detel_descripcion, detel_nombre, detel_extension, detel_ubicacion, detel_estado,fk_elemento,fk_seccion_elemento,detel_orden,detel_posicion,detel_url,detel_blank)
-	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7,@p8,@p9,@p10,@p11)
+	            detel_descripcion, detel_nombre, detel_extension, detel_ubicacion, detel_estado,fk_elemento,fk_seccion_elemento,detel_orden,detel_posicion,detel_url,detel_blank,detel_hash)
+	            VALUES ( @p0, @p1, @p2,@p3, @p5,@p6,@p7,@p8,@p9,@p10,@p11,@p12)
                 returning detel_id;";
             claseError error = new claseError();
             try
@@ -201,6 +204,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_posicion));
                     query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_url));
                     query.Parameters.AddWithValue("@p11", ManejoNulos.ManegeNullBool(intranetDetalleElemento.detel_blank));
+                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_hash));
                     idIntranetImagenInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -220,7 +224,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             bool response = false;
             string consulta = @"UPDATE intranet.int_detalle_elemento
 	                    SET  detel_descripcion=@p0, detel_nombre=@p1, detel_extension=@p2, detel_ubicacion=@p3,  
-detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@p10, detel_orden=@p11
+detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@p10, detel_orden=@p11,detel_hash=@p12
 	                    WHERE detel_id=@p6;";
             try
             {
@@ -239,6 +243,7 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
                     query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_url));
                     query.Parameters.AddWithValue("@p10", ManejoNulos.ManegeNullBool(intranetDetalleElemento.detel_blank));
                     query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_orden));
+                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_hash));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -332,6 +337,30 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
                 error.Value = ex.Message;
             }
             return (intranetDetElementoReordenado: response, error: error);
+        }
+        public (bool intranetDetalleElementoEditado, claseError error) IntranetDetalleElementoEditarHashJson(IntranetDetalleElementoEntidad intranetDetalleElemento) {
+            bool response = false;
+            claseError error = new claseError();
+            string consulta = @"UPDATE intranet.int_detalle_elemento
+	                            SET detel_hash=@p0
+	                            WHERE detel_id=@p1;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(intranetDetalleElemento.detel_hash));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(intranetDetalleElemento.detel_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch(Exception ex) {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (response, error);
         }
     }
 }

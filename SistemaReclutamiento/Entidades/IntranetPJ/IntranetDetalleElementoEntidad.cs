@@ -23,5 +23,6 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string detel_url { get; set; }
         public bool detel_blank { get; set; }
         public int fk_tipo_elemento { get; set; }
+        public string detel_hash { get; set; }
     }
 }
