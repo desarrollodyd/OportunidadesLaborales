@@ -118,13 +118,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 if (footerTupla.error.Key.Equals(string.Empty))
                 {
                     intranetFooter = footerTupla.listaFooters.ToList();
-                    if (intranetFooter.Count > 0)
-                    {
-                        foreach (var m in intranetFooter)
-                        {
-                            m.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", m.foot_imagen);
-                        }
-                    }
                 }
                 else {
                     mensajeerrorBD += "Error en Footers: " + error.Value+"\n";
@@ -163,11 +156,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     {
                         foreach (var m in intranetActividades_)
                         {
-                            if (m.act_imagen != "")
-                            {
-                                m.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\Actividades\\", m.act_imagen);
-                            }
-                            
                             intranetActividades.Add(m);
                             listaNoticias.Add(Tuple.Create( m.act_fecha,  m.act_descripcion.ToUpper(), "ACTIVIDAD: "));
                         }
@@ -326,7 +314,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                             if (itemDetalleElemento.detel_nombre != "")
                                             {
                                                 //itemDetalleElemento.detel_nombre  = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElemento.detel_nombre+"."+ itemDetalleElemento.detel_extension);
-                                                itemDetalleElemento.detel_nombre = itemDetalleElemento.detel_hash;
+                                                itemDetalleElemento.detel_nombre = "IntranetFiles/"+itemDetalleElemento.detel_nombre+"."+itemDetalleElemento.detel_extension;
                                             }
 
                                             var seccion_elemento = new List<dynamic>();
@@ -357,7 +345,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                                                     if (itemDetalleElementosModal.detelm_nombre != "")
                                                                     {
                                                                         //itemDetalleElementosModal.detelm_nombre = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "\\", itemDetalleElementosModal.detelm_nombre + "." + itemDetalleElementosModal.detelm_extension);
-                                                                        itemDetalleElementosModal.detelm_nombre = itemDetalleElementosModal.detelm_hash;
+                                                                        itemDetalleElementosModal.detelm_nombre = "IntranetFiles/"+itemDetalleElementosModal.detelm_nombre+"."+itemDetalleElementosModal.detelm_extension;
                                                                     }
                                                                     ListaDetalleElementoModal.Add(new
                                                                     {
@@ -485,11 +473,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 respuesta = false;
             }
 
-
-            var serializer = new JavaScriptSerializer();
-            serializer.MaxJsonLength = Int32.MaxValue;
-
-            var resultData = new
+            return Json(new
             {
                 dataMenus = intranetMenu.ToList(),
                 dataActividades = intranetActividades.ToList(),
@@ -502,14 +486,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 mensajeerrorBD = mensajeerrorBD,
                 cantidadSalas = cantidadSalas,
                 cantidadApuestasDeportivas = cantidadApuestasDeportivas,
-                dataFooter= intranetFooter
-            };
-            var result = new ContentResult
-            {
-                Content = serializer.Serialize(resultData),
-                ContentType = "application/json"
-            };
-            return result;
+                dataFooter = intranetFooter
+            });
+            //var serializer = new JavaScriptSerializer();
+            //serializer.MaxJsonLength = Int32.MaxValue;
+
+            //var resultData = new
+            //{
+            //    dataMenus = intranetMenu.ToList(),
+            //    dataActividades = intranetActividades.ToList(),
+            //    dataCumpleanios = listaPersona,
+            //    dataSaludos = intraSaludos.ToList(),
+            //    respuesta = respuesta,
+            //    mensaje = mensaje,
+            //    listaNoticias = listaNoticiasDesordenado,
+            //    dataSecciones = ListaSeccion.ToList(),
+            //    mensajeerrorBD = mensajeerrorBD,
+            //    cantidadSalas = cantidadSalas,
+            //    cantidadApuestasDeportivas = cantidadApuestasDeportivas,
+            //    dataFooter= intranetFooter
+            //};
+            //var result = new ContentResult
+            //{
+            //    Content = serializer.Serialize(resultData),
+            //    ContentType = "application/json"
+            //};
+            //return result;
 
         }
 
@@ -877,6 +879,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     else {
                         errormensaje = "No hay Empresas";
                     }
+                    response = true;
+                    errormensaje = "Listando Data";
                 }
                 else {
                     errormensaje = listaEmpresasTupla.error.Value;

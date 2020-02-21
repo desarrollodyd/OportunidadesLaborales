@@ -160,7 +160,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                                             //Eliminar imagenes si las hubiera
                                                             if (k.detelm_extension != "")
                                                             {
-                                                                rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + k.detelm_nombre + "." + k.detelm_extension);
+                                                               
+                                                                var direcciondetElemento = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                                                rutaEliminar = Path.Combine(direcciondetElemento + k.detelm_nombre + "." + k.detelm_extension);
                                                                 if (System.IO.File.Exists(rutaEliminar))
                                                                 {
                                                                     System.IO.File.Delete(rutaEliminar);
@@ -182,7 +184,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                 //eliminar Imagenes si hubiera
                                 if (detalleElementoTupla.intranetDetalleElemento.detel_extension != "")
                                 {
-                                    rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + detalleElementoTupla.intranetDetalleElemento.detel_nombre + "." + detalleElementoTupla.intranetDetalleElemento.detel_extension);
+                                 
+                                    var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                    rutaEliminar = Path.Combine(direccion + detalleElementoTupla.intranetDetalleElemento.detel_nombre + "." + detalleElementoTupla.intranetDetalleElemento.detel_extension);
                                     if (System.IO.File.Exists(rutaEliminar))
                                     {
                                         System.IO.File.Delete(rutaEliminar);

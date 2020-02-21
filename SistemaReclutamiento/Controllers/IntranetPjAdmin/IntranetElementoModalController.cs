@@ -115,7 +115,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var listaDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(emod_id);
                 detalleElementoModal = listaDetallesTupla.intranetDetalleElementoModalListaxElementoID;
                 foreach (var m in detalleElementoModal) {
-                    rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + m.detelm_nombre+"."+m.detelm_extension);
+              
+                    var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                    rutaAnterior = Path.Combine(direccion + m.detelm_nombre+"."+m.detelm_extension);
                     if (System.IO.File.Exists(rutaAnterior))
                     {
                         System.IO.File.Delete(rutaAnterior);

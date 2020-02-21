@@ -22,7 +22,7 @@
 </section>
 <div class="separador"></div>
 <section id="singlepost">
-    <table class="table table-bordered" id="agenda_table" style="width:100%">
+    <table class="table table-bordered datatable_agenda" id="agenda_table" style="width:100%">
         <tbody>
             <tr>
                 <td colspan="7">
@@ -41,7 +41,8 @@
         usuario = (@Html.Raw(usuario));
     </script>
     <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
-    <script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJAgenda.js"></script>
+    @* <script>
        
         var pathBase = $("#BasePath").val();
         var url = pathBase + "IntranetPJ/IntranetListarAgenda";
@@ -135,5 +136,5 @@
                 '</tr>'+
             '</table></div>';
         }
-    </script>
+    </script> *@
 }

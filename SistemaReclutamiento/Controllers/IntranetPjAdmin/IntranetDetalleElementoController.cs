@@ -125,14 +125,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             {
                                 string nombreArchivo = ("Elemento_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                 var nombre = (nombreArchivo + extension);
-                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
-                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                rutaInsertar = Path.Combine(direccion, nombre);
+                                if (!Directory.Exists(direccion))
                                 {
-                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                    System.IO.Directory.CreateDirectory(direccion);
                                 }
                                 //intranetDetalleElemento.detel_hash=rutaInsertar
                                 file.SaveAs(rutaInsertar);
-                                intranetDetalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
+                                //intranetDetalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                 intranetDetalleElemento.detel_nombre = nombreArchivo;
                                 intranetDetalleElemento.detel_extension = (extension == ".jpg" ? "jpg" : "png");
                             }
@@ -200,15 +201,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                         {
                                             string nombreArchivo = ("Elemento_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                             var nombre = (nombreArchivo + extension);
-                                            rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
+                                            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                            rutaInsertar = Path.Combine(direccion, nombre);
 
-                                            if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                            if (!Directory.Exists(direccion))
                                             {
-                                                System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                                System.IO.Directory.CreateDirectory(direccion);
                                             }
 
                                             file.SaveAs(rutaInsertar);
-                                            intranetDetalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
+                                            //intranetDetalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                             intranetDetalleElemento.detel_nombre = nombreArchivo;
 
                                             if (extension == ".jpg") {
@@ -343,19 +345,23 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             {
                                 string nombreArchivo = ("Elemento_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                 var nombre = (nombreArchivo + extension);
+                                var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                rutaInsertar = Path.Combine(direccion, nombre);
 
-                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
-                                rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + detalleElemento.detel_nombre_imagen);
-                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                //rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
+
+                                rutaAnterior = Path.Combine(direccion, detalleElemento.detel_nombre_imagen);
+                           
+                                if (!Directory.Exists(direccion + "/"))
                                 {
-                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                    System.IO.Directory.CreateDirectory(direccion + "/");
                                 }
                                 if (System.IO.File.Exists(rutaAnterior))
                                 {
                                     System.IO.File.Delete(rutaAnterior);
                                 }
                                 file.SaveAs(rutaInsertar);
-                                detalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
+                                //detalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                 detalleElemento.detel_nombre = nombreArchivo;
                                 extension = extension.Replace(".", "");
                                 detalleElemento.detel_extension = extension;
@@ -369,7 +375,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     }
                     else
                     {
-                        detalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detalleElemento.detel_nombre_imagen);
+                        //detalleElemento.detel_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detalleElemento.detel_nombre_imagen);
                         string[] word = detalleElemento.detel_nombre_imagen.Split('.');
                         detalleElemento.detel_nombre = word[0];
                         detalleElemento.detel_extension = word[1];
@@ -411,6 +417,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             List<IntranetElementoModalEntidad> listaElementoModal = new List<IntranetElementoModalEntidad>();
             IntranetSeccionElementoEntidad seccionElemento = new IntranetSeccionElementoEntidad();
             string rutaEliminar = "";
+            //var nombre = (nombreArchivo + extension);
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
             try
             {
                 var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(detel_id);
@@ -432,7 +440,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                             foreach (var k in listaDetalleElementoModal) {
                                                 //Eliminar imagenes si las hubiera
                                                 if (k.detelm_extension != "") {
-                                                    rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + k.detelm_nombre + "." + k.detelm_extension);
+                                                    rutaEliminar = Path.Combine(direccion , k.detelm_nombre + "." + k.detelm_extension);
                                                     if (System.IO.File.Exists(rutaEliminar))
                                                     {
                                                         System.IO.File.Delete(rutaEliminar);
@@ -453,7 +461,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     }
                     //eliminar Imagenes si hubiera
                     if (detalleElementoTupla.intranetDetalleElemento.detel_extension != "") {
-                        rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + detalleElementoTupla.intranetDetalleElemento.detel_nombre + "." + detalleElementoTupla.intranetDetalleElemento.detel_extension);
+                        rutaEliminar = Path.Combine(direccion, detalleElementoTupla.intranetDetalleElemento.detel_nombre + "." + detalleElementoTupla.intranetDetalleElemento.detel_extension);
                         if (System.IO.File.Exists(rutaEliminar)) {
                             System.IO.File.Delete(rutaEliminar);
                         }
@@ -493,7 +501,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 {
                     detalleElemento = detalleElementoTupla.intranetDetalleElemento;
                     //detalleElemento.detel_nombre_imagen = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detalleElemento.detel_nombre + "." + detalleElemento.detel_extension);
-                    detalleElemento.detel_nombre_imagen = detalleElemento.detel_hash;
+                    detalleElemento.detel_nombre_imagen = detalleElemento.detel_nombre+"."+detalleElemento.detel_extension;
                     mensaje = "Obteniendo Data";
                     respuesta = true;
                 }

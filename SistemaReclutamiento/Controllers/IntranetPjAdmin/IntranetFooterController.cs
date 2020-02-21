@@ -19,6 +19,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         IntranetFooterModel intranetFooterbl = new IntranetFooterModel();
         string PathActividadesIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         RutaImagenes rutaImagenes = new RutaImagenes();
+
         public ActionResult Index()
         {
             return View();
@@ -33,6 +34,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string rutaInsertar = "";
             string errormensaje = "";
             bool response = false;
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "IntranetFiles/Footer/";
             try
             {
                 intranetFooter.foot_estado = "A";
@@ -44,14 +46,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         if (extension == ".jpg" || extension == ".png" ||extension==".jpeg")
                         {
                             var nombreArchivo = "Footer_" + DateTime.Now.ToString("yyyyMMddHHmmss")+extension;
-                            rutaInsertar = Path.Combine(PathActividadesIntranet + "/Footer/", nombreArchivo);
-                            if (!Directory.Exists(PathActividadesIntranet + "/Footer/")) {
-                                System.IO.Directory.CreateDirectory(PathActividadesIntranet + "/Footer/");
+                            rutaInsertar = Path.Combine(direccion, nombreArchivo);
+                            if (!Directory.Exists(direccion)) {
+                                System.IO.Directory.CreateDirectory(direccion);
                             }
                             file.SaveAs(rutaInsertar);
                             intranetFooter.foot_imagen = nombreArchivo;
                             if (intranetFooter.ruta_anterior != "" && intranetFooter.ruta_anterior != null) {
-                                string rutaAnterior = Path.Combine(PathActividadesIntranet+"/Footer/" , intranetFooter.ruta_anterior);
+                                string rutaAnterior = Path.Combine(direccion , intranetFooter.ruta_anterior);
                                 if (System.IO.File.Exists(rutaAnterior))
                                 {
                                     System.IO.File.Delete(rutaAnterior);
@@ -85,7 +87,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     errormensaje = "Insertado";
                                     footer = footerTupla.footer;
                                     footer.ruta_anterior = footer.foot_imagen;
-                                    footer.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", footer.foot_imagen);
                                 }
                             
                             }
@@ -115,7 +116,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     errormensaje = "Insertado";
                                     footer = footerIdTupla.footer;
                                     footer.ruta_anterior = footer.foot_imagen;
-                                    footer.foot_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", footer.foot_imagen);
                                 }
                         }
                     }
@@ -137,7 +137,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             bool response = false;
             claseError error = new claseError();
             List<IntranetFooterEntidad> lista = new List<IntranetFooterEntidad>();
-            try{
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/Footer/";
+            try
+            {
                 var intranetFooterTupla = intranetFooterbl.IntranetFooterObtenerFootersJson();
                 error = intranetFooterTupla.error;
                 if (error.Key.Equals(string.Empty))
@@ -146,7 +148,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     foreach (var m in lista)
                     {
                         m.ruta_anterior = m.foot_imagen;
-                        m.foot_imagen=rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Footer/", m.foot_imagen);
+                        m.foot_imagen=m.foot_imagen;
                     }
                     
                     errormensaje = "Listando Data";
@@ -159,22 +161,27 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             catch (Exception ex) {
                 errormensaje = ex.Message;
             }
-            var serializer = new JavaScriptSerializer();
-            serializer.MaxJsonLength = Int32.MaxValue;
-            var resultData = new
+            //var serializer = new JavaScriptSerializer();
+            //serializer.MaxJsonLength = Int32.MaxValue;
+            //var resultData = new
+            //{
+            //    data = lista.ToList(),
+            //    respuesta = response,
+            //    mensaje = errormensaje
+            //};
+
+
+            //var result = new ContentResult
+            //{
+            //    Content = serializer.Serialize(resultData),
+            //    ContentType = "application/json"
+            //};
+            return Json(new
             {
                 data = lista.ToList(),
                 respuesta = response,
                 mensaje = errormensaje
-            };
-
-
-            var result = new ContentResult
-            {
-                Content = serializer.Serialize(resultData),
-                ContentType = "application/json"
-            };
-            return result;
+            });
             //return Json(new { mensaje = errormensaje, respuesta = response, data = lista.ToList() });
         }
     }

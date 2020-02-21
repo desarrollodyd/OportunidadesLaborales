@@ -51,7 +51,7 @@
                                 var img = '';
                                 if (value != "") {
                                     //$("#perfil_principal").attr("src", "data:image/gif;base64," + rutaImage);
-                                    img += '<img src="data:image/gif;base64,' + value + '" style="width:50px;height:50px;" />';
+                                    img += '<img src="'+basePath+"IntranetFiles/Actividades/" + value + '" style="width:50px;height:50px;" />';
                                     //img += '<img src="' + basePath + 'Content/intranet/images/png/' + value + '" / style="width:50px;height:50px;">';
                                 }
                                 else {
@@ -191,12 +191,11 @@
                     if (response.respuesta) {
                         var actividad = response.data;
                         if (actividad.act_imagen != "") {
-                            var nombre_arr = actividad.act_imagen.split(".");
                             $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
                             $("#cvfecha").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
                             $("#divCV").show();
 
-                            $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
+                            $("#icono_actual").attr("src", basePath+"IntranetFiles/Actividades/" + actividad.act_imagen);
                             $("#img_ubicacion").val(actividad.img_ubicacion);
                         }
 
@@ -237,12 +236,11 @@
                         $("#img_ubicacion").val("");
                         var actividad = response.data;
                         if (actividad.act_imagen != "") {
-                            var nombre_arr = actividad.act_imagen.split(".");
                             $("#cvnombre").text("Nombre: " + actividad.img_ubicacion);
                             $("#cvfecha").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
                             $("#divCV").show();
 
-                            $("#icono_actual").attr("src", "data:image/gif;base64," + actividad.act_imagen);
+                            $("#icono_actual").attr("src", basePath+"IntranetFiles/Actividades/" + actividad.act_imagen);
                             $("#img_ubicacion").val(actividad.img_ubicacion);
                         }
 

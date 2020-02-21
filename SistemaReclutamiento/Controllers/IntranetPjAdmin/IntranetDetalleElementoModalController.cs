@@ -92,13 +92,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             {
                                 string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                 var nombre = (nombreArchivo + extension);
-                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
-                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                rutaInsertar = Path.Combine(direccion, nombre);
+                                if (!Directory.Exists(direccion))
                                 {
-                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                    System.IO.Directory.CreateDirectory(direccion);
                                 }
                                 file.SaveAs(rutaInsertar);
-                                intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
+                                //intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                 intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
                                 //intranetDetalleElementoModal.detelm_extension = (extension == ".jpg" ? "jpg" : "png");
                                 if (extension == ".jpg")
@@ -174,15 +175,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     {
                                         string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                         var nombre = (nombreArchivo + extension);
-                                        rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
+                                        var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                                
+                                        rutaInsertar = Path.Combine(direccion, nombre);
 
-                                        if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                        if (!Directory.Exists(direccion))
                                         {
-                                            System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                            System.IO.Directory.CreateDirectory(direccion);
                                         }
 
                                         file.SaveAs(rutaInsertar);
-                                        intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
+                                        //intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                         intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
 
                                         if (extension == ".jpg")
@@ -294,7 +297,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 //buscar Imagen para eliminar
                 var imagenTupla=intranetDetalleElementoModalbl.IntranetDetalleElementoModalIdObtenerJson(detelm_id);
                 if(imagenTupla.error.Key.Equals(string.Empty)){
-                    rutaEliminar = Path.Combine(pathArchivosIntranet + "/" + imagenTupla.intranetDetalleElementoModal.detelm_nombre+"."+imagenTupla.intranetDetalleElementoModal.detelm_extension);
+                    //var nombre = (nombreArchivo + extension);
+                    var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
+                    rutaEliminar = Path.Combine(direccion, imagenTupla.intranetDetalleElementoModal.detelm_nombre+"."+imagenTupla.intranetDetalleElementoModal.detelm_extension);
                         if (System.IO.File.Exists(rutaEliminar))
                     {
                         System.IO.File.Delete(rutaEliminar);
@@ -332,8 +337,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 if (error.Key.Equals(string.Empty))
                 {
                     intranetDetalleElementoModal = intranetDetalleElementoModalTupla.intranetDetalleElementoModal;
-                    intranetDetalleElementoModal.detelm_nombre_imagen = intranetDetalleElementoModal.detelm_hash;
+                    //intranetDetalleElementoModal.detelm_nombre_imagen = intranetDetalleElementoModal.detelm_hash;
                     //intranetDetalleElementoModal.detelm_nombre_imagen = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre + "." + intranetDetalleElementoModal.detelm_extension);
+                    intranetDetalleElementoModal.detelm_nombre_imagen = intranetDetalleElementoModal.detelm_nombre + "." + intranetDetalleElementoModal.detelm_extension;
                     response = true;
                     mensaje = "Obteniendo Data";
                 }
@@ -371,19 +377,20 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             {
                                 string nombreArchivo = ("ElementoModal_" + DateTime.Now.ToString("yyyyMMddHHmmss"));
                                 var nombre = (nombreArchivo + extension);
+                                var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
 
-                                rutaInsertar = Path.Combine(pathArchivosIntranet + "/", nombre);
-                                rutaAnterior = Path.Combine(pathArchivosIntranet + "/" + intranetDetalleElementoModal.detelm_nombre_imagen);
-                                if (!Directory.Exists(pathArchivosIntranet + "/"))
+                                rutaInsertar = Path.Combine(direccion, nombre);
+                                rutaAnterior = Path.Combine(direccion, intranetDetalleElementoModal.detelm_nombre_imagen);
+                                if (!Directory.Exists(direccion))
                                 {
-                                    System.IO.Directory.CreateDirectory(pathArchivosIntranet + "/");
+                                    System.IO.Directory.CreateDirectory(direccion);
                                 }
                                 if (System.IO.File.Exists(rutaAnterior))
                                 {
                                     System.IO.File.Delete(rutaAnterior);
                                 }
                                 file.SaveAs(rutaInsertar);
-                                intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
+                                //intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, nombre);
                                 intranetDetalleElementoModal.detelm_nombre = nombreArchivo;
                                 extension = extension.Replace(".", "");
                                 intranetDetalleElementoModal.detelm_extension = extension;
@@ -396,7 +403,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         }
                     }
                     else {
-                        intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre_imagen);
+                        //intranetDetalleElementoModal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, intranetDetalleElementoModal.detelm_nombre_imagen);
                         string[] word = intranetDetalleElementoModal.detelm_nombre_imagen.Split('.');
                         intranetDetalleElementoModal.detelm_nombre = word[0];
                         intranetDetalleElementoModal.detelm_extension = word[1];

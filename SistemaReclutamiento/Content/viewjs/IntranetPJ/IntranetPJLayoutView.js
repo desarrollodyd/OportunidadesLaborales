@@ -68,12 +68,12 @@
                         var append='';
                         if(footer.foot_posicion=='I'){
                             $("#titulo_izquierda").html(footer.foot_descripcion);
-                            append+='<img style="width:100%;height:260px;" src="data:image/gif;base64,'+footer.foot_imagen+'"></img>';
+                            append+='<img style="width:100%;height:260px;" src="'+basePath+"IntranetFiles/Footer/"+footer.foot_imagen+'"></img>';
                             $("#foto_izquierda").append(append);
                         }
                         else{
                             $("#titulo_derecha").html(footer.foot_descripcion);
-                            append+='<img style="width:100%;height:260px;" src="data:image/gif;base64,'+footer.foot_imagen+'"></img>';
+                            append+='<img style="width:100%;height:260px;" src="'+basePath+"IntranetFiles/Footer/"+footer.foot_imagen+'"></img>';
                             $("#foto_derecha").append(append);
                         }
                     })
@@ -114,7 +114,7 @@
                     appendActividades += '<h3 class="blocktitle"><img src="' + basePath + 'Content/intranet/images/actividad.png" class="img_title"/> ACTIVIDADES DE ' + meses[diahoy.getMonth()] + '</h3><div class="getcat"> <ul class="catlist">';
                     $.each(dataActividades, function (index, actividad) {
                         var diaActividad = new Date(moment(actividad.act_fecha).format('YYYY-MM-DD'));
-                        appendActividades += '<li><a href="javascript:void(0);"><img src="data:image/gif;base64,' + actividad.act_imagen + '" class="img_title" /><p class="meta-date" >' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A') + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
+                        appendActividades += '<li><a href="javascript:void(0);"><img src="'+basePath+"IntranetFiles/Actividades/" + actividad.act_imagen + '" class="img_title" /><p class="meta-date" >' + meses[diaActividad.getMonth()] + ' ' + (diaActividad.getDate() + 1) + ', ' + diaActividad.getFullYear() + ' - ' + moment(actividad.act_fecha).format('hh-mm A') + '</p><h2 class="wtitle">' + actividad.act_descripcion + '</h2> </a></li>';
                     });
                     appendActividades += '</ul></div >';
                     $("#actividadesMes").append(appendActividades);
@@ -211,7 +211,7 @@
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendElementos += '<article>' +
                                                 '<div class="imgpost th">' +
-                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt = "">' +
+                                                '<img src = "'+basePath+ detalleelemento.detel_nombre + '" alt = "">' +
                                                 '</div>' +
                                                 '</article>';
                                         });
@@ -229,7 +229,7 @@
                                                     "<div class='ctitle wt" + (index + 2) + "'>" + detalleelemento.detel_descripcion + " </div></li>";
                                             }
                                             else {
-                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="' +basePath+ detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -258,7 +258,7 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendContenido += '<article><div class="post-authorthumb th">'+
-                                                '<div class="intern"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt= "padding:0px" style=""></div>'+
+                                                '<div class="intern"><img src="'+basePath+detalleelemento.detel_nombre + '" alt= "padding:0px" style=""></div>'+
 		  					                                            '</div>' +
                                                 '<div class="post-content">' +
                                                 detalleelemento.detel_descripcion +'</div></article>'
@@ -275,7 +275,7 @@
                                     if (detalleElementolista.length > 0) {
                                         $.each(detalleElementolista, function (index, detalleelemento) {
                                             appendslider += '<div class="contentBox">' +
-                                                '<img src = "data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt = "Field" />' +
+                                                '<img src = "' +basePath+detalleelemento.detel_nombre + '" alt = "Field" />' +
                                                 '<div class="overlay">' +
                                                 '<div class="title-carousel">' +
                                                 '<a href="javascript:void(0);">' +
@@ -312,7 +312,7 @@
                                                 //'<div class="fdate">15<br /><span>Dec</span></div>' +
                                                 '</div>' +
                                                 '<div class="imgslide">' +
-                                                '<img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt="" title="" class="slidefeatured">' +
+                                                '<img src="'+basePath+detalleelemento.detel_nombre + '" alt="" title="" class="slidefeatured">' +
                                                 '</div>' +
                                                 //'<div class="catf-caption">'+
                                                 //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
@@ -353,7 +353,7 @@
                                             if (index == 0) {
                                                 appendDetalleElementoheader += '<div class="featured abrir_pagina abrir_pagina_izquierda" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                                     '<div class="thumb foto_cuadro_izquiera">' +
-                                                    ' <img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt="">' +
+                                                    ' <img src="'+basePath+detalleelemento.detel_nombre + '" alt="">' +
                                                     '<div class="overlay">' +
                                                     '<div class="title-carousel">' +
                                                     '<div class="ticarousel titulo_izquierda"> ' + detalleelemento.detel_descripcion + '</div>' +
@@ -373,7 +373,7 @@
                                                 if (i < 4) {
                                                     appendDetalleElementobody += '<li>' +
                                                         '<div class="octhumb">' +
-                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" data-id="'+detalleelemento.detel_id+'"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                        '<a href="javascript:void(0);" class="foto_cuadro_derecha" data-id="'+detalleelemento.detel_id+'"><img src="'+basePath+detalleelemento.detel_nombre + '" alt=""></a>' +
                                                         '</div>' +
                                                         '<div class="desc">' +
                                                         '<a href="javascript:void(0);" class="abrir_pagina titulo_derecha'+detalleelemento.detel_id+'" data-blank="' + detalleelemento.detel_blank + '" data-url="' + detalleelemento.detel_url + '">' + detalleelemento.detel_descripcion + '</a>' +
@@ -413,7 +413,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '" > ' + detalleelemento.detel_descripcion + ' </div ></li > ';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="'+basePath+detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -448,7 +448,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
+                                                appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="'+basePath+detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -482,7 +482,7 @@
                                                     '<div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detel_descripcion + ' </div></li>';
                                             }
                                             else {
-                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>';
+                                                appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="'+basePath+detalleelemento.detel_nombre + '" alt=""></a>';
                                             }
 
                                         });
@@ -572,7 +572,7 @@
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="thumb">' +
-                                                '<a href="javascript:void(0);" class="" ><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="" ><img src="'+basePath+detalleelemento.detel_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
@@ -602,7 +602,7 @@
                                                 '<div class="itemblog">' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="lthumb">' +
-                                                '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detel_nombre + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);"><img src="'+basePath+detalleelemento.detel_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="clear"></div>' +
                                                 '<div class="excerpt">' +
@@ -779,7 +779,7 @@
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendElementos += '<article>' +
                                         '<div class="imgpost th">' +
-                                        '<img src = "data: image / gif; base64, ' + detalleelemento.detelm_nombre + '" alt = "">' +
+                                        '<img src = "'+basePath+detalleelemento.detelm_nombre + '" alt = "">' +
                                         '</div>' +
                                         '</article>';
 
@@ -799,7 +799,7 @@
                                             "<div class='ctitle wt" + (index + 2) + "'>" + detalleelemento.detelm_descripcion + " </div></li>";
                                     }
                                     else {
-                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
+                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="'+basePath+detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -828,7 +828,7 @@
                             if (detalleElementolista.length > 0) {
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendContenido += '<article><div class="post-authorthumb th">' +
-                                        '<div class="intern"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt= "" style="padding:0px"></div>' +
+                                        '<div class="intern"><img src="'+basePath+detalleelemento.detelm_nombre + '" alt= "" style="padding:0px"></div>' +
                                         '</div>' +
                                         '<div class="post-content">' +
                                         detalleelemento.detelm_descripcion + '</div></article>'
@@ -844,7 +844,7 @@
                             if (detalleElementolista.length > 0) {
                                 $.each(detalleElementolista, function (index, detalleelemento) {
                                     appendslider += '<div class="contentBox">' +
-                                        '<img src = "data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt = "Field" />' +
+                                        '<img src = "'+basePath+detalleelemento.detelm_nombre + '" alt = "Field" />' +
                                         '<div class="overlay">' +
                                         '<div class="title-carousel">' +
                                         '<a href="javascript:void(0);">' +
@@ -881,7 +881,7 @@
                                         //'<div class="fdate">15<br /><span>Dec</span></div>' +
                                         '</div>' +
                                         '<div class="imgslide">' +
-                                        '<img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt="" title="" class="slidefeatured">' +
+                                        '<img src="'+basePath+detalleelemento.detelm_nombre + '" alt="" title="" class="slidefeatured">' +
                                         '</div>' +
                                         //'<div class="catf-caption">'+
                                         //    '<h2>Star Trek Into Darkness is a 2013 American</h2>'+
@@ -922,7 +922,7 @@
                                     if (index == 0) {
                                         appendDetalleElementoheader += '<div class="featured" style="border: 4px solid #4e4c4c;padding-right: 20px;padding-top: 20px;">' +
                                             '<div class="thumb foto_cuadro_izquiera">' +
-                                            ' <img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt="">' +
+                                            ' <img src="'+basePath+detalleelemento.detelm_nombre + '" alt="">' +
                                             '<div class="overlay">' +
                                             '<div class="title-carousel">' +
                                             '<div class="ticarousel"> ' + detalleelemento.detelm_descripcion + '</div>' +
@@ -942,7 +942,7 @@
                                         if (i < 4) {
                                             appendDetalleElementobody += '<li>' +
                                                 '<div class="octhumb">' +
-                                                '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>' +
+                                                '<a href="javascript:void(0);" class="foto_cuadro_derecha"><img src="'+basePath+detalleelemento.detelm_nombre + '" alt=""></a>' +
                                                 '</div>' +
                                                 '<div class="desc">' +
                                                 '<a href="javascript:void(0);">' + detalleelemento.detelm_descripcion + '</a>' +
@@ -981,7 +981,7 @@
                                         appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
+                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;" src="'+basePath+detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -1015,7 +1015,7 @@
                                         appendsIzquierda += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
+                                        appendsDerecha += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="'+basePath+detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -1048,7 +1048,7 @@
                                         appendsDerecha += '<li><div class="ctitle wt' + (index + 2) + '"> ' + detalleelemento.detelm_descripcion + ' </div></li>';
                                     }
                                     else {
-                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>';
+                                        appendsIzquierda += '<a href="javascript:void(0);"><img style="margin-bottom: 0px;height: 200px;" src="'+basePath+detalleelemento.detelm_nombre + '" alt=""></a>';
                                     }
 
                                 });
@@ -1135,7 +1135,7 @@
                                         '<div class="itemblog">' +
                                         '<div class="clear"></div>' +
                                         '<div class="thumb">' +
-                                        '<a href="javascript:void(0);"><img src="data:image/gif;base64,' + detalleelemento.detelm_nombre + '" alt=""></a>' +
+                                        '<a href="javascript:void(0);"><img src="'+basePath+detalleelemento.detelm_nombre + '" alt=""></a>' +
                                         '</div>' +
                                         '<div class="clear"></div>' +
                                         '<div class="excerpt">' +

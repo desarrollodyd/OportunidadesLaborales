@@ -1217,7 +1217,7 @@ var PanelContenido = function () {
                             $("#detel_nombre_imagen_modal").text("Nombre: " + data.detel_nombre + "." + data.detel_extension);
                             $("#detel_nombre_imagen").val(data.detel_nombre + "." + data.detel_extension);
                             // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
-                            $("#icono_actual_detel").attr("src", "data:image/gif;base64," + data.detel_nombre_imagen);
+                            $("#icono_actual_detel").attr("src", basePath+"IntranetFiles/" + data.detel_nombre_imagen);
                             $("#divdetel").show();
                             $(".detel-imagen").show();
                             $(".detel-nombre").show();
@@ -1823,7 +1823,7 @@ var PanelContenido = function () {
                             $("#detelm_nombre_imagen_modal").text("Nombre: " + data.detelm_nombre + "." + data.detelm_extension);
                             $("#detelm_nombre_imagen").val(data.detelm_nombre + "." + data.detelm_extension);
                             // $("#detel_fecha_imagen").text("Fecha Subida: " + moment(actividad.act_fecha).format("YYYY-MM-DD hh:mm A"));
-                            $("#icono_actual_detelm").attr("src", "data:image/gif;base64," + data.detelm_nombre_imagen);
+                            $("#icono_actual_detelm").attr("src", basePath+"IntranetFiles/" + data.detelm_nombre_imagen);
                             $("#divdetelm").show();
                             $(".detelm-imagen").show();
                             $(".detelm-nombre").show();
