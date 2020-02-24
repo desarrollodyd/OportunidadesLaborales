@@ -34,7 +34,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string rutaInsertar = "";
             string errormensaje = "";
             bool response = false;
-            var direccion = Server.MapPath("/") + Request.ApplicationPath + "IntranetFiles/Footer/";
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/Footer/";
             try
             {
                 intranetFooter.foot_estado = "A";

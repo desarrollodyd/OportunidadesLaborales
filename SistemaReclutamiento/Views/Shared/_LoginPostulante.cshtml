@@ -35,7 +35,7 @@
     <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
 </head>
 
-<body>
+<body style="background-image:url('Content/images/Fondo.png') !important">
     <div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>
     <div class="login">
         @RenderBody()

@@ -135,6 +135,7 @@
     <Content Include="Content\build\js\custom.js" />
     <Content Include="Content\build\js\custom.min.js" />
     <Content Include="Content\images\dots.png" />
+    <Content Include="Content\images\Fondo.png" />
     <Content Include="Content\images\gears.png" />
     <Content Include="Content\images\icon.png" />
     <Content Include="Content\images\landing.jpg" />
@@ -5036,6 +5037,7 @@
     <Compile Include="Entidades\Postulante\PostulanteFavoritosEntidad.cs" />
     <Compile Include="Entidades\Proveedor\CPCARTEntidad.cs" />
     <Compile Include="Entidades\Proveedor\CPPAGOEntidad.cs" />
+    <Compile Include="Entidades\Proveedor\CTCOMD.cs" />
     <Compile Include="Entidades\Proveedor\MenuEntidad.cs" />
     <Compile Include="Entidades\Proveedor\MesaPartesCIAEntidad.cs" />
     <Compile Include="Entidades\Proveedor\ModuloEntidad.cs" />

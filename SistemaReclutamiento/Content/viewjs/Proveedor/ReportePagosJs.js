@@ -205,7 +205,7 @@
                                     subtotal = oData.subtotalDolares;
                                 }
                                 var boton =
-                                    '<a href="#" class="btn btn-dark btn_detalle btn-sm" data-toggle="modal" data-target=".bs-example-modal-detalle" data-moneda="' + oData.CP_CCODMON+'" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="' + subtotal+'"> Ver Detalle</a>'
+                                    '<a href="#" class="btn btn-dark btn_detalle btn-sm" data-toggle="modal" data-target=".bs-example-modal-detalle" data-moneda="' + oData.CP_CCODMON+'" data-numdoc="' + value + '" data-tabla="' + nombre_tabla + '" data-subtotal="' + subtotal+'" data-fecha="'+oData.CP_CFECCOM+'" data-cuenta="'+(oData.CP_CCUENTA)+'"> Ver Detalle</a>'
                                     ;
                                 return boton;
                             }
@@ -231,7 +231,9 @@
             var nombre_tabla = $(this).data("tabla");
             var subtotal = $(this).data("subtotal");
             var moneda = $(this).data("moneda");
-            var dataForm = { num_doc: num_doc, nombre_tabla: nombre_tabla };
+            var fecha_compra=$(this).data("fecha");
+            var cuenta=$(this).data("cuenta");
+            var dataForm = { num_doc: num_doc, nombre_tabla: nombre_tabla,fecha_compra:fecha_compra,cuenta:cuenta };
             if (!$().DataTable) {
                 console.warn('Advertencia - datatables.min.js no esta declarado.');
                 return;
@@ -300,6 +302,10 @@
                     {
                         data: "PG_CGLOSA",
                         title: "GLOSA"
+                    },
+                    {
+                        data: "DNUMDOR",
+                        title: "NRO. CONSTANCIA"
                     }
                 ]
             });

@@ -188,28 +188,32 @@ namespace SistemaReclutamiento.Models
             return (lista,error, cadena);
         }
 
-        public (List<CPPAGOEntidad> lista, claseError error) CPPAGOListarPagosPorNumeroDocumento(string nombre_tabla, string cod_proveedor, string tipo_doc, string num_doc)
+        public (List<CPPAGOEntidad> lista, claseError error) CPPAGOListarPagosPorNumeroDocumentoDetraccion(string nombre_tabla, string cod_proveedor, string tipo_doc, string num_doc,string nombre_tabla_constancia)
         {
             List<CPPAGOEntidad> lista = new List<CPPAGOEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT [PG_CVANEXO]
-                                      ,[PG_CCODIGO]
-                                      ,[PG_CTIPDOC]
-                                      ,[PG_CNUMDOC]
-                                      ,[PG_CORDKEY]
-                                      ,[PG_CDEBHAB]
-                                      ,[PG_NIMPOMN]
-                                      ,[PG_NIMPOUS]
-                                      ,[PG_CFECCOM]
-                                      ,[PG_CSUBDIA]
-                                      ,[PG_CNUMCOM]
-                                      ,[PG_CGLOSA]
-                                      ,[PG_CCOGAST]
-                                      ,[PG_CORIGEN]
-                                      ,[PG_CUSUARI]
-                                      ,[PG_CCODMON]
-                                      ,[PG_DFECCOM]
-                          FROM [dbo].[" + nombre_tabla + "] where PG_CCODIGO=@p1 and PG_CTIPDOC=@p2 and PG_CNUMDOC = @p3 ";
+            string consulta = @"SELECT pago.[PG_CVANEXO]
+                                      ,pago.[PG_CCODIGO]
+                                      ,pago.[PG_CTIPDOC]
+                                      ,pago.[PG_CNUMDOC]
+                                      ,pago.[PG_CORDKEY]
+                                      ,pago.[PG_CDEBHAB]
+                                      ,pago.[PG_NIMPOMN]
+                                      ,pago.[PG_NIMPOUS]
+                                      ,pago.[PG_CFECCOM]
+                                      ,pago.[PG_CSUBDIA]
+                                      ,pago.[PG_CNUMCOM]
+                                      ,pago.[PG_CGLOSA]
+                                      ,pago.[PG_CCOGAST]
+                                      ,pago.[PG_CORIGEN]
+                                      ,pago.[PG_CUSUARI]
+                                      ,pago.[PG_CCODMON]
+                                      ,pago.[PG_DFECCOM]
+									  ,comd.DNUMDOR
+FROM " + nombre_tabla+" as pago "+
+" inner join "+nombre_tabla_constancia+" as comd "+ 
+" on pago.PG_CCODIGO=comd.DCODANE "+
+" where pago.pg_ccodigo=@p1 and pago.PG_CTIPDOC=@p2 and pago.PG_CNUMDOC = @p3 and pago.PG_NIMPOMN!=0 and pago.PG_CSUBDIA!=16 and comd.DNUMDOC=@p4 and comd.DSUBDIA!=1646 and comd.DMNIMPOR!=0 and comd.DCUENTA='421203'";
             try
             {
                 using (var con = new SqlConnection(_conexion_concar))
@@ -220,6 +224,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", cod_proveedor);
                     query.Parameters.AddWithValue("@p2", tipo_doc);
                     query.Parameters.AddWithValue("@p3", num_doc);
+                    query.Parameters.AddWithValue("@p4", num_doc);
            
                     using (var dr = query.ExecuteReader())
                     {
@@ -246,6 +251,7 @@ namespace SistemaReclutamiento.Models
                                     PG_CUSUARI = ManejoNulos.ManageNullStr(dr["PG_CUSUARI"]),
                                     PG_CCODMON = ManejoNulos.ManageNullStr(dr["PG_CCODMON"]),
                                     PG_DFECCOM = ManejoNulos.ManageNullDate(dr["PG_DFECCOM"]),
+                                    DNUMDOR = ManejoNulos.ManageNullStr(dr["DNUMDOR"]),
                                 };
 
                                 lista.Add(cartera);
@@ -263,12 +269,87 @@ namespace SistemaReclutamiento.Models
 
             return (lista,error);
         }
+        public (List<CPPAGOEntidad> lista, claseError error) CPPAGOListarPagosPorNumeroDocumento(string nombre_tabla, string cod_proveedor, string tipo_doc, string num_doc, string nombre_tabla_constancia)
+        {
+            List<CPPAGOEntidad> lista = new List<CPPAGOEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT [PG_CVANEXO]
+                                      ,[PG_CCODIGO]
+                                      ,[PG_CTIPDOC]
+                                      ,[PG_CNUMDOC]
+                                      ,[PG_CORDKEY]
+                                      ,[PG_CDEBHAB]
+                                      ,[PG_NIMPOMN]
+                                      ,[PG_NIMPOUS]
+                                      ,[PG_CFECCOM]
+                                      ,[PG_CSUBDIA]
+                                      ,[PG_CNUMCOM]
+                                      ,[PG_CGLOSA]
+                                      ,[PG_CCOGAST]
+                                      ,[PG_CORIGEN]
+                                      ,[PG_CUSUARI]
+                                      ,[PG_CCODMON]
+                                      ,[PG_DFECCOM]
+                          FROM [dbo].[" + nombre_tabla + "] where PG_CCODIGO=@p1 and PG_CTIPDOC=@p2 and PG_CNUMDOC = @p3 and PG_CSUBDIA!=16 and PG_NIMPOMN!=0";
+            try
+            {
+                using (var con = new SqlConnection(_conexion_concar))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+
+                    query.Parameters.AddWithValue("@p1", cod_proveedor);
+                    query.Parameters.AddWithValue("@p2", tipo_doc);
+                    query.Parameters.AddWithValue("@p3", num_doc);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var cartera = new CPPAGOEntidad
+                                {
+                                    PG_CVANEXO = ManejoNulos.ManageNullStr(dr["PG_CVANEXO"]),
+                                    PG_CCODIGO = ManejoNulos.ManageNullStr(dr["PG_CCODIGO"]),
+                                    PG_CTIPDOC = ManejoNulos.ManageNullStr(dr["PG_CTIPDOC"]),
+                                    PG_CNUMDOC = ManejoNulos.ManageNullStr(dr["PG_CNUMDOC"]),
+                                    PG_CORDKEY = ManejoNulos.ManageNullStr(dr["PG_CORDKEY"]),
+                                    PG_CDEBHAB = ManejoNulos.ManageNullStr(dr["PG_CDEBHAB"]),
+                                    PG_NIMPOMN = ManejoNulos.ManageNullDecimal(dr["PG_NIMPOMN"]),
+                                    PG_NIMPOUS = ManejoNulos.ManageNullDecimal(dr["PG_NIMPOUS"]),
+                                    PG_CFECCOM = ManejoNulos.ManageNullStr(dr["PG_CFECCOM"]),
+                                    PG_CSUBDIA = ManejoNulos.ManageNullStr(dr["PG_CSUBDIA"]),
+                                    PG_CNUMCOM = ManejoNulos.ManageNullStr(dr["PG_CNUMCOM"]),
+                                    PG_CGLOSA = ManejoNulos.ManageNullStr(dr["PG_CGLOSA"]),
+                                    PG_CCOGAST = ManejoNulos.ManageNullStr(dr["PG_CCOGAST"]),
+                                    PG_CORIGEN = ManejoNulos.ManageNullStr(dr["PG_CORIGEN"]),
+                                    PG_CUSUARI = ManejoNulos.ManageNullStr(dr["PG_CUSUARI"]),
+                                    PG_CCODMON = ManejoNulos.ManageNullStr(dr["PG_CCODMON"]),
+                                    PG_DFECCOM = ManejoNulos.ManageNullDate(dr["PG_DFECCOM"]),
+                                    DNUMDOR = "",
+                                };
+                                lista.Add(cartera);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+
+            return (lista, error);
+        }
         public (decimal subtotalSoles,decimal subtotalDolares, claseError error) ObtenerSubtotalporNumeroDocumento(string nombre_tabla, string num_doc, string tipo_doc,string cod_proveedor)
         {
             claseError error = new claseError();
             decimal subtotalSoles=0;
             decimal subtotalDolares = 0;
-            string consulta = @"select sum(PG_NIMPOMN) AS subtotalSoles, sum(PG_NIMPOUS) as subtotalDolares  FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 ;";
+            string consulta = @"select sum(PG_NIMPOMN) AS subtotalSoles, sum(PG_NIMPOUS) as subtotalDolares  FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 and PG_CSUBDIA!=16 ;";
             try
             {
                 using (var con = new SqlConnection(_conexion_concar))
@@ -383,7 +464,7 @@ namespace SistemaReclutamiento.Models
                                 TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
                                 inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
                                 where 
-                                periodo.NU_ANNO=2019 and periodo.NU_PERI=
+                                periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI=
                                 "+mes_activo+" and (select month(emp.FE_NACI_TRAB))=" +
                                 "(select MONTH(getdate())) and (select day(emp.FE_NACI_TRAB))>=(select day(getdate())) " +
                                 "and empresa.CO_EMPR in "+listaEmpresas+" order by day(emp.FE_NACI_TRAB) asc";
@@ -444,7 +525,7 @@ namespace SistemaReclutamiento.Models
                                 inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
                                 inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
                                 inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
-                                where periodo.NU_ANNO=2019 and periodo.NU_PERI="+mes_activo+" and empresa.CO_EMPR in " + listaEmpresas+" order by emp.NO_APEL_PATE asc";
+                                where periodo.NU_ANNO=year(getdate()) and periodo.NU_PERI="+mes_activo+" and empresa.CO_EMPR in " + listaEmpresas+" order by emp.NO_APEL_PATE asc";
             try
             {
                 using (var con = new SqlConnection(_conexion))

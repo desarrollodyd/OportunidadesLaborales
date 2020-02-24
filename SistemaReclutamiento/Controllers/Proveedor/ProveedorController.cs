@@ -285,11 +285,14 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta = respuesta, mensaje = errormensaje, cadena = cadena });
         }
-        public ActionResult ListarPagosporNumeroDocumentoJson(string num_doc, string nombre_tabla)
+        public ActionResult ListarPagosporNumeroDocumentoJson(string num_doc, string nombre_tabla, string fecha_compra,string cuenta)
         {
             //yyyy - MM - dd HH':'mm':'ss
             bool respuesta = false;
             var errormensaje = "";
+            
+            string anioconstancia = fecha_compra.Substring(0,2);
+            string nombretablaconstancia = "CT"+nombre_tabla.Trim()+"COMD"+anioconstancia;
             string nombretabla = "CP" + nombre_tabla.Trim() + "PAGO";
             string tipo_doc = "FT";
             UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
@@ -297,19 +300,38 @@ namespace SistemaReclutamiento.Controllers
             var lista = new List<CPPAGOEntidad>();
             try
             {
-                var listatupla = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim());
-                lista = listatupla.lista;
-                var errorlista = listatupla.error;
-                if (errorlista.Key.Equals(string.Empty))
+                if (cuenta.Trim().Equals("421203"))
                 {
-                    errormensaje = "Cargando Data ...";
-                    respuesta = true;
+                    var listatupla = sql.CPPAGOListarPagosPorNumeroDocumentoDetraccion(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim(), nombretablaconstancia.Trim());
+                    lista = listatupla.lista;
+                    var errorlista = listatupla.error;
+                    if (errorlista.Key.Equals(string.Empty))
+                    {
+                        errormensaje = "Cargando Data ...";
+                        respuesta = true;
+                    }
+                    else
+                    {
+                        errormensaje = errorlista.Value;
+                        respuesta = false;
+                    }
                 }
-                else
-                {
-                    errormensaje = errorlista.Value;
-                    respuesta = false;
+                else {
+                    var listatupla = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim(), nombretablaconstancia.Trim());
+                    lista = listatupla.lista;
+                    var errorlista = listatupla.error;
+                    if (errorlista.Key.Equals(string.Empty))
+                    {
+                        errormensaje = "Cargando Data ...";
+                        respuesta = true;
+                    }
+                    else
+                    {
+                        errormensaje = errorlista.Value;
+                        respuesta = false;
+                    }
                 }
+              
 
             }
             catch (Exception exp)
@@ -474,10 +496,22 @@ namespace SistemaReclutamiento.Controllers
                 ws.Cells[string.Format("B{0}:J{0}", fila)].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 fila++;
 
+
                 //Detalle
-                var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumento
-                    (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim());
-                listapagosporDocumento = listapagosporDocumentotupla.lista;
+                string nombretablaconstancia = "CT" + nombre_tabla + "COMD" + item.CP_CFECCOM.Substring(0, 2);
+                if (item.CP_CCUENTA.Trim().Equals("421203")) {
+                    var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumentoDetraccion
+                        (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim(), nombretablaconstancia.Trim());
+                    listapagosporDocumento = listapagosporDocumentotupla.lista;
+                }
+                else
+                {
+                    var listapagosporDocumentotupla = sql.CPPAGOListarPagosPorNumeroDocumento
+                   (nombretablapago, usuario.usu_nombre, tipo_doc, item.CP_CNUMDOC.Trim(),nombretablaconstancia.Trim());
+                    listapagosporDocumento = listapagosporDocumentotupla.lista;
+                }
+               
+               
                 if (listapagosporDocumento.Count > 0)
                 {
                     inicioGrupo = fila;
@@ -491,10 +525,11 @@ namespace SistemaReclutamiento.Controllers
                     ws.Cells[string.Format("H{0}", inicioGrupo)].Value = "Importe";
                     ws.Cells[string.Format("I{0}", inicioGrupo)].Value = "Fecha";
                     ws.Cells[string.Format("J{0}", inicioGrupo)].Value = "Glosa";
-                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Font.Bold = true;
-                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
-                    ws.Cells[string.Format("C{0}:J{0}", inicioGrupo)].Style.Font.Color.SetColor(Color.White);
+                    ws.Cells[string.Format("K{0}", inicioGrupo)].Value = "Nro Contancia";
+                    ws.Cells[string.Format("C{0}:K{0}", inicioGrupo)].Style.Font.Bold = true;
+                    ws.Cells[string.Format("C{0}:K{0}", inicioGrupo)].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    ws.Cells[string.Format("C{0}:K{0}", inicioGrupo)].Style.Fill.BackgroundColor.SetColor(Color.DarkRed);
+                    ws.Cells[string.Format("C{0}:K{0}", inicioGrupo)].Style.Font.Color.SetColor(Color.White);
                     fila++;
                     //Datos
                     foreach (var detalle in listapagosporDocumento)
@@ -521,6 +556,7 @@ namespace SistemaReclutamiento.Controllers
                         ws.Cells[string.Format("H{0}", fila)].Value = importedetalle;
                         ws.Cells[string.Format("I{0}", fila)].Value = fechapago;
                         ws.Cells[string.Format("J{0}", fila)].Value = detalle.PG_CGLOSA;
+                        ws.Cells[string.Format("K{0}", fila)].Value = detalle.DNUMDOR;
                         fila++;
                     }
                     //Agregar una fila extra en el detalle para que no se confundan con el collapse
@@ -536,9 +572,9 @@ namespace SistemaReclutamiento.Controllers
                 else
                 {
                     ws.Cells[string.Format("C{0}", fila)].Value = "No se encontro pagos para este documento";
-                    ws.Cells[string.Format("C{0}:J{0}", fila)].Style.Font.Bold = true;
+                    ws.Cells[string.Format("C{0}:K{0}", fila)].Style.Font.Bold = true;
                     ws.Cells[string.Format("C{0}", fila)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    ws.Cells[string.Format("C{0}:J{0}", fila)].Merge = true;
+                    ws.Cells[string.Format("C{0}:K{0}", fila)].Merge = true;
                     ws.Row(fila).OutlineLevel = 1;
                     ws.Row(fila).Collapsed = true;
                     //Agregar una fila extra en el detalle para que no se confundan con el collapse

@@ -24,5 +24,6 @@ namespace SistemaReclutamiento.Entidades.Proveedor
         public string PG_CUSUARI { get; set; }
         public string PG_CCODMON { get; set; }
         public DateTime PG_DFECCOM { get; set; }
+        public string DNUMDOR { get; set; }
     }
 }
