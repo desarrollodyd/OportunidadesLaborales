@@ -107,6 +107,9 @@
 
 </head>
 <body>
+    <div id="cortina" style="background-color:#fff;position:absolute;z-index:10000;height:100%;width:100%;overflow:hidden">
+
+    </div>
     <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
     @*<div id="BasePath" class="hidden">@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/</div>*@
     <nav class="pushy pushy-left">

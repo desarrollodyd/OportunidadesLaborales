@@ -66,16 +66,18 @@ function block_general(block) {
             "padding"       : "10px",
             "color"         : "#f00",
             "position"      : "absolute",
-            "margin-top"    :   "-200px",
+            "margin-top": "-200px",
+            "font-family": "Intranet Cpj",
         },
         "class" : "",
         "text"  : "Cargando, espere por favor ..."
     });
     $(block).LoadingOverlay("show", {
-        background      : "rgba(0, 0, 0, 1)",
+        background      : "rgba(255, 255, 255, 1)",
         // image           :  '',
-        imageAnimation  : "1.5s fadein",
-        imageColor      : "#f00",
+        imageAnimation  : "1.5s pulse",
+        imageColor: "#f00",
+        image: basePath +"Content/intranet/images/logo.png",
         custom  : customElement
         // background: "rgba(51, 51, 51, 0.5)"
     });
@@ -194,23 +196,27 @@ function responseSimple(obj) {
         beforeSend: function () {
             
             if (opciones.loader) {
-                $("body").css('overflow','hidden');
+                $("body").css('overflow', 'hidden');
                 block_general("body");
+
             }
             if (opciones.callBackBeforeSend != null) {
                 opciones.callBackBeforeSend();
             }
         },
         complete: function () {
+
             if (opciones.loader) {
                 unblock("body");
-                $("body").css('overflow','auto');
+                
             }
             if (opciones.callBackSComplete != null) {
                 opciones.callBackSComplete();
             }
         },
         success: function (response) {
+            $("#cortina").fadeOut();
+            $("body").css('overflow', 'auto');
             var respuesta = response.respuesta;
             var mensaje = response.mensaje;
 
