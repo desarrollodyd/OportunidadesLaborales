@@ -208,18 +208,17 @@ function responseSimple(obj) {
 
             if (opciones.loader) {
                 unblock("body");
-                
+                $("#cortina").fadeOut();
+                $("body").css('overflow', 'auto');
             }
             if (opciones.callBackSComplete != null) {
                 opciones.callBackSComplete();
             }
         },
         success: function (response) {
-            $("#cortina").fadeOut();
-            $("body").css('overflow', 'auto');
+           
             var respuesta = response.respuesta;
             var mensaje = response.mensaje;
-
             if (respuesta) {
                 messageResponse({
                     text: mensaje,
