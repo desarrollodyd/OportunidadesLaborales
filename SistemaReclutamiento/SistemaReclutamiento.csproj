@@ -4012,6 +4012,7 @@
     <Content Include="Content\viewjs\generalIntranetAdmin.js" />
     <Content Include="Content\viewjs\generalIntranetPJ.js" />
     <Content Include="Content\viewjs\generalProveedor.js" />
+    <Content Include="Content\viewjs\generalWebCorporativaAdmin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJActividades.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminIndex.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
@@ -4052,6 +4053,7 @@
     <Content Include="Content\viewjs\Proveedor\Proveedor.js" />
     <Content Include="Content\viewjs\Proveedor\ProveedorCambiarPasswordVista.js" />
     <Content Include="Content\viewjs\Proveedor\ReportePagosJs.js" />
+    <Content Include="Content\viewjs\WebCorporativaAdmin\WebDepartamento.js" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\icon.png" />
@@ -5008,6 +5010,9 @@
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
+    <Compile Include="Controllers\WebCorporativaAdmin\WebCorporativaAdminController.cs" />
+    <Compile Include="Controllers\WebCorporativaAdmin\WebDepartamentoController.cs" />
+    <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetAplicativoEntidad.cs" />
@@ -5059,6 +5064,7 @@
     <Compile Include="Entidades\UbigeoEntidad.cs" />
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
+    <Compile Include="Entidades\WebCorporativa\WebDepartamentoEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -5108,6 +5114,7 @@
     <Compile Include="Models\Proveedor\SubMenuModel.cs" />
     <Compile Include="Models\UbigeoModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
+    <Compile Include="Models\WebCorporativa\WebDepartamentoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
@@ -5177,6 +5184,11 @@
     <Content Include="Views\IntranetPJ\IntranetPJAgenda.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJToken.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJSistemas.cshtml" />
+    <Content Include="Views\WebCorporativa\Index.cshtml" />
+    <Content Include="Views\WebCorporativaAdmin\WebDepartamento.cshtml" />
+    <Content Include="Views\Shared\_LayoutWebCorporativaAdmin.cshtml" />
+    <Content Include="Views\Shared\_LoginWebCorporativaAdmin.cshtml" />
+    <Content Include="Views\WebCorporativaAdmin\WebCorporativaLogin.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5191,10 +5203,8 @@
     <Folder Include="Content\backupbd\" />
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
+    <Folder Include="Content\viewjs\WebCorporativa\" />
     <Folder Include="log\" />
-    <Folder Include="Views\IntranetArchivos\" />
-    <Folder Include="Views\IntranetSistemas\" />
-    <Folder Include="Views\IntranetToken\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

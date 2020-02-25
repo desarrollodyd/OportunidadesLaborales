@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LoginWebCorporativaAdmin.cshtml";
+}
+<div class="login-container">
+    <div class="center">
+        <h1>
+            <i class="ace-icon fa fa-shield red"></i>
+            <span class="red">Acceso</span>
+            <span class="white" id="id-text2">Administracion Web Corporativa</span>
+        </h1>
+        <h4 class="white" id="id-company-text">&copy; Corporacion PJ</h4>
+    </div>
+
+    <div class="space-6"></div>
+
+    <div class="position-relative">
+        <div id="login-box" class="login-box visible widget-box no-border">
+            <div class="widget-body">
+                <div class="widget-main">
+                    <h4 class="header black lighter bigger">
+                        <i class="ace-icon fa fa-shield red"></i>
+                        Ingrese sus Credenciales
+                    </h4>
+
+                    <div class="space-6"></div>
+
+                    <form id="login-form">
+                        <fieldset>
+                            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" id="usu_login" name="usu_login" placeholder="Nombre de Usuario" />
+                                    <i class="ace-icon fa fa-user"></i>
+                                </span>
+                            </label>
+
+                            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" id="usu_password" name="usu_password" class="form-control" placeholder="Contraseña" />
+                                    <i class="ace-icon fa fa-lock"></i>
+                                </span>
+                            </label>
+
+                            <div class="space"></div>
+
+                            <div class="clearfix">
+                                <button type="button" class="width-35 pull-right btn btn-sm btn-inverse btn_ingresar">
+                                    <i class="ace-icon fa fa-key"></i>
+                                    <span class="bigger-110">Acceder</span>
+                                </button>
+                            </div>
+
+                            <div class="space-4"></div>
+                        </fieldset>
+                    </form>
+                </div><!-- /.widget-main -->
+
+                <div class="toolbar clearfix">
+
+                </div>
+            </div><!-- /.widget-body -->
+        </div><!-- /.login-box -->
+
+
+    </div><!-- /.position-relative -->
+</div>
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJAdminLogin.js"></script>
+}
+
+

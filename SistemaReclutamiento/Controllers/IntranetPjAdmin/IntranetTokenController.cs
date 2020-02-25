@@ -253,19 +253,42 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             List<dynamic> listaTotal = new List<dynamic>();
             try
             {
-                //if (listasistemas.Count > 0) {
-                //    foreach (var sistema in listasistemas) {
-                //        List<dynamic> lista = new List<dynamic>();
-                //        string[] word = sistema.sist_ruta.Split('/');
-                //        string ruta=word[0]+"//"+word[2]+"/"+word[3]+"/"+
-                //        listaUsuarios = sistema.usuarios;
-                //    }
-                //}
+                if (listasistemas.Count > 0)
+                {
+                    foreach (var sistema in listasistemas)
+                    {
+                        List<dynamic> lista = new List<dynamic>();
+                        string[] word = sistema.sist_ruta.Split('/');
+                        string ruta = word[0] + "//" + word[2] + "/" + word[3];
+
+                        var client = new RestClient(ruta);
+
+                        var request = new RestRequest("/UsuarioEditarTokenAccesoIntranetJson",Method.POST);
+                        //request.AddParameter("applitacion/json; chartset=utf-8", sistema.usuarios, ParameterType.RequestBody);
+                        //request.RequestFormat = DataFormat.Json;
+                        //IRestResponse responseAPI = client.Execute(request);
+                        if (sistema.usuarios.Count > 0) {
+                            foreach (var usuario in sistema.usuarios) {
+                                usuario.Token = usuario.TokenPostgres;
+                            }
+                        }
+                        request.AddParameter("application/json", JsonConvert.SerializeObject(sistema.usuarios), ParameterType.RequestBody);
+
+                        IRestResponse restResponse = client.Execute(request);
+
+                        //IRestResponse responseData = SimpleJson.DeserializeObject<IRestResponse>(restResponse.Content);
+                        dynamic jsonObj = JsonConvert.DeserializeObject(restResponse.Content);
+                        response = true;
+                        errormensaje = "Editado";
+                        //
+                      
+                    }
+                }
             }
             catch (Exception ex) {
                 errormensaje = ex.Message;
             }
-            return Json(new { listaSistemas=listasistemas,mensaje=errormensaje,respuesta=response});
+            return Json(new { listaSistemas=listasistemas,listaTotal,mensaje=errormensaje,respuesta=response});
         }
     }
 }
