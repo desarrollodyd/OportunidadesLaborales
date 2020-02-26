@@ -108,9 +108,9 @@ namespace SistemaReclutamiento.Models.WebCorporativa
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(departamento.dep_nombre));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(departamento.dep_nombre));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(departamento.dep_imagen));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(departamento.dep_imagen_detalle));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(departamento.dep_imagen_detalle));
                     idDeptatamentoInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -137,9 +137,9 @@ namespace SistemaReclutamiento.Models.WebCorporativa
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(departamento.dep_nombre));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(departamento.dep_imagen));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(departamento.dep_imagen));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(departamento.dep_imagen_detalle));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(departamento.dep_id));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(departamento.dep_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }

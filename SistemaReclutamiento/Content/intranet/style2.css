@@ -3539,7 +3539,8 @@ aside.sideleft{
 }
 
 .widget h3{
-	font-size: 20px;
+    font-family: "Intranet CPJ" !important;
+	font-size: 15px !important;
 }
 .widget a:hover{ 
 	color: #FF0000; 

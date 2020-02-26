@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutWebCorporativaAdmin.cshtml";
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Contenido</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="alert alert-warning">
+                Contenido <strong>Secciones!</strong>
+
+            </div>
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs" id="tabmenu">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home3">
+                            <i class="pink ace-icon fa fa-tachometer bigger-110"></i>
+                            Buscando...
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="tabcontenido" style="min-height: 380px;height:auto;">
+                    <div id="home3" class="tab-pane in active ">
+                        <div class="alert alert-warning">Buscando Data...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+@section js
+{
+    <script src="~/Content/viewjs/WebCorporativaAdmin/WebSecciones.js"></script>
+}

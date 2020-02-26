@@ -45,59 +45,77 @@
 </div><!-- /.page-content -->
 
 
-@*<div class="modal fade" tabindex="-1" id="modalFormulario" role="dialog" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="modalFormulario" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header blackheader">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="nf"><span id="tituloModalMenu"></span> Menu</h4>
+                <h4 class="modal-title" id="nf"><span id="tituloModalMenu"></span> Departamento</h4>
             </div>
             <div class="modal-body" id="">
                 <div class="row">
-                    <form class="" id="form_menus">
-                        <input type="hidden" name="menu_id" id="menu_id" value="" />
+                    <form class="" id="form_departamentos">
+                        <input type="hidden" name="dep_id" id="dep_id" value="0" />
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
                                 <label>Titulo</label>
-                                <input type="text" name="menu_titulo" id="menu_titulo" class="form-control" placeholder="Titulo" />
+                                <input type="text" name="dep_nombre" id="dep_nombre" class="form-control" placeholder="Titulo" />
                             </div>
                         </div>
+                        <!--Imagen Para Departamento-->
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label>URI</label>
-                                <input type="text" name="menu_url" id="menu_url" class="form-control" placeholder="URI" />
+                                <label>Adjuntar Imagen para Departamento (Opcional)</label>
+                                <label class="btn btn-warning" for="dep_imagen">
+                                    <span id="span_dep_imagen"><i class="fa fa-upload"></i>  Subir Imagen</span>
+                                    <input id="dep_imagen" name="dep_imagen" type="file" class="form-control" style="display:none;" />
+                                </label>
                             </div>
                         </div>
+                        <div class="col-md-12" style="display:none" id="div_dep_imagen">
+                           
+                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
+                                <label class="col-md-12 col-xs-12">Icono Actual</label>
+                                <a id="frm_dep_imagen" href="#" class="atch-thumb" style="width:100%;">
+                                    <img id="dep_icono_actual" style="width:100px;height:100px"/>
+                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="dep_imagen_nombre"></span></div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--Fin Imagen Departamento-->
+                           <!--Imagen Detalle Para Departamento-->
                         <div class="col-md-12 col-xs-12">
                             <div class="form-group">
-                                <label>¿Se abrira en una pestaña nueva?</label>
-                                <select class="form-control" name="menu_blank" id="menu_blank">
-                                    <option value=false selected>No</option>
-                                    <option value=true>Si</option>
-                                </select>
+                                <label>Adjuntar Detalle Imagen para Departamento (Opcional)</label>
+                                <label class="btn btn-warning" for="dep_imagen_detalle">
+                                    <span id="span_dep_imagen_detalle"><i class="fa fa-upload"></i>  Subir Detalle</span>
+                                    <input id="dep_imagen_detalle" name="dep_imagen_detalle" type="file" class="form-control" style="display:none;" />
+                                </label>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12">
-                            <div class="form-group">
-                                <label>Estado</label>
-                                <select class="form-control" name="menu_estado" id="menu_estado">
-                                    <option value="A" selected>Activo</option>
-                                    <option value="I">Inactivo</option>
-                                </select>
+                        <div class="col-md-12" style="display:none" id="div_dep_imagen_detalle">
+                           
+                            <div class="col-md-4 col-lg-offset-3 col-xs-12 attachment" style="border: 0px solid black;padding: 5px;text-align: center;">
+                                <label class="col-md-12 col-xs-12">Icono Actual</label>
+                                <a id="frm_dep_imagen" href="#" class="atch-thumb" style="width:100%;">
+                                    <img id="dep_icono_detalle_actual" style="width:100px;height:100px"/>
+                                    <div class="file-name" style="width:100%;text-align:left;"><i class="fa fa-file"></i> <span id="dep_imagen_detalle_nombre"></span></div>
+                                </a>
                             </div>
                         </div>
+                        <!--Fin Imagen Detalle Departamento-->
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
-                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+                <button class="btn btn_guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn_cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
 
 

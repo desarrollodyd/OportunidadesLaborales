@@ -16,5 +16,9 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
         public ActionResult PanelDepartamento() {
             return View("~/Views/WebCorporativaAdmin/WebDepartamento.cshtml");
         }
+        public ActionResult PanelSecciones()
+        {
+            return View("~/Views/WebCorporativaAdmin/WebSecciones.cshtml");
+        }
     }
 }
