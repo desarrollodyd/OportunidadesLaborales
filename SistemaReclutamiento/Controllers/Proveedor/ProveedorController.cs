@@ -252,10 +252,26 @@ namespace SistemaReclutamiento.Controllers
             UsuarioEntidad usuario = (UsuarioEntidad)Session["usu_proveedor"];
             SQLModel sql = new SQLModel();
             var lista = new List<CPCARTEntidad>();
+            //var listaDetracciones = new List<CPCARTEntidad>();
+            int indice = 0;
+            string documento = "";
+            string documento2 = "";
             try
             {
                 var listatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_final);
                 lista = listatupla.lista;
+               var listaDetracciones = listatupla.lista.Where(x => x.CP_CNUMDOC.Trim().Substring(x.CP_CNUMDOC.Trim().Length-1, 1).Equals("D")).ToList();
+                foreach (var detraccion in listaDetracciones)
+                {
+                    documento = detraccion.CP_CNUMDOC.Trim().Substring(0, detraccion.CP_CNUMDOC.Trim().Length - 2);
+                    var objeto = lista.Where(x => x.CP_CNUMDOC.Trim().Equals(documento)).FirstOrDefault();
+                    if (objeto != null)
+                    {
+                        objeto.CP_NIMPOMN = objeto.CP_NIMPOMN - detraccion.CP_NIMPOMN;
+                    }
+                    //var contiene = lista.Where(x => x.CP_CNUMDOC.Equals(documento)).FirstOrDefault();
+
+                }
                 cadena = listatupla.cadena;
                 var errorlista = listatupla.error;
                 if (errorlista.Key.Equals(string.Empty))

@@ -116,7 +116,7 @@ namespace SistemaReclutamiento.Models
 [CP_CFECVEN],[CP_CFECREC],[CP_CSITUAC],[CP_CFECCOM],[CP_CSUBDIA],[CP_CCOMPRO],[CP_CDEBHAB],[CP_CCODMON],
 [CP_NTIPCAM],[CP_NIMPOMN],[CP_NIMPOUS],[CP_NSALDMN],[CP_NSALDUS],[CP_NIGVMN],[CP_NIGVUS],[CP_NIMP2MN],
 [CP_NIMP2US],[CP_NIMPAJU],[CP_CCUENTA],[CP_CAREA],[CP_CFECUBI],[CP_CTDOCRE],[CP_CNDOCRE],[CP_CFDOCRE],
-[CP_CTDOCCO],[CP_DFECDOC],[CP_DFECCOM] FROM [" + nombre_tabla+ "] where CP_CCODIGO=@p1 and CP_CTIPDOC=@p2 and CP_DFECDOC between @p3 and @p4 ";
+[CP_CTDOCCO],[CP_DFECDOC],[CP_DFECCOM] FROM [" + nombre_tabla+ "] where CP_CCODIGO=@p1 and CP_CTIPDOC=@p2 and CP_CSITUAC!='R' and CP_DFECDOC between @p3 and @p4 ";
 
             cadena+=consulta+ "-"+ nombre_tabla+"-"+ cod_proveedor+"-"+tipo_doc+"-"+ fecha_inicio+"-"+fecha_final;
             try
@@ -349,7 +349,7 @@ FROM " + nombre_tabla+" as pago "+
             claseError error = new claseError();
             decimal subtotalSoles=0;
             decimal subtotalDolares = 0;
-            string consulta = @"select sum(PG_NIMPOMN) AS subtotalSoles, sum(PG_NIMPOUS) as subtotalDolares  FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 and PG_CSUBDIA!=16 ;";
+            string consulta = @"select sum(PG_NIMPOMN) AS subtotalSoles, sum(PG_NIMPOUS) as subtotalDolares  FROM " + nombre_tabla + " WHERE PG_CNUMDOC=@p1 and PG_CTIPDOC=@p2 and PG_CCODIGO=@p3 and PG_CSUBDIA!=16;";
             try
             {
                 using (var con = new SqlConnection(_conexion_concar))

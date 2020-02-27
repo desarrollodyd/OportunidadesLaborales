@@ -5067,9 +5067,9 @@
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
     <Compile Include="Entidades\WebCorporativa\WebDepartamentoEntidad.cs" />
+    <Compile Include="Entidades\WebCorporativa\WebDetalleElementoEntidad.cs" />
     <Compile Include="Entidades\WebCorporativa\WebElementoEntidad.cs" />
     <Compile Include="Entidades\WebCorporativa\WebMenuEntidad.cs" />
-    <Compile Include="Entidades\WebCorporativa\WebSeccionEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -5120,6 +5120,8 @@
     <Compile Include="Models\UbigeoModel.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Models\WebCorporativa\WebDepartamentoModel.cs" />
+    <Compile Include="Models\WebCorporativa\WebDetalleElementoModel.cs" />
+    <Compile Include="Models\WebCorporativa\WebElementoModel.cs" />
     <Compile Include="Models\WebCorporativa\WebMenuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
