@@ -12,6 +12,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
     public class WebMenuController : Controller
     {
         WebMenuModel menubl = new WebMenuModel();
+        WebElementoModel elementobl = new WebElementoModel();
         // GET: WebMenu
         public ActionResult Index()
         {
@@ -24,12 +25,21 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             string mensajeConsola = "";
             bool respuesta = false;
             List<WebMenuEntidad> listaMenus = new List<WebMenuEntidad>();
+            List<WebElementoEntidad> listaElementos = new List<WebElementoEntidad>();
             claseError error = new claseError();
             try
             {
                 var menuTupla = menubl.WebMenuListarJson();
                 error = menuTupla.error;
                 listaMenus = menuTupla.lista.Where(x=>x.menu_estado.Equals("A")).ToList();
+                //Listar Elementos
+                foreach(var menu in listaMenus)
+                {
+                    var elementoTupla = elementobl.WebElementoListarxMenuIDJson(menu.menu_id);
+                    if (elementoTupla.error.Key.Equals(string.Empty)) {
+                        menu.elemento = elementoTupla.lista;
+                    }
+                }
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Listando Menus";

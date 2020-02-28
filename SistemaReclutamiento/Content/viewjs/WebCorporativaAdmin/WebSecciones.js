@@ -22,8 +22,9 @@
                                 value.menu_titulo+
                             '</a >' +
                         '</li >';
-                    
-                
+                        //crear tabla para elementos
+
+                        //Fin de tabla
                     div += '<div id="_tab_contenido_' + value.menu_id + '" class="tab-pane ' + activo + '">' +
                         '<div class="row" style="margin-bottom:8px">' +
                         '<div class="col-md-2 col-sm-6 col-xs-6 pull-right"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nueva_seccion" data-id="' + value.menu_id + '" data-rel="tooltip" title="Nueva Seccion"><i class="ace-icon fa fa-file"></i> Nueva Seccion </button></div>' +

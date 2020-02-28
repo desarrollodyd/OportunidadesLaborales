@@ -256,7 +256,7 @@ html , body{
     text-shadow: 1px 1px #000
 }
 .menu_section>ul {
-    margin-top: 10px
+    margin-top: 0px;
 }
 .profile_pic {
     width: 50%;
@@ -363,6 +363,7 @@ body .container.body .right_col {
 .nav_title {
     width: 230px;
     float: left;
+    background: #ad0707;
     /*background: linear-gradient(#ad0707, #f50000), #500202;*/
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;
     border-radius: 0;
@@ -730,7 +731,8 @@ a:focus {
 }
     .nav.side-menu > li > a {
         margin-bottom: 1px;
-        background: linear-gradient(#0e0e0e, #131517), #61666b;
+        /* background: linear-gradient(#0e0e0e, #131517), #61666b; */
+        background: #282828;
         box-shadow: rgba(0, 0, 0, .25) 0 1px 0, inset rgba(255, 255, 255, .16) 0 1px 0;
     }
 .nav.side-menu>li>a:hover {
@@ -801,7 +803,8 @@ a:focus {
     border-right: 5px solid #ad0707;
 }
 .nav li.current-page {
-    background: #f89797;
+    /* background: #f89797; */
+    background: #828282;
     /*background: rgba(255, 255, 255, 0.05)*/
 }
 .nav li li li.current-page {
@@ -814,7 +817,8 @@ a:focus {
 .nav.side-menu > li.active > a {
     text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
     /*background: linear-gradient(#ad0707, #f50000), #500202;*/
-    background: #ad0707;
+    /* background: #ad0707; */
+    background: #282828;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0
 }
 .navbar-brand,

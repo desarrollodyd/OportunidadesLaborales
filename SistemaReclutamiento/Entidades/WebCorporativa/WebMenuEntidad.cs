@@ -11,5 +11,10 @@ namespace SistemaReclutamiento.Entidades.WebCorporativa
         public string menu_titulo { get; set; }
         public string menu_estado { get; set; }
         public int menu_orden { get; set; }
+        public List<WebElementoEntidad> elemento { get; set; }
+        //public WebMenuEntidad()
+        //{
+        //    this.elemento = new List<WebElementoEntidad>();
+        //}
     }
 }
