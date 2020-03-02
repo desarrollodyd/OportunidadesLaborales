@@ -134,20 +134,27 @@
                             data: "CP_CCODMON",
                             title: "Saldo",
                             "render": function (value, type, oData, meta) {
+                                // return oData.CP_NSALDMN;
                                 var montoPagado = 0;
                                 var importe = 0;
                                 var saldo = 0;
                                 if (value == "MN") {
-                                    importe = oData.CP_NIMPOMN;
+                                    importe = oData.CP_NSALDMN;
                                     montoPagado = oData.subtotalSoles;
                                    
                                 }
                                 else {
-                                    importe = oData.CP_NIMPOUS;
+                                    importe = oData.CP_NSALDUS;
                                     montoPagado = oData.subtotalDolares;
                                    
                                 }
-                                saldo = importe - montoPagado;
+                                if(importe==0){
+                                    saldo=0;
+                                }
+                                else{
+                                    saldo = importe - montoPagado;
+
+                                }
                                 return saldo;
                             }
                         },

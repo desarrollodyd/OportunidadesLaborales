@@ -253,9 +253,7 @@ namespace SistemaReclutamiento.Controllers
             SQLModel sql = new SQLModel();
             var lista = new List<CPCARTEntidad>();
             //var listaDetracciones = new List<CPCARTEntidad>();
-            int indice = 0;
             string documento = "";
-            string documento2 = "";
             try
             {
                 var listatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_final);
@@ -267,10 +265,8 @@ namespace SistemaReclutamiento.Controllers
                     var objeto = lista.Where(x => x.CP_CNUMDOC.Trim().Equals(documento)).FirstOrDefault();
                     if (objeto != null)
                     {
-                        objeto.CP_NIMPOMN = objeto.CP_NIMPOMN - detraccion.CP_NIMPOMN;
+                        objeto.CP_NSALDMN = objeto.CP_NIMPOMN - detraccion.CP_NIMPOMN;
                     }
-                    //var contiene = lista.Where(x => x.CP_CNUMDOC.Equals(documento)).FirstOrDefault();
-
                 }
                 cadena = listatupla.cadena;
                 var errorlista = listatupla.error;
