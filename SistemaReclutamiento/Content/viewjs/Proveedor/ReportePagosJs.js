@@ -162,10 +162,11 @@
                             data: "CP_CCODMON",
                             title: "ESTADO",
                             "render": function (value, type, oData, meta) {
+                                var estado='';
+                                var mensaje_estado='';
                                 if (value == "MN") {
                                     var pagado = oData.subtotalSoles;
-                                    var mensaje_estado = "";
-                                    if (pagado == oData.CP_NIMPOMN) {
+                                    if (pagado == oData.CP_NSALDMN||oData.CP_NSALDMN==0) {
                                         estado = "success";
                                         mensaje_estado = "PAGADO";
                                     }
@@ -173,15 +174,14 @@
                                         estado = "danger";
                                         mensaje_estado = "PENDIENTE";
                                     }
-                                    else if (pagado != 0 && pagado < oData.CP_NIMPOMN) {
+                                    else if (pagado != 0 && pagado < oData.CP_NSALDMN) {
                                         estado = "warning";
                                         mensaje_estado = "PARCIAL";
                                     }
                                 }
                                 else {
                                     var pagado = oData.subtotalDolares;
-                                    var mensaje_estado = "";
-                                    if (pagado == oData.CP_NIMPOUS) {
+                                    if (pagado == oData.CP_NSALDUS||oData.CP_NSALDUS==0) {
                                         estado = "success";
                                         mensaje_estado = "PAGADO";
                                     }
@@ -189,7 +189,7 @@
                                         estado = "danger";
                                         mensaje_estado = "PENDIENTE";
                                     }
-                                    else if (pagado != 0 && pagado < oData.CP_NIMPOUS) {
+                                    else if (pagado != 0 && pagado < oData.CP_NSALDUS) {
                                         estado = "warning";
                                         mensaje_estado = "PARCIAL";
                                     }

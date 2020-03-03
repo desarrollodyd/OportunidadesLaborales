@@ -251,6 +251,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             bool response = false;
             List<SEG_Usuario> listaUsuarios = new List<SEG_Usuario>();
             List<dynamic> listaTotal = new List<dynamic>();
+            string NombreEmpleado = "";
+            int UsuarioID = 0;
+            int EmpleadoID = 0;
+            string UsuarioNombre = "";
+            string Estado = "";
+            string TokenNuevo = "";
+            string TokenAntiguo = "";
+            string DOI = "";
+            int indiceCoincidencia = 0;
+            string TokenPostgres = "";
             try
             {
                 if (listasistemas.Count > 0)
@@ -278,11 +288,40 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                         //IRestResponse responseData = SimpleJson.DeserializeObject<IRestResponse>(restResponse.Content);
                         dynamic jsonObj = JsonConvert.DeserializeObject(restResponse.Content);
-                        response = true;
-                        errormensaje = "Editado";
-                        //
-                      
+                        foreach (var obj in jsonObj.data)
+                        {
+                            NombreEmpleado = obj.NombreEmpleado;
+                            UsuarioID = obj.UsuarioID;
+                            EmpleadoID = obj.EmpleadoID;
+                            UsuarioNombre = obj.UsuarioNombre;
+                            Estado = obj.Estado;
+                            TokenNuevo = obj.TokenNuevo;
+                            TokenAntiguo = obj.TokenAntiguo;
+                            DOI = obj.DOI;
+                            lista.Add(new
+                            {
+                                NombreEmpleado,
+                                UsuarioID,
+                                EmpleadoID,
+                                UsuarioNombre,
+                                Estado,
+                                TokenNuevo,
+                                TokenAntiguo,
+                                DOI
+                            });
+                        }
+                        listaTotal.Add(new
+                        {
+                            sistema.sist_id,
+                            sistema.sist_nombre,
+                            sistema.sist_ruta,
+                            sistema.sist_descripcion,
+                            sistema.sist_estado,
+                            usuarios = lista
+                        });
                     }
+                    response = true;
+                    errormensaje = "Editado";
                 }
             }
             catch (Exception ex) {
