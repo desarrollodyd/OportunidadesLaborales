@@ -40,6 +40,67 @@
     </div>
 </div><!-- /.page-content -->
 
+<!--Modal Elemnto-->
+<div class="modal fade" tabindex="-1" id="modalFormularioElemento" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title"><span id="tituloModalElemento"></span> Elemento</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_elemento">
+                        <input type="hidden" name="elem_id" id="elem_id" value="" />
+                        <input type="hidden" name="elem_orden" id="elem_orden" value="" />
+                        <input type="hidden" name="fk_menu" id="fk_menu" value="" />
+                        <div class="col-md-12 col-xs-12" id="div_tipo_elemento">
+                            <div class="form-group" id="div_fk_tipo_elemento">
+                                <label>Tipo de Elemento</label>
+                                <select class="form-control" name="fk_tipo_elemento" id="fk_tipo_elemento">
+                                    <option value="">Tipo de Elemento</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group" id="div_texto_fk_tipo_elemento">
+                                <label>Tipo de Elemento</label>
+                                <div class="form-control" id="texto_fk_tipo_elemento"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 contenido_elemento">
+                            <div class="form-group">
+                                <label id="parrafo_elemento">Texto</label>
+                                <div id="contenido_input">
+                                    <input type="text" name="elem_contenido" id="elem_contenido" class="form-control" placeholder="Texto" />
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="elem_estado" id="elem_estado">
+                                    <option value="A" selected>Activo</option>
+                                    <option value="I">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn_guardar_elemento btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal Elemento-->
 @section js
 {
     <script src="~/Content/viewjs/WebCorporativaAdmin/WebSecciones.js"></script>

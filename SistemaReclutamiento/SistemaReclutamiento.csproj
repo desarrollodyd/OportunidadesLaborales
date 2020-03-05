@@ -5014,7 +5014,10 @@
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebCorporativaAdminController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebDepartamentoController.cs" />
+    <Compile Include="Controllers\WebCorporativaAdmin\WebDetalleElementoController.cs" />
+    <Compile Include="Controllers\WebCorporativaAdmin\WebElementoController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebMenuController.cs" />
+    <Compile Include="Controllers\WebCorporativaAdmin\WebTipoElementoController.cs" />
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
@@ -5071,6 +5074,7 @@
     <Compile Include="Entidades\WebCorporativa\WebDetalleElementoEntidad.cs" />
     <Compile Include="Entidades\WebCorporativa\WebElementoEntidad.cs" />
     <Compile Include="Entidades\WebCorporativa\WebMenuEntidad.cs" />
+    <Compile Include="Entidades\WebCorporativa\WebTipoElementoEntidad.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -5124,6 +5128,7 @@
     <Compile Include="Models\WebCorporativa\WebDetalleElementoModel.cs" />
     <Compile Include="Models\WebCorporativa\WebElementoModel.cs" />
     <Compile Include="Models\WebCorporativa\WebMenuModel.cs" />
+    <Compile Include="Models\WebCorporativa\WebTipoElementoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
@@ -5215,7 +5220,8 @@
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="Content\viewjs\WebCorporativa\" />
     <Folder Include="log\" />
-    <Folder Include="Views\WebMenu\" />
+    <Folder Include="Views\WebDetalleElemento\" />
+    <Folder Include="Views\WebTipoElemento\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Content\vendors\devbridge-autocomplete\src\jquery.autocomplete.d.ts" />

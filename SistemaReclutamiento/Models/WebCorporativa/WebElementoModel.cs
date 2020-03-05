@@ -20,8 +20,10 @@ namespace SistemaReclutamiento.Models.WebCorporativa
         {
             List<WebElementoEntidad> lista = new List<WebElementoEntidad>();
             claseError error = new claseError();
-            string consulta = @"SELECT elm_id, elm_contenido, fk_menu, fk_tipo, elm_orden
-	                            FROM web_corporativa.web_elemento where fk_menu=@p0 order by elm_orden;";
+            string consulta = @"SELECT elem_id, elem_contenido, fk_menu, fk_tipo_elemento, elem_orden,tipo_nombre,elem_estado
+                                FROM web_corporativa.web_elemento join web_corporativa.web_tipo_elemento
+                                on web_corporativa.web_elemento.fk_tipo_elemento=web_corporativa.web_tipo_elemento.tipo_id
+                                where fk_menu=@p0 order by elem_orden;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -38,11 +40,13 @@ namespace SistemaReclutamiento.Models.WebCorporativa
                                 var Elemento = new WebElementoEntidad
                                 {
 
-                                    elm_id = ManejoNulos.ManageNullInteger(dr["elm_id"]),
-                                    elm_contenido = ManejoNulos.ManageNullStr(dr["elm_contenido"]),
-                                    elm_orden = ManejoNulos.ManageNullInteger(dr["elm_orden"]),
+                                    elem_id = ManejoNulos.ManageNullInteger(dr["elem_id"]),
+                                    elem_contenido = ManejoNulos.ManageNullStr(dr["elem_contenido"]),
+                                    elem_orden = ManejoNulos.ManageNullInteger(dr["elem_orden"]),
                                     fk_menu = ManejoNulos.ManageNullInteger(dr["fk_menu"]),
-                                    fk_tipo = ManejoNulos.ManageNullInteger(dr["fk_tipo"]),
+                                    fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
+                                    tipo_nombre = ManejoNulos.ManageNullStr(dr["tipo_nombre"]),
+                                    elem_estado = ManejoNulos.ManageNullStr(dr["elem_estado"]),
                                 };
                                 lista.Add(Elemento);
                             }
@@ -64,8 +68,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
         {
             WebElementoEntidad WebElemento = new WebElementoEntidad();
             claseError error = new claseError();
-            string consulta = @"SELECT elm_id, elm_contenido, fk_menu, fk_tipo, elm_orden
-	                            FROM web_corporativa.web_elemento where elm_id=@p0;";
+            string consulta = @"SELECT elem_id, elem_contenido, fk_menu, fk_tipo_elemento, elem_orden,elem_estado
+	                            FROM web_corporativa.web_elemento where elem_id=@p0;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -80,11 +84,12 @@ namespace SistemaReclutamiento.Models.WebCorporativa
                             while (dr.Read())
                             {
 
-                                WebElemento.elm_id = ManejoNulos.ManageNullInteger(dr["elm_id"]);
-                                WebElemento.elm_contenido = ManejoNulos.ManageNullStr(dr["elm_contenido"]);
+                                WebElemento.elem_id = ManejoNulos.ManageNullInteger(dr["elem_id"]);
+                                WebElemento.elem_contenido = ManejoNulos.ManageNullStr(dr["elem_contenido"]);
                                 WebElemento.fk_menu = ManejoNulos.ManageNullInteger(dr["fk_menu"]);
-                                WebElemento.fk_tipo = ManejoNulos.ManageNullInteger(dr["fk_tipo"]);
-                                WebElemento.elm_orden = ManejoNulos.ManageNullInteger(dr["elm_orden"]);
+                                WebElemento.fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]);
+                                WebElemento.elem_orden = ManejoNulos.ManageNullInteger(dr["elem_orden"]);
+                                WebElemento.elem_estado = ManejoNulos.ManageNullStr(dr["elem_estado"]);
                             }
                         }
                     }
@@ -102,8 +107,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             //bool response = false;
             int idWebElementoInsertado = 0;
             string consulta = @"INSERT INTO web_corporativa.web_elemento(
-	                            elm_contenido, fk_menu, fk_tipo, elm_orden)
-	                            VALUES (@p0, @p1, @p2, @p3);
+	                            elem_contenido, fk_menu, fk_tipo_elemento, elem_orden,elem_estado)
+	                            VALUES (@p0, @p1, @p2, @p3,@p4)
                                             returning elem_id;";
             claseError error = new claseError();
             try
@@ -112,10 +117,11 @@ namespace SistemaReclutamiento.Models.WebCorporativa
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(WebElemento.elm_contenido));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(WebElemento.elem_contenido));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(WebElemento.fk_menu));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(WebElemento.fk_tipo));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(WebElemento.elm_orden));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(WebElemento.fk_tipo_elemento));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(WebElemento.elem_orden));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(WebElemento.elem_estado));
                     idWebElementoInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                 }
             }
@@ -131,19 +137,20 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE web_corporativa.web_elemento
-	                            SET  elm_contenido=@p0, fk_menu=@p1, fk_tipo=@p2, elm_orden=@p3
-	                            WHERE elm_id=@p4;";
+	                            SET  elem_contenido=@p0, fk_menu=@p1, fk_tipo_elemento=@p2, elem_orden=@p3,elem_estado=@p4
+	                            WHERE elem_id=@p5;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(WebElemento.elm_contenido));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(WebElemento.elem_contenido));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(WebElemento.fk_menu));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(WebElemento.fk_tipo));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(WebElemento.elm_orden));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(WebElemento.elm_id));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(WebElemento.fk_tipo_elemento));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(WebElemento.elem_orden));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(WebElemento.elem_estado));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(WebElemento.elem_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
@@ -159,7 +166,7 @@ namespace SistemaReclutamiento.Models.WebCorporativa
         {
             bool response = false;
             string consulta = @"DELETE FROM web_corporativa.web_elemento
-	                                WHERE elm_id=@p0;";
+	                                WHERE elem_id=@p0;";
             claseError error = new claseError();
             try
             {
@@ -186,16 +193,16 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE web_corporativa.web_elemento
-	                            SET elm_orden=@p0
-	                            WHERE elm_id=@p1;";
+	                            SET elem_orden=@p0
+	                            WHERE elem_id=@p1;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(WebElemento.elm_orden));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(WebElemento.elm_id));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(WebElemento.elem_orden));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(WebElemento.elem_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
