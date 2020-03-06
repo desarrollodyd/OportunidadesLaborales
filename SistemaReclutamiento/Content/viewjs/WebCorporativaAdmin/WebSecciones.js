@@ -178,7 +178,89 @@
             data: JSON.stringify(dataForm),
             refresh: false,
             callBackSuccess: function (response) {
-              console.log(response);
+                var rows=response.data;
+                var tr='';
+                $.each(rows, function (index, value) {
+                    var boton = '<button data-rel="tooltip" title="Editar" class="btn btn-primary  btn-xs btn-round btn-white btn_editar_detalle_elemento" data-id="' + value.detel_id + '" data-elemento_id="' + elemento_id +'"><i class="ace-icon fa fa-pencil"></i> </button>' +
+                        ' <button data-rel="tooltip" title="Eliminar" class="btn btn-danger  btn-xs btn-round btn-white btn_eliminar_detalle_elemento" data-id="' + value.detel_id + '" data-elemento_id="' + elemento_id+'"><i class="ace-icon fa fa-trash"></i> </button>';
+
+                    var clase_estado = 'success';
+                    var estado = "Activo";
+                    if (value.detel_estado == "I") {
+                        clase_estado = 'danger';
+                        estado = "Inactivo";
+                    };
+                    var posicion = '';
+
+                    var tipo = $("#elemento_" + elemento_id).data("tipo");
+                    var clasedetalle = "grey";
+                    var clasedetalleboton = "";
+                    var columan_imagen = "";
+                    var columna_imagen_detalle = "";
+                    if (tipo == 1||tipo==2||tipo==3||tipo==8) {
+                        columan_imagen = "hidden";
+                        columna_imagen_detalle = "hidden";
+                    }
+                    if (tipo == 4 || tipo == 5 || tipo == 6 ) {
+                        columna_imagen_detalle = "hidden";
+                        // if (tipo == 11|| tipo==7) {
+                        //     value.detel_descripcion = "IMAGEN";
+                        // }
+                    }
+
+                    
+
+                    var detalle = '<div class="action-buttons">' +
+                        '<a data-id="' + value.detel_id + '" data-seccion="' + value.detel_id + '" href="javascript:void(0);" class="' + clasedetalle + ' bigger-140 ' + clasedetalleboton+'" title = "Detalle">' +
+                        '<i class="ace-icon fa fa-angle-double-up"></i>' +
+                        '<span class="sr-only">Detalle</span>' +
+                        '</a>' +
+                        '</div>';
+                    var nombre = value.detel_titulo;
+                    if (value.detel_imagen == "") {
+                        nombre = "";
+                    }
+                    if(value.detel_imagen!=""){
+                        nombre=value.detel_imagen;
+                    }
+                    tr += '<tr class="elem_' + elemento_id + '"  data-id="' + value.detel_id + '" data-orden="' + value.detel_orden 
+                    + '"><td class="center">' + detalle + '</td><td><span class="detelem_orden label label-white middle label-default">' 
+                    + (index + 1) + '</span> ' + value.detel_titulo + '</td><td class="' + columan_imagen + '">' 
+                    + nombre + '</td><td class="' + columna_imagen_detalle + '" >' + posicion + '</td><td><span class="label label-' 
+                    + clase_estado + ' label-white middle">' + estado + '</span></td><td>' + boton + '</td></tr>';
+                });
+                var boton_nuevo = ' <div class="row" style="margin-bottom:10px;">' +
+                    '<div class="col-md-3 col-md-offset-6 col-sm-2 col-xs-12"><button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_ordenar_detalle_elemento" data-id="' + elemento_id + '" data-rel="tooltip" title="Ordenar Detalle Elemento"><i class="ace-icon glyphicon glyphicon-list-alt"></i> Ordenar </button></div>' +
+                    '<div class="col-md-3 col-sm-5 col-xs-12"><button class="btn btn-white btn-success btn-sm btn-block btn-round btn_nuevo_detalle_elemento" data-id="' + elemento_id + '" data-rel="tooltip" title="Nuevo Detalle Elemento"><i class="ace-icon fa fa-file"></i> Nuevo Detalle Elemento </button></div>' +
+                    
+                    '</div>';
+
+                
+                var columan_imagen = "";
+                var columna_imagen_detalle = "";
+                if (tipo_elemento == 1||tipo_elemento==2||tipo_elemento==3||tipo_elemento==8) {
+                    columan_imagen = "hidden";
+                    columna_imagen_detalle = "hidden";
+                }
+
+                if (tipo_elemento == 4 || tipo_elemento == 5 || tipo_elemento == 6 ) {
+                    columna_imagen_detalle = "hidden";
+                }
+
+                if (rows.length > 0) {
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' + columan_imagen 
+                    + '">Imagen</th><th style="width: 12%;" class="' + columna_imagen_detalle 
+                    + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 12%;">Acciones</th></tr></thead><tbody class="tbody_detalle_elemento_' 
+                    + elemento_id + '">' + tr + '</tbody></table>';
+                    $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5" style="padding-left: 2%;"><div class="table-detail"><div class="rows">' 
+                    + boton_nuevo + '' + tr + '</div></div></td>');
+                }
+                else {
+                    tr = '<table class="table table-bordered table-condensed table-xs table-hover"><thead><tr><th style="width: 5%;"></th><th>Texto</th><th class="' 
+                    + columan_imagen + '">Imagen</th><th style="width: 12%;" class="' + columna_imagen_detalle 
+                    + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 12%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
+                    $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
+                }
             }
         });
     };
@@ -372,6 +454,279 @@
                 PanelContenido.init_ListarDetalleElementos(elemento_id);
             }
         });
+        $(document).on('click','.btn_nuevo_detalle_elemento',function(){
+            var elemento_id = $(this).data("id");
+            var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
+
+            console.log(tipo_elemento);
+            $("#div_parrafo_detalleelemento").html("");
+            var input = '<input type="text" name="detel_parrafo" id="detel_parrafo" class="form-control" placeholder="Texto">';
+            var textarea = '<textarea name="detel_parrafo" id="detel_parrafo" class="form-control"></textarea>';
+            $("#div_parrafo_detalleelemento").html(input);
+            $("#tituloModalDetalleElemento").text("Nuevo");
+            $("#fk_elemento").val(elemento_id);
+            $("#fk_tipo").val(tipo_elemento);
+            $("#detel_id").val(0);
+            $("#detel_nombre_imagen").text("");
+            $("#detel_nombre_imagen_detalle").val("");
+            $("#spandetel_detalle").html('<i class="fa fa-upload"></i>  Subir Imagen');
+            $("#spandetel").html('<i class="fa fa-upload"></i>  Subir Imagen');
+            $("#detel_titulo").val("");
+            $("#detel_subtitulo").val("");
+            $("#detel_parrafo").val("");
+            $("#detel_estado").val("A");
+            $("#divdetel").hide();
+            $("#divdetel_detalle").hide();
+            if(tipo_elemento==4){
+                //hide
+                $(".detel-subtitulo").hide();
+                $(".detel-parrafo").hide();
+                $(".detel-imagen-detalle").hide();
+                //show
+                $(".detel-titulo").show();
+            }
+            else if(tipo_elemento==5){
+                //hide
+                $(".detel-parrafo").hide();
+                $(".detel-imagen-detalle").hide();
+                //show
+                $(".detel-titulo").show();
+                $(".detel-subtitulo").show();
+            }
+            else if(tipo_elemento==6){
+                //hide
+                $(".detel-imagen-detalle").hide();
+                //show
+                $(".detel-titulo").show();
+                $(".detel-subtitulo").show();
+                
+                $("#div_parrafo_detalleelemento").html(textarea);
+                $('#detel_parrafo').richText({
+                    imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                    fileUpload: false, urls: false
+                });
+                $("a.richText-help").hide();
+                $(".detel-parrafo").show();
+            }
+            else if(tipo_elemento==7){
+                $(".detel-titulo").hide();
+                $(".detel-subtitulo").hide();
+                $(".detel-parrafo").hide();
+                $(".detel-imagen-detalle").show();
+            }
+            $("#modalFormularioDetalleElemento").modal("show");
+        })
+
+        $(document).on('click', '.btn_guardar_detalle_elemento', function () {
+            //$("#form_detalle_elemento").submit();
+            var elemento_id = $("#fk_elemento").val();
+            var tipo_elemento = $("#elemento_" + elemento_id).data("tipo");
+
+            if (tipo_elemento == 4) {
+                if ($("#detel_titulo").val() == "") {
+                    messageResponse({
+                        text: 'Titulo es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+                if ($("#detel_imagen").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 5) {
+                if ($("#detel_titulo").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Titulo es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+
+                if ($("#detel_subtitulo").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'subtitulo es obligatorio',
+                        type: "error"
+                });
+                    return false;
+                }
+                if ($("#detel_imagen").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Seleccione Imagen',
+                        type: "error"
+                });
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 6) {
+                if ($("#detel_titulo").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Titulo es obligatorio',
+                        type: "error"
+                    });
+                    return false;
+                }
+
+                if ($("#detel_subtitulo").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Subtitulo es Obligatorio',
+                        type: "error"
+                    });
+
+                    return false;
+                }
+                if ($("#detel_parrafo").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Parrafo es Obligatorio',
+                        type: "error"
+                    });
+
+                    return false;
+                }
+                if ($("#detel_imagen").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Selecione Imagen',
+                        type: "error"
+                    });
+
+                    return false;
+                }
+            }
+
+            if (tipo_elemento == 7) {
+                if ($("#detel_imagen").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Selecione Imagen',
+                        type: "error"
+                    });
+                    return false;
+                }
+                if ($("#detel_imagen_detalle").val() == "" && $("#tituloModalDetalleElemento").text() == "Nuevo") {
+                    messageResponse({
+                        text: 'Selecione Imagen para Detalle',
+                        type: "error"
+                    });
+                    return false;
+                }
+            }
+            var dataForm = new FormData(document.getElementById("form_detalle_elemento"));
+            var url = '';
+            if ($("#detel_id").val() == 0) {
+                url = 'WebDetalleElemento/WebDetalleElementoInsertarJson';
+            }
+            else {
+                url = 'WebDetalleElemento/WebDetalleElementoEditarJson';
+            }
+            responseFileSimple({
+                url: url,
+                data: dataForm,
+                refresh: false,
+                callBackSuccess: function (response) {
+                    if (response.respuesta) {
+                        PanelContenido.init_ListarDetalleElementos(elemento_id);
+                        $("#modalFormularioDetalleElemento").modal("hide");
+                    }
+                }
+            })
+        });
+        $(document).on("change", "#detel_imagen", function () {
+            var _image = $('#detel_imagen')[0].files[0];
+            if (_image != null) {
+                var image_arr = _image.name.split(".");
+                var extension = image_arr[1].toLowerCase();
+                //console.log(extension);
+                if (extension!= "jpg" && extension != "png" && extension != "jpeg") {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato jpg, png ó jpeg',
+                        type: "warning"
+                    });
+                }
+                else {
+                    var nombre = image_arr[0].substring(0, 11);
+                    var actualicon = image_arr[1].toLowerCase();
+                    var icon = "";
+                    if (actualicon == "png" || actualicon == "jpg" || actualicon == 'jpeg') {
+                        icon = '<i class="fa fa-file-word-o"></i>';
+                    }
+                    else {
+                        icon = '<i class="fa fa-file-pdf-o"></i>';
+                    };
+                    $("#spandetel").html("");
+                    $("#spandetel").append(icon + " " + nombre + "... ." + actualicon);
+                    $("#spandetel").css({ 'font-size': '10px' });
+                }
+            }
+            else {
+                $("#spandetel").html("");
+                $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Imagen');
+            }
+        });
+        $(document).on("change", "#detel_imagen_detalle", function () {
+            var _image = $('#detel_imagen_detalle')[0].files[0];
+            if (_image != null) {
+                var image_arr = _image.name.split(".");
+                var extension = image_arr[1].toLowerCase();
+                //console.log(extension);
+                if (extension!= "jpg" && extension != "png" && extension != "jpeg") {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato jpg, png ó jpeg',
+                        type: "warning"
+                    });
+                }
+                else {
+                    var nombre = image_arr[0].substring(0, 11);
+                    var actualicon = image_arr[1].toLowerCase();
+                    var icon = "";
+                    if (actualicon == "png" || actualicon == "jpg" || actualicon == 'jpeg') {
+                        icon = '<i class="fa fa-file-word-o"></i>';
+                    }
+                    else {
+                        icon = '<i class="fa fa-file-pdf-o"></i>';
+                    };
+                    $("#spandetel_detalle").html("");
+                    $("#spandetel_detalle").append(icon + " " + nombre + "... ." + actualicon);
+                    $("#spandetel_detalle").css({ 'font-size': '10px' });
+                }
+            }
+            else {
+                $("#spandetel_detalle").html("");
+                $("#spandetel_detalle").append('<i class="fa fa-upload"></i>  Subir Imagen');
+            }
+        });
+        $(document).on("click", ".btn_eliminar_detalle_elemento", function (e) {
+            var det_elemento_id = $(this).data("id");
+            var elemento_id = $(this).data("elemento_id");
+            if (det_elemento_id != "" || det_elemento_id > 0) {
+                messageConfirmation({
+                    content: '¿Esta seguro que desea ELIMINAR este Detalle de Elemento?',
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: "WebDetalleElemento/WebDetalleElementoEliminarJson",
+                            data: JSON.stringify({ detel_id: det_elemento_id }),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                if (response.respuesta) {
+                                    PanelContenido.init_ListarDetalleElementos(elemento_id);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+            else {
+                messageResponse({
+                    text: "Error no se encontro ID",
+                    type: "error"
+                })
+            }
+        });
+        
         /**End Seccion Detalle de Elementos */
 
     }

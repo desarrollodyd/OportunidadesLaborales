@@ -3,6 +3,7 @@ using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.WebCorporativa;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +14,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
     {
         // GET: WebElemento
         WebElementoModel elementobl = new WebElementoModel();
+        WebDetalleElementoModel detallebl = new WebDetalleElementoModel();
         public ActionResult Index()
         {
             return View();
@@ -162,8 +164,33 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             string errormensaje = "";
             bool response = false;
             claseError error = new claseError();
+            List<WebDetalleElementoEntidad> listadetalles = new List<WebDetalleElementoEntidad>();
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/WebFiles/";
+            string rutaEliminar = "";
             try
             {
+                var listaTupla = detallebl.WebDetalleElementoListarxElementoIDJson(elem_id);
+                if (listaTupla.error.Key.Equals(string.Empty)) {
+                    listadetalles = listaTupla.listadetalle;
+                    foreach(var m in listadetalles)
+                    {
+                        if (m.fk_tipo == 4 || m.fk_tipo == 5 || m.fk_tipo == 6 || m.fk_tipo == 7) {
+                            rutaEliminar = Path.Combine(direccion, m.detel_imagen);
+                            if (System.IO.File.Exists(rutaEliminar))
+                            {
+                                System.IO.File.Delete(rutaEliminar);
+                            }
+                            if (m.fk_tipo == 7) {
+                                rutaEliminar = Path.Combine(direccion, m.detel_imagen_detalle);
+                                if (System.IO.File.Exists(rutaEliminar))
+                                {
+                                    System.IO.File.Delete(rutaEliminar);
+                                }
+                            }
+                        }
+                        
+                    }
+                }
                 var intranetElementoTupla = elementobl.WebElementoEliminarJson(elem_id);
                 error = intranetElementoTupla.error;
                 if (error.Key.Equals(string.Empty))
