@@ -1,0 +1,111 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutWebCorporativaAdmin.cshtml";
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Menus</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs" id="tabmenu">
+                    <li class="active">
+                        <a data-toggle="tab" href="#_tab_contenido_0">
+                            <i class="red ace-icon fa fa-tachometer bigger-110"></i>
+                            SALAS
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#_tab_contenido_1">
+                            <i class="red ace-icon fa fa-tachometer bigger-110"></i>
+                            APUESTAS DEPORTIVAS
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#_tab_contenido_2">
+                            <i class="red ace-icon fa fa-tachometer bigger-110"></i>
+                            NOTICIAS
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#_tab_contenido_3">
+                            <i class="red ace-icon fa fa-tachometer bigger-110"></i>
+                            CONÓCENOS
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#_tab_contenido_4">
+                            <i class="red ace-icon fa fa-tachometer bigger-110"></i>
+                            PROMOCIONES
+                        </a>
+                    </li>
+                    <li class="">
+                        <a data-toggle="tab" href="#_tab_contenido_5">
+                            <i class="red ace-icon fa fa-tachometer bigger-110"></i>
+                            CONTACTO
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="tabcontenido" style="min-height: 380px;height:auto;">
+                    <div id="_tab_contenido_0" class="tab-pane in active ">
+                        <div class="row" style="margin-bottom:8px">
+                            <div class="col-md-12">
+                                <div class="text-warning bigger-110 orange align-center">
+                                    Departamentos
+                                    <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                                    <button class="btn btn-white btn-success btn-sm btn-block btn-round btnNuevoDepartamento" data-id="" data-rel="tooltip" title="Nuevo Departamento"><i class="ace-icon fa fa-file"></i> Nuevo  </button></div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr />
+                            </div>
+                            <div class="col-md-12">
+                                <div>
+                                    <table id="provinciasTable" class="table table-condensed datatable-menulistado table-striped table-bordered table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <div class="alert alert-warning alert-dismissible text-center" style="margin-bottom:0px;"><span>Listando Data</span></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                           
+                        </div>
+                        <div id="_tab_contenido_1" class="tab-pane in  ">
+                            <div class="alert alert-warning">Buscando Data1..</div>
+                        </div>
+                        <div id="_tab_contenido_2" class="tab-pane in  ">
+                            <div class="alert alert-warning">Buscando Data.2..</div>
+                        </div>
+                        <div id="_tab_contenido_3" class="tab-pane in  ">
+                            <div class="alert alert-warning">Buscando Data3...</div>
+                        </div>
+                        <div id="_tab_contenido_4" class="tab-pane in  ">
+                            <div class="alert alert-warning">Buscando Data.4..</div>
+                        </div>
+                        <div id="_tab_contenido_5" class="tab-pane in  ">
+                            <div class="alert alert-warning">Buscando Data..8.</div>
+                        </div>
+                    </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section js
+{
+    <script src="~/Content/viewjs/WebCorporativaAdmin/WebMenus.js"></script>
+}

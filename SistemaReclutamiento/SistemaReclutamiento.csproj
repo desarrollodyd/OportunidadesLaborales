@@ -4054,6 +4054,7 @@
     <Content Include="Content\viewjs\Proveedor\ProveedorCambiarPasswordVista.js" />
     <Content Include="Content\viewjs\Proveedor\ReportePagosJs.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebDepartamento.js" />
+    <Content Include="Content\viewjs\WebCorporativaAdmin\WebMenus.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebSecciones.js" />
     <Content Include="Content\WebCorporativa\cascada.jpg" />
     <Content Include="Content\WebCorporativa\chiclayo.jpg" />
@@ -5395,6 +5396,7 @@
     <Content Include="Views\WebCorporativa\apuestas.cshtml" />
     <Content Include="Views\WebCorporativa\noticias.cshtml" />
     <Content Include="Views\WebCorporativa\conocenos.cshtml" />
+    <Content Include="Views\WebCorporativaAdmin\WebMenus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

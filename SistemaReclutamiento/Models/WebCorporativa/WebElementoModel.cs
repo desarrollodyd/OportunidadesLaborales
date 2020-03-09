@@ -214,5 +214,56 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             return (reordenado: response, error: error);
         }
+
+        //////////////////////////////////////////////////////////////
+        ///
+
+        public (List<WebElementoEntidad> lista, claseError error) WebElementoListarxMenuIDxtipoJson(int menu_id,int tipo)
+        {
+            List<WebElementoEntidad> lista = new List<WebElementoEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT elem_id, elem_contenido, fk_menu, fk_tipo_elemento, elem_orden,tipo_nombre,elem_estado
+                                FROM web_corporativa.web_elemento join web_corporativa.web_tipo_elemento
+                                on web_corporativa.web_elemento.fk_tipo_elemento=web_corporativa.web_tipo_elemento.tipo_id
+                                where fk_menu=@p0 and fk_tipo_elemento=@p1 order by elem_orden;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", menu_id);
+                    query.Parameters.AddWithValue("@p1", menu_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var Elemento = new WebElementoEntidad
+                                {
+
+                                    elem_id = ManejoNulos.ManageNullInteger(dr["elem_id"]),
+                                    elem_contenido = ManejoNulos.ManageNullStr(dr["elem_contenido"]),
+                                    elem_orden = ManejoNulos.ManageNullInteger(dr["elem_orden"]),
+                                    fk_menu = ManejoNulos.ManageNullInteger(dr["fk_menu"]),
+                                    fk_tipo_elemento = ManejoNulos.ManageNullInteger(dr["fk_tipo_elemento"]),
+                                    tipo_nombre = ManejoNulos.ManageNullStr(dr["tipo_nombre"]),
+                                    elem_estado = ManejoNulos.ManageNullStr(dr["elem_estado"]),
+                                };
+                                lista.Add(Elemento);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista, error: error);
+        }
     }
 }
