@@ -13,5 +13,20 @@ namespace SistemaReclutamiento.Controllers.WebCorporativa
         {
             return View();
         }
+
+        public ActionResult apuestas()
+        {
+            return View();
+        }
+
+        public ActionResult noticias()
+        {
+            return View();
+        }
+
+        public ActionResult conocenos()
+        {
+            return View();
+        }
     }
 }
