@@ -13,5 +13,6 @@ namespace SistemaReclutamiento.Entidades
         public int dro_orden { get; set; }
         public string dro_estado { get; set; }
         public int fk_det_pregunta_of { get; set; }
+        public int dro_calificacion { get; set; }
     }
 }

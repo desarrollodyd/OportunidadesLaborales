@@ -329,15 +329,22 @@ namespace SistemaReclutamiento.Controllers
                     id = Convert.ToInt32(split[1]);
                     //respuesta.fk_pos_pregunta_ol = id;
                     string[] splitRespuesta = Convert.ToString(respuestas[contadorRespuestas]).Split('=');
+                    string[] splitDetalleRespuesta = Convert.ToString(splitRespuesta[0]).Split('~');
+                    if (splitDetalleRespuesta.Length == 5) {
+                        respuesta.rol_calificacion = Convert.ToInt32(splitDetalleRespuesta[1]);
+                        respuesta.rol_tipo = splitDetalleRespuesta[2];
+                        respuesta.rol_orden = Convert.ToInt32(splitDetalleRespuesta[3]);
+                        respuesta.rol_estado = splitDetalleRespuesta[4];
+                    }
                     if (splitRespuesta[1].ToString() != "")
                     {
-                        respuesta.rol_respuesta = Convert.ToString(splitRespuesta[1]);
+                        respuesta.rol_respuesta = Convert.ToString(HttpUtility.UrlDecode(splitRespuesta[1]));
                     }
                     else
                     {
                         contadorRespuestas++;
                         splitRespuesta = Convert.ToString(respuestas[contadorRespuestas]).Split('=');
-                        respuesta.rol_respuesta = Convert.ToString(splitRespuesta[1]);
+                        respuesta.rol_respuesta = Convert.ToString(HttpUtility.UrlDecode(splitRespuesta[1]));
 
                     }
                     try

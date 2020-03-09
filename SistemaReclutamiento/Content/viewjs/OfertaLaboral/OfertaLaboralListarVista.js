@@ -128,12 +128,8 @@
                 refresh: false,
                 callBackSuccess: function (response) {
                     CloseMessages();
+                    console.log(response);
                     var oferta = response.oferta;
-                    //$("#postularModalBody>.panel-default>.panel-body").html("");
-                    //$("#postularModalBody>.panel-default>.requisitos").append("<p>" + oferta.ola_requisitos + "</p>");
-                    //$("#postularModalBody>.panel-default>.funciones").append("<p>" + oferta.ola_funciones + "</p>");
-                    //$("#postularModalBody>.panel-default>.competencias").append("<p>" + oferta.ola_competencias + "</p>");
-                    //$("#postularModalBody>.panel-default>.condiciones_lab").append("<p>" + oferta.ola_condiciones_lab + "</p>");
                     var listaPreguntas = response.data;
                     var anexar = $("#postularModalBody>.x_panel>.x_content>form");
                     $(anexar).html("");
@@ -145,10 +141,10 @@
                         $.each(listaRespuestas, function (i, respuesta) {
                             var tituloRespuesta = "";
                             if (respuesta.dro_respuesta == "") {
-                                tituloRespuesta += '<div class="radio"><label><input name="opt_respuesta' + pregunta.dop_id + '" data-id="' + pregunta.dop_id + '" class="texto' + pregunta.dop_id + '" type="radio" value="" /> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" name="opt_respuestalabel' + pregunta.dop_id + '" /></div>';
+                                tituloRespuesta += '<div class="radio"><label><input name="opt_respuesta' + pregunta.dop_id + '~'+respuesta.dro_calificacion+'~'+respuesta.dro_tipo+'~'+respuesta.dro_orden+'~'+respuesta.dro_estado+'" data-id="' + pregunta.dop_id + '" class="texto' + pregunta.dop_id + '" type="radio" value="" /> Otra Respuesta:</label> <input class="form-control" type="text" placeholder="Respuesta" disabled="true" name="opt_respuestalabel' + pregunta.dop_id + '" /></div>';
                             }
                             else {
-                                tituloRespuesta += '<div class="radio"><label><input data-id="' + pregunta.dop_id + '" value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id + '" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
+                                tituloRespuesta += '<div class="radio"><label><input data-id="' + pregunta.dop_id + '" value="' + respuesta.dro_respuesta + '"name="opt_respuesta' + pregunta.dop_id +'~'+respuesta.dro_calificacion+'~'+respuesta.dro_tipo+'~'+respuesta.dro_orden+'~'+respuesta.dro_estado+'" type="radio"/>' + respuesta.dro_respuesta + '</label></div>';
                             }
                             $(".pregunta" + respuesta.fk_det_pregunta_of).append(tituloRespuesta);
                         });
