@@ -12,7 +12,7 @@ namespace SistemaReclutamiento.Entidades
         public string rol_tipo { get; set; }
         public int rol_orden { get; set; }
         public bool rol_elegida { get; set; }
-        public string rol_calificacion { get; set; }
+        public int rol_calificacion { get; set; }
         public string rol_estado { get; set; }
         public int fk_pos_pregunta_ol { get; set; }
     }

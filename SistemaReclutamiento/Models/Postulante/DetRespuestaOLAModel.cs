@@ -20,7 +20,7 @@ namespace SistemaReclutamiento.Models
         public List<DetRespuestaOLAEntidad> DetRespuestaListarporPreguntaJson(int fk_det_pregunta_of)
         {
             List<DetRespuestaOLAEntidad> lista = new List<DetRespuestaOLAEntidad>();
-            string consulta = @"SELECT dro_id, dro_respuesta, dro_tipo, dro_orden, dro_estado, fk_det_pregunta_of
+            string consulta = @"SELECT dro_id, dro_respuesta, dro_tipo, dro_orden, dro_estado, fk_det_pregunta_of,dro_calificacion
 	FROM gestion_talento.gdt_ola_det_respuesta_of where fk_det_pregunta_of=@p0 and dro_estado='A'
                                 order by dro_orden asc;";
             try
@@ -44,7 +44,8 @@ namespace SistemaReclutamiento.Models
                                     dro_tipo = ManejoNulos.ManageNullStr(dr["dro_tipo"]),
                                     dro_orden = ManejoNulos.ManageNullInteger(dr["dro_orden"]),
                                     dro_estado = ManejoNulos.ManageNullStr(dr["dro_estado"]),
-                                    fk_det_pregunta_of = ManejoNulos.ManageNullInteger(dr["fk_det_pregunta_of"])
+                                    fk_det_pregunta_of = ManejoNulos.ManageNullInteger(dr["fk_det_pregunta_of"]),
+                                    dro_calificacion = ManejoNulos.ManageNullInteger(dr["dro_calificacion"]),
                                 };
 
                                 lista.Add(detalle);
