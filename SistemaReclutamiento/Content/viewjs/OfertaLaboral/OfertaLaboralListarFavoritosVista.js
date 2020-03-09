@@ -23,7 +23,6 @@
             refresh: false,
             callBackSuccess: function (response) {
                 CloseMessages();
-                console.log(response);
                 var data = response.data;
                 var respuesta = response.respuesta;
                 $("#ofertasContenido").html("");
@@ -37,7 +36,9 @@
                         //else {
                         //    span += 'fa fa-star-o';
                         //}
-                        if (!value.ya_postulo) {
+                        var fecha_fin = new Date(moment(value.ola_fecha_fin).format('YYYY-MM-DD'));
+                        var diahoy = new Date(moment(new Date()).format('YYYY-MM-DD'));
+                        if (!value.ya_postulo&&fecha_fin>=diahoy) {
                             span += '<button type="button" id=postular' + value.ola_id + ' data-id=' + value.ola_id + ' class="btn btn-success btn-sm btn_postular" style="font-size: 15px !important;" data-toggle="modal" data-target=".bs-example-modal-postular"> Postula</button>';
                         }
                         $("#ofertasContenido").append('<div class=col-md-4 col-sm-4 col-xs-12"><div class="profile_details">' +

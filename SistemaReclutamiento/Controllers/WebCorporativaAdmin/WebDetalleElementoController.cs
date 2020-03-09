@@ -94,7 +94,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     if (detalle.fk_tipo == 7) {
                         HttpPostedFileBase imagen_detalle = Request.Files[1];
                         //verificar si la primera imagen existe
-                        if (imagen_detalle.ContentLength > 0 && imagen_1 != null)
+                        if (imagen_detalle.ContentLength > 0 && imagen_detalle != null)
                         {
                             if (imagen_detalle.ContentLength <= tamanioMaximo)
                             {
@@ -128,7 +128,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var totaltupla = detallebl.WebDetalleElementoListarxElementoIDJson(detalle.fk_elemento);
                 if (totaltupla.error.Key.Equals(string.Empty))
                 {
-                    detalle.detel_orden = totaltupla.listadetalle.Max(x => x.detel_orden) + 1;
+                    if (totaltupla.listadetalle.Count > 0)
+                    {
+                        detalle.detel_orden = totaltupla.listadetalle.Max(x => x.detel_orden) + 1;
+                    }
+                    else {
+                        detalle.detel_orden = 1;
+                    }
+                    
                 }
                 else {
                     detalle.detel_orden = 1;
@@ -201,26 +208,158 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             return Json(new {respuesta,mensaje });
         }
         [HttpPost]
-        public ActionResult WebDetallleElementoEditarJson(WebDetalleElementoEntidad detalle) {
+        public ActionResult WebDetalleElementoEditarJson(WebDetalleElementoEntidad detalle) {
 
             int tamanioMaximo = 4194304;
             string extension = "";
-            string errormensaje = "";
-            bool respuestaConsulta = false;
-            string mensajeConsola = "";
+            string mensaje = "";
+            bool respuesta = false;
             string rutaInsertar = "";
             string rutaAnterior = "";
             WebDetalleElementoEntidad detalleelemento = new WebDetalleElementoEntidad();
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/WebFiles/";
             try
             {
                 if (detalle.fk_tipo == 4 || detalle.fk_tipo == 5 || detalle.fk_tipo == 6 || detalle.fk_tipo == 7) {
-                   
+                    HttpPostedFileBase imagen_1 = Request.Files[0];
+                    if (imagen_1.ContentLength > 0 && imagen_1 != null)
+                    {
+                        if (imagen_1.ContentLength <= tamanioMaximo)
+                        {
+                            extension = Path.GetExtension(imagen_1.FileName);
+                            if (extension.ToLower() == ".jpg" || extension.ToLower() == ".png" || extension.ToLower() == ".jpeg")
+                            {
+                                var nombreArchivo = "Imagen_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension;
+                                rutaInsertar = Path.Combine(direccion, nombreArchivo);
+                                rutaAnterior= Path.Combine(direccion, detalle.detel_nombre_imagen);
+                               
+                                if (!Directory.Exists(direccion))
+                                {
+                                    System.IO.Directory.CreateDirectory(direccion);
+                                }
+                                if (System.IO.File.Exists(rutaAnterior))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
+                                }
+                                imagen_1.SaveAs(rutaInsertar);
+                                detalle.detel_imagen = nombreArchivo;
+                            }
+                            else
+                            {
+                                mensaje = "Solo se aceptan formaton PNG ó JPG";
+                                return Json(new { mensaje = mensaje, respuesta = respuesta });
+                            }
+                        }
+
+                    }
+                    else {
+                        detalle.detel_imagen = detalle.detel_nombre_imagen;
+                    }
+                    if (detalle.fk_tipo == 7) {
+                        HttpPostedFileBase imagen_detalle = Request.Files[1];
+                        //verificar si la primera imagen existe
+                        if (imagen_detalle.ContentLength > 0 && imagen_detalle != null)
+                        {
+                            if (imagen_detalle.ContentLength <= tamanioMaximo)
+                            {
+                                extension = Path.GetExtension(imagen_detalle.FileName);
+                                if (extension.ToLower() == ".jpg" || extension.ToLower() == ".png" || extension.ToLower() == ".jpeg")
+                                {
+                                    var nombreArchivo = "DetalleImagen_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension;
+                                    rutaInsertar = Path.Combine(direccion, nombreArchivo);
+                                    rutaAnterior = Path.Combine(direccion, detalle.detel_nombre_imagen_detalle);
+                                    if (!Directory.Exists(direccion))
+                                    {
+                                        System.IO.Directory.CreateDirectory(direccion);
+                                    }
+                                    if (System.IO.File.Exists(rutaAnterior))
+                                    {
+                                        System.IO.File.Delete(rutaAnterior);
+                                    }
+                                    imagen_detalle.SaveAs(rutaInsertar);
+                                    detalle.detel_imagen_detalle = nombreArchivo;
+                                }
+                                else
+                                {
+                                    mensaje = "Solo se aceptan formaton PNG ó JPG";
+                                    return Json(new { mensaje = mensaje, respuesta = respuesta });
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { respuesta = false, mensaje = "Archivo demasiado grande" });
+                            }
+                        }
+                        else {
+                            detalle.detel_imagen_detalle = detalle.detel_nombre_imagen_detalle;
+                        }
+                    }
+                }
+                //Edicion
+                var editadoTupla = detallebl.WebDetalleElementoEditarJson(detalle);
+                if (editadoTupla.error.Key.Equals(string.Empty)) {
+                    respuesta = editadoTupla.WebDetalleElementoEditado;
+                    mensaje = "Editado";
+                }
+                else {
+                    mensaje = editadoTupla.error.Value;
                 }
             }
             catch (Exception ex) {
-
+                mensaje = ex.Message;
             }
-            return Json(new { });
+            return Json(new {respuesta,mensaje });
+        }
+        [HttpPost]
+        public ActionResult WebDetalleElementoIDObtenerJson(int detel_id) {
+            string errormensaje = "";
+            bool response = false;
+            WebDetalleElementoEntidad detalle = new WebDetalleElementoEntidad();
+            try
+            {
+                var detalleTupla = detallebl.WebDetalleElementoIdObtenerJson(detel_id);
+                if (detalleTupla.error.Key.Equals(string.Empty)) {
+                    detalle = detalleTupla.detalle;
+                    errormensaje = "Obteniendo Detalle";
+                    response = true;
+                }
+                else
+                {
+                    errormensaje = detalleTupla.error.Value;
+                }
+            }
+            catch (Exception ex) {
+                errormensaje = ex.Message;
+            }
+            return Json(new { respuesta=response,data=detalle,mensaje=errormensaje });
+        }
+        [HttpPost]
+        public ActionResult WebDetalleElementoEditarOrdenJson(WebDetalleElementoEntidad[] arrayDetElemento)
+        {
+            WebDetalleElementoEntidad detalle = new WebDetalleElementoEntidad();
+            claseError error = new claseError();
+            bool response = false;
+            string errormensaje = "";
+            int tamanio = arrayDetElemento.Length;
+            foreach (var m in arrayDetElemento)
+            {
+                detalle.detel_id = m.detel_id;
+                detalle.detel_orden = m.detel_orden;
+                var reordenadoTupla = detallebl.WebDetalleElementoEditarOrdenJson(detalle);
+                error = reordenadoTupla.error;
+                if (error.Key.Equals(string.Empty))
+                {
+                    response = reordenadoTupla.WebDetElementoReordenado;
+                    errormensaje = "Editado";
+                }
+                else
+                {
+                    response = false;
+                    errormensaje = "No se Pudo Editar";
+                    return Json(new { respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
+                }
+            }
+            return Json(new { tamanioelemento = tamanio, respuesta = response, mensaje = errormensaje, mensajeconsola = "" });
         }
     }
 }

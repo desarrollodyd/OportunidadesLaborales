@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Entidades.WebCorporativa
 {
     public class WebElementoEntidad
     {
         public int elem_id { get; set; }
+        [AllowHtml]
         public string elem_contenido { get; set; }
         public int elem_orden { get; set; }
         public int fk_menu { get; set; }

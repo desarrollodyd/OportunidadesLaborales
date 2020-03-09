@@ -161,7 +161,7 @@
                     refresh: false,
                     callBackSuccess: function (response) {
                         if (response.respuesta) {
-                            PanelContenido.init_ListarElementos(menu_id);
+                            //PanelContenido.init_ListarElementos(menu_id);
                         }
                     }
                 });
@@ -261,6 +261,34 @@
                     + '">Ubicacion</th><th style="width: 10%;">Estado</th><th style="width: 12%;">Acciones</th></tr></thead><tbody><tr><td colspan="6"><div class="alert alert-warning" style="margin-bottom:0px;">No tiene Data ...</div></td></tr></tbody></table>';
                     $('#tr_elemento_contenido_' + elemento_id).html('<td colspan="5"><div class="table-detail">' + boton_nuevo + ''+tr+'</div></td>');
                 }
+            }
+        });
+    };
+    var _sort_detalle_elemento = function (elemento_id) {
+        $('.tbody_detalle_elemento_' + elemento_id).sortable({
+            cursor: 'move',
+            placeholder: 'box placeholder',
+            stop: function (event, ui) {
+                let lista_orden = [];
+                var lista = $('.tbody_detalle_elemento_' + elemento_id + ' tr.elem_' + elemento_id);
+                $.each(lista, function (index, value) {
+                    lista_orden.push({
+                        detel_id: $(this).data("id"),
+                        detel_orden: (index + 1)
+                    });
+                    $(this).find("span.detelem_orden").text((index + 1));
+                });
+                console.log(lista_orden);
+                responseSimple({
+                    url: "WebDetalleElemento/WebDetalleElementoEditarOrdenJson",
+                    data: JSON.stringify({ arrayDetElemento: lista_orden }),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                        if (response.respuesta) {
+                            //PanelContenido.init_ListarDetalleElementos(elemento_id);
+                        }
+                    }
+                });
             }
         });
     };
@@ -726,6 +754,106 @@
                 })
             }
         });
+        $(document).on('click', '.btn_editar_detalle_elemento', function (e) {
+            var det_elemento_id = $(this).data("id");
+            $("#tituloModalDetalleElemento").text("Editar");
+            var dataForm = {
+                detel_id: det_elemento_id,
+            }
+            responseSimple({
+                url: 'WebDetalleElemento/WebDetalleElementoIdObtenerJson',
+                refresh: false,
+                data: JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    var data = response.data;
+                    if (response.respuesta) {
+                        $("#detel_imagen").val("");
+                        $("#detel_imagen_detalle").val("");
+
+                        $("#divdetel").hide();
+                        $("#divdetel_detalle").hide();
+                        $(".detel-titulo").hide();
+                        $(".detel-subtitulo").hide();
+                        $(".detel-parrafo").hide();
+                        $("#divdetel_detalle").hide();
+                        $(".detel-imagen-detalle").hide();
+
+
+
+                        $('#detel_id').val(data.detel_id);
+                        $('#fk_elemento').val(data.fk_elemento);
+                        $("#fk_tipo").val(data.fk_tipo);
+                        $("#spandetel").html("");
+                        $("#spandetel").append('<i class="fa fa-upload"></i>  Subir Imagen');
+                        $("#spandetel_detalle").html("");
+                        $("#spandetel_detalle").append('<i class="fa fa-upload"></i>  Subir Detalle');
+                        if (data.fk_tipo == 4||data.fk_tipo==5||data.fk_tipo==6||data.fk_tipo==7)
+                         {
+                            $(".detel-imagen").show();
+                            $("#detel_nombre_imagen_modal").text("Nombre: " + data.detel_imagen);
+                            $("#detel_nombre_imagen").val(data.detel_imagen);
+                            $("#icono_actual_detel").attr("src", basePath+"WebFiles/" + data.detel_imagen);
+                            $("#divdetel").show();
+                            
+                            if(data.fk_tipo==4){
+                                $(".detel-titulo").show();
+                            }
+                             else if(data.fk_tipo==5){
+                                $(".detel-titulo").show();
+                                $(".detel-subtitulo").show();
+                                
+                            }
+                            else if(data.fk_tipo==6){
+                                $(".detel-titulo").show();
+                                $(".detel-subtitulo").show();
+                                $(".detel-parrafo").show();
+                                
+                            }
+                            else if(data.fk_tipo==7){
+                                $("#detel_nombre_imagen_detalle_modal").text("Nombre: " + data.detel_imagen_detalle);
+                                $("#detel_nombre_imagen_detalle").val(data.detel_imagen_detalle);
+                                $("#icono_actual_detel_detalle").attr("src", basePath+"WebFiles/" + data.detel_imagen_detalle);
+                                $("#divdetel_detalle").show();
+                                $(".detel-imagen-detalle").show();
+                            }
+                        }
+                        $("#div_parrafo_detalleelemento").html("");
+                        var input = '<input type="text" name="detel_parrafo" id="detel_parrafo" class="form-control" placeholder="Texto">';
+                        var textarea = '<textarea name="detel_parrafo" id="detel_parrafo" class="form-control"></textarea>';
+                        $("#div_parrafo_detalleelemento").html(input);
+
+                        if (data.fk_tipo == 6) {
+                            $("#div_parrafo_detalleelemento").html(textarea);
+                            $("#detel_parrafo").val(data.detel_parrafo);
+                            $('#detel_parrafo').richText({
+                                imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                                fileUpload: false, urls: false
+                            });
+                            $("a.richText-help").hide();
+                        }
+
+                        
+                        $("#detel_estado").val(data.detel_estado);
+                        $("#detel_titulo").val(data.detel_titulo);
+                        $("#detel_subtitulo").val(data.detel_subtitulo);
+                        $("#detel_parrafo").val(data.detel_parrafo);
+                        $("#detel_orden").val(data.detel_orden);
+                        $('#modalFormularioDetalleElemento').modal('show');
+                    }
+                },
+            })
+
+        });
+        $(document).on('click', '.btn_ordenar_detalle_elemento', function (e) {
+            var elemento_id = $(this).data("id");
+            var spans = $('tbody.tbody_detalle_elemento_' + elemento_id + ' tr span.detelem_orden');
+            console.log(spans)
+            $.each(spans, function (index, value) {
+                $(this).removeClass("label-default");
+                $(this).addClass("label-warning");
+            });
+            PanelContenido.init_Sort_Detalle_Elemento(elemento_id);
+        });
         
         /**End Seccion Detalle de Elementos */
 
@@ -783,6 +911,9 @@
         },
         init_ListarDetalleElementos: function (elemento_id) {
             _ListarDetalleElementos(elemento_id);
+        },
+        init_Sort_Detalle_Elemento: function (elemento_id) {
+            _sort_detalle_elemento(elemento_id);
         },
     }
 }();
