@@ -157,8 +157,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                 cuerpo = cuerpo.Replace(m.url, "cid:imagen" + contador);
                                 contador++;
                             }
-                            string html = @"<div style=" + background + " ><div style=" + "\"text-align:center;\"" + "><h1>¡Corporacion PJ Te desea Un Feliz Cumpleaños!</h1></div></br>" +
-                                "<div style=\"padding-left:25px;\"><h2>Ademas queremos entregarte un mensaje de " + persona_que_saluda + " para ti :<h2></br>" +
+                            string html = @"<div style=" + background + " ><div style=" + "\"text-align:center;\"" + "><h1>¡Corporación PJ te desea un feliz cumpleaños!</h1></div></br>" +
+                                "<div style=\"padding-left:25px;\"><h2>Además queremos entregarte un mensaje de " + persona_que_saluda + " para ti :<h2></br>" +
                                 "<h1>" + cuerpo + "<h1>" +
                                           "</div></div>";
                             contador = 0;

@@ -1,5 +1,7 @@
 ﻿using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.Postulante;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Models.Postulante;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,7 @@ namespace SistemaReclutamiento.Controllers
         OfimaticaModel ofimaticabl = new OfimaticaModel();
         PostgradoModel postgradobl = new PostgradoModel();
         EstOfimaticaModel ofimaticaHerramientabl = new EstOfimaticaModel();
+        PosSeleccionModel postulanteseleccionbl = new PosSeleccionModel();
         static ConfiguracionModel configuracionbl = new ConfiguracionModel();
         static ConfiguracionEntidad rutaPerfilPostulante = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_FOTO_POSTULANTE");
         static ConfiguracionEntidad rutaCvPostulante = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_CV_POSTULANTE");
@@ -315,10 +318,12 @@ namespace SistemaReclutamiento.Controllers
             string errormensaje = "";
             PosPreguntaOLAEntidad pregunta = new PosPreguntaOLAEntidad();
             PosRespuestaOLAEntidad respuesta = new PosRespuestaOLAEntidad();
-            int id = 0, idPreguntaInsertada = 0, contador = 0, contadorRespuestas=0;
+            PosSeleccionEntidad posSeleccion = new PosSeleccionEntidad();
+            int id = 0, idPreguntaInsertada = 0, contador = 0, contadorRespuestas=0,totalCalificacion=0;
 
             string[] respuestas = form.Split('&');
             pregunta.fk_postulacion = fk_postulacion;
+            posSeleccion.fk_postulacion = fk_postulacion;
 
             if (preguntas.Length > 0)
             {
@@ -335,6 +340,7 @@ namespace SistemaReclutamiento.Controllers
                         respuesta.rol_tipo = splitDetalleRespuesta[2];
                         respuesta.rol_orden = Convert.ToInt32(splitDetalleRespuesta[3]);
                         respuesta.rol_estado = splitDetalleRespuesta[4];
+                        totalCalificacion += respuesta.rol_calificacion;
                     }
                     if (splitRespuesta[1].ToString() != "")
                     {
@@ -366,6 +372,13 @@ namespace SistemaReclutamiento.Controllers
                     }
                     contador++;
                     contadorRespuestas++;
+                }
+                //guardado en tabla gdt_sel_postulante(calificacion total de las preguntas repondidas)
+                posSeleccion.spo_nivel1_calif = totalCalificacion;
+                posSeleccion.spo_nivel1_selec = false;
+                var totalSeleccionTupla = postulanteseleccionbl.PosSeleccionInsertarJson(posSeleccion);
+                if (!totalSeleccionTupla.error.Key.Equals(string.Empty)) {
+                    return Json(new { respuesta = false, mensaje = "No se pudo insertar el total de Calificacion" });
                 }
             }
             else {

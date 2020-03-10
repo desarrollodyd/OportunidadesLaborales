@@ -5234,6 +5234,7 @@
     <Compile Include="Entidades\Postulante\EstIdiomaEntidad.cs" />
     <Compile Include="Entidades\Postulante\ExperienciaEntidad.cs" />
     <Compile Include="Entidades\Postulante\IdiomaEntidad.cs" />
+    <Compile Include="Entidades\Postulante\PosSeleccionEntidad.cs" />
     <Compile Include="Entidades\Postulante\PostulanteFavoritosEntidad.cs" />
     <Compile Include="Entidades\Proveedor\CPCARTEntidad.cs" />
     <Compile Include="Entidades\Proveedor\CPPAGOEntidad.cs" />
@@ -5292,6 +5293,7 @@
     <Compile Include="Models\Postulante\EstIdiomaModel.cs" />
     <Compile Include="Models\Postulante\ExperienciaModel.cs" />
     <Compile Include="Models\Postulante\IdiomaModel.cs" />
+    <Compile Include="Models\Postulante\PosSeleccionModel.cs" />
     <Compile Include="Models\Postulante\PostulanteFavoritosModel.cs" />
     <Compile Include="Models\Proveedor\MenuModel.cs" />
     <Compile Include="Models\Proveedor\MesaPartesCIAModel.cs" />

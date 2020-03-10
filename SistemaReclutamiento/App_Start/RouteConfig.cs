@@ -34,7 +34,11 @@ namespace SistemaReclutamiento
                 url: "SGC",
                 defaults: new { controller = "IntranetPJAdmin", action = "Index" }
             );
-
+            routes.MapRoute(
+             name: "WebCorporativa",
+             url: "Institucional",
+             defaults: new { controller = "WebCorporativa", action = "Index" }
+         );
             //Todas las demas rutas deben ir arriba de esta, para que no haya problemas
             routes.MapRoute(
                 name: "Default",

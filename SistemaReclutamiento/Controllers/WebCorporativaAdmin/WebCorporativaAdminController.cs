@@ -33,7 +33,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
         ///
 
         [HttpPost]
-        public ActionResult WebElementoListarxMenuIDxtipoJson(int menu_id,int tipo,string nombreElemento)
+        public ActionResult WebElementoListarxMenuIDxtipoJson(int menu_id=1,int tipo=1,string nombreElemento="")
         {
             string mensaje = "";
             string mensajeConsola = "";
