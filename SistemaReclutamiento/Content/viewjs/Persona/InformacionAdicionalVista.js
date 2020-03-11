@@ -215,9 +215,9 @@
                 var image_arr = _image.name.split(".");
                 var extension = image_arr[1].toLowerCase();
                 //console.log(extension);
-                if (extension != "pdf" && extension != "doc" && extension != "docx") {
+                if (extension != "pdf") {
                     messageResponse({
-                        text: 'Sólo Se Permite formato word o pdf',
+                        text: 'Sólo Se Permite formato pdf',
                         type: "warning"
                     });
                 }

@@ -106,11 +106,13 @@ namespace SistemaReclutamiento.Controllers
         {
             bool respuesta = false;
             string nemonic = "RUTA_FOTO_POSTULANTE";
+
             string errormensaje = "";
             var usuario = new UsuarioEntidad();        
             var persona = new PersonaEntidad();
             var postulante = new PostulanteEntidad();
             var configuracion = configuracionbl.ConfiguracionObtenerporNemonicJson(nemonic);
+            var configuraciondefecto = configuracionbl.ConfiguracionObtenerporNemonicJson("RUTA_FOTO_DEFECTO");
             RutaImagenes rutaImagenes = new RutaImagenes();
             string pendiente = "";
             try
@@ -148,7 +150,13 @@ namespace SistemaReclutamiento.Controllers
                             Session["ubigeo"] = ubigeobl.UbigeoObtenerDatosporIdJson(persona.fk_ubigeo);
                             postulante = postulantebl.PostulanteIdObtenerporUsuarioJson(usuario.usu_id);
                             Session["postulante"] = postulante;
-                            rutaImagenes.imagenPostulante_CV(configuracion.config_nombre,postulante.pos_foto);
+                            if (postulante.pos_foto != "")
+                            {
+                                rutaImagenes.imagenPostulante_CV(configuracion.config_nombre, postulante.pos_foto);
+                            }
+                            else {
+                                rutaImagenes.imagenPostulante_CV(configuraciondefecto.config_nombre,"");
+                            }
                             respuesta = true;
                             errormensaje = "Bienvenido, " + usuario.usu_nombre;
                         }

@@ -13,9 +13,10 @@ namespace SistemaReclutamiento.Utilitarios
     {
         public void imagenPostulante_CV(string ruta,string name)
         {
-            string postulante_image = @""+ruta+"/"+name;
+            string postulante_image = "";
             if (name != null && name != ""&& ruta!=null && ruta!="")
             {
+                postulante_image = @"" + ruta + "/" + name;
                 if (System.IO.File.Exists(postulante_image))
                 {
                     byte[] imagebytes = System.IO.File.ReadAllBytes(postulante_image);
@@ -31,7 +32,7 @@ namespace SistemaReclutamiento.Utilitarios
             }
             else
             {
-                postulante_image = HttpContext.Current.Server.MapPath("~/images/user.png");
+                postulante_image = @"" + ruta ;
                 byte[] imagebytes = System.IO.File.ReadAllBytes(postulante_image);
                 string base64String = Convert.ToBase64String(imagebytes);
                 HttpContext.Current.Session["rutaPerfil"] = base64String;

@@ -374,7 +374,7 @@ namespace SistemaReclutamiento.Controllers
                     contadorRespuestas++;
                 }
                 //guardado en tabla gdt_sel_postulante(calificacion total de las preguntas repondidas)
-                posSeleccion.spo_nivel1_calif = totalCalificacion;
+                posSeleccion.spo_nivel1_calif = Convert.ToInt32(totalCalificacion/preguntas.Length);
                 posSeleccion.spo_nivel1_selec = false;
                 var totalSeleccionTupla = postulanteseleccionbl.PosSeleccionInsertarJson(posSeleccion);
                 if (!totalSeleccionTupla.error.Key.Equals(string.Empty)) {

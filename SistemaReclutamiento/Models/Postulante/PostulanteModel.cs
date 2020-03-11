@@ -63,7 +63,7 @@ pos_trab_otra_empresa
                         {
                             while (dr.Read())
                             {
-                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]) == "" ? "user.png" : dr["pos_foto"];
+                                var pos_foto = ManejoNulos.ManageNullStr(dr["pos_foto"]);
                                 postulante.pos_condicion_viv = ManejoNulos.ManageNullStr(dr["pos_condicion_viv"]);
                                 postulante.pos_direccion = ManejoNulos.ManageNullStr(dr["pos_direccion"]);
                                 postulante.pos_tipo_calle = ManejoNulos.ManageNullStr(dr["pos_tipo_calle"]);

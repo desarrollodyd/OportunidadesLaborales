@@ -233,7 +233,7 @@ namespace SistemaReclutamiento.Models.WebCorporativa
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", menu_id);
-                    query.Parameters.AddWithValue("@p1", menu_id);
+                    query.Parameters.AddWithValue("@p1", tipo);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
