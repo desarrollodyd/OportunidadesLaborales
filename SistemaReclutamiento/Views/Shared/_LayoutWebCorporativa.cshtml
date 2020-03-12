@@ -1,6 +1,10 @@
 ﻿@using SistemaReclutamiento.Models;
 @using SistemaReclutamiento.Entidades;
 @using SistemaReclutamiento.Utilitarios;
+@{ 
+  
+    string fecha_archivos = Seguridad.EncriptarCadenaHASH(Convert.ToString(DateTime.Now));
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +30,12 @@
     <link href="~/Content/WebCorporativa/css/responsive.css" rel="stylesheet">
     <script src="~/Content/WebCorporativa/js/modernizr.custom.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel='stylesheet' type='text/css'>
+    <link href="~/Content/vendors/select2/dist/css/select2.css?v=@fecha_archivos" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css?v=@fecha_archivos" rel="stylesheet" />
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=@fecha_archivos" rel="stylesheet" />
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css?v=@fecha_archivos" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css?v=@fecha_archivos" rel="stylesheet">
 </head>
 
 <body>
@@ -56,11 +66,11 @@
                     <div id="header-bottom">
                         <nav id="main-nav">
                             <ul id="main-menu" class="clearfix">
+                                <li><a href="~/WebCorporativa/conocenos">CONÓCENOS</a><span></span></li>
                                 <li class="current-menu-item"><a href="~/WebCorporativa/index">SALAS</a><span></span></li>
                                 <li><a href="~/WebCorporativa/apuestas">APUESTAS DEPORTIVAS</a><span></span></li>
-                                <li ><a href="~/WebCorporativa/noticias">NOTICIAS</a><span></span></li>
                                 <li><a href="#"><img src="~/Content/WebCorporativa/logo__.png" style="width: 130px;margin-top: -67px;"></a><span></span></li>
-                                <li><a href="~/WebCorporativa/conocenos">CONÓCENOS</a><span></span></li>
+                                <li><a href="~/WebCorporativa/noticias">NOTICIAS</a><span></span></li>
                                 <li><a href="#">PROMOCIONES</a><span></span></li>
                                 <li><a href="#">CONTACTO</a><span></span></li>
                             </ul>
@@ -69,16 +79,16 @@
                                 <span>Menu</span>
                                 <ul id="toggle-view-menu">
                                     <li class="clearfix">
-                                        <h3><a href="~/WebCorporativa">SALAS</a></h3>
+                                        <h3><a href="~/WebCorporativa/conocenos">CONÓCENOS</a></h3>
+                                    </li>
+                                    <li class="clearfix">
+                                        <h3><a href="~/WebCorporativa/Index">SALAS</a></h3>
                                     </li>
                                     <li class="clearfix">
                                         <h3><a href="~/WebCorporativa/apuestas">APUESTAS DEPORTIVAS</a></h3>
                                     </li>
                                     <li class="clearfix">
                                         <h3><a href="~/WebCorporativa/noticias">NOTICIAS</a></h3>
-                                    </li>
-                                    <li class="clearfix">
-                                        <h3><a href="~/WebCorporativa/conocenos">CONÓCENOS</a></h3>
                                     </li>
                                     <li class="clearfix">
                                         <h3><a href="#">PROMOCIONES</a></h3>
@@ -147,7 +157,7 @@
         <!--row-fluid-->
     </div>
 
-    
+
 
 
     <script src="~/Content/WebCorporativa/js/jquery-1.8.3.min.js"></script>
@@ -167,6 +177,15 @@
     <script src="~/Content/WebCorporativa/js/styleswitch.js"></script>
     <script src="~/Content/WebCorporativa/js/custom.js" charset="utf-8"></script>
 
+    <script src="~/Content/vendors/nprogress/nprogress.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.nonblock.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/iCheck/icheck.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/moment/moment.js?v=@fecha_archivos"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js?v=@fecha_archivos"></script>
+    <script src="~/Content/viewjs/general.js"></script>
     @RenderSection("js", required: false)
 </body>
 </html>

@@ -12,8 +12,8 @@
 
         <div class="widget kopa-gallery-widget">
 
-            <div class="gallery-slider flexslider">
-                <ul class="slides">
+            <div class="gallery-slider flexslider" >
+                <ul class="slides" id="ElementoSuperior">
                     <li>
                         <img src="~/Content/WebCorporativa/show.jpg" alt="" />
                         <h2 class="gallery-caption"><div class="gatit">SHOW EN VIVO</div><br>Todas las semanas</h2>
@@ -84,7 +84,7 @@
         <h3 class="h3_" style="text-align: center;"> Noticias destacadas</h3>
         <div class="widget kopa-carousel-widget">
             <div class="list-carousel responsive">
-                <ul class="kopa-featured-news-carousel">
+                <ul class="kopa-featured-news-carousel" id="ElementoInferior">
                     <li style="width: 234px;">
                         <article class="entry-item clearfix">
                             <div class="entry-thumb" style="margin-bottom: 0px;">
@@ -181,3 +181,11 @@
     <div class="clear"></div>
     <!--header-middle-->
 </div>
+@section js
+{
+
+    <script type="text/javascript">
+        menu_id = 4;
+    </script>
+    <script src="~/Content/viewjs/WebCorporativa/conocenos.js"></script>
+}

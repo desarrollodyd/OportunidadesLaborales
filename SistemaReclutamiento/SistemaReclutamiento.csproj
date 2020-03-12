@@ -4056,6 +4056,7 @@
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebDepartamento.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebMenus.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebSecciones.js" />
+    <Content Include="Content\viewjs\WebCorporativa\conocenos.js" />
     <Content Include="Content\WebCorporativa\cascada.jpg" />
     <Content Include="Content\WebCorporativa\chiclayo.jpg" />
     <Content Include="Content\WebCorporativa\chimbote.jpg" />
@@ -5413,7 +5414,6 @@
     <Folder Include="Content\backupbd\" />
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
-    <Folder Include="Content\viewjs\WebCorporativa\" />
     <Folder Include="log\" />
     <Folder Include="Views\WebDetalleElemento\" />
     <Folder Include="Views\WebTipoElemento\" />

@@ -143,6 +143,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                         elemento.elem_orden = 1;
                         elemento.elem_estado = "A";
                         elemento.fk_menu = menu_id;
+                        elemento.fk_tipo_elemento = detalle.fk_tipo;
                         var elementoCreadoTupla = elementobl.WebElementoInsertarJson(elemento);
                         if (elementoCreadoTupla.error.Key.Equals(string.Empty))
                         {
@@ -347,6 +348,117 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 mensaje = ex.Message;
             }
             return Json(new { respuesta, mensaje });
+        }
+        [HttpPost]
+        public ActionResult WebDetalleElementoEditarJson(WebDetalleElementoEntidad detalle)
+        {
+
+            int tamanioMaximo = 4194304;
+            string extension = "";
+            string mensaje = "";
+            bool respuesta = false;
+            string rutaInsertar = "";
+            string rutaAnterior = "";
+            WebDetalleElementoEntidad detalleelemento = new WebDetalleElementoEntidad();
+            var direccion = Server.MapPath("/") + Request.ApplicationPath + "/WebFiles/";
+            try
+            {
+                if (detalle.fk_tipo == 1 || detalle.fk_tipo == 2 || detalle.fk_tipo == 3 || detalle.fk_tipo == 4||detalle.fk_tipo==5||detalle.fk_tipo==6||detalle.fk_tipo==7)
+                {
+                    HttpPostedFileBase imagen_1 = Request.Files[0];
+                    if (imagen_1.ContentLength > 0 && imagen_1 != null)
+                    {
+                        if (imagen_1.ContentLength <= tamanioMaximo)
+                        {
+                            extension = Path.GetExtension(imagen_1.FileName);
+                            if (extension.ToLower() == ".jpg" || extension.ToLower() == ".png" || extension.ToLower() == ".jpeg")
+                            {
+                                var nombreArchivo = "Imagen_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension;
+                                rutaInsertar = Path.Combine(direccion, nombreArchivo);
+                                rutaAnterior = Path.Combine(direccion, detalle.detel_nombre_imagen);
+
+                                if (!Directory.Exists(direccion))
+                                {
+                                    System.IO.Directory.CreateDirectory(direccion);
+                                }
+                                if (System.IO.File.Exists(rutaAnterior))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
+                                }
+                                imagen_1.SaveAs(rutaInsertar);
+                                detalle.detel_imagen = nombreArchivo;
+                            }
+                            else
+                            {
+                                mensaje = "Solo se aceptan formaton PNG ó JPG";
+                                return Json(new { mensaje = mensaje, respuesta = respuesta });
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        detalle.detel_imagen = detalle.detel_nombre_imagen;
+                    }
+                    if (detalle.fk_tipo == 1)
+                    {
+                        HttpPostedFileBase imagen_detalle = Request.Files[1];
+                        //verificar si la primera imagen existe
+                        if (imagen_detalle.ContentLength > 0 && imagen_detalle != null)
+                        {
+                            if (imagen_detalle.ContentLength <= tamanioMaximo)
+                            {
+                                extension = Path.GetExtension(imagen_detalle.FileName);
+                                if (extension.ToLower() == ".jpg" || extension.ToLower() == ".png" || extension.ToLower() == ".jpeg")
+                                {
+                                    var nombreArchivo = "DetalleImagen_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension;
+                                    rutaInsertar = Path.Combine(direccion, nombreArchivo);
+                                    rutaAnterior = Path.Combine(direccion, detalle.detel_nombre_imagen_detalle);
+                                    if (!Directory.Exists(direccion))
+                                    {
+                                        System.IO.Directory.CreateDirectory(direccion);
+                                    }
+                                    if (System.IO.File.Exists(rutaAnterior))
+                                    {
+                                        System.IO.File.Delete(rutaAnterior);
+                                    }
+                                    imagen_detalle.SaveAs(rutaInsertar);
+                                    detalle.detel_imagen_detalle = nombreArchivo;
+                                }
+                                else
+                                {
+                                    mensaje = "Solo se aceptan formaton PNG ó JPG";
+                                    return Json(new { mensaje = mensaje, respuesta = respuesta });
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { respuesta = false, mensaje = "Archivo demasiado grande" });
+                            }
+                        }
+                        else
+                        {
+                            detalle.detel_imagen_detalle = detalle.detel_nombre_imagen_detalle;
+                        }
+                    }
+                }
+                //Edicion
+                var editadoTupla = detallebl.WebDetalleElementoEditarJson(detalle);
+                if (editadoTupla.error.Key.Equals(string.Empty))
+                {
+                    respuesta = editadoTupla.WebDetalleElementoEditado;
+                    mensaje = "Editado";
+                }
+                else
+                {
+                    mensaje = editadoTupla.error.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje,data=detalle.fk_elemento });
         }
 
     }
