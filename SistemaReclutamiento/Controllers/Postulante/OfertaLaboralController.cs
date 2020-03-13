@@ -23,6 +23,10 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
+        public ActionResult OfertaLaboralListarVista2()
+        {
+            return View();
+        }
         public ActionResult OfertaLaboralListarMisPostulacionesVista()
         {
             return View();

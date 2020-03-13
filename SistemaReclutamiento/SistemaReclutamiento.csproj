@@ -4038,6 +4038,7 @@
     <Content Include="Content\viewjs\menuProveedor.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarFavoritosVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
+    <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista2.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista.js" />
     <Content Include="Content\viewjs\Persona\CambiarPasswordVista.js" />
     <Content Include="Content\viewjs\Persona\DatosPersonaVista.js" />
@@ -4056,7 +4057,10 @@
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebDepartamento.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebMenus.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebSecciones.js" />
+    <Content Include="Content\viewjs\WebCorporativa\apuestas.js" />
     <Content Include="Content\viewjs\WebCorporativa\conocenos.js" />
+    <Content Include="Content\viewjs\WebCorporativa\index.js" />
+    <Content Include="Content\viewjs\WebCorporativa\noticias.js" />
     <Content Include="Content\WebCorporativa\cascada.jpg" />
     <Content Include="Content\WebCorporativa\chiclayo.jpg" />
     <Content Include="Content\WebCorporativa\chimbote.jpg" />
@@ -5400,6 +5404,7 @@
     <Content Include="Views\WebCorporativa\noticias.cshtml" />
     <Content Include="Views\WebCorporativa\conocenos.cshtml" />
     <Content Include="Views\WebCorporativaAdmin\WebMenus.cshtml" />
+    <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista2.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

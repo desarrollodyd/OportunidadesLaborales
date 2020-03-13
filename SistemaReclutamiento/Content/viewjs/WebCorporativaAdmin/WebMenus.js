@@ -170,7 +170,7 @@
          
             //menu SALAS, DEPARTAMENTO
             if(fk_tipo==1){
-                $(".detel-titulo").hide();
+                $(".detel-titulo").show();
                 $(".detel-subtitulo").hide();
                 $(".detel-parrafo").hide();
                 $(".detel-imagen-detalle").show();
@@ -613,6 +613,7 @@
                                 $("#icono_actual_detel_detalle").attr("src", basePath+"WebFiles/" + data.detel_imagen_detalle);
                                 $("#divdetel_detalle").show();
                                 $(".detel-imagen-detalle").show();
+                                $(".detel-titulo").show();
                             }
                         }
                         $("#div_parrafo_detalleelemento").html("");
@@ -620,7 +621,7 @@
                         var textarea = '<textarea name="detel_parrafo" id="detel_parrafo" class="form-control"></textarea>';
                         $("#div_parrafo_detalleelemento").html(input);
 
-                        if (data.fk_tipo == 6) {
+                        if (data.fk_tipo == 7) {
                             $("#div_parrafo_detalleelemento").html(textarea);
                             $("#detel_parrafo").val(data.detel_parrafo);
                             $('#detel_parrafo').richText({

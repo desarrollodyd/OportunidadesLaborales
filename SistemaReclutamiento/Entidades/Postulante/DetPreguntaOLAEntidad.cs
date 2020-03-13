@@ -14,6 +14,7 @@ namespace SistemaReclutamiento.Entidades
         public string dop_resp2 { get; set; }
         public string dop_porcentaje { get; set; }
         public int fk_oferta_laboral { get; set; }
+        public DetRespuestaOLAEntidad respuesta { get; set; }
         public ICollection<DetRespuestaOLAEntidad> DetalleRespuesta { get; set; }
         public DetPreguntaOLAEntidad() {
             this.DetalleRespuesta = new HashSet<DetRespuestaOLAEntidad>();

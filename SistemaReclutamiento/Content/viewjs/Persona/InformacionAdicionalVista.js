@@ -70,66 +70,66 @@
         };
        
         /**/
-        if (postulante.pos_trabajo_pj == true) {
-            $("#cboTrabajoPJ").bootstrapToggle('on');
-            //$("#cboEmpresa").val(postulante.pos_trab_pj_desc);
-            if (postulante.pos_trab_pj_desc == "OTRA EMPRESA") {
-                /*Empresas*/
-                selectResponse({
-                    url: "SQL/TMEMPRListarJson",
-                    select: "cboEmpresa",
-                    campoID: "DE_NOMB",
-                    CampoValor: "DE_NOMB",
-                    select2: true,
-                    allOption: false,
-                    placeholder: "SELECCIONE EMPRESA",
-                    data_first: {
-                        id: "OTRA EMPRESA",
-                        text: '::: OTRA EMPRESA :::',
-                        selected:true,
-                    },
-                });
-                $("#div_otra_empresa").show();
-                $("#pos_trab_otra_empresa").val(postulante.pos_trab_otra_empresa);
-            }
-            else {
-                selectResponse({
-                    url: "SQL/TMEMPRListarJson",
-                    select: "cboEmpresa",
-                    campoID: "DE_NOMB",
-                    CampoValor: "DE_NOMB",
-                    select2: true,
-                    allOption: false,
-                    placeholder: "SELECCIONE EMPRESA",
-                    data_first: {
-                        id: "OTRA EMPRESA",
-                        text: '::: OTRA EMPRESA :::',
-                        selected: false,
-                    },
-                    selectVal: postulante.pos_trab_pj_desc
-                });
-                $("#div_otra_empresa").hide();
-            }
+        // if (postulante.pos_trabajo_pj == true) {
+        //     $("#cboTrabajoPJ").bootstrapToggle('on');
+        //     //$("#cboEmpresa").val(postulante.pos_trab_pj_desc);
+        //     if (postulante.pos_trab_pj_desc == "OTRA EMPRESA") {
+        //         /*Empresas*/
+        //         selectResponse({
+        //             url: "SQL/TMEMPRListarJson",
+        //             select: "cboEmpresa",
+        //             campoID: "DE_NOMB",
+        //             CampoValor: "DE_NOMB",
+        //             select2: true,
+        //             allOption: false,
+        //             placeholder: "SELECCIONE EMPRESA",
+        //             data_first: {
+        //                 id: "OTRA EMPRESA",
+        //                 text: '::: OTRA EMPRESA :::',
+        //                 selected:true,
+        //             },
+        //         });
+        //         $("#div_otra_empresa").show();
+        //         $("#pos_trab_otra_empresa").val(postulante.pos_trab_otra_empresa);
+        //     }
+        //     else {
+        //         selectResponse({
+        //             url: "SQL/TMEMPRListarJson",
+        //             select: "cboEmpresa",
+        //             campoID: "DE_NOMB",
+        //             CampoValor: "DE_NOMB",
+        //             select2: true,
+        //             allOption: false,
+        //             placeholder: "SELECCIONE EMPRESA",
+        //             data_first: {
+        //                 id: "OTRA EMPRESA",
+        //                 text: '::: OTRA EMPRESA :::',
+        //                 selected: false,
+        //             },
+        //             selectVal: postulante.pos_trab_pj_desc
+        //         });
+        //         $("#div_otra_empresa").hide();
+        //     }
+        // }
+        // else {
+        //     $("#cboTrabajoPJ").bootstrapToggle('off');
+        //     $("#pos_trabajo_pj").val(false);
+        //     $("#cboEmpresa").prop('disabled', true);
+        // }
+        if (postulante.pos_trab_pj_desc == "") {
+           $('#cboTrabajoPJ').bootstrapToggle('off');
+           $("#pos_trabajo_pj").val(false);
         }
         else {
-            $("#cboTrabajoPJ").bootstrapToggle('off');
-            $("#pos_trabajo_pj").val(false);
-            $("#cboEmpresa").prop('disabled', true);
+           if (postulante.pos_trabajo_pj == true) {
+               $('#cboTrabajoPJ').bootstrapToggle('on');
+               $("#pos_trabajo_pj").val(true);
+           }
+           else {
+               $('#cboTrabajoPJ').bootstrapToggle('off');
+               $("#pos_trabajo_pj").val(false);
+           }
         }
-        //if (postulante.pos_trab_pj_desc == "") {
-        //    $('#cboTrabajoPJ').bootstrapToggle('off');
-        //    $("#pos_trabajo_pj").val(false);
-        //}
-        //else {
-        //    if (postulante.pos_trabajo_pj == true) {
-        //        $('#cboTrabajoPJ').bootstrapToggle('on');
-        //        $("#pos_trabajo_pj").val(true);
-        //    }
-        //    else {
-        //        $('#cboTrabajoPJ').bootstrapToggle('off');
-        //        $("#pos_trabajo_pj").val(false);
-        //    }
-        //}
         /**/
    
     };
@@ -298,86 +298,21 @@
             var check = $(this).prop('checked');
             if (check) {
                 $("#pos_trabajo_pj").val(true);
-                //_objetoForm_frmInformacionAdicional.valid();
                 $("#cboEmpresa").rules('add', {
                     required: true,
                     messages: {
                         required: "Empresa Obligatoria"
                     }
                 });
-                $("#pos_trab_otra_empresa").prop('disabled', false);
-                $("#cboEmpresa").prop("disabled", false);
-                console.log(postulante.pos_trabajo_pj);
-                console.log(postulante.pos_trab_pj_desc);
-                console.log(postulante.pos_trab_otra_empresa);
-
-                if (postulante.pos_trabajo_pj == true) {
-                    if (postulante.pos_trab_pj_desc == "OTRA EMPRESA") {
-                        selectResponse({
-                            url: "SQL/TMEMPRListarJson",
-                            select: "cboEmpresa",
-                            campoID: "DE_NOMB",
-                            CampoValor: "DE_NOMB",
-                            select2: true,
-                            allOption: false,
-                            placeholder: "SELECCIONE EMPRESA",
-                            data_first: {
-                                id: 'OTRA EMPRESA',
-                                text: '::: OTRA EMPRESA :::',
-                                selected:true,
-                            },
-                        });
-                        $("#pos_trab_otra_empresa").val(postulante.pos_trab_otra_empresa);
-                        $("#div_otra_empresa").show();
-                    }
-                    else {
-                        selectResponse({
-                            url: "SQL/TMEMPRListarJson",
-                            select: "cboEmpresa",
-                            campoID: "DE_NOMB",
-                            CampoValor: "DE_NOMB",
-                            select2: true,
-                            allOption: false,
-                            placeholder: "SELECCIONE EMPRESA",
-                            data_first: {
-                                id: 'OTRA EMPRESA',
-                                text: '::: OTRA EMPRESA :::',
-                                selected:false,
-                            },
-                            selectVal: postulante.pos_trab_pj_desc,
-                        });
-                        $("#pos_trab_otra_empresa").val("");
-                        $("#div_otra_empresa").hide();
-                    }
-                }
-                else {
-                    selectResponse({
-                        url: "SQL/TMEMPRListarJson",
-                        select: "cboEmpresa",
-                        campoID: "DE_NOMB",
-                        CampoValor: "DE_NOMB",
-                        select2: true,
-                        allOption: false,
-                        placeholder: "SELECCIONE EMPRESA",
-                        data_first: {
-                            id: 'OTRA EMPRESA',
-                            text: '::: OTRA EMPRESA :::',
-                            selected: false,
-                        },
-                    });
-                    $("#pos_trab_otra_empresa").val("");
-                    $("#div_otra_empresa").hide();
-                }
-                //$("#cboEmpresa").val(postulante.pos_trab_pj_desc);
+                $("#pos_trab_pj_desc").prop('disabled', false);
+                $("#pos_trab_pj_desc").val(postulante.pos_trab_otra_empresa);
                 $("#pos_cv").rules('remove', 'required');
             }
             else {
                 $("#pos_trabajo_pj").val(false);
-                $("#cboEmpresa").prop('disabled', true);
-                $("#pos_trab_otra_empresa").prop('disabled', true);
-                $("#pos_trab_otra_empresa").rules('remove', 'required');
-                $("#pos_trab_otra_empresa").val("");
-                $("#div_otra_empresa").hide();
+                $("#pos_trab_pj_desc").prop('disabled', true);
+                $("#pos_trab_pj_desc").rules('remove', 'required');
+                $("#pos_trab_pj_desc").val("");
             }
         });
         /*Familiares*/

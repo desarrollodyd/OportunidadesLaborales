@@ -17,26 +17,16 @@
             allOption: false,
             placeholder: "PAIS"
         });
-        //selectResponse({
-        //    url: "SQL/TMEMPRListarJson",
-        //    select: "cbocodEmpresa",
-        //    campoID: "CO_EMPR",
-        //    CampoValor: "DE_NOMB",
-        //    select2: true,
-        //    allOption: false,
-        //    placeholder: "Seleccione Empresa"
-        //});
+    
     };
     var _ActivarTextBox = function () {
         $('#frm-Postular input').on('change', function () {
             var dato = $(this).data("id");
             if ($("input.texto"+dato+":radio").is(':checked')) {
                 $("input[name=opt_respuestalabel" + dato + "]").attr('disabled', false);
-                //$('input[name=text]').attr('disabled', false);
             }
             else {
                 $("input[name=opt_respuestalabel" + dato + "]").attr('disabled', true);
-                //$('.radio>input[type=text]').attr('disabled', true);
             }
         });
       
@@ -150,11 +140,11 @@
             }
             var data = { arrayPreguntas: arrayPreguntas, fk_oferta_laboral: id_oferta_laboral };
             responseSimple({
-                    url: "Postulante/PostulantePostularJson",
+                    url: "Postulante/PostulantePostularJson2",
                     data: JSON.stringify(data),
                     refresh:false,
                     callBackSuccess: function (response) {
-                        if(response.respuesta){
+                        if(response.response){
                             refresh(true);
                         }
                     }
@@ -428,20 +418,6 @@
                 $("#cboDistrito").rules('remove', 'required');
             }
         });
-        //$("#cbocodEmpresa").change(function () {
-        //    var CO_EMPR = $("#cbocodEmpresa option:selected").val();
-        //    selectResponse({
-        //        url: "SQL/TTPUES_TRABListarJson",
-        //        select: "cbocodCargo",
-        //        data: { CO_EMPR: CO_EMPR},
-        //        campoID: "CO_PUES_TRAB",
-        //        CampoValor: "DE_PUES_TRAB",
-        //        select2: true,
-        //        allOption: false,
-        //        placeholder: "Seleccione Puesto"
-        //    });
-        //});
-
         $(document).on("click", ".btn_cancelar", function (e) {
             $("#ola_nombre").val("");
             $("#cborangoFecha").val("");
@@ -466,21 +442,6 @@
             if ($('#cboDistrito').hasClass('select2-hidden-accessible')) {
                 $('#cboDistrito').select2('destroy');
             }
-
-            //selectResponse({
-            //    url: "SQL/TMEMPRListarJson",
-            //    select: "cbocodEmpresa",
-            //    campoID: "CO_EMPR",
-            //    CampoValor: "DE_NOMB",
-            //    select2: true,
-            //    allOption: false,
-            //    placeholder: "Seleccione Empresa"
-            //});
-
-            //$("#cbocodCargo").html('<option value="">Seleccione Cargo</option>');
-            //if ($('#cbocodCargo').hasClass('select2-hidden-accessible')) {
-            //    $('#cbocodCargo').select2('destroy');
-            //}
         });
     };
 

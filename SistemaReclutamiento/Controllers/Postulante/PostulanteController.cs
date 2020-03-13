@@ -295,7 +295,7 @@ namespace SistemaReclutamiento.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostulantePostularJson(string[] preguntas, string form, int fk_oferta_laboral) {
+        public ActionResult PostulantePostularJson2(string[] preguntas, string form, int fk_oferta_laboral) {
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
             int fk_postulacion = 0;
             if (preguntas == null) {
@@ -390,6 +390,76 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
 
+        [HttpPost]
+        public ActionResult PostulantePostularJson (List<DetPreguntaOLAEntidad> arrayPreguntas,int fk_oferta_laboral){
+            PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];
+            int fk_postulacion = 0;
+            if (arrayPreguntas == null||arrayPreguntas.Count<=0)
+            {
+                return Json(new { respuesta = false, mensaje = "No hay Preguntas" });
+            }
+            if (postulante.fk_nacionalidad == 0)
+            {
+                return Json(new { respuesta = false, mensaje = "Debe Completar sus Datos Personales para Postular a una Oferta" });
+            }
+            fk_postulacion = PostulanteMigrarDataJson(fk_oferta_laboral);
+            if (fk_postulacion == 0)
+            {
+                return Json(new { respuesta = false, mensaje = "Error al Migrar Data de Postulante" });
+            }
+            PosPreguntaOLAEntidad pregunta = new PosPreguntaOLAEntidad();
+            PosRespuestaOLAEntidad respuesta = new PosRespuestaOLAEntidad();
+            PosSeleccionEntidad posSeleccion = new PosSeleccionEntidad();
+            int idPreguntaInsertada = 0, totalCalificacion = 0;
+
+            bool respuestaConsulta = false;
+            string errormensaje = "";
+
+            posSeleccion.fk_postulacion = fk_postulacion;
+            foreach (var preg in arrayPreguntas) {
+                pregunta.fk_postulacion=fk_postulacion;
+                pregunta.pol_pregunta = preg.dop_pregunta;
+                if (preg.respuesta != null) {
+                    respuesta.rol_respuesta = preg.respuesta.dro_respuesta;
+                    respuesta.rol_calificacion = preg.respuesta.dro_calificacion;
+                    respuesta.rol_tipo = preg.respuesta.dro_tipo;
+                    respuesta.rol_orden = preg.respuesta.dro_orden;
+                    respuesta.rol_estado = preg.respuesta.dro_estado;
+                    totalCalificacion += preg.respuesta.dro_calificacion;
+                }
+                try
+                {
+                    //Insertar Preguntas
+                    var preguntaInsertada = preguntabl.PosPreguntaOLAInsertarJson(pregunta);
+                    idPreguntaInsertada = preguntaInsertada.idPreguntaInsertada;
+                    errormensaje = preguntaInsertada.error.Value;
+                    if (idPreguntaInsertada > 0)
+                    {
+                        respuesta.fk_pos_pregunta_ol = idPreguntaInsertada;
+                        var respuestaPreguntaInsertada = respuestabl.PosRespuestaOLAInsertarJson(respuesta);
+                        respuestaConsulta = respuestaPreguntaInsertada.response;
+                        errormensaje = respuestaPreguntaInsertada.error.Value;
+                    }
+                }
+                catch (Exception ex) {
+                    return Json(new { respuesta = false, mensaje = ex.Message });
+                }
+            }
+            posSeleccion.spo_nivel1_calif = Convert.ToInt32(totalCalificacion / arrayPreguntas.Count);
+            posSeleccion.spo_nivel1_selec = false;
+            var totalSeleccionTupla = postulanteseleccionbl.PosSeleccionInsertarJson(posSeleccion);
+            if (!totalSeleccionTupla.error.Key.Equals(string.Empty))
+            {
+                return Json(new { respuesta = false, mensaje = "No se pudo insertar el total de Calificacion" });
+            }
+            else {
+                errormensaje = "Postulacion Realizada.";
+                respuestaConsulta = true;
+            }
+            return Json(new { respuesta= respuestaConsulta, mensaje=errormensaje,data=arrayPreguntas });
+        }
+
+        
         /// <summary>
         /// Metodo para Migrar Datos de Tablas gdt_per... a tablas gdt_pos... de Postgres
         /// </summary>
@@ -397,7 +467,7 @@ namespace SistemaReclutamiento.Controllers
         /// 
         /// <returns>Devuelve un Json de respuesta</returns>
 
- 
+
         public int PostulanteMigrarDataJson(int fk_oferta_laboral)
         {
             PostulanteEntidad postulante = (PostulanteEntidad)Session["postulante"];           
