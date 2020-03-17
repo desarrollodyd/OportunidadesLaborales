@@ -26,7 +26,9 @@
 
             // fonts
             fonts: true,
-            fontList: ["Arial", 
+            fontList: [
+                    "Intranet Cpj delgado",
+                    "Arial", 
                     "Arial Black", 
                     "Comic Sans MS", 
                     "Courier New", 
@@ -38,6 +40,7 @@
                     "Tahoma", 
                     "Times New Roman",
                     "Verdana"
+                   
                     ],
             fontColor: true,
             fontSize: true,

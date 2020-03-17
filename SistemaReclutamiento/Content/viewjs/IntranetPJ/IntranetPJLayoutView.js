@@ -711,12 +711,18 @@
         });
 
         $(document).on('click', 'li.modal_o', function () {
+            var my_object2='';
             var dataseccion = $(this).data("sece");
             var formattedJson = JSON.stringify(dataseccion);
             var my_object = JSON.parse(formattedJson);
             if (my_object.length > 0) {
                 var seccion = my_object[0];
                 var elementos = seccion.elemento_modal;
+                if(elementos==null){
+                    my_object2 = JSON.parse(dataseccion);
+                    seccion=my_object2[0];
+                    elementos=seccion.elemento_modal;
+                }
                 $("#contenido_modal").html("");
                 var appendSeccion = "";
                 slider = false;
