@@ -226,7 +226,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                                         per_nombre = m.NO_TRAB,
                                         per_apellido_pat = m.NO_APEL_PATE,
                                         per_apellido_mat = m.NO_APEL_MATE,
-                                        per_fechanacimiento = ManejoNulos.ManageNullDate(contiene.per_fechanacimiento),
+                                        per_fechanacimiento = m.FE_NACI_TRAB,
                                         DE_NOMB = m.DE_NOMB,
                                         DE_AREA = m.DE_AREA,
                                         DE_PUES_TRAB = m.DE_PUES_TRAB,
