@@ -5407,6 +5407,7 @@
     <Content Include="Views\WebCorporativaAdmin\WebMenus.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista2.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJFichas.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJFichaFormulario.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
