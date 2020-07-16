@@ -4018,6 +4018,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichas.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFooter.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJSecciones.js" />
@@ -5405,6 +5406,7 @@
     <Content Include="Views\WebCorporativa\conocenos.cshtml" />
     <Content Include="Views\WebCorporativaAdmin\WebMenus.cshtml" />
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista2.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJFichas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,152 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Fichas Sintomatológicas</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-warning">
+                Envio y seguimiento de Fichas Sintomatológicas
+
+            </div>
+            <div class="tabbable tabs-left" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home3">
+                            <i class="pink ace-icon fa fa-tachometer bigger-110"></i>
+                            Enviar Links
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#profile3">
+                            <i class="blue ace-icon fa fa-link bigger-110"></i>
+                            Enviados
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home3" class="tab-pane in active">
+                        <div class="row" style="margin-bottom:10px;">
+                            <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                                <button class="btn btn-white btn-success btn-sm btn-block btn-round btn_enviarFichas" data-id="1" data-rel="tooltip" title="Enviar">
+                                    <i class="ace-icon fa fa-file"></i> Enviar
+                                </button>
+                            </div>
+                            <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                                <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarEmpleados" data-id="1" data-rel="tooltip" title="Buscar">
+                                    <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Empresa(s)
+                                        </span>
+                                        <select class="form-control" name="empresa" id="cbo_empresa">
+                                            <option>Seleccione</option>
+                                        </select>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Sede(s)
+                                        </span>
+                                        <select class="form-control" name="sede" id="cbo_sede">
+                                            <option>Seleccione</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <table id="fichasenvioListado" class="table table-condensed table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="alert alert-warning alert-dismissible text-center"><span>Seleccione empresa o sede para mostrar registros</span></div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="profile3" class="tab-pane">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3 col-md-offset-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                   Desde
+                                                </span>
+                                                <input type="text" name="desde" id="txt_desde" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Hasta
+                                                </span>
+                                                <input type="text" name="hasta" id="txt_hasta" class="form-control" />
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <table id="fichasestadoListado" class="table table-condensed datatable-archivoslistado table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+
+
+
+
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFichas.js"></script>
+}
+
+
+
