@@ -72,7 +72,7 @@
                     </small>
                 </a>
             </div>
-          
+
         </div><!-- /.navbar-container -->
     </div>
 
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                     <div class="col-md-8 col-md-offset-2" style="margin-top:15px;">
-                        
+
                         <div class="">
                             <div class="col-md-12">
                                 <div class="form-group text-center">
@@ -185,7 +185,7 @@
                                         <span class="input-group-addon">
                                             DNI
                                         </span>
-                                        <input type="text" name="dni" id="txt-dni" class="form-control input-sm" />
+                                        <input type="text" name="dni" id="txt-dni_" class="form-control input-sm" />
                                     </div>
                                 </div>
                             </div>
@@ -219,9 +219,9 @@
                                     <div class="form-group" style="padding-top: 2px;">
                                         a. Sensación de alza térmica o fiebre
                                     </div>
-                                   
+
                                 </div>
-                                <div class="col-md-2 col-sm-4 col-xs-4">
+                                <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
                                     <label>
                                         <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
                                         <span class="lbl"></span>
@@ -234,7 +234,7 @@
                                         b. Tos, estornudo o dificultad para respirar
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-xs-4">
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                     <label>
                                         <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
                                         <span class="lbl"></span>
@@ -247,7 +247,7 @@
                                         c. Expectoracion o flema amarilla o verdosa
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-xs-4">
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                     <label>
                                         <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
                                         <span class="lbl"></span>
@@ -260,7 +260,7 @@
                                         d. Contacto con persona(s) con un caso confirmado de COVID19
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-xs-4">
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                     <label>
                                         <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
                                         <span class="lbl"></span>
@@ -270,14 +270,21 @@
                             <div class="col-md-12" style="margin-top:5px;">
                                 <div class="col-md-10 col-xs-8">
                                     <div class="form-group" style="padding-top: 2px;">
-                                        e. Esta tomando alguna medicacin(detallar)
+                                        e. Esta tomando alguna medicación(detallar)
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-xs-4">
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                     <label>
                                         <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
                                         <span class="lbl"></span>
                                     </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:0px;">
+                                <div class="col-md-12">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        <input class="form-control input-sm" type="text" name="detalle" id="txt-detalle" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12" style="margin-top:15px;clear:both;">
@@ -287,9 +294,9 @@
                                             2.- Estoy considerado como persona de riesgo frente a COVID-19*
                                         </div>
                                     </div>
-                                    
+
                                 </div>
-                                <div class="col-md-2 col-xs-4">
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                     <label>
                                         <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
                                         <span class="lbl"></span>
@@ -329,20 +336,20 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-6 col-md-offset-3" style="margin-top:15px;margin-bottom:5px;">
-                               <button class="btn btn-primary btn-block">ENVIAR</button>
+                                <button class="btn btn-primary btn-block">ENVIAR</button>
                             </div>
                             <div class="col-md-12" style="margin-top:15px;font-size:10px">
                                 <div class="form-group">
                                     *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
-                                     asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
-                                     de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.                                
+                                    asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
+                                    de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div><!-- /.main-content -->
@@ -396,28 +403,9 @@
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     @*<script src="~/Content/intranetSGC/assets/js/jquery-sortable.js"></script>*@
     <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
-
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFichas.js"></script>
     <script>
-        $('#txt-firma').ace_file_input({
-					no_file:'sin archivo ...',
-					btn_choose:'escoger',
-					btn_change:'cambiar',
-					droppable:false,
-					onchange:null,
-					thumbnail:false //| true | large
-					//whitelist:'gif|png|jpg|jpeg'
-					//blacklist:'exe|php'
-					//onchange:''
-					//
-        });
 
-        var dateinicio = new Date(moment().format("MM-DD-YYYY"));
-        $('#txt-fecha').datetimepicker({
-            format: 'DD-MM-YYYY',
-            ignoreReadonly: true,
-            allowInputToggle: true,
-            defaultDate: dateinicio
-        })
 
     </script>
 </body>

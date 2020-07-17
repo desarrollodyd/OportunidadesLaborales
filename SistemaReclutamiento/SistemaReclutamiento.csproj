@@ -4037,6 +4037,7 @@
     <Content Include="Content\viewjs\Login\LoginJs.js" />
     <Content Include="Content\viewjs\Login\LoginProveedor.js" />
     <Content Include="Content\viewjs\menuProveedor.js" />
+    <Content Include="Content\viewjs\OfertaLaboral\FormularioFichaVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarFavoritosVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarMisPostulacionesVista.js" />
     <Content Include="Content\viewjs\OfertaLaboral\OfertaLaboralListarVista2.js" />
@@ -5192,6 +5193,7 @@
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
     <Compile Include="Controllers\Postulante\ExperienciaController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Postulante\FichaSintomatologicaController.cs" />
     <Compile Include="Controllers\Postulante\IdiomaController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetPjAdminController.cs" />
     <Compile Include="Controllers\IntranetPJ\IntranetPJController.cs" />
@@ -5408,6 +5410,7 @@
     <Content Include="Views\OfertaLaboral\OfertaLaboralListarVista2.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJFichas.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJFichaFormulario.cshtml" />
+    <Content Include="Views\FichaSintomatologica\FormularioFichaVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
