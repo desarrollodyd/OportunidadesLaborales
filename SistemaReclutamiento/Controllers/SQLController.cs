@@ -12,6 +12,7 @@ namespace SistemaReclutamiento.Controllers
     {
         // GET: SQL
         SQLModel sqlbl = new SQLModel();
+        PersonaModel personabl = new PersonaModel();
         public ActionResult Index()
         {
             return View();
@@ -64,5 +65,138 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = listapuesto.ToList(), respuesta = response, mensaje = errormensaje });
         }
+        [HttpPost]
+        public ActionResult TTSEDEListarporEmpresaJson(string[] listaEmpresas)
+        {
+            string errormensaje = "";
+            List<TTSEDE> lista = new List<TTSEDE>();
+            claseError error = new claseError();
+            bool response = false;
+            string stringEmpresas = "";
+            try
+            {
+                if (listaEmpresas.Count() > 0)
+                {
+                    stringEmpresas += "(";
+                    foreach (var cod_emp in listaEmpresas)
+                    {
+                        stringEmpresas += @"'"+cod_emp+"',";
+                    }
+                    stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
+                    stringEmpresas += ")";
+                    var listaTupla = sqlbl.TTSEDEListarporEmpresaJson(stringEmpresas);
+                    if (listaTupla.error.Key.Equals(string.Empty))
+                    {
+                        lista = listaTupla.listapuesto;
+                        errormensaje = "Listando Sedes";
+                        response = true;
+                    }
+                    else
+                    {
+                        errormensaje = listaTupla.error.Value;
+                    }
+                }
+                else
+                {
+                    errormensaje = "Datos Enviados Incorrectos";
+                }
+         
+            }catch(Exception ex)
+            {
+                errormensaje = ex.Message + ",Llame Administrador";
+            }
+            return Json(new { data=lista, mensaje=errormensaje, respuesta=response});
+        }
+        [HttpPost]
+        public ActionResult PersonaListarFichasJson(string[] listaEmpresas, string[] listaSedes)
+        {
+            string errormensaje = "";
+            bool response = false;
+            string stringEmpresas = "";
+            string stringSedes = "";
+            List<PersonaEntidad> listaPersonasPostgres = new List<PersonaEntidad>();
+            List<PersonaSqlEntidad> listaPersonasSQL = new List<PersonaSqlEntidad>();
+            List<dynamic> lista = new List<dynamic>();
+            
+            try
+            {
+                
+                if (listaEmpresas.Count() > 0 && listaSedes.Count() > 0)
+                {
+                    int mes_anterior = DateTime.Now.Month - 1;
+                    stringEmpresas += "(";
+                    foreach (var cod_emp in listaEmpresas)
+                    {
+                        stringEmpresas += @"'" + cod_emp + "',";
+                    }
+                    stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
+                    stringEmpresas += ")";
+
+                    stringSedes += "(";
+                    foreach(var cod_sede in listaSedes)
+                    {
+                        stringSedes += @"'" + cod_sede + "',";
+                    }
+                    stringSedes = stringSedes.Substring(0, stringSedes.Length - 1);
+                    stringSedes += ")";
+
+                    var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerDataEmpresaFichasJson(stringEmpresas, stringSedes, mes_anterior);
+                    if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                    {
+                        listaPersonasSQL = listaPersonasSQLTupla.lista;
+                    }
+                    else
+                    {
+                        errormensaje += listaPersonasSQLTupla.error.Value;
+                    }
+                    var listaPersonasPostgresTupla = personabl.PersonaListarEmpleadosJson();
+                    if (listaPersonasPostgresTupla.error.Key.Equals(string.Empty))
+                    {
+                        listaPersonasPostgres = listaPersonasPostgresTupla.listaPersonas;
+                    }
+                    else
+                    {
+                        errormensaje += listaPersonasPostgresTupla.error.Value;
+                    }
+                    if (listaPersonasSQL.Count > 0 && listaPersonasPostgres.Count > 0)
+                    {
+                        foreach (var m in listaPersonasSQL)
+                        {
+                            string correoCorporativo = "";
+                            var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).FirstOrDefault();
+                            if (contiene != null)
+                            {
+                                correoCorporativo = contiene.per_correoelectronico;
+                            }
+                            lista.Add(new {
+                                id=m.CO_TRAB,
+                                nombre=m.NO_APEL_PATE+" " + m.NO_APEL_MATE+", "+m.NO_TRAB,
+                                id_empresa=m.CO_EMPR,
+                                empresa =m.DE_NOMB,
+                                id_sede=m.CO_SEDE,
+                                sede=m.DE_SEDE,
+                                correoPersonal=m.NO_DIRE_MAI1,
+                                correoCorporativo
+                            });
+                        }
+                    }
+
+                    response = true;
+                    errormensaje = "Listando Data";
+                }
+                else
+                {
+                    errormensaje = "Datos Enviados Incorrectos";
+                }
+     
+            }
+            catch(Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+
+            return Json(new { data = lista, respuesta=response,mensaje=errormensaje });
+        }
+
     }
 }

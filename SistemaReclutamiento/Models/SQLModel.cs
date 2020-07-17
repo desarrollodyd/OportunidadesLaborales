@@ -569,5 +569,111 @@ FROM " + nombre_tabla+" as pago "+
             }
             return (lista: listaPersonas, error: error);
         }
+        public (List<TTSEDE> listapuesto, claseError error) TTSEDEListarporEmpresaJson(string listaEmpresas)
+        {
+            List<TTSEDE> lista = new List<TTSEDE>();
+            claseError error = new claseError();
+            string consulta = @"select CO_EMPR,CO_SEDE,DE_SEDE from TTSEDE where CO_EMPR in "+listaEmpresas+";";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var sede = new TTSEDE()
+                                {
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    CO_SEDE = ManejoNulos.ManageNullStr(dr["CO_SEDE"]),
+                                    DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]),
+                                };
+                                lista.Add(sede);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                Console.WriteLine(ex.Message);
+            }
+            return (listapuesto: lista, error: error);
+        }
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenerDataEmpresaFichasJson(string listaEmpresas, string listaSedes,int mes_activo)
+        {
+            claseError error = new claseError();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            string consulta = @"Select
+                  emp.CO_TRAB, emp.NO_TRAB, emp.NO_APEL_PATE, emp.NO_APEL_MATE,emp.NU_TLF1, emp.NU_TLF2, emp.NO_DIRE_MAI1,
+                    empresa.DE_NOMB,
+					empresa.CO_EMPR,
+                    unidad.DE_UNID, 
+                    sede.DE_SEDE,  
+					sede.CO_SEDE,
+                    gerencia.DE_DEPA, 
+                    area.DE_AREA,  
+                    grupo.DE_GRUP_OCUP,
+                    puesto.DE_PUES_TRAB
+                    from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB
+                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                    inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+                    inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+                    inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+                    inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+                    inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+                    inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+                    where periodo.CO_EMPR in " + listaEmpresas+" and periodo.CO_SEDE in "+listaSedes+
+					"AND periodo.NU_ANNO=2019 and periodo.NU_PERI="+mes_activo;
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+
+
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var persona = new PersonaSqlEntidad
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    DE_AREA = ManejoNulos.ManageNullStr(dr["DE_AREA"]),
+                                    DE_PUES_TRAB = ManejoNulos.ManageNullStr(dr["DE_PUES_TRAB"]),
+                                    NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
+                                    NU_TLF2 = ManejoNulos.ManageNullStr(dr["NU_TLF2"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                    DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]),
+
+                                };
+
+                                listaPersonas.Add(persona);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista: listaPersonas, error: error);
+        }
     }
 }

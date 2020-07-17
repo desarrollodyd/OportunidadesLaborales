@@ -52,7 +52,7 @@ namespace SistemaReclutamiento.Models
         public int fk_postulante { get; set; }
         public int fk_oferta_laboral { get; set; }
     }
-    public class claseError{
+    public class claseError {
         public string Key { get; set; }
         public string Value { get; set; }
         public claseError() {
@@ -80,6 +80,18 @@ namespace SistemaReclutamiento.Models
         public string Token { get; set; }
         public string DOI { get; set; }
         public string TokenPostgres { get; set; }
+    }
+    public class TTSEDE{
+        public string CO_EMPR { get; set; }
+        public string CO_SEDE { get; set; }
+        public string DE_SEDE { get; set; }
+        public string ST_DOMI_FISC { get; set; }
+        public string TI_SEDE_RTPS { get; set; }
+        public string NU_RUCS_SEDE { get; set; }
+        public string NO_DIRE_SEDE { get; set; }
+        public string NU_CASA { get; set; }
+        public string NU_INTE { get; set; }
+        public string NO_ZONA { get; set; }
     }
 
 }
