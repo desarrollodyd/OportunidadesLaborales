@@ -52,12 +52,10 @@
     <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />
 
     <style>
-        /*#seccionesListado > tbody > tr > td {
-        padding-left:25px;
-        }*/
-        /*table.table > tbody > tr > td {
-            padding-left:30px;
-        }*/
+       label {
+           margin-bottom: 0px;
+
+       }
     </style>
 </head>
 
@@ -65,15 +63,6 @@
     <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
     <div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top">
         <div class="navbar-container ace-save-state" id="navbar-container">
-            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
-                <span class="sr-only">Toggle sidebar</span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-
-                <span class="icon-bar"></span>
-            </button>
 
             <div class="navbar-header pull-left">
                 <a href="#" class="navbar-brand">
@@ -93,9 +82,11 @@
             <div class="main-content-inner">
                 <br />
                 <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="alert alert-warning text-center">
-                            Ingrese código y DNI para obener información de registro
+                    <div class="col-md-12">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="alert alert-warning text-center">
+                                Ingrese código y DNI para obener información de registro
+                            </div>
                         </div>
                     </div>
 
@@ -106,7 +97,7 @@
                                     <span class="input-group-addon">
                                         Codigo
                                     </span>
-                                    <input type="text" name="desde" id="txt-codigo" class="form-control" />
+                                    <input type="text" name="codigo" id="txt-codigo" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -118,7 +109,7 @@
                                     <span class="input-group-addon">
                                         DNI
                                     </span>
-                                    <input type="text" name="desde" id="txt-dni" class="form-control" />
+                                    <input type="text" name="dni" id="txt-dni" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -142,12 +133,11 @@
                     </div>
                     <div class="col-md-8 col-md-offset-2" style="margin-top:15px;">
                         
-                        <div class="row">
+                        <div class="">
                             <div class="col-md-12">
                                 <div class="form-group text-center">
                                     He recibido explicación del objeto de esta evaluación y me compromento a responder con la verdad.
                                 </div>
-                                
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
@@ -175,7 +165,7 @@
                                         <span class="input-group-addon">
                                             Apellidos y Nombres
                                         </span>
-                                        <input type="text" name="ruc" id="txt-apellidos" class="form-control input-sm" />
+                                        <input type="text" name="apellidos" id="txt-apellidos" class="form-control input-sm" />
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +175,7 @@
                                         <span class="input-group-addon">
                                             Area de Trabajo
                                         </span>
-                                        <input type="text" name="empresa" id="txt-area" class="form-control input-sm" />
+                                        <input type="text" name="area" id="txt-area" class="form-control input-sm" />
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +185,7 @@
                                         <span class="input-group-addon">
                                             DNI
                                         </span>
-                                        <input type="text" name="ruc" id="txt-dni" class="form-control input-sm" />
+                                        <input type="text" name="dni" id="txt-dni" class="form-control input-sm" />
                                     </div>
                                 </div>
                             </div>
@@ -203,9 +193,9 @@
                                 <div class="form-group">
                                     <div class="input-group">
                                         <span class="input-group-addon">
-                                           Dirección
+                                            Dirección
                                         </span>
-                                        <input type="text" name="empresa" id="txt-direccion" class="form-control input-sm" />
+                                        <input type="text" name="direccion" id="txt-direccion" class="form-control input-sm" />
                                     </div>
                                 </div>
                             </div>
@@ -215,8 +205,128 @@
                                         <span class="input-group-addon">
                                             Celular
                                         </span>
-                                        <input type="text" name="ruc" id="txt-celular" class="form-control input-sm" />
+                                        <input type="text" name="celelar" id="txt-celular" class="form-control input-sm" />
                                     </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <div class="form-group">
+                                    1.- En los últimos 14 dias calendario ha tenido algunos de los síntomas siguientes:
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-sm-8 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        a. Sensación de alza térmica o fiebre
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-4">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        b. Tos, estornudo o dificultad para respirar
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        c. Expectoracion o flema amarilla o verdosa
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        d. Contacto con persona(s) con un caso confirmado de COVID19
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        e. Esta tomando alguna medicacin(detallar)
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                <div class="form-group">
+                                    2.- Estoy considerado como persona de riesgo frente a COVID-19*
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <hr style="margin-top:5px;margin-bottom:5px;" />
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <div class="form-group">
+                                    Todos los datos expresados en esta ficha constituyen declaracion jurada de mi parte. He sido informado que de omitir o
+                                    falsear informacion puedo perjudicar la salud de mis compañeros y la mia propia, lo cual de constituir una falta grave a la salud pública, asumo sus consecuencias.
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Fecha
+                                                </span>
+                                                <input type="text" name="fecha" id="txt-fecha" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-md-offset-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Firma
+                                                </span>
+                                                <input type="file" name="firma" id="txt-firma" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-md-offset-3" style="margin-top:15px;margin-bottom:5px;">
+                               <button class="btn btn-primary btn-block">ENVIAR</button>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;font-size:10px">
+                                <div class="form-group">
+                                    *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
+                                     asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
+                                     de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.                                
                                 </div>
                             </div>
                         </div>
@@ -276,7 +386,29 @@
     @*<script src="~/Content/intranetSGC/assets/js/jquery-sortable.js"></script>*@
     <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
 
+    <script>
+        $('#txt-firma').ace_file_input({
+					no_file:'sin archivo ...',
+					btn_choose:'escoger',
+					btn_change:'cambiar',
+					droppable:false,
+					onchange:null,
+					thumbnail:false //| true | large
+					//whitelist:'gif|png|jpg|jpeg'
+					//blacklist:'exe|php'
+					//onchange:''
+					//
+        });
 
+        var dateinicio = new Date(moment().format("MM-DD-YYYY"));
+        $('#txt-fecha').datetimepicker({
+            format: 'DD-MM-YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: dateinicio
+        })
+
+    </script>
 </body>
 
 </html>
