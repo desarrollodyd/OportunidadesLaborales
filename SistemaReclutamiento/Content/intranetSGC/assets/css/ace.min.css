@@ -10487,7 +10487,7 @@ input[type=checkbox].ace.ace-switch {
         }
 
             input[type=checkbox].ace.ace-switch.ace-switch-7 + .lbl::before {
-                content: "OFF\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0ON";
+                content: "NO\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0\a0SI";
                 font-weight: bolder;
                 font-size: 13px;
                 background-color: #FFF;

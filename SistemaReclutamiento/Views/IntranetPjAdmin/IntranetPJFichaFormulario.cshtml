@@ -1,7 +1,413 @@
-﻿
+﻿@using SistemaReclutamiento.Models;
+@using SistemaReclutamiento.Entidades;
+@using SistemaReclutamiento.Utilitarios;
 @{
-    ViewBag.Title = "IntranetPJFichaFormulario";
+    Layout = "";
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<h2>IntranetPJFichaFormulario</h2>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>SGC Intranet</title>
 
+    <link rel="shortcut icon" href="~/Content/images/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <!-- page specific plugin styles -->
+    <!-- text fonts -->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/fonts.googleapis.com.css" />
+
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/richtext.min.css" rel="stylesheet" />
+    <!-- ace styles -->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-part2.min.css" class="ace-main-stylesheet" />
+    <![endif]-->
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-rtl.min.css" />
+    <!--[if lte IE 9]>
+      <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-ie.min.css" />
+    <![endif]-->
+    <!-- inline styles related to this page -->
+    <!-- ace settings handler -->
+    <script src="~/Content/intranetSGC/assets/js/ace-extra.min.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+    <!--[if lte IE 8]>
+    <script src="~/Content/intranetSGC/assets/js/html5shiv.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/respond.min.js"></script>
+    <![endif]-->
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+       label {
+           margin-bottom: 0px;
+
+       }
+    </style>
+</head>
+
+<body class="no-skin">
+    <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
+    <div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+
+            <div class="navbar-header pull-left">
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-book"></i>
+                        Ficha Asintomática
+                    </small>
+                </a>
+            </div>
+
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <div class="main-container ace-save-state" id="main-container">
+
+        <div class="main-content" style="overflow-x: hidden;">
+            <div class="main-content-inner">
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-8 col-md-offset-2">
+                            <div class="alert alert-warning text-center">
+                                Ingrese código y DNI para obener información de registro
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        Codigo
+                                    </span>
+                                    <input type="text" name="codigo" id="txt-codigo" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        DNI
+                                    </span>
+                                    <input type="text" name="dni" id="txt-dni" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <hr />
+                    </div>
+                    <div class="col-md-12" style="margin-top:15px;">
+                        <div class="text-center">
+                            <div><b>Anexo 2</b></div>
+                            <div><b>FICHA SINTOMATOLÓGICA</b></div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top:15px;">
+                        <div class="text-center">
+                            <div>Ficha de Sintomatología COVID-19</div>
+                            <div>Para Regreso al Trabajo</div>
+                            <div>Declaracion Jurada</div>
+                        </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2" style="margin-top:15px;">
+
+                        <div class="">
+                            <div class="col-md-12">
+                                <div class="form-group text-center">
+                                    He recibido explicación del objeto de esta evaluación y me compromento a responder con la verdad.
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Empresa
+                                        </span>
+                                        <input type="text" name="empresa" id="txt-empresa" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            RUC.
+                                        </span>
+                                        <input type="text" name="ruc" id="txt-ruc" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Apellidos y Nombres
+                                        </span>
+                                        <input type="text" name="apellidos" id="txt-apellidos" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Area de Trabajo
+                                        </span>
+                                        <input type="text" name="area" id="txt-area" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            DNI
+                                        </span>
+                                        <input type="text" name="dni" id="txt-dni_" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Dirección
+                                        </span>
+                                        <input type="text" name="direccion" id="txt-direccion" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Celular
+                                        </span>
+                                        <input type="text" name="celelar" id="txt-celular" class="form-control input-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <div class="form-group">
+                                    1.- En los últimos 14 dias calendario ha tenido algunos de los síntomas siguientes:
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-sm-8 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        a. Sensación de alza térmica o fiebre
+                                    </div>
+
+                                </div>
+                                <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        b. Tos, estornudo o dificultad para respirar
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        c. Expectoracion o flema amarilla o verdosa
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        d. Contacto con persona(s) con un caso confirmado de COVID19
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:5px;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        e. Esta tomando alguna medicación(detallar)
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:0px;">
+                                <div class="col-md-12">
+                                    <div class="form-group" style="padding-top: 2px;">
+                                        <input class="form-control input-sm" type="text" name="detalle" id="txt-detalle" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                <div class="col-md-10 col-xs-8">
+                                    <div class="row">
+                                        <div class="form-group" style="padding-top: 2px;">
+                                            2.- Estoy considerado como persona de riesgo frente a COVID-19*
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                    <label>
+                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="clear:both;">
+                                <hr style="margin-top:5px;margin-bottom:5px;" />
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                <div class="form-group">
+                                    Todos los datos expresados en esta ficha constituyen declaracion jurada de mi parte. He sido informado que de omitir o
+                                    falsear informacion puedo perjudicar la salud de mis compañeros y la mia propia, lo cual de constituir una falta grave a la salud pública, asumo sus consecuencias.
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Fecha
+                                                </span>
+                                                <input type="text" name="fecha" id="txt-fecha" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 col-md-offset-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Firma
+                                                </span>
+                                                <input type="file" name="firma" id="txt-firma" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-md-offset-3" style="margin-top:15px;margin-bottom:5px;">
+                                <button class="btn btn-primary btn-block">ENVIAR</button>
+                            </div>
+                            <div class="col-md-12" style="margin-top:15px;font-size:10px">
+                                <div class="form-group">
+                                    *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
+                                    asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
+                                    de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                    <span class="bigger-120">
+                        <span class="blue bolder">Corporacion PJ</span>
+                        &copy; 2019
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    <!-- basic scripts -->
+    <!--[if !IE]> -->
+    <script src="~/Content/intranetSGC/assets/js/jquery-2.1.4.min.js"></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/intranetSGC/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="~/Content/intranetSGC/assets/js/bootstrap.min.js"></script>
+
+    <!-- page specific plugin scripts -->
+    <!--[if lte IE 8]>
+      <script src="assets/js/excanvas.min.js"></script>
+    <![endif]-->
+    <script src="~/Content/intranetSGC/assets/js/jquery-ui.custom.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.ui.touch-punch.min.js"></script>
+
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
+    <script src="~/Content/vendors/moment/moment.js"></script>
+    <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- ace scripts -->
+
+    <script src="~/Content/intranetSGC/assets/js/ace-elements.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
+    @*<script src="~/Content/intranetSGC/assets/js/jquery-sortable.js"></script>*@
+    <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFichas.js"></script>
+    <script>
+
+
+    </script>
+</body>
+
+</html>
