@@ -16,6 +16,7 @@ namespace SistemaReclutamiento.Entidades
         public string upr_estado { get; set; }
         public int fk_pregunta { get; set; }
         public int fk_usuario { get; set; }
+        public int fk_envio { get; set; }
         public ICollection<CumUsuRespuestaEntidad> CumUsuRespuesta { get; set; }
         public CumUsuPreguntaEntidad()
         {

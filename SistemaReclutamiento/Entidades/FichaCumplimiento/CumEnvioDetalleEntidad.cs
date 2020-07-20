@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SistemaReclutamiento.Entidades.FichaCumplimiento
+namespace SistemaReclutamiento.Entidades
 {
     public class CumEnvioDetalleEntidad
     {
@@ -14,5 +14,6 @@ namespace SistemaReclutamiento.Entidades.FichaCumplimiento
         public DateTime end_fecha_reg { get; set; }
         public DateTime end_fecha_act { get; set; }
         public string end_estado { get; set; }
+        public int fk_envio { get; set; }
     }
 }

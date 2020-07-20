@@ -5287,6 +5287,8 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumCuestionarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioEntidad.cs" />
+    <Compile Include="Models\FichaCumplimiento\CumEnvioDetModel.cs" />
+    <Compile Include="Models\FichaCumplimiento\CumEnvioModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuarioModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuPreguntaModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuRespuestaModel.cs" />

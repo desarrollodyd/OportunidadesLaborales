@@ -13,15 +13,31 @@
         <div class="x_content">
             <div class="" role="tabpanel">
                 <ul id="datosPersonales_ul" class="nav nav-tabs bar_tabs hidden-xs" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#ficha_tab" role="tab" data-toggle="tab" aria-expanded="true">Ficha Sintomatológica</a>
+                    <li role="presentation" id="myTab" class="active">
+                        <a href="#lista_ficha_tab"  role="tab" data-toggle="tab" aria-expanded="true">Listado Fichas</a>
                     </li>
+                    <li role="presentation" id="myTab2"  >
+                        <a href="#ficha_tab" role="tab" data-toggle="tab" aria-expanded="false">Ficha Sintomatológica</a>
+                    </li>
+
                     <li class="pull-right">
                         <button type="button" class="btn btn-danger btn_guardar"><i class="fa fa-save"></i> Guardar</button>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade active in" id="ficha_tab" aria-labelledby="ficha_tab">
+                    <div role="tabpanel" id="lista_ficha_tab" class="tab-pane fade active in" aria-labelledby="lista_ficha_tab">
+                        <table id="fichasListado" class="table table-condensed datatable-fichasListado table-striped table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button id="btn_tab">Cambiar</button>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade in" id="ficha_tab" aria-labelledby="ficha_tab">
 
                         <form id="frmFichaFormulario-form" class="" method="post">
                             <input type="hidden" name="txt-tipo" id="txt-tipo" value="POSTULANTE" />
