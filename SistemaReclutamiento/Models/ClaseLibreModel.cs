@@ -83,6 +83,7 @@ namespace SistemaReclutamiento.Models
     }
     public class TTSEDE{
         public string CO_EMPR { get; set; }
+        public string DE_NOMB { get; set; }
         public string CO_SEDE { get; set; }
         public string DE_SEDE { get; set; }
         public string ST_DOMI_FISC { get; set; }

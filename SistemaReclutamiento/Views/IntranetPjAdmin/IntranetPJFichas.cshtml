@@ -20,21 +20,29 @@
                 Envio y seguimiento de Fichas Sintomatológicas
 
             </div>
-            <div class="tabbable tabs-left" style="margin-left:10px;margin-top:10px;">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
                 <ul class="nav nav-tabs" id="myTab3">
                     <li class="active">
                         <a data-toggle="tab" href="#home3">
-                            <i class="pink ace-icon fa fa-tachometer bigger-110"></i>
+                            <i class="orange ace-icon fa fa-tachometer bigger-110"></i>
                             Enviar Links
                         </a>
                     </li>
 
                     <li>
                         <a data-toggle="tab" href="#profile3">
-                            <i class="blue ace-icon fa fa-link bigger-110"></i>
-                            Enviados
+                            <i class="red ace-icon fa fa-envelope bigger-110"></i>
+                            Empleados
                         </a>
                     </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#profile4">
+                            <i class="green ace-icon fa fa-linkedin-square bigger-110"></i>
+                            Postulantes
+                        </a>
+                    </li>
+
                 </ul>
 
                 <div class="tab-content">
@@ -58,7 +66,7 @@
                                         <span class="input-group-addon">
                                             Empresa(s)
                                         </span>
-                                        <select class="form-control" name="empresa[]" id="cbo_empresa">
+                                        <select class="form-control input-sm" name="empresa[]" id="cbo_empresa">
                                             @*<option>Seleccione</option>*@
                                         </select>
                                        
@@ -117,15 +125,18 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarFichas" data-id="1" data-rel="tooltip" title="Buscar">
-                                                <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
-                                            </button>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Estado
+                                                </span>
+                                                <select class="form-control input-sm"><option value="">Seleccione</option></select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_descargarFichas" data-id="1" data-rel="tooltip" title="Descargar">
-                                                <i class="ace-icon glyphicon glyphicon-download"></i> Descargar
+                                            <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarFichas" data-id="1" data-rel="tooltip" title="Buscar">
+                                                <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
                                             </button>
                                         </div>
                                     </div>
@@ -133,6 +144,53 @@
                             </div>
                             <div class="col-md-12">
                                 <table id="fichasestadoListado" class="table table-condensed datatable-archivoslistado table-striped table-bordered table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6">
+                                                <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="profile4" class="tab-pane">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Desde
+                                                </span>
+                                                <input type="text" name="desde" id="txt_desdep" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Hasta
+                                                </span>
+                                                <input type="text" name="hasta" id="txt_hastap" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarFichasp" data-id="1" data-rel="tooltip" title="Buscar">
+                                                <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <table id="fichaspostulanteListado" class="table table-condensed datatable-fichaspostulantelistado table-striped table-bordered table-hover">
                                     <tbody>
                                         <tr>
                                             <td colspan="6">

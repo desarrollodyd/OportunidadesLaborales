@@ -17161,7 +17161,7 @@ div.dataTables_processing {
 
 .select2-container--default .select2-selection {
     border-radius: 0;
-    line-height: 24px;
+    line-height: 20px;
     border-color: #AAA
 }
 
@@ -23041,4 +23041,8 @@ div.box.placeholder {
 
 .richText-toolbar ul{
     margin:0px !important;
+}
+
+#fichasenvioListado tbody td{
+    font-size:11px;
 }
