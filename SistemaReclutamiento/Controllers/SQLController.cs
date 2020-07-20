@@ -70,6 +70,7 @@ namespace SistemaReclutamiento.Controllers
         {
             string errormensaje = "";
             List<TTSEDE> lista = new List<TTSEDE>();
+            var listasede = new List<dynamic>();
             claseError error = new claseError();
             bool response = false;
             string stringEmpresas = "";
@@ -88,6 +89,33 @@ namespace SistemaReclutamiento.Controllers
                     if (listaTupla.error.Key.Equals(string.Empty))
                     {
                         lista = listaTupla.listapuesto;
+                        
+                        var empresas = lista.GroupBy(z=>new { z.DE_NOMB,z.CO_EMPR}).Select(group=>new { group.Key.DE_NOMB,group.Key.CO_EMPR}).ToList();
+                        foreach (var item in empresas)
+                        {
+                            var listaChildren = new List<dynamic>();
+                            foreach (var itemL in lista)
+                            {
+                                if (item.CO_EMPR == itemL.CO_EMPR)
+                                {
+                                    listaChildren.Add(new
+                                    {
+                                        id = itemL.CO_SEDE,
+                                        text = itemL.DE_SEDE
+                                    });
+                                }
+                                
+                            }
+
+                            listasede.Add(new
+                            {
+                                id="",
+                                text =  item.DE_NOMB,
+                                children= listaChildren
+                            });
+                        }
+
+
                         errormensaje = "Listando Sedes";
                         response = true;
                     }
@@ -105,7 +133,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 errormensaje = ex.Message + ",Llame Administrador";
             }
-            return Json(new { data=lista, mensaje=errormensaje, respuesta=response});
+            return Json(new { data= listasede, mensaje=errormensaje, respuesta=response});
         }
         [HttpPost]
         public ActionResult PersonaListarFichasJson(string[] listaEmpresas, string[] listaSedes)

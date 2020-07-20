@@ -573,7 +573,11 @@ FROM " + nombre_tabla+" as pago "+
         {
             List<TTSEDE> lista = new List<TTSEDE>();
             claseError error = new claseError();
-            string consulta = @"select CO_EMPR,CO_SEDE,DE_SEDE from TTSEDE where CO_EMPR in "+listaEmpresas+";";
+
+            string consulta = @"select sed.CO_EMPR,sed.CO_SEDE,sed.DE_SEDE ,em.DE_NOMB 
+                                from TTSEDE sed
+                                join TMEMPR em on em.CO_EMPR=sed.CO_EMPR where sed.CO_EMPR in " + listaEmpresas;
+
             try
             {
                 using (var con = new SqlConnection(_conexion))
@@ -589,6 +593,7 @@ FROM " + nombre_tabla+" as pago "+
                                 var sede = new TTSEDE()
                                 {
                                     CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
                                     CO_SEDE = ManejoNulos.ManageNullStr(dr["CO_SEDE"]),
                                     DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]),
                                 };

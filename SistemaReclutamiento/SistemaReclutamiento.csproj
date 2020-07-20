@@ -4018,6 +4018,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichaFormulario.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichas.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFooter.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJMenus.js" />

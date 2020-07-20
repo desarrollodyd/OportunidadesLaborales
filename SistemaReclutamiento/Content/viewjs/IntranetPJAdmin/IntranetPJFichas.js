@@ -8,56 +8,6 @@
             return;
         }
         var dataForm = { empresa, sede };
-        // url: "IntranetFichas/IntranetFichasEmviarLink",
-        // responseSimple({
-        //    url: "SQL/IntranetFichasEmviarLink",
-        //    refresh: false,
-        //    data: dataForm,
-        //    callBackSuccess: function (response) {
-        //        simpleDataTable({
-        //            uniform: false,
-        //            tableNameVariable: "datatable_fichasListado",
-        //            table: "#fichasenvioListado",
-        //            tableColumnsData: response.data,
-        //            tableHeaderCheck: true,
-        //            tableHeaderCheckIndex: 0,
-        //            headerCheck: "chk_fichas",
-        //            tableColumns: [
-        //                {
-        //                    data: "id",
-        //                    title: "",
-        //                    "bSortable": false,
-        //                    className: 'align-center',
-        //                    "render": function (value) {
-        //                        var check = '<input type="checkbox" class="form-check-input-styled-info fichasListado" data-id="' + value + '" name="chk[]">';
-        //                        return check;
-        //                    },
-        //                    width: "50px",
-        //                },
-        //                {
-        //                    data: "nombre",
-        //                    title: "Nombre Empleado",
-        //                },
-        //                {
-        //                    data: "empresa",
-        //                    title: "Empresa",
-        //                },
-        //                {
-        //                    data: "sede",
-        //                    title: "Sede",
-        //                },
-        //                {
-        //                    data: "correoCorporativo",
-        //                    title: "C.Corporativo",
-        //                },
-        //                {
-        //                    data: "correoPersonal",
-        //                    title: "C.Personal",
-        //                },
-        //            ]
-        //        })
-        //    }
-        // });
     };
 
     var _inicio = function () {
@@ -68,19 +18,9 @@
            CampoValor: "DE_NOMB",
            select2: true,
            allOption: false,
-        //    placeholder: "Seleccione Empresa"
+           placeholder: "Seleccione Empresa"
         });
-        $("#cbo_empresa").select2({
-            multiple:true,
-            placeholder:'Seleccione Empresa'
-        })
-        // responseSimple({
-        //     url: "SQL/TMEMPRListarJson",
-        //     refresh: false,
-        //     callBackSuccess: function (response) {
-        //         console.log(response);
-        //     }
-        // })
+
     }
     var _componentes = function () {
         // $("#cbo_empresa").change(function(){
@@ -90,29 +30,59 @@
             var dataForm={
                 listaEmpresas:empresas
             }
-            selectResponse({
+
+            responseSimple({
                 url: "SQL/TTSEDEListarporEmpresaJson",
-                select: "cbo_sede",
-                campoID: "CO_SEDE",
-                CampoValor: "DE_SEDE",
-                data:dataForm,
-                select2: true,
-                allOption: false,
-             //    placeholder: "Seleccione Empresa"
-             });
-             $("#cbo_sede").select2({
-                multiple:true,
-                placeholder:'Seleccione Empresa'
-            })
-            // responseSimple({
-            //     url:'SQL/TTSEDEListarporEmpresaJson',
-            //     refresh:false,
-            //     data:JSON.stringify(dataForm),
-            //     callBackSuccess:function(response){
-            //         console.log(response);
-            //     }
+                data: JSON.stringify(dataForm),
+                refresh: false,
+                callBackBeforeSend: function (response) {
+                    $("#cbo_sede").html("");
+                    $("#cbo_sede").append('<option value="">Cargando...</option>');
+                    $("#cbo_sede").attr("disabled", "disabled");
+                },
+                callBackSuccess: function (response) {
+                    console.log(response.data);
+                    var respuesta = response.respuesta;
+                    if (respuesta) {
+                        var data = response.data;
+                        $("#cbo_sede").html("");
+                        $.each(data, function (index, value) {
+                            var children = value.children;
+                            $("#cbo_sede").append('<optgroup value="' + value.id + '" label="' + value.text + '">');
+                            $.each(children, function (indexCh, valueCh) {
+                                $("#cbo_sede").append('<option value="' + valueCh.id + '">' + valueCh.text + '</option>');
+                            });
+                            $("#cbo_sede").append('</optgroup>');
+                            
+                        });
+                        $("#cbo_sede").removeAttr("disabled");
+
+                        $('#cbo_sede').select2({
+                            width: "100%",
+                            multiple: true,
+                            placeholder:"Seleccione"
+                        });
+                    }
+                }
+            });
+
+            //selectResponse({
+            //    url: "SQL/TTSEDEListarporEmpresaJson",
+            //    select: "cbo_sede",
+            //    campoID: "CO_SEDE",
+            //    CampoValor: "DE_SEDE",
+            //    data:dataForm,
+            //    select2: true,
+            //    allOption: false,
+            // //    placeholder: "Seleccione Empresa"
             // });
+            // $("#cbo_sede").select2({
+            //    multiple:true,
+            //    placeholder:'Seleccione Empresa'
+            //})
+
         });
+
         $(document).on('change',"#cbo_sede",function(){
             var sedes=$(this).val();
             var dataForm={
@@ -197,27 +167,35 @@
     };
 
     var _metodos = function () {
-        $('#txt-firma').ace_file_input({
-            no_file: 'sin archivo ...',
-            btn_choose: 'escoger',
-            btn_change: 'cambiar',
-            droppable: false,
-            onchange: null,
-            thumbnail: false //| true | large
-            //whitelist:'gif|png|jpg|jpeg'
-            //blacklist:'exe|php'
-            //onchange:''
-            //
-        });
 
         var dateinicio = new Date(moment().format("MM-DD-YYYY"));
-        $('#txt-fecha').datetimepicker({
+        $('#txt_desde').datetimepicker({
             format: 'DD-MM-YYYY',
             ignoreReadonly: true,
             allowInputToggle: true,
             defaultDate: dateinicio
         })
 
+        $('#txt_hasta').datetimepicker({
+            format: 'DD-MM-YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: dateinicio
+        })
+
+        $('#txt_desdep').datetimepicker({
+            format: 'DD-MM-YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: dateinicio
+        })
+
+        $('#txt_hastap').datetimepicker({
+            format: 'DD-MM-YYYY',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: dateinicio
+        })
     };
 
     //

@@ -418,7 +418,7 @@ function selectResponse(obj) {
         selectVal: null,
         select2: false,
         allOption: false,
-        placeholder: "SELECCIONE",
+        placeholder: "Seleccione",
         data_first: null,
         disabled: false,
         readonly:false,
@@ -452,7 +452,7 @@ function selectResponse(obj) {
             var datos = response.data;
             var mensaje = response.mensaje;
             $("#" + opciones.select).html("");
-            $("#" + opciones.select).append('<option value="">' + opciones.placeholder + '</option>');
+           // $("#" + opciones.select).append('<option value="">' + opciones.placeholder + '</option>');
             if (datos.length > 0) {
                 if (opciones.allOption) {
                     $("#" + opciones.select).append('<option value="0">Todos</option>');
@@ -478,7 +478,7 @@ function selectResponse(obj) {
                 });
                 $("#" + opciones.select).removeAttr("disabled");
                 if (opciones.select2) {
-                    $("#" + opciones.select).select2();
+                    $("#" + opciones.select).select2({ width: "100%",placeholder: opciones.placeholder });
                 }
                 if (opciones.disabled) {
                     $("#" + opciones.select).prop('disabled',true);
