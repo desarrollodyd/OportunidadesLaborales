@@ -353,7 +353,7 @@
                 messageResponse({
                     text: "Debe Seleccionar al menos una Actividad",
                     type: "error"
-                })
+                });
             }
 
         })
@@ -366,7 +366,6 @@
 
         $(document).on("click", "#actividadesListado  tbody :checkbox", function (e) {
             $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
-
             $('.chk_actividades').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
         })
     };

@@ -80,7 +80,7 @@
                                             Sede(s)
                                         </span>
                                         <select class="form-control" name="sede[]" id="cbo_sede">
-                                            <option>Seleccione</option>
+                                            @*<option>Seleccione</option>*@
                                         </select>
                                     </div>
                                 </div>
@@ -129,7 +129,12 @@
                                                 <span class="input-group-addon">
                                                     Estado
                                                 </span>
-                                                <select class="form-control input-sm"><option value="">Seleccione</option></select>
+                                                <select class="form-control input-sm" name="estado" id="cboestado">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Pendiente</option>
+                                                    <option value="2">Completado</option>
+                                                    <option value="3">Reenviado</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -143,7 +148,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <table id="fichasestadoListado" class="table table-condensed datatable-archivoslistado table-striped table-bordered table-hover">
+                                <table id="fichasestadoListado" class="table table-condensed datatable-fichasestadoListado table-striped table-bordered table-hover">
                                     <tbody>
                                         <tr>
                                             <td colspan="6">
@@ -177,6 +182,20 @@
                                                     Hasta
                                                 </span>
                                                 <input type="text" name="hasta" id="txt_hastap" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Estado
+                                                </span>
+                                                <select class="form-control input-sm" name="estado" id="cboestadop">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="2">Actual</option>
+                                                    <option value="3">Pasadas</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

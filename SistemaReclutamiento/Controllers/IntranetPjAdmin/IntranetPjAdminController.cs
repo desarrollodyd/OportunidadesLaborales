@@ -21,6 +21,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         IntranetDetalleElementoModalModel detalleelementomodalbl = new IntranetDetalleElementoModalModel();
         UsuarioModel usuariobl = new UsuarioModel();
         PersonaModel personabl = new PersonaModel();
+
+        IntranetFichaModel fichabl = new IntranetFichaModel();
         string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         claseError error = new claseError();
         RutaImagenes rutaImagenes = new RutaImagenes();
@@ -58,6 +60,70 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         public ActionResult FichaFormulario()
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJFichaFormulario.cshtml");
+        }
+
+        [HttpPost]
+        public ActionResult IntranetFichasEmpleadoListarJson(DateTime desde,DateTime hasta , int estado)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<cum_envio> listaEnvios = new List<cum_envio>();
+            try
+            {
+                string tipo = "Empleado";
+                var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
+                error = envioTupla.error;
+                listaEnvios = envioTupla.intranetFichaLista;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Fichas";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar las Fichas";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaEnvios.ToList(), respuesta, mensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult IntranetFichasPostulanteListarJson(DateTime desde, DateTime hasta, int estado)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<cum_envio> listaEnvios = new List<cum_envio>();
+            try
+            {
+                string tipo = "Postulante";
+                var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
+                error = envioTupla.error;
+                listaEnvios = envioTupla.intranetFichaLista;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Fichas";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar las Fichas";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = listaEnvios.ToList(), respuesta, mensaje, mensajeconsola = mensajeConsola });
         }
         public ActionResult PanelSecciones(int menu_id=1)
         {

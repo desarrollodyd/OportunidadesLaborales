@@ -421,7 +421,8 @@ function selectResponse(obj) {
         placeholder: "Seleccione",
         data_first: null,
         disabled: false,
-        readonly:false,
+        readonly: false,
+        multiple:false
     }
 
     var opciones = $.extend({}, defaults, obj);
@@ -478,7 +479,7 @@ function selectResponse(obj) {
                 });
                 $("#" + opciones.select).removeAttr("disabled");
                 if (opciones.select2) {
-                    $("#" + opciones.select).select2({ width: "100%",placeholder: opciones.placeholder });
+                    $("#" + opciones.select).select2({ width: "100%",placeholder: opciones.placeholder,multiple:opciones.multiple });
                 }
                 if (opciones.disabled) {
                     $("#" + opciones.select).prop('disabled',true);
