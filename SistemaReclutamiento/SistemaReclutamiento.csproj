@@ -5174,6 +5174,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FichaCumplimiento\CumUsuarioController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetActividadesController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetAplicativoController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetArchivosController.cs" />
@@ -5217,6 +5218,12 @@
     <Compile Include="Controllers\WebCorporativaAdmin\WebTipoElementoController.cs" />
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumUsuarioEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumEnvioDetalleEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumPreguntaEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumRespuestaEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumUsuPreguntaEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumUsuRespuestaEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetActividadesEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetAplicativoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetCPJLocalEntidad.cs" />
@@ -5277,6 +5284,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ConfiguracionModel.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumCuestionarioEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumEnvioEntidad.cs" />
+    <Compile Include="Models\FichaCumplimiento\CumUsuarioModel.cs" />
+    <Compile Include="Models\FichaCumplimiento\CumUsuPreguntaModel.cs" />
+    <Compile Include="Models\FichaCumplimiento\CumUsuRespuestaModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetActividadesModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetAplicativoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetCPJLocalModel.cs" />
@@ -5426,6 +5438,7 @@
     <Folder Include="Content\vendors\google-code-prettify\bin\" />
     <Folder Include="Content\viewjs\Usuario\" />
     <Folder Include="log\" />
+    <Folder Include="Views\CumUsuario\" />
     <Folder Include="Views\WebDetalleElemento\" />
     <Folder Include="Views\WebTipoElemento\" />
   </ItemGroup>

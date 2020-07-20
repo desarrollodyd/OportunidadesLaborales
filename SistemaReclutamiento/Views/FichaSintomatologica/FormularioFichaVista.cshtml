@@ -3,7 +3,9 @@
 @using System.Web.UI.WebControls
 @using SistemaReclutamiento.Utilitarios;
 @{
-
+    String persona = new JavaScriptSerializer().Serialize(Session["per_full"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usu_full"]);
+    String postulante = new JavaScriptSerializer().Serialize(Session["postulante"]);
 }
 
 <div class="col-md-12 col-sm-12 col-xs-12">
@@ -22,11 +24,10 @@
                     <div role="tabpanel" class="tab-pane fade active in" id="ficha_tab" aria-labelledby="ficha_tab">
 
                         <form id="frmFichaFormulario-form" class="" method="post">
-                            <div class="col-md-12 col-xs-12" style="padding-top:10px;">
-                                <div class="col-md-12 col-sm-12 col-xs-12 visible-xs" style="margin-bottom:10px;">
-                                    <button type="button" class="btn btn-danger col-xs-12 btn_guardar"><i class="fa fa-save"></i> Guardar</button>
-                                </div>
-                            </div>
+                            <input type="hidden" name="txt-tipo" id="txt-tipo" value="POSTULANTE" />
+                            <input type="hidden" name="txt-id_cus" id="txt-id_cus" value="0"/>
+                            <input type="hidden" name="txt-img_act" id="txt-firma_act" value=""/>
+                            <input type="hidden" name="txt-estado" id="txt-estado" value="" />
                             <div class="">
                               
                                 <div class="col-md-12" style="margin-top:15px;">
@@ -57,7 +58,7 @@
                                                     <span class="input-group-addon">
                                                         Empresa
                                                     </span>
-                                                    <input type="text" name="empresa" id="txt-empresa" class="form-control input-sm" />
+                                                    <input type="text" name="txt-empresa" id="txt-empresa" class="form-control input-sm" disabled />
                                                 </div>
                                             </div>
                                         </div>
@@ -67,7 +68,7 @@
                                                     <span class="input-group-addon">
                                                         RUC.
                                                     </span>
-                                                    <input type="text" name="ruc" id="txt-ruc" class="form-control input-sm" />
+                                                    <input type="text" name="txt-ruc" id="txt-ruc" class="form-control input-sm" disabled />
                                                 </div>
                                             </div>
                                         </div>
@@ -77,7 +78,7 @@
                                                     <span class="input-group-addon">
                                                         Apellidos y Nombres
                                                     </span>
-                                                    <input type="text" name="apellidos" id="txt-apellidos" class="form-control input-sm" />
+                                                    <input type="text" name="txt-nombres" id="txt-nombres" class="form-control input-sm" />
                                                 </div>
                                             </div>
                                         </div>
@@ -87,7 +88,7 @@
                                                     <span class="input-group-addon">
                                                         Area de Trabajo
                                                     </span>
-                                                    <input type="text" name="area" id="txt-area" class="form-control input-sm" />
+                                                    <input type="text" name="txt-area" id="txt-area" class="form-control input-sm" disabled />
                                                 </div>
                                             </div>
                                         </div>
@@ -97,7 +98,7 @@
                                                     <span class="input-group-addon">
                                                         DNI
                                                     </span>
-                                                    <input type="text" name="dni" id="txt-dni_" class="form-control input-sm" />
+                                                    <input type="text" name="txt-dni" id="txt-dni" class="form-control input-sm" />
                                                 </div>
                                             </div>
                                         </div>
@@ -107,7 +108,7 @@
                                                     <span class="input-group-addon">
                                                         Dirección
                                                     </span>
-                                                    <input type="text" name="direccion" id="txt-direccion" class="form-control input-sm" />
+                                                    <input type="text" name="txt-direccion" id="txt-direccion" class="form-control input-sm" />
                                                 </div>
                                             </div>
                                         </div>
@@ -117,7 +118,7 @@
                                                     <span class="input-group-addon">
                                                         Celular
                                                     </span>
-                                                    <input type="text" name="celelar" id="txt-celular" class="form-control input-sm" />
+                                                    <input type="text" name="txt-celular" id="txt-celular" class="form-control input-sm" />
                                                 </div>
                                             </div>
                                         </div>
@@ -135,8 +136,23 @@
                                             </div>
                                             <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
                                                 <div class="form-check pl-0">
-                                                    <input type="checkbox" name="fiebre" id="cboFiebre" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-                                                    <input type="hidden" name="pos_brevete" id="pos_brevete" />
+                                                    <input 
+                                                            class="preg1 pregunta"
+                                                           type="checkbox" 
+                                                           name="cbo1" 
+                                                           id="cbo1" 
+                                                           data-height="30px" 
+                                                           data-toggle="toggle"
+                                                           data-on="Si" 
+                                                           data-off="No" 
+                                                           data-onstyle="primary" 
+                                                           data-offstyle="danger" 
+                                                           value="1"
+                                                           data-predesc="Sensación de alza térmica o fiebre"
+                                                           data-fkpreg="1"
+                                                           data-restipo="CERRADA"
+                                                           data-id="0"
+                                                           data-uprid="0"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -148,8 +164,23 @@
                                             </div>
                                             <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                                 <div class="form-check pl-0">
-                                                    <input type="checkbox" name="tos" id="cboTos" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-                                                    <input type="hidden" name="pos_brevete" id="pos_brevete" />
+                                                    <input 
+                                                            class="preg2 pregunta"
+                                                           type="checkbox" 
+                                                           name="cbo2" 
+                                                           id="cbo2" 
+                                                           data-height="30px" 
+                                                           data-toggle="toggle" 
+                                                           data-on="Si" 
+                                                           data-off="No" 
+                                                           data-onstyle="primary" 
+                                                           data-offstyle="danger" 
+                                                           value="1"
+                                                           data-predesc="Tos, estornudo o dificultad  para respirar"
+                                                           data-fkpreg="2"
+                                                           data-restipo="CERRADA"
+                                                           data-id="0"
+                                                           data-uprid="0"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,8 +192,23 @@
                                             </div>
                                             <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                                 <div class="form-check pl-0">
-                                                    <input type="checkbox" name="flema" id="cboFlema" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-                                                    <input type="hidden" name="pos_brevete" id="pos_brevete" />
+                                                    <input  
+                                                           class="preg3 pregunta"
+                                                           type="checkbox" 
+                                                           name="cbo3" 
+                                                           id="cbo3" 
+                                                           data-height="30px" 
+                                                           data-toggle="toggle" 
+                                                           data-on="Si" 
+                                                           data-off="No" 
+                                                           data-onstyle="primary" 
+                                                           data-offstyle="danger" 
+                                                           value="1"
+                                                           data-predesc="Expectoracion o flema amarilla o verdosa"
+                                                           data-fkpreg="3"
+                                                           data-restipo="CERRADA"
+                                                           data-id="0"
+                                                           data-uprid="0"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -174,28 +220,68 @@
                                             </div>
                                             <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                                 <div class="form-check pl-0">
-                                                    <input type="checkbox" name="contacto" id="cboContacto" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-                                                    <input type="hidden" name="pos_brevete" id="pos_brevete" />
+                                                    <input 
+                                                           class="preg4 pregunta"
+                                                           type="checkbox" 
+                                                           name="cbo4" 
+                                                           id="cbo4" 
+                                                           data-height="30px" 
+                                                           data-toggle="toggle" 
+                                                           data-on="Si" 
+                                                           data-off="No" 
+                                                           data-onstyle="primary" 
+                                                           data-offstyle="danger"
+                                                           value="1"
+                                                           data-predesc="Contacto con persona(s) con un caso confirmado de COVID19"
+                                                           data-fkpreg="4"
+                                                           data-restipo="CERRADA"
+                                                           data-id="0"
+                                                           data-uprid="0"/>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-12" style="margin-top:5px;">
                                             <div class="col-md-10 col-xs-8">
                                                 <div class="form-group" style="padding-top: 2px;">
-                                                    e. Esta tomando alguna medicación(detallar)
+                                                    e. Esta tomando alguna medicación (detallar)
                                                 </div>
                                             </div>
                                             <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                                 <div class="form-check pl-0">
-                                                    <input type="checkbox" name="medicacion" id="cboMedicacion" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-                                                    <input type="hidden" name="pos_brevete" id="pos_brevete" />
+                                                    <input 
+                                                           class="preg5 pregunta"
+                                                           type="checkbox" 
+                                                           name="cbo5" 
+                                                           id="cbo5" 
+                                                           data-height="30px" 
+                                                           data-toggle="toggle" 
+                                                           data-on="Si" 
+                                                           data-off="No" 
+                                                           data-onstyle="primary" 
+                                                           data-offstyle="danger" 
+                                                           value="1"
+                                                           data-predesc="Esta tomando alguna medicación (detallar)"
+                                                           data-fkpreg="5"
+                                                           data-restipo="ABIERTA"
+                                                           data-id="0"
+                                                           data-uprid="0"/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12" style="margin-top:0px;">
+                                        <div class="col-md-12 divdetalle5" style="margin-top:0px; display:none">
                                             <div class="col-md-12">
                                                 <div class="form-group" style="padding-top: 2px;">
-                                                    <input class="form-control input-sm" type="text" name="detalle" id="txt-detalle" />
+                                                    <input 
+                                                           class="form-control input-sm preg6 detalle" 
+                                                           type="text" 
+                                                           name="detalle5" 
+                                                           id="detalle5"                                                           
+                                                           data-predesc="Esta tomando alguna medicación (detallar)"
+                                                           data-fkpreg="5"
+                                                           data-restipo="ABIERTA"
+                                                           data-id="0"
+                                                           data-uprid="0"
+                                                           />
                                                 </div>
                                             </div>
                                         </div>
@@ -210,8 +296,23 @@
                                             </div>
                                             <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
                                                 <div class="form-check pl-0">
-                                                    <input type="checkbox" name="riesgo" id="cboRiesgo" checked data-height="30px" data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="primary" data-offstyle="danger" value="1">
-                                                    <input type="hidden" name="pos_brevete" id="pos_brevete" />
+                                                    <input 
+                                                           class="preg6 pregunta"
+                                                           type="checkbox" 
+                                                           name="cbo6" 
+                                                           id="cbo6" 
+                                                           data-height="30px" 
+                                                           data-toggle="toggle" 
+                                                           data-on="Si" 
+                                                           data-off="No" 
+                                                           data-onstyle="primary" 
+                                                           data-offstyle="danger" 
+                                                           value="1"
+                                                           data-predesc="Estoy considerado como persona de riesgo frente a COVID-19*"
+                                                           data-fkpreg="6"
+                                                           data-restipo="CERRADA"
+                                                           data-id="0"
+                                                           data-uprid="0"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -274,7 +375,9 @@
 @section js
 {
     <script type="text/javascript">
-        
+        persona = (@Html.Raw(persona));
+        usuario = (@Html.Raw(usuario));
+        postulante = (@Html.Raw(postulante));
     </script>
     <script src="~/Content/viewjs/OfertaLaboral/FormularioFichaVista.js"></script>
 }
