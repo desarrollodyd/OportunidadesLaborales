@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.FichaCumplimiento;
 using SistemaReclutamiento.Models;
 using System;
 using System.Collections.Generic;

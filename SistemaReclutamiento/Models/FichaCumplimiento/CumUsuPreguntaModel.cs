@@ -1,5 +1,5 @@
 ﻿using Npgsql;
-using SistemaReclutamiento.Entidades;
+using SistemaReclutamiento.Entidades.FichaCumplimiento;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;

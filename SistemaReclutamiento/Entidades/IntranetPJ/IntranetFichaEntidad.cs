@@ -33,5 +33,8 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string env_estado { get; set; }
         public int fk_cuestionario { get; set; }
         public int fk_usuario { get; set; }
+
+        public string end_correo_corp { get; set; }
+        public string end_correo_pers { get; set; }
     }
 }

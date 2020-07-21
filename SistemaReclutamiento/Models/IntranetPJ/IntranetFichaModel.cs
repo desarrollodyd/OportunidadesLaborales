@@ -19,12 +19,13 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         public (List<cum_envio> intranetFichaLista, claseError error) IntranetFichaListarJson(string tipo,DateTime inicio,DateTime fin)
         {
             List<cum_envio> lista = new List<cum_envio>();
+            var fecha = ManejoNulos.ManageNullDate(inicio).ToString("yyyy-MM-dd HH':'mm':'ss");
             claseError error = new claseError();
-            string consulta = @"SELECT ce.env_id, ce.env_nombre, ce.env_tipo, ce.env_fecha_reg, ce.env_fecha_act, ce.env_estado, ce.fk_cuestionario, ce.fk_usuario
+            string consulta = @"SELECT ce.env_id, ce.env_nombre, ce.env_tipo, ce.env_fecha_reg, ce.env_fecha_act, ce.env_estado,ced.end_correo_corp,ced.end_correo_pers, ce.fk_cuestionario, ce.fk_usuario
 	                            FROM cumplimiento.cum_envio ce
-                                join cumplimiento.cum_usuario cu on cu.fk_usuario = ce.fk_usuario
-                                 where cu.cus_tipo=@p0 and ce.env_fecha_reg>=@p1 and ce.env_fecha_reg <=@p2 ;
-	                                ;";
+                                join cumplimiento.cum_usuario cu on cu.cus_id = ce.fk_usuario
+                                join cumplimiento.cum_envio_det ced on ced.fk_envio = ce.env_id
+                                 where cu.cus_tipo=@p0 and ce.env_fecha_reg between '" + ManejoNulos.ManageNullDate(inicio).ToString("yyyy-MM-dd HH':'mm':'ss")+ "' and '" + ManejoNulos.ManageNullDate(fin).ToString("yyyy-MM-dd 23':'59':'59") + "' ;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -32,8 +33,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", tipo);
-                    query.Parameters.AddWithValue("@p1", inicio);
-                    query.Parameters.AddWithValue("@p2", fin);
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullDate(inicio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(fin));
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)
@@ -49,6 +50,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     env_fecha_reg = ManejoNulos.ManageNullDate(dr["env_fecha_reg"]),
                                     env_fecha_act = ManejoNulos.ManageNullDate(dr["env_fecha_act"]),
                                     env_estado = ManejoNulos.ManageNullStr(dr["env_estado"]),
+                                    end_correo_corp = ManejoNulos.ManageNullStr(dr["end_correo_corp"]),
+                                    end_correo_pers = ManejoNulos.ManageNullStr(dr["end_correo_pers"]),
                                     fk_cuestionario = ManejoNulos.ManageNullInteger(dr["fk_cuestionario"]),
                                     fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]),
                                 };
