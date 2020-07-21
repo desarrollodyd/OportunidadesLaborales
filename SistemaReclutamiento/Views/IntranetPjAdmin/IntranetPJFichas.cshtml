@@ -53,11 +53,11 @@
                                     <i class="ace-icon fa fa-file"></i> Enviar
                                 </button>
                             </div>
-                            <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                            @*<div class="col-md-2 col-sm-6 col-xs-6 pull-right">
                                 <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarEmpleados" data-id="1" data-rel="tooltip" title="Buscar">
                                     <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
                                 </button>
-                            </div>
+                            </div>*@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -193,8 +193,9 @@
                                                 </span>
                                                 <select class="form-control input-sm" name="estado" id="cboestadop">
                                                     <option value="">Seleccione</option>
-                                                    <option value="2">Actual</option>
-                                                    <option value="3">Pasadas</option>
+                                                    <option value="1">Pendiente</option>
+                                                    <option value="2">Completado</option>
+                                                    <option value="3">Reenviado</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -209,7 +210,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <table id="fichaspostulanteListado" class="table table-condensed datatable-fichaspostulantelistado table-striped table-bordered table-hover">
+                                <table id="fichaspostulanteListadop" class="table table-condensed datatable-fichaspostulantelistadop table-striped table-bordered table-hover">
                                     <tbody>
                                         <tr>
                                             <td colspan="6">

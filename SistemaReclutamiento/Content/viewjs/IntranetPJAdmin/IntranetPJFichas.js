@@ -133,8 +133,17 @@
                                     title: "",
                                     "bSortable": false,
                                     className: 'align-center',
-                                    "render": function (value) {
-                                        var check = '<input type="checkbox" class="form-check-input-styled-info fichasListado" data-id="' + value + '" name="chk[]">';
+                                    "render": function (value, type, oData) {
+                                        var correoCorporativo = oData.correoCorporativo;
+                                        var correoPersonal = oData.correoPersonal;
+                                        var correo = "";
+                                        if (correoPersonal == '') {
+                                            correo = correoCorporativo;
+                                        }
+                                        else {
+                                            correo = correoPersonal;
+                                        }
+                                        var check = '<input type="checkbox" class="form-check-input-styled-info fichasListado" data-id="' + value + '|' + correoCorporativo + ' | ' + correoPersonal +'" name="chk[]">';
                                         return check;
                                     },
                                     width: "50px",
@@ -199,7 +208,7 @@
             $('.chk_fichas').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
         });
 
-        $(document).on('click', '#btn_enviarFichas', function () {
+        $(document).on('click', '.btn_enviarFichas', function () {
             let arrayUsuarios = [];
             $('#fichasenvioListado tbody tr input[type=checkbox]:checked').each(function () {
                 arrayUsuarios.push($(this).data("id"));
@@ -277,25 +286,25 @@
                                 title: "ID Usuario",
                             },
                             {
-                                data: "correoCorporativo",
+                                data: "end_correo_corp",
                                 title: "C.Corporativo",
                             },
                             {
-                                data: "correoPersonal",
+                                data: "end_correo_pers",
                                 title: "C.Personal",
                             },
                             {
                                 data: "env_fecha_reg",
                                 title: "Fecha",
                                 "render": function (value) {
-                                    var fecha = moment(value).format('YYYY-MM-DD');
+                                    var fecha = moment(value).format('DD-MM-YYYY');
                                     return fecha;
                                 },
                                 width: "120px",
                             },
                             {
                                 data: "env_estado",
-                                tittle: 'Estado',
+                                title: 'Estado',
                                 "render": function (value, type, oData) {
                                     var clase = '';
                                     var estado = '';
@@ -316,9 +325,10 @@
                             },
                             {
                                 data: "env_id",
-                                tittle: 'Accion',
+                                title: 'Accion',
                                 "render": function (value, type, oData) {
-                                    return '<button class="btn btn-primary btn_download" data-id="' + value.env_id+'"><i class="ace-icon fa fa-word align-top bigger-125" ></i >Descargar</button>';
+                                    return '<button class="btn btn-white btn-primary btn-sm btn_reenviar" data-id="' + value + '"><i class="ace-icon fa fa-envelope-o" ></i> Reenviar</button>' +
+                                        ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="ace-icon fa fa-file-word-o" ></i> Descargar</button>';
                                 }
                             }
                         ]
@@ -359,14 +369,14 @@
 
             var dataForm = { desde, hasta, estado };
             responseSimple({
-                url: "IntranetPjAdmin/IntranetFichasEmpleadoListarJson",
+                url: "IntranetPjAdmin/IntranetFichasPostulanteListarJson",
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
                     simpleDataTable({
                         uniform: false,
-                        tableNameVariable: "datatable_fichasestadoListado",
-                        table: "#fichasestadoListado",
+                        tableNameVariable: "datatable-fichaspostulantelistadop",
+                        table: "#fichaspostulanteListadop",
                         tableColumnsData: response.data,
                         tableHeaderCheck: false,
                         tableColumns: [
@@ -375,11 +385,11 @@
                                 title: "ID Usuario",
                             },
                             {
-                                data: "correoCorporativo",
+                                data: "end_correo_corp",
                                 title: "C.Corporativo",
                             },
                             {
-                                data: "correoPersonal",
+                                data: "end_correo_pers",
                                 title: "C.Personal",
                             },
                             {
@@ -393,7 +403,7 @@
                             },
                             {
                                 data: "env_estado",
-                                tittle: 'Estado',
+                                title: 'Estado',
                                 "render": function (value, type, oData) {
                                     var clase = '';
                                     var estado = '';
@@ -414,9 +424,10 @@
                             },
                             {
                                 data: "env_id",
-                                tittle: 'Accion',
+                                title: 'Accion',
                                 "render": function (value, type, oData) {
-                                    return '<button class="btn btn-primary btn_download" data-id="' + value.env_id + '"><i class="ace-icon fa fa-word align-top bigger-125" ></i >Descargar</button>';
+                                    return '<button class="btn btn-white btn-primary btn-sm btn_reenviar" data-id="' + value + '"><i class="ace-icon fa fa-envelope-o" ></i> Reenviar</button>' +
+                                        ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="ace-icon fa fa-file-word-o" ></i> Descargar</button>';
                                 }
                             }
                         ]
@@ -424,6 +435,26 @@
                 }
             })
         });
+
+        $(document).on('click', '.btn_reenviar', function () {
+            var envioid = $(this).data("id");
+            messageConfirmation({
+                content: '¿Esta seguro de Reenviar Ficha Sintomatológica?',
+                callBackSAceptarComplete: function () {
+                    var dataForm = { envioID: envioid };
+                    responseSimple({
+                        url: "IntranetPjAdmin/ReEnviarJson",
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+
+                        }
+                    })
+                }
+            });
+
+        });
+
     };
 
     var _metodos = function () {

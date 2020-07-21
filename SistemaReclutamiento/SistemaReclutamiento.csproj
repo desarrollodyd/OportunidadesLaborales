@@ -5219,6 +5219,7 @@
     <Compile Include="Controllers\WebCorporativaAdmin\WebTipoElementoController.cs" />
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\Class1.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioDetalleEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumPreguntaEntidad.cs" />

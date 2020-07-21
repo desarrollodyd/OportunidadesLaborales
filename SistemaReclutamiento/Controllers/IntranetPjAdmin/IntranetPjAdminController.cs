@@ -1,7 +1,10 @@
 ﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.IntranetPJ;
+using SistemaReclutamiento.Entidades.FichaCumplimiento;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Models.FichaCumplimiento;
+
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
@@ -24,7 +27,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         PersonaModel personabl = new PersonaModel();
 
         CumUsuarioModel cumusubl = new CumUsuarioModel();
-     
+        CumEnvioModel cumenviobl = new CumEnvioModel();
+        CumEnvioDetModel cumenviodetbl = new CumEnvioDetModel();
 
         IntranetFichaModel fichabl = new IntranetFichaModel();
         string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
@@ -61,8 +65,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             return View("~/Views/IntranetPJAdmin/IntranetPJFichas.cshtml");
         }
 
-        public ActionResult FichaFormulario()
+        public ActionResult FichaFormulario(string id)
         {
+            var envio_id = Seguridad.Desencriptar(id);
+            ViewBag.envioid = envio_id;
             return View("~/Views/IntranetPJAdmin/IntranetPJFichaFormulario.cshtml");
         }
 
@@ -75,7 +81,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             List<cum_envio> listaEnvios = new List<cum_envio>();
             try
             {
-                string tipo = "Empleado";
+                string tipo = "EMPLEADO";
                 var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
                 error = envioTupla.error;
                 listaEnvios = envioTupla.intranetFichaLista;
@@ -107,7 +113,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             List<cum_envio> listaEnvios = new List<cum_envio>();
             try
             {
-                string tipo = "Postulante";
+                string tipo = "POSTULANTE";
                 var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
                 error = envioTupla.error;
                 listaEnvios = envioTupla.intranetFichaLista;
@@ -139,15 +145,23 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             bool respuesta = false;
             List<cum_usuario> listausuarios = new List<cum_usuario>();
             CumUsuarioEntidad cumusuario = new CumUsuarioEntidad();
-
+            CumEnvioEntidad cumenvio = new CumEnvioEntidad();
+            CumEnvioDetalleEntidad cumenviodet = new CumEnvioDetalleEntidad();
             var correopersonal = "";
+            var correocorporativo = "";
             var clave = "";
+            int idcumusu = 0;
             try
             {
                
                 foreach (var item in listaEmpleados)
                 {
-                    var usuarioTupla = fichabl.IntranetUsuarioListarJson(item);
+                    var itemarray = item.Split('|');
+
+
+                    var usuarioTupla = fichabl.IntranetUsuarioListarJson(itemarray[0]);
+                    correopersonal = itemarray[2];
+                    correocorporativo = itemarray[1];
                     var cumusuarioExiste = usuarioTupla.intranetCumusuarioLista;
                     int existe = usuarioTupla.intranetCumusuarioLista.Count;
 
@@ -161,32 +175,103 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         //cumusuario.cus_correo = correopersonal;
                         //cumusuario.cus_id = cumusuarioExiste[0].cus_id;
                         //var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
+                        idcumusu= cumusuarioExiste[0].cus_id;
                     }
                     else
                     {
                         cumusuario.cus_estado = "A";
                         cumusuario.cus_firma = "";
-                        cumusuario.cus_dni = item;
+                        cumusuario.cus_dni = itemarray[0];
                         cumusuario.cus_correo = correopersonal;
                         cumusuario.cus_tipo = "EMPLEADO";
                         cumusuario.cus_fecha_reg = DateTime.Now;
+                        cumusuario.cus_fecha_act = DateTime.Now;
                         cumusuario.cus_clave = clave;
                         var usuainsert = cumusubl.CumUsuarioInsertarsinfkuserJson(cumusuario);
+                        idcumusu = usuainsert.idInsertado;
+                    }
 
-                        
+                    if (idcumusu > 0)
+                    {
+                        cumenvio.env_fecha_reg = DateTime.Now;
+                        cumenvio.env_fecha_act = DateTime.Now;
+                        cumenvio.env_estado = "1";
+                        cumenvio.fk_cuestionario = 1;
+                        cumenvio.fk_usuario = idcumusu;
+                        var envio = cumenviobl.CumEnvioInsertarJson(cumenvio);
+
+                        if (envio.idInsertado > 0)
+                        {
+                            cumenviodet.end_fecha_reg = DateTime.Now;
+                            cumenviodet.end_fecha_act = DateTime.Now;
+                            cumenviodet.end_estado = "1";
+                            cumenviodet.end_dni = item;
+                            cumenviodet.fk_envio = envio.idInsertado;
+                            cumenviodet.end_correo_corp = correocorporativo;
+                            cumenviodet.end_correo_pers = correopersonal;
+                            var enviodet = cumenviodetbl.CumEnvioDetalleInsertarJson(cumenviodet);
+
+                            //////envio correo aqui/////
+                        }
+
                     }
                 }
-               
-                if (error.Key.Equals(string.Empty))
+
+                mensaje = "Fichas Registradas";
+                respuesta = true;
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta, mensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult ReEnviarJson(int envioID)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            CumEnvioEntidad envio = new CumEnvioEntidad();
+            try
+            {
+                var envioTupla = cumenviobl.CumEnvioIdObtenerJson(envioID);
+                error = envioTupla.error;
+                envio = envioTupla.cumEnvio;
+                if (envio.fk_usuario > 0)
                 {
-                    mensaje = "Listando Fichas";
+                    int cususuario = envio.fk_usuario;
+                    var cum_usua = cumusubl.CumUsuarioIdObtenerJson(cususuario);
+                    var entidadusuario = cum_usua.cumUsuario;
+                    var clave = entidadusuario.cus_clave;
+                    var correo = entidadusuario.cus_correo;
+                    var nombre = "";
+                    var id = envioID.ToString();
+                    var encriptado = Seguridad.Encriptar(id);
+                    Correo correo_enviar = new Correo();
+                    string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                    //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
+                    correo_enviar.EnviarCorreo(
+                        correo,
+                        "Link de Ficha Sintomatológica",
+                        "Hola! : " + nombre + " \n " +
+                        "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
+                        "Ingrese al siguiente Link y complete el formulario"
+                        + "\n solo se puede editar el mismo dia de envio, \n" +
+                        " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
+                        );
+
+                    mensaje = "Se reenvio Ficha";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
-                    mensaje = "No se Pudieron Listar las Fichas";
+                    mensaje = "No Se pudo reenviar Ficha";
+                    respuesta = false;
                 }
+                
 
             }
             catch (Exception exp)
