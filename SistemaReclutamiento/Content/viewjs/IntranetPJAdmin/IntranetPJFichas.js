@@ -211,7 +211,7 @@
                     callBackSAceptarComplete: function () {
                         var dataForm = { listaEmpleados: arrayUsuarios };
                         responseSimple({
-                            url: "IntranetActividades/IntranetActividadesEliminarVariosJson",
+                            url: "IntranetPjAdmin/EnviarJson",
                             data: JSON.stringify(dataForm),
                             refresh: false,
                             callBackSuccess: function (response) {

@@ -68,5 +68,53 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             return (intranetFichaLista: lista, error: error);
         }
 
+        public (List<cum_usuario> intranetCumusuarioLista, claseError error) IntranetUsuarioListarJson(string id)
+        {
+            List<cum_usuario> lista = new List<cum_usuario>();
+            claseError error = new claseError();
+            string consulta = @"SELECT cus_id, cus_dni, cus_tipo, cus_correo, cus_clave, cus_firma, cus_fecha_reg, cus_fecha_act, cus_estado, fk_usuario
+	                            FROM cumplimiento.cum_usuario
+	                             where cus_dni=@p0;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var ficha = new cum_usuario
+                                {
+
+                                    cus_id = ManejoNulos.ManageNullInteger(dr["cus_id"]),
+                                    cus_dni = ManejoNulos.ManageNullStr(dr["cus_dni"]),
+                                    cus_tipo = ManejoNulos.ManageNullStr(dr["cus_tipo"]),
+                                    cus_correo = ManejoNulos.ManageNullStr(dr["cus_correo"]),
+                                    cus_clave = ManejoNulos.ManageNullStr(dr["cus_clave"]),
+                                    cus_fecha_reg = ManejoNulos.ManageNullDate(dr["cus_fecha_reg"]),
+                                    cus_fecha_act = ManejoNulos.ManageNullDate(dr["cus_fecha_act"]),
+                                    cus_estado = ManejoNulos.ManageNullStr(dr["cus_estado"]),
+                                    fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]),
+                                };
+
+                                lista.Add(ficha);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (intranetCumusuarioLista: lista, error: error);
+        }
     }
 }

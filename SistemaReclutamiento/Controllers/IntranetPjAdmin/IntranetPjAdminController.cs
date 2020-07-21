@@ -6,6 +6,7 @@ using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,6 +22,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         IntranetDetalleElementoModalModel detalleelementomodalbl = new IntranetDetalleElementoModalModel();
         UsuarioModel usuariobl = new UsuarioModel();
         PersonaModel personabl = new PersonaModel();
+
+        CumUsuarioModel cumusubl = new CumUsuarioModel();
+     
 
         IntranetFichaModel fichabl = new IntranetFichaModel();
         string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
@@ -125,6 +129,73 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             }
             return Json(new { data = listaEnvios.ToList(), respuesta, mensaje, mensajeconsola = mensajeConsola });
         }
+
+
+        [HttpPost]
+        public ActionResult EnviarJson(string[] listaEmpleados)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<cum_usuario> listausuarios = new List<cum_usuario>();
+            CumUsuarioEntidad cumusuario = new CumUsuarioEntidad();
+
+            var correopersonal = "";
+            var clave = "";
+            try
+            {
+               
+                foreach (var item in listaEmpleados)
+                {
+                    var usuarioTupla = fichabl.IntranetUsuarioListarJson(item);
+                    var cumusuarioExiste = usuarioTupla.intranetCumusuarioLista;
+                    int existe = usuarioTupla.intranetCumusuarioLista.Count;
+
+                    string path = Path.GetRandomFileName();
+                    path = path.Replace(".", "");
+                    clave = path.Substring(0, 8);
+                
+                    if (existe > 0)
+                    {
+                        //cumusuario.cus_fecha_act = DateTime.Now;
+                        //cumusuario.cus_correo = correopersonal;
+                        //cumusuario.cus_id = cumusuarioExiste[0].cus_id;
+                        //var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
+                    }
+                    else
+                    {
+                        cumusuario.cus_estado = "A";
+                        cumusuario.cus_firma = "";
+                        cumusuario.cus_dni = item;
+                        cumusuario.cus_correo = correopersonal;
+                        cumusuario.cus_tipo = "EMPLEADO";
+                        cumusuario.cus_fecha_reg = DateTime.Now;
+                        cumusuario.cus_clave = clave;
+                        var usuainsert = cumusubl.CumUsuarioInsertarsinfkuserJson(cumusuario);
+
+                        
+                    }
+                }
+               
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Fichas";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar las Fichas";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta, mensaje, mensajeconsola = mensajeConsola });
+        }
+
         public ActionResult PanelSecciones(int menu_id=1)
         {
             //List<IntranetMenuEntidad> intranetMenu = new List<IntranetMenuEntidad>();
