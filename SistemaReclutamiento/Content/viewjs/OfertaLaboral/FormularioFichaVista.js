@@ -48,7 +48,7 @@
                         },
                         {
                             data: "env_fecha_reg",
-                            title: "Fecha",
+                            title: "Fecha Envío",
                             "render": function (value) {
                                 var fecha = moment(value).format('DD-MM-YYYY');
                                 return fecha;

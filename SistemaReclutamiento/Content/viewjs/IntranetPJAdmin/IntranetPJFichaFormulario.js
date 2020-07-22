@@ -1,6 +1,7 @@
 ﻿var PanelFichaFormulario = function () {
     var objEnvioDet='';
     var objEnvio='';
+    var preguntas='';
     var _componentes = function () {
        
     };
@@ -54,19 +55,28 @@
 
                                         var fechaActual=moment(new Date()).format("DD/MM/YYYY");
                                         var fechaEnvio=moment(cusEnvioDet.end_fecha_reg).format("DD/MM/YYYY");
-                                        if(fechaActual!=fechaEnvio){
+                                        if(fechaActual!=fechaEnvio&&cusEnvio.env_estado==2){
                                             $(".btn_guardar").attr('disabled',true);
                                         }
                                         $("#txt-codigo-busqueda").attr('disabled',true);
                                         $("#txt-dni-busqueda").attr('disabled',true);
                                         // Llenado de data
-                                        var preguntas=cusUsuario.CumUsuPregunta;
+                                        preguntas=cusUsuario.CumUsuPregunta;
+                                        console.log(preguntas);
                                         if(preguntas.length>0){
                                             $.each(preguntas,function(index,value){
                                                 var fk_pregunta=value.fk_pregunta;
                                                 var respuestas=value.CumUsuRespuesta;
                                                 $.each(respuestas,function(i,val){
-                    
+                                                    if(val.ure_respuesta=='SI'&&val.ure_tipo=='CERRADA'){
+                                                        // $("#cbo"+fk_pregunta).bootstrapToggle('on');
+                                                        $("#cbo"+fk_pregunta).prop("checked", !$("#cbo"+fk_pregunta).prop("checked"));
+                                                        $("#cbo"+fk_pregunta).val(true);
+                                                    }
+                                                    else{
+                                                        // $("#cbo"+fk_pregunta).bootstrapToggle('off');
+                                                        $("#cbo"+fk_pregunta).val(true);
+                                                    }
                                                
                                                     if(val.ure_tipo=='ABIERTA'&&(val.ure_respuesta=='SI'||val.ure_respuesta=='NO')){
                                                         if(val.ure_respuesta=='SI'||val.ure_respuesta=='NO'){
@@ -75,6 +85,7 @@
                                                             $("#cbo"+fk_pregunta).attr('data-restipo',val.ure_tipo);
                                                             $("#cbo"+fk_pregunta).attr('data-id',val.ure_id);
                                                             $("#cbo"+fk_pregunta).attr('data-uprid',value.upr_id);
+                                                            // $("#cbo"+fk_pregunta).attr('data-detalle','SI');
                                                             if(val.ure_respuesta=='SI'){
                                                                 // $("#cbo"+fk_pregunta).bootstrapToggle('on');
                                                                 $("#cbo"+fk_pregunta).prop("checked", !$("#cbo"+fk_pregunta).prop("checked"));
@@ -98,17 +109,7 @@
                                                         
                                                     }
                                                     else{
-                                                        if(val.ure_respuesta=='SI'){
-                                                            // $("#cbo"+fk_pregunta).bootstrapToggle('on');
-                                                            $("#cbo"+fk_pregunta).prop("checked", !$("#cbo"+fk_pregunta).prop("checked"));
-                                                            $("#cbo"+fk_pregunta).val(true);
-                                                        }
-                                                        else{
-                                                            // $("#cbo"+fk_pregunta).bootstrapToggle('off');
-                                                            $("#cbo"+fk_pregunta).val(true);
-                                                        }
-    
-    
+
                                                         $("#cbo"+fk_pregunta).attr('data-predesc',value.upr_pregunta);
                                                         $("#cbo"+fk_pregunta).attr('data-fkpreg',fk_pregunta);
                                                         $("#cbo"+fk_pregunta).attr('data-restipo',val.ure_tipo);
@@ -170,7 +171,138 @@
         });
         $(document).on('click','.btn_guardar',function(e){
             e.preventDefault();
+            var objUsuario={
+                cus_id:$("#txt-id_cus").val(),
+                cus_dni:$("#txt-dni").val(),
+                cus_direccion:$("#txt-direccion").val(),
+                cus_celular:$("#txt-celular").val(),
+                cus_tipo:$("#txt-tipo").val(),
+                cus_firma_act:$("#txt-firma_act").val(),
+                cus_estado:$("#txt-estado").val(),
+            }
+            var fileName=$('#txt-firma').val();
+            // var fileName = e.target.files[0].name;
+            objUsuario.cus_firma=fileName;
+            var divsPreguntas = $(".pregunta");
+            var arrayPreguntas=[];
+
+            $(divsPreguntas).each(function(e,val){
+                var arrayRespuestas=[];
+                var respuesta='';
+                var orden=0;
+                if($(this).data('restipo')=='CERRADA'){
+                    if($(this).prop('checked')){
+                        respuesta='SI';
+                        orden=1;
+                    }
+                    else{
+                        respuesta='NO';
+                        orden=2;
+                    }
+                }
+                var objetoPregunta={
+                    upr_id:$(this).data('uprid'),
+                    upr_pregunta:$(this).data('predesc'),
+                    fk_pregunta:$(this).data('fkpreg'),
+                }
+                var objetoRespuesta={
+                    ure_id:$(this).data("id"),
+                    ure_respuesta:respuesta,
+                    ure_tipo:$(this).data('restipo'),
+                    ure_orden:orden,
+                }
+                arrayRespuestas.push(objetoRespuesta);
+                if($(this).data('restipo')=='ABIERTA'){
+                    if(respuesta!='SI' && respuesta!='NO'){
+                        console.log($("#detalle"+$(this).data('fkpreg')).data("id"));
+                        console.log($("#detalle"+$(this).data('fkpreg')).val());
+                        console.log($("#detalle"+$(this).data('fkpreg')).data('restipo'));
+                        var objetoRespuestaAbierta={
+                            ure_id:$("#detalle"+$(this).data('fkpreg')).data("id"),
+                            ure_respuesta:$("#detalle"+$(this).data('fkpreg')).val(),
+                            // ure_respuesta:'',
+                            ure_tipo:$("#detalle"+$(this).data('fkpreg')).data('restipo'),
+                            ure_orden:3
+                        }
+                        arrayRespuestas.push(objetoRespuestaAbierta);
+                    }
+                }
+                objetoPregunta.CumUsuRespuesta=arrayRespuestas;
+                arrayPreguntas.push(objetoPregunta);
+            })
+            objUsuario.CumUsuPregunta=arrayPreguntas;
+            objEnvioDet.CumEnvio.CumUsuario=objUsuario;
+            var url='';
+            var file = $('#txt-firma')[0].files[0];
+            if(preguntas.length==0){
+                if(file==null){
+                    messageResponse({
+                        text: "Debe Seleccionar Un Archivo Adjunto",
+                        type: "error"
+                    })
+                    return false;
+                }
+                url='CumUsuario/CumFichaInsertarJson';
+            }
+            else{
+                url='CumUsuario/CumFichaEditarJson'
+            }
+            var dataForm=new FormData();
+            dataForm.append('usuario',JSON.stringify(objEnvioDet));
+            dataForm.append('file',file);
+            responseFileSimple({
+                url:url,
+                data:dataForm,
+                refresh:false,
+                callBackSuccess:function(response){
+                    if(response.respuesta){
+                        window.location.reload();
+                    }
+                }
+            })
+            // if(objEnvioDet.end_id==0){//Nuevo Usuario
+            //     console.log("Nuevo Usuario");
+            //     var dataForm=new FormData();
+            //     dataForm.append('usuario',JSON.stringify(objEnvioDet));
+            //     var file = $('#txt-firma')[0].files[0];
+            //     if(file!=null){
+            //         dataForm.append('file', file);
+            //         responseFileSimple({
+            //             url:'CumUsuario/CumFichaInsertarJson',
+            //             data:dataForm,
+            //             refresh:false,
+            //             callBackSuccess:function(response){
+            //                 if(response.respuesta){
+            //                     window.location.reload();
+            //                 }
+            //             }
+            //         })
+            //     }
+            //     else{
+            //         messageResponse({
+            //             text: "Debe Seleccionar Un Archivo Adjunto",
+            //             type: "error"
+            //         })
+            //     }
+            // }
+            // else{
+            //     console.log("Edicion")
+            //     var dataForm={
+            //         usuario:objUsuario,
+            //     }
+            //     responseSimple({
+            //         url:'CumUsuario/CumFichaEditarJson',
+            //         refresh:false,
+            //         data:JSON.stringify(dataForm),
+            //         callBackSuccess:function(response){
+            //             if(response.respuesta){
+            //                 window.localtion.reload();
+            //             }
+            //         }
+            //     })
+            // }
             console.log(objEnvioDet);
+            
         })
 
         $('input[type="checkbox"]').change(function () {

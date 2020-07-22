@@ -118,8 +118,8 @@ namespace SistemaReclutamiento.Models
             string consulta = @"INSERT INTO cumplimiento.cum_usu_pregunta(
 	                            upr_dni, upr_pregunta, upr_tipo, 
                                 upr_fecha_reg, upr_estado, 
-                                fk_pregunta, fk_usuario)
-	                            VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6)
+                                fk_pregunta, fk_usuario,fk_envio)
+	                            VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6,@p7)
                                 returning upr_id;";
             claseError error = new claseError();
             try
@@ -135,6 +135,7 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(usu_pregunta.upr_estado));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(usu_pregunta.fk_pregunta));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(usu_pregunta.fk_usuario));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(usu_pregunta.fk_envio));
                     idInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                     //query.ExecuteNonQuery();
                     //response = true;
@@ -154,7 +155,7 @@ namespace SistemaReclutamiento.Models
             string consulta = @"UPDATE cumplimiento.cum_usu_pregunta
 	                            SET upr_dni=@p0, upr_pregunta=@p1, 
                                 upr_fecha_act=@p2, 
-                                fk_pregunta=@p3, fk_usuario=@p4
+                                fk_pregunta=@p3
 	                            WHERE upr_id=@p5;";
             try
             {
@@ -166,7 +167,6 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(usu_pregunta.upr_pregunta));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(usu_pregunta.upr_fecha_act));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(usu_pregunta.fk_pregunta));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(usu_pregunta.fk_usuario));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(usu_pregunta.upr_id));
                     query.ExecuteNonQuery();
                     response = true;

@@ -465,5 +465,33 @@ namespace SistemaReclutamiento.Models
             }
             return (cumUsuario: usuario, error: error);
         }
+        public (bool editado, claseError error) CumUsuarioEditarFirmaJson(CumUsuarioEntidad usuario)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE cumplimiento.cum_usuario
+	                            SET cus_firma=@p0,cus_fecha_act=@p1
+	                            WHERE cus_id=@p2;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(usuario.cus_firma));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullDate(usuario.cus_fecha_act));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(usuario.cus_id));
+
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (editado: response, error: error);
+        }
     }
 }

@@ -197,7 +197,7 @@ namespace SistemaReclutamiento.Models
             string consulta = @"UPDATE cumplimiento.cum_usu_respuesta
 	                            SET  ure_dni=@p0, ure_respuesta=@p1, ure_tipo=@p2, 
                                 ure_orden=@p3, ure_calificacion=@p4, 
-                                ure_estado=@p5, fk_usu_pregunta=@p6, fk_usuario=@p7
+                                ure_estado=@p5
 	                            WHERE ure_id=@p8;";
             try
             {
@@ -211,8 +211,6 @@ namespace SistemaReclutamiento.Models
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(usu_respuesta.ure_orden));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(usu_respuesta.ure_calificacion));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(usu_respuesta.ure_estado));
-                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(usu_respuesta.fk_usu_pregunta));
-                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(usu_respuesta.fk_usuario));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(usu_respuesta.ure_id));
                     query.ExecuteNonQuery();
                     response = true;
