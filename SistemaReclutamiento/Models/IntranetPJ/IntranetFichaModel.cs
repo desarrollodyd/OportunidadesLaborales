@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<cum_envio> lista = new List<cum_envio>();
             var fecha = ManejoNulos.ManageNullDate(inicio).ToString("yyyy-MM-dd HH':'mm':'ss");
             claseError error = new claseError();
-            string consulta = @"SELECT ce.env_id, ce.env_nombre, ce.env_tipo, ce.env_fecha_reg, ce.env_fecha_act, ce.env_estado,ced.end_correo_corp,ced.end_correo_pers, ce.fk_cuestionario, ce.fk_usuario
+            string consulta = @"SELECT ce.env_id,cu.cus_dni,cu.cus_correo, ce.env_nombre, ce.env_tipo, ce.env_fecha_reg, ce.env_fecha_act, ce.env_estado,ced.end_correo_corp,ced.end_correo_pers, ce.fk_cuestionario, ce.fk_usuario
 	                            FROM cumplimiento.cum_envio ce
                                 join cumplimiento.cum_usuario cu on cu.cus_id = ce.fk_usuario
                                 join cumplimiento.cum_envio_det ced on ced.fk_envio = ce.env_id
@@ -50,6 +50,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     env_fecha_reg = ManejoNulos.ManageNullDate(dr["env_fecha_reg"]),
                                     env_fecha_act = ManejoNulos.ManageNullDate(dr["env_fecha_act"]),
                                     env_estado = ManejoNulos.ManageNullStr(dr["env_estado"]),
+                                    cus_dni = ManejoNulos.ManageNullStr(dr["cus_dni"]),
+                                    cus_correo = ManejoNulos.ManageNullStr(dr["cus_correo"]),
                                     end_correo_corp = ManejoNulos.ManageNullStr(dr["end_correo_corp"]),
                                     end_correo_pers = ManejoNulos.ManageNullStr(dr["end_correo_pers"]),
                                     fk_cuestionario = ManejoNulos.ManageNullInteger(dr["fk_cuestionario"]),
@@ -76,7 +78,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             List<cum_envio> lista = new List<cum_envio>();
             var fecha = ManejoNulos.ManageNullDate(inicio).ToString("yyyy-MM-dd HH':'mm':'ss");
             claseError error = new claseError();
-            string consulta = @"SELECT ce.env_id,per.per_nombre,per.per_apellido_pat, ce.env_nombre, ce.env_tipo, ce.env_fecha_reg, ce.env_fecha_act, ce.env_estado,ced.end_correo_corp,ced.end_correo_pers, ce.fk_cuestionario, ce.fk_usuario
+            string consulta = @"SELECT ce.env_id,per.per_nombre,per.per_apellido_pat,per.per_apellido_mat, ce.env_nombre, ce.env_tipo, ce.env_fecha_reg, ce.env_fecha_act, ce.env_estado,ced.end_correo_corp,ced.end_correo_pers, ce.fk_cuestionario, ce.fk_usuario
 	                            FROM cumplimiento.cum_envio ce
                                 join cumplimiento.cum_usuario cu on cu.cus_id = ce.fk_usuario
                                 join cumplimiento.cum_envio_det ced on ced.fk_envio = ce.env_id
@@ -105,6 +107,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                     env_nombre = ManejoNulos.ManageNullStr(dr["env_nombre"]),
                                     per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
                                     per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
+                                    per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]),
                                     env_tipo = ManejoNulos.ManageNullStr(dr["env_tipo"]),
                                     env_fecha_reg = ManejoNulos.ManageNullDate(dr["env_fecha_reg"]),
                                     env_fecha_act = ManejoNulos.ManageNullDate(dr["env_fecha_act"]),
