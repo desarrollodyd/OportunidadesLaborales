@@ -289,7 +289,53 @@ namespace SistemaReclutamiento.Models
             }
             return usuario;
         }
+
+        public (List<UsuarioEntidadPostulante> lista, claseError error) PostulantesListarJson()
+        {
+            claseError error = new claseError();
+            List<UsuarioEntidadPostulante> lista = new List<UsuarioEntidadPostulante>();
+
+            string consulta = @"SELECT usu.usu_id,usu.usu_estado,per.per_numdoc,per.per_nombre,per.per_apellido_pat,per.per_correoelectronico
+	                            FROM seguridad.seg_usuario usu
+                                join marketing.cpj_persona per on per.per_id=usu.fk_persona
+                                where usu.usu_tipo='POSTULANTE' and usu.usu_estado='A' ";
+
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            var postulantes = new UsuarioEntidadPostulante
+                            {
+                                usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]),
+                                per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
+                                per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
+                                per_num_doc = ManejoNulos.ManageNullStr(dr["per_numdoc"]),
+                                per_correoelectronico = ManejoNulos.ManageNullStr(dr["per_correoelectronico"]),
+                                usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]),
+                                
+                            };
+                            lista.Add(postulantes);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                //Console.Write(ex.Message);
+            }
+            return (lista: lista, error: error);
+        }
+
         #endregion
+
         #region Usuario Proveedor
         public UsuarioEntidad ProveedorValidarCredenciales(string usu_login)
         {

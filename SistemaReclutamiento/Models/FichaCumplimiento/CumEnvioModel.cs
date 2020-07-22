@@ -154,9 +154,9 @@ namespace SistemaReclutamiento.Models.FichaCumplimiento
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(envio.env_fecha_act));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullDate(envio.env_fecha_act));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(envio.env_estado));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(envio.env_id));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(envio.env_id));
 
                     query.ExecuteNonQuery();
                     response = true;

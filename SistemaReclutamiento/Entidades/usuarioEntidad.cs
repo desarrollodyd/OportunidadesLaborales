@@ -23,4 +23,15 @@ namespace SistemaReclutamiento.Entidades
         public string usu_token { get; set; }
         public string usu_exp_token { get; set; }
     }
+
+    public class UsuarioEntidadPostulante
+    {
+        public int usu_id { get; set; }
+        public string usu_estado { get; set; }
+        public string per_num_doc { get; set; }
+        public string per_nombre { get; set; }
+        public string per_apellido_pat { get; set; }
+        public string per_correoelectronico { get; set; }
+       
+    }
 }

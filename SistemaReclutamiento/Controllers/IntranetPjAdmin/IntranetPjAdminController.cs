@@ -114,7 +114,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             try
             {
                 string tipo = "POSTULANTE";
-                var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
+                var envioTupla = fichabl.IntranetFichaPostListarJson(desde, hasta);
                 error = envioTupla.error;
                 listaEnvios = envioTupla.intranetFichaLista;
                 if (error.Key.Equals(string.Empty))
@@ -159,7 +159,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     var itemarray = item.Split('|');
 
 
-                    var usuarioTupla = fichabl.IntranetUsuarioListarJson(itemarray[0]);
+                    var usuarioTupla = fichabl.IntranetUsuarioListarJson(itemarray[0],"EMPLEADO");
                     correopersonal = itemarray[2];
                     correocorporativo = itemarray[1];
                     var cumusuarioExiste = usuarioTupla.intranetCumusuarioLista;
@@ -171,11 +171,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 
                     if (existe > 0)
                     {
-                        //cumusuario.cus_fecha_act = DateTime.Now;
-                        //cumusuario.cus_correo = correopersonal;
-                        //cumusuario.cus_id = cumusuarioExiste[0].cus_id;
-                        //var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
-                        idcumusu= cumusuarioExiste[0].cus_id;
+
+                        cumusuario.cus_correo = correopersonal;
+                        cumusuario.cus_id = cumusuarioExiste[0].cus_id;
+                        var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
+                        idcumusu = cumusuarioExiste[0].cus_id;
                     }
                     else
                     {
@@ -253,6 +253,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     Correo correo_enviar = new Correo();
                     string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
+                    envio.env_fecha_act = DateTime.Now;
+                    envio.env_estado = "3";
+                    envio.env_id = envioID;
+                    var estado = cumenviobl.CumEnvioEditarJson(envio);
                     correo_enviar.EnviarCorreo(
                         correo,
                         "Link de Ficha Sintomatológica",
@@ -272,6 +276,128 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     respuesta = false;
                 }
                 
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { respuesta, mensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult listaPostulantes()
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<UsuarioEntidadPostulante> lista = new List<UsuarioEntidadPostulante>();
+            try
+            {
+
+                var envioTupla = usuariobl.PostulantesListarJson();
+                error = envioTupla.error;
+                lista = envioTupla.lista;
+                if (error.Key.Equals(string.Empty))
+                {
+                    mensaje = "Listando Postulantes";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensajeConsola = error.Value;
+                    mensaje = "No se Pudieron Listar las Postulantes";
+                }
+
+            }
+            catch (Exception exp)
+            {
+                mensaje = exp.Message + ",Llame Administrador";
+            }
+            return Json(new { data = lista.ToList(), respuesta, mensaje, mensajeconsola = mensajeConsola });
+        }
+
+        [HttpPost]
+        public ActionResult EnviarPJson(string[] listaPostulantes)
+        {
+            string mensaje = "";
+            string mensajeConsola = "";
+            bool respuesta = false;
+            List<cum_usuario> listausuarios = new List<cum_usuario>();
+            CumUsuarioEntidad cumusuario = new CumUsuarioEntidad();
+            CumEnvioEntidad cumenvio = new CumEnvioEntidad();
+            CumEnvioDetalleEntidad cumenviodet = new CumEnvioDetalleEntidad();
+            var correopersonal = "";
+            var dni = "";
+            var clave = "";
+            int idcumusu = 0;
+            try
+            {
+
+                foreach (var item in listaPostulantes)
+                {
+                    var itemarray = item.Split('|');
+
+                    var usuarioTupla = fichabl.IntranetUsuarioListarJson(itemarray[1],"POSTULANTE");
+                    dni = itemarray[1];
+                    correopersonal = itemarray[2];
+                    var cumusuarioExiste = usuarioTupla.intranetCumusuarioLista;
+                    int existe = usuarioTupla.intranetCumusuarioLista.Count;
+
+                    string path = Path.GetRandomFileName();
+                    path = path.Replace(".", "");
+                    clave = path.Substring(0, 8);
+
+                    if (existe > 0)
+                    {
+                       
+                        cumusuario.cus_correo = correopersonal;
+                        cumusuario.cus_id = cumusuarioExiste[0].cus_id;
+                        var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
+                        idcumusu = cumusuarioExiste[0].cus_id;
+                    }
+                    else
+                    {
+                        cumusuario.cus_estado = "A";
+                        cumusuario.cus_firma = "";
+                        cumusuario.cus_dni = dni;
+                        cumusuario.cus_correo = correopersonal;
+                        cumusuario.cus_tipo = "POSTULANTE";
+                        cumusuario.cus_fecha_reg = DateTime.Now;
+                        cumusuario.cus_fecha_act = DateTime.Now;
+                        cumusuario.cus_clave = clave;
+                        cumusuario.fk_usuario = Convert.ToInt32(itemarray[0]);
+                        var usuainsert = cumusubl.CumUsuarioPostInsertarsinfkuserJson(cumusuario);
+                        idcumusu = usuainsert.idInsertado;
+                    }
+
+                    if (idcumusu > 0)
+                    {
+                        cumenvio.env_fecha_reg = DateTime.Now;
+                        cumenvio.env_fecha_act = DateTime.Now;
+                        cumenvio.env_estado = "1";
+                        cumenvio.fk_cuestionario = 1;
+                        cumenvio.fk_usuario = idcumusu;
+                        var envio = cumenviobl.CumEnvioInsertarJson(cumenvio);
+
+                        if (envio.idInsertado > 0)
+                        {
+                            cumenviodet.end_fecha_reg = DateTime.Now;
+                            cumenviodet.end_fecha_act = DateTime.Now;
+                            cumenviodet.end_estado = "1";
+                            cumenviodet.end_dni = item;
+                            cumenviodet.fk_envio = envio.idInsertado;
+                            cumenviodet.end_correo_pers = correopersonal;
+                            var enviodet = cumenviodetbl.CumEnvioDetalleInsertarJson(cumenviodet);
+
+                            //////envio correo aqui/////
+                        }
+
+                    }
+                }
+
+                mensaje = "Fichas Registradas";
+                respuesta = true;
 
             }
             catch (Exception exp)

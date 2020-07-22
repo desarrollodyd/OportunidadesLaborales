@@ -250,6 +250,43 @@ namespace SistemaReclutamiento.Models
             }
             return (idInsertado: idInsertado, error: error);
         }
+
+        public (int idInsertado, claseError error) CumUsuarioPostInsertarsinfkuserJson(CumUsuarioEntidad usuario)
+        {
+            //bool response = false;
+            int idInsertado = 0;
+            string consulta = @"INSERT INTO cumplimiento.cum_usuario(
+	                            cus_dni, cus_tipo, cus_correo, cus_firma, cus_fecha_reg, cus_estado,cus_clave, cus_fecha_act,fk_usuario)
+	                            VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6,@p7,@p8)
+                                returning cus_id;";
+            claseError error = new claseError();
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(usuario.cus_dni));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(usuario.cus_tipo));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(usuario.cus_correo));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(usuario.cus_firma));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(usuario.cus_fecha_reg));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(usuario.cus_estado));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(usuario.cus_clave));
+                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullDate(usuario.cus_fecha_act));
+                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullInteger(usuario.fk_usuario));
+                    idInsertado = Int32.Parse(query.ExecuteScalar().ToString());
+                    //query.ExecuteNonQuery();
+                    //response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (idInsertado: idInsertado, error: error);
+        }
         public (bool editado, claseError error) CumUsuarioEditarJson(CumUsuarioEntidad usuario)
         {
             claseError error = new claseError();
@@ -290,7 +327,7 @@ namespace SistemaReclutamiento.Models
             bool response = false;
             string consulta = @"UPDATE cumplimiento.cum_usuario
 	                            SET cus_correo=@p2, 
-                                cus_clave=@p3,cus_fecha_act=@p4, cus_estado=@p5
+                                
 	                            WHERE cus_id=@p7;";
             try
             {
@@ -300,9 +337,6 @@ namespace SistemaReclutamiento.Models
                     var query = new NpgsqlCommand(consulta, con);
                    
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(usuario.cus_correo));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(usuario.cus_clave));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullDate(usuario.cus_fecha_act));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(usuario.cus_estado));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(usuario.cus_id));
                     query.ExecuteNonQuery();
                     response = true;

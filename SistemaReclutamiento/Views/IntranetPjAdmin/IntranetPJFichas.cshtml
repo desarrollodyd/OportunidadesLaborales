@@ -47,56 +47,103 @@
 
                 <div class="tab-content">
                     <div id="home3" class="tab-pane in active">
-                        <div class="row" style="margin-bottom:10px;">
-                            <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
-                                <button class="btn btn-white btn-success btn-sm btn-block btn-round btn_enviarFichas" data-id="1" data-rel="tooltip" title="Enviar">
-                                    <i class="ace-icon fa fa-file"></i> Enviar
-                                </button>
-                            </div>
-                            @*<div class="col-md-2 col-sm-6 col-xs-6 pull-right">
-                                <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarEmpleados" data-id="1" data-rel="tooltip" title="Buscar">
-                                    <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
-                                </button>
-                            </div>*@
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Empresa(s)
-                                        </span>
-                                        <select class="form-control input-sm" name="empresa[]" id="cbo_empresa">
-                                            @*<option>Seleccione</option>*@
-                                        </select>
-                                       
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs tab-color-blue background-blue" id="myTab_">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#tabempleado">
+                                        <i class="orange ace-icon fa fa-user bigger-110"></i>
+                                        Empleados
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a data-toggle="tab" href="#tab_postulante" id="tabpostulanted">
+                                        <i class="red ace-icon fa fa-user-md bigger-110"></i>
+                                        Postulantes
+                                    </a>
+                                </li>
+
+                            </ul>
+                            <div class="tab-content">
+                                <div id="tabempleado" class="tab-pane in active">
+                                    <div class="row" style="margin-bottom:10px;">
+                                        <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                                            <button class="btn btn-white btn-success btn-sm btn-block btn-round btn_enviarFichas" data-id="1" data-rel="tooltip" title="Enviar">
+                                                <i class="ace-icon fa fa-file"></i> Enviar
+                                            </button>
+                                        </div>
+                                        @*<div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarEmpleados" data-id="1" data-rel="tooltip" title="Buscar">
+                    <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
+                </button>
+            </div>*@
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        Empresa(s)
+                                                    </span>
+                                                    <select class="form-control input-sm" name="empresa[]" id="cbo_empresa">
+                                                        @*<option>Seleccione</option>*@
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        Sede(s)
+                                                    </span>
+                                                    <select class="form-control" name="sede[]" id="cbo_sede">
+                                                        @*<option>Seleccione</option>*@
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <table id="fichasenvioListado" class="table table-condensed table-striped table-bordered table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <div class="alert alert-warning alert-dismissible text-center"><span>Seleccione empresa o sede para mostrar registros</span></div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Sede(s)
-                                        </span>
-                                        <select class="form-control" name="sede[]" id="cbo_sede">
-                                            @*<option>Seleccione</option>*@
-                                        </select>
+                                <div id="tab_postulante" class="tab-pane">
+                                    <div class="row" style="margin-bottom:10px;">
+                                        <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                                            <button class="btn btn-white btn-success btn-sm btn-block btn-round btn_enviarFichasP" data-id="1" data-rel="tooltip" title="Enviar">
+                                                <i class="ace-icon fa fa-file"></i> Enviar
+                                            </button>
+                                        </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table id="fichapostulanteListado" class="table table-condensed table-striped table-bordered table-hover">
+                                                <tbody>
+                                                    <tr>
+                                                        <td colspan="6">
+                                                            <div class="alert alert-warning alert-dismissible text-center"><span>Seleccione empresa o sede para mostrar registros</span></div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <table id="fichasenvioListado" class="table table-condensed table-striped table-bordered table-hover">
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="6">
-                                                <div class="alert alert-warning alert-dismissible text-center"><span>Seleccione empresa o sede para mostrar registros</span></div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+
                         </div>
+                       
                     </div>
 
                     <div id="profile3" class="tab-pane">

@@ -136,13 +136,6 @@
                                     "render": function (value, type, oData) {
                                         var correoCorporativo = oData.correoCorporativo;
                                         var correoPersonal = oData.correoPersonal;
-                                        var correo = "";
-                                        if (correoPersonal == '') {
-                                            correo = correoCorporativo;
-                                        }
-                                        else {
-                                            correo = correoPersonal;
-                                        }
                                         var check = '<input type="checkbox" class="form-check-input-styled-info fichasListado" data-id="' + value + '|' + correoCorporativo + ' | ' + correoPersonal +'" name="chk[]">';
                                         return check;
                                     },
@@ -385,8 +378,13 @@
                                 title: "ID Usuario",
                             },
                             {
-                                data: "end_correo_corp",
-                                title: "C.Corporativo",
+                                data: "nombre",
+                                title: "Nombre Empleado",
+                                "render": function (value, type, oData) {
+                                    var nombre = oData.per_apellido_pat + ', ' + oData.per_nombre;
+
+                                    return nombre;
+                                }
                             },
                             {
                                 data: "end_correo_pers",
@@ -447,7 +445,13 @@
                         data: JSON.stringify(dataForm),
                         refresh: false,
                         callBackSuccess: function (response) {
-
+                            if ($("#profile3").is(":visible")) {
+                                $(".btn_buscarFichas").click();
+                            }
+                            else {
+                                $(".btn_buscarFichasp").click();
+                            }
+                            
                         }
                     })
                 }
@@ -455,6 +459,113 @@
 
         });
 
+        $(document).on('click', '#tabpostulanted', function () {
+            responseSimple({
+                url: "IntranetPjAdmin/listaPostulantes",
+                data: JSON.stringify({}),
+                refresh: false,
+                callBackSuccess: function (response) {
+                    simpleDataTable({
+                        uniform: false,
+                        tableNameVariable: "datatable_fichapostulanteListado",
+                        table: "#fichapostulanteListado",
+                        tableColumnsData: response.data,
+                        tableHeaderCheck: true,
+                        tableHeaderCheckIndex: 0,
+                        headerCheck: "chk_fichasp",
+                        tableColumns: [
+                            {
+                                data: "usu_id",
+                                title: "",
+                                "bSortable": false,
+                                className: 'align-center',
+                                "render": function (value, type, oData) {
+                                    var correoPersonal = oData.per_correoelectronico;
+                                    var dni = oData.per_num_doc;
+                                    var check = '<input type="checkbox" class="form-check-input-styled-info fichapostulanteListado" data-id="' + value + ' | ' + dni + ' | ' + correoPersonal + '" name="chk[]">';
+                                    return check;
+                                },
+                                width: "50px",
+                            },
+                            {
+                                data: "nombre",
+                                title: "Nombre Empleado",
+                                "render": function (value, type, oData) {
+                                    var nombre = oData.per_apellido_pat + ', ' + oData.per_nombre;
+                                   
+                                    return nombre;
+                                }
+                            },
+                            {
+                                data: "per_correoelectronico",
+                                title: "C.Personal",
+                            },
+                            {
+                                data: "usu_id",
+                                tittle: 'Estado Correo',
+                                "render": function (value, type, oData) {
+                                    var correoPersonal = oData.per_correoelectronico;
+                                    var clase = '';
+                                    var estado = '';
+                                    if (correoPersonal == '') {
+                                        clase = 'danger';
+                                        estado = 'No Verificado';
+                                    }
+                                    else {
+                                        clase = 'success';
+                                        estado = 'verificado';
+                                    }
+                                    return '<span class="label label-' + clase + '">' + estado + '</span>';
+                                }
+                            }
+                        ]
+                    });
+                }
+            })
+
+        });
+
+        $(document).on("click", ".chk_fichasp", function (e) {
+            $('#fichapostulanteListado').find('tbody :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
+        })
+
+        $(document).on("click", "#fichapostulanteListado  tbody :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+            $('.chk_fichasp').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+        });
+
+        $(document).on('click', '.btn_enviarFichasP', function () {
+            let arrayUsuarios = [];
+            $('#fichapostulanteListado tbody tr input[type=checkbox]:checked').each(function () {
+                arrayUsuarios.push($(this).data("id"));
+            });
+
+            if (arrayUsuarios.length > 0) {
+                messageConfirmation({
+                    content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
+                    callBackSAceptarComplete: function () {
+                        var dataForm = { listaPostulantes: arrayUsuarios };
+                        responseSimple({
+                            url: "IntranetPjAdmin/EnviarPJson",
+                            data: JSON.stringify(dataForm),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+
+                            }
+                        })
+                    }
+                });
+            }
+            else {
+                messageResponse({
+                    text: "Debe Seleccionar al menos un Postulante",
+                    type: "error"
+                });
+            }
+
+        });
     };
 
     var _metodos = function () {
