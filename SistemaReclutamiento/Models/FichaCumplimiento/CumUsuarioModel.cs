@@ -349,5 +349,121 @@ namespace SistemaReclutamiento.Models
             }
             return (editado: response, error: error);
         }
+        public (CumUsuarioEntidad cumUsuario, claseError error) CumUsuarioObtenerporNumDocyClave(string numdoc, string clave)
+        {
+            CumUsuarioEntidad usuario = new CumUsuarioEntidad();
+            claseError error = new claseError();
+            string consulta = @"SELECT cus_id,
+                                        cus_dni, 
+                                        cus_tipo, 
+                                        cus_correo, 
+                                        cus_clave, 
+                                        cus_firma, 
+                                        cus_fecha_reg, 
+                                        cus_fecha_act, 
+                                        cus_estado, 
+                                        fk_usuario
+	                                    FROM cumplimiento.cum_usuario
+                                        where cus_dni=@p0 and cus_clave=@p1";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", numdoc);
+                    query.Parameters.AddWithValue("@p1", clave);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+
+                                usuario.cus_id = ManejoNulos.ManageNullInteger(dr["cus_id"]);
+                                usuario.cus_dni = ManejoNulos.ManageNullStr(dr["cus_dni"]);
+                                usuario.cus_tipo = ManejoNulos.ManageNullStr(dr["cus_tipo"]);
+                                usuario.cus_correo = ManejoNulos.ManageNullStr(dr["cus_correo"]);
+                                usuario.cus_clave = ManejoNulos.ManageNullStr(dr["cus_clave"]);
+                                usuario.cus_firma = ManejoNulos.ManageNullStr(dr["cus_firma"]);
+                                usuario.cus_fecha_reg = ManejoNulos.ManageNullDate(dr["cus_fecha_reg"]);
+                                usuario.cus_fecha_act = ManejoNulos.ManageNullDate(dr["cus_fecha_act"]);
+                                usuario.cus_estado = ManejoNulos.ManageNullStr(dr["cus_estado"]);
+                                usuario.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (cumUsuario: usuario, error: error);
+        }
+        public (CumUsuarioEntidad cumUsuario, claseError error) CumUsuarioIdObtenerDataCompletaJson(int cus_id)
+        {
+            CumUsuarioEntidad usuario = new CumUsuarioEntidad();
+            claseError error = new claseError();
+            string consulta = @"select cus.cus_id,
+                                        cus.cus_dni, 
+                                        cus.cus_tipo, 
+                                        cus.cus_correo, 
+                                        cus.cus_clave, 
+                                        cus.cus_firma, 
+                                        cus.cus_fecha_reg, 
+                                        cus.cus_fecha_act, 
+                                        cus.cus_estado, 
+                                        cus.fk_usuario,
+										per.per_nombre,per.per_apellido_pat,per.per_apellido_mat,
+										per.per_direccion,
+										per.per_celular
+	                                    FROM cumplimiento.cum_usuario cus
+										join seguridad.seg_usuario seg on seg.usu_id=cus.fk_usuario
+										join marketing.cpj_persona per on per.per_id=seg.fk_persona
+										where cus.cus_id=@p0";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", cus_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+
+                                usuario.cus_id = ManejoNulos.ManageNullInteger(dr["cus_id"]);
+                                usuario.cus_dni = ManejoNulos.ManageNullStr(dr["cus_dni"]);
+                                usuario.cus_tipo = ManejoNulos.ManageNullStr(dr["cus_tipo"]);
+                                usuario.cus_correo = ManejoNulos.ManageNullStr(dr["cus_correo"]);
+                                usuario.cus_clave = ManejoNulos.ManageNullStr(dr["cus_clave"]);
+                                usuario.cus_firma = ManejoNulos.ManageNullStr(dr["cus_firma"]);
+                                usuario.cus_fecha_reg = ManejoNulos.ManageNullDate(dr["cus_fecha_reg"]);
+                                usuario.cus_fecha_act = ManejoNulos.ManageNullDate(dr["cus_fecha_act"]);
+                                usuario.cus_estado = ManejoNulos.ManageNullStr(dr["cus_estado"]);
+                                usuario.nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]);
+                                usuario. apellido_pat= ManejoNulos.ManageNullStr(dr["per_apellido_pat"]);
+                                usuario.apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]);
+                                usuario.direccion = ManejoNulos.ManageNullStr(dr["per_direccion"]);
+                                usuario.celular = ManejoNulos.ManageNullStr(dr["per_celular"]);
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (cumUsuario: usuario, error: error);
+        }
     }
 }

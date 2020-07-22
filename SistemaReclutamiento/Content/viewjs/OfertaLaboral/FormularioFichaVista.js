@@ -3,11 +3,91 @@
     var postulanteSesion=postulante;
     var personaSesion=persona;
     var _inicio=function(){
-        $("#txt-nombres").val(personaSesion.per_apellido_pat+" "+personaSesion.per_apellido_mat+", "+personaSesion.per_nombre);
-        $("#txt-dni").val(personaSesion.per_numdoc);
-        $("#txt-celular").val(postulanteSesion.pos_celular);
-        $("#txt-direccion").val(postulanteSesion.pos_direccion);
-        _ListardatosFicha(usuarioSesion.usu_id)
+        // $("#txt-nombres").val(personaSesion.per_apellido_pat+" "+personaSesion.per_apellido_mat+", "+personaSesion.per_nombre);
+        // $("#txt-dni").val(personaSesion.per_numdoc);
+        // $("#txt-celular").val(postulanteSesion.pos_celular);
+        // $("#txt-direccion").val(postulanteSesion.pos_direccion);
+        // _ListardatosFicha(usuarioSesion.usu_id)
+        var dataForm={
+            fk_usuario:usuarioSesion.usu_id,
+            tipo:'POSTULANTE'
+        }
+        responseSimple({
+            url:'CumUsuario/CumEnvioListarJson',
+            data:JSON.stringify(dataForm),
+            refresh:false,
+            callBackSuccess:function(response){
+                simpleDataTable({
+                    uniform: false,
+                    tableNameVariable: "datatable_fichasListado",
+                    table: "#fichasListado",
+                    tableColumnsData: response.data,
+                    tableHeaderCheck: true,
+                    tableHeaderCheckIndex: 0,
+                    headerCheck: "chk_ficha",
+                    "scrollX":true,
+                    tableColumns: [
+                        {
+                            data: "env_id",
+                            title: "",
+                            "bSortable": false,
+                            className: 'align-center',
+                            "render": function (value, type, oData) {
+                                var check = '<input type="checkbox" class="form-check-input-styled-info fichasListado" data-id="' + value +'" name="chk[]">';
+                                return check;
+                            },
+                            width: "50px",
+                        },
+                        {
+                            data: "fk_usuario",
+                            title: "ID Usuario",
+                        },
+                        {
+                            data: "end_correo_pers",
+                            title: "Dir. de Envío",
+                        },
+                        {
+                            data: "env_fecha_reg",
+                            title: "Fecha",
+                            "render": function (value) {
+                                var fecha = moment(value).format('DD-MM-YYYY');
+                                return fecha;
+                            },
+                            width: "120px",
+                        },
+                        {
+                            data: "env_estado",
+                            title: 'Estado',
+                            "render": function (value, type, oData) {
+                                var clase = '';
+                                var estado = '';
+                                if (value == 1) {
+                                    clase = 'danger';
+                                    estado = 'Pendiente';
+                                }
+                                if (value == 2) {
+                                    clase = 'success';
+                                    estado = 'Completado';
+                                }
+                                if (value == 3) {
+                                    clase = 'warning';
+                                    estado = 'Reenviado';
+                                }
+                                return '<span class="label label-' + clase + '">' + estado + '</span>';
+                            }
+                        },
+                        {
+                            data: "env_id",
+                            title: 'Accion',
+                            "render": function (value, type, oData) {
+                                return ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="fa fa-download" ></i> Descargar</button>';
+                            }
+                        }
+                    ]
+                });
+                // $("#fichasListado").DataTable().draw();
+            }
+        })
     }
     var _ListardatosFicha = function (usuario_id) {
         var dataForm={
@@ -236,26 +316,22 @@
 
 
         })
-        $(document).on('click','#myTab',function(e){
-            e.preventDefault();
-            console.log("click");
+        $(document).on("click", ".chk_all", function (e) {
+            if(this.checked){
+                $(".btn_descar_todo").show()
+            }
+            else{
+                $(".btn_descar_todo").hide()
+            }
+            $('#fichasListado').find('tbody>tr>td :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
         })
-        $(document).on('click','#myTab2',function(e){
-            // e.preventDefault();
-    
-            console.log("click2");
-        })
-        $(document).on('click','#btn_tab',function(e){
-           
-            $("#ficha_tab").addClass("active");
-            $("#ficha_tab").addClass("in");
-            // $('#myTab2')[0].click();
-            $('#myTab2').addClass("active");
-            $('#myTab').removeClass("active");
-            $("#lista_ficha_tab").removeClass("active");
-            $("#lista_ficha_tab").removeClass("in");
-            // $('#myTab2').trigger('click'); 
-        })
+
+        $(document).on("click", "#fichasListado>tbody>tr>td :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+            $('.chk_all').prop('checked', ($(this).closest('table').find('tbody>tr>td :checkbox:checked').length == $(this).closest('table').find('tbody>tr>td :checkbox').length)); //Tira / coloca a seleção no .checkAll
+        });
     
     };
 
@@ -281,9 +357,9 @@
             _componentes();
             _metodos();
         },
-        __ListardatosFicha: function (usuario_id) {
-            _ListardatosFicha(usuario_id);
-        },
+        // __ListardatosFicha: function (usuario_id) {
+        //     _ListardatosFicha(usuario_id);
+        // },
     }
 }();
 

@@ -2,7 +2,9 @@
 using Newtonsoft.Json.Linq;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.FichaCumplimiento;
+using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Models.IntranetPJ;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,72 +20,76 @@ namespace SistemaReclutamiento.Controllers
         CumUsuarioModel cumUsuariobl = new CumUsuarioModel();
         CumUsuPreguntaModel cumUsuPreguntabl = new CumUsuPreguntaModel();
         CumUsuRespuestaModel cumUsuRespuestabl = new CumUsuRespuestaModel();
+        IntranetFichaModel intranetFichabl = new IntranetFichaModel();
+        SQLModel sqlBL = new SQLModel();
+        CumEnvioDetModel envDetModelbl = new CumEnvioDetModel();
+        CumEnvioModel enviobl = new CumEnvioModel();
 
         public ActionResult Index()
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult CumUsuarioFkUsuarioObtenerJson(int fk_usuario)
-        {
-            var errormensaje = "";
-            var response = false;
-            CumUsuarioEntidad cumUsuario = new CumUsuarioEntidad();
-            try
-            {
-                var cumUsuarioTupla = cumUsuariobl.CumUsuarioFkUsuarioObtenerJson(fk_usuario);
-                if (cumUsuarioTupla.error.Key.Equals(string.Empty))
-                {
-                    cumUsuario=cumUsuarioTupla.cumUsuario;
-                    if (cumUsuario.cus_id != 0)
-                    {
-                        var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id);
-                        if (cumPreguntaTupla.error.Key.Equals(string.Empty))
-                        {
-                            List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
-                            foreach (var preg in cumPreguntaTupla.lista)
-                            {
-                                CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
-                                pregunta = preg;
-                                var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
-                                if (cumRespuestaTupla.error.Key.Equals(string.Empty))
-                                {
-                                    pregunta.CumUsuRespuesta=cumRespuestaTupla.lista;
-                                }
-                                else
-                                {
-                                    errormensaje = cumRespuestaTupla.error.Value;
-                                }
-                                listaPreguntas.Add(pregunta);
-                            }
-                            cumUsuario.CumUsuPregunta = listaPreguntas;
+        //[HttpPost]
+        //public ActionResult CumUsuarioFkUsuarioObtenerJson(int fk_usuario)
+        //{
+        //    var errormensaje = "";
+        //    var response = false;
+        //    CumUsuarioEntidad cumUsuario = new CumUsuarioEntidad();
+        //    try
+        //    {
+        //        var cumUsuarioTupla = cumUsuariobl.CumUsuarioFkUsuarioObtenerJson(fk_usuario);
+        //        if (cumUsuarioTupla.error.Key.Equals(string.Empty))
+        //        {
+        //            cumUsuario=cumUsuarioTupla.cumUsuario;
+        //            if (cumUsuario.cus_id != 0)
+        //            {
+        //                var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id);
+        //                if (cumPreguntaTupla.error.Key.Equals(string.Empty))
+        //                {
+        //                    List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
+        //                    foreach (var preg in cumPreguntaTupla.lista)
+        //                    {
+        //                        CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
+        //                        pregunta = preg;
+        //                        var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
+        //                        if (cumRespuestaTupla.error.Key.Equals(string.Empty))
+        //                        {
+        //                            pregunta.CumUsuRespuesta=cumRespuestaTupla.lista;
+        //                        }
+        //                        else
+        //                        {
+        //                            errormensaje = cumRespuestaTupla.error.Value;
+        //                        }
+        //                        listaPreguntas.Add(pregunta);
+        //                    }
+        //                    cumUsuario.CumUsuPregunta = listaPreguntas;
 
-                        }
-                        else
-                        {
-                            errormensaje = cumPreguntaTupla.error.Value;
-                        }
-                    }
-                    else
-                    {
-                        cumUsuario.cus_fecha_reg = DateTime.Now;
+        //                }
+        //                else
+        //                {
+        //                    errormensaje = cumPreguntaTupla.error.Value;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                cumUsuario.cus_fecha_reg = DateTime.Now;
 
-                    }
-                    errormensaje = "Cargando Data";
-                    response = true;
-                }
-                else
-                {
-                    errormensaje = cumUsuarioTupla.error.Value;
-                }
+        //            }
+        //            errormensaje = "Cargando Data";
+        //            response = true;
+        //        }
+        //        else
+        //        {
+        //            errormensaje = cumUsuarioTupla.error.Value;
+        //        }
             
-            }
-            catch (Exception exp)
-            {
-                errormensaje = exp.Message + ",Llame Administrador";
-            }
-            return Json(new { data = cumUsuario, respuesta = response, mensaje = errormensaje });
-        }
+        //    }
+        //    catch (Exception exp)
+        //    {
+        //        errormensaje = exp.Message + ",Llame Administrador";
+        //    }
+        //    return Json(new { data = cumUsuario, respuesta = response, mensaje = errormensaje });
+        //}
         [HttpPost]
         public ActionResult CumFichaInsertarJson()
         {
@@ -279,6 +285,169 @@ namespace SistemaReclutamiento.Controllers
             }
 
             return Json(new { respuesta = response, mensaje = errormensaje, data = usuario });
+        }
+        [HttpPost]
+        public ActionResult CumEnvioListarJson(int fk_usuario,string tipo)
+        {
+            string errormensaje = "";
+            bool response = false;
+            List<cum_envio> listaEnvio = new List<cum_envio>();
+            try
+            {
+                var envioTupla = intranetFichabl.IntranetFichaPostListarxUsuarioJson(fk_usuario,tipo);
+                if (envioTupla.error.Key.Equals(string.Empty))
+                {
+                    listaEnvio = envioTupla.intranetFichaLista;
+                    response = true;
+                }
+                else
+                {
+                    errormensaje = envioTupla.error.Value;
+                }
+            }
+            catch(Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { mensaje=errormensaje,respuesta=response,data=listaEnvio});
+
+        }
+        [HttpPost]
+        public ActionResult CumUsuarioObtenerDataporEnvioJson(string codigo, string numdoc, int env_id)
+        {
+            var errormensaje = "";
+            var response = false;
+            CumUsuarioEntidad cumUsuario = new CumUsuarioEntidad();
+            CumEnvioDetalleEntidad cumEnvioDet = new CumEnvioDetalleEntidad();
+            CumEnvioEntidad cumEnvio = new CumEnvioEntidad();
+            try
+            {
+                //buscar usuario con ese codigo y numdoc
+                var usuarioTuplaClave = cumUsuariobl.CumUsuarioObtenerporNumDocyClave(numdoc, codigo);
+                if (usuarioTuplaClave.error.Key.Equals(string.Empty))
+                {
+                    //cumUsuario = usuarioTupla.cumUsuario;
+                    if (usuarioTuplaClave.cumUsuario.cus_id != 0)
+                    {
+                        //Se encontro, buscar su data de acuerdo al tipo EMPLEADO o POSTULANTE
+                        if (usuarioTuplaClave.cumUsuario.cus_tipo.ToUpper().Equals("POSTULANTE"))
+                        {
+                            //postgres
+                            var usuarioTuplaPostgres = cumUsuariobl.CumUsuarioIdObtenerDataCompletaJson(usuarioTuplaClave.cumUsuario.cus_id);
+                            if (usuarioTuplaPostgres.error.Key.Equals(string.Empty))
+                            {
+                                cumUsuario = usuarioTuplaPostgres.cumUsuario;
+                            }
+                            else
+                            {
+                                errormensaje = usuarioTuplaPostgres.error.Value;
+                            }
+                        }
+                        else if(usuarioTuplaClave.cumUsuario.cus_tipo.ToUpper().Equals("EMPLEADO"))
+                        {
+                            //sql
+                            cumUsuario = usuarioTuplaClave.cumUsuario;
+
+                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni);
+                            if (personaSQLTupla.error.Key.Equals(string.Empty))
+                            {
+                                PersonaSqlEntidad persona = personaSQLTupla.persona;
+                                cumUsuario.nombre = persona.NO_TRAB;
+                                cumUsuario.apellido_pat = persona.NO_APEL_PATE;
+                                cumUsuario.apellido_mat = persona.NO_APEL_MATE;
+                                cumUsuario.empresa = persona.DE_NOMB;
+                                cumUsuario.sede = persona.DE_SEDE;
+                                cumUsuario.celular = persona.NU_TLF1;
+                                cumUsuario.direccion = persona.NO_DIRE_TRAB;
+                                cumUsuario.ruc = persona.NU_RUCS;
+                            }
+                            else
+                            {
+                                errormensaje = personaSQLTupla.error.Value;
+                            }
+                        }
+                        else
+                        {
+                            //error
+                            errormensaje = "Ha ocurrido un Error";
+                        }
+                        //Listar Preguntas y Respuestas
+                        var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id, env_id);
+                        if (cumPreguntaTupla.error.Key.Equals(string.Empty))
+                        {
+                            List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
+                            foreach (var preg in cumPreguntaTupla.lista)
+                            {
+                                CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
+                                pregunta = preg;
+                                var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
+                                if (cumRespuestaTupla.error.Key.Equals(string.Empty))
+                                {
+                                    pregunta.CumUsuRespuesta = cumRespuestaTupla.lista;
+                                }
+                                else
+                                {
+                                    errormensaje = cumRespuestaTupla.error.Value;
+                                }
+                                listaPreguntas.Add(pregunta);
+                            }
+                            cumUsuario.CumUsuPregunta = listaPreguntas;
+                         
+
+                        }
+                        else
+                        {
+                            errormensaje = cumPreguntaTupla.error.Value;
+                        }
+                        //Obtener Envio
+
+                        var envioDetTupla = envDetModelbl.CumEnvioDetalleObtenerxEnvioJson(env_id);
+                        if (envioDetTupla.error.Key.Equals(string.Empty))
+                        {
+                            cumEnvioDet = envioDetTupla.cumEnvioDet;
+                            //llenar Envio;
+                            var envioTupla = enviobl.CumEnvioIdObtenerJson(env_id);
+                            if (envioTupla.error.Key.Equals(string.Empty))
+                            {
+                                cumEnvio = envioTupla.cumEnvio;
+                                if (cumEnvio.env_id != 0)
+                                {
+                                    cumEnvio.CumUsuario = cumUsuario;
+                                    cumEnvioDet.CumEnvio = cumEnvio;
+                                    response = true;
+                                    errormensaje = "Listando Data";
+                                }
+                                else
+                                {
+                                    errormensaje = "Error al Listar Data";
+                                }
+                            }
+                            else
+                            {
+                                errormensaje = envioTupla.error.Value;
+                            }
+                        }
+                        else
+                        {
+                            errormensaje = envioDetTupla.error.Value;
+                        }
+                    }
+                    else
+                    {
+                        errormensaje = "Datos Incorrectos";
+                    }
+                }
+                else
+                {
+                    errormensaje = usuarioTuplaClave.error.Value;
+                }
+           
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { mensaje=errormensaje,respuesta=response, data= cumEnvioDet });
         }
     }
 }

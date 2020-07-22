@@ -19,6 +19,15 @@ namespace SistemaReclutamiento.Entidades.FichaCumplimiento
         public int fk_usuario { get; set; }
         public string cus_firma_act { get; set; }
         public ICollection<CumUsuPreguntaEntidad> CumUsuPregunta { get; set; }
+        //data extra para mostrar en ficha sintomatologica
+        public string nombre { get; set; }
+        public string apellido_pat { get; set; }
+        public string apellido_mat { get; set; }
+        public string empresa { get; set; }
+        public string ruc { get; set; }
+        public string sede { get; set; }
+        public string direccion { get; set; }
+        public string celular { get; set; }
         public CumUsuarioEntidad()
         {
             this.CumUsuPregunta = new HashSet<CumUsuPreguntaEntidad>();

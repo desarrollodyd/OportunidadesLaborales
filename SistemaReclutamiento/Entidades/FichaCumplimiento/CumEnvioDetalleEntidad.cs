@@ -15,5 +15,10 @@ namespace SistemaReclutamiento.Entidades.FichaCumplimiento
         public DateTime end_fecha_act { get; set; }
         public string end_estado { get; set; }
         public int fk_envio { get; set; }
+        public CumEnvioEntidad CumEnvio { get; set; }
+        public CumEnvioDetalleEntidad()
+        {
+            this.CumEnvio = new CumEnvioEntidad();
+        }
     }
 }

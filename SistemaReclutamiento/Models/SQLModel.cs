@@ -397,7 +397,10 @@ FROM " + nombre_tabla+" as pago "+
                     emp.NO_APEL_PATE, 
                     emp.NO_APEL_MATE, 
                     emp.TI_SITU,
+		            emp.NO_DIRE_TRAB,
+					emp.NU_TLF1,
                     empresa.DE_NOMB,
+                    empresa.NU_RUCS,
                     unidad.DE_UNID, 
                     sede.DE_SEDE,  
                     gerencia.DE_DEPA, 
@@ -440,6 +443,9 @@ FROM " + nombre_tabla+" as pago "+
                                 persona.DE_AREA = ManejoNulos.ManageNullStr(dr["DE_AREA"]);
                                 persona.DE_GRUP_OCUP = ManejoNulos.ManageNullStr(dr["DE_GRUP_OCUP"]);
                                 persona.DE_PUES_TRAB = ManejoNulos.ManageNullStr(dr["DE_PUES_TRAB"]);
+                                persona.NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]);
+                                persona.NO_DIRE_TRAB = ManejoNulos.ManageNullStr(dr["NO_DIRE_TRAB"]);
+                                persona.NU_RUCS = ManejoNulos.ManageNullStr(dr["NU_RUCS"]);
                             }
                         }
                     }

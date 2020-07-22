@@ -3,6 +3,7 @@
 @using SistemaReclutamiento.Utilitarios;
 @{
     Layout = "";
+    string envio_id = ViewBag.envioid;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -48,14 +49,14 @@
     <script src="~/Content/intranetSGC/assets/js/html5shiv.min.js"></script>
     <script src="~/Content/intranetSGC/assets/js/respond.min.js"></script>
     <![endif]-->
+    @*<link href="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.css" rel="stylesheet" />*@
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />
 
     <style>
-       label {
-           margin-bottom: 0px;
-
-       }
+        label {
+            margin-bottom: 0px;
+        }
     </style>
 </head>
 
@@ -82,6 +83,7 @@
             <div class="main-content-inner">
                 <br />
                 <div class="row">
+
                     <div class="col-md-12">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="alert alert-warning text-center">
@@ -97,7 +99,7 @@
                                     <span class="input-group-addon">
                                         Codigo
                                     </span>
-                                    <input type="text" name="codigo" id="txt-codigo" class="form-control" />
+                                    <input type="text" name="codigo" id="txt-codigo-busqueda" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -109,7 +111,7 @@
                                     <span class="input-group-addon">
                                         DNI
                                     </span>
-                                    <input type="text" name="dni" id="txt-dni" class="form-control" />
+                                    <input type="text" name="dni" id="txt-dni-busqueda" class="form-control" />
                                 </div>
                             </div>
                         </div>
@@ -117,238 +119,350 @@
                     <div class="col-md-12">
                         <hr />
                     </div>
-                    <div class="col-md-12" style="margin-top:15px;">
-                        <div class="text-center">
-                            <div><b>Anexo 2</b></div>
-                            <div><b>FICHA SINTOMATOLÓGICA</b></div>
-                        </div>
-                    </div>
+                    <div style="display:none" id="fichaSintomatologica">
+                        <form id="frmFichaFormulario-form" class="" method="post">
 
-                    <div class="col-md-12" style="margin-top:15px;">
-                        <div class="text-center">
-                            <div>Ficha de Sintomatología COVID-19</div>
-                            <div>Para Regreso al Trabajo</div>
-                            <div>Declaracion Jurada</div>
-                        </div>
-                    </div>
-                    <div class="col-md-8 col-md-offset-2" style="margin-top:15px;">
 
-                        <div class="">
-                            <div class="col-md-12">
-                                <div class="form-group text-center">
-                                    He recibido explicación del objeto de esta evaluación y me compromento a responder con la verdad.
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Empresa
-                                        </span>
-                                        <input type="text" name="empresa" id="txt-empresa" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            RUC.
-                                        </span>
-                                        <input type="text" name="ruc" id="txt-ruc" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Apellidos y Nombres
-                                        </span>
-                                        <input type="text" name="apellidos" id="txt-apellidos" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Area de Trabajo
-                                        </span>
-                                        <input type="text" name="area" id="txt-area" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            DNI
-                                        </span>
-                                        <input type="text" name="dni" id="txt-dni_" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Dirección
-                                        </span>
-                                        <input type="text" name="direccion" id="txt-direccion" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Celular
-                                        </span>
-                                        <input type="text" name="celelar" id="txt-celular" class="form-control input-sm" />
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="hidden" name="txt-tipo" id="txt-tipo" value="POSTULANTE" />
+                            <input type="hidden" name="txt-id_cus" id="txt-id_cus" value="0" />
+                            <input type="hidden" name="txt-img_act" id="txt-firma_act" value="" />
+                            <input type="hidden" name="txt-estado" id="txt-estado" value="" />
+
+
                             <div class="col-md-12" style="margin-top:15px;">
-                                <div class="form-group">
-                                    1.- En los últimos 14 dias calendario ha tenido algunos de los síntomas siguientes:
+                                <div class="text-center">
+                                    <div><b>Anexo 2</b></div>
+                                    <div><b>FICHA SINTOMATOLÓGICA</b></div>
                                 </div>
                             </div>
-                            <div class="col-md-12" style="margin-top:5px;">
-                                <div class="col-md-10 col-sm-8 col-xs-8">
-                                    <div class="form-group" style="padding-top: 2px;">
-                                        a. Sensación de alza térmica o fiebre
-                                    </div>
 
-                                </div>
-                                <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
-                                    <label>
-                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
-                                        <span class="lbl"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:5px;">
-                                <div class="col-md-10 col-xs-8">
-                                    <div class="form-group" style="padding-top: 2px;">
-                                        b. Tos, estornudo o dificultad para respirar
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
-                                    <label>
-                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
-                                        <span class="lbl"></span>
-                                    </label>
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <div class="text-center">
+                                    <div>Ficha de Sintomatología COVID-19</div>
+                                    <div>Para Regreso al Trabajo</div>
+                                    <div>Declaracion Jurada</div>
                                 </div>
                             </div>
-                            <div class="col-md-12" style="margin-top:5px;">
-                                <div class="col-md-10 col-xs-8">
-                                    <div class="form-group" style="padding-top: 2px;">
-                                        c. Expectoracion o flema amarilla o verdosa
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
-                                    <label>
-                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
-                                        <span class="lbl"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:5px;">
-                                <div class="col-md-10 col-xs-8">
-                                    <div class="form-group" style="padding-top: 2px;">
-                                        d. Contacto con persona(s) con un caso confirmado de COVID19
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
-                                    <label>
-                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
-                                        <span class="lbl"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:5px;">
-                                <div class="col-md-10 col-xs-8">
-                                    <div class="form-group" style="padding-top: 2px;">
-                                        e. Esta tomando alguna medicación(detallar)
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
-                                    <label>
-                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
-                                        <span class="lbl"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:0px;">
-                                <div class="col-md-12">
-                                    <div class="form-group" style="padding-top: 2px;">
-                                        <input class="form-control input-sm" type="text" name="detalle" id="txt-detalle" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="margin-top:15px;clear:both;">
-                                <div class="col-md-10 col-xs-8">
-                                    <div class="row">
-                                        <div class="form-group" style="padding-top: 2px;">
-                                            2.- Estoy considerado como persona de riesgo frente a COVID-19*
+                            <div class="col-md-8 col-md-offset-2" style="margin-top:15px;">
+
+                                <div class="">
+                                    <div class="col-md-12">
+                                        <div class="form-group text-center">
+                                            He recibido explicación del objeto de esta evaluación y me compromento a responder con la verdad.
                                         </div>
                                     </div>
-
-                                </div>
-                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
-                                    <label>
-                                        <input name="switch-field-1" class="ace ace-switch ace-switch-7" type="checkbox" />
-                                        <span class="lbl"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-12" style="clear:both;">
-                                <hr style="margin-top:5px;margin-bottom:5px;" />
-                            </div>
-                            <div class="col-md-12" style="margin-top:15px;clear:both;">
-                                <div class="form-group">
-                                    Todos los datos expresados en esta ficha constituyen declaracion jurada de mi parte. He sido informado que de omitir o
-                                    falsear informacion puedo perjudicar la salud de mis compañeros y la mia propia, lo cual de constituir una falta grave a la salud pública, asumo sus consecuencias.
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Empresa
+                                                </span>
+                                                <input type="text" name="txt-empresa" id="txt-empresa" class="form-control input-sm" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon">
-                                                    Fecha
+                                                    RUC.
                                                 </span>
-                                                <input type="text" name="fecha" id="txt-fecha" class="form-control input-sm" />
+                                                <input type="text" name="txt-ruc" id="txt-ruc" class="form-control input-sm" disabled />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-5 col-md-offset-3">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon">
-                                                    Firma
+                                                    Apellidos y Nombres
                                                 </span>
-                                                <input type="file" name="firma" id="txt-firma" class="form-control input-sm" />
+                                                <input type="text" name="txt-nombres" id="txt-nombres" class="form-control input-sm" disabled />
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Area de Trabajo
+                                                </span>
+                                                <input type="text" name="txt-area" id="txt-area" class="form-control input-sm" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    DNI
+                                                </span>
+                                                <input type="text" name="txt-dni" id="txt-dni" class="form-control input-sm" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Dirección
+                                                </span>
+                                                <input type="text" name="txt-direccion" id="txt-direccion" class="form-control input-sm" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Celular
+                                                </span>
+                                                <input type="text" name="txt-celular" id="txt-celular" class="form-control input-sm" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px;">
+                                        <div class="form-group">
+                                            1.- En los últimos 14 dias calendario ha tenido algunos de los síntomas siguientes:
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:5px;">
+                                        <div class="col-md-10 col-sm-8 col-xs-8">
+                                            <div class="form-group" style="padding-top: 2px;">
+                                                a. Sensación de alza térmica o fiebre
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                            <label>
+                                                <input class="ace ace-switch ace-switch-7 preg1 pregunta"
+                                                       type="checkbox"
+                                                       name="cbo1"
+                                                       id="cbo1"
+                                                       @*data-height="30px"
+                                                    data-toggle="toggle"
+                                                    data-on="Si"
+                                                    data-off="No"
+                                                    data-onstyle="primary"
+                                                    data-offstyle="danger"*@
+                                                       value="1"
+                                                       data-predesc="Sensación de alza térmica o fiebre"
+                                                       data-fkpreg="1"
+                                                       data-restipo="CERRADA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:5px;">
+                                        <div class="col-md-10 col-xs-8">
+                                            <div class="form-group" style="padding-top: 2px;">
+                                                b. Tos, estornudo o dificultad para respirar
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                            <label>
+                                                <input class="ace ace-switch ace-switch-7 preg2 pregunta"
+                                                       type="checkbox"
+                                                       name="cbo2"
+                                                       id="cbo2"
+                                                       @*data-height="30px"
+                                                    data-toggle="toggle"
+                                                    data-on="Si"
+                                                    data-off="No"
+                                                    data-onstyle="primary"
+                                                    data-offstyle="danger"*@
+                                                       value="1"
+                                                       data-predesc="Tos, estornudo o dificultad  para respirar"
+                                                       data-fkpreg="2"
+                                                       data-restipo="CERRADA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:5px;">
+                                        <div class="col-md-10 col-xs-8">
+                                            <div class="form-group" style="padding-top: 2px;">
+                                                c. Expectoracion o flema amarilla o verdosa
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                            <label>
+                                                <input class="ace ace-switch ace-switch-7 preg3 pregunta"
+                                                       type="checkbox"
+                                                       name="cbo3"
+                                                       id="cbo3"
+                                                       @*data-height="30px"
+                                                    data-toggle="toggle"
+                                                    data-on="Si"
+                                                    data-off="No"
+                                                    data-onstyle="primary"
+                                                    data-offstyle="danger"*@
+                                                       value="1"
+                                                       data-predesc="Expectoracion o flema amarilla o verdosa"
+                                                       data-fkpreg="3"
+                                                       data-restipo="CERRADA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:5px;">
+                                        <div class="col-md-10 col-xs-8">
+                                            <div class="form-group" style="padding-top: 2px;">
+                                                d. Contacto con persona(s) con un caso confirmado de COVID19
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                            <label>
+                                                <input class="ace ace-switch ace-switch-7 preg4 pregunta"
+                                                       type="checkbox"
+                                                       name="cbo4"
+                                                       id="cbo4"
+                                                       @*data-height="30px"
+                                                    data-toggle="toggle"
+                                                    data-on="Si"
+                                                    data-off="No"
+                                                    data-onstyle="primary"
+                                                    data-offstyle="danger"*@
+                                                       value="1"
+                                                       data-predesc="Contacto con persona(s) con un caso confirmado de COVID19"
+                                                       data-fkpreg="4"
+                                                       data-restipo="CERRADA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:5px;">
+                                        <div class="col-md-10 col-xs-8">
+                                            <div class="form-group" style="padding-top: 2px;">
+                                                e. Esta tomando alguna medicación(detallar)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                            <label>
+                                                <input class="ace ace-switch ace-switch-7 preg5 pregunta"
+                                                       type="checkbox"
+                                                       name="cbo5"
+                                                       id="cbo5"
+                                                       @*data-height="30px"
+                                                    data-toggle="toggle"
+                                                    data-on="Si"
+                                                    data-off="No"
+                                                    data-onstyle="primary"
+                                                    data-offstyle="danger"*@
+                                                       value="1"
+                                                       data-predesc="Esta tomando alguna medicación (detallar)"
+                                                       data-fkpreg="5"
+                                                       data-restipo="ABIERTA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 divdetalle5" style="margin-top:0px; display:none">
+                                        <div class="col-md-12">
+                                            <div class="form-group" style="padding-top: 2px;">
+                                                <input class="form-control input-sm preg6 detalle"
+                                                       type="text"
+                                                       name="detalle5"
+                                                       id="detalle5"
+                                                       data-predesc="Esta tomando alguna medicación (detallar)"
+                                                       data-fkpreg="5"
+                                                       data-restipo="ABIERTA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                        <div class="col-md-10 col-xs-8">
+                                            <div class="row">
+                                                <div class="form-group" style="padding-top: 2px;">
+                                                    2.- Estoy considerado como persona de riesgo frente a COVID-19*
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                            <label>
+                                                <input name="cbo6"
+                                                       class="ace ace-switch ace-switch-7 preg6 pregunta"
+                                                       type="checkbox"
+                                                       id="cbo6"
+                                                       @*data-height="30px"
+                                                       data-toggle="toggle"
+                                                       data-on="Si"
+                                                       data-off="No"
+                                                       data-onstyle="primary"
+                                                       data-offstyle="danger"*@
+                                                       value="1"
+                                                       data-predesc="Estoy considerado como persona de riesgo frente a COVID-19*"
+                                                       data-fkpreg="6"
+                                                       data-restipo="CERRADA"
+                                                       data-id="0"
+                                                       data-uprid="0" />
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="clear:both;">
+                                        <hr style="margin-top:5px;margin-bottom:5px;" />
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                        <div class="form-group">
+                                            Todos los datos expresados en esta ficha constituyen declaracion jurada de mi parte. He sido informado que de omitir o
+                                            falsear informacion puedo perjudicar la salud de mis compañeros y la mia propia, lo cual de constituir una falta grave a la salud pública, asumo sus consecuencias.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            Fecha
+                                                        </span>
+                                                        <input type="text" name="fecha" id="txt-fecha" class="form-control input-sm" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5 col-md-offset-3">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            Firma
+                                                        </span>
+                                                        <input type="file" name="firma" id="txt-firma" class="form-control input-sm" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 col-md-offset-3" style="margin-top:15px;margin-bottom:5px;">
+                                        <button class="btn btn-primary btn-block btn_guardar">ENVIAR</button>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px;font-size:10px">
+                                        <div class="form-group">
+                                            *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
+                                            asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
+                                            de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </form>
 
-                            <div class="col-md-6 col-md-offset-3" style="margin-top:15px;margin-bottom:5px;">
-                                <button class="btn btn-primary btn-block">ENVIAR</button>
-                            </div>
-                            <div class="col-md-12" style="margin-top:15px;font-size:10px">
-                                <div class="form-group">
-                                    *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
-                                    asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
-                                    de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
-                                </div>
-                            </div>
-                        </div>
                     </div>
+
 
                 </div>
             </div>
@@ -402,12 +516,13 @@
     <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     @*<script src="~/Content/intranetSGC/assets/js/jquery-sortable.js"></script>*@
+    @*<script src="~/Content/vendors/bootstrapToogle/bootstrap4-toggle.min.js"></script>*@
     <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
-    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFichaFormulario.js"></script>
     <script>
-
-
+        var envio_id =@Html.Raw(envio_id);
     </script>
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFichaFormulario.js"></script>
+
 </body>
 
 </html>

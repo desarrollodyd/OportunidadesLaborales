@@ -3,7 +3,6 @@ using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Entidades.FichaCumplimiento;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
-using SistemaReclutamiento.Models.FichaCumplimiento;
 
 using SistemaReclutamiento.Utilitarios;
 using System;
@@ -60,14 +59,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJArchivos.cshtml");
         }
-        public ActionResult PanelFichas(string token="")
+        public ActionResult PanelFichas()
         {
-            string _token = "";
-            _token = token;
-            if (token != "")
-            {
-
-            }
             return View("~/Views/IntranetPJAdmin/IntranetPJFichas.cshtml");
         }
 

@@ -7,7 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
-namespace SistemaReclutamiento.Models.FichaCumplimiento
+namespace SistemaReclutamiento.Models
 {
     public class CumEnvioModel
     {

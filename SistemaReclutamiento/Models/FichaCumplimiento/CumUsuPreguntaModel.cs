@@ -16,14 +16,14 @@ namespace SistemaReclutamiento.Models
         {
             _conexion = ConfigurationManager.ConnectionStrings["conexion"].ConnectionString;
         }
-        public (List<CumUsuPreguntaEntidad> lista, claseError error) CumUsuPreguntaListarxUsuarioJson(int fk_usuario)
+        public (List<CumUsuPreguntaEntidad> lista, claseError error) CumUsuPreguntaListarxUsuarioJson(int fk_usuario, int fk_envio)
         {
             List<CumUsuPreguntaEntidad> lista = new List<CumUsuPreguntaEntidad>();
             claseError error = new claseError();
             string consulta = @"SELECT upr_id, upr_dni, upr_pregunta, upr_tipo, upr_fecha_reg, 
                                 upr_fecha_act, upr_estado, fk_pregunta, fk_usuario
 	                            FROM cumplimiento.cum_usu_pregunta
-                                where fk_usuario=@p0;";
+                                where fk_usuario=@p0 and fk_envio=@p1;";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -31,6 +31,7 @@ namespace SistemaReclutamiento.Models
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", fk_usuario);
+                    query.Parameters.AddWithValue("@p1", fk_envio);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

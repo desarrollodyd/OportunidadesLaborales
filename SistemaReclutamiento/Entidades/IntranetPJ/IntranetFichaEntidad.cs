@@ -38,6 +38,8 @@ namespace SistemaReclutamiento.Entidades.IntranetPJ
         public string per_apellido_pat { get; set; }
         public string end_correo_corp { get; set; }
         public string end_correo_pers { get; set; }
+        public string per_apellido_mat { get; set; }
+        public string cus_tipo { get; set; }
 
     }
 }

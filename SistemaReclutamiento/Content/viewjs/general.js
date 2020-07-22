@@ -682,7 +682,7 @@ function simpleDataTable(obj) {
         "initComplete": function () {
             var api = this.api();
             if (opciones.tableHeaderCheck) {
-                $(api.column(0).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all"> Seleccionar Todo');
+                $(api.column(0).header()).html('<input type="checkbox" name="header_chk_all" data-children="' + opciones.table + '" class="form-check-input-styled-info chk_all">');
             }
             //if (opciones.uniform) {
             //    // Info
