@@ -60,8 +60,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJArchivos.cshtml");
         }
-        public ActionResult PanelFichas()
+        public ActionResult PanelFichas(string token="")
         {
+            string _token = "";
+            _token = token;
+            if (token != "")
+            {
+
+            }
             return View("~/Views/IntranetPJAdmin/IntranetPJFichas.cshtml");
         }
 
