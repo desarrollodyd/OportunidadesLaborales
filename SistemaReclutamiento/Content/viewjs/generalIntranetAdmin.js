@@ -153,6 +153,7 @@ function responseSimple(obj) {
         refresh: true,
         redirect: false,
         redirectUrl: null,
+        notify:true,
         callBackBeforeSend: null,
         callBackSComplete: null,
         callBackSuccess: function () {
@@ -193,18 +194,20 @@ function responseSimple(obj) {
         success: function (response) {
             var respuesta = response.respuesta;
             var mensaje = response.mensaje;
-
-            if (respuesta) {
-                messageResponse({
-                    text: mensaje,
-                    type: "success"
-                });
-            } else {
-                messageResponse({
-                    text: mensaje,
-                    type: "error"
-                });
-            };
+            if (opciones.notify) {
+                if (respuesta) {
+                    messageResponse({
+                        text: mensaje,
+                        type: "success"
+                    });
+                } else {
+                    messageResponse({
+                        text: mensaje,
+                        type: "error"
+                    });
+                };
+            }
+            
             if (opciones.redirect) {
                 if (opciones.redirectUrl == null) {
                     console.warn('Advertencia - redirectUrl no fue declarado.');

@@ -6,6 +6,7 @@
         responseSimple({
             url: "SQL/TMEMPRListarJson",
             refresh: false,
+            notify:false,
             callBackBeforeSend: function (response) {
                 $("#cbo_empresa").html("");
                 $("#cbo_empresa").append('<option value="">Cargando...</option>');
@@ -272,19 +273,32 @@
                         tableNameVariable: "datatable_fichasestadoListado",
                         table: "#fichasestadoListado",
                         tableColumnsData: response.data,
-                        tableHeaderCheck: false,
+                        tableHeaderCheck: true,
+                        tableHeaderCheckIndex: 0,
+                        headerCheck: "chk_enviosIDE",
                         tableColumns: [
                             {
-                                data: "fk_usuario",
-                                title: "ID Usuario",
+                                data: "env_id",         
+                                title: "",
+                                "bSortable": false,
+                                className: 'align-center',
+                                "render": function (value) {
+                                    var check = '<input type="checkbox" class="form-check-input-styled-info fichasestadoListado" data-id="' + value + '" name="chk[]">';
+                                    return check;
+                                },
+                                width: "50px",
                             },
                             {
-                                data: "end_correo_corp",
-                                title: "C.Corporativo",
+                                data: "per_nombre",
+                                title: "Nombre Empleado",
+                                "render": function (value, type, oData) {
+                                    var nombre = oData.per_apellido_pat +' ' + oData.per_apellido_mat + ', ' + oData.per_nombre;
+                                    return nombre;
+                                },
                             },
                             {
-                                data: "end_correo_pers",
-                                title: "C.Personal",
+                                data: "cus_correo",
+                                title: "Correo",
                             },
                             {
                                 data: "env_fecha_reg",
@@ -330,6 +344,17 @@
             })
         });
 
+        $(document).on("click", ".chk_enviosIDE", function (e) {
+            $('#fichasestadoListado').find('tbody :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
+        })
+
+        $(document).on("click", "#fichasestadoListado  tbody :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+            $('.chk_enviosIDE').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+        });
+
         $(document).on('click', '.btn_buscarFichasp', function () {
             var desde = $("#txt_desdep").val();
             var hasta = $("#txt_hastap").val();
@@ -371,24 +396,33 @@
                         tableNameVariable: "datatable-fichaspostulantelistadop",
                         table: "#fichaspostulanteListadop",
                         tableColumnsData: response.data,
-                        tableHeaderCheck: false,
+                        tableHeaderCheck: true,
+                        tableHeaderCheckIndex: 0,
+                        headerCheck: "chk_enviosIDP",
                         tableColumns: [
                             {
-                                data: "fk_usuario",
-                                title: "ID Usuario",
+                                data: "env_id",
+                                title: "",
+                                "bSortable": false,
+                                className: 'align-center',
+                                "render": function (value) {
+                                    var check = '<input type="checkbox" class="form-check-input-styled-info fichaspostulanteListadop" data-id="' + value + '" name="chk[]">';
+                                    return check;
+                                },
+                                width: "50px",
                             },
                             {
                                 data: "nombre",
                                 title: "Nombre Empleado",
                                 "render": function (value, type, oData) {
-                                    var nombre = oData.per_apellido_pat + ', ' + oData.per_nombre;
+                                    var nombre = oData.per_apellido_pat + ' '+ oData.per_apellido_mat + ', ' + oData.per_nombre;
 
                                     return nombre;
                                 }
                             },
                             {
                                 data: "end_correo_pers",
-                                title: "C.Personal",
+                                title: "Correo",
                             },
                             {
                                 data: "env_fecha_reg",
@@ -432,6 +466,17 @@
                     });
                 }
             })
+        });
+
+        $(document).on("click", ".chk_enviosIDP", function (e) {
+            $('#fichaspostulanteListadop').find('tbody :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
+        })
+
+        $(document).on("click", "#fichaspostulanteListadop  tbody :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+            $('.chk_enviosIDP').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
         });
 
         $(document).on('click', '.btn_reenviar', function () {

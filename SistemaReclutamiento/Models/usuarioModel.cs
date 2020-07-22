@@ -334,6 +334,7 @@ namespace SistemaReclutamiento.Models
             return (lista: lista, error: error);
         }
 
+
         #endregion
 
         #region Usuario Proveedor

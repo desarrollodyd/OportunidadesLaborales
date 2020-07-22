@@ -29,6 +29,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         CumEnvioModel cumenviobl = new CumEnvioModel();
         CumEnvioDetModel cumenviodetbl = new CumEnvioDetModel();
 
+        SQLModel sqlbl = new SQLModel();
+
         IntranetFichaModel fichabl = new IntranetFichaModel();
         string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         claseError error = new claseError();
@@ -86,6 +88,31 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 listaEnvios = envioTupla.intranetFichaLista;
                 if (error.Key.Equals(string.Empty))
                 {
+                    var txtids = new List<dynamic>();
+                    foreach (var p in listaEnvios)
+                    {
+                        var itemarray = p.cus_dni.Split('|');
+                        txtids.Add(itemarray[0]);
+                    }
+
+                    var ids = "";
+                    ids = "  in(" + "'" + String.Join("','", txtids) + "'" + ")";
+                    var lista = sqlbl.PersonaSQLJson(ids);
+                    var listadopersonas = lista.lista;
+
+                    foreach (var p in listaEnvios)
+                    {
+                        var itemarray = p.cus_dni.Split('|');
+                        var persona = listadopersonas.Select(x=>new {x.CO_TRAB,x.NO_TRAB,x.NO_APEL_PATE,x.NO_APEL_MATE }).Where(z=>z.CO_TRAB== itemarray[0]).ToList();
+                        if (persona.Count > 0)
+                        {
+                            p.per_nombre = persona[0].NO_TRAB;
+                            p.per_apellido_pat = persona[0].NO_APEL_PATE;
+                            p.per_apellido_mat= persona[0].NO_APEL_MATE;
+                        }
+                        
+                    }
+
                     mensaje = "Listando Fichas";
                     respuesta = true;
                 }

@@ -64,6 +64,7 @@ namespace SistemaReclutamiento.Models
             }
             return (lista: lista, error: error);
         }
+
         public (CumEnvioEntidad cumEnvio, claseError error) CumEnvioIdObtenerJson(int env_id)
         {
             CumEnvioEntidad envio = new CumEnvioEntidad();
