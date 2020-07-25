@@ -611,6 +611,65 @@
             }
 
         });
+        $(document).on('click','.btn_descargarTodosPostulantes',function(e){
+            e.preventDefault();
+            var arrayIds = '';
+            $('#fichaspostulanteListadop tbody tr input[type=checkbox]:checked').each(function () {
+                // arrayIds.push($(this).data("id"));
+                arrayIds+=$(this).data("id")+",";
+            });
+            arrayIds = arrayIds.substring(0, arrayIds.length - 1);
+            // arrayIds=arrayIds.slice(0,-1);
+            if(arrayIds.length>0){
+                let a= document.createElement('a');
+                a.target= '_blank';
+                a.href= basePath + "FichaSintomatologica/DownloadPdfReporteMultile?env_ids=" + arrayIds;
+                a.click();
+                // window.location.href = basePath + "FichaSintomatologica/DownloadPdfReporteMultile?env_ids=" + arrayIds;
+            }
+            else{
+                messageResponse({
+                    text: "Debe seleccionar al menos un registro",
+                    type: "error"
+                })
+                return false;
+            }
+        })
+        $(document).on('click','.btn_descargarTodosEmpleados',function(e){
+            e.preventDefault();
+            var arrayIds = '';
+            $('#fichaspostulanteListadop tbody tr input[type=checkbox]:checked').each(function () {
+                // arrayIds.push($(this).data("id"));
+                arrayIds+=$(this).data("id")+",";
+            });
+            arrayIds = arrayIds.substring(0, arrayIds.length - 1);
+            // arrayIds=arrayIds.slice(0,-1);
+            if(arrayIds.length>0){
+                let a= document.createElement('a');
+                a.target= '_blank';
+                a.href= basePath + "FichaSintomatologica/DownloadPdfReporteMultile?env_ids=" + arrayIds;
+                a.click();
+                // window.location.href = basePath + "FichaSintomatologica/DownloadPdfReporteMultile?env_ids=" + arrayIds;
+            }
+            else{
+                messageResponse({
+                    text: "Debe seleccionar al menos un registro",
+                    type: "error"
+                })
+                return false;
+            }
+        })
+        $(document).on('click','.btn_download',function(e){
+            e.preventDefault();
+            console.log('click');
+            var env_id = $(this).data("id");
+            let a= document.createElement('a');
+            a.target= '_blank';
+            a.href= basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;;
+            a.click();
+            // window.location.href = basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;
+        })
+        
     };
 
     var _metodos = function () {

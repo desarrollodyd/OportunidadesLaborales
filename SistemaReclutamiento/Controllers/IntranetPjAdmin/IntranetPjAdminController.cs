@@ -85,7 +85,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 string tipo = "EMPLEADO";
                 var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
                 error = envioTupla.error;
-                listaEnvios = envioTupla.intranetFichaLista;
+                listaEnvios = envioTupla.intranetFichaLista.Where(x=>x.env_estado.Equals(estado.Trim())).ToList();
                 if (error.Key.Equals(string.Empty))
                 {
                     var txtids = new List<dynamic>();
@@ -142,7 +142,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 string tipo = "POSTULANTE";
                 var envioTupla = fichabl.IntranetFichaPostListarJson(desde, hasta);
                 error = envioTupla.error;
-                listaEnvios = envioTupla.intranetFichaLista;
+                listaEnvios = envioTupla.intranetFichaLista.Where(x=>x.env_estado.Equals(estado.Trim())).ToList();
                 if (error.Key.Equals(string.Empty))
                 {
                     mensaje = "Listando Fichas";
@@ -186,14 +186,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
 
                     var usuarioTupla = fichabl.IntranetUsuarioListarJson(itemarray[0],"EMPLEADO");
-                    correopersonal = itemarray[2];
-                    correocorporativo = itemarray[1];
+                    correopersonal = itemarray[2].Trim();
+                    correocorporativo = itemarray[1].Trim(); ;
                     var cumusuarioExiste = usuarioTupla.intranetCumusuarioLista;
                     int existe = usuarioTupla.intranetCumusuarioLista.Count;
 
                     string path = Path.GetRandomFileName();
                     path = path.Replace(".", "");
-                    clave = path.Substring(0, 8);
+                    clave = path.Substring(0, 8).Trim();
                 
                     if (existe > 0)
                     {
@@ -207,7 +207,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     {
                         cumusuario.cus_estado = "A";
                         cumusuario.cus_firma = "";
-                        cumusuario.cus_dni = itemarray[0];
+                        cumusuario.cus_dni = itemarray[0].ToString();
                         cumusuario.cus_correo = correopersonal;
                         cumusuario.cus_tipo = "EMPLEADO";
                         cumusuario.cus_fecha_reg = DateTime.Now;
@@ -231,13 +231,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             cumenviodet.end_fecha_reg = DateTime.Now;
                             cumenviodet.end_fecha_act = DateTime.Now;
                             cumenviodet.end_estado = "1";
-                            cumenviodet.end_dni = item;
+                            cumenviodet.end_dni = item.Trim();
                             cumenviodet.fk_envio = envio.idInsertado;
                             cumenviodet.end_correo_corp = correocorporativo;
                             cumenviodet.end_correo_pers = correopersonal;
                             var enviodet = cumenviodetbl.CumEnvioDetalleInsertarJson(cumenviodet);
 
                             //////envio correo aqui/////
+                            Correo correo_enviar = new Correo();
+                            string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                            string nombre = "";
+
+                            cumenvio.env_fecha_act = DateTime.Now;
+                            cumenvio.env_estado = "1";
+                            cumenvio.env_id = envio.idInsertado;
+                            string correo = (correopersonal == "" ? correocorporativo : correopersonal);
+                            string encriptado = Seguridad.Encriptar(envio.idInsertado.ToString());
+                            var estado = cumenviobl.CumEnvioEditarJson(cumenvio);
+                            correo_enviar.EnviarCorreo(
+                             correo,
+                             "Link de Ficha Sintomatológica",
+                             "Hola! : " + nombre + " \n " +
+                             "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
+                             "Ingrese al siguiente Link y complete el formulario"
+                             + "\n solo se puede editar el mismo dia de envio, \n" +
+                             " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
+                             );
+
                         }
 
                     }
@@ -271,8 +291,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     int cususuario = envio.fk_usuario;
                     var cum_usua = cumusubl.CumUsuarioIdObtenerJson(cususuario);
                     var entidadusuario = cum_usua.cumUsuario;
-                    var clave = entidadusuario.cus_clave;
-                    var correo = entidadusuario.cus_correo;
+                    var clave = entidadusuario.cus_clave.Trim();
+                    var correo = entidadusuario.cus_correo.Trim();
                     var nombre = "";
                     var id = envioID.ToString();
                     var encriptado = Seguridad.Encriptar(id);
@@ -365,14 +385,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     var itemarray = item.Split('|');
 
                     var usuarioTupla = fichabl.IntranetUsuarioListarJson(itemarray[1],"POSTULANTE");
-                    dni = itemarray[1];
-                    correopersonal = itemarray[2];
+                    dni = itemarray[1].Trim();
+                    correopersonal = itemarray[2].Trim();
                     var cumusuarioExiste = usuarioTupla.intranetCumusuarioLista;
                     int existe = usuarioTupla.intranetCumusuarioLista.Count;
 
                     string path = Path.GetRandomFileName();
                     path = path.Replace(".", "");
-                    clave = path.Substring(0, 8);
+                    clave = path.Substring(0, 8).Trim();
 
                     if (existe > 0)
                     {
@@ -417,6 +437,25 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             var enviodet = cumenviodetbl.CumEnvioDetalleInsertarJson(cumenviodet);
 
                             //////envio correo aqui/////
+                            Correo correo_enviar = new Correo();
+                            string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                            string nombre = "";
+                            
+                            cumenvio.env_fecha_act = DateTime.Now;
+                            cumenvio.env_estado = "1";
+                            cumenvio.env_id = envio.idInsertado;
+
+                            string encriptado = Seguridad.Encriptar(envio.idInsertado.ToString());
+                            var estado = cumenviobl.CumEnvioEditarJson(cumenvio);
+                            correo_enviar.EnviarCorreo(
+                             correopersonal,
+                             "Link de Ficha Sintomatológica",
+                             "Hola! : " + nombre + " \n " +
+                             "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
+                             "Ingrese al siguiente Link y complete el formulario"
+                             + "\n solo se puede editar el mismo dia de envio, \n" +
+                             " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
+                             );
                         }
 
                     }

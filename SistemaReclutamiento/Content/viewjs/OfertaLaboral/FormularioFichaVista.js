@@ -172,7 +172,41 @@
 
     var _componentes = function () {
 
+        $(document).on('click', '.btn_download', function (e) {
+            console.log('click');
+            var env_id = $(this).data("id");
 
+            let a= document.createElement('a');
+            a.target= '_blank';
+            a.href= basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;
+            a.click();
+            // window.open(window.location.href = basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id,'_blank');
+            
+        })
+        $(document).on('click','.btn_descargar_todo',function(e){
+            e.preventDefault();
+            var arrayIds = '';
+            $('#fichasListado tbody tr input[type=checkbox]:checked').each(function () {
+                // arrayIds.push($(this).data("id"));
+                arrayIds+=$(this).data("id")+",";
+            });
+            arrayIds = arrayIds.substring(0, arrayIds.length - 1);
+            // arrayIds=arrayIds.slice(0,-1);
+            if(arrayIds.length>0){
+                let a= document.createElement('a');
+                a.target= '_blank';
+                a.href= basePath + "FichaSintomatologica/DownloadPdfReporteMultile?env_ids=" + arrayIds;
+                a.click();
+                // window.location.href = basePath + "FichaSintomatologica/DownloadPdfReporteMultile?env_ids=" + arrayIds;
+            }
+            else{
+                messageResponse({
+                    text: "Debe seleccionar al menos un registro",
+                    type: "error"
+                })
+                return false;
+            }
+        })
         // var dateinicio = new Date(moment().format("MM-DD-YYYY"));
         $('#txt-fecha').datetimepicker({
             format: 'DD-MM-YYYY',
@@ -317,12 +351,6 @@
 
         })
         $(document).on("click", ".chk_all", function (e) {
-            if(this.checked){
-                $(".btn_descar_todo").show()
-            }
-            else{
-                $(".btn_descar_todo").hide()
-            }
             $('#fichasListado').find('tbody>tr>td :checkbox')
                 .prop('checked', this.checked)
                 .closest('tr').toggleClass('selected', this.checked);

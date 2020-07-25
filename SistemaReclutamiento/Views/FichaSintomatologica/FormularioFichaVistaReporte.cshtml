@@ -1,0 +1,383 @@
+﻿@*@model SistemaReclutamiento.Entidades.FichaCumplimiento.CumUsuarioEntidad;*@
+@using SistemaReclutamiento.Entidades.FichaCumplimiento;
+@{
+    Layout = "";
+    //CumEnvioDetalleEntidad cumEnvioDet = new CumEnvioDetalleEntidad();
+    var cumEnvioDet = (CumEnvioDetalleEntidad)(ViewBag.cumEnvioDet);
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>SGC Intranet</title>
+
+    <link rel="shortcut icon" href="~/Content/images/icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+   
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/fonts.googleapis.com.css" />
+
+    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
+    <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/richtext.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
+
+  
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-rtl.min.css" />
+
+    <script src="~/Content/intranetSGC/assets/js/ace-extra.min.js"></script>
+
+  
+    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />
+
+    <style>
+        label {
+            margin-bottom: 0px;
+        }
+        .input-group-addon {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+    </style>
+</head>
+
+
+<body class="no-skin">
+
+    <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
+    <div class="main-container ace-save-state" id="main-container">
+        <div class="main-content" style="overflow-x: hidden;">
+            <div class="main-content-inner">
+                <div class="row">
+                    <div id="fichaSintomatologica">
+                        <form id="frmFichaFormulario-form" class="" method="post">
+
+
+                            <input type="hidden" name="txt-tipo" id="txt-tipo" value="POSTULANTE" />
+                            <input type="hidden" name="txt-id_cus" id="txt-id_cus" value="0" />
+                            <input type="hidden" name="txt-img_act" id="txt-firma_act" value="" />
+                            <input type="hidden" name="txt-estado" id="txt-estado" value="" />
+
+
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <div class="text-center">
+                                    <div><b>Anexo 2</b></div>
+                                    <div><b>FICHA SINTOMATOLÓGICA</b></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" style="margin-top:15px;">
+                                <div class="text-center">
+                                    <div>Ficha de Sintomatología COVID-19</div>
+                                    <div>Para Regreso al Trabajo</div>
+                                    <div>Declaracion Jurada</div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-md-offset-2" style="margin-top:15px;">
+
+                                <div class="">
+                                    <div class="col-md-12">
+                                        <div class="form-group text-center">
+                                            He recibido explicación del objeto de esta evaluación y me compromento a responder con la verdad.
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    Empresa:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.empresa" type="text" name="txt-empresa" id="txt-empresa" class="form-control input-sm" />
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    RUC:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.ruc" type="text" name="txt-ruc" id="txt-ruc" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    Apellidos y Nombres:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.nombre @cumEnvioDet.CumEnvio.CumUsuario.apellido_pat, @cumEnvioDet.CumEnvio.CumUsuario.apellido_mat" type="text" name="txt-nombres" id="txt-nombres" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    Area de Trabajo:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.sede" type="text" name="txt-area" id="txt-area" class="form-control input-sm" />
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    DNI:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.cus_dni" type="text" name="txt-dni" id="txt-dni" class="form-control input-sm" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    Dirección:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.direccion" type="text" name="txt-direccion" id="txt-direccion" class="form-control input-sm" />
+                                                <span class="input-group-addon" style="background-color:#fff">
+                                                    Celular:
+                                                </span>
+                                                <input style="border:0;padding:0;margin:0;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.CumUsuario.celular" type="text" name="txt-celular" id="txt-celular" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-top:15px;">
+                                        <div class="form-group">
+                                            1.- En los últimos 14 dias calendario ha tenido algunos de los síntomas siguientes:
+                                        </div>
+                                    </div>
+                                    @{
+                                        if (cumEnvioDet.CumEnvio.CumUsuario.CumUsuPregunta.Count > 0)
+                                        {
+                                            char letra = 'a';
+                                            List<CumUsuPreguntaEntidad> preguntas = new List<CumUsuPreguntaEntidad>();
+                                            preguntas = cumEnvioDet.CumEnvio.CumUsuario.CumUsuPregunta.ToList();
+                                            foreach (var pregunta in preguntas)
+                                            {
+                                                if (pregunta.fk_pregunta == 6)
+                                                {
+                                                    <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                                        <div class="col-md-10 col-xs-8">
+                                                            <div class="row">
+                                                                <div class="form-group" style="padding-top: 2px;">
+                                                                    2.- @pregunta.upr_pregunta
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                            @foreach (var respuesta in pregunta.CumUsuRespuesta)
+                                                            {
+                                                                if (respuesta.ure_respuesta == "SI")
+                                                                {
+                                                                    <span>SI( X )     NO( &nbsp; )</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>SI( &nbsp; )     NO( X )</span>
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-md-12" style="margin-top:5px;">
+                                                        <div class="col-md-10 col-sm-8 col-xs-8">
+                                                            <div class="form-group" style="padding-top: 2px;">
+                                                                @letra. @pregunta.upr_pregunta
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                            @foreach (var respuesta in pregunta.CumUsuRespuesta)
+                                                            {
+                                                                if (respuesta.ure_respuesta == "SI")
+                                                                {
+                                                                    <span>SI( X )     NO( &nbsp; )</span>
+                                                                }
+                                                                else if (respuesta.ure_respuesta == "NO")
+                                                                {
+                                                                    <span>SI( &nbsp; )     NO( X )</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="" style="margin-top:20px;margin-bottom:10px;">
+                                                                        @respuesta.ure_respuesta
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+                                                letra++;
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-12" style="margin-top:5px;">
+                                                <div class="col-md-10 col-sm-8 col-xs-8">
+                                                    <div class="form-group" style="padding-top: 2px;">
+                                                        a. Sensación de alza térmica o fiebre
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-2 col-sm-4 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                    <span>SI( &nbsp; )     NO( &nbsp; )</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="margin-top:5px;">
+                                                <div class="col-md-10 col-xs-8">
+                                                    <div class="form-group" style="padding-top: 2px;">
+                                                        b. Tos, estornudo o dificultad para respirar
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                    <span>SI( &nbsp; )     NO( &nbsp; )</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="margin-top:5px;">
+                                                <div class="col-md-10 col-xs-8">
+                                                    <div class="form-group" style="padding-top: 2px;">
+                                                        c. Expectoracion o flema amarilla o verdosa
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                    <span>SI( &nbsp; )     NO( &nbsp; )</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="margin-top:5px;">
+                                                <div class="col-md-10 col-xs-8">
+                                                    <div class="form-group" style="padding-top: 2px;">
+                                                        d. Contacto con persona(s) con un caso confirmado de COVID19
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                    <span>SI( &nbsp; )     NO( &nbsp; )</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="margin-top:5px;">
+                                                <div class="col-md-10 col-xs-8">
+                                                    <div class="form-group" style="padding-top: 2px;">
+                                                        e. Esta tomando alguna medicación(detallar)
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                    <span>SI( &nbsp; )     NO( &nbsp; )</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 divdetalle5" style="margin-top:0px; display:none">
+                                                <div class="col-md-12">
+                                                    <div class="form-group" style="padding-top: 2px;">
+                                                        <input class="form-control input-sm preg6 detalle"
+                                                               type="text"
+                                                               name="detalle5"
+                                                               id="detalle5"
+                                                               data-predesc="Esta tomando alguna medicación (detallar)"
+                                                               data-fkpreg="5"
+                                                               data-restipo="ABIERTA"
+                                                               data-id="0"
+                                                               data-uprid="0" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                                <div class="col-md-10 col-xs-8">
+                                                    <div class="row">
+                                                        <div class="form-group" style="padding-top: 2px;">
+                                                            2.- Estoy considerado como persona de riesgo frente a COVID-19*
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-2 col-xs-4" style="text-align: right;padding-right: 0px;">
+                                                    <span>SI( &nbsp; )     NO( &nbsp; )</span>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+
+                                    <div class="col-md-12" style="clear:both;">
+                                        <hr style="margin-top:5px;margin-bottom:5px;" />
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:15px;clear:both;">
+                                        <div class="form-group">
+                                            Todos los datos expresados en esta ficha constituyen declaracion jurada de mi parte. He sido informado que de omitir o
+                                            falsear informacion puedo perjudicar la salud de mis compañeros y la mia propia, lo cual de constituir una falta grave a la salud pública, asumo sus consecuencias.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon" style="background-color:#fff">
+                                                            Fecha :
+                                                        </span>
+                                                        <input style="border:0;padding:0 ;margin-top:50px;padding-top:50px;background-color:#fff;border-bottom:1px solid #393939;" value="@cumEnvioDet.CumEnvio.env_fecha_reg.Day/@cumEnvioDet.CumEnvio.env_fecha_reg.Month/@cumEnvioDet.CumEnvio.env_fecha_reg.Year" type="text" name="fecha" id="txt-fecha" class="form-control input-sm" />
+                                                        <span class="input-group-addon" style="background-color:#fff">
+                                                            Firma
+                                                        </span>
+                                                        <img style="border:0;padding:0;margin:0;background-color:#fff;width: 250px;height: 100px;" id="usuario_firma" src="~/CumplimientoFiles/CumUsuario/@cumEnvioDet.CumEnvio.CumUsuario.cus_firma" alt="" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" style="margin-top:15px;font-size:10px">
+                                        <div class="form-group">
+                                            *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
+                                            asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
+                                            de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div><!-- /.main-content -->
+
+    </div><!-- /.main-container -->
+ 
+    @*<script src="~/Content/intranetSGC/assets/js/jquery-2.1.4.min.js"></script>
+
+
+    <script type="text/javascript">
+        if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/intranetSGC/assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    </script>
+    <script src="~/Content/intranetSGC/assets/js/bootstrap.min.js"></script>
+
+
+    <script src="~/Content/intranetSGC/assets/js/jquery-ui.custom.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/jquery.ui.touch-punch.min.js"></script>
+
+    <script src="~/Content/vendors/loadingoverlay/loadingoverlay.min.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.js"></script>
+    <script src="~/Content/vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="~/Content/vendors/jquery.confirm/jquery-confirm.js"></script>
+    <script src="~/Content/vendors/moment/moment.js"></script>
+    <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+
+    <script src="~/Content/intranetSGC/assets/js/ace-elements.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
+    <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
+
+    <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>*@
+</body>
+
+</html>
+
