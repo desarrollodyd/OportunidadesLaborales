@@ -4250,12 +4250,6 @@
     <Content Include="Content\WebCorporativa\tacna.jpg" />
     <Content Include="Content\WebCorporativa\trujillo.jpg" />
     <Content Include="Content\WebCorporativa\tumbes.jpg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200720063040.jpg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722172756.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722172910.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722172932.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722175713.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722180214.jpeg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\icon.png" />
