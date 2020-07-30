@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using OfficeOpenXml;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
@@ -28,6 +29,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         CumUsuarioModel cumusubl = new CumUsuarioModel();
         CumEnvioModel cumenviobl = new CumEnvioModel();
         CumEnvioDetModel cumenviodetbl = new CumEnvioDetModel();
+        CumUsuarioExcelModel cumusuexcelbl = new CumUsuarioExcelModel();
 
         SQLModel sqlbl = new SQLModel();
 
@@ -72,7 +74,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             ViewBag.envioid = envio_id;
             return View("~/Views/IntranetPJAdmin/IntranetPJFichaFormulario.cshtml");
         }
-
+        public ActionResult PanelSubidaExcel()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJSubidaExcel.cshtml");
+        }
         [HttpPost]
         public ActionResult IntranetFichasEmpleadoListarJson(DateTime desde,DateTime hasta , int estado)
         {
@@ -507,6 +512,207 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJSistemas.cshtml");
         }
+
+        #region Region Modelado de Excel para Usuarios de Ficha Sintomatologica
+        [HttpPost]
+        public ActionResult MostrarExcelModeloJson()
+        {
+            string errormensaje = "";
+            bool response = false;
+            string base64String = "";
+            string pathCarpetaArchivoExcel = Server.MapPath("/") + Request.ApplicationPath + "CumplimientoFiles/ExcelModelo";
+            try
+            {
+                string pathRutaArchivoExcel = @"" + pathCarpetaArchivoExcel + "/CORREO_PERSONAL_MODELO.xlsx";
+                if (System.IO.File.Exists(pathRutaArchivoExcel))
+                {
+                    byte[] imagebytes = System.IO.File.ReadAllBytes(pathRutaArchivoExcel);
+                    base64String = Convert.ToBase64String(imagebytes);
+                }
+                else
+                {
+                    base64String = string.Empty;
+                }
+                errormensaje = "Obteniendo Archivo";
+                response = true;
+            }
+            catch(Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { mensaje=errormensaje,respuesta=response,data=base64String});
+        }
+        [HttpPost]
+        public ActionResult SubirExcelJson()
+        {
+            bool response = false;
+            string errormensaje = "";
+
+            List<PersonaSqlEntidad> listaDocumentosExcel = new List<PersonaSqlEntidad>();
+
+            List<object> listaRespuesta = new List<object>();
+            HttpPostedFileBase file = Request.Files["file"];
+
+            string documento = "";
+            string cabeceraDocumento = "";
+            string cabeceraCorreo = "";
+
+            List<PersonaSqlEntidad> listaSQL = new List<PersonaSqlEntidad>();
+            List<CumUsuarioExcelEntidad> listaPostgres = new List<CumUsuarioExcelEntidad>();
+
+            ExcelPackage ExcelResultado = new ExcelPackage();
+
+            try
+            {
+                using (var package = new ExcelPackage(file.InputStream))
+                {
+                    // get the first worksheet in the workbook
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
+                    int colCount = worksheet.Dimension.End.Column;  //get Column Count
+                    int rowCount = worksheet.Dimension.End.Row;     //get row count
+                    cabeceraDocumento = worksheet.Cells[1, 1].Value?.ToString().Trim();
+                    cabeceraCorreo = worksheet.Cells[1, 2].Value?.ToString().Trim();
+                    if(cabeceraDocumento.Equals("COD_TRAB.")&&cabeceraCorreo.Equals("CORREO ELECTRÓNICO"))
+                    {
+                        for (int row = 2; row <= rowCount; row++)
+                        {
+
+                            listaDocumentosExcel.Add(new PersonaSqlEntidad {
+                               CO_TRAB = worksheet.Cells[row, 1].Value?.ToString().Trim(),
+                               NO_DIRE_MAI1= worksheet.Cells[row, 2].Value?.ToString().Trim()
+                        });
+                            //for (int col = 1; col <= colCount; col++)
+                            //{
+                            //    listaDocumentos.Add(worksheet.Cells[row, col].Value?.ToString().Trim());
+                            //}
+                        }
+                        if (listaDocumentosExcel.Count > 0)
+                        {
+                            ExcelResultado.Workbook.Worksheets.Add("Resultado");
+
+                            ExcelWorksheet WSResultado = ExcelResultado.Workbook.Worksheets[1];
+
+                            int rowResultado = 1;
+
+                            //listar de sql
+                            var listaPersonasSQLTupla = sqlbl.PersonaSQLListarDocumentosJson();
+                            if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                            {
+                                listaSQL = listaPersonasSQLTupla.lista;
+                            }
+                            else
+                            {
+                                errormensaje = listaPersonasSQLTupla.error.Value;
+                            }
+                            //listar de postgress
+                            var listaUsuariosExcelPostgresTupla = cumusuexcelbl.CumUsuarioExcelListarJson();
+                            if (listaUsuariosExcelPostgresTupla.error.Key.Equals(string.Empty))
+                            {
+                                listaPostgres = listaUsuariosExcelPostgresTupla.lista;
+                            }
+                            else
+                            {
+                                errormensaje = listaUsuariosExcelPostgresTupla.error.Value;
+                            }
+                            foreach(var registro in listaDocumentosExcel)
+                            {
+                                var contieneSQL = listaSQL.Where(x => x.CO_TRAB.Equals(registro.CO_TRAB)).FirstOrDefault();
+                                if (contieneSQL != null)
+                                {
+                                    CumUsuarioExcelEntidad cumUsuarioExcelET = new CumUsuarioExcelEntidad();
+                                    var contienePostgres = listaPostgres.Where(x => x.cue_numdoc.Equals(registro.CO_TRAB)).FirstOrDefault();
+                                    if (contienePostgres != null)
+                                    {
+                                        //Existe, entonces editar
+                                        if (!contienePostgres.cue_correo.Equals(registro.NO_DIRE_MAI1))
+                                        {
+                                            cumUsuarioExcelET.cue_id = contienePostgres.cue_id;
+                                            cumUsuarioExcelET.cue_numdoc = contienePostgres.cue_numdoc;
+                                            cumUsuarioExcelET.cue_correo = registro.NO_DIRE_MAI1;
+                                            cumUsuarioExcelET.cue_fecha_act = DateTime.Now;
+                                            var cumUSuarioTupla = cumusuexcelbl.CumUsuarioExcelEditarJson(cumUsuarioExcelET);
+                                            if (!cumUSuarioTupla.error.Key.Equals(string.Empty))
+                                            {
+                                                //Agregar a excel
+                                                WSResultado.Cells[rowResultado, 1].Value = cumUsuarioExcelET.cue_numdoc;
+                                                WSResultado.Cells[rowResultado, 2].Value = cumUsuarioExcelET.cue_correo;
+                                                WSResultado.Cells[rowResultado, 3].Value = "Error Al Editar";
+                                                rowResultado++;
+                                                listaRespuesta.Add(new
+                                                {
+                                                    documento = contienePostgres.cue_numdoc,
+                                                    correo = contienePostgres.cue_correo,
+                                                    motivo = "Error Al Editar"
+                                                });
+
+                                            }
+                                        }
+                                       
+                                    }
+                                    else
+                                    {
+                                        //No Existe, entonces insertar
+                                        cumUsuarioExcelET.cue_numdoc = registro.CO_TRAB;
+                                        cumUsuarioExcelET.cue_correo = registro.NO_DIRE_MAI1;
+                                        cumUsuarioExcelET.cue_fecha_reg = DateTime.Now;
+                                        var cumUSuarioTupla = cumusuexcelbl.CumUsuarioExcelInsertarJson(cumUsuarioExcelET);
+                                        if (!cumUSuarioTupla.error.Key.Equals(string.Empty))
+                                        {
+                                            WSResultado.Cells[rowResultado, 1].Value = cumUsuarioExcelET.cue_numdoc;
+                                            WSResultado.Cells[rowResultado, 2].Value = cumUsuarioExcelET.cue_correo;
+                                            WSResultado.Cells[rowResultado, 3].Value = "Error Al Insertar";
+                                            rowResultado++;
+                                            listaRespuesta.Add(new
+                                            {
+                                                documento = cumUsuarioExcelET.cue_numdoc,
+                                                correo = cumUsuarioExcelET.cue_correo,
+                                                motivo = "Error Al Insertar"
+                                            });
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    WSResultado.Cells[rowResultado, 1].Value = registro.CO_TRAB;
+                                    WSResultado.Cells[rowResultado, 2].Value = registro.NO_DIRE_MAI1;
+                                    WSResultado.Cells[rowResultado, 3].Value = "No se Encuentra en OFIPLAN";
+                                    rowResultado++;
+                                    listaRespuesta.Add(new
+                                    {
+                                        documento = registro.CO_TRAB,
+                                        correo = registro.NO_DIRE_MAI1,
+                                        motivo = "No se Encuentra en OFIPLAN"
+                                    });
+                                   
+                                }
+                                
+                            }
+                        }
+                        response = true;
+                        errormensaje = "Listando";
+                    }
+                    else
+                    {
+                        errormensaje = "Error en formato de Documento (Cabecera)";
+                    }
+                    
+                } 
+            }catch(Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            byte[] imagebytes = ExcelResultado.GetAsByteArray();
+            string base64String = Convert.ToBase64String(imagebytes);
+            return Json(new {
+                respuesta = response,
+                mensaje = errormensaje,
+                data = listaRespuesta.ToList(),
+                base64=base64String
+            });
+       
+
+        }
+        #endregion
 
         #region seccion1
 

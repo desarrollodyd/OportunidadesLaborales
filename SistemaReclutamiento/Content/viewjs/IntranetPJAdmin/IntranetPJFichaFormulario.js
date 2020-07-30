@@ -132,30 +132,30 @@
             allowInputToggle: true,
             defaultDate: dateinicio
         })
-        $('#txt-dni-busqueda').on('keydown keypress', function (e) {
-            if (e.key.length === 1) {
-                if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
-                    $(this).val($(this).val() + e.key);
-                    if ($(this).val().length == 8) {
-                        var codigo=$("#txt-codigo-busqueda").val();
-                        if(codigo!=''&&codigo!=undefined){
-                            var numdoc=$(this).val();
-                            // var dataForm = {
-                            //     codigo:codigo,
-                            //     numdoc:numdoc,
-                            //     env_id:envio_id
-                            // };
-                            _cargarData(codigo,numdoc,envio_id);
+        // $('#txt-dni-busqueda').on('keydown keypress', function (e) {
+        //     if (e.key.length === 1) {
+        //         if ($(this).val().length < 8 && !isNaN(parseFloat(e.key))) {
+        //             $(this).val($(this).val() + e.key);
+        //             if ($(this).val().length == 8) {
+        //                 var codigo=$("#txt-codigo-busqueda").val();
+        //                 if(codigo!=''&&codigo!=undefined){
+        //                     var numdoc=$(this).val();
+        //                     // var dataForm = {
+        //                     //     codigo:codigo,
+        //                     //     numdoc:numdoc,
+        //                     //     env_id:envio_id
+        //                     // };
+        //                     _cargarData(codigo,numdoc,envio_id);
                        
-                        }
-                        else{
-                            console.log("debe llenar el campo codigo");
-                        }
-                    }
-                }
-                return false;
-            }
-        });
+        //                 }
+        //                 else{
+        //                     console.log("debe llenar el campo codigo");
+        //                 }
+        //             }
+        //         }
+        //         return false;
+        //     }
+        // });
         $(document).on('click','.btn_guardar',function(e){
             e.preventDefault();
             var objUsuario={
@@ -314,6 +314,20 @@
         //         $("#txt-dni-busqueda").trigger(e);
         //     }
         // });
+        $(document).on('click','#btn_buscar',function(e){
+            console.log('click');
+            var dni=$('#txt-dni-busqueda').val();
+            var codigo=$("#txt-codigo-busqueda").val();
+            if(codigo!=''&&codigo!=undefined&&dni!=''&&dni!=undefined){
+                _cargarData(codigo,dni,envio_id);
+            }
+            else{
+                messageResponse({
+                    text: "Campos obligatorios",
+                    type: "error"
+                })
+            }
+        })
     };
 
     //

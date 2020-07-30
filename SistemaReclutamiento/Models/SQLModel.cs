@@ -731,5 +731,50 @@ FROM " + nombre_tabla+" as pago "+
             }
             return (lista: listaPersonas, error: error);
         }
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLListarDocumentosJson()
+        {
+            claseError error = new claseError();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            string consulta = @"Select
+                  emp.CO_TRAB, emp.NO_TRAB, emp.NO_APEL_PATE, emp.NO_APEL_MATE, emp.NO_DIRE_MAI1, NO_DIRE_MAI2
+                    from TMTRAB_PERS as emp";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+
+
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var persona = new PersonaSqlEntidad
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                    NO_DIRE_MAI2 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI2"]),
+                                };
+
+                                listaPersonas.Add(persona);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista: listaPersonas, error: error);
+        }
     }
 }
