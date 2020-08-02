@@ -13,6 +13,7 @@ namespace SistemaReclutamiento.Controllers
         // GET: SQL
         SQLModel sqlbl = new SQLModel();
         PersonaModel personabl = new PersonaModel();
+        CumUsuarioExcelModel cumusuexcelbl = new CumUsuarioExcelModel();
         public ActionResult Index()
         {
             return View();
@@ -145,13 +146,15 @@ namespace SistemaReclutamiento.Controllers
             List<PersonaEntidad> listaPersonasPostgres = new List<PersonaEntidad>();
             List<PersonaSqlEntidad> listaPersonasSQL = new List<PersonaSqlEntidad>();
             List<dynamic> lista = new List<dynamic>();
-            
+            List<CumUsuarioExcelEntidad> listaPostgresExcel = new List<CumUsuarioExcelEntidad>();
+
             try
             {
                 
                 if (listaEmpresas.Count() > 0 && listaSedes.Count() > 0)
                 {
                     int mes_anterior = DateTime.Now.Month - 1;
+                    mes_anterior = 6;
                     stringEmpresas += "(";
                     foreach (var cod_emp in listaEmpresas)
                     {
@@ -186,15 +189,38 @@ namespace SistemaReclutamiento.Controllers
                     {
                         errormensaje += listaPersonasPostgresTupla.error.Value;
                     }
+
+
                     if (listaPersonasSQL.Count > 0 && listaPersonasPostgres.Count > 0)
                     {
+                        //listar de postgress Usuarios de Plantilla de Excel
+
+                        var listaUsuariosExcelPostgresTupla = cumusuexcelbl.CumUsuarioExcelListarJson();
+                        if (listaUsuariosExcelPostgresTupla.error.Key.Equals(string.Empty))
+                        {
+                            listaPostgresExcel = listaUsuariosExcelPostgresTupla.lista;
+                        }
+                        else
+                        {
+                            errormensaje += listaUsuariosExcelPostgresTupla.error.Value;
+                        }
+
                         foreach (var m in listaPersonasSQL)
                         {
+
                             string correoCorporativo = "";
+
                             var contiene = listaPersonasPostgres.Where(x => x.per_numdoc.Equals(m.CO_TRAB)).FirstOrDefault();
                             if (contiene != null)
                             {
                                 correoCorporativo = contiene.per_correoelectronico;
+                            }
+
+                            //Actualizar direccion de correo personal desde la tabla CumUsuarioExcel
+                            var contieneUsuarioExcel = listaPostgresExcel.Where(x => x.cue_numdoc.Trim().Equals(m.CO_TRAB.Trim())).FirstOrDefault();
+                            if (contieneUsuarioExcel != null)
+                            {
+                                m.NO_DIRE_MAI1 = contieneUsuarioExcel.cue_correo.Trim();
                             }
                             lista.Add(new {
                                 id=m.CO_TRAB,
@@ -208,7 +234,6 @@ namespace SistemaReclutamiento.Controllers
                             });
                         }
                     }
-
                     response = true;
                     errormensaje = "Listando Data";
                 }

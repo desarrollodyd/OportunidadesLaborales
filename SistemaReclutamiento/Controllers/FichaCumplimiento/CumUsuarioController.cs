@@ -395,6 +395,7 @@ namespace SistemaReclutamiento.Controllers
                             if (usuarioTuplaPostgres.error.Key.Equals(string.Empty))
                             {
                                 cumUsuario = usuarioTuplaPostgres.cumUsuario;
+                                cumUsuario.cus_firma_act = cumUsuario.cus_firma;
                             }
                             else
                             {
@@ -418,6 +419,7 @@ namespace SistemaReclutamiento.Controllers
                                 cumUsuario.celular = persona.NU_TLF1;
                                 cumUsuario.direccion = persona.NO_DIRE_TRAB;
                                 cumUsuario.ruc = persona.NU_RUCS;
+                                cumUsuario.cus_firma_act = cumUsuario.cus_firma;
                             }
                             else
                             {
@@ -542,12 +544,26 @@ namespace SistemaReclutamiento.Controllers
                         {
                             var nombreArchivo = (usuario.cus_dni.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + extension);
                             rutaInsertar = Path.Combine(direccion, nombreArchivo);
+                            rutaAnterior = Path.Combine(direccion, usuario.cus_firma_act.ToString());
                             if (!Directory.Exists(direccion))
                             {
                                 System.IO.Directory.CreateDirectory(direccion);
                             }
+                            if (System.IO.File.Exists(rutaAnterior))
+                            {
+                                System.IO.File.Delete(rutaAnterior);
+                            }
                             file.SaveAs(rutaInsertar);
-                            usuario.cus_firma = nombreArchivo;
+                            cumUsuario.cus_firma = nombreArchivo;
+                            cumUsuario.cus_fecha_act = DateTime.Now;
+                            cumUsuario.cus_id = usuario.cus_id;
+                            var usuarioEdicionTupla = cumUsuariobl.CumUsuarioEditarFirmaJson(cumUsuario);
+                            if (!usuarioEdicionTupla.error.Key.Equals(string.Empty))
+                            {
+                                errormensaje = "Error al Editar Firma Digital";
+                                return Json(new { respuesta = response, mensaje = errormensaje });
+                            }
+                       
                         }
                         else
                         {

@@ -1,5 +1,5 @@
 ﻿var PanelExcel = function () {
-    var excelBase64='';
+   
     var _inicio = function () {
         $('#excel').ace_file_input({
             no_file: 'sin archivo ...',
@@ -9,24 +9,35 @@
             onchange: null,
             thumbnail: false
         });
-        responseSimple({
-            url: "IntranetPJAdmin/MostrarExcelModeloJson",
-            refresh: false,
-            callBackSuccess: function (response) {
-               excelBase64=response.data;
-            }
-        });
+   
     };
 
     var _metodos = function () {
         $(document).on('click','.btn_descargar_modelo',function(e){
-        
-            var link = document.createElement('a');
-            document.body.appendChild(link); //required in FF, optional for Chrome
-            link.href = "data:application/vnd.ms-excel;base64, "+excelBase64;;
-            link.download = "ExcelPrueba.xls";
-            link.click();
-            link.remove();
+            var excelBase64='';
+            responseSimple({
+                url: "IntranetPJAdmin/MostrarExcelModeloJson",
+                refresh: false,
+                callBackSuccess: function (response) {
+                    if(response.respuesta){
+                        excelBase64=response.data;
+                        var link = document.createElement('a');
+                        document.body.appendChild(link); //required in FF, optional for Chrome
+                        link.href = "data:application/vnd.ms-excel;base64, "+excelBase64;;
+                        link.download = "ExcelPrueba.xlsx";
+                        link.click();
+                        link.remove();
+                        console.log(response);
+                    }
+                    else{
+                        messageResponse({
+                            text: response.mensaje,
+                            type: "error"
+                        })
+                    }
+                }
+            });
+      
         });
         $(document).on('click','.btn_subir_excel',function(e){
             var file = $('#excel')[0].files[0];
@@ -44,29 +55,29 @@
                 var dataForm=new FormData();
                 dataForm.append('file',file);
                 // console.log(extension);
-                responseFileSimple({
-                    url:url,
-                    data:dataForm,
-                    refresh:false,
-                    callBackSuccess:function(response){
-                        var link = document.createElement('a');
-                        document.body.appendChild(link); //required in FF, optional for Chrome
-                        link.href = "data:application/vnd.ms-excel;base64, "+response.base64;;
-                        link.download = "ExcelResultado.xls";
-                        link.click();
-                        link.remove();
-                    }
-                })
-                // if (extension != 'xls' ||extension !='xlsx') {
-                //     messageResponse({
-                //         text: 'Sólo Se Permite formato Excel (.xls||xlsx)',
-                //         type: "warning"
-                //     });
+           
+                if (extension != 'xls' && extension !='xlsx') {
+                    messageResponse({
+                        text: 'Sólo Se Permite formato Excel (.xls||xlsx)',
+                        type: "warning"
+                    });
                   
-                // }
-                // else {
-                
-                // }
+                }
+                else {
+                    responseFileSimple({
+                        url:url,
+                        data:dataForm,
+                        refresh:false,
+                        callBackSuccess:function(response){
+                            var link = document.createElement('a');
+                            document.body.appendChild(link); //required in FF, optional for Chrome
+                            link.href = "data:application/vnd.ms-excel;base64, "+response.base64;;
+                            link.download = "ExcelResultado.xlsx";
+                            link.click();
+                            link.remove();
+                        }
+                    })
+                }
             }
           
         });

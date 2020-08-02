@@ -22,8 +22,10 @@
                 if(cusUsuario.cus_id!=0){
 
                     var fechaActual=moment(new Date()).format("DD/MM/YYYY");
-                    var fechaEnvio=moment(cusEnvioDet.end_fecha_reg).format("DD/MM/YYYY");
+                    var fechaEnvio=moment(cusEnvioDet.end_fecha_act).format("DD/MM/YYYY");
                     if(fechaActual!=fechaEnvio&&cusEnvio.env_estado==2){
+                        // console.log(fechaActual,fechaEnvio);
+                        // if(fechaActual!=fechaEnvio){
                         $(".btn_guardar").attr('disabled',true);
                     }
                     $("#txt-codigo-busqueda").attr('disabled',true);
@@ -67,26 +69,29 @@
                                 }
                             })
                         });
-                        $('#txt-firma').ace_file_input({
-                            no_file: cusUsuario.cus_firma,
-                            btn_choose: 'cambiar',
-                            btn_change: 'cancelar',
-                            droppable: false,
-                            onchange: null,
-                            thumbnail: false
-                        });
+                     
+                    }
+         
+                    var span_no_file='';
+                    var span_choose='';
+                    if(cusUsuario.cus_firma==''||cusUsuario.cus_firma==null){
+                        span_no_file="Sin archivo";
+                        span_choose='Escoger';
+                        $("#txt-firma_act").val('');
                     }
                     else{
-                        $('#txt-firma').ace_file_input({
-                            no_file: 'sin archivo ...',
-                            btn_choose: 'escoger',
-                            btn_change: 'cancelar',
-                            droppable: false,
-                            onchange: null,
-                            thumbnail: false
-                        });
+                        span_no_file=cusUsuario.cus_firma;
+                        span_choose='Cambiar';
+                        $("#txt-firma_act").val(cusUsuario.cus_firma);
                     }
-
+                    $('#txt-firma').ace_file_input({
+                        no_file: span_no_file,
+                        btn_choose: span_choose,
+                        btn_change: 'cancelar',
+                        droppable: false,
+                        onchange: null,
+                        thumbnail: false
+                    });
                  
                     $("#txt-estado").val(cusUsuario.cus_estado);
                     $("#txt-id_cus").val(cusUsuario.cus_id);
@@ -101,7 +106,6 @@
                     $("#txt-area").val(cusUsuario.sede);
                     $("#txt-ruc").val(cusUsuario.ruc);
                     $("#txt-empresa").val(cusUsuario.empresa);
-
                     //Firma
                   
                     $("#fichaSintomatologica").show();
@@ -248,7 +252,21 @@
                     })
                     return false;
                 }
-                url='CumUsuario/CumFichaInsertarJson';
+                else{
+                    var image_arr = file.name.split(".");
+                    var extension = image_arr[1].toLowerCase();
+                    if (extension != 'pdf' && extension !='jpg'&&extension !='png'&&extension !='jpeg') {
+                        messageResponse({
+                            text: 'Sólo Se Permite formato Imagen(png,jpg,jpeg) o Pdf',
+                            type: "warning"
+                        });
+                      return false;
+                    }
+                    else{
+                        url='CumUsuario/CumFichaInsertarJson';
+                    }
+                }
+                
             }
             else{
                 url='CumUsuario/CumFichaEditarJson'
@@ -271,13 +289,20 @@
                     if(response.respuesta){
                         var codigo=$("#txt-codigo-busqueda").val();
                         var numdoc=$("#txt-dni-busqueda").val();
+                        messageResponse({
+                            text: "Ficha Registrada",
+                            type: "success"
+                        })
+                        setTimeout(function () {
+                            window.location.reload();
+                        },2000);
                         // console.log(codigo);
                         // console.log(numdoc);
                         // console.log(envio_id);
                         // PanelFichaFormulario.init_cargarData(codigo,numdoc,envio_id);
-                        window.location.reload();
+                        
                     }
-                }
+                },
             })
         })
 

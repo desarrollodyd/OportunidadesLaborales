@@ -70,7 +70,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
         public ActionResult FichaFormulario(string id)
         {
-            var envio_id = Seguridad.Desencriptar(id);
+            var envio_id = Seguridad.Base64ForUrlDecode(id);
             ViewBag.envioid = envio_id;
             return View("~/Views/IntranetPJAdmin/IntranetPJFichaFormulario.cshtml");
         }
@@ -205,6 +205,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
                         cumusuario.cus_correo = correopersonal;
                         cumusuario.cus_id = cumusuarioExiste[0].cus_id;
+                        cumusuario.cus_clave = clave;
                         var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
                         idcumusu = cumusuarioExiste[0].cus_id;
                     }
@@ -251,7 +252,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             cumenvio.env_estado = "1";
                             cumenvio.env_id = envio.idInsertado;
                             string correo = (correopersonal == "" ? correocorporativo : correopersonal);
-                            string encriptado = Seguridad.Encriptar(envio.idInsertado.ToString());
+                            string encriptado = Seguridad.Base64ForUrlEncode(envio.idInsertado.ToString());
                             var estado = cumenviobl.CumEnvioEditarJson(cumenvio);
                             correo_enviar.EnviarCorreo(
                              correo,
@@ -300,7 +301,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     var correo = entidadusuario.cus_correo.Trim();
                     var nombre = "";
                     var id = envioID.ToString();
-                    var encriptado = Seguridad.Encriptar(id);
+                    var encriptado = Seguridad.Base64ForUrlEncode(id);
                     Correo correo_enviar = new Correo();
                     string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
                     //MailMessage message = new MailMessage("s3k.zimbra@gmail.com", persona.per_correoelectronico, "correo de confirmacion", cuerpo_correo);
@@ -404,6 +405,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                        
                         cumusuario.cus_correo = correopersonal;
                         cumusuario.cus_id = cumusuarioExiste[0].cus_id;
+                        cumusuario.cus_clave = clave;
                         var usuaupdate = cumusubl.CumUsuarioEditarcorreoJson(cumusuario);
                         idcumusu = cumusuarioExiste[0].cus_id;
                     }
@@ -450,7 +452,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             cumenvio.env_estado = "1";
                             cumenvio.env_id = envio.idInsertado;
 
-                            string encriptado = Seguridad.Encriptar(envio.idInsertado.ToString());
+                            string encriptado = Seguridad.Base64ForUrlEncode(envio.idInsertado.ToString());
                             var estado = cumenviobl.CumEnvioEditarJson(cumenvio);
                             correo_enviar.EnviarCorreo(
                              correopersonal,
@@ -574,13 +576,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     cabeceraCorreo = worksheet.Cells[1, 2].Value?.ToString().Trim();
                     if(cabeceraDocumento.Equals("COD_TRAB.")&&cabeceraCorreo.Equals("CORREO ELECTRÓNICO"))
                     {
+                        string _CO_TRAB = "";
+                        string _NO_DIRE_MAI1 = "";
                         for (int row = 2; row <= rowCount; row++)
                         {
-
+                            _CO_TRAB = worksheet.Cells[row, 1].Value?.ToString().Replace("'", "");
+                            _NO_DIRE_MAI1 = worksheet.Cells[row, 2].Value?.ToString().Replace("'", "");
                             listaDocumentosExcel.Add(new PersonaSqlEntidad {
-                               CO_TRAB = worksheet.Cells[row, 1].Value?.ToString().Trim(),
-                               NO_DIRE_MAI1= worksheet.Cells[row, 2].Value?.ToString().Trim()
-                        });
+                               CO_TRAB = _CO_TRAB.Trim(),
+                               NO_DIRE_MAI1= _NO_DIRE_MAI1.Trim()
+                            });
+                            _CO_TRAB = "";
+                            _NO_DIRE_MAI1 = "";
                             //for (int col = 1; col <= colCount; col++)
                             //{
                             //    listaDocumentos.Add(worksheet.Cells[row, col].Value?.ToString().Trim());

@@ -326,7 +326,7 @@ namespace SistemaReclutamiento.Models
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE cumplimiento.cum_usuario
-	                            SET cus_correo=@p2, 
+	                            SET cus_correo=@p2,cus_clave=@p3
                                 
 	                            WHERE cus_id=@p7;";
             try
@@ -337,6 +337,7 @@ namespace SistemaReclutamiento.Models
                     var query = new NpgsqlCommand(consulta, con);
                    
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(usuario.cus_correo));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(usuario.cus_clave));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullInteger(usuario.cus_id));
                     query.ExecuteNonQuery();
                     response = true;
