@@ -154,7 +154,7 @@ namespace SistemaReclutamiento.Controllers
                 if (listaEmpresas.Count() > 0 && listaSedes.Count() > 0)
                 {
                     int mes_anterior = DateTime.Now.Month - 1;
-                    mes_anterior = 6;
+                    //mes_anterior = 6;
                     stringEmpresas += "(";
                     foreach (var cod_emp in listaEmpresas)
                     {

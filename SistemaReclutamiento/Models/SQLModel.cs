@@ -641,7 +641,8 @@ FROM " + nombre_tabla+" as pago "+
                     inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
                     inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
                     where periodo.CO_EMPR in " + listaEmpresas+" and periodo.CO_SEDE in "+listaSedes+
-					"AND periodo.NU_ANNO=2019 and periodo.NU_PERI="+mes_activo;
+                    "AND periodo.NU_ANNO=(getdate()) and periodo.NU_PERI=" + mes_activo;
+            //periodo.nu_anno=2019 para pruebas
             try
             {
                 using (var con = new SqlConnection(_conexion))
