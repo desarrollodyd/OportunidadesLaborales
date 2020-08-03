@@ -102,7 +102,7 @@ namespace SistemaReclutamiento.Controllers
             string errormensaje = "";
             bool response = false;
             int tamanioMaximo = 4194304;
-            string direccion = Server.MapPath("/") + Request.ApplicationPath + "CumplimientoFiles/CumUsuario";
+            string direccion = Server.MapPath("/") + Request.ApplicationPath + "/CumplimientoFiles/CumUsuario";
             int idUsuarioInsertado = 0;
             dynamic jsonObj = JsonConvert.DeserializeObject(request);
 
@@ -520,7 +520,7 @@ namespace SistemaReclutamiento.Controllers
             string rutaAnterior = "";
   
             int tamanioMaximo = 4194304;
-            string direccion = Server.MapPath("/") + Request.ApplicationPath + "CumplimientoFiles/CumUsuario";
+            string direccion = Server.MapPath("/") + Request.ApplicationPath + "/CumplimientoFiles/CumUsuario";
             dynamic jsonObj = JsonConvert.DeserializeObject(request);
             CumUsuarioEntidad cumUsuario = new CumUsuarioEntidad();
             List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();

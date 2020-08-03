@@ -638,7 +638,7 @@
         $(document).on('click','.btn_descargarTodosEmpleados',function(e){
             e.preventDefault();
             var arrayIds = '';
-            $('#fichaspostulanteListadop tbody tr input[type=checkbox]:checked').each(function () {
+            $('#fichasestadoListado tbody tr input[type=checkbox]:checked').each(function () {
                 // arrayIds.push($(this).data("id"));
                 arrayIds+=$(this).data("id")+",";
             });

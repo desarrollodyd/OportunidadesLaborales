@@ -522,7 +522,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string errormensaje = "";
             bool response = false;
             string base64String = "";
-            string pathCarpetaArchivoExcel = Server.MapPath("/") + Request.ApplicationPath + "CumplimientoFiles/ExcelModelo";
+            string pathCarpetaArchivoExcel = Server.MapPath("/") + Request.ApplicationPath + "/CumplimientoFiles/ExcelModelo";
             try
             {
                 string pathRutaArchivoExcel = @"" + pathCarpetaArchivoExcel + "/CORREO_PERSONAL_MODELO.xlsx";
