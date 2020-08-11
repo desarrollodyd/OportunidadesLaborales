@@ -73,11 +73,25 @@ namespace SistemaReclutamiento.Controllers
                         {
                             //sql
                             cumUsuario = usuarioTuplaClave.cumUsuario;
-
-                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni);
+                            int mes_actual = DateTime.Now.Month;
+                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual);
                             if (personaSQLTupla.error.Key.Equals(string.Empty))
                             {
-                                PersonaSqlEntidad persona = personaSQLTupla.persona;
+                                PersonaSqlEntidad persona = new PersonaSqlEntidad();
+                                if (personaSQLTupla.persona.CO_TRAB==null)
+                                {
+                                    mes_actual = mes_actual - 1;
+                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual);
+                                    if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                                    {
+                                        persona = personaSQLTupla2.persona;
+                                    }
+                                }
+                                else
+                                {
+                                    persona = personaSQLTupla.persona;
+                                }
+                                //PersonaSqlEntidad persona = personaSQLTupla.persona;
                                 cumUsuario.nombre = persona.NO_TRAB;
                                 cumUsuario.apellido_pat = persona.NO_APEL_PATE;
                                 cumUsuario.apellido_mat = persona.NO_APEL_MATE;

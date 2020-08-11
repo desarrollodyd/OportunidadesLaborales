@@ -178,10 +178,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             CumUsuarioEntidad cumusuario = new CumUsuarioEntidad();
             CumEnvioEntidad cumenvio = new CumEnvioEntidad();
             CumEnvioDetalleEntidad cumenviodet = new CumEnvioDetalleEntidad();
+            List<CumUsuarioEntidad> listaUsuariosEnvio = new List<CumUsuarioEntidad>();
             var correopersonal = "";
             var correocorporativo = "";
             var clave = "";
             int idcumusu = 0;
+            int totalInsertados = 0;
+            int totalEnviados = 0;
             try
             {
                
@@ -243,9 +246,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             cumenviodet.end_correo_pers = correopersonal;
                             var enviodet = cumenviodetbl.CumEnvioDetalleInsertarJson(cumenviodet);
 
-                            //////envio correo aqui/////
-                            Correo correo_enviar = new Correo();
-                            string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                            ////////envio correo aqui/////
+                            //Correo correo_enviar = new Correo();
+                            //string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
                             string nombre = "";
 
                             cumenvio.env_fecha_act = DateTime.Now;
@@ -254,22 +257,31 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             string correo = (correopersonal == "" ? correocorporativo : correopersonal);
                             string encriptado = Seguridad.Base64ForUrlEncode(envio.idInsertado.ToString());
                             var estado = cumenviobl.CumEnvioEditarJson(cumenvio);
-                            correo_enviar.EnviarCorreo(
-                             correo,
-                             "Link de Ficha Sintomatológica",
-                             "Hola! : " + nombre + " \n " +
-                             "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
-                             "Ingrese al siguiente Link y complete el formulario"
-                             + "\n solo se puede editar el mismo dia de envio, \n" +
-                             " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
-                             );
+                            listaUsuariosEnvio.Add(new CumUsuarioEntidad
+                            {
+                                cus_correo = correo,
+                                cus_clave=clave,
+                                encriptado=encriptado
+                            });
+                            totalInsertados++;
+                            //correo_enviar.EnviarCorreo(
+                            // correo,
+                            // "Link de Ficha Sintomatológica",
+                            // "Hola! : " + nombre + " \n " +
+                            // "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
+                            // "Ingrese al siguiente Link y complete el formulario"
+                            // + "\n solo se puede editar el mismo dia de envio, \n" +
+                            // " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
+                            // );
+                            
 
                         }
 
                     }
                 }
+                totalEnviados = EnviarCorreos(listaUsuariosEnvio);
 
-                mensaje = "Fichas Registradas";
+                mensaje = "Fichas Registradas = "+totalInsertados+"; \n Total correos Enviados = " + totalEnviados;
                 respuesta = true;
 
             }
@@ -379,10 +391,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             CumUsuarioEntidad cumusuario = new CumUsuarioEntidad();
             CumEnvioEntidad cumenvio = new CumEnvioEntidad();
             CumEnvioDetalleEntidad cumenviodet = new CumEnvioDetalleEntidad();
+            List<CumUsuarioEntidad> listaUsuariosEnvio = new List<CumUsuarioEntidad>();
             var correopersonal = "";
             var dni = "";
             var clave = "";
             int idcumusu = 0;
+            int totalInsertados = 0;
+            int totalEnviados=0;
             try
             {
 
@@ -444,9 +459,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             var enviodet = cumenviodetbl.CumEnvioDetalleInsertarJson(cumenviodet);
 
                             //////envio correo aqui/////
-                            Correo correo_enviar = new Correo();
-                            string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
-                            string nombre = "";
+                            //Correo correo_enviar = new Correo();
+                            //string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+                            //string nombre = "";
                             
                             cumenvio.env_fecha_act = DateTime.Now;
                             cumenvio.env_estado = "1";
@@ -454,21 +469,30 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
                             string encriptado = Seguridad.Base64ForUrlEncode(envio.idInsertado.ToString());
                             var estado = cumenviobl.CumEnvioEditarJson(cumenvio);
-                            correo_enviar.EnviarCorreo(
-                             correopersonal,
-                             "Link de Ficha Sintomatológica",
-                             "Hola! : " + nombre + " \n " +
-                             "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
-                             "Ingrese al siguiente Link y complete el formulario"
-                             + "\n solo se puede editar el mismo dia de envio, \n" +
-                             " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
-                             );
+
+                            listaUsuariosEnvio.Add(new CumUsuarioEntidad
+                            {
+                                cus_correo = correopersonal,
+                                cus_clave = clave,
+                                encriptado = encriptado
+                            });
+                            totalInsertados++;
+
+                            //correo_enviar.EnviarCorreo(
+                            // correopersonal,
+                            // "Link de Ficha Sintomatológica",
+                            // "Hola! : " + nombre + " \n " +
+                            // "Tu clave es la que necesitaras para guardar tu ficha : " + clave + " \n " +
+                            // "Ingrese al siguiente Link y complete el formulario"
+                            // + "\n solo se puede editar el mismo dia de envio, \n" +
+                            // " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + encriptado
+                            // );
                         }
 
                     }
                 }
-
-                mensaje = "Fichas Registradas";
+                totalEnviados = EnviarCorreos(listaUsuariosEnvio);
+                mensaje = "Fichas Registradas = " + totalInsertados + "; \n Total correos Enviados = " + totalEnviados;
                 respuesta = true;
 
             }
@@ -902,5 +926,30 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         }
 
         #endregion
+        public int EnviarCorreos( List<CumUsuarioEntidad> listaUsuarios)
+        {
+            ////////envio correo aqui/////
+            Correo correo_enviar = new Correo();
+            string basepath = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+            int contador = 0;
+            if (listaUsuarios.Count > 0)
+            {
+                foreach (var m in listaUsuarios)
+                {
+                    correo_enviar.EnviarCorreo(
+                     m.cus_correo,
+                     "Link de Ficha Sintomatológica",
+                     "Hola! : \n " +
+                     "Tu clave es la que necesitaras para guardar tu ficha : " + m.cus_clave + " \n " +
+                     "Ingrese al siguiente Link y complete el formulario"
+                     + "\n solo se puede editar el mismo dia de envio, \n" +
+                     " Link Ficha Sintomatológica : " + basepath + "IntranetPJAdmin/FichaFormulario?id=" + m.encriptado
+                     );
+                    contador++;
+                }
+            }
+         
+            return contador;
+        }
     }
 }
