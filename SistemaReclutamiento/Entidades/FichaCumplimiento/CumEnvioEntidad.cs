@@ -16,6 +16,7 @@ namespace SistemaReclutamiento.Entidades.FichaCumplimiento
         public int fk_cuestionario { get; set; }
         public int fk_usuario { get; set; }
         public CumUsuarioEntidad CumUsuario { get; set; }
+        public string env_observacion { get; set; }
         public CumEnvioEntidad()
         {
             this.CumUsuario = new CumUsuarioEntidad();

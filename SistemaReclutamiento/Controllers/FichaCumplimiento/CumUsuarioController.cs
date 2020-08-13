@@ -103,7 +103,6 @@ namespace SistemaReclutamiento.Controllers
             bool response = false;
             int tamanioMaximo = 4194304;
             string direccion = Server.MapPath("/") + Request.ApplicationPath + "/CumplimientoFiles/CumUsuario";
-            int idUsuarioInsertado = 0;
             dynamic jsonObj = JsonConvert.DeserializeObject(request);
 
             CumUsuarioEntidad cumUsuario = new CumUsuarioEntidad();
@@ -407,14 +406,23 @@ namespace SistemaReclutamiento.Controllers
                             //sql
                             cumUsuario = usuarioTuplaClave.cumUsuario;
                             int mes_actual = DateTime.Now.Month;
-                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual);
+                            int anio = DateTime.Now.Year;
+                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
                             if (personaSQLTupla.error.Key.Equals(string.Empty))
                             {
                                 PersonaSqlEntidad persona = new PersonaSqlEntidad(); 
                                 if (personaSQLTupla.persona.CO_TRAB==null)
                                 {
-                                    mes_actual = mes_actual - 1;
-                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual);
+                                    if (mes_actual == 1)
+                                    {
+                                        mes_actual = 12;
+                                        anio = anio - 1;
+                                    }
+                                    else
+                                    {
+                                        mes_actual = mes_actual - 1;
+                                    }
+                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
                                     if (personaSQLTupla2.error.Key.Equals(string.Empty))
                                     {
                                         persona = personaSQLTupla2.persona;
@@ -747,15 +755,24 @@ namespace SistemaReclutamiento.Controllers
                             //sql
                             cumUsuario = usuarioTuplaClave.cumUsuario;
                             int mes_actual = DateTime.Now.Month;
-                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual);
+                            int anio = DateTime.Now.Year;
+                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
                             if (personaSQLTupla.error.Key.Equals(string.Empty))
                             {
                                 //PersonaSqlEntidad persona = personaSQLTupla.persona;
                                 PersonaSqlEntidad persona = new PersonaSqlEntidad();
                                 if (personaSQLTupla.persona.CO_TRAB==null)
                                 {
-                                    mes_actual = mes_actual - 1;
-                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual);
+                                    if (mes_actual == 1)
+                                    {
+                                        mes_actual = 12;
+                                        anio = anio - 1;
+                                    }
+                                    else
+                                    {
+                                        mes_actual = mes_actual - 1;
+                                    }
+                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
                                     if (personaSQLTupla2.error.Key.Equals(string.Empty))
                                     {
                                         persona = personaSQLTupla2.persona;
@@ -831,6 +848,57 @@ namespace SistemaReclutamiento.Controllers
                 errormensaje = ex.Message;
             }
             return Json(new { mensaje = errormensaje, respuesta = response, data = cumEnvioDet });
+        }
+        [HttpPost]
+        public ActionResult CumUsuarioObtenerEnvioxIdJson(int env_id)
+        {
+            bool response = false;
+            string errormensaje = "";
+            CumEnvioEntidad envio = new CumEnvioEntidad();
+            try
+            {
+                var envioTupla = cumEnviobl.CumEnvioIdObtenerJson(env_id);
+                if (envioTupla.error.Key.Equals(string.Empty))
+                {
+                    envio = envioTupla.cumEnvio;
+                    response = true;
+                    errormensaje = "Mostrando observación";
+                }
+                else
+                {
+                    errormensaje = envioTupla.error.Value;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { respuesta = response, mensaje = errormensaje, data=envio });
+        }
+        [HttpPost]
+        public ActionResult CumUsuarioEditarObservacionEnvioJson(CumEnvioEntidad envio)
+        {
+            bool response = false;
+            string errormensaje = "";
+            try
+            {
+                var envioTupla = cumEnviobl.CumEnvioEditarObservacionJson(envio);
+                if (envioTupla.error.Key.Equals(string.Empty))
+                {
+                    response = true;
+                    errormensaje = "Editado";
+                }
+                else
+                {
+                    errormensaje = envioTupla.error.Value;
+                }
+
+            }catch(Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { respuesta=response,mensaje=errormensaje });
         }
     }
 }

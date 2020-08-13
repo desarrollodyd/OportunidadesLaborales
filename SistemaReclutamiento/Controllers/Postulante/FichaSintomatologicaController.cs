@@ -73,15 +73,25 @@ namespace SistemaReclutamiento.Controllers
                         {
                             //sql
                             cumUsuario = usuarioTuplaClave.cumUsuario;
-                            int mes_actual = DateTime.Now.Month;
-                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual);
+                            DateTime fecha_act = Convert.ToDateTime(cumEnvioDet.end_fecha_act);
+                            int mes_actual = fecha_act.Month;
+                            int anio = fecha_act.Year;
+                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
                             if (personaSQLTupla.error.Key.Equals(string.Empty))
                             {
                                 PersonaSqlEntidad persona = new PersonaSqlEntidad();
                                 if (personaSQLTupla.persona.CO_TRAB==null)
                                 {
-                                    mes_actual = mes_actual - 1;
-                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual);
+                                    if (mes_actual == 1)
+                                    {
+                                        mes_actual = 12;
+                                        anio = anio - 1;
+                                    }
+                                    else
+                                    {
+                                        mes_actual = mes_actual - 1;
+                                    }
+                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
                                     if (personaSQLTupla2.error.Key.Equals(string.Empty))
                                     {
                                         persona = personaSQLTupla2.persona;

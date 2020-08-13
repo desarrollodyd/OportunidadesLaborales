@@ -143,6 +143,10 @@
                                     width: "50px",
                                 },
                                 {
+                                    data: "id",
+                                    title: "Nro. Documento",
+                                },
+                                {
                                     data: "nombre",
                                     title: "Nombre Empleado",
                                 },
@@ -268,6 +272,7 @@
                 data: JSON.stringify(dataForm),
                 refresh: false,
                 callBackSuccess: function (response) {
+                    console.log(response);
                     simpleDataTable({
                         uniform: false,
                         tableNameVariable: "datatable_fichasestadoListado",
@@ -335,7 +340,8 @@
                                 title: 'Accion',
                                 "render": function (value, type, oData) {
                                     return '<button class="btn btn-white btn-primary btn-sm btn_reenviar" data-id="' + value + '"><i class="ace-icon fa fa-envelope-o" ></i> Reenviar</button>' +
-                                        ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="ace-icon fa fa-file-word-o" ></i> Descargar</button>';
+                                        ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="ace-icon fa fa-file-word-o" ></i> Descargar</button>'+
+                                        ' <button class="btn btn-white btn-success btn-sm btn_observacion" data-id="' + value + '"><i class="ace-icon fa fa-search-plus" ></i> Obs.</button>';
                                 }
                             }
                         ]
@@ -459,7 +465,8 @@
                                 title: 'Accion',
                                 "render": function (value, type, oData) {
                                     return '<button class="btn btn-white btn-primary btn-sm btn_reenviar" data-id="' + value + '"><i class="ace-icon fa fa-envelope-o" ></i> Reenviar</button>' +
-                                        ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="ace-icon fa fa-file-word-o" ></i> Descargar</button>';
+                                        ' <button class="btn btn-white btn-warning btn-sm btn_download" data-id="' + value + '"><i class="ace-icon fa fa-file-word-o" ></i> Descargar</button>'+
+                                        ' <button class="btn btn-white btn-success btn-sm btn_observacion" data-id="' + value + '"><i class="ace-icon fa fa-search-plus" ></i> Obs.</button>';
                                 }
                             }
                         ]
@@ -540,6 +547,10 @@
                                    
                                     return nombre;
                                 }
+                            },
+                            {
+                                data: "per_num_doc",
+                                title: "Nro. Documento",
                             },
                             {
                                 data: "per_correoelectronico",
@@ -668,6 +679,69 @@
             a.href= basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;;
             a.click();
             // window.location.href = basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;
+        })
+        $(document).on('click','.btn_observacion',function(e){
+            e.preventDefault();
+            var env_id=$(this).data("id");
+            if(env_id!=0){
+                var dataForm={
+                    env_id:env_id
+                }
+                responseSimple({
+                    url:'CumUsuario/CumUsuarioObtenerEnvioxIdJson',
+                    data:JSON.stringify(dataForm),
+                    refresh:false,
+                    callBackSuccess:function(response){
+                        console.log(response);
+                        if(response.respuesta){
+                            var data=response.data;
+                            $("#env_id").val(data.env_id);
+                            $("#div_parrafo_observacion").html("");
+                            var input = '<input type="text" name="env_observacion" id="env_observacion" class="form-control" placeholder="Observación">';
+                            var textarea = '<textarea name="env_observacion" id="env_observacion" class="form-control"></textarea>';
+                            $("#div_parrafo_observacion").html(input);
+                            $("#div_parrafo_observacion").html(textarea);
+
+                            $("#env_observacion").val(data.env_observacion);
+                            $('#env_observacion').richText({
+                                imageUpload: false, table: false, removeStyles: false, videoEmbed: false, height: "120",
+                                fileUpload: false, urls: false
+                            });
+                            $("a.richText-help").hide();
+                           
+
+                            $('#modalObservacion').modal('show');
+                        }
+                    }
+                })
+            }else{
+                messageResponse({
+                    text: "Id de Envío Incorrecto",
+                    type: "error"
+                })
+            }
+        })
+        $(document).on('click','.btn_guardar_observacion',function(e){
+            e.preventDefault();
+            var env_id=$("#env_id").val();
+            if(env_id!=0){
+                var dataForm = $('#form_observacion').serializeFormJSON();
+                responseSimple({
+                    url:'CumUsuario/CumUsuarioEditarObservacionEnvioJson',
+                    data:JSON.stringify(dataForm),
+                    refresh:false,
+                    callBackSuccess:function(response){
+                        $('#modalObservacion').modal('hide');
+                    }
+                })
+            }
+            else{
+                messageResponse({
+                    text: "Id de Envío Incorrecto",
+                    type: "error"
+                }) 
+            }
+            console.log(dataForm);
         })
         
     };

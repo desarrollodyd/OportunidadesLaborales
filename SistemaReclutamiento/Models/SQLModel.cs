@@ -388,10 +388,10 @@ FROM " + nombre_tabla+" as pago "+
         
         
         //Consulta para modal de Cumpleaños Intranet
-        public (PersonaSqlEntidad persona, claseError error) PersonaSQLObtenerInformacionPuestoTrabajoJson(string dni, int mes) {
+        public (PersonaSqlEntidad persona, claseError error) PersonaSQLObtenerInformacionPuestoTrabajoJson(string dni, int mes, int anio) {
             PersonaSqlEntidad persona = new PersonaSqlEntidad();
             claseError error = new claseError();
-            string consulta = @"Select 
+            string consulta = @"Select top 1
                     emp.CO_TRAB, 
                     emp.NO_TRAB, 
                     emp.NO_APEL_PATE, 
@@ -416,7 +416,7 @@ FROM " + nombre_tabla+" as pago "+
                     inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
                     inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
                     where emp.CO_TRAB=@p0
-                    and periodo.NU_ANNO=YEAR(GETDATE()) and periodo.NU_PERI=@p1
+                    and periodo.NU_ANNO=@p2 and periodo.NU_PERI=@p1
                     order by periodo.NU_ANNO desc;";
             try
             {
@@ -426,6 +426,7 @@ FROM " + nombre_tabla+" as pago "+
                     var query = new SqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", dni);
                     query.Parameters.AddWithValue("@p1", mes);
+                    query.Parameters.AddWithValue("@p2", anio);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

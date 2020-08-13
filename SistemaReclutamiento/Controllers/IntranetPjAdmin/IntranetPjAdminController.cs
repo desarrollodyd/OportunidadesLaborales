@@ -677,6 +677,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                                 });
 
                                             }
+                                            else
+                                            {
+                                                WSResultado.Cells[rowResultado, 1].Value = cumUsuarioExcelET.cue_numdoc;
+                                                WSResultado.Cells[rowResultado, 2].Value = cumUsuarioExcelET.cue_correo;
+                                                WSResultado.Cells[rowResultado, 3].Value = "Correo Editado Correctamente";
+                                                rowResultado++;
+                                                listaRespuesta.Add(new
+                                                {
+                                                    documento = contienePostgres.cue_numdoc,
+                                                    correo = contienePostgres.cue_correo,
+                                                    motivo = "Correo Editado Correctamente"
+                                                });
+                                            }
+                                        }
+                                        else
+                                        {
+                                            WSResultado.Cells[rowResultado, 1].Value = contienePostgres.cue_numdoc;
+                                            WSResultado.Cells[rowResultado, 2].Value = contienePostgres.cue_correo;
+                                            WSResultado.Cells[rowResultado, 3].Value = "Registro repetido,no editado";
+                                            rowResultado++;
+                                            listaRespuesta.Add(new
+                                            {
+                                                documento = contienePostgres.cue_numdoc,
+                                                correo = contienePostgres.cue_correo,
+                                                motivo = "Registro repetido, no editado"
+                                            });
                                         }
                                        
                                     }
@@ -700,19 +726,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                                 motivo = "Error Al Insertar"
                                             });
                                         }
+                                        else
+                                        {
+                                            WSResultado.Cells[rowResultado, 1].Value = cumUsuarioExcelET.cue_numdoc;
+                                            WSResultado.Cells[rowResultado, 2].Value = cumUsuarioExcelET.cue_correo;
+                                            WSResultado.Cells[rowResultado, 3].Value = "Insertado Correctamente";
+                                            rowResultado++;
+                                            listaRespuesta.Add(new
+                                            {
+                                                documento = cumUsuarioExcelET.cue_numdoc,
+                                                correo = cumUsuarioExcelET.cue_correo,
+                                                motivo = "Insertado Correctamente"
+                                            });
+                                        }
                                     }
                                 }
                                 else
                                 {
                                     WSResultado.Cells[rowResultado, 1].Value = registro.CO_TRAB;
                                     WSResultado.Cells[rowResultado, 2].Value = registro.NO_DIRE_MAI1;
-                                    WSResultado.Cells[rowResultado, 3].Value = "No se Encuentra en OFIPLAN";
+                                    WSResultado.Cells[rowResultado, 3].Value = "No se Encuentra en OFIPLAN, no insertado";
                                     rowResultado++;
                                     listaRespuesta.Add(new
                                     {
                                         documento = registro.CO_TRAB,
                                         correo = registro.NO_DIRE_MAI1,
-                                        motivo = "No se Encuentra en OFIPLAN"
+                                        motivo = "No se Encuentra en OFIPLAN, no insertado"
                                     });
                                    
                                 }
@@ -742,6 +781,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             });
        
 
+        }
+        [HttpPost]
+        public ActionResult CumUsuarioExcelListarJson()
+        {
+            bool response = false;
+            string errormensaje = "";
+            List<CumUsuarioExcelEntidad> lista = new List<CumUsuarioExcelEntidad>(); 
+            try
+            {
+                var listaTupla = cumusuexcelbl.CumUsuarioExcelListarJson();
+                if (listaTupla.error.Key.Equals(string.Empty))
+                {
+                    lista = listaTupla.lista;
+                    errormensaje = "Listando Correos";
+                    response = true;
+                }
+                else
+                {
+                    errormensaje = listaTupla.error.Value;
+                }
+            }catch(Exception ex)
+            {
+
+                errormensaje = ex.Message;
+            }
+            return Json(new { data=lista,mensaje=errormensaje,respuesta=response });
         }
         #endregion
 

@@ -1,4 +1,35 @@
 ﻿var PanelExcel = function () {
+
+    var llenarDatatable=function(){
+        responseSimple({
+            url:'IntranetPJAdmin/CumUsuarioExcelListarJson',
+            refresh:false,
+            callBackSuccess:function(response){
+                if(response.respuesta){
+                    simpleDataTable({
+                        uniform: false,
+                        tableNameVariable: "datatable-fichasExcelListado",
+                        table: "#fichasExcelListado",
+                        tableColumnsData: response.data,
+                        tableColumns: [
+                            {
+                                data: "cue_id",
+                                title: "Id"
+                            },
+                            {
+                                data: "cue_numdoc",
+                                title: "Nro. Documento",
+                            },
+                            {
+                                data: "cue_correo",
+                                title: "Correo",
+                            }
+                        ]
+                    });
+                }
+            }
+        })
+    }
    
     var _inicio = function () {
         $('#excel').ace_file_input({
@@ -9,7 +40,7 @@
             onchange: null,
             thumbnail: false
         });
-   
+        llenarDatatable();
     };
 
     var _metodos = function () {
@@ -50,7 +81,8 @@
             }
             else{
                 var image_arr = file.name.split(".");
-                var extension = image_arr[1].toLowerCase();
+                var extension = image_arr.pop().toLowerCase();
+                console.log(extension);
                 url='IntranetPJAdmin/SubirExcelJson';
                 var dataForm=new FormData();
                 dataForm.append('file',file);
@@ -75,6 +107,7 @@
                             link.download = "ExcelResultado.xlsx";
                             link.click();
                             link.remove();
+                            llenarDatatable();
                         }
                     })
                 }
