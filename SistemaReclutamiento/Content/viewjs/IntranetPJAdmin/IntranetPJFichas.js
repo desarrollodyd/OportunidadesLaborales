@@ -13,7 +13,6 @@
                 $("#cbo_empresa").attr("disabled", "disabled");
             },
             callBackSuccess: function (response) {
-                console.log(response.data);
                 var respuesta = response.respuesta;
                 if (respuesta) {
                     var data = response.data;
@@ -87,6 +86,13 @@
                                     placeholder: "Seleccione Sede"
                                 });
                             }
+                            $("#fichasenvioListado").html(`<tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <div class="alert alert-warning alert-dismissible text-center"><span>Seleccione una sede para mostrar registros</span></div>
+                                </td>
+                            </tr>
+                        </tbody>`);
                         }
                     });
                 }
@@ -213,20 +219,22 @@
             });
 
             if (arrayUsuarios.length > 0) {
-                messageConfirmation({
-                    content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
-                    callBackSAceptarComplete: function () {
-                        var dataForm = { listaEmpleados: arrayUsuarios };
-                        responseSimple({
-                            url: "IntranetPjAdmin/EnviarJson",
-                            data: JSON.stringify(dataForm),
-                            refresh: false,
-                            callBackSuccess: function (response) {
+                $("#cantidad_enviar_empleados").text(arrayUsuarios.length);
+                $("#modalEnvioFichasEmpleados").modal("show");
+                // messageConfirmation({
+                //     content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
+                //     callBackSAceptarComplete: function () {
+                //         var dataForm = { listaEmpleados: arrayUsuarios };
+                //         responseSimple({
+                //             url: "IntranetPjAdmin/EnviarJson",
+                //             data: JSON.stringify(dataForm),
+                //             refresh: false,
+                //             callBackSuccess: function (response) {
                                 
-                            }
-                        })
-                    }
-                });
+                //             }
+                //         })
+                //     }
+                // });
             }
             else {
                 messageResponse({
@@ -235,6 +243,28 @@
                 });
             }
 
+        });
+        $(document).on('click','.btn_envio_confirmacion_empleados',function(e){
+            e.preventDefault();
+            $("#modalEnvioFichasEmpleados").modal("hide");
+            let arrayUsuarios = [];
+            $('#fichasenvioListado tbody tr input[type=checkbox]:checked').each(function () {
+                arrayUsuarios.push($(this).data("id"));
+            });
+            messageConfirmation({
+                content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
+                callBackSAceptarComplete: function () {
+                    var dataForm = { listaEmpleados: arrayUsuarios };
+                    responseSimple({
+                        url: "IntranetPjAdmin/EnviarJson",
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            $("#modalEnvioFichasEmpleados").modal("hide");
+                        }
+                    })
+                }
+            });
         });
 
         $(document).on('click', '.btn_buscarFichas', function () {
@@ -599,20 +629,22 @@
             });
 
             if (arrayUsuarios.length > 0) {
-                messageConfirmation({
-                    content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
-                    callBackSAceptarComplete: function () {
-                        var dataForm = { listaPostulantes: arrayUsuarios };
-                        responseSimple({
-                            url: "IntranetPjAdmin/EnviarPJson",
-                            data: JSON.stringify(dataForm),
-                            refresh: false,
-                            callBackSuccess: function (response) {
+                $("#cantidad_enviar_postulantes").text(arrayUsuarios.length);
+                $("#modalEnvioFichasPostulantes").modal("show");
+                // messageConfirmation({
+                //     content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
+                //     callBackSAceptarComplete: function () {
+                //         var dataForm = { listaPostulantes: arrayUsuarios };
+                //         responseSimple({
+                //             url: "IntranetPjAdmin/EnviarPJson",
+                //             data: JSON.stringify(dataForm),
+                //             refresh: false,
+                //             callBackSuccess: function (response) {
 
-                            }
-                        })
-                    }
-                });
+                //             }
+                //         })
+                //     }
+                // });
             }
             else {
                 messageResponse({
@@ -622,6 +654,30 @@
             }
 
         });
+
+        $(document).on('click','.btn_envio_confirmacion_postulantes',function(e){
+            e.preventDefault();
+            $("#modalEnvioFichasPostulantes").modal("hide");
+            let arrayUsuarios = [];
+            $('#fichapostulanteListado tbody tr input[type=checkbox]:checked').each(function () {
+                arrayUsuarios.push($(this).data("id"));
+            });
+            messageConfirmation({
+                content: '¿Esta seguro de Enviar Fichas Sintomatológicas a los empleados Seleccionados?',
+                callBackSAceptarComplete: function () {
+                    var dataForm = { listaPostulantes: arrayUsuarios };
+                    responseSimple({
+                        url: "IntranetPjAdmin/EnviarPJson",
+                        data: JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            $("#modalEnvioFichasPostulantes").modal("hide");
+                        }
+                    })
+                }
+            });
+        });
+
         $(document).on('click','.btn_descargarTodosPostulantes',function(e){
             e.preventDefault();
             var arrayIds = '';
@@ -645,7 +701,7 @@
                 })
                 return false;
             }
-        })
+        });
         $(document).on('click','.btn_descargarTodosEmpleados',function(e){
             e.preventDefault();
             var arrayIds = '';
@@ -669,7 +725,7 @@
                 })
                 return false;
             }
-        })
+        });
         $(document).on('click','.btn_download',function(e){
             e.preventDefault();
             console.log('click');
@@ -679,7 +735,7 @@
             a.href= basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;;
             a.click();
             // window.location.href = basePath + "FichaSintomatologica/DownloadFdfReporte?env_id=" + env_id;
-        })
+        });
         $(document).on('click','.btn_observacion',function(e){
             e.preventDefault();
             var env_id=$(this).data("id");
@@ -720,7 +776,7 @@
                     type: "error"
                 })
             }
-        })
+        });
         $(document).on('click','.btn_guardar_observacion',function(e){
             e.preventDefault();
             var env_id=$("#env_id").val();
@@ -742,6 +798,93 @@
                 }) 
             }
             console.log(dataForm);
+        });
+        $(document).on('click','.btn_buscarEmpleados',function() {
+            // reset modal if it isn't visible
+            if (!($('.modal.in').length)) {
+              $('.modal-dialog').css({
+                top: 0,
+                left: 0
+              });
+            }
+            $('#modalBusquedaEmpleados').modal({
+              backdrop: false,
+              show: true
+            });
+          
+            $('.modal-dialog').draggable({
+              handle: ".modal-header"
+            });
+        });
+        $(document).on('click','.btn_buscar_empleados_modal',function(){
+            var opcion=$("#cbo_opcion").val();
+            if(opcion!=""){
+                $("busquedaEmpleadosListado").html(`
+                  <tbody>
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                        </td>
+                    </tr>
+                 </tbody>`);
+                var busqueda=$("#busqueda").val();
+                var dataForm={
+                    opcion:opcion,
+                    busqueda:busqueda
+                }
+                responseSimple({
+                    url:'IntranetPJAdmin/IntranetBuscarEmpleadosModalJson',
+                    data:JSON.stringify(dataForm),
+                    refresh:false,
+                    callBackSuccess:function(response){
+                        if(response.respuesta && response.data.length>0){
+                            var data=response.data;
+                            console.log(data);
+                            simpleDataTable({
+                                uniform: false,
+                                tableNameVariable: "datatable_busquedaEmpleadosListado",
+                                table: "#busquedaEmpleadosListado",
+                                tableColumnsData: response.data,
+                                tableColumns: [
+                                    {
+                                        data: "CO_TRAB",
+                                        title: "Nro. Documento",
+                                    },
+                                    {
+                                        data: "CO_TRAB",
+                                        title: "Nombre Empleado",
+                                        "render":function(value, type, oData){
+                                            var span='';
+                                            span+=oData.NO_APEL_PATE+ " "+ oData.NO_APEL_MATE+", "+oData.NO_TRAB;
+                                            return span;
+                                        }
+                                    },
+                                    {
+                                        data: "DE_NOMB",
+                                        title: "Empresa",
+                                    },
+                                    {
+                                        data: "DE_SEDE",
+                                        title: "Sede",
+                                    },
+                                ]
+                            });
+                        }
+                        else{
+                            messageResponse({
+                                text: "No se encontraron registros",
+                                type: "warning"
+                            });
+                        }
+                    }
+                })
+            }
+            else{
+                messageResponse({
+                    text: "Debe Seleccionar una Opcion",
+                    type: "error"
+                });
+            }
         })
         
     };

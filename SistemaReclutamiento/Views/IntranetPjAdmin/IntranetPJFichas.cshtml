@@ -68,15 +68,16 @@
                                 <div id="tabempleado" class="tab-pane in active">
                                     <div class="row" style="margin-bottom:10px;">
                                         <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
+                                            <button class="btn btn-white btn-primary btn-sm btn-block btn-round btn_buscarEmpleados" data-id="1" data-rel="tooltip" title="Buscar">
+                                                <i class="ace-icon fa fa-search"></i> Buscar
+                                            </button>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6 col-xs-6 pull-right">
                                             <button class="btn btn-white btn-success btn-sm btn-block btn-round btn_enviarFichas" data-id="1" data-rel="tooltip" title="Enviar">
                                                 <i class="ace-icon fa fa-file"></i> Enviar
                                             </button>
                                         </div>
-                                        @*<div class="col-md-2 col-sm-6 col-xs-6 pull-right">
-                                                <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarEmpleados" data-id="1" data-rel="tooltip" title="Buscar">
-                                                    <i class="ace-icon glyphicon glyphicon-list-alt"></i> Buscar
-                                                </button>
-                                            </div>*@
+
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
@@ -290,7 +291,7 @@
         </div>
     </div>
 </div><!-- /.page-content -->
-
+<!--Modal Observaciones-->
 <div class="modal fade" tabindex="-1" id="modalObservacion" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -322,10 +323,103 @@
         </div>
     </div>
 </div>
+<!--Modal Cantidad de Envios Empleados-->
+<div class="modal fade" tabindex="-1" id="modalEnvioFichasEmpleados" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Envio de Fichas Sintomatológicas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    Se Enviaran -> <span id="cantidad_enviar_empleados"></span> Fichas a Empleados. pulse en "Aceptar" para EnviarFichas
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn_envio_confirmacion_empleados btn-primary"><i class="fa fa-save"></i> Aceptar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal Cantidad de Envios Postulantes-->
+<div class="modal fade" tabindex="-1" id="modalEnvioFichasPostulantes" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Envio de Fichas Sintomatológicas</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    Se Enviaran -> <span id="cantidad_enviar_postulantes"></span> Fichas a Postulantes. pulse en "Aceptar" para EnviarFichas
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn_envio_confirmacion_postulantes btn-primary"><i class="fa fa-save"></i> Aceptar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-
-
+<!--Modal Cantidad de Envios Postulantes-->
+<div class="modal fade" tabindex="-1" id="modalBusquedaEmpleados" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">Busqueda de Empleados</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form class="" id="form_observacion" method="post">
+                        <input type="hidden" name="env_id" id="env_id" value="0" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Tipo de Busqueda</label>
+                                <div>
+                                    <select name="opcion" id="cbo_opcion" class="form-control">
+                                        <option value="DNI">DNI</option>
+                                        <option value="APELLIDOS">Apellidos</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Ingrese Búsqueda</label>
+                                <div>
+                                    <input type="text" name="busqueda" id="busqueda" class="form-control" placeholder="Texto" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-md-12 col-xs-12">
+                        <table id="busquedaEmpleadosListado" class="table table-condensed datatable-busquedaEmpleadosListado table-striped table-bordered table-hover">
+                            <tbody>
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn_buscar_empleados_modal"><i class="fa fa-save"></i> Buscar</button>
+                <button type="button" class="btn btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section js
 {
     <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJFichas.js"></script>

@@ -780,5 +780,82 @@ FROM " + nombre_tabla+" as pago "+
             }
             return (lista: listaPersonas, error: error);
         }
+        //consulta para Busqueda de empleados por apellidos
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenerInformacionPuestoTrabajoxApellidoJson(string apellidos, int mes, int anio)
+        {
+            claseError error = new claseError();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            string consulta = @"Select emp.CO_TRAB, 
+                    emp.NO_TRAB, 
+                    emp.NO_APEL_PATE, 
+                    emp.NO_APEL_MATE, 
+                    emp.TI_SITU,
+		            emp.NO_DIRE_TRAB,
+					emp.NU_TLF1,
+                    empresa.DE_NOMB,
+                    empresa.NU_RUCS,
+                    unidad.DE_UNID, 
+                    sede.DE_SEDE,  
+                    gerencia.DE_DEPA, 
+                    area.DE_AREA,  
+                    grupo.DE_GRUP_OCUP,
+                    puesto.DE_PUES_TRAB
+                    from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB
+                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                    inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+                    inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+                    inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+                    inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+                    inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+                    inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+                    where concat(emp.NO_APEL_PATE, ' ', emp.NO_APEL_MATE)  like '%"+apellidos+"%' and periodo.NU_PERI=@p1 and periodo.NU_ANNO=@p2;";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p1", mes);
+                    query.Parameters.AddWithValue("@p2", anio);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var persona = new PersonaSqlEntidad
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    TI_SITU = ManejoNulos.ManageNullStr(dr["TI_SITU"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    DE_UNID = ManejoNulos.ManageNullStr(dr["DE_UNID"]),
+                                    DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]),
+                                    DE_DEPA = ManejoNulos.ManageNullStr(dr["DE_DEPA"]),
+                                    DE_AREA = ManejoNulos.ManageNullStr(dr["DE_AREA"]),
+                                    DE_GRUP_OCUP = ManejoNulos.ManageNullStr(dr["DE_GRUP_OCUP"]),
+                                    DE_PUES_TRAB = ManejoNulos.ManageNullStr(dr["DE_PUES_TRAB"]),
+                                    NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
+                                    NO_DIRE_TRAB = ManejoNulos.ManageNullStr(dr["NO_DIRE_TRAB"]),
+                                    NU_RUCS = ManejoNulos.ManageNullStr(dr["NU_RUCS"]),
+                            };
+
+                                listaPersonas.Add(persona);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista: listaPersonas, error: error);
+        }
     }
 }

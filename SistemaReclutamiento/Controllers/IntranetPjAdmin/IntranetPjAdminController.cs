@@ -1016,5 +1016,103 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
          
             return contador;
         }
+        [HttpPost]
+        public ActionResult IntranetBuscarEmpleadosModalJson(string busqueda, string opcion)
+        {
+            string errormensaje = "";
+            bool response = false;
+            List<PersonaSqlEntidad> lista = new List<PersonaSqlEntidad>();
+            try
+            {
+                if (opcion.ToUpper() == "DNI")
+                {
+                    int mes_actual = DateTime.Now.Month;
+                    int anio = DateTime.Now.Year;
+                    var personaTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(busqueda, mes_actual, anio);
+                    if (personaTupla.error.Key.Equals(string.Empty))
+                    {
+                        PersonaSqlEntidad persona = new PersonaSqlEntidad();
+                        if (personaTupla.persona.CO_TRAB == null)
+                        {
+                            if (mes_actual == 1)
+                            {
+                                mes_actual = 12;
+                                anio = anio - 1;
+                            }
+                            else
+                            {
+                                mes_actual = mes_actual - 1;
+                            }
+                            var personaSQLTupla2 = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(busqueda, mes_actual, anio);
+                            if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                            {
+                                if (personaSQLTupla2.persona.CO_TRAB != null)
+                                {
+                                    persona = personaSQLTupla2.persona;
+                                    lista.Add(persona);
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            persona = personaTupla.persona;
+                            lista.Add(persona);
+                        }
+                       
+                        response = true;
+                        errormensaje = "Listando Info";
+                    }
+                    else
+                    {
+                        errormensaje = personaTupla.error.Value;
+                    }
+                }
+                else if(opcion.ToUpper()=="APELLIDOS")
+                {
+                    int mes_actual = DateTime.Now.Month;
+                    int anio = DateTime.Now.Year;
+                    var personaTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoxApellidoJson(busqueda.ToUpper(), mes_actual, anio);
+                    if (personaTupla.error.Key.Equals(string.Empty))
+                    {
+                        if (personaTupla.lista.Count == 0)
+                        {
+                            if (mes_actual == 1)
+                            {
+                                mes_actual = 12;
+                                anio = anio - 1;
+                            }
+                            else
+                            {
+                                mes_actual = mes_actual - 1;
+                            }
+                            var personaSQLTupla2 = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoxApellidoJson(busqueda.ToUpper(), mes_actual, anio);
+                            if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                            {
+                                lista = personaSQLTupla2.lista;
+                            }
+                        }
+                        else
+                        {
+                            lista = personaTupla.lista;
+                        }
+                        response = true;
+                        errormensaje = "Listando Info";
+                    }
+                    else
+                    {
+                        errormensaje = personaTupla.error.Value;
+                    }
+                }
+                else
+                {
+                    errormensaje = "Opcion : "+opcion+", Incorrecta";
+                }
+            }catch(Exception ex)
+            {
+                errormensaje = ex.Message;
+            }
+            return Json(new { mensaje=errormensaje,respuesta=response,data=lista });
+        }
     }
 }

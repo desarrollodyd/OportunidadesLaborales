@@ -339,6 +339,16 @@
                                             de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
                                         </div>
                                     </div>
+                                    <div class="col-md-12" style="margin-top:10px;font-size:13px">
+                                        <div class="form-group">
+                                            @{ if (cumEnvioDet.CumEnvio.env_observacion != "")
+                                                {
+                                                    @Html.Raw("Observación : ")
+                                                    @Html.Raw(cumEnvioDet.CumEnvio.env_observacion);
+                                                }
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
