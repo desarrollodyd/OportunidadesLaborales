@@ -22,7 +22,7 @@ namespace SistemaReclutamiento.Models
             claseError error = new claseError();
             string consulta = @"SELECT env_id, env_nombre, env_tipo, 
                                 env_fecha_reg, env_fecha_act, 
-                                env_estado, fk_cuestionario, fk_usuario
+                                env_estado, fk_cuestionario, fk_usuario, env_observacion
 	                            FROM cumplimiento.cum_envio
                                 where fk_usuario=@p0;";
             try
@@ -48,6 +48,7 @@ namespace SistemaReclutamiento.Models
                                     env_estado = ManejoNulos.ManageNullStr(dr["env_estado"]),
                                     fk_cuestionario = ManejoNulos.ManageNullInteger(dr["fk_cuestionario"]),
                                     fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]),
+                                    env_observacion = ManejoNulos.ManageNullStr(dr["env_observacion"]),
                                 };
 
                                 lista.Add(envio);
@@ -71,7 +72,7 @@ namespace SistemaReclutamiento.Models
             claseError error = new claseError();
             string consulta = @"SELECT env_id, env_nombre, env_tipo, 
                                 env_fecha_reg, env_fecha_act, 
-                                env_estado, fk_cuestionario, fk_usuario
+                                env_estado, fk_cuestionario, fk_usuario, env_observacion
 	                            FROM cumplimiento.cum_envio
                                 where env_id=@p0;";
             try
@@ -95,6 +96,7 @@ namespace SistemaReclutamiento.Models
                                 envio.env_estado = ManejoNulos.ManageNullStr(dr["env_estado"]);
                                 envio.fk_cuestionario = ManejoNulos.ManageNullInteger(dr["fk_cuestionario"]);
                                 envio.fk_usuario = ManejoNulos.ManageNullInteger(dr["fk_usuario"]);
+                                envio.env_observacion = ManejoNulos.ManageNullStr(dr["env_observacion"]);
                             }
                         }
                     }
@@ -157,6 +159,33 @@ namespace SistemaReclutamiento.Models
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullDate(envio.env_fecha_act));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(envio.env_estado));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(envio.env_id));
+
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (editado: response, error: error);
+        }
+        public (bool editado, claseError error) CumEnvioEditarObservacionJson(CumEnvioEntidad envio)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE cumplimiento.cum_envio
+	                            SET env_observacion=@p1
+	                            WHERE env_id=@p2;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(envio.env_observacion));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(envio.env_id));
 
                     query.ExecuteNonQuery();

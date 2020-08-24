@@ -28,6 +28,8 @@ namespace SistemaReclutamiento.Entidades.FichaCumplimiento
         public string sede { get; set; }
         public string direccion { get; set; }
         public string celular { get; set; }
+        //Encriptado para envio de correos
+        public string encriptado { get; set; }
         public CumUsuarioEntidad()
         {
             this.CumUsuPregunta = new HashSet<CumUsuPreguntaEntidad>();

@@ -39,8 +39,8 @@
                             width: "50px",
                         },
                         {
-                            data: "fk_usuario",
-                            title: "ID Usuario",
+                            data: "env_id",
+                            title: "ID Registro",
                         },
                         {
                             data: "end_correo_pers",

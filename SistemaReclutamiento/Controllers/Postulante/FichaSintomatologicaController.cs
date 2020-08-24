@@ -73,11 +73,35 @@ namespace SistemaReclutamiento.Controllers
                         {
                             //sql
                             cumUsuario = usuarioTuplaClave.cumUsuario;
-
-                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni);
+                            DateTime fecha_act = Convert.ToDateTime(cumEnvioDet.end_fecha_act);
+                            int mes_actual = fecha_act.Month;
+                            int anio = fecha_act.Year;
+                            var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
                             if (personaSQLTupla.error.Key.Equals(string.Empty))
                             {
-                                PersonaSqlEntidad persona = personaSQLTupla.persona;
+                                PersonaSqlEntidad persona = new PersonaSqlEntidad();
+                                if (personaSQLTupla.persona.CO_TRAB==null)
+                                {
+                                    if (mes_actual == 1)
+                                    {
+                                        mes_actual = 12;
+                                        anio = anio - 1;
+                                    }
+                                    else
+                                    {
+                                        mes_actual = mes_actual - 1;
+                                    }
+                                    var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
+                                    if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                                    {
+                                        persona = personaSQLTupla2.persona;
+                                    }
+                                }
+                                else
+                                {
+                                    persona = personaSQLTupla.persona;
+                                }
+                                //PersonaSqlEntidad persona = personaSQLTupla.persona;
                                 cumUsuario.nombre = persona.NO_TRAB;
                                 cumUsuario.apellido_pat = persona.NO_APEL_PATE;
                                 cumUsuario.apellido_mat = persona.NO_APEL_MATE;

@@ -720,11 +720,34 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             var errormensaje = "";
             bool respuestaConsulta = false;
             try {
-                var personaSQLTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(dni);
+                int mes_actual = DateTime.Now.Month;
+                int anio = DateTime.Now.Year;
+                var personaSQLTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(dni,mes_actual,anio);
                 error = personaSQLTupla.error;
                 if (error.Key.Equals(string.Empty))
                 {
-                    personasql = personaSQLTupla.persona;
+                    if (personaSQLTupla.persona.CO_TRAB==null)
+                    {
+                        if (mes_actual == 1)
+                        {
+                            mes_actual = 12;
+                            anio = anio - 1;
+                        }
+                        else
+                        {
+                            mes_actual = mes_actual - 1;
+                        }
+                        var personaSQLTupla2= sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(dni, mes_actual,anio);
+                        if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                        {
+                            personasql = personaSQLTupla2.persona;
+                        }
+                    }
+                    else
+                    {
+                        personasql = personaSQLTupla.persona;
+
+                    }
                     errormensaje = "Obteniendo Datos";
                     respuestaConsulta = true;
                 }

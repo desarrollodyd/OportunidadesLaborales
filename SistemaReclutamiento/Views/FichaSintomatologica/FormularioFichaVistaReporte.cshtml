@@ -22,22 +22,22 @@
 
     <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/fonts.googleapis.com.css" />
 
-    <link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    @*<link href="~/Content/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
     <link href="~/Content/vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
     <link href="~/Content/vendors/pnotify/dist/pnotify.nonblock.css" rel="stylesheet">
     <link href="~/Content/vendors/jquery.confirm/jquery-confirm.css" rel="stylesheet" />
-    <link href="~/Content/intranetSGC/assets/css/richtext.min.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/richtext.min.css" rel="stylesheet" />*@
     <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
 
   
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-skins.min.css" />
-    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-rtl.min.css" />
+    @*<link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="~/Content/intranetSGC/assets/css/ace-rtl.min.css" />*@
 
-    <script src="~/Content/intranetSGC/assets/js/ace-extra.min.js"></script>
+    @*<script src="~/Content/intranetSGC/assets/js/ace-extra.min.js"></script>*@
 
   
-    <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />
+    @*<link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />*@
 
     <style>
         label {
@@ -337,6 +337,16 @@
                                             *Persona de riesgo frente a COVID-19: Edad mayor de 65 años, Hipertensión arterial no controlada, enfermedades cardiovasculares graves, cáncer, diabetes mellitus,
                                             asma moderada o grave, enfermedad pulmonar crónica, enfermedad o tratamiento inmunosupresor, obesidad con indice de masa musculkar (IMC)
                                             de 40 a más, insuficiencia renal cronica en tratamiento con hemodialisis.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:10px;font-size:13px">
+                                        <div class="form-group">
+                                            @{ if (cumEnvioDet.CumEnvio.env_observacion != "")
+                                                {
+                                                    @Html.Raw("Observación : ")
+                                                    @Html.Raw(cumEnvioDet.CumEnvio.env_observacion);
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>

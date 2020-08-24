@@ -4024,6 +4024,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJExcel.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichaFormulario.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichaFormularioReporte.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichas.js" />
@@ -4250,12 +4251,6 @@
     <Content Include="Content\WebCorporativa\tacna.jpg" />
     <Content Include="Content\WebCorporativa\trujillo.jpg" />
     <Content Include="Content\WebCorporativa\tumbes.jpg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200720063040.jpg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722172756.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722172910.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722172932.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722175713.jpeg" />
-    <Content Include="CumplimientoFiles\CumUsuario\47316152_20200722180214.jpeg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="images\icon.png" />
@@ -5237,7 +5232,7 @@
     <Compile Include="Controllers\WebCorporativaAdmin\WebTipoElementoController.cs" />
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
-    <Compile Include="Entidades\FichaCumplimiento\Class1.cs" />
+    <Compile Include="Entidades\FichaCumplimiento\CumUsuarioExcelEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioDetalleEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumPreguntaEntidad.cs" />
@@ -5309,6 +5304,7 @@
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioEntidad.cs" />
     <Compile Include="Models\FichaCumplimiento\CumEnvioDetModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumEnvioModel.cs" />
+    <Compile Include="Models\FichaCumplimiento\CumUsuarioExcelModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuarioModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuPreguntaModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuRespuestaModel.cs" />
@@ -5448,6 +5444,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJFichaFormulario.cshtml" />
     <Content Include="Views\FichaSintomatologica\FormularioFichaVista.cshtml" />
     <Content Include="Views\FichaSintomatologica\FormularioFichaVistaReporte.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJSubidaExcel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
