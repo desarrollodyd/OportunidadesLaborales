@@ -1,0 +1,149 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Boletas GDT</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab1">
+                            <i class="orange ace-icon fa fa-tachometer bigger-110"></i>
+                            Procesar PDF
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#tab2">
+                            <i class="red ace-icon fa fa-envelope bigger-110"></i>
+                            Creación de Directorios
+                        </a>
+                    </li>
+
+                    <li>
+                        <a data-toggle="tab" href="#tab3">
+                            <i class="green ace-icon fa fa-linkedin-square bigger-110"></i>
+                            Configuración
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane in active">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            Empresa(s)
+                                        </span>
+                                        <select class="form-control input-sm" name="empresa" id="cbo_empresa"></select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                           
+                            <div class="col-md-12">
+                              
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="tab2" class="tab-pane">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="alert alert-warning">
+                                        Creacion de Directorios GDT
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Año
+                                                </span>
+                                                <input type="text" name="anio_creacion" id="anio_creacion" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <button class="btn btn-white btn-warning btn-sm btn-block btn-round btn_buscarFichasp" data-id="1" data-rel="tooltip" title="Buscar">
+                                                <i class="ace-icon glyphicon glyphicon-list-alt"></i> Crear
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                             
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab3" class="tab-pane">
+                        <div class="row">
+                            <div class="col-md-12">
+                                    <div class="widget-box">
+                                        <div class="widget-header widget-header-flat widget-header-small">
+                                            <h5 class="widget-title">
+                                                <i class="ace-icon fa fa-signal"></i>
+                                                Configuracion
+                                            </h5>
+                                            <div class="widget-toolbar">
+                                                <a href="#" class="btn btn-minier btn-guardar-path-principal btn-primary" data-action="settings"><i class="fa fa-save"></i> Guardar Path</a>
+                                            </div>
+                                        </div>
+                                        <div class="widget-body">
+                                            <div class="widget-main">
+                                                <div class="row">
+                                                    <form class="" id="form_path_principal">
+                                                        <div class="col-md-12 col-xs-12">
+                                                            <div class="form-group">
+                                                                <label>Descripción</label>
+                                                                <input type="text" name="bol_descripcion" id="bol_descripcion" class="form-control input-sm" placeholder="Descripcion" value="Path raiz para creacion de directorios" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-xs-12">
+                                                            <div class="form-group">
+                                                                <label>Path</label>
+                                                                <input type="text" name="bol_path" id="bol_path" class="form-control input-sm" placeholder="C:/BoletasGDT/" value="C:/BoletasGDT/" />
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div><!-- /.widget-main -->
+                                        </div><!-- /.widget-body -->
+                                    </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBoletasGDT.js"></script>
+}

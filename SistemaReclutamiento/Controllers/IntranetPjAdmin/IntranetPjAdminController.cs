@@ -78,6 +78,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJSubidaExcel.cshtml");
         }
+        public ActionResult PanelBoletasGDT()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJBoletasGDT.cshtml");
+        }
         [HttpPost]
         public ActionResult IntranetFichasEmpleadoListarJson(DateTime desde,DateTime hasta , int estado)
         {
