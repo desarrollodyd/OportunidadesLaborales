@@ -60,7 +60,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             claseError error = new claseError();
             string consulta = @"SELECT config_id, config_descripcion, config_estado, 
                                 config_valor, config_tipo
-	                            FROM boletas_gdt.bol_configuracion;
+	                            FROM boletas_gdt.bol_configuracion
                                 where config_tipo=@p0;";
             try
             {
@@ -141,6 +141,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(configuracion.config_estado));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(configuracion.config_valor));
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(configuracion.config_tipo));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(configuracion.config_id));
                     query.ExecuteNonQuery();
                     response = true;
                 }
