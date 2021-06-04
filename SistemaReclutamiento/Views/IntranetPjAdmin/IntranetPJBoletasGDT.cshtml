@@ -2,7 +2,11 @@
 @{
     Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
 }
-
+@section AddToHead
+{
+    <link href="~/Content/intranetSGC/jqueryztree/css/demo.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/jqueryztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+}
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
@@ -26,14 +30,14 @@
                     </li>
 
                     <li>
-                        <a data-toggle="tab" href="#tab2" data-tab="tab1" data-tipoconfiguracion="PATH">
+                        <a data-toggle="tab" href="#tab2" data-tab="tab2" data-tipoconfiguracion="PATH">
                             <i class="red ace-icon fa fa-envelope bigger-110"></i>
                             Creación de Directorios
                         </a>
                     </li>
 
                     <li>
-                        <a data-toggle="tab" href="#tab3" data-tab="tab1">
+                        <a data-toggle="tab" href="#tab3" data-tab="tab3">
                             <i class="green ace-icon fa fa-linkedin-square bigger-110"></i>
                             Configuración
                         </a>
@@ -44,21 +48,51 @@
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane in active">
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">
-                                            Empresa(s)
-                                        </span>
-                                        <select class="form-control input-sm" name="empresa" id="cboEmpresa"></select>
-
+                            <form id="formProcesarPdf">
+                                <input type="hidden" name="nombreEmpresa" value="" id="nombreEmpresa" />
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Empresa
+                                            </span>
+                                            <select class="form-control input-sm" name="empresa" id="cboEmpresa"></select>
+                                        </div>
                                     </div>
                                 </div>
-
-                            </div>
-                           
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha
+                                            </span>
+                                            <input type="text" name="fechaProcesoPdf" id="fechaProcesoPdf" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Quincena
+                                            </span>
+                                            <select class="form-control input-sm" name="quincena" id="cboQuincena">
+                                                <option value="Quincena1" selected>Quincena 1</option>
+                                                <option value="Quincena2">Quincena 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <button class="btn btn-white btn-primary btn-sm btn-block btn-round btnProcesarPdf" data-rel="tooltip" title="ProcesarPdf">
+                                            <i class="ace-icon glyphicon glyphicon-list-alt"></i> Procesar PDF
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="col-md-12">
-                              
+
                             </div>
                         </div>
 
@@ -68,7 +102,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="alert alert-warning">
+                                    <div class="alert alert-warning" style="margin-left:10px">
                                         Creacion de Directorios GDT
                                     </div>
                                     <div class="col-md-6">
@@ -107,7 +141,7 @@
                                                 <form class="" id="formPathPrincipal">
                                                     <input type="hidden" name="config_id" value="" id="config_id" />
                                                     <input type="hidden" name="config_tipo" value="PATH" id="config_tipo" />
-                                                    <input type="hidden" name="config_estado" value="1" id="config_estado"/>
+                                                    <input type="hidden" name="config_estado" value="1" id="config_estado" />
                                                     <div class="col-md-12 col-xs-12">
                                                         <div class="form-group">
                                                             <label>Descripción</label>
@@ -128,15 +162,24 @@
                                 </div>
                             </div>
                             <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div id="mostrarArbolDirectorios" style="display:none;padding-left:10px;padding-right:10px" align="center">
+                                        <h3>Arbol de Directorios</h3>
+                                        <ul id="treeDemo2" class="ztree" style="width:100%"></ul>
 
+                                    </div>
+                                </div>
+                             
                             </div>
                         </div>
                     </div>
                     <div id="tab3" class="tab-pane">
                         <div class="row">
-                         
                             <div class="col-md-12 col-xs-12">
-
+                                @*<div id="mostrarArbolDirectorios" style="display:none">
+                                    <h2>Arbol de Directorios</h2>
+                                    <ul id="treeDemo" class="ztree" style="width:100%"></ul>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -149,5 +192,6 @@
 
 @section js
 {
+    <script src="~/Content/intranetSGC/jqueryztree/js/jquery.ztree.core.js"></script>
     <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBoletasGDT.js"></script>
 }

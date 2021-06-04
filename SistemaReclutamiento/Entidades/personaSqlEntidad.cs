@@ -34,6 +34,8 @@ namespace SistemaReclutamiento.Entidades
         public string NO_DIRE_MAI2;
         public string NO_DIRE_TRAB;
         public string NU_RUCS;
+        public string CO_CENT_COST;
+        public string TI_DOCU_IDEN;
 
     }
 }

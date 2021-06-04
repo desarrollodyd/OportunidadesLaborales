@@ -1,13 +1,24 @@
 ﻿let panelBoletas=function(){
-    let tabAcciones=['tab1','tab2','tab3']
     let _inicio=function(){
-        let dateinicio = new Date(moment().format("YYYY"))
+        // let dateinicio = new Date(moment().format("YYYY"))
+        var hoy = new Date();
+        var fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
+        $("#cboQuincena").select2({
+            placeholder: "--Seleccione--", allowClear: true
+        })
         $('#anioCreacion').datetimepicker({
             format: 'YYYY',
             ignoreReadonly: true,
             allowInputToggle: true,
-            defaultDate: dateinicio,
-            maxDate:dateinicio
+            defaultDate: fecha_hoy,
+            maxDate:fecha_hoy
+        })
+        $('#fechaProcesoPdf').datetimepicker({
+            format: 'YYYY-MM',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: fecha_hoy,
+            maxDate:fecha_hoy
         })
         //carga de salas
         responseSimple({
@@ -17,6 +28,7 @@
                 CloseMessages()
                 if(response.respuesta){
                     let data=response.data
+                    $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
                     $.each(data, function (index, value) {
                         $("#cboEmpresa").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
                     });
@@ -28,41 +40,35 @@
         })
     }
     let _componentes=function(){
-        // $(".nav-tabs a").click(function(){
-        //     $(this).tab('show');
-        //     console.log("asd")
-        //   });
-        //   $('.nav-tabs a').on('shown.bs.tab', function(event){
-        //     //   console.log(event.target)
-        //     //   console.log(event.relatedTarget)
-        //     //   let tab=$(this).data("tab")
-        //     //   console.log(tab)
-        //     // var x = $(event.target).text();         // active tab
-        //     // var y = $(event.relatedTarget).text();  // previous tab
-        //     // $(".act span").text(x);
-        //     // $(".prev span").text(y);
-        //   });
         $(document).on('shown.bs.tab','.nav-tabs a',function(e){
+            //   console.log(e.target)
             let tab=$(this).data('tab')
-            let tipoConfiguracion=$(this).data('tipoconfiguracion')
-            if(tipoConfiguracion){
-                let dataForm={tipo:tipoConfiguracion}
-                responseSimple({
-                    url: "IntranetPJBoletasGDT/BolConfiguracionObtenerxTipoJson",
-                    data:JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                        CloseMessages()
-                        let data=response.data
-                        if(data.config_id!=0){
-                            $("#config_id").val(data.config_id)
-                            $("#config_valor").val(data.config_valor)
-                            $("#config_tipo").val(data.config_tipo)
-                            $("#config_estado").val(data.config_estado)
-                            $("#config_descripcion").val(data.config_descripcion)
+            if(tab=='tab1'){
+                
+            }
+            else if(tab=='tab2'){
+                let tipoConfiguracion=$(this).data('tipoconfiguracion')
+                if(tipoConfiguracion){
+                    let dataForm={tipo:tipoConfiguracion}
+                    responseSimple({
+                        url: "IntranetPJBoletasGDT/BolConfiguracionObtenerxTipoJson",
+                        data:JSON.stringify(dataForm),
+                        refresh: false,
+                        callBackSuccess: function (response) {
+                            CloseMessages()
+                            let data=response.data
+                            if(data.config_id!=0){
+                                $("#config_id").val(data.config_id)
+                                $("#config_valor").val(data.config_valor)
+                                $("#config_tipo").val(data.config_tipo)
+                                $("#config_estado").val(data.config_estado)
+                                $("#config_descripcion").val(data.config_descripcion)
+                            }
                         }
-                    }
-                })
+                    })
+                }
+            }
+            else if(tab=='tab3'){
             }
         })
         $(document).on('click','.btnGuardarPathPrincipal',function(e){
@@ -109,9 +115,37 @@
                 data: JSON.stringify(dataForm),
                 callBackSuccess: function (response) {
                     // CloseMessages()
-                    console.log(response)
+                    zNodes=response.data;
+                    $("#mostrarArbolDirectorios").show();
+                    $.fn.zTree.init($("#treeDemo2"), {}, zNodes)
                 }
             })
+        })
+        $(document).on('click','.btnProcesarPdf',function(e){
+            e.preventDefault()
+            $("#formProcesarPdf").submit()
+            if (_objetoForm_formProcesarPdf.valid()) {
+                let dataForm = $('#formProcesarPdf').serializeFormJSON()
+                let url='IntranetPJBoletasGDT/BolProcesarPdf'
+                responseSimple({
+                    url: url,
+                    data:JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                       console.log(response)
+                    }
+                })
+            }
+            else{
+                messageResponse({
+                    text: "Complete los campos Obligatorios",
+                    type: "error"
+                })
+            }
+        })
+        $(document).on('change','#cboEmpresa',function(e){
+            let nombreEmpresa=$(this).find(':selected').text()
+            $("#nombreEmpresa").val(nombreEmpresa)
         })
     }
     let _metodos=function(){
@@ -121,12 +155,12 @@
             rules: {
                 config_descripcion:
                 {
-                    required: false,
+                    required: true,
 
                 },
                 config_valor:
                 {
-                    required: false,
+                    required: true,
 
                 }
 
@@ -142,8 +176,90 @@
                 }
 
             }
+        })
+        validar_Form({
+            nameVariable: 'formProcesarPdf',
+            contenedor: '#formProcesarPdf',
+            rules: {
+                empresa:
+                {
+                    required: true,
+                },
+                fechaProcesoPdf:
+                {
+                    required: true,
+                },
+                quincena:
+                {
+                    required: true,
+                }
+
+            },
+            messages: {
+                empresa:
+                {
+                    required: 'Campo Obligatorio',
+                },
+                fechaProcesoPdf:
+                {
+                    required: 'Campo Obligatorio',
+                },
+                quincena:
+                {
+                    required:'Campo Obligatorio'
+                }
+
+            }
         });
     }
+    let setting = {	};
+    let zNodes =[
+        { name:"pNode 01", open:true,
+            children: [
+                { name:"pNode 11",
+                    children: [
+                        { name:"leaf node 111"},
+                        { name:"leaf node 112"},
+                        { name:"leaf node 113"},
+                        { name:"leaf node 114"}
+                    ]},
+                { name:"pNode 12",
+                    children: [
+                        { name:"leaf node 121"},
+                        { name:"leaf node 122"},
+                        { name:"leaf node 123"},
+                        { name:"leaf node 124"}
+                    ]},
+                { name:"pNode 13 - no child", isParent:true}
+            ]},
+        { name:"pNode 02",
+            children: [
+                { name:"pNode 21", open:true,
+                    children: [
+                        { name:"leaf node 211"},
+                        { name:"leaf node 212"},
+                        { name:"leaf node 213"},
+                        { name:"leaf node 214"}
+                    ]},
+                { name:"pNode 22",
+                    children: [
+                        { name:"leaf node 221"},
+                        { name:"leaf node 222"},
+                        { name:"leaf node 223"},
+                        { name:"leaf node 224"}
+                    ]},
+                { name:"pNode 23",
+                    children: [
+                        { name:"leaf node 231"},
+                        { name:"leaf node 232"},
+                        { name:"leaf node 233"},
+                        { name:"leaf node 234"}
+                    ]}
+            ]},
+        { name:"pNode 3 - no child", isParent:true}
+    
+    ];
+    
     return {
         init: function () {
             _inicio()
@@ -155,3 +271,5 @@
 document.addEventListener('DOMContentLoaded',function(){
     panelBoletas.init()
 })
+
+

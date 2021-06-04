@@ -857,5 +857,77 @@ FROM " + nombre_tabla+" as pago "+
             }
             return (lista: listaPersonas, error: error);
         }
+        public (List<PersonaSqlEntidad> lista, claseError error) PersonaSQLObtenrListadoBoletasGDTJson(string empresa,int periodo,int anio)
+        {
+            claseError error = new claseError();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            string consulta = @"select top 4
+            T.CO_TRAB ,
+            T.NO_APEL_PATE,
+            T.NO_APEL_MATE,
+            t.NO_TRAB,
+            t.NO_DIRE_MAI1,
+            I.TI_DOCU_IDEN,
+            E.CO_PUES_TRAB,
+            cc.CO_CENT_COST, 
+            Ct.CO_EMPR
+            from TDTRAB_CALC as CT
+            inner join TMTRAB_CALC as PT on PT.co_empr = Ct.co_empr and PT.co_trab = Ct.co_trab and PT.nu_anno = CT.nu_anno and PT.nu_peri = CT.nu_peri
+            inner join TDCCOS_PERI as CC on CC.co_trab = ct.co_trab and CC.co_empr = ct.co_empr and cc.nu_anno = pt.nu_anno and cc.nu_peri = pt.nu_peri
+            inner join ttcent_cost as NCC on NCC.co_cent_cost = cc.co_cent_cost and ct.co_empr = NCC.co_empr
+            inner join TMTRAB_PERS as T on t.co_trab = ct.co_trab 
+            inner join TMTRAB_EMPR as E on E.co_trab = ct.co_trab and E.co_empr = ct.co_empr 
+            inner join TTPUES_TRAB as C on PT.co_empr = C.co_empr and PT.co_pues_trab = C.co_pues_trab 
+            inner join TMUNID_EMPR as U on U.co_empr = PT.co_empr and U.co_unid = PT.co_unid
+            inner join TTSEDE as S on  S.co_empr = pT.co_empr and s.co_sede = pT.co_sede
+            inner join TMEMPR as Cia on cia.co_empr = Pt.co_empr
+            inner join TTDEPA  as D on pt.co_empr = D.co_empr AND pt.CO_DEPA = D.CO_DEPA
+            inner join TDIDEN_TRAB AS I ON I.CO_TRAB = E.CO_TRAB AND I.ST_PRES_REPO = 'S'
+            where ct.nu_anno =@p0 and ct.NU_PERI =@p1 and "+
+            " ct.co_empr   in ('"+empresa+
+            "') AND ct.co_cpto_form in " +
+            " ('@BASIC') " +
+            " order by T.CO_TRAB asc";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", anio);
+                    query.Parameters.AddWithValue("@p1", periodo);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var persona = new PersonaSqlEntidad
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_DIRE_MAI1=ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                    CO_PUES_TRAB=ManejoNulos.ManageNullStr(dr["CO_PUES_TRAB"]),
+                                    CO_CENT_COST = ManejoNulos.ManageNullStr(dr["CO_CENT_COST"]),
+                                    CO_EMPR=ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                };
+
+                                listaPersonas.Add(persona);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (lista: listaPersonas, error: error);
+        }
     }
 }
