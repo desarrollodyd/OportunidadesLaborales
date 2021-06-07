@@ -307,6 +307,8 @@
     <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\diy\7.png" />
     <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\diy\8.png" />
     <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\diy\9.png" />
+    <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\diy\pdf_black.png" />
+    <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\diy\pdf_flat.png" />
     <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\line_conn.gif" />
     <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\loading.gif" />
     <Content Include="Content\intranetSGC\jqueryztree\css\zTreeStyle\img\zTreeStandard.gif" />

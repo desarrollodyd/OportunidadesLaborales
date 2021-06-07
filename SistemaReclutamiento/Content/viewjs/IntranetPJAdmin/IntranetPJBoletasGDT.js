@@ -92,7 +92,7 @@
                     callBackSuccess: function (response) {
                         CloseMessages()
                         if(response.idInsertado!=0){
-                            config_id=idInsertado
+                            config_id=response.idInsertado
                         }
                         $("#config_id").val(config_id)
                     }

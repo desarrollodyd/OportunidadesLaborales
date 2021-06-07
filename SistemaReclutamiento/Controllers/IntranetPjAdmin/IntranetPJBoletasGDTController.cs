@@ -108,6 +108,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             claseError error = new claseError();
             string anio = anioCreacion;
             List<dynamic> listaDirectorioEmpresa = new List<dynamic>();
+            string direccion = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
+
+            //string pathAplicacion = Server.MapPath("/") + Request.ApplicationPath + "\\Content\\intranetSGC\\jqueryztree\\css\\zTreeStyle\\img\\diy\\";
             try
             {
                 var listaEmpresaTupla = sqlbl.EmpresaListarJson();
@@ -134,18 +137,46 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         List<dynamic> listaDirectorioMes = new List<dynamic>();
 
                         foreach (var mes in meses) {
+                            string iconoPdf = "pdf_flat.png";
                             DirectoryInfo directorioMes = directorioAnio.CreateSubdirectory(mes);
                             DirectoryInfo directorioQuincena1 = directorioMes.CreateSubdirectory("Quincena1");
                             DirectoryInfo directorioQuincena2 = directorioMes.CreateSubdirectory("Quincena2");
                             List<dynamic> listaDirectorioQuincena = new List<dynamic>();
+
+                            FileInfo[] filesQuincena1 = directorioQuincena1.GetFiles();
+                            FileInfo[] filesQuincena2 = directorioQuincena2.GetFiles();
+
+                            List<dynamic> listFilesQuincena1 =new List<dynamic>();
+                            List<dynamic> listFilesQuincena2 =new List<dynamic>();
+                            //var direccion = Server.MapPath("/") + Request.ApplicationPath;
+
+                            foreach (var file in filesQuincena1) {
+                                double mbytes = ConvertBytesToMegabytes(file.Length);
+                                listFilesQuincena1.Add(new {
+                                    name = file.Name + " \t \t "+mbytes+"Mb.",
+                                    icon = direccion + "/Content/intranetSGC/jqueryztree/css/zTreeStyle/img/diy/" + iconoPdf,
+                                });
+                            }
+
+                            foreach (var file in filesQuincena2)
+                            {
+                                double mbytes = ConvertBytesToMegabytes(file.Length);
+                                listFilesQuincena2.Add(new
+                                {
+                                    name = file.Name + " \t \t " + mbytes + "Mb.",
+                                    icon = direccion + "/Content/intranetSGC/jqueryztree/css/zTreeStyle/img/diy/" + iconoPdf,
+                                });
+                            }
+
+
                             listaDirectorioQuincena.Add(new {
                                 name = directorioQuincena1.Name,
-                                children=new List<dynamic>()
+                                children=listFilesQuincena1
                             });
                             listaDirectorioQuincena.Add(new
                             {
                                 name = directorioQuincena2.Name,
-                                children = new List<dynamic>()
+                                children = listFilesQuincena2
                             });
 
                             listaDirectorioMes.Add(new {
@@ -190,10 +221,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 DateTime fechaProceso = fechaProcesoPdf;
                 var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
-
+                
                 if (listaPersonasTupla.error.Value.Equals(string.Empty))
                 {
-
+                    configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
 
                     string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
@@ -206,6 +237,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     if (Directory.Exists(pathPdf))
                     {
                         //realizar la busqueda del pdf y realizar la division de este
+                        string file = Directory.GetFiles(pathPdf, "*.pdf").FirstOrDefault();
+                        if(file != null){
+                            //pdf encontrado
+
+                        }
                     }
                     mensaje = "Listando Data";
                     respuesta = true;
@@ -215,6 +251,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { data=listaPersonas,mensaje,respuesta });
+        }
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return Math.Round(((bytes / 1024f) / 1024f), 2);
+        }
+
+        static double ConvertKilobytesToMegabytes(long kilobytes)
+        {
+            return Math.Round((kilobytes / 1024f),2);
         }
     }
 }
