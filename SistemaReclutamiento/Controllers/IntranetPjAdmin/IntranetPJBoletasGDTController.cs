@@ -1,4 +1,6 @@
-﻿using SistemaReclutamiento.Entidades;
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.BoletasGDT;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.BoletasGDT;
@@ -109,8 +111,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string anio = anioCreacion;
             List<dynamic> listaDirectorioEmpresa = new List<dynamic>();
             string direccion = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
-
-            //string pathAplicacion = Server.MapPath("/") + Request.ApplicationPath + "\\Content\\intranetSGC\\jqueryztree\\css\\zTreeStyle\\img\\diy\\";
+            string directorioHijo = "BOLETASAPROCESAR";
             try
             {
                 var listaEmpresaTupla = sqlbl.EmpresaListarJson();
@@ -121,7 +122,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     listaempresa = listaEmpresaTupla.listaempresa;
                     configuracion = configuracionTupla.configuracion;
                     //Crear directorio principal
-                    DirectoryInfo directorioPrincipal =Directory.CreateDirectory(configuracion.config_valor);
+                    DirectoryInfo directorioPrincipal =Directory.CreateDirectory(Path.Combine(configuracion.config_valor+directorioHijo));
                     //Creacion de arbol de directorios
                     foreach (var empresa in listaempresa)
                     {
@@ -212,27 +213,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             string mensaje = "No se pudieron procesar las boletas";
             bool respuesta = false;
-            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+
             string tipoConfiguracion = "PATH";
+            string directorioProceso = "BOLETASPROCESADAS";
+            string directorioaProcesar = "BOLETASAPROCESAR";
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
 
             try
             {
                 DateTime fechaProceso = fechaProcesoPdf;
                 var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
-                
                 if (listaPersonasTupla.error.Value.Equals(string.Empty))
                 {
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
 
                     string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
-                    //string nombreEmpresa = String.Join("", arrayNombreEmpresa);
-                    string nombreDirectorio = empresa + "_" + String.Join("", arrayNombreEmpresa);
+                    string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
+
                     string mes = meses[fechaProceso.Month - 1];
                     string anio = Convert.ToString(fechaProceso.Year);
-                    string pathPdf = Path.Combine(configuracion.config_valor, nombreDirectorio,anio,mes,quincena);
+
+                    string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio,mes,quincena);
+
+                    DirectoryInfo directorioRoot = Directory.CreateDirectory(Path.Combine(configuracion.config_valor, directorioProceso,nombreDirectorioEmpresa));
 
                     if (Directory.Exists(pathPdf))
                     {
@@ -241,10 +247,40 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         if(file != null){
                             //pdf encontrado
 
+                            using (PdfReader reader = new PdfReader(Path.Combine(pathPdf, file)))
+                            {
+                                if (reader.NumberOfPages == listaPersonas.Count)
+                                {
+                                    for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
+                                    {
+                                        var item = listaPersonas.ElementAt(pagenumber - 1);
+                                        string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
+                                        string filename = item.CO_TRAB + "_" + item.CO_EMPR+"_"+anio+"_"+mes+"_"+quincena+ ".pdf";
+                                        DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
+                                        Document document = new Document();
+                                        PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
+
+                                        document.Open();
+
+                                        copy.AddPage(copy.GetImportedPage(reader, pagenumber));
+                                        document.Close();
+                                    }
+                                }
+                                else {
+                                    mensaje = "Inconsistencia entre pdf y total de trabajadores";
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            mensaje = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente";
                         }
                     }
-                    mensaje = "Listando Data";
-                    respuesta = true;
+                    else
+                    {
+                        mensaje = "No se encuentra el directorio, crearlo en el menú de creación de directorios";
+                    }
                 }
             }catch(Exception ex)
             {

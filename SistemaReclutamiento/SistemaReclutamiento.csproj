@@ -5272,6 +5272,7 @@
     <Compile Include="Controllers\WebCorporativaAdmin\WebTipoElementoController.cs" />
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\BoletasGDT\BolConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\BoletasGDT\BolEmpleadoBoletaEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioExcelEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioEntidad.cs" />
@@ -5341,6 +5342,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BoletasGDT\BolConfiguracionModel.cs" />
+    <Compile Include="Models\BoletasGDT\BolEmpleadoBoletaModel.cs" />
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumCuestionarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioEntidad.cs" />
