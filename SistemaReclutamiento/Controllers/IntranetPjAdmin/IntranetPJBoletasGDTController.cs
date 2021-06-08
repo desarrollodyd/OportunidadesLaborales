@@ -218,23 +218,26 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string directorioProceso = "BOLETASPROCESADAS";
             string directorioaProcesar = "BOLETASAPROCESAR";
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            BolEmpleadoBoletaModel empleadoBoletaBL = new BolEmpleadoBoletaModel();
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
 
             try
             {
                 DateTime fechaProceso = fechaProcesoPdf;
+                string mes = meses[fechaProceso.Month - 1];
+                string anio = Convert.ToString(fechaProceso.Year);
+
                 var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+
+                string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
+                string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
+
                 if (listaPersonasTupla.error.Value.Equals(string.Empty))
                 {
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
-
-                    string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
-                    string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
-
-                    string mes = meses[fechaProceso.Month - 1];
-                    string anio = Convert.ToString(fechaProceso.Year);
 
                     string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio,mes,quincena);
 
@@ -253,17 +256,68 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                 {
                                     for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
                                     {
+
+                                        BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
+
                                         var item = listaPersonas.ElementAt(pagenumber - 1);
                                         string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
                                         string filename = item.CO_TRAB + "_" + item.CO_EMPR+"_"+anio+"_"+mes+"_"+quincena+ ".pdf";
+
                                         DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
+
                                         Document document = new Document();
                                         PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
-
                                         document.Open();
 
                                         copy.AddPage(copy.GetImportedPage(reader, pagenumber));
                                         document.Close();
+                                        empleado.emp_co_trab = item.CO_TRAB;
+                                        empleado.emp_co_empr = item.CO_EMPR;
+                                        empleado.emp_anio = anio;
+                                        empleado.emp_periodo = mes;
+                                        empleado.emp_ruta_pdf = filename;
+                                        empleado.emp_no_trab = item.NO_TRAB;
+                                        empleado.emp_apel_pat = item.NO_APEL_PATE;
+                                        empleado.emp_apel_mat = item.NO_APEL_MATE;
+                                        empleado.emp_direc_mail = item.NO_DIRE_MAI1;
+                                        empleado.emp_nro_cel = item.NU_TLF1;
+                                        empleado.emp_quincena = quincena;
+                                        listaInsertar.Add(empleado);
+                                    }
+                                    //llenado en base de datos
+                                    int limite = listaInsertar.Count;
+                                    int limiteinferior = 0;
+                                    string consulta= "";
+                                    int totalInsertados = 0;
+                                    foreach (var empleado in listaInsertar) {
+                                        limiteinferior++;
+                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}'),",
+                                            empleado.emp_co_trab,
+                                            empleado.emp_co_empr,
+                                            empleado.emp_anio,
+                                            empleado.emp_periodo,
+                                            empleado.emp_quincena,
+                                            empleado.emp_ruta_pdf,
+                                            empleado.emp_enviado,
+                                            empleado.emp_descargado,
+                                            empleado.emp_fecha_reg.ToString("yyyy-MM-dd HH:mm:ss"),
+                                            empleado.emp_no_trab,
+                                            empleado.emp_apel_pat,
+                                            empleado.emp_apel_mat,
+                                            empleado.emp_direc_mail,
+                                            empleado.emp_nro_cel,
+                                            empleado.emp_tipo_doc
+                                            );
+                                    }
+                                    consulta = consulta.TrimEnd(',');
+                                    var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
+                                    if (totalInsertadosTupla.error.Value.Equals(string.Empty))
+                                    {
+                                        totalInsertados = totalInsertadosTupla.totalInsertados;
+                                                                         }
+                                    if (totalInsertados == listaPersonas.Count) {
+                                        mensaje = "PDFs procesados";
+                                        respuesta = true;
                                     }
                                 }
                                 else {
@@ -286,7 +340,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 mensaje = ex.Message;
             }
-            return Json(new { data=listaPersonas,mensaje,respuesta });
+            return Json(new { data=listaInsertar,mensaje,respuesta });
         }
         static double ConvertBytesToMegabytes(long bytes)
         {
