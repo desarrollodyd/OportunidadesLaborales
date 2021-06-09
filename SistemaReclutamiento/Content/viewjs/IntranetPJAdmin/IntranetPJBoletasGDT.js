@@ -144,7 +144,7 @@
             $("#formProcesarPdf").submit()
             if (_objetoForm_formProcesarPdf.valid()) {
                 let dataForm = $('#formProcesarPdf').serializeFormJSON()
-                let url='IntranetPJBoletasGDT/BolProcesarPdf'
+                let url='IntranetPJBoletasGDT/BolProcesarPdf2'
                 responseSimple({
                     url: url,
                     data:JSON.stringify(dataForm),
@@ -175,6 +175,7 @@
                     refresh: false,
                     callBackSuccess: function (response) {
                       if(response.respuesta){
+                        $("#divEnvioPDFs").show()
                         llenarDatatablePdfs(response.data)
                       }
                     }
@@ -211,6 +212,20 @@
         $(document).on("click", "#dataTableListarPdf  tbody :checkbox", function (e) {
             $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
             $('.chkListarPdf').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+        })
+        $(document).on("click",'.btnEnviarPDFs',function(e){
+            console.log(e)
+            e.preventDefault()
+            let arrayEmpleados = [];
+            $('#dataTableListarPdf tbody tr input[type=checkbox]:checked').each(function () {
+                let obj={
+                    emp_co_trab:$(this).data("empcotrab"),
+                    emp_ruta_pdf:$(this).data("emprutapdf"),
+                    emp_co_empr:$(this).data("empcoempr")
+                }
+                arrayEmpleados.push(obj);
+            });
+            console.log(arrayEmpleados)
         })
     }
     let _metodos=function(){
@@ -443,8 +458,11 @@
                     title: "",
                     "bSortable": false,
                     className: 'align-center',
-                    "render": function (value) {
-                        var check = '<input type="checkbox" class="form-check-input-styled-info pdfListado" data-id="' + value + '" name="chk2[]">';
+                    "render": function (value,row, oData) {
+                        var check = `<input type="checkbox" class="form-check-input-styled-info pdfListado" 
+                                        data-empcotrab="${oData.emp_co_trab}" 
+                                        data-emprutapdf="${oData.emp_ruta_pdf}" 
+                                        data-empcoempr=${oData.emp_co_empr} name="chk[]">`;
                         return check;
                     },
                     width: "50px",
@@ -478,8 +496,8 @@
                     "render": function (value) {
                         var span = '';
                         var span = `<div class="hidden-sm hidden-xs action-buttons">
-                                        <a class="blue btn-detalle" href="#" data-id="${value}">
-                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                        <a class="red btn-detalle" href="#" data-id="${value}">
+                                            <i class="ace-icon fa fa-file-pdf-o bigger-130"></i>
                                         </a>
                                     </div>
                                     <div class="hidden-md hidden-lg">
@@ -490,7 +508,7 @@
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                                 <li>
                                                     <a href="#" class="tooltip-info btn-detalle" data-id="${value}" data-rel="tooltip" title="View">
-                                                        <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
+                                                        <span class="red"><i class="ace-icon fa fa-file-pdf-o bigger-120"></i></span>
                                                     </a>
                                                 </li>
                                             </ul>

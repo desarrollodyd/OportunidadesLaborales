@@ -103,5 +103,36 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (lista: listaBoletas, error: error);
         }
+        public (bool eliminado, claseError error) BoolEmpleadoBoletaEliminarMasivoJson(string emp_co_empr, string anio, string periodo)
+        {
+            claseError error = new claseError();
+            bool eliminado = false;
+            string consulta = @"delete from boletas_gdt.bol_empleado_boleta where emp_ruta_pdf in(
+                                SELECT emp_ruta_pdf
+	                                FROM boletas_gdt.bol_empleado_boleta
+	                                where emp_co_empr=@p0
+		                                and emp_anio=@p1
+		                                and emp_periodo=@p2
+                                )";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(emp_co_empr));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(anio));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(periodo));
+                    query.ExecuteNonQuery();
+                    eliminado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (eliminado: eliminado, error: error);
+        }
     }
 }
