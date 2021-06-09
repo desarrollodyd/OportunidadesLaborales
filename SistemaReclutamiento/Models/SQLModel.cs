@@ -870,7 +870,8 @@ FROM " + nombre_tabla+" as pago "+
             I.TI_DOCU_IDEN,
             E.CO_PUES_TRAB,
             cc.CO_CENT_COST, 
-            Ct.CO_EMPR
+            Ct.CO_EMPR,
+            t.NU_TLF1
             from TDTRAB_CALC as CT
             inner join TMTRAB_CALC as PT on PT.co_empr = Ct.co_empr and PT.co_trab = Ct.co_trab and PT.nu_anno = CT.nu_anno and PT.nu_peri = CT.nu_peri
             inner join TDCCOS_PERI as CC on CC.co_trab = ct.co_trab and CC.co_empr = ct.co_empr and cc.nu_anno = pt.nu_anno and cc.nu_peri = pt.nu_peri
@@ -883,7 +884,7 @@ FROM " + nombre_tabla+" as pago "+
             inner join TMEMPR as Cia on cia.co_empr = Pt.co_empr
             inner join TTDEPA  as D on pt.co_empr = D.co_empr AND pt.CO_DEPA = D.CO_DEPA
             inner join TDIDEN_TRAB AS I ON I.CO_TRAB = E.CO_TRAB AND I.ST_PRES_REPO = 'S'
-            where ct.nu_anno =@p0 and ct.NU_PERI =@p1 and "+
+            where ct.nu_anno =@p0 and ct.NU_PERI =@p1 and " +
             " ct.co_empr   in ('"+empresa+
             "') AND ct.co_cpto_form in " +
             " ('@BASIC') " +
@@ -913,6 +914,8 @@ FROM " + nombre_tabla+" as pago "+
                                     CO_PUES_TRAB=ManejoNulos.ManageNullStr(dr["CO_PUES_TRAB"]),
                                     CO_CENT_COST = ManejoNulos.ManageNullStr(dr["CO_CENT_COST"]),
                                     CO_EMPR=ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    NU_TLF1=ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
+                                    TI_DOCU_IDEN = ManejoNulos.ManageNullStr(dr["TI_DOCU_IDEN"]),
                                 };
 
                                 listaPersonas.Add(persona);

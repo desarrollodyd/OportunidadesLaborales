@@ -18,6 +18,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
     {
         SQLModel sqlbl = new SQLModel();
         BolConfiguracionModel bolConfigBL = new BolConfiguracionModel();
+        BolEmpleadoBoletaModel empleadoBoletaBL = new BolEmpleadoBoletaModel();
+
         public string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre" };
 
         #region Configuracion Boletas
@@ -136,54 +138,28 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                         List<dynamic> listaDirectorioAnio = new List<dynamic>();
                         List<dynamic> listaDirectorioMes = new List<dynamic>();
-
+                        int nroMes = 1;
                         foreach (var mes in meses) {
                             string iconoPdf = "pdf_flat.png";
-                            DirectoryInfo directorioMes = directorioAnio.CreateSubdirectory(mes);
-                            DirectoryInfo directorioQuincena1 = directorioMes.CreateSubdirectory("Quincena1");
-                            DirectoryInfo directorioQuincena2 = directorioMes.CreateSubdirectory("Quincena2");
-                            List<dynamic> listaDirectorioQuincena = new List<dynamic>();
+                            DirectoryInfo directorioMes = directorioAnio.CreateSubdirectory(nroMes.ToString().PadLeft(2, '0')+"_"+mes);
+                            nroMes++;
+                            FileInfo[] filesMes = directorioMes.GetFiles();
 
-                            FileInfo[] filesQuincena1 = directorioQuincena1.GetFiles();
-                            FileInfo[] filesQuincena2 = directorioQuincena2.GetFiles();
-
-                            List<dynamic> listFilesQuincena1 =new List<dynamic>();
-                            List<dynamic> listFilesQuincena2 =new List<dynamic>();
+                            List<dynamic> listFilesMes =new List<dynamic>();
                             //var direccion = Server.MapPath("/") + Request.ApplicationPath;
 
-                            foreach (var file in filesQuincena1) {
+                            foreach (var file in filesMes) {
                                 double mbytes = ConvertBytesToMegabytes(file.Length);
-                                listFilesQuincena1.Add(new {
+                                listFilesMes.Add(new {
                                     name = file.Name + " \t \t "+mbytes+"Mb.",
                                     icon = direccion + "/Content/intranetSGC/jqueryztree/css/zTreeStyle/img/diy/" + iconoPdf,
                                 });
                             }
 
-                            foreach (var file in filesQuincena2)
-                            {
-                                double mbytes = ConvertBytesToMegabytes(file.Length);
-                                listFilesQuincena2.Add(new
-                                {
-                                    name = file.Name + " \t \t " + mbytes + "Mb.",
-                                    icon = direccion + "/Content/intranetSGC/jqueryztree/css/zTreeStyle/img/diy/" + iconoPdf,
-                                });
-                            }
-
-
-                            listaDirectorioQuincena.Add(new {
-                                name = directorioQuincena1.Name,
-                                children=listFilesQuincena1
-                            });
-                            listaDirectorioQuincena.Add(new
-                            {
-                                name = directorioQuincena2.Name,
-                                children = listFilesQuincena2
-                            });
-
                             listaDirectorioMes.Add(new {
                                 name = directorioMes.Name,
                                 open = false,
-                                children=listaDirectorioQuincena
+                                children=listFilesMes
                             });
                         }
                         listaDirectorioAnio.Add(new {
@@ -209,7 +185,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { mensaje, respuesta,data=listaDirectorioEmpresa });
         }
         [HttpPost]
-        public ActionResult BolProcesarPdf(DateTime fechaProcesoPdf,string empresa,string quincena,string nombreEmpresa)
+        public ActionResult BolProcesarPdf(DateTime fechaProcesoPdf,string empresa,string nombreEmpresa)
         {
             string mensaje = "No se pudieron procesar las boletas";
             bool respuesta = false;
@@ -218,14 +194,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string directorioProceso = "BOLETASPROCESADAS";
             string directorioaProcesar = "BOLETASAPROCESAR";
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
-            BolEmpleadoBoletaModel empleadoBoletaBL = new BolEmpleadoBoletaModel();
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
             List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
 
             try
             {
                 DateTime fechaProceso = fechaProcesoPdf;
-                string mes = meses[fechaProceso.Month - 1];
+                int mes = fechaProceso.Month;
+                string carpetaMes = mes.ToString().PadLeft(2, '0') + "_" + meses[mes-1];
                 string anio = Convert.ToString(fechaProceso.Year);
 
                 var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
@@ -239,7 +215,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
 
-                    string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio,mes,quincena);
+                    string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio,carpetaMes);
 
                     DirectoryInfo directorioRoot = Directory.CreateDirectory(Path.Combine(configuracion.config_valor, directorioProceso,nombreDirectorioEmpresa));
 
@@ -261,7 +237,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                                         var item = listaPersonas.ElementAt(pagenumber - 1);
                                         string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
-                                        string filename = item.CO_TRAB + "_" + item.CO_EMPR+"_"+anio+"_"+mes+"_"+quincena+ ".pdf";
+                                        string filename = item.CO_TRAB + "_" + item.CO_EMPR+"_"+anio+"_"+mes+ ".pdf";
 
                                         DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
 
@@ -274,29 +250,26 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         empleado.emp_co_trab = item.CO_TRAB;
                                         empleado.emp_co_empr = item.CO_EMPR;
                                         empleado.emp_anio = anio;
-                                        empleado.emp_periodo = mes;
+                                        empleado.emp_periodo = Convert.ToString(mes);
                                         empleado.emp_ruta_pdf = filename;
                                         empleado.emp_no_trab = item.NO_TRAB;
                                         empleado.emp_apel_pat = item.NO_APEL_PATE;
                                         empleado.emp_apel_mat = item.NO_APEL_MATE;
                                         empleado.emp_direc_mail = item.NO_DIRE_MAI1;
                                         empleado.emp_nro_cel = item.NU_TLF1;
-                                        empleado.emp_quincena = quincena;
+                                        empleado.emp_tipo_doc = item.TI_DOCU_IDEN;
                                         listaInsertar.Add(empleado);
                                     }
                                     //llenado en base de datos
-                                    int limite = listaInsertar.Count;
-                                    int limiteinferior = 0;
+                                
                                     string consulta= "";
                                     int totalInsertados = 0;
                                     foreach (var empleado in listaInsertar) {
-                                        limiteinferior++;
-                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', {6}, {7}, '{8}', '{9}', '{10}', '{11}', '{12}', '{13}', '{14}'),",
+                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}'),",
                                             empleado.emp_co_trab,
                                             empleado.emp_co_empr,
                                             empleado.emp_anio,
                                             empleado.emp_periodo,
-                                            empleado.emp_quincena,
                                             empleado.emp_ruta_pdf,
                                             empleado.emp_enviado,
                                             empleado.emp_descargado,
@@ -314,7 +287,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     if (totalInsertadosTupla.error.Value.Equals(string.Empty))
                                     {
                                         totalInsertados = totalInsertadosTupla.totalInsertados;
-                                                                         }
+                                    }
                                     if (totalInsertados == listaPersonas.Count) {
                                         mensaje = "PDFs procesados";
                                         respuesta = true;
@@ -341,6 +314,32 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { data=listaInsertar,mensaje,respuesta });
+        }
+        public ActionResult BolListarPdfJson(DateTime fechaListar,string empresaListar,string nombreEmpresaListar)
+        {
+            string mensaje = "No se pudieron listar las boletas";
+            bool respuesta = false;
+            List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
+            try
+            {
+                string mes = Convert.ToString(fechaListar.Month);
+                string anio = Convert.ToString(fechaListar.Year);
+                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresaListar, anio, mes);
+                if (listaBoletasTupla.error.Value.Equals(string.Empty))
+                {
+                    listaBoletas = listaBoletasTupla.lista;
+                    mensaje = "Listando registros";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensaje = listaBoletasTupla.error.Value;
+                }
+            }
+            catch (Exception ex) {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje,respuesta,data=listaBoletas });
         }
         static double ConvertBytesToMegabytes(long bytes)
         {

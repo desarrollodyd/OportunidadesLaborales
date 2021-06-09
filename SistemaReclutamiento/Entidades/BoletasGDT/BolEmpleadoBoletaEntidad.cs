@@ -11,7 +11,6 @@ namespace SistemaReclutamiento.Entidades.BoletasGDT
         public string emp_co_empr { get; set; }
         public string emp_anio { get; set; }
         public string emp_periodo { get; set; }
-        public string emp_quincena { get; set; }
         public string emp_ruta_pdf { get; set; }
         public int emp_enviado { get; set; }
         public int emp_descargado { get; set; }

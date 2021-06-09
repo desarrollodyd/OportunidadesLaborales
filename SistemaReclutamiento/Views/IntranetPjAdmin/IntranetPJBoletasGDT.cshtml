@@ -50,7 +50,7 @@
                         <div class="row">
                             <form id="formProcesarPdf">
                                 <input type="hidden" name="nombreEmpresa" value="" id="nombreEmpresa" />
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon">
@@ -72,27 +72,17 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                Quincena
-                                            </span>
-                                            <select class="form-control input-sm" name="quincena" id="cboQuincena">
-                                                <option value="Quincena1" selected>Quincena 1</option>
-                                                <option value="Quincena2">Quincena 2</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <button class="btn btn-white btn-primary btn-sm btn-block btn-round btnProcesarPdf" data-rel="tooltip" title="ProcesarPdf">
+                                        <button class="btn btn-white btn-primary btn-block btn-round btnProcesarPdf" data-rel="tooltip" title="ProcesarPdf">
                                             <i class="ace-icon glyphicon glyphicon-list-alt"></i> Procesar PDF
                                         </button>
                                     </div>
                                 </div>
                             </form>
-                            <div class="col-md-12">
-
+                            <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div class="table-responsive" id="contenedorTablaProcesoPdf">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -175,12 +165,43 @@
                     </div>
                     <div id="tab3" class="tab-pane">
                         <div class="row">
+                            <form id="formListarPfds">
+                                <input type="hidden" name="nombreEmpresaListar" value="" id="nombreEmpresaListar" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Empresa
+                                            </span>
+                                            <select class="form-control input-sm" name="empresaListar" id="cboEmpresaListar" style="width:100%"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha
+                                            </span>
+                                            <input type="text" name="fechaListar" id="fechaListar" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <button class="btn btn-white btn-primary btn-block btn-round btnListarData" data-rel="tooltip" title="Listar">
+                                            <i class="ace-icon glyphicon glyphicon-list-alt"></i> Listar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                             <div class="col-md-12 col-xs-12">
-                                @*<div id="mostrarArbolDirectorios" style="display:none">
-                                    <h2>Arbol de Directorios</h2>
-                                    <ul id="treeDemo" class="ztree" style="width:100%"></ul>
-                                </div>*@
+                                <div class="row">
+                                    <div class="table-responsive" id="contenedorTablaListar">
+                                    </div>
+                                </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

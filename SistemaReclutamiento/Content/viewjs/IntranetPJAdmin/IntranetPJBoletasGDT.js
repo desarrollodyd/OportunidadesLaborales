@@ -20,6 +20,13 @@
             defaultDate: fecha_hoy,
             maxDate:fecha_hoy
         })
+        $('#fechaListar').datetimepicker({
+            format: 'YYYY-MM',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: fecha_hoy,
+            maxDate:fecha_hoy
+        })
         //carga de salas
         responseSimple({
             url: "sql/TMEMPRListarJson",
@@ -29,10 +36,21 @@
                 if(response.respuesta){
                     let data=response.data
                     $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
+                    $("#cboEmpresaListar").append(`<option value="">--Seleccione--<option>`)
+
                     $.each(data, function (index, value) {
                         $("#cboEmpresa").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
                     });
                     $("#cboEmpresa").select2({
+                        placeholder: "--Seleccione--", allowClear: true
+                    })
+                    $.each(data, function (index, value) {
+                        $("#cboEmpresaListar").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+                    });
+                    $("#cboEmpresa").select2({
+                        placeholder: "--Seleccione--", allowClear: true
+                    })
+                    $("#cboEmpresaListar").select2({
                         placeholder: "--Seleccione--", allowClear: true
                     })
                 }
@@ -132,7 +150,33 @@
                     data:JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
-                       console.log(response)
+                      if(response.respuesta){
+                        llenarDatatableProceso(response.data)
+                      }
+                    }
+                })
+            }
+            else{
+                messageResponse({
+                    text: "Complete los campos Obligatorios",
+                    type: "error"
+                })
+            }
+        })
+        $(document).on('click','.btnListarData',function(e){
+            e.preventDefault()
+            $("#formListarPfds").submit()
+            if (_objetoForm_formListarPfds.valid()) {
+                let dataForm = $('#formListarPfds').serializeFormJSON()
+                let url='IntranetPJBoletasGDT/BolListarPdfJson'
+                responseSimple({
+                    url: url,
+                    data:JSON.stringify(dataForm),
+                    refresh: false,
+                    callBackSuccess: function (response) {
+                      if(response.respuesta){
+                        llenarDatatablePdfs(response.data)
+                      }
                     }
                 })
             }
@@ -146,6 +190,27 @@
         $(document).on('change','#cboEmpresa',function(e){
             let nombreEmpresa=$(this).find(':selected').text()
             $("#nombreEmpresa").val(nombreEmpresa)
+        })
+        $(document).on("click", ".chkProcesoPdf", function (e) {
+            $('#dataTableProcesoPdf').find('tbody :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
+        })
+
+        $(document).on("click", "#dataTableProcesoPdf  tbody :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+            $('.chkProcesoPdf').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
+        })
+
+        $(document).on("click", ".chkListarPdf", function (e) {
+            $('#dataTableListarPdf').find('tbody :checkbox')
+                .prop('checked', this.checked)
+                .closest('tr').toggleClass('selected', this.checked);
+        })
+
+        $(document).on("click", "#dataTableListarPdf  tbody :checkbox", function (e) {
+            $(this).closest('tr').toggleClass('selected', this.checked); //Classe de seleção na row
+            $('.chkListarPdf').prop('checked', ($(this).closest('table').find('tbody :checkbox:checked').length == $(this).closest('table').find('tbody :checkbox').length)); //Tira / coloca a seleção no .checkAll
         })
     }
     let _metodos=function(){
@@ -189,10 +254,6 @@
                 {
                     required: true,
                 },
-                quincena:
-                {
-                    required: true,
-                }
 
             },
             messages: {
@@ -204,11 +265,30 @@
                 {
                     required: 'Campo Obligatorio',
                 },
-                quincena:
+            }
+        });
+        validar_Form({
+            nameVariable: 'formListarPfds',
+            contenedor: '#formListarPfds',
+            rules: {
+                empresaListar:
                 {
-                    required:'Campo Obligatorio'
+                    required: true,
+                },
+                fechaListar:
+                {
+                    required: true,
                 }
-
+            },
+            messages: {
+                empresaListar:
+                {
+                    required: 'Campo Obligatorio',
+                },
+                fechaListar:
+                {
+                    required: 'Campo Obligatorio',
+                },
             }
         });
     }
@@ -259,7 +339,170 @@
         { name:"pNode 3 - no child", isParent:true}
     
     ];
-    
+    let llenarDatatableProceso=function(data) {
+        if (!$().DataTable) {
+            console.warn('Advertencia - datatables.min.js no esta declarado.');
+            return;
+        }
+        let addtabla = $("#contenedorTablaProcesoPdf");
+        $(addtabla).empty();
+        $(addtabla).append('<table id="dataTableProcesoPdf" class="table table-condensed table-bordered table-hover" style="width:100%"></table>');
+        simpleDataTable({
+            uniform: false,
+            tableNameVariable: "datatable_dataTableProcesoPdf",
+            table: "#dataTableProcesoPdf",
+            tableColumnsData: data,
+            tableHeaderCheck: true,
+            tableHeaderCheckIndex: 0,
+            headerCheck: "chkProcesoPdf",
+            tableColumns: [
+                {
+                    data: "emp_co_trab",
+                    title: "",
+                    "bSortable": false,
+                    className: 'align-center',
+                    "render": function (value) {
+                        var check = '<input type="checkbox" class="form-check-input-styled-info procesosPdfListado" data-id="' + value + '" name="chk[]">';
+                        return check;
+                    },
+                    width: "50px",
+                },
+                {
+                    data: "emp_co_trab",
+                    title: "Doc. Id.",
+                },
+                {
+                    data: "emp_tipo_doc",
+                    title: "Tipo Doc.",
+                },
+                {
+                    data: "emp_co_trab",
+                    title: "Empleado",
+                    "render":function(value,row,oData){
+                        return oData.emp_apel_pat+ " " + oData.emp_apel_mat+"," + oData.emp_no_trab
+                    }
+                },
+                {
+                    data: "emp_direc_mail",
+                    title: "Dir. envio",
+                },
+                {
+                    data: "emp_ruta_pdf",
+                    title: "Pdf",
+                },
+                {
+                    data: "emp_co_trab",
+                    title: "Acciones",
+                    "render": function (value) {
+                        var span = '';
+                        var span = `<div class="hidden-sm hidden-xs action-buttons">
+                                        <a class="blue btn-detalle" href="#" data-id="${value}">
+                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                        </a>
+                                    </div>
+                                    <div class="hidden-md hidden-lg">
+                                        <div class="inline pos-rel">
+                                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                                                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                <li>
+                                                    <a href="#" class="tooltip-info btn-detalle" data-id="${value}" data-rel="tooltip" title="View">
+                                                        <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>`
+                        return span
+                    }
+                }
+
+            ]
+        })
+    }
+    let llenarDatatablePdfs=function(data) {
+        if (!$().DataTable) {
+            console.warn('Advertencia - datatables.min.js no esta declarado.');
+            return;
+        }
+        let addtabla = $("#contenedorTablaListar");
+        $(addtabla).empty();
+        $(addtabla).append('<table id="dataTableListarPdf" class="table table-condensed table-bordered table-hover" style="width:100%"></table>');
+        simpleDataTable({
+            uniform: false,
+            tableNameVariable: "datatable_dataTableListarPdf",
+            table: "#dataTableListarPdf",
+            tableColumnsData: data,
+            tableHeaderCheck: true,
+            tableHeaderCheckIndex: 0,
+            headerCheck: "chkListarPdf",
+            tableColumns: [
+                {
+                    data: "emp_co_trab",
+                    title: "",
+                    "bSortable": false,
+                    className: 'align-center',
+                    "render": function (value) {
+                        var check = '<input type="checkbox" class="form-check-input-styled-info pdfListado" data-id="' + value + '" name="chk2[]">';
+                        return check;
+                    },
+                    width: "50px",
+                },
+                {
+                    data: "emp_co_trab",
+                    title: "Doc. Id.",
+                },
+                {
+                    data: "emp_tipo_doc",
+                    title: "Tipo Doc.",
+                },
+                {
+                    data: "emp_co_trab",
+                    title: "Empleado",
+                    "render":function(value,row,oData){
+                        return oData.emp_apel_pat+ " " + oData.emp_apel_mat+"," + oData.emp_no_trab
+                    }
+                },
+                {
+                    data: "emp_direc_mail",
+                    title: "Dir. envio",
+                },
+                {
+                    data: "emp_ruta_pdf",
+                    title: "Pdf",
+                },
+                {
+                    data: "emp_co_trab",
+                    title: "Acciones",
+                    "render": function (value) {
+                        var span = '';
+                        var span = `<div class="hidden-sm hidden-xs action-buttons">
+                                        <a class="blue btn-detalle" href="#" data-id="${value}">
+                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                        </a>
+                                    </div>
+                                    <div class="hidden-md hidden-lg">
+                                        <div class="inline pos-rel">
+                                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+                                                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                <li>
+                                                    <a href="#" class="tooltip-info btn-detalle" data-id="${value}" data-rel="tooltip" title="View">
+                                                        <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>`
+                        return span
+                    }
+                }
+
+            ]
+        })
+    }
     return {
         init: function () {
             _inicio()
