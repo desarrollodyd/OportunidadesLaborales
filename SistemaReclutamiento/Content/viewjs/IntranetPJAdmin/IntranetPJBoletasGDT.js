@@ -221,11 +221,19 @@
                 let obj={
                     emp_co_trab:$(this).data("empcotrab"),
                     emp_ruta_pdf:$(this).data("emprutapdf"),
-                    emp_co_empr:$(this).data("empcoempr")
+                    emp_co_empr:$(this).data("empcoempr"),
+                    emp_direc_mail:$(this).data("empdiremail")
                 }
                 arrayEmpleados.push(obj);
             });
-            console.log(arrayEmpleados)
+            responseSimple({
+                url: "IntranetPJBoletasGDT/EnviarBoletasEmailJson",
+                refresh: false,
+                data: JSON.stringify(arrayEmpleados),
+                callBackSuccess: function (response) {
+                   console.log(response);
+                }
+            })
         })
     }
     let _metodos=function(){
@@ -367,21 +375,7 @@
             tableNameVariable: "datatable_dataTableProcesoPdf",
             table: "#dataTableProcesoPdf",
             tableColumnsData: data,
-            tableHeaderCheck: true,
-            tableHeaderCheckIndex: 0,
-            headerCheck: "chkProcesoPdf",
             tableColumns: [
-                {
-                    data: "emp_co_trab",
-                    title: "",
-                    "bSortable": false,
-                    className: 'align-center',
-                    "render": function (value) {
-                        var check = '<input type="checkbox" class="form-check-input-styled-info procesosPdfListado" data-id="' + value + '" name="chk[]">';
-                        return check;
-                    },
-                    width: "50px",
-                },
                 {
                     data: "emp_co_trab",
                     title: "Doc. Id.",
@@ -404,35 +398,7 @@
                 {
                     data: "emp_ruta_pdf",
                     title: "Pdf",
-                },
-                {
-                    data: "emp_co_trab",
-                    title: "Acciones",
-                    "render": function (value) {
-                        var span = '';
-                        var span = `<div class="hidden-sm hidden-xs action-buttons">
-                                        <a class="blue btn-detalle" href="#" data-id="${value}">
-                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
-                                        </a>
-                                    </div>
-                                    <div class="hidden-md hidden-lg">
-                                        <div class="inline pos-rel">
-                                            <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                                                <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                                <li>
-                                                    <a href="#" class="tooltip-info btn-detalle" data-id="${value}" data-rel="tooltip" title="View">
-                                                        <span class="blue"><i class="ace-icon fa fa-search-plus bigger-120"></i></span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>`
-                        return span
-                    }
                 }
-
             ]
         })
     }
@@ -462,7 +428,8 @@
                         var check = `<input type="checkbox" class="form-check-input-styled-info pdfListado" 
                                         data-empcotrab="${oData.emp_co_trab}" 
                                         data-emprutapdf="${oData.emp_ruta_pdf}" 
-                                        data-empcoempr=${oData.emp_co_empr} name="chk[]">`;
+                                        data-empcoempr=${oData.emp_co_empr}
+                                        data-empdiremail=${oData.emp_direc_mail} name="chk[]">`;
                         return check;
                     },
                     width: "50px",
@@ -489,6 +456,10 @@
                 {
                     data: "emp_ruta_pdf",
                     title: "Pdf",
+                },
+                {
+                    data: "emp_enviado",
+                    title: "Nro. Envios",
                 },
                 {
                     data: "emp_co_trab",

@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -504,6 +507,69 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { data = listaInsertar, mensaje, respuesta });
+        }
+        [HttpPost]
+        public ActionResult EnviarBoletasEmailJson(List<BolEmpleadoBoletaEntidad> listaBoletas) {
+            string mensaje = "";
+            bool respuesta = false;
+            string remitente = "";
+            string password = "";
+            try
+            {
+                foreach (var boleta in listaBoletas)
+                {
+                    //string direccionesEnvio = boleta.emp_direc_mail;
+                    string direccionesEnvio = "diego.canchari@gladcon.com";
+                    string cuerpoMensaje = ("Boleta<br>" +
+                         " <br>" +
+                         " <a href=''>Link de Pdf</a>");
+                    string asunto = "Pdf creado Cod Trabajador: " + boleta.emp_co_empr;
+                    Task.Run(() =>
+                    {
+                        Task oResp = EnviarCorreoAsync(remitente,password,direccionesEnvio,asunto,cuerpoMensaje);
+                    }).ContinueWith(t => {
+                        if (t.IsCompleted)
+                        {
+                            var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
+                        }
+                    })/*.GetAwaiter().GetResult()*/;
+                }
+                mensaje = "Envio Iniciado";
+                respuesta = true;
+            }
+            catch (Exception ex) {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje,respuesta });
+        }
+        public async Task<bool> EnviarCorreoAsync(string remitente, string password, string destinatarios,string asunto, string body = "")
+        {
+            bool respuesta = false;
+            SmtpClient cliente;
+            MailMessage email;
+            try
+            {
+                cliente = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(remitente, password)
+                };
+                email = new MailMessage(remitente, destinatarios.Trim(), asunto, body)
+                {
+                    IsBodyHtml = true,
+                    BodyEncoding = System.Text.Encoding.UTF8,
+                    SubjectEncoding = System.Text.Encoding.Default
+                };
+                await cliente.SendMailAsync(email);
+                respuesta = true;
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+            }
+            return respuesta;
         }
     }
 }

@@ -134,5 +134,31 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (eliminado: eliminado, error: error);
         }
+        public (bool editado, claseError error) BoolEmpleadoBoletaEditarEnvioJson(string emp_ruta_pdf,DateTime fechaAct)
+        {
+            claseError error = new claseError();
+            bool editado = false;
+            string consulta = @"UPDATE boletas_gdt.bol_empleado_boleta
+	                            SET emp_enviado=emp_enviado+1,emp_fecha_act=@p1
+	                            WHERE emp_ruta_pdf=@p2;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullDate(fechaAct));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(emp_ruta_pdf));
+                    query.ExecuteNonQuery();
+                    editado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+            }
+            return (editado: editado, error: error);
+        }
     }
 }
