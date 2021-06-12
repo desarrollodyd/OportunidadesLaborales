@@ -187,137 +187,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje, respuesta,data=listaDirectorioEmpresa });
         }
-        [HttpPost]
-        public ActionResult BolProcesarPdf(DateTime fechaProcesoPdf,string empresa,string nombreEmpresa)
-        {
-            string mensaje = "No se pudieron procesar las boletas";
-            bool respuesta = false;
 
-            string tipoConfiguracion = "PATH";
-            string directorioProceso = "BOLETASPROCESADAS";
-            string directorioaProcesar = "BOLETASAPROCESAR";
-            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
-            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
-            List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
-
-            try
-            {
-                DateTime fechaProceso = fechaProcesoPdf;
-                int mes = fechaProceso.Month;
-                string carpetaMes = mes.ToString().PadLeft(2, '0') + "_" + meses[mes-1];
-                string anio = Convert.ToString(fechaProceso.Year);
-
-                var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
-                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
-
-                string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
-                string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
-
-                if (listaPersonasTupla.error.Value.Equals(string.Empty))
-                {
-                    configuracion = configuracionTupla.configuracion;
-                    listaPersonas = listaPersonasTupla.lista;
-
-                    string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio,carpetaMes);
-
-                    DirectoryInfo directorioRoot = Directory.CreateDirectory(Path.Combine(configuracion.config_valor, directorioProceso,nombreDirectorioEmpresa));
-
-                    if (Directory.Exists(pathPdf))
-                    {
-                        //realizar la busqueda del pdf y realizar la division de este
-                        string file = Directory.GetFiles(pathPdf, "*.pdf").FirstOrDefault();
-                        if(file != null){
-                            //pdf encontrado
-
-                            using (PdfReader reader = new PdfReader(Path.Combine(pathPdf, file)))
-                            {
-                                if (reader.NumberOfPages == listaPersonas.Count)
-                                {
-                                    for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
-                                    {
-
-                                        BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
-
-                                        var item = listaPersonas.ElementAt(pagenumber - 1);
-                                        string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
-                                        string filename = item.CO_TRAB + "_" + item.CO_EMPR+"_"+anio+"_"+mes+ ".pdf";
-
-                                        DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
-
-                                        Document document = new Document();
-                                        PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
-                                        document.Open();
-
-                                        copy.AddPage(copy.GetImportedPage(reader, pagenumber));
-                                        document.Close();
-                                        empleado.emp_co_trab = item.CO_TRAB;
-                                        empleado.emp_co_empr = item.CO_EMPR;
-                                        empleado.emp_anio = anio;
-                                        empleado.emp_periodo = Convert.ToString(mes);
-                                        empleado.emp_ruta_pdf = filename;
-                                        empleado.emp_no_trab = item.NO_TRAB;
-                                        empleado.emp_apel_pat = item.NO_APEL_PATE;
-                                        empleado.emp_apel_mat = item.NO_APEL_MATE;
-                                        empleado.emp_direc_mail = item.NO_DIRE_MAI1;
-                                        empleado.emp_nro_cel = item.NU_TLF1;
-                                        empleado.emp_tipo_doc = item.TI_DOCU_IDEN;
-                                        listaInsertar.Add(empleado);
-                                    }
-                                    //llenado en base de datos
-                                
-                                    string consulta= "";
-                                    int totalInsertados = 0;
-                                    foreach (var empleado in listaInsertar) {
-                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}'),",
-                                            empleado.emp_co_trab,
-                                            empleado.emp_co_empr,
-                                            empleado.emp_anio,
-                                            empleado.emp_periodo,
-                                            empleado.emp_ruta_pdf,
-                                            empleado.emp_enviado,
-                                            empleado.emp_descargado,
-                                            empleado.emp_fecha_reg.ToString("yyyy-MM-dd HH:mm:ss"),
-                                            empleado.emp_no_trab,
-                                            empleado.emp_apel_pat,
-                                            empleado.emp_apel_mat,
-                                            empleado.emp_direc_mail,
-                                            empleado.emp_nro_cel,
-                                            empleado.emp_tipo_doc
-                                            );
-                                    }
-                                    consulta = consulta.TrimEnd(',');
-                                    var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
-                                    if (totalInsertadosTupla.error.Value.Equals(string.Empty))
-                                    {
-                                        totalInsertados = totalInsertadosTupla.totalInsertados;
-                                    }
-                                    if (totalInsertados == listaPersonas.Count) {
-                                        mensaje = "PDFs procesados";
-                                        respuesta = true;
-                                    }
-                                }
-                                else {
-                                    mensaje = "Inconsistencia entre pdf y total de trabajadores";
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            mensaje = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente";
-                        }
-                    }
-                    else
-                    {
-                        mensaje = "No se encuentra el directorio, crearlo en el menú de creación de directorios";
-                    }
-                }
-            }catch(Exception ex)
-            {
-                mensaje = ex.Message;
-            }
-            return Json(new { data=listaInsertar,mensaje,respuesta });
-        }
         public ActionResult BolListarPdfJson(DateTime fechaListar,string empresaListar,string nombreEmpresaListar)
         {
             string mensaje = "No se pudieron listar las boletas";
@@ -344,15 +214,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje,respuesta,data=listaBoletas });
         }
-        static double ConvertBytesToMegabytes(long bytes)
-        {
-            return Math.Round(((bytes / 1024f) / 1024f), 2);
-        }
-
-        static double ConvertKilobytesToMegabytes(long kilobytes)
-        {
-            return Math.Round((kilobytes / 1024f),2);
-        }
+      
         [HttpPost]
         public ActionResult BolProcesarPdf2(DateTime fechaProcesoPdf, string empresa, string nombreEmpresa)
         {
@@ -516,26 +378,34 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string password = "";
             try
             {
-                foreach (var boleta in listaBoletas)
+                if (listaBoletas.Count > 0)
                 {
-                    //string direccionesEnvio = boleta.emp_direc_mail;
-                    string direccionesEnvio = "diego.canchari@gladcon.com";
-                    string cuerpoMensaje = ("Boleta<br>" +
-                         " <br>" +
-                         " <a href=''>Link de Pdf</a>");
-                    string asunto = "Pdf creado Cod Trabajador: " + boleta.emp_co_empr;
-                    Task.Run(() =>
+                    foreach (var boleta in listaBoletas)
                     {
-                        Task oResp = EnviarCorreoAsync(remitente,password,direccionesEnvio,asunto,cuerpoMensaje);
-                    }).ContinueWith(t => {
-                        if (t.IsCompleted)
+                        //string direccionesEnvio = boleta.emp_direc_mail;
+                        string direccionesEnvio = "diego.canchari@gladcon.com";
+                        string cuerpoMensaje = ("Boleta<br>" +
+                             " <br>" +
+                             " <a href=''>Link de Pdf</a>");
+                        string asunto = "Pdf creado Cod Trabajador: " + boleta.emp_co_empr;
+                        Task.Run(() =>
                         {
-                            var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
-                        }
-                    })/*.GetAwaiter().GetResult()*/;
+                            Task oResp = EnviarCorreoAsync(remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
+                        }).ContinueWith(t =>
+                        {
+                            if (t.IsCompleted)
+                            {
+                                var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
+                            }
+                        })/*.GetAwaiter().GetResult()*/;
+                    }
+                    mensaje = "Envio Iniciado";
+                    respuesta = true;
                 }
-                mensaje = "Envio Iniciado";
-                respuesta = true;
+                else {
+                    mensaje = "No se encontro registros a enviar";
+                }
+              
             }
             catch (Exception ex) {
                 mensaje = ex.Message;
@@ -570,6 +440,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 respuesta = false;
             }
             return respuesta;
+        }
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return Math.Round(((bytes / 1024f) / 1024f), 2);
+        }
+
+        static double ConvertKilobytesToMegabytes(long kilobytes)
+        {
+            return Math.Round((kilobytes / 1024f), 2);
         }
     }
 }
