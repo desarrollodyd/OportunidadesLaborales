@@ -15,6 +15,8 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.IO;
+using SistemaReclutamiento.Entidades.BoletasGDT;
+using SistemaReclutamiento.Models.BoletasGDT;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
@@ -38,8 +40,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         IntranetAccesoModel usuarioAccesobl = new IntranetAccesoModel();
         UsuarioModel usuariobl = new UsuarioModel();
         // GET: IntranetPJ
-
+        BolEmpleadoBoletaModel empleadoBoletaBL = new BolEmpleadoBoletaModel();
         RutaImagenes rutaImagenes = new RutaImagenes();
+        //string[] TiposDocumentoOFIPLAN = { "BRE", "DNI", "PAS", "CEX", "AFP" };
         string PathActividadesIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
 
         //API key
@@ -539,6 +542,37 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
         public ActionResult Agenda()
         {
             return View("~/Views/IntranetPJ/IntranetPJAgenda.cshtml");
+        }
+        public ActionResult MisBoletasGDT() {
+            PersonaEntidad persona = new PersonaEntidad();
+            persona = (PersonaEntidad)Session["perIntranet_full"];
+            List<TMEMPR> listaEmpresasSQL = new List<TMEMPR>();
+            List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
+            ViewBag.dataEmpresas = null;
+            string tipo_doc = persona.per_tipodoc.ToUpper();
+            switch (tipo_doc)
+            {
+                case "DNI":
+                    tipo_doc = "DNI";
+                    break;
+                case "CARNÉ DE EXTRANJERIA":
+                    tipo_doc = "CEX";
+                    break;
+                case "PASAPORTE":
+                    tipo_doc = "PAS";
+                    break;
+                case "OTROS":
+                    tipo_doc = "AFP";
+                    break;
+                default:
+                    tipo_doc="DNI";
+                    break;
+            }
+            var listaEmpresasSQLTupla = sqlbl.EmpresaListarxCodigoTrabajadorJson(persona.per_numdoc, tipo_doc);
+            if (listaEmpresasSQLTupla.error.Value.Equals(string.Empty)) {
+                ViewBag.dataEmpresas = listaEmpresasSQLTupla.listaempresa;
+            }
+            return View("~/Views/IntranetPJ/IntranetPJMisBoletasGDT.cshtml");
         }
         [HttpPost]
         public ActionResult ListarLocalesporTipoJson(string tipo, string nombre="") {

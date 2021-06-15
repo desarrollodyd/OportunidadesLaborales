@@ -1282,6 +1282,10 @@
             var tipo = $(this).data("tipo");
             redirect({ site: 'intranetPJ/mapa?tipo=' + tipo, time: 0 })
         });
+        $(document).on('click', 'ul#boletasGDT li', function () {
+            // var tipo = $(this).data("tipo");
+            redirect({ site: 'intranetPJ/MisBoletasGDT', time: 0 })
+        });
 
 
         $(document).on('click', 'div.img_face', function () {

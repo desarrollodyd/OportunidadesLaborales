@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_LayoutIntranetPJ.cshtml";
+
+}
+@using System.Activities.Expressions
+@using System.Web.Script.Serialization
+@using System.Web.UI.WebControls
+@{
+    String persona = new JavaScriptSerializer().Serialize(Session["perIntranet_full"]);
+    String usuario = new JavaScriptSerializer().Serialize(Session["usuIntranet_full"]);
+    String listaEmpresas = new JavaScriptSerializer().Serialize(ViewBag.dataEmpresas);
+}
+@section AddToHead
+{
+
+    <style>
+        .btnBuscar {
+            margin-left: 20px;
+            padding: 8px;
+        }
+        .btnVisualizarPDF2 {
+            margin-left: 20px;
+            padding: 8px;
+        }
+        .form-control {
+            margin-left: 10px;
+        }
+        .select2-selection {
+            min-height: 32px;
+            padding-top: 5px;
+            margin-right: 2px;
+        }
+    </style>
+
+}
+<section id="singlepost">
+    <header>
+        <div class="loverate"><a href="#"><i class="fa fa-download"></i></a></div>
+        <h1>Mis Boletas</h1>
+
+    </header>
+</section>
+<div class="content">
+    <div class="twelve columns listcomments">
+
+        <div class="twelve columns">
+            <form class="form" id="busquedaBoletas" style="margin-bottom:0px;">
+                <div class="row collapsable">
+                    <div class="four columns">
+                        <select id="cboEmpresas" name="cboEmpresas" class="form-control"></select>
+                    </div>
+                    <div class="four columns">
+                        <input type="text" id="fechaProceso" name="fechaProceso" value="" class="form-control" />
+                    </div>
+                    <div class="four columns">
+                        <button class="btn btn-primary button radius alert btnBuscar">Buscar Boletas</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+        <h4 class="lista_titulo" style="font-size:18px;margin-left: 0px;margin-top:0px;">
+            Resultados Búsqueda:
+        </h4>
+        <div>
+            <table id="boletasListado" class="table table-condensed table-sm datatable-boletasListado table-striped table-bordered table-hover" style="width:100%">
+                <tbody>
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="modalBoleta" class="modal">
+
+    <div id="contenidoModalBoleta" class="modal-content">
+        <div class="header_cumple">Mi Boleta<span class="close">&times;</span></div>
+        <section id="singlepost">
+            <header></header>
+            <article>
+                <div id="contenidoBoletaPdf" style="height:500px"></div>
+            </article>
+
+        </section>
+
+
+    </div>
+</div>
+@section js
+{
+
+    <script type="text/javascript">
+        menu_id = 0;
+        persona = (@Html.Raw(persona));
+        usuario = (@Html.Raw(usuario));
+        listaEmpresas = (@Html.Raw(listaEmpresas));
+    </script>
+    <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
+    <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJLayoutView.js"></script>
+    <script src="~/Content/viewjs/IntranetPJ/IntranetPJMisBoletasGDT.js"></script>
+}

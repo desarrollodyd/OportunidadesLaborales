@@ -214,7 +214,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje,respuesta,data=listaBoletas });
         }
-      
+        public ActionResult BolListarporEmpleadoJson(DateTime fechaListar, string empresaListar, string nombreEmpresaListar,string empleado)
+        {
+            string mensaje = "No se pudieron listar las boletas";
+            bool respuesta = false;
+            List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
+            try
+            {
+                string mes = Convert.ToString(fechaListar.Month);
+                string anio = Convert.ToString(fechaListar.Year);
+                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoJson(empresaListar, anio, mes,empleado);
+                if (listaBoletasTupla.error.Value.Equals(string.Empty))
+                {
+                    listaBoletas = listaBoletasTupla.lista;
+                    mensaje = "Listando registros";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensaje = listaBoletasTupla.error.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje, respuesta, data = listaBoletas });
+        }
         [HttpPost]
         public ActionResult BolProcesarPdf2(DateTime fechaProcesoPdf, string empresa, string nombreEmpresa)
         {
@@ -384,21 +410,26 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         public ActionResult EnviarBoletasEmailJson(List<BolEmpleadoBoletaEntidad> listaBoletas) {
             string mensaje = "";
             bool respuesta = false;
-            string remitente = "";
-            string password = "";
+            string remitente = ConfigurationManager.AppSettings["user_boletasgdt"].ToString();
+            string password = ConfigurationManager.AppSettings["password_boletasgdt"].ToString();
+            string direccionesEnvio= ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
             try
             {
                 if (listaBoletas.Count > 0)
                 {
+                    string mes = "";
                     foreach (var boleta in listaBoletas)
                     {
                         //string direccionesEnvio = boleta.emp_direc_mail;
-                        string direccionesEnvio = "diego.canchari@gladcon.com";
+                        int periodo = Convert.ToInt32(boleta.emp_periodo)-1;
+                        mes = meses[periodo];
+                        //string direccionesEnvio = "diego.canchari@gladcon.com";
                         string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
                         string cuerpoMensaje = ("Buenos dias, se ha creado su boleta <br>" +
-                             " <br>Mes : "+boleta.emp_periodo+" <br>Año : "+boleta.emp_anio +"<br>Cod. Trabajador :"+boleta.emp_co_trab+
+                             " <br>Mes : "+mes+" <br>Año : "+boleta.emp_anio +"<br>Cod. Trabajador :"+boleta.emp_co_trab+
+                             "<br>Empresa: "+boleta.nombreEmpresa+
                              " <br>Puede visualizarla en:"+
-                             " <a href='http://181.65.130.36:2222/ExtranetPJ/IntranetPJ/Login'>Link de Intranet</a>" +
+                             " <h3><a href='http://181.65.130.36:2222/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
                              "<br>");
                         string asunto = "Boleta creada, Trabajador: " + nombreEmpleado ;
                         Task.Run(() =>

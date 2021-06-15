@@ -4076,6 +4076,7 @@
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLayoutView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJLoginView.js" />
     <Content Include="Content\viewjs\IntranetPJ\IntranetPJMapaView.js" />
+    <Content Include="Content\viewjs\IntranetPJ\IntranetPJMisBoletasGDT.js" />
     <Content Include="Content\viewjs\Login\Activacion.js" />
     <Content Include="Content\viewjs\Login\ActivacionProveedor.js" />
     <Content Include="Content\viewjs\Login\CambioPassword.js" />
@@ -5490,6 +5491,7 @@
     <Content Include="Views\FichaSintomatologica\FormularioFichaVistaReporte.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJSubidaExcel.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJBoletasGDT.cshtml" />
+    <Content Include="Views\IntranetPJ\IntranetPJMisBoletasGDT.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

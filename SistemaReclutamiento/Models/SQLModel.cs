@@ -932,5 +932,51 @@ FROM " + nombre_tabla+" as pago "+
             }
             return (lista: listaPersonas, error: error);
         }
+
+        public (List<TMEMPR> listaempresa, claseError error) EmpresaListarxCodigoTrabajadorJson(string CO_TRAB,string TI_DOCU_IDEN)
+        {
+            List<TMEMPR> lista = new List<TMEMPR>();
+            claseError error = new claseError();
+            string consulta = @"Select           distinct
+                    empresa.DE_NOMB,
+					empresa.CO_EMPR
+					
+                    from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB
+                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+					inner join TDIDEN_TRAB as TipoDoc on TipoDoc.CO_TRAB=emp.CO_TRAB
+                    where emp.CO_TRAB=@p0 and TipoDoc.TI_DOCU_IDEN=@p1";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", CO_TRAB);
+                    query.Parameters.AddWithValue("@p1", TI_DOCU_IDEN);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var empresa = new TMEMPR()
+                                {
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                };
+                                lista.Add(empresa);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Key = ex.Data.Count.ToString();
+                error.Value = ex.Message;
+                Console.WriteLine(ex.Message);
+            }
+            return (listaempresa: lista, error: error);
+        }
     }
 }

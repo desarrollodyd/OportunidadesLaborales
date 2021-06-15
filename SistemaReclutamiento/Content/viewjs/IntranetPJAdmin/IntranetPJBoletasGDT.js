@@ -224,6 +224,7 @@
             console.log(e)
             e.preventDefault()
             let arrayEmpleados = [];
+            let nombreEmpresa=$("#cboEmpresaListar").find(':selected').text()
             $('#dataTableListarPdf tbody tr input[type=checkbox]:checked').each(function () {
                 let obj={
                     emp_co_trab:$(this).data("empcotrab"),
@@ -232,6 +233,10 @@
                     emp_direc_mail:$(this).data("empdiremail"),
                     emp_periodo:$(this).data("empperiodo"),
                     emp_anio:$(this).data("empanio"),
+                    emp_no_trab:$(this).data("empnotrab"),
+                    emp_apel_pat:$(this).data("empapelpat"),
+                    emp_apel_mat:$(this).data("empapelmat"),
+                    nombreEmpresa:nombreEmpresa
                 }
                 arrayEmpleados.push(obj);
             });
@@ -252,6 +257,7 @@
         })
         $(document).on('click','.btnVisualizarPDF',function(e){
             e.preventDefault()
+            $("#contenidoBoletaPdf").html('')
             let nombreEmpresa=$("#cboEmpresaListar").find(':selected').text()
             
             let obj={
@@ -268,12 +274,15 @@
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
                         let data = response.data;
-                        let file = response.fileName;
-                        let a = document.createElement('a');
-                        a.target = '_self';
-                        a.href = "data:application/pdf;base64, " + data;
-                        a.download = file;
-                        a.click();
+                       $("#modalBoleta").modal('show')
+                        $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
+                            encodeURI(data) + "'></iframe>")
+                        // let file = response.fileName;
+                        // let a = document.createElement('a');
+                        // a.target = '_self';
+                        // a.href = "data:application/pdf;base64, " + data;
+                        // a.download = file;
+                        // a.click();
                     }
                 }
             })
@@ -421,7 +430,7 @@
             tableColumns: [
                 {
                     data: "emp_co_trab",
-                    title: "Doc. Id.",
+                    title: "Nro. Doc.",
                 },
                 {
                     data: "emp_tipo_doc",
@@ -474,7 +483,10 @@
                                         data-empcoempr="${oData.emp_co_empr}"
                                         data-empdiremail="${oData.emp_direc_mail}"
                                         data-empperiodo="${oData.emp_periodo}"
-                                        data-empanio="${emp_anio}"
+                                        data-empanio="${oData.emp_anio}"
+                                        data-empnotrab="${oData.emp_no_trab}"
+                                        data-empapelpat="${oData.emp_apel_pat}"
+                                        data-empapelmat="${oData.emp_apel_mat}"
                                         name="chk[]">`;
                         return check;
                     },
@@ -482,7 +494,7 @@
                 },
                 {
                     data: "emp_co_trab",
-                    title: "Doc. Id.",
+                    title: "Nro. Doc.",
                 },
                 {
                     data: "emp_tipo_doc",
