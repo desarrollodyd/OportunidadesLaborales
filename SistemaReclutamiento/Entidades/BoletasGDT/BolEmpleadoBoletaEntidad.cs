@@ -22,6 +22,7 @@ namespace SistemaReclutamiento.Entidades.BoletasGDT
         public string emp_direc_mail { get; set; }
         public string emp_nro_cel { get; set; }
         public string emp_tipo_doc { get; set; }
+        public string nombreEmpresa { get; set; }
         public BolEmpleadoBoletaEntidad()
         {
             this.emp_enviado = 0;

@@ -686,7 +686,11 @@ function simpleDataTable(obj) {
             //        });
             //    }
             //}
-        }
+        },
+        "lengthMenu": [ 
+            [10, 25, 50, -1], 
+            [10, 25, 50, "All"] 
+        ]
     });
     listaDatatable.push({ tabla: objt + '_' + opciones.tableNameVariable });
     localStorage.setItem('tablas_', JSON.stringify(listaDatatable));

@@ -861,7 +861,7 @@ FROM " + nombre_tabla+" as pago "+
         {
             claseError error = new claseError();
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
-            string consulta = @"select top 800
+            string consulta = @"select 
             T.CO_TRAB ,
             T.NO_APEL_PATE,
             T.NO_APEL_MATE,

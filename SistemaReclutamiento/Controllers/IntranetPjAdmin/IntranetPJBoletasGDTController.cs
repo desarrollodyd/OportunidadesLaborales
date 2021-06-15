@@ -220,7 +220,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             string mensaje = "No se pudieron procesar las boletas";
             bool respuesta = false;
-
+            string mensajeConsola = "";
+            int totalRegistrosBD = 0;
+            int totalHojas = 0;
             string tipoConfiguracion = "PATH";
             string directorioProceso = "BOLETASPROCESADAS";
             string directorioaProcesar = "BOLETASAPROCESAR";
@@ -257,7 +259,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         //eliminar la data y carpetas
                         if (listaEliminarTupla.error.Value.Equals(string.Empty)) {
                             string[] subdirectoryEntries = Directory.GetDirectories(Path.Combine(configuracion.config_valor, directorioaProcesar));
-                            if (subdirectoryEntries.Length > 0)
+                            if (subdirectoryEntries.Length > 0 &&listaEliminarTupla.lista.Count>0)
                             {
                                 //eliminar pdfs
                                 foreach (var empleado in listaEliminarTupla.lista) {
@@ -279,6 +281,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                             using (PdfReader reader = new PdfReader(Path.Combine(pathPdf, file)))
                             {
+                                totalRegistrosBD = listaPersonas.Count;
+                                totalHojas = reader.NumberOfPages;
                                 if (reader.NumberOfPages == listaPersonas.Count)
                                 {
                                     for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
@@ -343,12 +347,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     if (totalInsertados == listaPersonas.Count)
                                     {
                                         mensaje = "PDFs procesados";
+                                        mensajeConsola = "PDFs procesados---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas+"]"; 
                                         respuesta = true;
                                     }
                                 }
                                 else
                                 {
                                     mensaje = "Inconsistencia entre pdf y total de trabajadores";
+                                    mensajeConsola = "Inconsistencia entre pdf y total de trabajadores---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
                                 }
                             }
 
@@ -356,19 +362,23 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         else
                         {
                             mensaje = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente";
+                            mensajeConsola = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente ---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+
                         }
                     }
                     else
                     {
                         mensaje = "No se encuentra el directorio, crearlo en el menú de creación de directorios";
+                        mensajeConsola = "No se encuentra el directorio, crearlo en el menú de creación de directorios --->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
                     }
                 }
             }
             catch (Exception ex)
             {
                 mensaje = ex.Message;
-            }
-            return Json(new { data = listaInsertar, mensaje, respuesta });
+                mensajeConsola = ex.Message + "--->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+;            }
+            return Json(new { data = listaInsertar, mensaje, respuesta,mensajeConsola });
         }
         [HttpPost]
         public ActionResult EnviarBoletasEmailJson(List<BolEmpleadoBoletaEntidad> listaBoletas) {
@@ -384,10 +394,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     {
                         //string direccionesEnvio = boleta.emp_direc_mail;
                         string direccionesEnvio = "diego.canchari@gladcon.com";
-                        string cuerpoMensaje = ("Boleta<br>" +
-                             " <br>" +
-                             " <a href=''>Link de Pdf</a>");
-                        string asunto = "Pdf creado Cod Trabajador: " + boleta.emp_co_empr;
+                        string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
+                        string cuerpoMensaje = ("Buenos dias, se ha creado su boleta <br>" +
+                             " <br>Mes : "+boleta.emp_periodo+" <br>Año : "+boleta.emp_anio +"<br>Cod. Trabajador :"+boleta.emp_co_trab+
+                             " <br>Puede visualizarla en:"+
+                             " <a href='http://181.65.130.36:2222/ExtranetPJ/IntranetPJ/Login'>Link de Intranet</a>" +
+                             "<br>");
+                        string asunto = "Boleta creada, Trabajador: " + nombreEmpleado ;
                         Task.Run(() =>
                         {
                             Task oResp = EnviarCorreoAsync(remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
@@ -449,6 +462,44 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         static double ConvertKilobytesToMegabytes(long kilobytes)
         {
             return Math.Round((kilobytes / 1024f), 2);
+        }
+        [HttpPost]
+        public ActionResult VisualizarPdfIntranetAdminJson(BolEmpleadoBoletaEntidad empleado)
+        {
+            string mensaje = "";
+            bool respuesta = false;
+            string directorioProceso = "BOLETASPROCESADAS";
+            string tipoConfiguracion = "PATH";
+            string fileName = "";
+            String data = "";
+            try
+            {
+                string[] arrayNombreEmpresa = empleado.nombreEmpresa.Split(' ');
+                string nombreDirectorioEmpresa = empleado.emp_co_empr + "_" + String.Join("", arrayNombreEmpresa);
+                string nombreDirectorioEmpleado = empleado.emp_co_empr + "_" + empleado.emp_co_trab;
+                string nombreArchivo = empleado.emp_ruta_pdf;
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                if (configuracionTupla.error.Value.Equals(string.Empty))
+                {
+                    string pathArchivo = Path.Combine(configuracionTupla.configuracion.config_valor,directorioProceso, nombreDirectorioEmpresa, nombreDirectorioEmpleado, nombreArchivo);
+                    if (System.IO.File.Exists(pathArchivo))
+                    {
+                        Byte[] bytes = System.IO.File.ReadAllBytes(pathArchivo);
+                        String file = Convert.ToBase64String(bytes);
+                        data = file;
+                        fileName = nombreArchivo;
+                        respuesta = true;
+                        mensaje = "Existe el archivo";
+                    }
+                    else {
+                        mensaje = "No se encontro el archivo";
+                    }
+                }
+            }
+            catch (Exception ex) {
+
+            }
+            return Json(new { data,mensaje,respuesta,fileName});
         }
     }
 }

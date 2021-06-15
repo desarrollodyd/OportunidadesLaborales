@@ -141,20 +141,27 @@
         })
         $(document).on('click','.btnProcesarPdf',function(e){
             e.preventDefault()
+          
             $("#formProcesarPdf").submit()
             if (_objetoForm_formProcesarPdf.valid()) {
                 let dataForm = $('#formProcesarPdf').serializeFormJSON()
                 let url='IntranetPJBoletasGDT/BolProcesarPdf2'
-                responseSimple({
-                    url: url,
-                    data:JSON.stringify(dataForm),
-                    refresh: false,
-                    callBackSuccess: function (response) {
-                      if(response.respuesta){
-                        llenarDatatableProceso(response.data)
-                      }
+                messageConfirmation({
+                    content: '¿Esta seguro de realizar esta acción?',
+                    callBackSAceptarComplete: function () {
+                        responseSimple({
+                            url: url,
+                            data:JSON.stringify(dataForm),
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                            console.log(response.mensajeConsola)
+                              if(response.respuesta){
+                                llenarDatatableProceso(response.data)
+                              }
+                            }
+                        })
                     }
-                })
+                });
             }
             else{
                 messageResponse({
@@ -222,16 +229,52 @@
                     emp_co_trab:$(this).data("empcotrab"),
                     emp_ruta_pdf:$(this).data("emprutapdf"),
                     emp_co_empr:$(this).data("empcoempr"),
-                    emp_direc_mail:$(this).data("empdiremail")
+                    emp_direc_mail:$(this).data("empdiremail"),
+                    emp_periodo:$(this).data("empperiodo"),
+                    emp_anio:$(this).data("empanio"),
                 }
                 arrayEmpleados.push(obj);
             });
+            messageConfirmation({
+                content: '¿Esta seguro de realizar esta acción?',
+                callBackSAceptarComplete: function () {
+                    responseSimple({
+                        url: "IntranetPJBoletasGDT/EnviarBoletasEmailJson",
+                        refresh: false,
+                        data: JSON.stringify(arrayEmpleados),
+                        callBackSuccess: function (response) {
+                           console.log(response);
+                        }
+                    })
+                }
+            });
+          
+        })
+        $(document).on('click','.btnVisualizarPDF',function(e){
+            e.preventDefault()
+            let nombreEmpresa=$("#cboEmpresaListar").find(':selected').text()
+            
+            let obj={
+                emp_co_trab:$(this).data("empcotrab"),
+                emp_ruta_pdf:$(this).data("emprutapdf"),
+                emp_co_empr:$(this).data("empcoempr"),
+                emp_direc_mail:$(this).data("empdiremail"),
+                nombreEmpresa:nombreEmpresa
+            }
             responseSimple({
-                url: "IntranetPJBoletasGDT/EnviarBoletasEmailJson",
+                url: "IntranetPJBoletasGDT/VisualizarPdfIntranetAdminJson",
                 refresh: false,
-                data: JSON.stringify(arrayEmpleados),
+                data: JSON.stringify(obj),
                 callBackSuccess: function (response) {
-                   console.log(response);
+                    if (response.respuesta) {
+                        let data = response.data;
+                        let file = response.fileName;
+                        let a = document.createElement('a');
+                        a.target = '_self';
+                        a.href = "data:application/pdf;base64, " + data;
+                        a.download = file;
+                        a.click();
+                    }
                 }
             })
         })
@@ -428,8 +471,11 @@
                         var check = `<input type="checkbox" class="form-check-input-styled-info pdfListado" 
                                         data-empcotrab="${oData.emp_co_trab}" 
                                         data-emprutapdf="${oData.emp_ruta_pdf}" 
-                                        data-empcoempr=${oData.emp_co_empr}
-                                        data-empdiremail=${oData.emp_direc_mail} name="chk[]">`;
+                                        data-empcoempr="${oData.emp_co_empr}"
+                                        data-empdiremail="${oData.emp_direc_mail}"
+                                        data-empperiodo="${oData.emp_periodo}"
+                                        data-empanio="${emp_anio}"
+                                        name="chk[]">`;
                         return check;
                     },
                     width: "50px",
@@ -462,12 +508,17 @@
                     title: "Nro. Envios",
                 },
                 {
-                    data: "emp_co_trab",
+                    data: null,
                     title: "Acciones",
-                    "render": function (value) {
+                    "render": function (value,row, oData) {
                         var span = '';
                         var span = `<div class="hidden-sm hidden-xs action-buttons">
-                                        <a class="red btn-detalle" href="#" data-id="${value}">
+                                        <a class="red btnVisualizarPDF" href="#"    
+                                            data-empcotrab="${oData.emp_co_trab}" 
+                                            data-emprutapdf="${oData.emp_ruta_pdf}" 
+                                            data-empcoempr="${oData.emp_co_empr}"
+                                            data-empdiremail="${oData.emp_direc_mail}"
+                                           >
                                             <i class="ace-icon fa fa-file-pdf-o bigger-130"></i>
                                         </a>
                                     </div>
@@ -478,7 +529,14 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
                                                 <li>
-                                                    <a href="#" class="tooltip-info btn-detalle" data-id="${value}" data-rel="tooltip" title="View">
+                                                    <a href="#" class="tooltip-info btnVisualizarPDF" 
+                                                    
+                                                        data-empcotrab="${oData.emp_co_trab}" 
+                                                        data-emprutapdf="${oData.emp_ruta_pdf}" 
+                                                        data-empcoempr="${oData.emp_co_empr}"
+                                                        data-empdiremail="${oData.emp_direc_mail}"
+                                                       
+                                                    data-rel="tooltip" title="View">
                                                         <span class="red"><i class="ace-icon fa fa-file-pdf-o bigger-120"></i></span>
                                                     </a>
                                                 </li>
