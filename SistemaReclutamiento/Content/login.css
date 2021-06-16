@@ -33,7 +33,7 @@ a {
 
 body {
     position: relative;
-    color: #666;
+    color: #05a245;
     font: 16px/26px "Raleway", sans-serif;
     /*text-align: center;*/
     height: 100%;
@@ -156,10 +156,14 @@ a.button {
     width: 100%;
     height: 100vh;
     overflow: auto;
-    background: -moz-linear-gradient(48deg, rgba(42, 46, 54, 1) 0%, rgba(97, 107, 125, 1) 100%);
+    /* background: -moz-linear-gradient(48deg, rgba(42, 46, 54, 1) 0%, rgba(97, 107, 125, 1) 100%);
     background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgba(109, 5, 5, 1)), color-stop(100%, rgba(218, 42, 42)));
     background: -webkit-linear-gradient(48deg, rgba(109, 5, 5, 1) 0%, rgba(218, 42, 42) 100%);
-    background: linear-gradient(42deg, rgb(109, 5, 5) 0%, rgb(218, 42, 42) 100%);
+    background: linear-gradient(42deg, rgb(109, 5, 5) 0%, rgb(218, 42, 42) 100%);*/
+    background: -moz-linear-gradient(42deg, rgb(226 17 22) 0%, rgb(241 137 3) 100%);
+    background: -webkit-gradient(linear, left bottom, right top, color-stop(0%, rgb(226 17 22)), color-stop(100%, rgb(241 137 3)));
+    background: -webkit-linear-gradient(42deg, rgb(226 17 22) 0%, rgb(241 137 3) 100%);
+    background: linear-gradient(42deg, rgb(226 17 22) 0%, rgb(241 137 3) 100%);
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -716,7 +720,7 @@ input {
     display: inline-block;
     background: transparent;
     border: 0;
-    border-bottom: 1px solid #5A6374;
+    border-bottom: 1px solid #fde608;
     outline: 0;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -737,10 +741,14 @@ input {
     cursor: pointer;
     font-size: .8em;
     border-radius: 7px;
-    background: -moz-linear-gradient(270deg, rgba(105, 221, 201, 1) 0%, rgba(78, 193, 182, 1) 100%);
+    /*background: -moz-linear-gradient(270deg, rgba(105, 221, 201, 1) 0%, rgba(78, 193, 182, 1) 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #555), color-stop(100%, #333));
     background: -webkit-linear-gradient(270deg, #555 0%, #333 100%);
-    background: linear-gradient(180deg, #333 0%, rgb(9, 6, 6) 100%);
+    background: linear-gradient(180deg, #333 0%, rgb(9, 6, 6) 100%);*/
+    background: -moz-linear-gradient(180deg, #213f7e 0%, rgb(33 61 123) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #213f7e), color-stop(100%, rgb(33 61 123)));
+    background: -webkit-linear-gradient(180deg, #213f7e 0%, rgb(33 61 123) 100%);
+    background: linear-gradient( 180deg, #213f7e 0%, rgb(33 61 123) 100%);
     -webkit-box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75);
     box-shadow: 0px 0px 37px -9px rgba(0, 0, 0, 0.75);
@@ -1102,7 +1110,7 @@ select {
 }
 
 option {
-    color: #fff;
+    color: #9e0808;
     background: black;
 }
 
@@ -1125,7 +1133,7 @@ label.validation-invalid-label,
 label.validation-valid-label {
     margin-top: -15px;
     display: block !important;
-    color: #f19191;
+    color: #980c0c;
     position: absolute !important;
     z-index: 1;
     padding-top: 2px;
