@@ -181,6 +181,7 @@
                     data:JSON.stringify(dataForm),
                     refresh: false,
                     callBackSuccess: function (response) {
+                        CloseMessages()
                       if(response.respuesta){
                         $("#divEnvioPDFs").show()
                         llenarDatatablePdfs(response.data)
@@ -272,11 +273,29 @@
                 refresh: false,
                 data: JSON.stringify(obj),
                 callBackSuccess: function (response) {
+                    CloseMessages()
                     if (response.respuesta) {
                         let data = response.data;
+                        $(".ui-pnotify").remove()
                        $("#modalBoleta").modal('show')
                         $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
                             encodeURI(data) + "'></iframe>")
+
+
+                        if (!($('.modal.in').length)) {
+                            $('.modal-dialog').css({
+                                top: 0,
+                                left: 0
+                            });
+                            }
+                            $('#modalBoleta').modal({
+                            backdrop: false,
+                            show: true
+                            });
+                        
+                            $('.modal-dialog').draggable({
+                            handle: ".modal-header"
+                            });    
                         // let file = response.fileName;
                         // let a = document.createElement('a');
                         // a.target = '_self';
@@ -286,6 +305,10 @@
                     }
                 }
             })
+        })
+        $(document).on('click','.close',function(e){
+            e.preventDefault()
+            $("#modalBoleta").modal('hide')
         })
     }
     let _metodos=function(){
