@@ -703,7 +703,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                             }
                             else
                             {
-                                errormensaje = "Usuario no Pertenece a CPJ";
+                                errormensaje = "Usuario no Pertenece";
                             }
                         }
                         else
