@@ -144,8 +144,11 @@
     <Content Include="Content\images\Fondo.png" />
     <Content Include="Content\images\gears.png" />
     <Content Include="Content\images\icon.png" />
+    <Content Include="Content\images\icon_.png" />
     <Content Include="Content\images\landing.jpg" />
+    <Content Include="Content\images\landing_.jpg" />
     <Content Include="Content\images\LOGOPJ.png" />
+    <Content Include="Content\images\LOGOPJ_.png" />
     <Content Include="Content\images\pj.png" />
     <Content Include="Content\images\ray.png" />
     <Content Include="Content\images\splat.png" />
@@ -334,6 +337,7 @@
     <Content Include="Content\intranet\images\arrow_left.gif" />
     <Content Include="Content\intranet\images\arrow_right.gif" />
     <Content Include="Content\intranet\images\big_transparent.gif" />
+    <Content Include="Content\intranet\images\cak2e.png" />
     <Content Include="Content\intranet\images\cake.png" />
     <Content Include="Content\intranet\images\cursors\cursor_arrow_left.cur" />
     <Content Include="Content\intranet\images\cursors\cursor_arrow_left.png" />
@@ -383,6 +387,9 @@
     <Content Include="Content\intranet\images\foundation\orbit\timer-black.png" />
     <Content Include="Content\intranet\images\logo.png" />
     <Content Include="Content\intranet\images\logo_.png" />
+    <Content Include="Content\intranet\images\logo_svg.svg" />
+    <Content Include="Content\intranet\images\logo__.png" />
+    <Content Include="Content\intranet\images\logo___.png" />
     <Content Include="Content\intranet\images\patterns\1.png" />
     <Content Include="Content\intranet\images\patterns\10.png" />
     <Content Include="Content\intranet\images\patterns\11.png" />
