@@ -5269,6 +5269,7 @@
     <Compile Include="Controllers\Postulante\PostulanteController.cs" />
     <Compile Include="Controllers\Postulante\PostulanteFavoritosController.cs" />
     <Compile Include="Controllers\Proveedor\ProveedorController.cs" />
+    <Compile Include="Controllers\SeguridadIntranet\SeguridadIntranetController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
@@ -5338,6 +5339,12 @@
     <Compile Include="Entidades\Postulante\RespuestaPreFiltro.cs" />
     <Compile Include="Entidades\Proveedor\RolEntidad.cs" />
     <Compile Include="Entidades\Proveedor\SubMenuEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\Metodo_atributos.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\Metodo_clase.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_PermisoEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_PermisoRolEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_RolEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_UsuarioRolEntidad.cs" />
     <Compile Include="Entidades\UbigeoEntidad.cs" />
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
@@ -5403,6 +5410,7 @@
     <Compile Include="Models\ClaseLibreModel.cs" />
     <Compile Include="Models\Proveedor\ProveedorModel.cs" />
     <Compile Include="Models\Proveedor\RolModel.cs" />
+    <Compile Include="Models\SeguridadIntranet\SEG_PermisoDAL.cs" />
     <Compile Include="Models\SQLModel.cs" />
     <Compile Include="Models\Proveedor\SubMenuModel.cs" />
     <Compile Include="Models\UbigeoModel.cs" />
@@ -5516,6 +5524,7 @@
     <Folder Include="log\" />
     <Folder Include="Views\CumUsuario\" />
     <Folder Include="Views\IntranetPJBoletasGDT\" />
+    <Folder Include="Views\SeguridadIntranet\" />
     <Folder Include="Views\WebDetalleElemento\" />
     <Folder Include="Views\WebTipoElemento\" />
   </ItemGroup>

@@ -9,17 +9,14 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
-    [SeguridadMenu]
     public class EducacionBasicaController : Controller
     {
         EducacionBasicaModel educacionBasicabl = new EducacionBasicaModel();
         // GET: educacionBasica
-        [SeguridadMenu(false)]
         public ActionResult Index()
         {
             return View();
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionBasicaListarJson(int fkPosID)
         {
@@ -36,7 +33,6 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta=true, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionBasicaInsertarJson(EducacionBasicaEntidad educacionBasica)
         {
@@ -62,7 +58,6 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionBasicaEditarJson(EducacionBasicaEntidad educacionBasica)
         {
@@ -87,7 +82,6 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionBasicaEliminarJson(int id)
         {

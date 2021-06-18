@@ -18,7 +18,6 @@ namespace SistemaReclutamiento.Controllers
         {
             return View();
         }
-        [SeguridadMenu(false)]
         [HttpPost]
     
         public ActionResult EducacionSuperiorListarJson(int fkPosID)
@@ -36,7 +35,6 @@ namespace SistemaReclutamiento.Controllers
             }
             return Json(new { data = lista.ToList(), respuesta = true, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionSuperiorInsertarJson(EducacionSuperiorEntidad educacionSuperior)
         {
@@ -63,7 +61,6 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionSuperiorEditarJson(EducacionSuperiorEntidad educacionSuperior)
         {
@@ -88,7 +85,6 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
         }
-        [SeguridadMenu(false)]
         [HttpPost]
         public ActionResult EducacionSuperiorEliminarJson(int id)
         {
