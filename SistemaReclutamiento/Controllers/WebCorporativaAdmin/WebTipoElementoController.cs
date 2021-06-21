@@ -25,14 +25,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var listaTupla = tipoelementobl.WebTipoElementoListarJson();
-                if (listaTupla.error.Key.Equals(string.Empty))
+                if (listaTupla.error.Respuesta)
                 {
                     lista = listaTupla.lista;
                     response = true;
                     errormensaje = "Listando Tipos";
                 }
                 else {
-                    errormensaje = listaTupla.error.Value;
+                    errormensaje = listaTupla.error.Mensaje;
                 }
             }
             catch (Exception ex) {

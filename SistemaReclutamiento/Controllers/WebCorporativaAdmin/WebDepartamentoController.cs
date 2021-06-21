@@ -32,14 +32,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var departamentoTupla = departamentobl.WebDepartamentoListarJson();
                 error = departamentoTupla.error;
                 listaDepartamentos = departamentoTupla.lista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Departamentos";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Departamentos";
                 }
 
@@ -64,14 +64,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var departamentoTupla = departamentobl.WebDepartamentoIdObtenerJson(dep_id);
                 error = departamentoTupla.error;
                 departamento = departamentoTupla.departamento;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Departamento Obtennido";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se pudo obtener informacion del Departamento";
                 }
 
@@ -157,7 +157,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var departamentoTupla = departamentobl.WebDepartamentoInsertarJson(departamento);
                 error = departamentoTupla.error;
                
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     idInsertadoo = departamentoTupla.idDeptatamentoInsertado;
                     if (idInsertadoo > 0) {
@@ -172,7 +172,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se pudo insertar del Departamento";
                 }
 
@@ -201,7 +201,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var departamentIdTupla = departamentobl.WebDepartamentoIdObtenerJson(departamento.dep_id);
-                if (departamentIdTupla.error.Key.Equals(string.Empty)) {
+                if (departamentIdTupla.error.Respuesta) {
                     departamentoActual = departamentIdTupla.departamento;
                 }
                 //verificar si la primera imagen existe
@@ -271,7 +271,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var departamentoTupla = departamentobl.WebDepartamentoEditarJson(departamento);
                 error = departamentoTupla.error;
 
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     editado = departamentoTupla.DepartamentoEditado;
                     if (editado !=false)
@@ -286,7 +286,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se pudo editar el Departamento";
                 }
             }
@@ -309,7 +309,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var departamentoIdTupla = departamentobl.WebDepartamentoIdObtenerJson(dep_id);
-                if (departamentoIdTupla.error.Key.Equals(string.Empty)){
+                if (departamentoIdTupla.error.Respuesta){
                     //Eliminar Archivos Primero
                     var dep_imagen = departamentoIdTupla.departamento.dep_imagen;
                     rutaEliminar = Path.Combine(direccion, dep_imagen);
@@ -327,14 +327,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
 
                 var departamentoTupla = departamentobl.WebDepartamentoEliminarJson(dep_id);
                 error = departamentoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Departamento Eliminado";
                     respuesta = departamentoTupla.DepartamentoEliminado;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se pudo Eliminar";
                 }
 

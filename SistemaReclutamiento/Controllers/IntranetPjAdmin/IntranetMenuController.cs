@@ -42,14 +42,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var menuTupla = intranetMenubl.IntranetMenuListarJson();
                 error = menuTupla.error;
                 listaMenus = menuTupla.intranetMenuLista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Menus";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Menus";
                 }
                 
@@ -75,14 +75,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var menuTupla = intranetMenubl.IntranetMenuListarJson();
                 error = menuTupla.error;
                 listaMenus = menuTupla.intranetMenuLista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Menus";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Menus";
                 }
 
@@ -122,14 +122,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var menuTupla = intranetMenubl.IntranetMenuListarTodoJson();
                 error = menuTupla.error;
                 listaMenus = menuTupla.intranetMenuLista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Menus";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Menus";
                 }
 
@@ -152,14 +152,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var menuTupla = intranetMenubl.IntranetMenuIdObtenerJson(menu_id);
                 error = menuTupla.error;
                 menu = menuTupla.intranetMenu;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Obteniendo Informacion del Menu Seleccionado";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudo Obtener La Informacionb del Menu Seleccionado";
                 }
 
@@ -182,13 +182,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             try
             {
                 var listaMenusTupla = intranetMenubl.IntranetMenuListarTodoJson();
-                if (listaMenusTupla.error.Key.Equals(string.Empty)) {
+                if (listaMenusTupla.error.Respuesta) {
                     totalRegistros = listaMenusTupla.intranetMenuLista.Max(x => x.menu_orden);
                     intranetMenu.menu_orden = totalRegistros + 1;
                     var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
                     error = menuTupla.error;
 
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         mensaje = "Se Registró Correctamente";
                         respuesta = true;
@@ -197,24 +197,24 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     else
                     {
                         mensaje = "No se Pudo insertar el Menu";
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                     }
                 }
                 else
                 {
                     mensaje = "No se Pudo insertar el Menu";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
                 //var totalMenuTupla = intranetMenubl.IntranetMenuObtenerTotalRegistrosJson();
                 //error = totalMenuTupla.error;
-                //if (error.Key.Equals(string.Empty))
+                //if (error.Respuesta)
                 //{
                 //    totalRegistros = totalMenuTupla.intranetMenuTotal;
                 //    intranetMenu.menu_orden = totalRegistros + 1;
                 //    var menuTupla = intranetMenubl.IntranetMenuInsertarJson(intranetMenu);
                 //    error = menuTupla.error;
 
-                //    if (error.Key.Equals(string.Empty))
+                //    if (error.Respuesta)
                 //    {
                 //        mensaje = "Se Registró Correctamente";
                 //        respuesta = true;
@@ -223,13 +223,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 //    else
                 //    {
                 //        mensaje = "No se Pudo insertar el Menu";
-                //        mensajeConsola = error.Value;
+                //        mensajeConsola = error.Mensaje;
                 //    }
                 //}
                 //else
                 //{
                 //    mensaje = "No se Pudo insertar el Menu";
-                //    mensajeConsola = error.Value;
+                //    mensajeConsola = error.Mensaje;
                 //}
 
 
@@ -253,14 +253,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 {
                     var menuTupla = intranetMenubl.IntranetMenuEditarJson(intranetMenu);
                     error = menuTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         respuestaConsulta = menuTupla.intranetMenuEditado;
                         errormensaje = "Se Editó Correctamente";
                     }
                     else
                     {
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                         errormensaje = "Error, no se Puede Editar";
                     }
                 }
@@ -292,17 +292,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             try
             {
                 var listaSeccionesTupla = intranetSeccionbl.IntranetSeccionListarxMenuIDJson(menu_id);
-                if (listaSeccionesTupla.error.Key.Equals(string.Empty)) {
+                if (listaSeccionesTupla.error.Respuesta) {
                     foreach (var seccion in listaSeccionesTupla.intranetSeccionListaxMenuID) {
                         var listaElementoTupla = intranetElementobl.IntranetElementoListarxSeccionIDJson(seccion.sec_id);
-                        if (listaElementoTupla.error.Key.Equals(string.Empty))
+                        if (listaElementoTupla.error.Respuesta)
                         {
                             foreach (var elemento in listaElementoTupla.intranetElementoListaxSeccionID)
                             {
                                 //Buscar los Detalles que pudiera tener
                                 var detalleElementoTupla2 = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(elemento.elem_id);
 
-                                if (detalleElementoTupla2.error.Key.Equals(string.Empty))
+                                if (detalleElementoTupla2.error.Respuesta)
                                 {
                                     listaDetalleElemento = detalleElementoTupla2.intranetDetalleElementoListaxElementoID;
                                     if (listaDetalleElemento.Count > 0)
@@ -310,14 +310,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                         foreach (var j in listaDetalleElemento)
                                         {
                                             var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(j.detel_id);
-                                            if (detalleElementoTupla.error.Key.Equals(string.Empty))
+                                            if (detalleElementoTupla.error.Respuesta)
                                             {
                                                 int fk_seccion_elemento = detalleElementoTupla.intranetDetalleElemento.fk_seccion_elemento;
                                                 if (fk_seccion_elemento > 0)
                                                 {
                                                     //Buscar todos los elementos modales que tengan ese fk_seccion elemento
                                                     var listaElementosTupla = intanetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(fk_seccion_elemento);
-                                                    if (listaElementosTupla.error.Key.Equals(string.Empty))
+                                                    if (listaElementosTupla.error.Respuesta)
                                                     {
                                                         listaElementoModal = listaElementosTupla.intranetElementoModalListaxseccionelementoID;
                                                         if (listaElementoModal.Count > 0)
@@ -326,7 +326,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                                             foreach (var m in listaElementoModal)
                                                             {
                                                                 var detalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(m.emod_id);
-                                                                if (detalleElementoModalTupla.error.Key.Equals(string.Empty))
+                                                                if (detalleElementoModalTupla.error.Respuesta)
                                                                 {
                                                                     listaDetalleElementoModal = detalleElementoModalTupla.intranetDetalleElementoModalListaxElementoID;
                                                                     if (listaDetalleElementoModal.Count > 0)
@@ -383,7 +383,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 }
                 var menuTupla = intranetMenubl.IntranetMenuEliminarJson(menu_id);
                 error = menuTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = menuTupla.intranetMenuEliminado;
                     errormensaje = "Menu Eliminado";
@@ -391,7 +391,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 else
                 {
                     errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -417,19 +417,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 for (int i = 0; i <= listaMenuEliminar.Length - 1; i++) {
 
                     var listaSeccionesTupla = intranetSeccionbl.IntranetSeccionListarxMenuIDJson(listaMenuEliminar[i]);
-                    if (listaSeccionesTupla.error.Key.Equals(string.Empty))
+                    if (listaSeccionesTupla.error.Respuesta)
                     {
                         foreach (var seccion in listaSeccionesTupla.intranetSeccionListaxMenuID)
                         {
                             var listaElementoTupla = intranetElementobl.IntranetElementoListarxSeccionIDJson(seccion.sec_id);
-                            if (listaElementoTupla.error.Key.Equals(string.Empty))
+                            if (listaElementoTupla.error.Respuesta)
                             {
                                 foreach (var elemento in listaElementoTupla.intranetElementoListaxSeccionID)
                                 {
                                     //Buscar los Detalles que pudiera tener
                                     var detalleElementoTupla2 = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(elemento.elem_id);
 
-                                    if (detalleElementoTupla2.error.Key.Equals(string.Empty))
+                                    if (detalleElementoTupla2.error.Respuesta)
                                     {
                                         listaDetalleElemento = detalleElementoTupla2.intranetDetalleElementoListaxElementoID;
                                         if (listaDetalleElemento.Count > 0)
@@ -437,14 +437,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                             foreach (var j in listaDetalleElemento)
                                             {
                                                 var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(j.detel_id);
-                                                if (detalleElementoTupla.error.Key.Equals(string.Empty))
+                                                if (detalleElementoTupla.error.Respuesta)
                                                 {
                                                     int fk_seccion_elemento = detalleElementoTupla.intranetDetalleElemento.fk_seccion_elemento;
                                                     if (fk_seccion_elemento > 0)
                                                     {
                                                         //Buscar todos los elementos modales que tengan ese fk_seccion elemento
                                                         var listaElementosTupla = intanetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(fk_seccion_elemento);
-                                                        if (listaElementosTupla.error.Key.Equals(string.Empty))
+                                                        if (listaElementosTupla.error.Respuesta)
                                                         {
                                                             listaElementoModal = listaElementosTupla.intranetElementoModalListaxseccionelementoID;
                                                             if (listaElementoModal.Count > 0)
@@ -453,7 +453,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                                                 foreach (var m in listaElementoModal)
                                                                 {
                                                                     var detalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(m.emod_id);
-                                                                    if (detalleElementoModalTupla.error.Key.Equals(string.Empty))
+                                                                    if (detalleElementoModalTupla.error.Respuesta)
                                                                     {
                                                                         listaDetalleElementoModal = detalleElementoModalTupla.intranetDetalleElementoModalListaxElementoID;
                                                                         if (listaDetalleElementoModal.Count > 0)
@@ -514,7 +514,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     var menuTupla = intranetMenubl.IntranetMenuEliminarJson(listaMenuEliminar[i]);
 
                     error = menuTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         respuestaConsulta = menuTupla.intranetMenuEliminado;
                         errormensaje = "Menus Eliminados";
@@ -522,7 +522,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     else
                     {
                         errormensaje = "Error, no se Puede Eliminar";
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                     }
                 }
                 respuestaConsulta = true;
@@ -547,7 +547,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 intranetMenu.menu_orden = m.menu_orden;
                 var reordenadoTupla = intranetMenubl.IntranetMenuEditarOrdenJson(intranetMenu);
                 error = reordenadoTupla.error;
-                if (error.Key.Equals(string.Empty)) {
+                if (error.Respuesta) {
                     response = reordenadoTupla.intranetMenuReordenado;
                     errormensaje = "Editado";
                 }

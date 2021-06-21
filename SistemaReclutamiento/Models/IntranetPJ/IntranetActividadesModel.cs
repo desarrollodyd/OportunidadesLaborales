@@ -60,8 +60,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetActividadesLista: lista, error: error);
         }
@@ -98,8 +98,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetActividades: intranetActividades, error: error);
         }
@@ -130,8 +130,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetActividadesInsertado: idIntranetActividadesInsertado, error: error);
         }
@@ -160,8 +160,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetActividadesEditado: response, error: error);
         }
@@ -185,8 +185,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetActividadesEliminado: response, error: error);
@@ -229,8 +229,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetActividadesLista: lista, error: error);
         }

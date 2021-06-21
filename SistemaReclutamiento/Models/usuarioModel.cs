@@ -327,8 +327,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 //Console.Write(ex.Message);
             }
             return (lista: lista, error: error);
@@ -663,8 +663,8 @@ namespace SistemaReclutamiento.Models
                 }
             }
             catch (Exception ex) {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (tokenInsertado: response, error: error);
         }
@@ -709,8 +709,8 @@ namespace SistemaReclutamiento.Models
                 }
             }
             catch (Exception Ex) {
-                error.Key = Ex.Data.Count.ToString();
-                error.Value = Ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = Ex.Message;
             }
             return (listaUsuarios: listaUsuarios, error: error);
         }

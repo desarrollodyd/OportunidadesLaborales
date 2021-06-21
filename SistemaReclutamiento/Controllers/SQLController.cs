@@ -30,7 +30,7 @@ namespace SistemaReclutamiento.Controllers
                 var sqltupla = sqlbl.EmpresaListarJson();
                 listaempresa = sqltupla.listaempresa;
                 error = sqltupla.error;
-                errormensaje = error.Value;
+                errormensaje = error.Mensaje;
                 if (errormensaje.Equals(string.Empty))
                 {
                     response = true;
@@ -54,7 +54,7 @@ namespace SistemaReclutamiento.Controllers
                 var sqltupla = sqlbl.PuestoTrabajoObtenerPorEmpresaJson(CO_EMPR);
                 listapuesto = sqltupla.listapuesto;
                 error = sqltupla.error;
-                errormensaje = error.Value;
+                errormensaje = error.Mensaje;
                 if (errormensaje.Equals(string.Empty))
                 {
                     response = true;
@@ -87,7 +87,7 @@ namespace SistemaReclutamiento.Controllers
                     stringEmpresas = stringEmpresas.Substring(0, stringEmpresas.Length - 1);
                     stringEmpresas += ")";
                     var listaTupla = sqlbl.TTSEDEListarporEmpresaJson(stringEmpresas);
-                    if (listaTupla.error.Key.Equals(string.Empty))
+                    if (listaTupla.error.Respuesta)
                     {
                         lista = listaTupla.listapuesto;
                         
@@ -122,7 +122,7 @@ namespace SistemaReclutamiento.Controllers
                     }
                     else
                     {
-                        errormensaje = listaTupla.error.Value;
+                        errormensaje = listaTupla.error.Mensaje;
                     }
                 }
                 else
@@ -172,22 +172,22 @@ namespace SistemaReclutamiento.Controllers
                     stringSedes += ")";
 
                     var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerDataEmpresaFichasJson(stringEmpresas, stringSedes, mes_anterior);
-                    if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                    if (listaPersonasSQLTupla.error.Respuesta)
                     {
                         listaPersonasSQL = listaPersonasSQLTupla.lista;
                     }
                     else
                     {
-                        errormensaje += listaPersonasSQLTupla.error.Value;
+                        errormensaje += listaPersonasSQLTupla.error.Mensaje;
                     }
                     var listaPersonasPostgresTupla = personabl.PersonaListarEmpleadosJson();
-                    if (listaPersonasPostgresTupla.error.Key.Equals(string.Empty))
+                    if (listaPersonasPostgresTupla.error.Respuesta)
                     {
                         listaPersonasPostgres = listaPersonasPostgresTupla.listaPersonas;
                     }
                     else
                     {
-                        errormensaje += listaPersonasPostgresTupla.error.Value;
+                        errormensaje += listaPersonasPostgresTupla.error.Mensaje;
                     }
 
 
@@ -196,13 +196,13 @@ namespace SistemaReclutamiento.Controllers
                         //listar de postgress Usuarios de Plantilla de Excel
 
                         var listaUsuariosExcelPostgresTupla = cumusuexcelbl.CumUsuarioExcelListarJson();
-                        if (listaUsuariosExcelPostgresTupla.error.Key.Equals(string.Empty))
+                        if (listaUsuariosExcelPostgresTupla.error.Respuesta)
                         {
                             listaPostgresExcel = listaUsuariosExcelPostgresTupla.lista;
                         }
                         else
                         {
-                            errormensaje += listaUsuariosExcelPostgresTupla.error.Value;
+                            errormensaje += listaUsuariosExcelPostgresTupla.error.Mensaje;
                         }
 
                         foreach (var m in listaPersonasSQL)

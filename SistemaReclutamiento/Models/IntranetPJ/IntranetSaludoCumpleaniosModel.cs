@@ -66,8 +66,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetSaludoCumpleanioLista: lista, error: error);
         }
@@ -122,8 +122,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetSaludoCumpleanioLista: lista, error: error);
         }
@@ -164,8 +164,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetSaludoCumpleanio: intranetSaludoCumpleanio, error: error);
         }
@@ -198,8 +198,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetSaludoCumpleanioInsertado: idIntranetSaludoCumpleanioInsertado, error: error);
         }
@@ -224,8 +224,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetSaludoCumpleanioEditado: response, error: error);
         }
@@ -249,8 +249,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetSaludoCumpleanioEliminado: response, error: error);

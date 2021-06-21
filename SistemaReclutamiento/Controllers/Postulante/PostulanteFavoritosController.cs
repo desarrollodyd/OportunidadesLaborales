@@ -33,7 +33,7 @@ namespace SistemaReclutamiento.Controllers.Postulante
             try {
                 var favoritosTupla = postulanteFavoritosbl.IntranetPostulanteFavoritosInsertarJson(postulanteFavoritos);
                 error = favoritosTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     idPostulanteFavoritoInsertado = favoritosTupla.idIntranetPostulanteFavoritosInsertado;
                     if (idPostulanteFavoritoInsertado ==true)
@@ -47,7 +47,7 @@ namespace SistemaReclutamiento.Controllers.Postulante
                     }
                 }
                 else {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -68,7 +68,7 @@ namespace SistemaReclutamiento.Controllers.Postulante
             {
                 var postulanteFavoritosTupla = postulanteFavoritosbl.IntranetPostulanteFavoritosEliminarJson(fk_postulante, fk_oferta_laboral);
                 error = postulanteFavoritosTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = true;
                     errormensaje = "Quitado de Favoritos";

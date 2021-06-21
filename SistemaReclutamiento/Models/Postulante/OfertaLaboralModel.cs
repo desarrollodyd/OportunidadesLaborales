@@ -165,8 +165,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 //Console.Write(ex.Message);
             }
             return (lista:lista,error:error);
@@ -287,8 +287,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                // Console.Write(ex.Message);
             }
             return (lista:lista,error:error);
@@ -463,8 +463,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 //Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return (ofertalaboral:ofertalaboral,error:error);
@@ -556,8 +556,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 //Console.Write(ex.Message);
             }
             return (lista:lista, error:error);

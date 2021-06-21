@@ -55,8 +55,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetTipoElementoLista: lista, error: error);
         }
@@ -93,8 +93,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetTipoElemento: intranetTipoElemento, error: error);
         }
@@ -124,8 +124,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetTipoElementoInsertado: idIntranetTipoElementoInsertado, error: error);
         }
@@ -152,8 +152,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetTipoElementoEditado: response, error: error);
         }
@@ -177,8 +177,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetTipoElementoEliminado: response, error: error);

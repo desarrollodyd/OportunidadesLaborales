@@ -40,8 +40,8 @@ namespace SistemaReclutamiento.Models.Postulante
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetPostulanteFavoritosInsertado: response, error: error);
         }
@@ -67,8 +67,8 @@ namespace SistemaReclutamiento.Models.Postulante
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetPostulanteFavoritosEliminado: response, error: error);
         }
@@ -106,8 +106,8 @@ namespace SistemaReclutamiento.Models.Postulante
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: lista, error: error);
         }

@@ -20,7 +20,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
         {
             //bool response = false;
             int totalInsertados = 0;
-            string consulta = @"INSERT INTO boletas_gdt.bol_empleado_boleta(
+            string consulta = @"INSERT INTO intranet.bol_empleado_boleta(
 	emp_co_trab, emp_co_empr, emp_anio, emp_periodo, emp_ruta_pdf, emp_enviado, emp_descargado, emp_fecha_reg, emp_no_trab, emp_apel_pat, emp_apel_mat, emp_direc_mail, emp_nro_cel, emp_tipo_doc)
 	VALUES " +values;
             claseError error = new claseError();
@@ -38,8 +38,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (totalInsertados: totalInsertados, error: error);
         }
@@ -50,7 +50,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             string consulta = @"SELECT emp_co_trab, emp_co_empr, emp_anio, emp_periodo, 
                             emp_ruta_pdf, emp_enviado, emp_descargado, emp_fecha_act, emp_fecha_reg, emp_no_trab, 
                             emp_apel_pat, emp_apel_mat, emp_direc_mail, emp_nro_cel, emp_tipo_doc
-	                            FROM boletas_gdt.bol_empleado_boleta
+	                            FROM intranet.bol_empleado_boleta
                                 where emp_co_empr=@p0
 	                                and emp_anio=@p1
 	                                and emp_periodo=@p2;";
@@ -98,8 +98,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaBoletas, error: error);
         }
@@ -107,9 +107,9 @@ namespace SistemaReclutamiento.Models.BoletasGDT
         {
             claseError error = new claseError();
             bool eliminado = false;
-            string consulta = @"delete from boletas_gdt.bol_empleado_boleta where emp_ruta_pdf in(
+            string consulta = @"delete from intranet.bol_empleado_boleta where emp_ruta_pdf in(
                                 SELECT emp_ruta_pdf
-	                                FROM boletas_gdt.bol_empleado_boleta
+	                                FROM intranet.bol_empleado_boleta
 	                                where emp_co_empr=@p0
 		                                and emp_anio=@p1
 		                                and emp_periodo=@p2
@@ -129,8 +129,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (eliminado: eliminado, error: error);
         }
@@ -138,7 +138,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
         {
             claseError error = new claseError();
             bool editado = false;
-            string consulta = @"UPDATE boletas_gdt.bol_empleado_boleta
+            string consulta = @"UPDATE intranet.bol_empleado_boleta
 	                            SET emp_enviado=emp_enviado+1,emp_fecha_act=@p1
 	                            WHERE emp_ruta_pdf=@p2;";
             try
@@ -155,8 +155,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (editado: editado, error: error);
         }
@@ -167,7 +167,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             string consulta = @"SELECT emp_co_trab, emp_co_empr, emp_anio, emp_periodo, 
                             emp_ruta_pdf, emp_enviado, emp_descargado, emp_fecha_act, emp_fecha_reg, emp_no_trab, 
                             emp_apel_pat, emp_apel_mat, emp_direc_mail, emp_nro_cel, emp_tipo_doc
-	                            FROM boletas_gdt.bol_empleado_boleta
+	                            FROM intranet.bol_empleado_boleta
                                 where emp_co_empr=@p0
 	                                and emp_anio=@p1
 	                                and emp_periodo=@p2 and emp_co_trab=@p3;";
@@ -216,8 +216,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaBoletas, error: error);
         }

@@ -61,8 +61,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: lista, error: error);
         }
@@ -106,8 +106,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (cumUsuPregunta: usuPregunta, error: error);
         }
@@ -143,8 +143,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idInsertado: idInsertado, error: error);
         }
@@ -174,8 +174,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (editado: response, error: error);
         }

@@ -51,8 +51,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista, error: error);
         }
@@ -87,8 +87,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (departamento: departamento, error: error);
         }
@@ -118,8 +118,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idDeptatamentoInsertado: idDeptatamentoInsertado, error: error);
         }
@@ -146,8 +146,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (DepartamentoEditado: response, error: error);
         }
@@ -171,8 +171,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (DepartamentoEliminado: response, error: error);

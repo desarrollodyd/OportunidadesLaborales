@@ -43,14 +43,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioListarJson();
                 error = saludoTupla.error;
                 listaComentarios = saludoTupla.intranetSaludoCumpleanioLista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Comentarios";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Comentarios";
                 }
 
@@ -72,14 +72,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioEditarJson(intranetSaludoCumpleanio);
                 error = saludoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = saludoTupla.intranetSaludoCumpleanioEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     errormensaje = "Error, no se Puede Editar";
                 }
             }
@@ -113,7 +113,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     intranetSaludoCumpleanio.sld_estado = "A";
                     var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioInsertarJson(intranetSaludoCumpleanio);
                     error = saludoTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         intranetSaludoCumpleaniosInsertado = saludoTupla.idIntranetSaludoCumpleanioInsertado;
                         respuestaConsulta = true;
@@ -280,7 +280,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                     else
                     {
-                        mensajeConsola += error.Value;
+                        mensajeConsola += error.Mensaje;
                         errormensaje = "Error, no se Puede Insertar";
                     }
                 }
@@ -309,7 +309,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioEliminarJson(sld_id);
                 error = saludoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = saludoTupla.intranetSaludoCumpleanioEliminado;
                     errormensaje = "Saludo Eliminado";
@@ -317,7 +317,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 else
                 {
                     errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -337,7 +337,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 {
                     var saludoTupla = intranetSaludoCumpleaniobl.IntranetSaludoCumpleanioEliminarJson(listaComentariosEliminar[i]);
                     error = saludoTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         respuestaConsulta = saludoTupla.intranetSaludoCumpleanioEliminado;
                         errormensaje = "Comentarios Eliminados";
@@ -345,7 +345,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     else
                     {
                         errormensaje = "Error, no se Puede Eliminar";
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                     }
                 }
                 respuestaConsulta = true;

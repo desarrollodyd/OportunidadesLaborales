@@ -30,14 +30,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var AplicativoTupla = intranetAplicativobl.IntranetAplicativoListarJson();
                 error = AplicativoTupla.error;
                 listaAplicativo = AplicativoTupla.intranetAplicativoLista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Aplicativos";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Aplicativos";
                 }
 
@@ -60,7 +60,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var AplicativoTupla = intranetAplicativobl.IntranetAplicativoInsertarJson(intranetAplicativo);
                 error = AplicativoTupla.error;
 
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
@@ -69,7 +69,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 else
                 {
                     mensaje = "No se Pudo insertar las Aplicativo";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
 
             }
@@ -90,14 +90,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             {
                 var AplicativoTupla = intranetAplicativobl.IntranetAplicativoEditarJson(intranetAplicativo);
                 error = AplicativoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = AplicativoTupla.intranetAplicativoEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     errormensaje = "Error, no se Puede Editar";
                 }
             }
@@ -118,7 +118,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             {
                 var AplicativoTupla = intranetAplicativobl.IntranetAplicativoEliminarJson(apl_id);
                 error = AplicativoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = AplicativoTupla.intranetAplicativoEliminado;
                     errormensaje = "Aplicativo Eliminado";
@@ -126,7 +126,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 else
                 {
                     errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
             }
             catch (Exception exp)

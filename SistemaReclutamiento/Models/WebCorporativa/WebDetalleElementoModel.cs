@@ -59,8 +59,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (listadetalles: lista, error: error);
         }
@@ -112,8 +112,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (listadetalle: lista, error: error);
         }
@@ -158,8 +158,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (detalle: WebImagen, error: error);
         }
@@ -192,8 +192,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idInsertado: idInsertado, error: error);
         }
@@ -228,8 +228,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (WebDetalleElementoEditado: response, error: error);
         }
@@ -253,8 +253,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (eliminado: response, error: error);
@@ -280,8 +280,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (WebDetElementoReordenado: response, error: error);
         }

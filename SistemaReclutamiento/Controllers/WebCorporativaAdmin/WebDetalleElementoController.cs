@@ -31,14 +31,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var DetalleElementoTupla = detallebl.WebDetalleElementoListarxElementoIDJson(elem_id);
                 error = DetalleElementoTupla.error;
                 listaDetalleElemento = DetalleElementoTupla.listadetalle;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Detalle Elemento";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Detalles";
                 }
 
@@ -126,7 +126,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 //Insertar Detalles
                 var totaltupla = detallebl.WebDetalleElementoListarxElementoIDJson(detalle.fk_elemento);
-                if (totaltupla.error.Key.Equals(string.Empty))
+                if (totaltupla.error.Respuesta)
                 {
                     if (totaltupla.listadetalle.Count > 0)
                     {
@@ -141,7 +141,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     detalle.detel_orden = 1;
                 }
                 var detalleTupla = detallebl.WebDetalleElementoInsertarJson(detalle);
-                if (detalleTupla.error.Key.Equals(string.Empty)) {
+                if (detalleTupla.error.Respuesta) {
                     if (detalleTupla.idInsertado > 0)
                     {
                         respuesta = true;
@@ -152,7 +152,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     }
                 }
                 else {
-                    mensaje = detalleTupla.error.Value;
+                    mensaje = detalleTupla.error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -171,7 +171,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var detalleTupla = detallebl.WebDetalleElementoIdObtenerJson(detel_id);
-                if (detalleTupla.error.Key.Equals(string.Empty)) {
+                if (detalleTupla.error.Respuesta) {
                     //eliminar imagenes si las hubiera
                     detalle = detalleTupla.detalle;
                     if (detalle.fk_tipo == 4 || detalle.fk_tipo == 5 || detalle.fk_tipo == 6||detalle.fk_tipo==7)
@@ -192,13 +192,13 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     }
                 }
                 var eliminadoTupla = detallebl.WebDetalleElementoEliminarJson(detalle.detel_id);
-                if (eliminadoTupla.error.Key.Equals(string.Empty))
+                if (eliminadoTupla.error.Respuesta)
                 {
                     respuesta = eliminadoTupla.eliminado;
                     mensaje = "Eliminado";
                 }
                 else {
-                    mensaje = eliminadoTupla.error.Value;
+                    mensaje = eliminadoTupla.error.Mensaje;
                 }
 
             }
@@ -297,12 +297,12 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 //Edicion
                 var editadoTupla = detallebl.WebDetalleElementoEditarJson(detalle);
-                if (editadoTupla.error.Key.Equals(string.Empty)) {
+                if (editadoTupla.error.Respuesta) {
                     respuesta = editadoTupla.WebDetalleElementoEditado;
                     mensaje = "Editado";
                 }
                 else {
-                    mensaje = editadoTupla.error.Value;
+                    mensaje = editadoTupla.error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -318,14 +318,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var detalleTupla = detallebl.WebDetalleElementoIdObtenerJson(detel_id);
-                if (detalleTupla.error.Key.Equals(string.Empty)) {
+                if (detalleTupla.error.Respuesta) {
                     detalle = detalleTupla.detalle;
                     errormensaje = "Obteniendo Detalle";
                     response = true;
                 }
                 else
                 {
-                    errormensaje = detalleTupla.error.Value;
+                    errormensaje = detalleTupla.error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -347,7 +347,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 detalle.detel_orden = m.detel_orden;
                 var reordenadoTupla = detallebl.WebDetalleElementoEditarOrdenJson(detalle);
                 error = reordenadoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = reordenadoTupla.WebDetElementoReordenado;
                     errormensaje = "Editado";

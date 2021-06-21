@@ -58,8 +58,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetElementoModalLista: lista, error: error);
         }
@@ -115,8 +115,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetElementoModalListaxseccionelementoID: lista, error: error);
         }
@@ -158,8 +158,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetElementoModal: intranetElementoModal, error: error);
         }
@@ -192,8 +192,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetElementoModalInsertado: idIntranetElementoModalInsertado, error: error);
         }
@@ -225,8 +225,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetElementoModalEditado: response, error: error);
         }
@@ -250,8 +250,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetElementoModalEliminado: response, error: error);
@@ -276,8 +276,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetElementoModalEliminado: response, error: error);
@@ -310,8 +310,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetElementoModalTotal: intranetElementoModalTotal, error: error);
         }
@@ -336,8 +336,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetElemModalReordenado: response, error: error);
         }

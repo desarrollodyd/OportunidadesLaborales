@@ -58,8 +58,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoModalLista: lista, error: error);
         }
@@ -108,8 +108,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoModalListaxElementoID: lista, error: error);
         }
@@ -154,8 +154,8 @@ detelm_orden, detelm_posicion
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoModal: intranetdetalleElementoModal, error: error);
         }
@@ -191,8 +191,8 @@ detelm_orden, detelm_posicion
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetDetalleElementoModalInsertado: idIntranetDetalleElementoModalInsertado, error: error);
         }
@@ -227,8 +227,8 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoModalEditado: response, error: error);
         }
@@ -252,8 +252,8 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetDetalleElementoModalEliminado: response, error: error);
@@ -285,8 +285,8 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoModalTotal: intranetDetalleElementoModalTotal, error: error);
         }
@@ -310,8 +310,8 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetDetalleElementoModalEliminado: response, error: error);
@@ -337,8 +337,8 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetElementoModalReordenado: response, error: error);
         }
@@ -363,8 +363,8 @@ detelm_ubicacion=@p3,  detelm_estado=@p5,fk_elemento_modal=@p7, detelm_posicion=
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (response, error);
         }

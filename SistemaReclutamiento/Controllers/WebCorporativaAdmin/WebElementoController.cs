@@ -33,14 +33,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var ElementoTupla = elementobl.WebElementoListarxMenuIDJson(menu_id);
                 error = ElementoTupla.error;
                 listaElementos = ElementoTupla.lista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Elementos";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Elementoes";
                 }
 
@@ -63,7 +63,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             {
                 var totalElementosTupla = elementobl.WebElementoListarxMenuIDJson(elemento.fk_menu);
                 error = totalElementosTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     if (totalElementosTupla.lista.Count > 0)
                     {
@@ -76,7 +76,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     var idInsertado = elementobl.WebElementoInsertarJson(elemento);
                     error = idInsertado.error;
 
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         mensaje = "Se Registró Correctamente";
                         respuesta = true;
@@ -85,13 +85,13 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     else
                     {
                         mensaje = "No se Pudo insertar el Elemento";
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                     }
                 }
                 else
                 {
                     mensaje = "Error al Insertar el Nuevo Elemento";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
 
 
@@ -114,7 +114,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             {
                 var intranetElementoTupla = elementobl.WebElementoIdObtenerJson(elem_id);
                 error = intranetElementoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     intranetElemento = intranetElementoTupla.elemento;
                     errormensaje = "Obteniendo Data";
@@ -122,7 +122,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 else
                 {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
             }
             catch (Exception ex)
@@ -141,14 +141,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             {
                 var intranetElementoTupla = elementobl.WebElementoEditarJson(elemento);
                 error = intranetElementoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = intranetElementoTupla.WebElementoEditado;
                     errormensaje = "Elemento Editado";
                 }
                 else
                 {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
 
             }
@@ -170,7 +170,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var listaTupla = detallebl.WebDetalleElementoListarxElementoIDJson(elem_id);
-                if (listaTupla.error.Key.Equals(string.Empty)) {
+                if (listaTupla.error.Respuesta) {
                     listadetalles = listaTupla.listadetalle;
                     foreach(var m in listadetalles)
                     {
@@ -193,14 +193,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 var intranetElementoTupla = elementobl.WebElementoEliminarJson(elem_id);
                 error = intranetElementoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = intranetElementoTupla.eliminado;
                     errormensaje = "Elemento Eliminado";
                 }
                 else
                 {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
 
             }
@@ -224,7 +224,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 elemento.elem_orden = m.elem_orden;
                 var reordenadoTupla = elementobl.WebElementoEditarOrdenJson(elemento);
                 error = reordenadoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = reordenadoTupla.reordenado;
                     errormensaje = "Editado";

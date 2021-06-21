@@ -27,13 +27,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var listatupla = sistemasbl.IntranetSistemasListarJson();
-                if (listatupla.error.Key.Equals(string.Empty)){
+                if (listatupla.error.Respuesta){
                     lista = listatupla.intranetSistemasLista;
                     errormensaje = "Listando Data";
                     response = true;
                 }
                 else {
-                    errormensaje = listatupla.error.Value;
+                    errormensaje = listatupla.error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -50,7 +50,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var sistematupla = sistemasbl.IntranetSistemaInsertarJson(sistema);
-                if (sistematupla.error.Key.Equals(string.Empty))
+                if (sistematupla.error.Respuesta)
                 {
                     idIntranetSistema = sistematupla.idIntranetSistemaInsertado;
                     if (idIntranetSistema > 0)
@@ -64,7 +64,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 else
                 {
-                    errormensaje = sistematupla.error.Value;
+                    errormensaje = sistematupla.error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -82,7 +82,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var sistematupla = sistemasbl.IntranetSistemaIdObtenerJson(sist_id);
-                if (sistematupla.error.Key.Equals(string.Empty))
+                if (sistematupla.error.Respuesta)
                 {
                     sistema = sistematupla.intranetSistema;
                     errormensaje = "Obteniendo Data";
@@ -90,7 +90,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 else
                 {
-                    errormensaje = sistematupla.error.Value;
+                    errormensaje = sistematupla.error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -107,14 +107,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var sistematupla = sistemasbl.IntranetSistemaEditarJson(sistema);
-                if (sistematupla.error.Key.Equals(string.Empty))
+                if (sistematupla.error.Respuesta)
                 {
                     response = sistematupla.intranetSistemaEditado;
                     errormensaje = "Editado con Éxito";
                 }
                 else
                 {
-                    errormensaje = sistematupla.error.Value;
+                    errormensaje = sistematupla.error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -130,14 +130,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var sistematupla = sistemasbl.IntranetMenuEliminarJson(sist_id);
-                if (sistematupla.error.Key.Equals(string.Empty))
+                if (sistematupla.error.Respuesta)
                 {
                     response = sistematupla.intranetSistemaEliminado;
                     errormensaje = "Eliminado con Éxito";
                 }
                 else
                 {
-                    errormensaje = sistematupla.error.Value;
+                    errormensaje = sistematupla.error.Mensaje;
                 }
             }
             catch (Exception exp)

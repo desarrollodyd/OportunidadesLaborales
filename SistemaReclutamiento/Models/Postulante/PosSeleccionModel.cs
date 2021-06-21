@@ -38,8 +38,8 @@ namespace SistemaReclutamiento.Models.Postulante
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idInsertado: idInsertado, error: error);
         }

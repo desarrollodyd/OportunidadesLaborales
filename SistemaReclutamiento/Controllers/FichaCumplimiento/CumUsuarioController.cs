@@ -40,13 +40,13 @@ namespace SistemaReclutamiento.Controllers
         //    try
         //    {
         //        var cumUsuarioTupla = cumUsuariobl.CumUsuarioFkUsuarioObtenerJson(fk_usuario);
-        //        if (cumUsuarioTupla.error.Key.Equals(string.Empty))
+        //        if (cumUsuarioTupla.error.Respuesta)
         //        {
         //            cumUsuario=cumUsuarioTupla.cumUsuario;
         //            if (cumUsuario.cus_id != 0)
         //            {
         //                var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id);
-        //                if (cumPreguntaTupla.error.Key.Equals(string.Empty))
+        //                if (cumPreguntaTupla.error.Respuesta)
         //                {
         //                    List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
         //                    foreach (var preg in cumPreguntaTupla.lista)
@@ -54,13 +54,13 @@ namespace SistemaReclutamiento.Controllers
         //                        CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
         //                        pregunta = preg;
         //                        var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
-        //                        if (cumRespuestaTupla.error.Key.Equals(string.Empty))
+        //                        if (cumRespuestaTupla.error.Respuesta)
         //                        {
         //                            pregunta.CumUsuRespuesta=cumRespuestaTupla.lista;
         //                        }
         //                        else
         //                        {
-        //                            errormensaje = cumRespuestaTupla.error.Value;
+        //                            errormensaje = cumRespuestaTupla.error.Mensaje;
         //                        }
         //                        listaPreguntas.Add(pregunta);
         //                    }
@@ -69,7 +69,7 @@ namespace SistemaReclutamiento.Controllers
         //                }
         //                else
         //                {
-        //                    errormensaje = cumPreguntaTupla.error.Value;
+        //                    errormensaje = cumPreguntaTupla.error.Mensaje;
         //                }
         //            }
         //            else
@@ -82,7 +82,7 @@ namespace SistemaReclutamiento.Controllers
         //        }
         //        else
         //        {
-        //            errormensaje = cumUsuarioTupla.error.Value;
+        //            errormensaje = cumUsuarioTupla.error.Mensaje;
         //        }
             
         //    }
@@ -164,7 +164,7 @@ namespace SistemaReclutamiento.Controllers
 
             //insertar Usuario
             var cumUsuarioTupla = cumUsuariobl.CumUsuarioEditarFirmaJson(cumUsuario);
-            if (cumUsuarioTupla.error.Key.Equals(string.Empty))
+            if (cumUsuarioTupla.error.Respuesta)
             {
                 foreach (var preg in preguntas)
                 {
@@ -179,7 +179,7 @@ namespace SistemaReclutamiento.Controllers
                     pregunta.fk_envio = envio.env_id;
                     //Insertar Preguntas
                     var pregTupla = cumUsuPreguntabl.CumUsuPreguntaInsertarJson(pregunta);
-                    if (pregTupla.error.Key.Equals(string.Empty))
+                    if (pregTupla.error.Respuesta)
                     {
                         int idPreguntaInsertada = pregTupla.idInsertado;
                         foreach (var resp in preg.CumUsuRespuesta)
@@ -194,7 +194,7 @@ namespace SistemaReclutamiento.Controllers
                             respuesta.ure_estado = "A";
                             //Insertar Respuesta
                             var resTupla = cumUsuRespuestabl.CumUsuRespuestaInsertarJson(respuesta);
-                            if (resTupla.error.Key.Equals(string.Empty))
+                            if (resTupla.error.Respuesta)
                             {
                                 errormensaje = "Insertado";
                                 response = true;
@@ -243,12 +243,12 @@ namespace SistemaReclutamiento.Controllers
                 cumEnvio.env_estado = "2";
                 cumEnvio.env_fecha_act = DateTime.Now;
                 var envioTupla = cumEnviobl.CumEnvioEditarJson(cumEnvio);
-                if (envioTupla.error.Key.Equals(string.Empty))
+                if (envioTupla.error.Respuesta)
                 {
                     cumEnvioDetalle.end_estado = "2";
                     cumEnvioDetalle.end_fecha_act = DateTime.Now;
                     var envioDetalleTupla = cumEnvioDetbl.CumEnvioDetalleEditarJson(cumEnvioDetalle);
-                    if (envioDetalleTupla.error.Key.Equals(string.Empty))
+                    if (envioDetalleTupla.error.Respuesta)
                     {
                         response = true;
                         errormensaje = "Editado";
@@ -286,7 +286,7 @@ namespace SistemaReclutamiento.Controllers
             cumUsuario.cus_fecha_act = DateTime.Now;
             //Editar Usuario
             var usuarioTupla = cumUsuariobl.CumUsuarioEditarJson(cumUsuario);
-            if (usuarioTupla.error.Key.Equals(string.Empty))
+            if (usuarioTupla.error.Respuesta)
             {
                 if (usuarioTupla.editado)
                 {
@@ -296,7 +296,7 @@ namespace SistemaReclutamiento.Controllers
                         preg.upr_fecha_act = DateTime.Now;
                         preg.fk_usuario = cumUsuario.cus_id;
                         var preguntaTupla = cumUsuPreguntabl.CumUsuPreguntaEditarJson(preg);
-                        if (preguntaTupla.error.Key.Equals(string.Empty)){
+                        if (preguntaTupla.error.Respuesta){
                             if (preguntaTupla.editado)
                             {
                                 //Editar Respuestas
@@ -306,14 +306,14 @@ namespace SistemaReclutamiento.Controllers
                                     resp.fk_usu_pregunta = preg.upr_id;
                                     resp.ure_dni = cumUsuario.cus_dni;
                                     var respuestaTupla = cumUsuRespuestabl.CumUsuRespuestaEditarJson(resp);
-                                    if (respuestaTupla.error.Key.Equals(string.Empty))
+                                    if (respuestaTupla.error.Respuesta)
                                     {
                                         errormensaje = "Editado";
                                         response = true;
                                     }
                                     else
                                     {
-                                        errormensaje = respuestaTupla.error.Value;
+                                        errormensaje = respuestaTupla.error.Mensaje;
                                     }
                                 }
                                 
@@ -326,7 +326,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         else
                         {
-                            errormensaje = preguntaTupla.error.Value;
+                            errormensaje = preguntaTupla.error.Mensaje;
                         }
                     }
                  
@@ -338,7 +338,7 @@ namespace SistemaReclutamiento.Controllers
             }
             else
             {
-                errormensaje = usuarioTupla.error.Value;
+                errormensaje = usuarioTupla.error.Mensaje;
             }
 
             return Json(new { respuesta = response, mensaje = errormensaje, data = usuario });
@@ -352,14 +352,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 var envioTupla = intranetFichabl.IntranetFichaPostListarxUsuarioJson(fk_usuario,tipo);
-                if (envioTupla.error.Key.Equals(string.Empty))
+                if (envioTupla.error.Respuesta)
                 {
                     listaEnvio = envioTupla.intranetFichaLista;
                     response = true;
                 }
                 else
                 {
-                    errormensaje = envioTupla.error.Value;
+                    errormensaje = envioTupla.error.Mensaje;
                 }
             }
             catch(Exception ex)
@@ -381,7 +381,7 @@ namespace SistemaReclutamiento.Controllers
             {
                 //buscar usuario con ese codigo y numdoc
                 var usuarioTuplaClave = cumUsuariobl.CumUsuarioObtenerporNumDocyClave(numdoc, codigo);
-                if (usuarioTuplaClave.error.Key.Equals(string.Empty))
+                if (usuarioTuplaClave.error.Respuesta)
                 {
                     //cumUsuario = usuarioTupla.cumUsuario;
                     if (usuarioTuplaClave.cumUsuario.cus_id != 0)
@@ -391,14 +391,14 @@ namespace SistemaReclutamiento.Controllers
                         {
                             //postgres
                             var usuarioTuplaPostgres = cumUsuariobl.CumUsuarioIdObtenerDataCompletaJson(usuarioTuplaClave.cumUsuario.cus_id);
-                            if (usuarioTuplaPostgres.error.Key.Equals(string.Empty))
+                            if (usuarioTuplaPostgres.error.Respuesta)
                             {
                                 cumUsuario = usuarioTuplaPostgres.cumUsuario;
                                 cumUsuario.cus_firma_act = cumUsuario.cus_firma;
                             }
                             else
                             {
-                                errormensaje = usuarioTuplaPostgres.error.Value;
+                                errormensaje = usuarioTuplaPostgres.error.Mensaje;
                             }
                         }
                         else if(usuarioTuplaClave.cumUsuario.cus_tipo.ToUpper().Equals("EMPLEADO"))
@@ -408,7 +408,7 @@ namespace SistemaReclutamiento.Controllers
                             int mes_actual = DateTime.Now.Month;
                             int anio = DateTime.Now.Year;
                             var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
-                            if (personaSQLTupla.error.Key.Equals(string.Empty))
+                            if (personaSQLTupla.error.Respuesta)
                             {
                                 PersonaSqlEntidad persona = new PersonaSqlEntidad(); 
                                 if (personaSQLTupla.persona.CO_TRAB==null)
@@ -423,7 +423,7 @@ namespace SistemaReclutamiento.Controllers
                                         mes_actual = mes_actual - 1;
                                     }
                                     var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
-                                    if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                                    if (personaSQLTupla2.error.Respuesta)
                                     {
                                         persona = personaSQLTupla2.persona;
                                     }
@@ -445,7 +445,7 @@ namespace SistemaReclutamiento.Controllers
                             }
                             else
                             {
-                                errormensaje = personaSQLTupla.error.Value;
+                                errormensaje = personaSQLTupla.error.Mensaje;
                             }
                         }
                         else
@@ -455,7 +455,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         //Listar Preguntas y Respuestas
                         var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id, env_id);
-                        if (cumPreguntaTupla.error.Key.Equals(string.Empty))
+                        if (cumPreguntaTupla.error.Respuesta)
                         {
                             List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
                             foreach (var preg in cumPreguntaTupla.lista)
@@ -463,13 +463,13 @@ namespace SistemaReclutamiento.Controllers
                                 CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
                                 pregunta = preg;
                                 var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
-                                if (cumRespuestaTupla.error.Key.Equals(string.Empty))
+                                if (cumRespuestaTupla.error.Respuesta)
                                 {
                                     pregunta.CumUsuRespuesta = cumRespuestaTupla.lista;
                                 }
                                 else
                                 {
-                                    errormensaje = cumRespuestaTupla.error.Value;
+                                    errormensaje = cumRespuestaTupla.error.Mensaje;
                                 }
                                 listaPreguntas.Add(pregunta);
                             }
@@ -479,17 +479,17 @@ namespace SistemaReclutamiento.Controllers
                         }
                         else
                         {
-                            errormensaje = cumPreguntaTupla.error.Value;
+                            errormensaje = cumPreguntaTupla.error.Mensaje;
                         }
                         //Obtener Envio
 
                         var envioDetTupla = envDetModelbl.CumEnvioDetalleObtenerxEnvioJson(env_id);
-                        if (envioDetTupla.error.Key.Equals(string.Empty))
+                        if (envioDetTupla.error.Respuesta)
                         {
                             cumEnvioDet = envioDetTupla.cumEnvioDet;
                             //llenar Envio;
                             var envioTupla = cumEnviobl.CumEnvioIdObtenerJson(env_id);
-                            if (envioTupla.error.Key.Equals(string.Empty))
+                            if (envioTupla.error.Respuesta)
                             {
                                 cumEnvio = envioTupla.cumEnvio;
                                 if (cumEnvio.env_id != 0)
@@ -506,12 +506,12 @@ namespace SistemaReclutamiento.Controllers
                             }
                             else
                             {
-                                errormensaje = envioTupla.error.Value;
+                                errormensaje = envioTupla.error.Mensaje;
                             }
                         }
                         else
                         {
-                            errormensaje = envioDetTupla.error.Value;
+                            errormensaje = envioDetTupla.error.Mensaje;
                         }
                     }
                     else
@@ -521,7 +521,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    errormensaje = usuarioTuplaClave.error.Value;
+                    errormensaje = usuarioTuplaClave.error.Mensaje;
                 }
            
             }
@@ -580,7 +580,7 @@ namespace SistemaReclutamiento.Controllers
                             cumUsuario.cus_fecha_act = DateTime.Now;
                             cumUsuario.cus_id = usuario.cus_id;
                             var usuarioEdicionTupla = cumUsuariobl.CumUsuarioEditarFirmaJson(cumUsuario);
-                            if (!usuarioEdicionTupla.error.Key.Equals(string.Empty))
+                            if (!usuarioEdicionTupla.error.Respuesta)
                             {
                                 errormensaje = "Error al Editar Firma Digital";
                                 return Json(new { respuesta = response, mensaje = errormensaje });
@@ -608,7 +608,7 @@ namespace SistemaReclutamiento.Controllers
                     cumUsuPregunta.fk_pregunta = preg.fk_pregunta;
 
                     var preguntaTupla = cumUsuPreguntabl.CumUsuPreguntaEditarJson(cumUsuPregunta);
-                    if (preguntaTupla.error.Key.Equals(string.Empty))
+                    if (preguntaTupla.error.Respuesta)
                     {
                         foreach (var resp in preg.CumUsuRespuesta)
                         {
@@ -618,14 +618,14 @@ namespace SistemaReclutamiento.Controllers
                             cumUsuRespuesta.ure_orden =resp.ure_orden;
                             cumUsuRespuesta.ure_estado = "A";
                             var respuestaTupla = cumUsuRespuestabl.CumUsuRespuestaEditarJson(cumUsuRespuesta);
-                            if (respuestaTupla.error.Key.Equals(string.Empty))
+                            if (respuestaTupla.error.Respuesta)
                             {
                                 errormensaje = "Editado";
                                 response = true;
                             }
                             else
                             {
-                                errormensaje = respuestaTupla.error.Value;
+                                errormensaje = respuestaTupla.error.Mensaje;
                             }
                         }
                     }
@@ -658,12 +658,12 @@ namespace SistemaReclutamiento.Controllers
                 cumEnvio.env_estado = "2";
                 cumEnvio.env_fecha_act = DateTime.Now;
                 var envioTupla = cumEnviobl.CumEnvioEditarJson(cumEnvio);
-                if (envioTupla.error.Key.Equals(string.Empty))
+                if (envioTupla.error.Respuesta)
                 {
                     cumEnvioDetalle.end_estado = "2";
                     cumEnvioDetalle.end_fecha_act = DateTime.Now;
                     var envioDetalleTupla = cumEnvioDetbl.CumEnvioDetalleEditarJson(cumEnvioDetalle);
-                    if (envioDetalleTupla.error.Key.Equals(string.Empty))
+                    if (envioDetalleTupla.error.Respuesta)
                     {
                         response = true;
                         errormensaje = "Editado";
@@ -699,12 +699,12 @@ namespace SistemaReclutamiento.Controllers
                 //Obtener Envio
 
                 var envioDetTupla = envDetModelbl.CumEnvioDetalleObtenerxEnvioJson(env_id);
-                if (envioDetTupla.error.Key.Equals(string.Empty))
+                if (envioDetTupla.error.Respuesta)
                 {
                     cumEnvioDet = envioDetTupla.cumEnvioDet;
                     //llenar Envio;
                     var envioTupla = cumEnviobl.CumEnvioIdObtenerJson(env_id);
-                    if (envioTupla.error.Key.Equals(string.Empty))
+                    if (envioTupla.error.Respuesta)
                     {
                         cumEnvio = envioTupla.cumEnvio;
                         if (cumEnvio.env_id != 0)
@@ -721,17 +721,17 @@ namespace SistemaReclutamiento.Controllers
                     }
                     else
                     {
-                        errormensaje = envioTupla.error.Value;
+                        errormensaje = envioTupla.error.Mensaje;
                     }
                 }
                 else
                 {
-                    errormensaje = envioDetTupla.error.Value;
+                    errormensaje = envioDetTupla.error.Mensaje;
                 }
 
                 //obtener usuario por fk_envio
                 var usuarioTuplaClave = cumUsuariobl.CumUsuarioIdObtenerJson(cumEnvio.fk_usuario);
-                if (usuarioTuplaClave.error.Key.Equals(string.Empty))
+                if (usuarioTuplaClave.error.Respuesta)
                 {
                     //cumUsuario = usuarioTupla.cumUsuario;
                     if (usuarioTuplaClave.cumUsuario.cus_id != 0)
@@ -741,13 +741,13 @@ namespace SistemaReclutamiento.Controllers
                         {
                             //postgres
                             var usuarioTuplaPostgres = cumUsuariobl.CumUsuarioIdObtenerDataCompletaJson(usuarioTuplaClave.cumUsuario.cus_id);
-                            if (usuarioTuplaPostgres.error.Key.Equals(string.Empty))
+                            if (usuarioTuplaPostgres.error.Respuesta)
                             {
                                 cumUsuario = usuarioTuplaPostgres.cumUsuario;
                             }
                             else
                             {
-                                errormensaje = usuarioTuplaPostgres.error.Value;
+                                errormensaje = usuarioTuplaPostgres.error.Mensaje;
                             }
                         }
                         else if (usuarioTuplaClave.cumUsuario.cus_tipo.ToUpper().Equals("EMPLEADO"))
@@ -757,7 +757,7 @@ namespace SistemaReclutamiento.Controllers
                             int mes_actual = DateTime.Now.Month;
                             int anio = DateTime.Now.Year;
                             var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
-                            if (personaSQLTupla.error.Key.Equals(string.Empty))
+                            if (personaSQLTupla.error.Respuesta)
                             {
                                 //PersonaSqlEntidad persona = personaSQLTupla.persona;
                                 PersonaSqlEntidad persona = new PersonaSqlEntidad();
@@ -773,7 +773,7 @@ namespace SistemaReclutamiento.Controllers
                                         mes_actual = mes_actual - 1;
                                     }
                                     var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
-                                    if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                                    if (personaSQLTupla2.error.Respuesta)
                                     {
                                         persona = personaSQLTupla2.persona;
                                     }
@@ -793,7 +793,7 @@ namespace SistemaReclutamiento.Controllers
                             }
                             else
                             {
-                                errormensaje = personaSQLTupla.error.Value;
+                                errormensaje = personaSQLTupla.error.Mensaje;
                             }
                         }
                         else
@@ -803,7 +803,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         //Listar Preguntas y Respuestas
                         var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id, env_id);
-                        if (cumPreguntaTupla.error.Key.Equals(string.Empty))
+                        if (cumPreguntaTupla.error.Respuesta)
                         {
                             List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
                             foreach (var preg in cumPreguntaTupla.lista)
@@ -811,13 +811,13 @@ namespace SistemaReclutamiento.Controllers
                                 CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
                                 pregunta = preg;
                                 var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
-                                if (cumRespuestaTupla.error.Key.Equals(string.Empty))
+                                if (cumRespuestaTupla.error.Respuesta)
                                 {
                                     pregunta.CumUsuRespuesta = cumRespuestaTupla.lista;
                                 }
                                 else
                                 {
-                                    errormensaje = cumRespuestaTupla.error.Value;
+                                    errormensaje = cumRespuestaTupla.error.Mensaje;
                                 }
                                 listaPreguntas.Add(pregunta);
                             }
@@ -827,7 +827,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         else
                         {
-                            errormensaje = cumPreguntaTupla.error.Value;
+                            errormensaje = cumPreguntaTupla.error.Mensaje;
                         }
                         cumEnvioDet.CumEnvio.CumUsuario = cumUsuario;
                     }
@@ -838,7 +838,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    errormensaje = usuarioTuplaClave.error.Value;
+                    errormensaje = usuarioTuplaClave.error.Mensaje;
                 }
 
 
@@ -858,7 +858,7 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 var envioTupla = cumEnviobl.CumEnvioIdObtenerJson(env_id);
-                if (envioTupla.error.Key.Equals(string.Empty))
+                if (envioTupla.error.Respuesta)
                 {
                     envio = envioTupla.cumEnvio;
                     response = true;
@@ -866,7 +866,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    errormensaje = envioTupla.error.Value;
+                    errormensaje = envioTupla.error.Mensaje;
                 }
 
             }
@@ -884,14 +884,14 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 var envioTupla = cumEnviobl.CumEnvioEditarObservacionJson(envio);
-                if (envioTupla.error.Key.Equals(string.Empty))
+                if (envioTupla.error.Respuesta)
                 {
                     response = true;
                     errormensaje = "Editado";
                 }
                 else
                 {
-                    errormensaje = envioTupla.error.Value;
+                    errormensaje = envioTupla.error.Mensaje;
                 }
 
             }catch(Exception ex)

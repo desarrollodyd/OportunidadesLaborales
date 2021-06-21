@@ -52,15 +52,15 @@ namespace SistemaReclutamiento.Controllers
                 var tuplalista = ofertaLaboralbl.OfertaLaboralListarVistaIndexJson(postulante.pos_id);
                 lista = tuplalista.lista;
                 error = tuplalista.error;
-                if (!error.Key.Equals(string.Empty)) {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                if (!error.Respuesta) {
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 //verificar si son Favoritos
                 var tuplaFavoritos = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
                 listaFavoritos = tuplaFavoritos.lista;
                 error = tuplaFavoritos.error;
-                if (!error.Key.Equals(string.Empty)) {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                if (!error.Respuesta) {
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 foreach (var m in lista) {
                     //listadoXObjeto.Any(x => x.atributoObjeto == xDatoBuscado)
@@ -146,18 +146,18 @@ namespace SistemaReclutamiento.Controllers
                 var tuplalista = ofertaLaboralbl.OfertaLaboralListarJson(reporte);
                 lista = tuplalista.lista;
                 error = tuplalista.error;
-                if (!error.Key.Equals(string.Empty))
+                if (!error.Respuesta)
                 {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 //Ver si son Favoritos
                 //verificar si son Favoritos
                 var tuplaFavoritos = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
                 listaFavoritos = tuplaFavoritos.lista;
                 error = tuplaFavoritos.error;
-                if (!error.Key.Equals(string.Empty))
+                if (!error.Respuesta)
                 {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 foreach (var m in lista)
                 {
@@ -242,18 +242,18 @@ namespace SistemaReclutamiento.Controllers
                 var tuplalista = ofertaLaboralbl.PostulanteListarMisOfertasPostuladasJson(reporte);
                 lista = tuplalista.lista;
                 error = tuplalista.error;
-                if (!error.Key.Equals(string.Empty))
+                if (!error.Respuesta)
                 {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 //Ver si son Favoritos
                 //verificar si son Favoritos
                 var tuplaFavoritos = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
                 listaFavoritos = tuplaFavoritos.lista;
                 error = tuplaFavoritos.error;
-                if (!error.Key.Equals(string.Empty))
+                if (!error.Respuesta)
                 {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 foreach (var m in lista)
                 {
@@ -304,9 +304,9 @@ namespace SistemaReclutamiento.Controllers
                 var tuplaofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
                 ofertaLaboral = tuplaofertaLaboral.ofertalaboral;
                 error = tuplaofertaLaboral.error;
-                if (!error.Key.Equals(string.Empty))
+                if (!error.Respuesta)
                 {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
 
                 response = true;
@@ -330,9 +330,9 @@ namespace SistemaReclutamiento.Controllers
                 var tuplaofertaLaboral = ofertaLaboralbl.OfertaLaboralIdObtenerJson(ola_id);
                 ofertaLaboral = tuplaofertaLaboral.ofertalaboral;
                 error = tuplaofertaLaboral.error;
-                if (!error.Key.Equals(string.Empty))
+                if (!error.Respuesta)
                 {
-                    return Json(new { mensaje = error.Value, respuesta = false });
+                    return Json(new { mensaje = error.Mensaje, respuesta = false });
                 }
                 detallepregunta = detpreguntabl.DetPreguntaListarporPreguntaJson(ola_id);
                 if (detallepregunta.Count > 0) {
@@ -363,23 +363,23 @@ namespace SistemaReclutamiento.Controllers
                 //Listamos los favoritos
                 var favoritosTupla = postulantefavoritosbl.IntranetPostulanteFavoritosListarxPostulanteJson(postulante.pos_id);
                 error = favoritosTupla.error;
-                if (error.Value.Equals(string.Empty)) {
+                if (error.Mensaje.Equals(string.Empty)) {
                     favoritos = favoritosTupla.lista;
                 }
                 else
                 {
-                    return Json(new { mensaje = error.Value, respuesta = response });
+                    return Json(new { mensaje = error.Mensaje, respuesta = response });
                 }
                 //Listar Ofertas que sean favoritas
                 foreach (var m in favoritos) {
                     var ofertaTupla = ofertaLaboralbl.OfertaLaboralIdObtenerJson(m.fk_oferta_laboral);
                     error = ofertaTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         listaofertas.Add(ofertaTupla.ofertalaboral);
                     }
                     else {
-                        return Json(new { mensaje = error.Value, respuesta = response });
+                        return Json(new { mensaje = error.Mensaje, respuesta = response });
                     }
                 }
                 //verificar si ya ha postulado a esa oferta

@@ -57,8 +57,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 Console.WriteLine(ex.Message);
             }
             return (listaempresa: lista, error: error);
@@ -100,8 +100,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 Console.WriteLine(ex.Message);
             }
             return (listapuesto: lista, error: error);
@@ -181,8 +181,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (lista,error, cadena);
@@ -263,8 +263,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (lista,error);
@@ -338,8 +338,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (lista, error);
@@ -379,8 +379,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (subtotalSoles,subtotalDolares, error);
@@ -456,8 +456,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (persona:persona,error:error);
@@ -513,8 +513,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch(Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista:listaPersonas,error:error);
         }
@@ -573,8 +573,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaPersonas, error: error);
         }
@@ -614,8 +614,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 Console.WriteLine(ex.Message);
             }
             return (listapuesto: lista, error: error);
@@ -685,8 +685,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaPersonas, error: error);
         }
@@ -730,8 +730,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaPersonas, error: error);
         }
@@ -775,8 +775,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaPersonas, error: error);
         }
@@ -852,8 +852,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaPersonas, error: error);
         }
@@ -927,8 +927,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista: listaPersonas, error: error);
         }
@@ -972,8 +972,8 @@ FROM " + nombre_tabla+" as pago "+
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 Console.WriteLine(ex.Message);
             }
             return (listaempresa: lista, error: error);

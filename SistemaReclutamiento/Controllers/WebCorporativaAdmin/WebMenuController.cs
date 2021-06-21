@@ -36,18 +36,18 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 foreach(var menu in listaMenus)
                 {
                     var elementoTupla = elementobl.WebElementoListarxMenuIDJson(menu.menu_id);
-                    if (elementoTupla.error.Key.Equals(string.Empty)) {
+                    if (elementoTupla.error.Respuesta) {
                         menu.elemento = elementoTupla.lista;
                     }
                 }
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Menus";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Menus";
                 }
 

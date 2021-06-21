@@ -59,7 +59,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             else
             {
                 error = menuTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     if (menuTupla.intranetMenuLista.Count > 0)
                     {
@@ -118,41 +118,41 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             try {
                 //Listando Footers
                 var footerTupla = intranetFooterbl.IntranetFooterObtenerFootersJson();
-                if (footerTupla.error.Key.Equals(string.Empty))
+                if (footerTupla.error.Respuesta)
                 {
                     intranetFooter = footerTupla.listaFooters.ToList();
                 }
                 else {
-                    mensajeerrorBD += "Error en Footers: " + error.Value+"\n";
+                    mensajeerrorBD += "Error en Footers: " + error.Mensaje+"\n";
                 }
                 //listando menus
                 var menuTupla = intranetMenubl.IntranetMenuListarJson();
                 error = menuTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     intranetMenu = menuTupla.intranetMenuLista;
                     
                 }
                 else {
-                    mensajeerrorBD += "Error en Menus: " + error.Value+"\n";
+                    mensajeerrorBD += "Error en Menus: " + error.Mensaje+"\n";
                 }
 
                 var mensajesCumpleanios = intranetSaludoCumpleaniosbl.IntranetSaludoCumpleanioActivosListarJson();
                 error = mensajesCumpleanios.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     intraSaludos = mensajesCumpleanios.intranetSaludoCumpleanioLista;
 
                 }
                 else
                 {
-                    mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+                    mensajeerrorBD += "Error en Menus: " + error.Mensaje + "\n";
                 }
 
                 //listando actividades
                 var actividadesTupla = intranetActividadesbl.IntranetActividadesListarJson();
                 error = actividadesTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     intranetActividades_ = actividadesTupla.intranetActividadesLista;
                     if (intranetActividades_.Count > 0)
@@ -166,14 +166,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 }
                 else
                 {
-                    mensajeerrorBD += "Error en Actividades: " + error.Value + "\n";
+                    mensajeerrorBD += "Error en Actividades: " + error.Mensaje + "\n";
                 }
 
                 //listando Cumpleaños
 
                 //Lista de Empresas desde Postgres
                 var listaEmpresasTupla = intranetempresabl.IntranetEmpresasListarJson();
-                if (listaEmpresasTupla.error.Key.Equals(string.Empty))
+                if (listaEmpresasTupla.error.Respuesta)
                 {
                     listaEmpresas = listaEmpresasTupla.intranetEmpresasLista.Where(x => x.emp_estado == "A").ToList();
                     //creamos el string con la lista de empresas para el IN en sql
@@ -192,7 +192,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         //obteniendo mes anterior
                         var mes_anterior = DateTime.Now.Month - 1;
                         var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaCumpleaniosJson(stringEmpresas,mes_anterior);
-                        if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                        if (listaPersonasSQLTupla.error.Respuesta)
                         {
                             listaPersonasSQL = listaPersonasSQLTupla.lista;
 
@@ -201,17 +201,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         }
                         else
                         {
-                            mensajeerrorBD += listaPersonasSQLTupla.error.Value;
+                            mensajeerrorBD += listaPersonasSQLTupla.error.Mensaje;
                         }
                         //Listado de PErsonas SQL
                         var listaPersonasPostgresTupla = personabl.PersonaListarEmpleadosJson();
-                        if (listaPersonasPostgresTupla.error.Key.Equals(string.Empty))
+                        if (listaPersonasPostgresTupla.error.Respuesta)
                         {
                             listaPersonasPostgres = listaPersonasPostgresTupla.listaPersonas;
                         }
                         else
                         {
-                            mensajeerrorBD += listaPersonasPostgresTupla.error.Value;
+                            mensajeerrorBD += listaPersonasPostgresTupla.error.Mensaje;
                         }
                         if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0)
                         {
@@ -252,13 +252,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 }
                 else
                 {
-                    mensajeerrorBD += listaEmpresasTupla.error.Value;
+                    mensajeerrorBD += listaEmpresasTupla.error.Mensaje;
                 }
 
 
                 //var cumpleaniosTupla = personabl.PersonaObtenerCumpleaniosporDia();
                 //error = cumpleaniosTupla.error;
-                //if (error.Key.Equals(string.Empty))
+                //if (error.Respuesta)
                 //{
                 //    listaPersona = cumpleaniosTupla.personaLista;
                 //    if (listaPersona.Count > 0)
@@ -272,7 +272,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 //}
                 //else
                 //{
-                //    mensajeerrorBD += "Error en Cumpleaños: " + error.Value + "\n";
+                //    mensajeerrorBD += "Error en Cumpleaños: " + error.Mensaje + "\n";
                 //}
                 //desordenando lista de noticias
                 while (listaNoticias.Count > 0)
@@ -287,7 +287,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 
                 var seccionesMenu = intraSeccionBL.IntranetSeccionListarxMenuIDJson(menu_id);
                 error = seccionesMenu.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     intranetSeccion = seccionesMenu.intranetSeccionListaxMenuID.Where(x=>x.sec_estado=="A").ToList();
                     if (intranetSeccion.Count > 0)
@@ -418,7 +418,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 }
                 else
                 {
-                    mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+                    mensajeerrorBD += "Error en Menus: " + error.Mensaje + "\n";
                 }
 
 
@@ -429,13 +429,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 //listando Cantidad de Salas
                 var cantidadTupla = intranetCPJLocalbl.IntranetCPJLocalListarCantidadLocalesJson();
                 error = cantidadTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     cantidadSalas = cantidadTupla.intranetLocalCantidadSalas;
                     //cantidadApuestasDeportivas = cantidadTupla.intranetLocalCantidadApuestasDeportivas;
                 }
                 else {
-                    mensajeerrorBD += "Error al Listar Cantidad de Salas y Apuestas Deportivas" + error.Value+"\n";
+                    mensajeerrorBD += "Error al Listar Cantidad de Salas y Apuestas Deportivas" + error.Mensaje+"\n";
                 }
                 //Listando Cantidad de Apuestas Deportivas
                 try
@@ -569,7 +569,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     break;
             }
             var listaEmpresasSQLTupla = sqlbl.EmpresaListarxCodigoTrabajadorJson(persona.per_numdoc, tipo_doc);
-            if (listaEmpresasSQLTupla.error.Value.Equals(string.Empty)) {
+            if (listaEmpresasSQLTupla.error.Mensaje.Equals(string.Empty)) {
                 ViewBag.dataEmpresas = listaEmpresasSQLTupla.listaempresa;
             }
             return View("~/Views/IntranetPJ/IntranetPJMisBoletasGDT.cshtml");
@@ -641,7 +641,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 else {
                     var listaTupla = intranetCPJLocalbl.IntranetCPJLocalListarporNombreJson(_tipo, _nombre);
                     error = listaTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         intranetLocalLista = listaTupla.intranetCPJLocalesLista;
                         response = true;
@@ -650,7 +650,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     else
                     {
                         response = false;
-                        errormensaje = error.Value;
+                        errormensaje = error.Mensaje;
                     }
                 }
                 
@@ -678,7 +678,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             {
                 var usuarioTupla = usuarioAccesobl.UsuarioIntranetValidarCredenciales(usu_login.ToLower());
                 error = usuarioTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     usuario = usuarioTupla.intranetUsuarioEncontrado;
                     if (usuario.usu_id > 0)
@@ -718,13 +718,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 }
                 else {
                     errormensaje = "Ha ocurrido un problema";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + "";
-                mensajeConsola = error.Value;
+                mensajeConsola = error.Mensaje;
             }
 
             return Json(new { mensajeconsola=mensajeConsola,respuesta = respuesta, mensaje = errormensaje, estado = pendiente/*, usuario=usuario*/ });
@@ -758,7 +758,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                 int anio = DateTime.Now.Year;
                 var personaSQLTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(dni,mes_actual,anio);
                 error = personaSQLTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     if (personaSQLTupla.persona.CO_TRAB==null)
                     {
@@ -772,7 +772,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                             mes_actual = mes_actual - 1;
                         }
                         var personaSQLTupla2= sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(dni, mes_actual,anio);
-                        if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                        if (personaSQLTupla2.error.Respuesta)
                         {
                             personasql = personaSQLTupla2.persona;
                         }
@@ -786,7 +786,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     respuestaConsulta = true;
                 }
                 else {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -875,7 +875,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             {
                 //Lista de Empresas desde Postgres
                 var listaEmpresasTupla = intranetempresabl.IntranetEmpresasListarJson();
-                if (listaEmpresasTupla.error.Key.Equals(string.Empty))
+                if (listaEmpresasTupla.error.Respuesta)
                 {
                     listaEmpresas = listaEmpresasTupla.intranetEmpresasLista.Where(x=>x.emp_estado=="A").ToList();
                     //creamos el string con la lista de empresas para el IN en sql
@@ -894,7 +894,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         stringEmpresas += ")";
                         //Listado de Personas SQL
                         var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas,mes_anterior);
-                        if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                        if (listaPersonasSQLTupla.error.Respuesta)
                         {
                             listaPersonasSQL = listaPersonasSQLTupla.lista;
 
@@ -902,15 +902,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                             //errormensaje = "Listando Agenda";
                         }
                         else {
-                            errormensaje += listaPersonasSQLTupla.error.Value;
+                            errormensaje += listaPersonasSQLTupla.error.Mensaje;
                         }
                         //Listado de PErsonas SQL
                         var listaPersonasPostgresTupla = personabl.PersonaListarEmpleadosJson();
-                        if (listaPersonasPostgresTupla.error.Key.Equals(string.Empty)){
+                        if (listaPersonasPostgresTupla.error.Respuesta){
                             listaPersonasPostgres = listaPersonasPostgresTupla.listaPersonas;
                         }
                         else {
-                            errormensaje += listaPersonasPostgresTupla.error.Value;
+                            errormensaje += listaPersonasPostgresTupla.error.Mensaje;
                         }
                         if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0) {
                             foreach (var m in listaPersonasSQL) {
@@ -940,7 +940,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     errormensaje = "Listando Data";
                 }
                 else {
-                    errormensaje = listaEmpresasTupla.error.Value;
+                    errormensaje = listaEmpresasTupla.error.Mensaje;
                 }
             }
             catch (Exception ex) {

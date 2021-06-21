@@ -57,7 +57,7 @@ namespace SistemaReclutamiento.Controllers
                 var persona_repetida_tupla = personabl.PersonaEmailObtenerJson(datos.per_correoelectronico);
                 var persona_repetida = persona_repetida_tupla.persona;
                 var error = persona_repetida_tupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     if (persona_repetida.per_id == 0)
                     {
@@ -106,7 +106,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    return Json(new { respuesta = respuestaConsulta, mensaje = error.Value });
+                    return Json(new { respuesta = respuestaConsulta, mensaje = error.Mensaje });
                 }
 
             }
@@ -180,7 +180,7 @@ namespace SistemaReclutamiento.Controllers
                 var tuplalistamenu = menubl.MenuListarJson(usuario.usu_id);
                 listamenu = tuplalistamenu.lista;
                 error = tuplalistamenu.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     if (listamenu.Count > 0)
                     {
@@ -194,7 +194,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    return Json(new { respuesta = false, mensaje = error.Value });
+                    return Json(new { respuesta = false, mensaje = error.Mensaje });
                 }
             }
             catch (Exception ex)
@@ -270,7 +270,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 cadena = listatupla.cadena;
                 var errorlista = listatupla.error;
-                if (errorlista.Key.Equals(string.Empty))
+                if (errorlista.Respuesta)
                 {
                     if (lista.Count > 0)
                     {
@@ -286,7 +286,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    errormensaje = errorlista.Value;
+                    errormensaje = errorlista.Mensaje;
                     respuesta = false;
                 }
 
@@ -317,14 +317,14 @@ namespace SistemaReclutamiento.Controllers
                     var listatupla = sql.CPPAGOListarPagosPorNumeroDocumentoDetraccion(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim(), nombretablaconstancia.Trim());
                     lista = listatupla.lista;
                     var errorlista = listatupla.error;
-                    if (errorlista.Key.Equals(string.Empty))
+                    if (errorlista.Respuesta)
                     {
                         errormensaje = "Cargando Data ...";
                         respuesta = true;
                     }
                     else
                     {
-                        errormensaje = errorlista.Value;
+                        errormensaje = errorlista.Mensaje;
                         respuesta = false;
                     }
                 }
@@ -332,14 +332,14 @@ namespace SistemaReclutamiento.Controllers
                     var listatupla = sql.CPPAGOListarPagosPorNumeroDocumento(nombretabla, usuario.usu_nombre, tipo_doc, num_doc.Trim(), nombretablaconstancia.Trim());
                     lista = listatupla.lista;
                     var errorlista = listatupla.error;
-                    if (errorlista.Key.Equals(string.Empty))
+                    if (errorlista.Respuesta)
                     {
                         errormensaje = "Cargando Data ...";
                         respuesta = true;
                     }
                     else
                     {
-                        errormensaje = errorlista.Value;
+                        errormensaje = errorlista.Mensaje;
                         respuesta = false;
                     }
                 }
@@ -382,7 +382,7 @@ namespace SistemaReclutamiento.Controllers
             var listatuplapagosporcompaniatupla = sql.CPCARTListarPagosPorCompania(nombretabla, usuario.usu_nombre, tipo_doc, fecha_inicio, fecha_fin);
             listaPagosporCompania = listatuplapagosporcompaniatupla.lista;
             var errorlista = listatuplapagosporcompaniatupla.error;
-            if (errorlista.Key.Equals(string.Empty))
+            if (errorlista.Respuesta)
             {
                 if (listaPagosporCompania.Count > 0)
                 {

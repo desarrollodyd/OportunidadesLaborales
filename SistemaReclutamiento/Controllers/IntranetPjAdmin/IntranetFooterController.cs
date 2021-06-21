@@ -73,16 +73,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                      //Eliminar registro de BD
                     var footerEliminadoTupla = intranetFooterbl.IntranetFooterEliminarJson(intranetFooter.foot_posicion);
-                    if (footerEliminadoTupla.error.Key.Equals(string.Empty))
+                    if (footerEliminadoTupla.error.Respuesta)
                     {
                         var intranetFooterTupla = intranetFooterbl.IntranetFooterInsertarJson(intranetFooter);
                         error = intranetFooterTupla.error;
-                        if (error.Key.Equals(string.Empty))
+                        if (error.Respuesta)
                         {
                             if (intranetFooterTupla.idIntranetFooterInsertado > 0)
                             {
                                 var footerTupla = intranetFooterbl.IntranetFooterIdObtenerJson(intranetFooterTupla.idIntranetFooterInsertado);
-                                if (footerTupla.error.Key.Equals(string.Empty)) {
+                                if (footerTupla.error.Respuesta) {
                                     response = true;
                                     errormensaje = "Insertado";
                                     footer = footerTupla.footer;
@@ -97,7 +97,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         }
                         else
                         {
-                            errormensaje = error.Value;
+                            errormensaje = error.Mensaje;
                         }
                     }
                     else {
@@ -107,11 +107,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 else {
                     //Editar Sin Imagen
                     var footerTupla=intranetFooterbl.IntrantetFooterEditarporPosicionJson(intranetFooter.foot_posicion,intranetFooter.foot_descripcion);
-                    if(footerTupla.error.Key.Equals(string.Empty)){
+                    if(footerTupla.error.Respuesta){
 
                         if(footerTupla.IntranetFooterEditado>0){
                             var footerIdTupla = intranetFooterbl.IntranetFooterIdObtenerJson(footerTupla.IntranetFooterEditado);
-                                if (footerIdTupla.error.Key.Equals(string.Empty)) {
+                                if (footerIdTupla.error.Respuesta) {
                                     response = true;
                                     errormensaje = "Insertado";
                                     footer = footerIdTupla.footer;
@@ -120,7 +120,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         }
                     }
                     else{
-                        errormensaje=footerTupla.error.Value;
+                        errormensaje=footerTupla.error.Mensaje;
                     }
                 }
                
@@ -142,7 +142,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var intranetFooterTupla = intranetFooterbl.IntranetFooterObtenerFootersJson();
                 error = intranetFooterTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     lista = intranetFooterTupla.listaFooters;
                     foreach (var m in lista)
@@ -155,7 +155,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     response = true;
                 }
                 else {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
             }
             catch (Exception ex) {

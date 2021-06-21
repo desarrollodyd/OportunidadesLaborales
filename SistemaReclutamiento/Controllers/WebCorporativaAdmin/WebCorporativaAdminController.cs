@@ -47,7 +47,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var ElementoTupla = elementobl.WebElementoListarxMenuIDxtipoJson(menu_id,tipo);
                 error = ElementoTupla.error;
                 listaElementos = ElementoTupla.lista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     foreach (var obj in listaElementos)
                     {
@@ -62,7 +62,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Elementoes";
                 }
 
@@ -88,7 +88,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var ElementoTupla = elementobl.WebElementoListarxMenuIDJson(menu_id);
                 error = ElementoTupla.error;
                 listaElementos = ElementoTupla.lista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     foreach (var obj in listaElementos)
                     {
@@ -103,7 +103,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Elementoes";
                 }
 
@@ -130,7 +130,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             {
                 //encontrar elemento con menu_id y tipo
                 var elementoTupla= elementobl.WebElementoListarxMenuIDxtipoJson(menu_id, detalle.fk_tipo);
-                if (elementoTupla.error.Key.Equals(string.Empty))
+                if (elementoTupla.error.Respuesta)
                 {
                     WebElementoEntidad elementoBusqueda = elementoTupla.lista.Where(x => x.fk_tipo_elemento == detalle.fk_tipo).SingleOrDefault();
                     if (elementoBusqueda != null)
@@ -145,19 +145,19 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                         elemento.fk_menu = menu_id;
                         elemento.fk_tipo_elemento = detalle.fk_tipo;
                         var elementoCreadoTupla = elementobl.WebElementoInsertarJson(elemento);
-                        if (elementoCreadoTupla.error.Key.Equals(string.Empty))
+                        if (elementoCreadoTupla.error.Respuesta)
                         {
                             detalle.fk_elemento = elementoCreadoTupla.idInsertado;
                             elementoInsertado = elementoCreadoTupla.idInsertado;
                         }
                         else
                         {
-                            return Json(new { mensaje = elementoCreadoTupla.error.Value, respuesta });
+                            return Json(new { mensaje = elementoCreadoTupla.error.Mensaje, respuesta });
                         }
                     }
                 }
                 else {
-                    return Json(new { mensaje = elementoTupla.error.Value, respuesta });
+                    return Json(new { mensaje = elementoTupla.error.Mensaje, respuesta });
                 }
                 if (detalle.fk_tipo == 1 || detalle.fk_tipo == 2 || detalle.fk_tipo == 3 || detalle.fk_tipo == 4||detalle.fk_tipo==5||detalle.fk_tipo==6||detalle.fk_tipo==7)
                 {
@@ -226,7 +226,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 //Insertar Detalles
                 var totaltupla = detallebl.WebDetalleElementoListarxElementoIDJson(detalle.fk_elemento);
-                if (totaltupla.error.Key.Equals(string.Empty))
+                if (totaltupla.error.Respuesta)
                 {
                     if (totaltupla.listadetalle.Count > 0)
                     {
@@ -243,7 +243,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     detalle.detel_orden = 1;
                 }
                 var detalleTupla = detallebl.WebDetalleElementoInsertarJson(detalle);
-                if (detalleTupla.error.Key.Equals(string.Empty))
+                if (detalleTupla.error.Respuesta)
                 {
                     if (detalleTupla.idInsertado > 0)
                     {
@@ -257,7 +257,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 else
                 {
-                    mensaje = detalleTupla.error.Value;
+                    mensaje = detalleTupla.error.Mensaje;
                 }
             }
             catch (Exception ex)
@@ -279,14 +279,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 var DetalleElementoTupla = detallebl.WebDetalleElementoListarxElementoIDJson(elem_id);
                 error = DetalleElementoTupla.error;
                 listaDetalleElemento = DetalleElementoTupla.listadetalle;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Detalle Elemento";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Detalles";
                 }
 
@@ -309,7 +309,7 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
             try
             {
                 var detalleTupla = detallebl.WebDetalleElementoIdObtenerJson(detel_id);
-                if (detalleTupla.error.Key.Equals(string.Empty))
+                if (detalleTupla.error.Respuesta)
                 {
                     //eliminar imagenes si las hubiera
                     detalle = detalleTupla.detalle;
@@ -332,14 +332,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                     }
                 }
                 var eliminadoTupla = detallebl.WebDetalleElementoEliminarJson(detalle.detel_id);
-                if (eliminadoTupla.error.Key.Equals(string.Empty))
+                if (eliminadoTupla.error.Respuesta)
                 {
                     respuesta = eliminadoTupla.eliminado;
                     mensaje = "Eliminado";
                 }
                 else
                 {
-                    mensaje = eliminadoTupla.error.Value;
+                    mensaje = eliminadoTupla.error.Mensaje;
                 }
 
             }
@@ -444,14 +444,14 @@ namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
                 }
                 //Edicion
                 var editadoTupla = detallebl.WebDetalleElementoEditarJson(detalle);
-                if (editadoTupla.error.Key.Equals(string.Empty))
+                if (editadoTupla.error.Respuesta)
                 {
                     respuesta = editadoTupla.WebDetalleElementoEditado;
                     mensaje = "Editado";
                 }
                 else
                 {
-                    mensaje = editadoTupla.error.Value;
+                    mensaje = editadoTupla.error.Mensaje;
                 }
             }
             catch (Exception ex)

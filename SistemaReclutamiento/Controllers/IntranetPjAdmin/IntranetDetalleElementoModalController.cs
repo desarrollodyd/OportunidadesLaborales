@@ -35,14 +35,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var ElementoTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(fk_elemento_modal);
                 error = ElementoTupla.error;
                 listaElementos = ElementoTupla.intranetDetalleElementoModalListaxElementoID;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Detalle Elemento Modal";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar los Detalles";
                 }
 
@@ -71,7 +71,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             if (intranetDetalleElementoModal.fk_seccion_elemento == 0)
             {
                 var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(intranetDetalleElementoModal.fk_elemento_modal);
-                if (totalDetallesTupla.error.Key.Equals(string.Empty))
+                if (totalDetallesTupla.error.Respuesta)
                 {
                     if (totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Count > 0)
                     {
@@ -138,7 +138,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                 }
                 else {
-                    mensaje = totalDetallesTupla.error.Value;
+                    mensaje = totalDetallesTupla.error.Mensaje;
                     respuesta = false;
                     return Json(new { respuesta, mensaje });
                 }
@@ -149,7 +149,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 try
                 {
                     var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(intranetDetalleElementoModal.fk_elemento_modal);
-                    if (totalDetallesTupla.error.Key.Equals(string.Empty))
+                    if (totalDetallesTupla.error.Respuesta)
                     {
                         if (totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Count > 0)
                         {
@@ -227,7 +227,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                     else
                     {
-                        mensaje = totalDetallesTupla.error.Value;
+                        mensaje = totalDetallesTupla.error.Mensaje;
                         respuesta = false;
                         return Json(new { respuesta = respuesta, mensaje = mensaje });
                     }
@@ -242,7 +242,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             else {
                 var totalDetallesTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(intranetDetalleElementoModal.fk_elemento_modal);
-                if (totalDetallesTupla.error.Key.Equals(string.Empty))
+                if (totalDetallesTupla.error.Respuesta)
                 {
                     if (totalDetallesTupla.intranetDetalleElementoModalListaxElementoID.Count > 0)
                     {
@@ -254,7 +254,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                 }
                 else {
-                    mensaje = totalDetallesTupla.error.Value;
+                    mensaje = totalDetallesTupla.error.Mensaje;
                     respuesta = false;
                     return Json(new { respuesta = respuesta, mensaje = mensaje });
                 }
@@ -265,7 +265,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var DetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalInsertarJson(intranetDetalleElementoModal);
                 error = DetalleElementoModalTupla.error;
 
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
@@ -274,7 +274,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 else
                 {
                     mensaje = "No se Pudo insertar el Detalle";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
 
             }
@@ -296,7 +296,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 //buscar Imagen para eliminar
                 var imagenTupla=intranetDetalleElementoModalbl.IntranetDetalleElementoModalIdObtenerJson(detelm_id);
-                if(imagenTupla.error.Key.Equals(string.Empty)){
+                if(imagenTupla.error.Respuesta){
                     //var nombre = (nombreArchivo + extension);
                     var direccion = Server.MapPath("/") + Request.ApplicationPath + "/IntranetFiles/";
                     rutaEliminar = Path.Combine(direccion, imagenTupla.intranetDetalleElementoModal.detelm_nombre+"."+imagenTupla.intranetDetalleElementoModal.detelm_extension);
@@ -308,14 +308,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 //Eliminar de BD
                 var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEliminarJson(detelm_id);
                 error = intranetDetalleElementoModalTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuesta = intranetDetalleElementoModalTupla.intranetDetalleElementoModalEliminado;
                     mensaje = "Eliminado";
                 }
                 else
                 {
-                    mensaje = error.Value;
+                    mensaje = error.Mensaje;
                 }
             }
             catch (Exception ex)
@@ -334,7 +334,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var intranetDetalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalIdObtenerJson(detelm_id);
                 error = intranetDetalleElementoModalTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     intranetDetalleElementoModal = intranetDetalleElementoModalTupla.intranetDetalleElementoModal;
                     //intranetDetalleElementoModal.detelm_nombre_imagen = intranetDetalleElementoModal.detelm_hash;
@@ -344,7 +344,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensaje = "Obteniendo Data";
                 }
                 else {
-                    mensaje = error.Value;
+                    mensaje = error.Mensaje;
                 }
             }
             catch (Exception ex)
@@ -416,14 +416,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 intranetDetalleElementoModal.detelm_ubicacion = "";
                 var intranetDetalleElementotupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEditarJson(intranetDetalleElementoModal);
                 error = intranetDetalleElementotupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = intranetDetalleElementotupla.intranetDetalleElementoModalEditado;
                     errormensaje = "Editado";
                 }
                 else
                 {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -445,7 +445,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 intranetDetElementoModal.detelm_orden = m.detelm_orden;
                 var reordenadoTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalEditarOrdenJson(intranetDetElementoModal);
                 error = reordenadoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = reordenadoTupla.intranetDetElementoModalReordenado;
                     errormensaje = "Editado";

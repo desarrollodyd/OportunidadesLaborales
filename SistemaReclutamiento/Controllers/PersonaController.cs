@@ -421,7 +421,7 @@ namespace SistemaReclutamiento.Controllers
                 var personatupla = personabl.PersonaDniObtenerJson(per_numdoc);
                 persona = personatupla.persona;
                 error = personatupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     if (persona.per_id != 0)
                     {
@@ -433,7 +433,7 @@ namespace SistemaReclutamiento.Controllers
                         var personasqltupla = personasqlbl.PersonaDniObtenerJson(per_numdoc);
                         personasql = personasqltupla.persona;
                         error = personasqltupla.error;
-                        if (error.Key.Equals(string.Empty))
+                        if (error.Respuesta)
                         {
                             if (personasql.CO_TRAB != "" && personasql.CO_TRAB != null)
                             {
@@ -453,7 +453,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         else
                         {
-                            errormensaje = error.Value;
+                            errormensaje = error.Mensaje;
                             _encontrado = string.Empty;
                         }
 
@@ -461,7 +461,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 else
                 {
-                    errormensaje = error.Value;
+                    errormensaje = error.Mensaje;
                     _encontrado = string.Empty;
                 }
 

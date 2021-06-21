@@ -58,8 +58,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (respuesta,error);
@@ -88,8 +88,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (respuesta,error);
         }
@@ -133,8 +133,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (webPermisoRol,error);
@@ -183,15 +183,16 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (lista,error);
         }
 
-        public List<SEG_PermisoEntidad> GetPermisosActivos()
+        public (List<SEG_PermisoEntidad> lista,claseError error) GetPermisosActivos()
         {
+            claseError error = new claseError();
             List<SEG_PermisoEntidad> lista = new List<SEG_PermisoEntidad>();
             string consulta = @"SELECT [WEB_PermID]
                               ,[WEB_PermNombre]
@@ -234,14 +235,16 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
-            return lista;
+            return (lista,error);
         }
 
-        public bool ActualizarEstadoPermiso(int web_PermId, int estado)
+        public (bool respuesta,claseError error) ActualizarEstadoPermiso(int web_PermId, int estado)
         {
+            claseError error = new claseError();
             bool respuesta = false;
             string consulta = @"UPDATE [SEG_Permiso]
                         SET [WEB_PermEstado] =@p1
@@ -260,13 +263,15 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
-            return respuesta;
+            return (respuesta, error) ;
         }
 
-        public bool ActualizarDescripcionPermiso(int web_PermId, string descripcion)
+        public (bool respuesta,claseError error) ActualizarDescripcionPermiso(int web_PermId, string descripcion)
         {
+            claseError error = new claseError();
             bool respuesta = false;
             string consulta = @"UPDATE [SEG_Permiso]
                         SET [WEB_PermDescripcion] =@p1
@@ -285,13 +290,15 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
-            return respuesta;
+            return (respuesta,error);
         }
 
-        public bool ActualizarNombrePermiso(int web_PermId, string nombre)
+        public (bool respuesta,claseError error) ActualizarNombrePermiso(int web_PermId, string nombre)
         {
+            claseError error = new claseError();
             bool respuesta = false;
             string consulta = @"UPDATE [SEG_Permiso]
                         SET [WEB_PermNombreR] =@p1
@@ -310,9 +317,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             catch (Exception ex)
             {
-                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
-            return respuesta;
+            return (respuesta,error);
         }
     }
 }

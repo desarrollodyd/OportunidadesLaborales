@@ -53,11 +53,11 @@ namespace SistemaReclutamiento.Models
         public int fk_oferta_laboral { get; set; }
     }
     public class claseError {
-        public string Key { get; set; }
-        public string Value { get; set; }
+        public bool Respuesta { get; set; }
+        public string Mensaje { get; set; }
         public claseError() {
-            Key = string.Empty;
-            Value = string.Empty;
+            Respuesta = true;
+            Mensaje = string.Empty;
         }
     }
     public class TMEMPR {

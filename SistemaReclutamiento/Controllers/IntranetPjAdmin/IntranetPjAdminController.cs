@@ -95,7 +95,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var envioTupla = fichabl.IntranetFichaListarJson(tipo, desde, hasta);
                 error = envioTupla.error;
                 listaEnvios = envioTupla.intranetFichaLista.Where(x=>x.env_estado.Equals(estado.Trim())).ToList();
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     var txtids = new List<dynamic>();
                     foreach (var p in listaEnvios)
@@ -127,7 +127,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Fichas";
                 }
 
@@ -152,14 +152,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var envioTupla = fichabl.IntranetFichaPostListarJson(desde, hasta);
                 error = envioTupla.error;
                 listaEnvios = envioTupla.intranetFichaLista.Where(x=>x.env_estado.Equals(estado.Trim())).ToList();
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Fichas";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Fichas";
                 }
 
@@ -366,14 +366,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var envioTupla = usuariobl.PostulantesListarJson();
                 error = envioTupla.error;
                 lista = envioTupla.lista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Postulantes";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Postulantes";
                 }
 
@@ -517,14 +517,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             //{
             //    var menuTupla = intranetMenubl.IntranetMenuListarJson();
             //    error = menuTupla.error;
-            //    if (error.Key.Equals(string.Empty))
+            //    if (error.Respuesta)
             //    {
             //        intranetMenu = menuTupla.intranetMenuLista;
             //        ViewBag.Menu = intranetMenu;
             //    }
             //    else
             //    {
-            //        mensajeerrorBD += "Error en Menus: " + error.Value + "\n";
+            //        mensajeerrorBD += "Error en Menus: " + error.Mensaje + "\n";
             //    }
             //}
             //catch (Exception ex)
@@ -631,23 +631,23 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
                             //listar de sql
                             var listaPersonasSQLTupla = sqlbl.PersonaSQLListarDocumentosJson();
-                            if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                            if (listaPersonasSQLTupla.error.Respuesta)
                             {
                                 listaSQL = listaPersonasSQLTupla.lista;
                             }
                             else
                             {
-                                errormensaje = listaPersonasSQLTupla.error.Value;
+                                errormensaje = listaPersonasSQLTupla.error.Mensaje;
                             }
                             //listar de postgress
                             var listaUsuariosExcelPostgresTupla = cumusuexcelbl.CumUsuarioExcelListarJson();
-                            if (listaUsuariosExcelPostgresTupla.error.Key.Equals(string.Empty))
+                            if (listaUsuariosExcelPostgresTupla.error.Respuesta)
                             {
                                 listaPostgres = listaUsuariosExcelPostgresTupla.lista;
                             }
                             else
                             {
-                                errormensaje = listaUsuariosExcelPostgresTupla.error.Value;
+                                errormensaje = listaUsuariosExcelPostgresTupla.error.Mensaje;
                             }
                             foreach(var registro in listaDocumentosExcel)
                             {
@@ -666,7 +666,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                             cumUsuarioExcelET.cue_correo = registro.NO_DIRE_MAI1;
                                             cumUsuarioExcelET.cue_fecha_act = DateTime.Now;
                                             var cumUSuarioTupla = cumusuexcelbl.CumUsuarioExcelEditarJson(cumUsuarioExcelET);
-                                            if (!cumUSuarioTupla.error.Key.Equals(string.Empty))
+                                            if (!cumUSuarioTupla.error.Respuesta)
                                             {
                                                 //Agregar a excel
                                                 WSResultado.Cells[rowResultado, 1].Value = cumUsuarioExcelET.cue_numdoc;
@@ -717,7 +717,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                         cumUsuarioExcelET.cue_correo = registro.NO_DIRE_MAI1;
                                         cumUsuarioExcelET.cue_fecha_reg = DateTime.Now;
                                         var cumUSuarioTupla = cumusuexcelbl.CumUsuarioExcelInsertarJson(cumUsuarioExcelET);
-                                        if (!cumUSuarioTupla.error.Key.Equals(string.Empty))
+                                        if (!cumUSuarioTupla.error.Respuesta)
                                         {
                                             WSResultado.Cells[rowResultado, 1].Value = cumUsuarioExcelET.cue_numdoc;
                                             WSResultado.Cells[rowResultado, 2].Value = cumUsuarioExcelET.cue_correo;
@@ -795,7 +795,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             try
             {
                 var listaTupla = cumusuexcelbl.CumUsuarioExcelListarJson();
-                if (listaTupla.error.Key.Equals(string.Empty))
+                if (listaTupla.error.Respuesta)
                 {
                     lista = listaTupla.lista;
                     errormensaje = "Listando Correos";
@@ -803,7 +803,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 }
                 else
                 {
-                    errormensaje = listaTupla.error.Value;
+                    errormensaje = listaTupla.error.Mensaje;
                 }
             }catch(Exception ex)
             {
@@ -842,7 +842,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             {
                 var usuarioTupla = usuarioAccesobl.UsuarioIntranetSGCValidarCredenciales(usu_login.ToLower());
                 error = usuarioTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     usuario = usuarioTupla.intranetUsuarioSGCEncontrado;
                     if (usuario.usu_id > 0)
@@ -882,13 +882,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 else
                 {
                     errormensaje = "Ha ocurrido un problema";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + "";
-                mensajeConsola = error.Value;
+                mensajeConsola = error.Mensaje;
             }
 
             return Json(new { mensajeconsola = mensajeConsola, respuesta = respuesta, mensaje = errormensaje, estado = pendiente/*, usuario=usuario*/ });
@@ -925,7 +925,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             {
                 //Detalleelemento
                 var listadetelemtupla = detalleelementobl.IntranetDetalleElementoListarJson();
-                if (listadetelemtupla.error.Key.Equals(string.Empty))
+                if (listadetelemtupla.error.Respuesta)
                 {
                     listaDetalleElemento = listadetelemtupla.intranetDetalleElementoLista.Where(x => x.detel_extension != "").ToList();
                     totalDetalles = listaDetalleElemento.Count;
@@ -934,12 +934,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         foreach (var detalle in listaDetalleElemento) {
                             detalle.detel_hash= rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detalle.detel_nombre+"."+detalle.detel_extension);
                             var detalleElementoEditado = detalleelementobl.IntranetDetalleElementoEditarHashJson(detalle);
-                            if (detalleElementoEditado.error.Key.Equals(string.Empty))
+                            if (detalleElementoEditado.error.Respuesta)
                             {
                                 totaldetallesEditados++;
                             }
                             else {
-                                errormensaje += detalleElementoEditado.error.Value;
+                                errormensaje += detalleElementoEditado.error.Mensaje;
                             }
                         }
                     }
@@ -947,11 +947,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 }
                 else
                 {
-                    errormensaje += listadetelemtupla.error.Value;
+                    errormensaje += listadetelemtupla.error.Mensaje;
                 }
                 //DetalleElementoModal
                 var listadetelemodTupla = detalleelementomodalbl.IntranetDetalleElementoModalListarJson();
-                if (listadetelemodTupla.error.Key.Equals(string.Empty))
+                if (listadetelemodTupla.error.Respuesta)
                 {
                     listaDetalleElementoModal = listadetelemodTupla.intranetDetalleElementoModalLista.Where(x => x.detelm_extension != "").ToList();
                     totaldetallemodal = listaDetalleElementoModal.Count;
@@ -961,20 +961,20 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         {
                             detallemodal.detelm_hash = rutaImagenes.ImagenIntranetActividades(pathArchivosIntranet, detallemodal.detelm_nombre + "." + detallemodal.detelm_extension);
                             var detalleElementoModalEditado = detalleelementomodalbl.IntranetDetalleElementoModalEditarHashJson(detallemodal);
-                            if (detalleElementoModalEditado.error.Key.Equals(string.Empty))
+                            if (detalleElementoModalEditado.error.Respuesta)
                             {
                                 totaldetallemodalEditado++;
                             }
                             else
                             {
-                                errormensaje += detalleElementoModalEditado.error.Value;
+                                errormensaje += detalleElementoModalEditado.error.Mensaje;
                             }
                         }
                     }
                     errormensaje += " Detalle Elemento Modal,";
                 }
                 else {
-                    errormensaje += listadetelemodTupla.error.Value;
+                    errormensaje += listadetelemodTupla.error.Mensaje;
                 }
                 response = true;
                 errormensaje += " Editados";
@@ -1033,7 +1033,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     int mes_actual = DateTime.Now.Month;
                     int anio = DateTime.Now.Year;
                     var personaTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(busqueda, mes_actual, anio);
-                    if (personaTupla.error.Key.Equals(string.Empty))
+                    if (personaTupla.error.Respuesta)
                     {
                         PersonaSqlEntidad persona = new PersonaSqlEntidad();
                         if (personaTupla.persona.CO_TRAB == null)
@@ -1048,7 +1048,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                 mes_actual = mes_actual - 1;
                             }
                             var personaSQLTupla2 = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(busqueda, mes_actual, anio);
-                            if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                            if (personaSQLTupla2.error.Respuesta)
                             {
                                 if (personaSQLTupla2.persona.CO_TRAB != null)
                                 {
@@ -1069,7 +1069,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     }
                     else
                     {
-                        errormensaje = personaTupla.error.Value;
+                        errormensaje = personaTupla.error.Mensaje;
                     }
                 }
                 else if(opcion.ToUpper()=="APELLIDOS")
@@ -1077,7 +1077,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     int mes_actual = DateTime.Now.Month;
                     int anio = DateTime.Now.Year;
                     var personaTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoxApellidoJson(busqueda.ToUpper(), mes_actual, anio);
-                    if (personaTupla.error.Key.Equals(string.Empty))
+                    if (personaTupla.error.Respuesta)
                     {
                         if (personaTupla.lista.Count == 0)
                         {
@@ -1091,7 +1091,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                 mes_actual = mes_actual - 1;
                             }
                             var personaSQLTupla2 = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoxApellidoJson(busqueda.ToUpper(), mes_actual, anio);
-                            if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                            if (personaSQLTupla2.error.Respuesta)
                             {
                                 lista = personaSQLTupla2.lista;
                             }
@@ -1105,7 +1105,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     }
                     else
                     {
-                        errormensaje = personaTupla.error.Value;
+                        errormensaje = personaTupla.error.Mensaje;
                     }
                 }
                 else

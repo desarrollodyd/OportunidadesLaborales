@@ -42,14 +42,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var seccionTupla = intranetSeccionbl.IntranetSeccionListarxMenuIDJson( menu_id);
                 error = seccionTupla.error;
                 listaMenus = seccionTupla.intranetSeccionListaxMenuID;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Secciones";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Secciones";
                 }
 
@@ -73,14 +73,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var seccionTupla = intranetSeccionbl.IntranetSeccionListarTodoxMenuIDJson(menu_id);
                 error = seccionTupla.error;
                 listaSecciones = seccionTupla.intranetSeccionListaTodoxMenuID;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Secciones";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Secciones";
                 }
 
@@ -102,14 +102,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var seccionTupla = intranetSeccionbl.IntranetSeccionEditarEstadoJson(intranetSeccion);
                 error = seccionTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = seccionTupla.intranetSeccionEditado;
                     errormensaje = "Se Editó Correctamente";
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     errormensaje = "Error, no se Puede Editar";
                 }
             }
@@ -132,12 +132,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 var totalSeccionesTupla = intranetSeccionbl.IntranetSeccionListarTodoxMenuIDJson(intranetSeccion.fk_menu);
                 error = totalSeccionesTupla.error;
-                if (error.Key.Equals(string.Empty)) {
+                if (error.Respuesta) {
                     intranetSeccion.sec_orden = totalSeccionesTupla.intranetSeccionListaTodoxMenuID.Max(x=>x.sec_orden) + 1;
                     var seccionTupla = intranetSeccionbl.IntranetSeccionInsertarJson(intranetSeccion);
                     error = seccionTupla.error;
 
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         mensaje = "Se Registró Correctamente";
                         respuesta = true;
@@ -146,13 +146,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     else
                     {
                         mensaje = "No se Pudo insertar el Menu";
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                     }
                 }
                 else
                 {
                     mensaje = "Error al Insertar la Nueva Seccion";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
                 
 
@@ -179,12 +179,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var listaElementoTupla = intranetElementobl.IntranetElementoListarxSeccionIDJson(sec_id);
-                if (listaElementoTupla.error.Key.Equals(string.Empty)) {
+                if (listaElementoTupla.error.Respuesta) {
                     foreach (var elemento in listaElementoTupla.intranetElementoListaxSeccionID) {
                         //Buscar los Detalles que pudiera tener
                         var detalleElementoTupla2 = intranetDetalleElementonbl.IntranetDetalleElementoListarxElementoIDJson(elemento.elem_id);
 
-                        if (detalleElementoTupla2.error.Key.Equals(string.Empty))
+                        if (detalleElementoTupla2.error.Respuesta)
                         {
                             listaDetalleElemento = detalleElementoTupla2.intranetDetalleElementoListaxElementoID;
                             if (listaDetalleElemento.Count > 0)
@@ -192,14 +192,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                 foreach (var j in listaDetalleElemento)
                                 {
                                     var detalleElementoTupla = intranetDetalleElementonbl.IntranetDetalleElementoIdObtenerJson(j.detel_id);
-                                    if (detalleElementoTupla.error.Key.Equals(string.Empty))
+                                    if (detalleElementoTupla.error.Respuesta)
                                     {
                                         int fk_seccion_elemento = detalleElementoTupla.intranetDetalleElemento.fk_seccion_elemento;
                                         if (fk_seccion_elemento > 0)
                                         {
                                             //Buscar todos los elementos modales que tengan ese fk_seccion elemento
                                             var listaElementosTupla = intanetElementoModalbl.IntranetElementoModalListarxSeccionElementoIDJson(fk_seccion_elemento);
-                                            if (listaElementosTupla.error.Key.Equals(string.Empty))
+                                            if (listaElementosTupla.error.Respuesta)
                                             {
                                                 listaElementoModal = listaElementosTupla.intranetElementoModalListaxseccionelementoID;
                                                 if (listaElementoModal.Count > 0)
@@ -208,7 +208,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                                     foreach (var m in listaElementoModal)
                                                     {
                                                         var detalleElementoModalTupla = intranetDetalleElementoModalbl.IntranetDetalleElementoModalListarxElementoIDJson(m.emod_id);
-                                                        if (detalleElementoModalTupla.error.Key.Equals(string.Empty))
+                                                        if (detalleElementoModalTupla.error.Respuesta)
                                                         {
                                                             listaDetalleElementoModal = detalleElementoModalTupla.intranetDetalleElementoModalListaxElementoID;
                                                             if (listaDetalleElementoModal.Count > 0)
@@ -262,7 +262,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 var seccionTupla = intranetSeccionbl.IntranetSeccionEliminarJson(sec_id);
                 error = seccionTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     respuestaConsulta = seccionTupla.intranetSeccionEliminado;
                     errormensaje = "Seccion Eliminada";
@@ -270,7 +270,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 else
                 {
                     errormensaje = "Error, no se Puede Eliminar";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
             }
             catch (Exception exp)
@@ -293,7 +293,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 intranetSeccion.sec_orden = m.sec_orden;
                 var reordenadoTupla = intranetSeccionbl.IntranetSeccionEditarOrdenJson(intranetSeccion);
                 error = reordenadoTupla.error;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     response = reordenadoTupla.intranetSeccionReordenado;
                     errormensaje = "Editado";

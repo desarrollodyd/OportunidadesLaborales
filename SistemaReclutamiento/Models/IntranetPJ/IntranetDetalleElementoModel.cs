@@ -62,8 +62,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoLista: lista, error: error);
         }
@@ -116,8 +116,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoListaxElementoID: lista, error: error);
         }
@@ -169,8 +169,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElemento: intranetImagen, error: error);
         }
@@ -208,8 +208,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idIntranetDetalleElementoInsertado: idIntranetImagenInsertado, error: error);
         }
@@ -245,8 +245,8 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoEditado: response, error: error);
         }
@@ -270,8 +270,8 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (intranetDetalleElementoEliminado: response, error: error);
@@ -302,8 +302,8 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetalleElementoTotal: intranetDetalleElementoTotal, error: error);
         }
@@ -328,8 +328,8 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (intranetDetElementoReordenado: response, error: error);
         }
@@ -352,8 +352,8 @@ detel_estado=@p5,fk_elemento=@p7, detel_posicion=@p8,detel_url=@p9,detel_blank=@
                 }
             }
             catch(Exception ex) {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (response, error);
         }

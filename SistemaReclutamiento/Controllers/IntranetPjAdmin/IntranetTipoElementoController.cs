@@ -29,14 +29,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var tipoElementoTupla = intranetTipoElementobl.IntranetTipoElementoListarJson();
                 error = tipoElementoTupla.error;
                 listaTipoElementos = tipoElementoTupla.intranetTipoElementoLista.Where(x=>x.tipo_estado.Equals("A")).OrderBy(x=>x.tipo_orden).ToList();
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Tipo de Elemento";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se pudo listar";
                 }
 

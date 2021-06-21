@@ -36,7 +36,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipo);
-                if (configuracionTupla.error.Value.Equals(string.Empty))
+                if (configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     configuracion = configuracionTupla.configuracion;
                     respuesta = true;
@@ -44,7 +44,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 else
                 {
-                    mensaje = configuracionTupla.error.Value;
+                    mensaje = configuracionTupla.error.Mensaje;
                 }
             }
             catch(Exception ex)
@@ -62,7 +62,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var configuracionTupla = bolConfigBL.BoolConfiguracionInsertarJson(configuracion);
-                if (configuracionTupla.error.Value.Equals(string.Empty))
+                if (configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     idInsertado = configuracionTupla.idInsertado;
                     if (idInsertado != 0)
@@ -86,7 +86,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var configuracionTupla = bolConfigBL.BoolConfiguracionEditarJson(configuracion);
-                if (configuracionTupla.error.Value.Equals(string.Empty))
+                if (configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     respuesta = configuracionTupla.editado;
                     if (respuesta)
@@ -122,7 +122,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var listaEmpresaTupla = sqlbl.EmpresaListarJson();
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
 
-                if (listaEmpresaTupla.error.Value.Equals(string.Empty)&&configuracionTupla.error.Value.Equals(string.Empty))
+                if (listaEmpresaTupla.error.Mensaje.Equals(string.Empty)&&configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaempresa = listaEmpresaTupla.listaempresa;
                     configuracion = configuracionTupla.configuracion;
@@ -198,7 +198,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string mes = Convert.ToString(fechaListar.Month);
                 string anio = Convert.ToString(fechaListar.Year);
                 var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresaListar, anio, mes);
-                if (listaBoletasTupla.error.Value.Equals(string.Empty))
+                if (listaBoletasTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaBoletas = listaBoletasTupla.lista;
                     mensaje = "Listando registros";
@@ -206,7 +206,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 else
                 {
-                    mensaje = listaBoletasTupla.error.Value;
+                    mensaje = listaBoletasTupla.error.Mensaje;
                 }
             }
             catch (Exception ex) {
@@ -224,7 +224,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string mes = Convert.ToString(fechaListar.Month);
                 string anio = Convert.ToString(fechaListar.Year);
                 var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoJson(empresaListar, anio, mes,empleado);
-                if (listaBoletasTupla.error.Value.Equals(string.Empty))
+                if (listaBoletasTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaBoletas = listaBoletasTupla.lista;
                     mensaje = "Listando registros";
@@ -232,7 +232,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 else
                 {
-                    mensaje = listaBoletasTupla.error.Value;
+                    mensaje = listaBoletasTupla.error.Mensaje;
                 }
             }
             catch (Exception ex)
@@ -271,7 +271,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
                 string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
 
-                if (listaPersonasTupla.error.Value.Equals(string.Empty))
+                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty))
                 {
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
@@ -283,7 +283,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     if (Directory.Exists(pathPdf))
                     {
                         //eliminar la data y carpetas
-                        if (listaEliminarTupla.error.Value.Equals(string.Empty)) {
+                        if (listaEliminarTupla.error.Mensaje.Equals(string.Empty)) {
                             string[] subdirectoryEntries = Directory.GetDirectories(Path.Combine(configuracion.config_valor, directorioaProcesar));
                             if (subdirectoryEntries.Length > 0 &&listaEliminarTupla.lista.Count>0)
                             {
@@ -366,7 +366,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     }
                                     consulta = consulta.TrimEnd(',');
                                     var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
-                                    if (totalInsertadosTupla.error.Value.Equals(string.Empty))
+                                    if (totalInsertadosTupla.error.Mensaje.Equals(string.Empty))
                                     {
                                         totalInsertados = totalInsertadosTupla.totalInsertados;
                                     }
@@ -510,7 +510,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string nombreDirectorioEmpleado = empleado.emp_co_empr + "_" + empleado.emp_co_trab;
                 string nombreArchivo = empleado.emp_ruta_pdf;
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
-                if (configuracionTupla.error.Value.Equals(string.Empty))
+                if (configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     string pathArchivo = Path.Combine(configuracionTupla.configuracion.config_valor,directorioProceso, nombreDirectorioEmpresa, nombreDirectorioEmpleado, nombreArchivo);
                     if (System.IO.File.Exists(pathArchivo))

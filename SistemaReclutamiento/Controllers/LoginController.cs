@@ -365,9 +365,9 @@ namespace SistemaReclutamiento.Controllers
             try
             {
                 var personatupla = personabl.PersonaEmailObtenerJson(correo_recuperacion.ToLower());
-                if (!personatupla.error.Key.Equals(string.Empty))
+                if (!personatupla.error.Respuesta)
                 {
-                    return Json(new { respuesta = false, mensaje = personatupla.error.Value });
+                    return Json(new { respuesta = false, mensaje = personatupla.error.Mensaje });
                 }
                 else
                 {

@@ -41,12 +41,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 //Listar Sistemas
                 var sistemasTupla = sistemasbl.IntranetSistemasListarJson();
-                if (sistemasTupla.error.Key.Equals(string.Empty))
+                if (sistemasTupla.error.Respuesta)
                 {
                     listaSistemas = sistemasTupla.intranetSistemasLista;
                 }
                 else {
-                    errormensaje += sistemasTupla.error.Value;
+                    errormensaje += sistemasTupla.error.Mensaje;
                 }
 
                 //if (listaSistemas.Count > 0) {
@@ -80,7 +80,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                 //Lista de Empresas desde Postgres
                 var listaEmpresasTupla = intranetempresabl.IntranetEmpresasListarJson();
-                if (listaEmpresasTupla.error.Key.Equals(string.Empty))
+                if (listaEmpresasTupla.error.Respuesta)
                 {
                     listaEmpresas = listaEmpresasTupla.intranetEmpresasLista.Where(x => x.emp_estado == "A").ToList();
                     //creamos el string con la lista de empresas para el IN en sql
@@ -99,7 +99,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         stringEmpresas += ")";
                         //Listado de Personas SQL
                         var listaPersonasSQLTupla = sqlbl.PersonaSQLObtenerListaAgendaJson(stringEmpresas, mes_anterior);
-                        if (listaPersonasSQLTupla.error.Key.Equals(string.Empty))
+                        if (listaPersonasSQLTupla.error.Respuesta)
                         {
                             listaPersonasSQL = listaPersonasSQLTupla.lista;
 
@@ -108,18 +108,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         }
                         else
                         {
-                            errormensaje += listaPersonasSQLTupla.error.Value;
+                            errormensaje += listaPersonasSQLTupla.error.Mensaje;
                         }
 
                         //Listado de PErsonas Postgres
                         var listaTupla = usuariobl.IntranetListarUsuariosTokenJson();
-                        if (listaTupla.error.Key.Equals(string.Empty))
+                        if (listaTupla.error.Respuesta)
                         {
                             listaPersonasPostgres = listaTupla.listaUsuarios;
                         }
                         else
                         {
-                            errormensaje = listaTupla.error.Value;
+                            errormensaje = listaTupla.error.Mensaje;
                         }
 
                         if (listaPersonasPostgres.Count > 0 && listaPersonasSQL.Count > 0)
@@ -153,7 +153,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 else
                 {
-                    errormensaje = listaEmpresasTupla.error.Value;
+                    errormensaje = listaEmpresasTupla.error.Mensaje;
                 }
 
 

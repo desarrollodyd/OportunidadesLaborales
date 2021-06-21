@@ -22,7 +22,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             claseError error = new claseError();
             string consulta = @"SELECT config_id, config_descripcion, config_estado, 
                                 config_valor, config_tipo
-	                            FROM boletas_gdt.bol_configuracion;
+	                            FROM intranet.bol_configuracion;
                                 where config_id=@p0;";
             try
             {
@@ -49,8 +49,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (configuracion, error);
         }
@@ -60,7 +60,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             claseError error = new claseError();
             string consulta = @"SELECT config_id, config_descripcion, config_estado, 
                                 config_valor, config_tipo
-	                            FROM boletas_gdt.bol_configuracion
+	                            FROM intranet.bol_configuracion
                                 where config_tipo=@p0;";
             try
             {
@@ -87,8 +87,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (configuracion, error);
         }
@@ -96,7 +96,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
         {
             //bool response = false;
             int idInsertado = 0;
-            string consulta = @"INSERT INTO boletas_gdt.bol_configuracion(
+            string consulta = @"INSERT INTO intranet.bol_configuracion(
 	                                config_descripcion, config_estado, config_valor, config_tipo)
 	                                VALUES (@p0,@p1,@p2,@p3)
                                 returning config_id;";
@@ -119,8 +119,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idInsertado: idInsertado, error: error);
         }
@@ -128,7 +128,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
         {
             claseError error = new claseError();
             bool response = false;
-            string consulta = @"UPDATE boletas_gdt.bol_configuracion
+            string consulta = @"UPDATE intranet.bol_configuracion
 	                                SET  config_descripcion=@p0, config_estado=@p1, config_valor=@p2, config_tipo=@p3
 	                                WHERE config_id=@p4;";
             try
@@ -148,8 +148,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (editado: response, error: error);
         }

@@ -37,12 +37,12 @@ namespace SistemaReclutamiento.Controllers
                 //Obtener Envio
 
                 var envioDetTupla = envDetModelbl.CumEnvioDetalleObtenerxEnvioJson(env_id);
-                if (envioDetTupla.error.Key.Equals(string.Empty))
+                if (envioDetTupla.error.Respuesta)
                 {
                     cumEnvioDet = envioDetTupla.cumEnvioDet;
                     //llenar Envio;
                     var envioTupla = cumEnviobl.CumEnvioIdObtenerJson(env_id);
-                    if (envioTupla.error.Key.Equals(string.Empty))
+                    if (envioTupla.error.Respuesta)
                     {
                         cumEnvio = envioTupla.cumEnvio;
                         if (cumEnvio.env_id != 0)
@@ -54,7 +54,7 @@ namespace SistemaReclutamiento.Controllers
                 }
                 //obtener usuario por fk_envio
                 var usuarioTuplaClave = cumUsuariobl.CumUsuarioIdObtenerJson(cumEnvio.fk_usuario);
-                if (usuarioTuplaClave.error.Key.Equals(string.Empty))
+                if (usuarioTuplaClave.error.Respuesta)
                 {
                     //cumUsuario = usuarioTupla.cumUsuario;
                     if (usuarioTuplaClave.cumUsuario.cus_id != 0)
@@ -64,7 +64,7 @@ namespace SistemaReclutamiento.Controllers
                         {
                             //postgres
                             var usuarioTuplaPostgres = cumUsuariobl.CumUsuarioIdObtenerDataCompletaJson(usuarioTuplaClave.cumUsuario.cus_id);
-                            if (usuarioTuplaPostgres.error.Key.Equals(string.Empty))
+                            if (usuarioTuplaPostgres.error.Respuesta)
                             {
                                 cumUsuario = usuarioTuplaPostgres.cumUsuario;
                             }
@@ -77,7 +77,7 @@ namespace SistemaReclutamiento.Controllers
                             int mes_actual = fecha_act.Month;
                             int anio = fecha_act.Year;
                             var personaSQLTupla = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni,mes_actual,anio);
-                            if (personaSQLTupla.error.Key.Equals(string.Empty))
+                            if (personaSQLTupla.error.Respuesta)
                             {
                                 PersonaSqlEntidad persona = new PersonaSqlEntidad();
                                 if (personaSQLTupla.persona.CO_TRAB==null)
@@ -92,7 +92,7 @@ namespace SistemaReclutamiento.Controllers
                                         mes_actual = mes_actual - 1;
                                     }
                                     var personaSQLTupla2 = sqlBL.PersonaSQLObtenerInformacionPuestoTrabajoJson(cumUsuario.cus_dni, mes_actual,anio);
-                                    if (personaSQLTupla2.error.Key.Equals(string.Empty))
+                                    if (personaSQLTupla2.error.Respuesta)
                                     {
                                         persona = personaSQLTupla2.persona;
                                     }
@@ -114,7 +114,7 @@ namespace SistemaReclutamiento.Controllers
                         }
                         //Listar Preguntas y Respuestas
                         var cumPreguntaTupla = cumUsuPreguntabl.CumUsuPreguntaListarxUsuarioJson(cumUsuario.cus_id, env_id);
-                        if (cumPreguntaTupla.error.Key.Equals(string.Empty))
+                        if (cumPreguntaTupla.error.Respuesta)
                         {
                             List<CumUsuPreguntaEntidad> listaPreguntas = new List<CumUsuPreguntaEntidad>();
                             foreach (var preg in cumPreguntaTupla.lista)
@@ -122,7 +122,7 @@ namespace SistemaReclutamiento.Controllers
                                 CumUsuPreguntaEntidad pregunta = new CumUsuPreguntaEntidad();
                                 pregunta = preg;
                                 var cumRespuestaTupla = cumUsuRespuestabl.CumUsuRespuestaListarxUsuPreguntaJson(pregunta.upr_id);
-                                if (cumRespuestaTupla.error.Key.Equals(string.Empty))
+                                if (cumRespuestaTupla.error.Respuesta)
                                 {
                                     pregunta.CumUsuRespuesta = cumRespuestaTupla.lista.OrderBy(x=>x.ure_orden).ToList();
                                 }

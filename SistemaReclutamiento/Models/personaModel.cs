@@ -172,8 +172,8 @@ namespace SistemaReclutamiento.Models
                 //    }
                 //}
 
-                error.Key = ex.Data.Values.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 Console.Write(ex.Message);
                 //ELog.save(this, ex);
             }
@@ -341,8 +341,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                // Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return (persona:persona, error:error);
@@ -393,8 +393,8 @@ namespace SistemaReclutamiento.Models
                 }
             }
             catch (Exception ex) {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (listaPersonas: listaPersonas, error: error);
         }
@@ -497,8 +497,8 @@ namespace SistemaReclutamiento.Models
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
                 // Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
             }
             return (personaLista: personaLista, error: error);

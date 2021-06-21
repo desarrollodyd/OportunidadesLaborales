@@ -57,8 +57,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista, error: error);
         }
@@ -97,8 +97,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (elemento: WebElemento, error: error);
         }
@@ -127,8 +127,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (idInsertado: idWebElementoInsertado, error: error);
         }
@@ -157,8 +157,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (WebElementoEditado: response, error: error);
         }
@@ -182,8 +182,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
 
             return (eliminado: response, error: error);
@@ -209,8 +209,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (reordenado: response, error: error);
         }
@@ -260,8 +260,8 @@ namespace SistemaReclutamiento.Models.WebCorporativa
             }
             catch (Exception ex)
             {
-                error.Key = ex.Data.Count.ToString();
-                error.Value = ex.Message;
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (lista, error: error);
         }

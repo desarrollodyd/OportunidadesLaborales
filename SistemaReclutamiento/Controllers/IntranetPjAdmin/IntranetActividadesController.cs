@@ -36,14 +36,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var ActividadesTupla = intranetActividadesbl.IntranetActividadesListarJson();
                 error = ActividadesTupla.error;
                 listaActividades = ActividadesTupla.intranetActividadesLista;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Actividadess";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Actividadess";
                 }
 
@@ -73,14 +73,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 {
                     Directory.CreateDirectory(direccion);
                 }
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Listando Actividadess";
                     respuesta = true;
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudieron Listar las Actividadess";
                 }
 
@@ -128,7 +128,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var actividadesTupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
                 error = actividadesTupla.error;
                 actividad = actividadesTupla.intranetActividades;
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     actividad.img_ubicacion = actividad.act_imagen;
                     //actividad.act_imagen = rutaImagenes.ImagenIntranetActividades(PathActividadesIntranet + "/Actividades/", actividad.act_imagen);
@@ -137,7 +137,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 }
                 else
                 {
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                     mensaje = "No se Pudo Obtener La Informacion de la Actividad Seleccionada";
                 }
 
@@ -220,7 +220,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 var actividadTupla = intranetActividadesbl.IntranetActividadesInsertarJson(intranetActividad);
                 error = actividadTupla.error;
 
-                if (error.Key.Equals(string.Empty))
+                if (error.Respuesta)
                 {
                     mensaje = "Se Registró Correctamente";
                     respuesta = true;
@@ -229,7 +229,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 else
                 {
                     mensaje = "No se Pudo insertar la Actividad";
-                    mensajeConsola = error.Value;
+                    mensajeConsola = error.Mensaje;
                 }
 
             }
@@ -261,14 +261,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     intranetActividad.act_imagen = intranetActividad.img_ubicacion;
                     var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
                     error = actividadTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         respuesta = actividadTupla.intranetActividadesEditado;
                         mensaje = "Se Editó la Actividad Correctamente";
                     }
                     else
                     {
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                         mensaje = "Error, no se Puede Editar";
                     }
                 }
@@ -317,14 +317,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
                     var actividadTupla = intranetActividadesbl.IntranetActividadesEditarJson(intranetActividad);
                     error = actividadTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         respuesta = actividadTupla.intranetActividadesEditado;
                         mensaje = "Se Editó la Actividad Correctamente";
                     }
                     else
                     {
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                         mensaje = "Error, no se Puede Editar";
                     }
                 }
@@ -350,7 +350,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             {
                 var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(act_id);
                 error = actividadesBusquedatupla.error;
-                if (error.Key.Equals(string.Empty)) {
+                if (error.Respuesta) {
                     intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
                     if (!intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
                     {
@@ -366,7 +366,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
                     var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(act_id);
                     error = ActividadesTupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
                         errormensaje = "Actividad Eliminado";
@@ -374,7 +374,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                     else
                     {
                         errormensaje = "Error, no se Puede Eliminar";
-                        mensajeConsola = error.Value;
+                        mensajeConsola = error.Mensaje;
                     }
                 }
 
@@ -402,7 +402,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 {
                     var actividadesBusquedatupla = intranetActividadesbl.IntranetActividadesIdObtenerJson(listaActividadesEliminar[i]);
                     error = actividadesBusquedatupla.error;
-                    if (error.Key.Equals(string.Empty))
+                    if (error.Respuesta)
                     {
                         intranetActividadesBusqueda = actividadesBusquedatupla.intranetActividades;
                         if (!intranetActividadesBusqueda.act_imagen.Equals(string.Empty))
@@ -419,7 +419,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 
                         var ActividadesTupla = intranetActividadesbl.IntranetActividadesEliminarJson(intranetActividadesBusqueda.act_id);
                         error = ActividadesTupla.error;
-                        if (error.Key.Equals(string.Empty))
+                        if (error.Respuesta)
                         {
                             respuestaConsulta = ActividadesTupla.intranetActividadesEliminado;
                             errormensaje = "Actividades Eliminado";
@@ -427,7 +427,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         else
                         {
                             errormensaje = "Error, no se Puede Eliminar";
-                            mensajeConsola = error.Value;
+                            mensajeConsola = error.Mensaje;
                         }
 
                     }

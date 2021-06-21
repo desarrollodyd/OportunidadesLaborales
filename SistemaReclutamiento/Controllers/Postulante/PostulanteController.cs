@@ -357,13 +357,13 @@ namespace SistemaReclutamiento.Controllers
                     {
                         var preguntaInsertada = preguntabl.PosPreguntaOLAInsertarJson(pregunta);
                         idPreguntaInsertada = preguntaInsertada.idPreguntaInsertada;
-                        errormensaje = preguntaInsertada.error.Value;
+                        errormensaje = preguntaInsertada.error.Mensaje;
                         if (idPreguntaInsertada > 0)
                         {
                             respuesta.fk_pos_pregunta_ol = idPreguntaInsertada;
                             var respuestaPreguntaInsertada = respuestabl.PosRespuestaOLAInsertarJson(respuesta);
                             respuestaConsulta = respuestaPreguntaInsertada.response;
-                            errormensaje = respuestaPreguntaInsertada.error.Value;
+                            errormensaje = respuestaPreguntaInsertada.error.Mensaje;
                         }
                     }
                     catch (Exception ex)
@@ -377,7 +377,7 @@ namespace SistemaReclutamiento.Controllers
                 posSeleccion.spo_nivel1_calif = Convert.ToInt32(totalCalificacion/preguntas.Length);
                 posSeleccion.spo_nivel1_selec = false;
                 var totalSeleccionTupla = postulanteseleccionbl.PosSeleccionInsertarJson(posSeleccion);
-                if (!totalSeleccionTupla.error.Key.Equals(string.Empty)) {
+                if (!totalSeleccionTupla.error.Respuesta) {
                     return Json(new { respuesta = false, mensaje = "No se pudo insertar el total de Calificacion" });
                 }
             }
@@ -432,13 +432,13 @@ namespace SistemaReclutamiento.Controllers
                     //Insertar Preguntas
                     var preguntaInsertada = preguntabl.PosPreguntaOLAInsertarJson(pregunta);
                     idPreguntaInsertada = preguntaInsertada.idPreguntaInsertada;
-                    errormensaje = preguntaInsertada.error.Value;
+                    errormensaje = preguntaInsertada.error.Mensaje;
                     if (idPreguntaInsertada > 0)
                     {
                         respuesta.fk_pos_pregunta_ol = idPreguntaInsertada;
                         var respuestaPreguntaInsertada = respuestabl.PosRespuestaOLAInsertarJson(respuesta);
                         respuestaConsulta = respuestaPreguntaInsertada.response;
-                        errormensaje = respuestaPreguntaInsertada.error.Value;
+                        errormensaje = respuestaPreguntaInsertada.error.Mensaje;
                     }
                 }
                 catch (Exception ex) {
@@ -448,7 +448,7 @@ namespace SistemaReclutamiento.Controllers
             posSeleccion.spo_nivel1_calif = Convert.ToInt32(totalCalificacion / arrayPreguntas.Count);
             posSeleccion.spo_nivel1_selec = false;
             var totalSeleccionTupla = postulanteseleccionbl.PosSeleccionInsertarJson(posSeleccion);
-            if (!totalSeleccionTupla.error.Key.Equals(string.Empty))
+            if (!totalSeleccionTupla.error.Respuesta)
             {
                 return Json(new { respuesta = false, mensaje = "No se pudo insertar el total de Calificacion" });
             }
