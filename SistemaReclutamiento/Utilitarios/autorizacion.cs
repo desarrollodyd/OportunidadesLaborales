@@ -8,10 +8,10 @@ namespace SistemaReclutamiento.Utilitarios
 {
     [global::System.AttributeUsage(AttributeTargets.Class | AttributeTargets.Method |
                 AttributeTargets.Property | AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public class SeguridadMenu:Attribute
+    public class autorizacion:Attribute
     {
 
-        public SeguridadMenu(bool activa = true)
+        public autorizacion(bool activa = true)
         {
             activar = activa;
         }

@@ -1,4 +1,5 @@
-﻿using SistemaReclutamiento.Entidades.SeguridadIntranet;
+﻿using Npgsql;
+using SistemaReclutamiento.Entidades.SeguridadIntranet;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
@@ -38,10 +39,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
 
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(permiso.WEB_PermNombre) == String.Empty ? SqlString.Null : Convert.ToString(permiso.WEB_PermNombre));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(permiso.WEB_PermTipo) == String.Empty ? SqlString.Null : Convert.ToString(permiso.WEB_PermTipo));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(permiso.WEB_PermControlador) == String.Empty ? SqlString.Null : Convert.ToString(permiso.WEB_PermControlador));
@@ -76,10 +77,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                     Delete from [dbo].[SEG_PermisoRol] WHERE [WEB_PermID] = @id";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", permisonombre);
                     query.Parameters.AddWithValue("@p1", controlador);
                     query.ExecuteNonQuery();
@@ -109,10 +110,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                               FROM [dbo].[SEG_Permiso] where WEB_PermNombre = @p0 and WEB_PermControlador=@p1";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", permisonombre);
                     query.Parameters.AddWithValue("@p1", controlador);
                     using (var dr = query.ExecuteReader())
@@ -155,10 +156,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                               FROM [dbo].[SEG_Permiso] order by WEB_PermControlador,WEB_PermNombre ASC";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     using (var dr = query.ExecuteReader())
                     {
                         while (dr.Read())
@@ -207,10 +208,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                             order by WEB_PermControlador,WEB_PermNombre ASC";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     using (var dr = query.ExecuteReader())
                     {
                         while (dr.Read())
@@ -251,10 +252,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                        WHERE [WEB_PermID] = @p0";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", web_PermId);
                     query.Parameters.AddWithValue("@p1", estado);
                     query.ExecuteNonQuery();
@@ -278,10 +279,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                        WHERE [WEB_PermID] = @p0";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", web_PermId);
                     query.Parameters.AddWithValue("@p1", descripcion);
                     query.ExecuteNonQuery();
@@ -305,10 +306,10 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                        WHERE [WEB_PermID] = @p0";
             try
             {
-                using (var con = new SqlConnection(_conexion))
+                using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
-                    var query = new SqlCommand(consulta, con);
+                    var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", web_PermId);
                     query.Parameters.AddWithValue("@p1", nombre);
                     query.ExecuteNonQuery();

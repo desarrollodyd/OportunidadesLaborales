@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SistemaReclutamiento.Entidades.SeguridadIntranet
 {
-    public class SEG_UsuarioRolEntidad
+    public class SEG_RolUsuarioEntidad
     {
         public int WEB_RUsuID { get; set; }
         public int WEB_RolID { get; set; }

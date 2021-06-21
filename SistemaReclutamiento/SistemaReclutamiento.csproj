@@ -5342,9 +5342,10 @@
     <Compile Include="Entidades\SeguridadIntranet\Metodo_atributos.cs" />
     <Compile Include="Entidades\SeguridadIntranet\Metodo_clase.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_PermisoEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_PermisoMenuEntidad.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_PermisoRolEntidad.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_RolEntidad.cs" />
-    <Compile Include="Entidades\SeguridadIntranet\SEG_UsuarioRolEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_RolUsuarioEntidad.cs" />
     <Compile Include="Entidades\UbigeoEntidad.cs" />
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
@@ -5411,6 +5412,10 @@
     <Compile Include="Models\Proveedor\ProveedorModel.cs" />
     <Compile Include="Models\Proveedor\RolModel.cs" />
     <Compile Include="Models\SeguridadIntranet\SEG_PermisoDAL.cs" />
+    <Compile Include="Models\SeguridadIntranet\SEG_PermisoMenuDAL.cs" />
+    <Compile Include="Models\SeguridadIntranet\SEG_PermisoRolDAL.cs" />
+    <Compile Include="Models\SeguridadIntranet\SEG_RolDAL.cs" />
+    <Compile Include="Models\SeguridadIntranet\SEG_RolUsuarioDAL.cs" />
     <Compile Include="Models\SQLModel.cs" />
     <Compile Include="Models\Proveedor\SubMenuModel.cs" />
     <Compile Include="Models\UbigeoModel.cs" />
@@ -5427,7 +5432,7 @@
     <Compile Include="Utilitarios\ManejoNulos.cs" />
     <Compile Include="Utilitarios\RutaImagenes.cs" />
     <Compile Include="Utilitarios\Seguridad.cs" />
-    <Compile Include="Utilitarios\SeguridadMenu.cs" />
+    <Compile Include="Utilitarios\autorizacion.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
