@@ -5,10 +5,12 @@
         let fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
         $("#cboEmpresas").html('')
         $("#cboEmpresas").append('<option value="">--Seleccione--</option>')
-        $.each(listaEmpresas,function(index,value){
-            $("#cboEmpresas").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`)
-        })
-        $("#cboEmpresas").select2()
+        if (listaEmpresas) {
+            $.each(listaEmpresas, function (index, value) {
+                $("#cboEmpresas").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`)
+            })
+            $("#cboEmpresas").select2()
+        }
         $('#fechaProceso').datetimepicker({
             format: 'YYYY-MM',
             ignoreReadonly: true,
@@ -16,6 +18,54 @@
             defaultDate: fecha_hoy,
             maxDate:fecha_hoy
         })
+        if (listaBoletasActuales) {
+            simpleDataTable({
+                uniform: false,
+                tableNameVariable: "datatable_boletasListado",
+                table: "#boletasListado",
+                tableColumnsData: listaBoletasActuales,
+                tableColumns: [
+
+                    {
+                        data: "emp_co_trab",
+                        title: "Nro. Doc.",
+                    },
+                    {
+                        data: "emp_tipo_doc",
+                        title: "Tipo Doc.",
+                    },
+                    {
+                        data: "emp_co_trab",
+                        title: "Empleado",
+                        "render": function (value, row, oData) {
+                            return oData.emp_apel_pat + " " + oData.emp_apel_mat + "," + oData.emp_no_trab
+                        }
+                    },
+                    {
+                        data: "emp_direc_mail",
+                        title: "Dir. envio",
+                    },
+                    {
+                        data: null,
+                        title: "Acciones",
+                        "render": function (value, row, oData) {
+                            var span = `
+                                                        <a href="#" class="btn btn-primary button radius alert btnVisualizarPDF2" 
+                                                        data-empcotrab="${oData.emp_co_trab}" 
+                                                        data-emprutapdf="${oData.emp_ruta_pdf}" 
+                                                        data-empcoempr="${oData.emp_co_empr}"
+                                                        data-empdiremail="${oData.emp_direc_mail}"
+                                                        data-rel="tooltip" title="View">
+                                                        Ver
+                                                    </a>
+                                                                `
+                            return span
+                        }
+                    }
+
+                ]
+            })
+        }
     }   
     let componentes=function(){
         $(document).on('click','.btnBuscar',function(e){

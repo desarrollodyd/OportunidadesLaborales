@@ -549,26 +549,42 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             List<TMEMPR> listaEmpresasSQL = new List<TMEMPR>();
             List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
             ViewBag.dataEmpresas = null;
-            string tipo_doc = persona.per_tipodoc.ToUpper();
-            switch (tipo_doc)
+            //string tipo_doc = persona.per_tipodoc.ToUpper();
+            //switch (tipo_doc)
+            //{
+            //    case "DNI":
+            //        tipo_doc = "DNI";
+            //        break;
+            //    case "CARNÉ DE EXTRANJERIA":
+            //        tipo_doc = "CEX";
+            //        break;
+            //    case "PASAPORTE":
+            //        tipo_doc = "PAS";
+            //        break;
+            //    case "OTROS":
+            //        tipo_doc = "AFP";
+            //        break;
+            //    default:
+            //        tipo_doc="DNI";
+            //        break;
+            //}
+            DateTime fechaActual = DateTime.Now;
+            //int mesActual = fechaActual.Month;
+            //int anioActual = fechaActual.Year;
+            int mesActual = 6;
+            int anioActual = 2020;
+            var personaSQLTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(persona.per_numdoc, mesActual, anioActual);
+            PersonaSqlEntidad personaSQL = new PersonaSqlEntidad();
+            if (personaSQLTupla.error.Respuesta)
             {
-                case "DNI":
-                    tipo_doc = "DNI";
-                    break;
-                case "CARNÉ DE EXTRANJERIA":
-                    tipo_doc = "CEX";
-                    break;
-                case "PASAPORTE":
-                    tipo_doc = "PAS";
-                    break;
-                case "OTROS":
-                    tipo_doc = "AFP";
-                    break;
-                default:
-                    tipo_doc="DNI";
-                    break;
+                personaSQL = personaSQLTupla.persona;
             }
-            var listaEmpresasSQLTupla = sqlbl.EmpresaListarxCodigoTrabajadorJson(persona.per_numdoc, tipo_doc);
+            var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoJson(personaSQL.CO_EMPR, Convert.ToString(anioActual), Convert.ToString(mesActual), persona.per_numdoc);
+            if (listaBoletasTupla.error.Respuesta)
+            {
+                ViewBag.dataBoletasActuales = listaBoletasTupla.lista;
+            }
+            var listaEmpresasSQLTupla = sqlbl.EmpresaListarxCodigoTrabajadorJson(persona.per_numdoc);
             if (listaEmpresasSQLTupla.error.Mensaje.Equals(string.Empty)) {
                 ViewBag.dataEmpresas = listaEmpresasSQLTupla.listaempresa;
             }

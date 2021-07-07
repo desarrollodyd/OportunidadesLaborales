@@ -10,6 +10,7 @@
     String persona = new JavaScriptSerializer().Serialize(Session["perIntranet_full"]);
     String usuario = new JavaScriptSerializer().Serialize(Session["usuIntranet_full"]);
     String listaEmpresas = new JavaScriptSerializer().Serialize(ViewBag.dataEmpresas);
+    String listaBoletasActuales = new JavaScriptSerializer().Serialize(ViewBag.dataBoletasActuales);
 }
 @section AddToHead
 {
@@ -101,6 +102,8 @@
         persona = (@Html.Raw(persona));
         usuario = (@Html.Raw(usuario));
         listaEmpresas = (@Html.Raw(listaEmpresas));
+        listaBoletasActuales = (@Html.Raw(listaBoletasActuales));
+
     </script>
     <script src="~/Content/vendors/select2/dist/js/select2.min.js"></script>
     <script src="~/Content/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>

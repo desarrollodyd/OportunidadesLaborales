@@ -401,6 +401,7 @@ FROM " + nombre_tabla+" as pago "+
 					emp.NU_TLF1,
                     empresa.DE_NOMB,
                     empresa.NU_RUCS,
+	                empresa.CO_EMPR,
                     unidad.DE_UNID, 
                     sede.DE_SEDE,  
                     gerencia.DE_DEPA, 
@@ -449,6 +450,7 @@ FROM " + nombre_tabla+" as pago "+
                                 persona.NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]);
                                 persona.NO_DIRE_TRAB = ManejoNulos.ManageNullStr(dr["NO_DIRE_TRAB"]);
                                 persona.NU_RUCS = ManejoNulos.ManageNullStr(dr["NU_RUCS"]);
+                                persona.CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]);
                             }
                         }
                     }
@@ -933,7 +935,7 @@ FROM " + nombre_tabla+" as pago "+
             return (lista: listaPersonas, error: error);
         }
 
-        public (List<TMEMPR> listaempresa, claseError error) EmpresaListarxCodigoTrabajadorJson(string CO_TRAB,string TI_DOCU_IDEN)
+        public (List<TMEMPR> listaempresa, claseError error) EmpresaListarxCodigoTrabajador_DocIdentidadJson(string CO_TRAB,string TI_DOCU_IDEN)
         {
             List<TMEMPR> lista = new List<TMEMPR>();
             claseError error = new claseError();
@@ -975,6 +977,49 @@ FROM " + nombre_tabla+" as pago "+
                 error.Respuesta = false;
                 error.Mensaje = ex.Message;
                 Console.WriteLine(ex.Message);
+            }
+            return (listaempresa: lista, error: error);
+        }
+        public (List<TMEMPR> listaempresa, claseError error) EmpresaListarxCodigoTrabajadorJson(string CO_TRAB)
+        {
+            List<TMEMPR> lista = new List<TMEMPR>();
+            claseError error = new claseError();
+            string consulta = @"Select           distinct
+                    empresa.DE_NOMB,
+					empresa.CO_EMPR
+					
+                    from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB
+                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+					inner join TDIDEN_TRAB as TipoDoc on TipoDoc.CO_TRAB=emp.CO_TRAB
+                    where emp.CO_TRAB=@p0";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", CO_TRAB);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var empresa = new TMEMPR()
+                                {
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                };
+                                lista.Add(empresa);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
             }
             return (listaempresa: lista, error: error);
         }
