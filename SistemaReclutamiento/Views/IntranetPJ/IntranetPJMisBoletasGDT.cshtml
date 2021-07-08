@@ -16,17 +16,17 @@
 {
 
     <style>
-        .btnBuscar {
+        /*.btnBuscar {
             margin-left: 20px;
             padding: 8px;
-        }
+        }*/
         .btnVisualizarPDF2 {
             margin-left: 20px;
             padding: 8px;
         }
-        .form-control {
+        /*.form-control {
             margin-left: 10px;
-        }
+        }*/
         .select2-selection {
             min-height: 32px;
             padding-top: 5px;
@@ -45,7 +45,7 @@
 <div class="content">
     <div class="twelve columns listcomments">
 
-        <div class="twelve columns">
+        @*<div class="twelve columns">
             <form class="form" id="busquedaBoletas" style="margin-bottom:0px;">
                 <div class="row collapsable">
                     <div class="four columns">
@@ -60,11 +60,47 @@
                 </div>
             </form>
 
-        </div>
+        </div>*@
+        <div class="twelve columns">
+            <h4 class="lista_titulo" style="font-size:18px;margin-left: 0px;margin-top:0px;color:#ff0000">
+                Buscar Boletas
+                <button id="btn_hide_show" title="Mostrar/Ocultar" class="btn btn-xs button" style="padding: 3px;"><i class="fa fa-eye" style="font-size: 18px;"></i></button>
+            </h4>
+            <br />
+            <br />
+            <div id="scroll">
+                <div class="commentform">
+                    @*<h2 class="titlecomment">Write Comments</h2>*@
+                    <form id="busquedaBoletas">
+                        <div class="row collapse">
+                            <div class="two columns"><label class="inline">Empresa</label></div>
+                            <div class="ten columns">
+                                <select id="cboEmpresas" name="cboEmpresas" class="form-control" style="width:100%"></select>
+                            </div>
 
-        <h4 class="lista_titulo" style="font-size:18px;margin-left: 0px;margin-top:0px;">
+                        </div>
+                        <div class="row collapse">
+                            <div class="two columns"><label class="inline">Fecha Inicio</label></div>
+                            <div class="four columns">
+                                <input type="text" id="fechaProcesoInicio" name="fechaProcesoInicio" value="" class="form-control" />
+                            </div>
+                            <div class="two columns"><label class="inline" style="padding-left: 8px;">Fecha Fin</label></div>
+                            <div class="four columns">
+                                <input type="text" id="fechaProcesoFin" name="fechaProcesoFin" value="" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row collapse">
+                            <button class="btn radius btn-block alert button btnBuscar" style="width:100%">Buscar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <hr />
+        @*<h4 class="lista_titulo" style="font-size:18px;margin-left: 0px;margin-top:0px;">
             Resultados Búsqueda:
-        </h4>
+        </h4>*@
         <div>
             <table id="boletasListado" class="table table-condensed table-sm datatable-boletasListado table-striped table-bordered table-hover" style="width:100%">
                 <tbody>

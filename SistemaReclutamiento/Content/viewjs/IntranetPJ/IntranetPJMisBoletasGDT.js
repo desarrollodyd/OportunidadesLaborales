@@ -1,6 +1,13 @@
 ﻿let PanelBoletas=function(){
     let modal = document.getElementById("modalBoleta");
+    let objBitacora={}
     let inicio=function(){
+        objBitacora={
+            btc_vista:getAbsolutePath(),
+            btc_accion:'ACCESO URL'
+        }
+        registrarBitacora(objBitacora)
+        $('#scroll').toggle('hide');
         let hoy = new Date();
         let fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
         $("#cboEmpresas").html('')
@@ -11,7 +18,14 @@
             })
             $("#cboEmpresas").select2()
         }
-        $('#fechaProceso').datetimepicker({
+        $('#fechaProcesoInicio').datetimepicker({
+            format: 'YYYY-MM',
+            ignoreReadonly: true,
+            allowInputToggle: true,
+            defaultDate: fecha_hoy,
+            maxDate:fecha_hoy
+        })
+        $('#fechaProcesoFin').datetimepicker({
             format: 'YYYY-MM',
             ignoreReadonly: true,
             allowInputToggle: true,
@@ -47,6 +61,13 @@
                     },
                     {
                         data: null,
+                        title: "Fecha Doc.",
+                        "render": function (value, row, oData) {
+                            return oData.emp_anio+"/"+oData.emp_periodo
+                        }
+                    },
+                    {
+                        data: null,
                         title: "Acciones",
                         "render": function (value, row, oData) {
                             var span = `
@@ -55,6 +76,7 @@
                                                         data-emprutapdf="${oData.emp_ruta_pdf}" 
                                                         data-empcoempr="${oData.emp_co_empr}"
                                                         data-empdiremail="${oData.emp_direc_mail}"
+                                                        data-nombreempresa="${oData.nombreEmpresa}"
                                                         data-rel="tooltip" title="View">
                                                         Ver
                                                     </a>
@@ -76,7 +98,8 @@
                 return;
             }
             let empresaListar=$("#cboEmpresas").val()
-            let fechaListar=$("#fechaProceso").val()
+            let fechaProcesoInicio=$("#fechaProcesoInicio").val()
+            let fechaProcesoFin=$("#fechaProcesoFin").val()
             if(empresaListar==""){
                 messageResponse({
                     text: "Debe seleccionar una empresa",
@@ -84,9 +107,16 @@
                 })
                 return;
             }
-            if(fechaListar==""){
+            if(fechaProcesoInicio==""){
                 messageResponse({
-                    text: "Fecha Incorrecta",
+                    text: "Fecha Inicio Incorrecta",
+                    type: "error"
+                })
+                return;
+            }
+            if(fechaProcesoFin==""){
+                messageResponse({
+                    text: "Fecha Fin Incorrecta",
                     type: "error"
                 })
                 return;
@@ -95,7 +125,8 @@
             let empleado=persona.per_numdoc
             let dataForm={
                 empresaListar:empresaListar,
-                fechaListar:fechaListar,
+                fechaProcesoInicio:fechaProcesoInicio,
+                fechaProcesoFin:fechaProcesoFin,
                 nombreEmpresaListar:nombreEmpresaListar,
                 empleado:empleado
             }
@@ -135,6 +166,13 @@
                                 },
                                 {
                                     data: null,
+                                    title: "Fecha Doc.",
+                                    "render": function (value, row, oData) {
+                                        return oData.emp_anio+"/"+oData.emp_periodo
+                                    }
+                                },
+                                {
+                                    data: null,
                                     title: "Acciones",
                                     "render": function (value,row, oData) {
                                         var span = `
@@ -153,6 +191,11 @@
                 
                             ]
                         })
+                        objBitacora={
+                            btc_vista:'IntranetPJBoletasGDT/BolListarporEmpleadoJson',
+                            btc_accion:'BUSQUEDA BOLETAS'
+                        }
+                        registrarBitacora(objBitacora)
                     }
                 }
             });
@@ -160,6 +203,7 @@
         $(document).on('click','.btnVisualizarPDF',function(e){
             e.preventDefault()
             let nombreEmpresa=$("#cboEmpresas").find(':selected').text()
+            
             let obj={
                 emp_co_trab:$(this).data("empcotrab"),
                 emp_ruta_pdf:$(this).data("emprutapdf"),
@@ -187,7 +231,9 @@
         $(document).on('click','.btnVisualizarPDF2',function(e){
             e.preventDefault()
             $("#contenidoBoletaPdf").html('')
-            let nombreEmpresa=$("#cboEmpresas").find(':selected').text()
+            // let nombreEmpresa=$("#cboEmpresas").find(':selected').text()
+            let nombreEmpresa=$(this).data("nombreempresa").trim()
+            console.log(nombreEmpresa)
             let obj={
                 emp_co_trab:$(this).data("empcotrab"),
                 emp_ruta_pdf:$(this).data("emprutapdf"),
@@ -213,12 +259,15 @@
                         //     "<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
                         //     encodeURI(data) + "'></iframe>"
                         // )
+                        objBitacora={
+                            btc_vista:'IntranetPJBoletasGDT/VisualizarPdfIntranetAdminJson',
+                            btc_accion:'VISUALIZACION PDF'
+                        }
+                        registrarBitacora(objBitacora)
                       
                     }
                 }
             })
-
-            
         })
         $(document).on('click', 'span.close', function () {
             modal.style.display = "none";
@@ -230,6 +279,26 @@
                 $("body").removeClass("openModal");
             }
         }
+        $(document).on("click", "#btn_hide_show", function () {
+            $('#scroll').toggle('slow');
+        });
+    }
+    let registrarBitacora=function(data){
+        let dataForm=data;
+        responseSimple({
+            url: "IntranetPJBoletasGDT/GuardarBitacoraJson",
+                refresh: false,
+                loader:false,
+                data:JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    CloseMessages()
+                }
+        })
+    }
+    let getAbsolutePath=function() {
+        var loc = window.location;
+        var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+        return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
     }
     return {
         init:function(){

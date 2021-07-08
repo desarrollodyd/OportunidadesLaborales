@@ -22,6 +22,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         SQLModel sqlbl = new SQLModel();
         BolConfiguracionModel bolConfigBL = new BolConfiguracionModel();
         BolEmpleadoBoletaModel empleadoBoletaBL = new BolEmpleadoBoletaModel();
+        BolBitacoraModel bitacoraBL = new BolBitacoraModel();
 
         public string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre" };
 
@@ -214,19 +215,65 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje,respuesta,data=listaBoletas });
         }
-        public ActionResult BolListarporEmpleadoJson(DateTime fechaListar, string empresaListar, string nombreEmpresaListar,string empleado)
+        public ActionResult BolListarporEmpleadoJson(DateTime fechaProcesoInicio,DateTime fechaProcesoFin, string empresaListar, string nombreEmpresaListar,string empleado)
         {
             string mensaje = "No se pudieron listar las boletas";
             bool respuesta = false;
             List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
             try
             {
-                string mes = Convert.ToString(fechaListar.Month);
-                string anio = Convert.ToString(fechaListar.Year);
-                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoJson(empresaListar, anio, mes,empleado);
+                int mesInicio = fechaProcesoInicio.Month;
+                int anioInicio = fechaProcesoInicio.Year;
+                int mesFin = fechaProcesoFin.Month;
+                int anioFin= fechaProcesoFin.Year;
+
+                //string stringPeriodo = "";
+                //List<string> periodos = new List<string>();
+                //for (int i = 1; i <= mesFin; i++)
+                //{
+                //    periodos.Add("'" + i + "'");
+                //}
+                //stringPeriodo = String.Join(",", periodos);
+
+                string stringAnio = "";
+                List<string> anios = new List<string>();
+                List<int> _anios = new List<int>();
+                for (int i = anioInicio; i <= anioFin; i++)
+                {
+                    anios.Add("'" + i + "'");
+                    _anios.Add(i);
+                }
+                stringAnio = String.Join(",", anios);
+                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoEmpresaFechasJson(empresaListar,empleado,stringAnio);
+
                 if (listaBoletasTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaBoletas = listaBoletasTupla.lista;
+                    foreach(var anio in _anios)
+                    {
+                        if (anio == anioInicio)
+                        {
+                            for (int i = 1; i < mesInicio ; i++)
+                            {
+                                var boleta = listaBoletas.Where(x => x.emp_anio.Equals(anio.ToString()) && x.emp_periodo.Equals(i.ToString())).FirstOrDefault();
+                                if (boleta != null)
+                                {
+                                    listaBoletas.Remove(boleta);
+                                }
+                            }
+                        }
+                        if (anio == anioFin)
+                        {
+                            for (int i = mesFin+1; i <= 12; i++)
+                            {
+                                var boleta = listaBoletas.Where(x => x.emp_anio.Equals(anio.ToString()) && x.emp_periodo.Equals(i.ToString())).FirstOrDefault();
+                                if (boleta != null)
+                                {
+                                    listaBoletas.Remove(boleta);
+                                }
+                            }
+                        }
+                    }
                     mensaje = "Listando registros";
                     respuesta = true;
                 }
@@ -531,6 +578,57 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
             }
             return Json(new { data,mensaje,respuesta,fileName});
+        }
+        [HttpPost]
+        public ActionResult GuardarBitacoraJson(BolBitacoraEntidad bitacora)
+        {
+            string mensaje = "No se pudo insertar";
+            bool respuesta = false;
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usuIntranet_full"];
+            int idInsertado = 0;
+            try
+            {
+                bitacora.btc_fecha_reg = DateTime.Now;
+                bitacora.btc_estado = 1;
+                bitacora.btc_usuario_id = usuario.usu_id;
+                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
+                if (insertadoTupla.error.Respuesta)
+                {
+                    mensaje = "Registrado";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensaje = insertadoTupla.error.Mensaje;
+                }
+            }
+            catch(Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new {respuesta,mensaje });
+        }
+        [HttpPost] 
+        public ActionResult BitacoraListarFiltrosJson(DateTime fechaInicio, DateTime fechaFin)
+        {
+            string mensaje = "No se pudieron listar los datos";
+            bool respuesta = false;
+            List<BolBitacoraEntidad> listaBitacoras = new List<BolBitacoraEntidad>();
+            try
+            {
+                var listaTupla = bitacoraBL.BitacoraListarFiltrosJson(fechaInicio, fechaFin);
+                if (listaTupla.error.Respuesta)
+                {
+                    listaBitacoras = listaTupla.lista.OrderByDescending(x=>x.btc_fecha_reg).ToList();
+                    mensaje = "Listando Registros";
+                    respuesta = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje, respuesta, data = listaBitacoras });
         }
     }
 }

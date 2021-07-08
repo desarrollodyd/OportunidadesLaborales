@@ -569,25 +569,40 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             //        break;
             //}
             DateTime fechaActual = DateTime.Now;
-            //int mesActual = fechaActual.Month;
-            //int anioActual = fechaActual.Year;
-            int mesActual = 6;
-            int anioActual = 2020;
+            int mesActual = fechaActual.Month;
+            int anioActual = fechaActual.Year;
+            //int mesActual = 6;
+            //int anioActual = 2020;
+            string stringAnio = "'"+anioActual+"'";
+            string stringPeriodo = "";
+            List<string> periodos = new List<string>();
+            for(int i = 1; i <= mesActual; i++)
+            {
+                periodos.Add("'"+i+"'");
+            }
+            stringPeriodo = String.Join(",", periodos);
             var personaSQLTupla = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(persona.per_numdoc, mesActual, anioActual);
             PersonaSqlEntidad personaSQL = new PersonaSqlEntidad();
             if (personaSQLTupla.error.Respuesta)
             {
                 personaSQL = personaSQLTupla.persona;
             }
-            var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoJson(personaSQL.CO_EMPR, Convert.ToString(anioActual), Convert.ToString(mesActual), persona.per_numdoc);
-            if (listaBoletasTupla.error.Respuesta)
-            {
-                ViewBag.dataBoletasActuales = listaBoletasTupla.lista;
-            }
+         
             var listaEmpresasSQLTupla = sqlbl.EmpresaListarxCodigoTrabajadorJson(persona.per_numdoc);
             if (listaEmpresasSQLTupla.error.Mensaje.Equals(string.Empty)) {
                 ViewBag.dataEmpresas = listaEmpresasSQLTupla.listaempresa;
+                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoFechasJson(persona.per_numdoc, stringAnio, stringPeriodo);
+                if (listaBoletasTupla.error.Respuesta)
+                {
+                    foreach(var boleta in listaBoletasTupla.lista)
+                    {
+                        var empresa= listaEmpresasSQLTupla.listaempresa.Where(x => x.CO_EMPR.Equals(boleta.emp_co_empr)).FirstOrDefault();
+                        boleta.nombreEmpresa = empresa.DE_NOMB;
+                    }
+                    ViewBag.dataBoletasActuales = listaBoletasTupla.lista;
+                }
             }
+          
             return View("~/Views/IntranetPJ/IntranetPJMisBoletasGDT.cshtml");
         }
         [HttpPost]

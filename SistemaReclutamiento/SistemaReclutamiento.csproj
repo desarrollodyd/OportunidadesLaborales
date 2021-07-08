@@ -5280,6 +5280,7 @@
     <Compile Include="Controllers\WebCorporativaAdmin\WebMenuController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebTipoElementoController.cs" />
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
+    <Compile Include="Entidades\BoletasGDT\BolBitacoraEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolConfiguracionEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolEmpleadoBoletaEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
@@ -5357,6 +5358,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BoletasGDT\BolBitacoraModel.cs" />
     <Compile Include="Models\BoletasGDT\BolConfiguracionModel.cs" />
     <Compile Include="Models\BoletasGDT\BolEmpleadoBoletaModel.cs" />
     <Compile Include="Models\ConfiguracionModel.cs" />

@@ -676,7 +676,10 @@ function simpleDataTable(obj) {
     this[objt + '_' + opciones.tableNameVariable] = $(opciones.table).DataTable({
         "bDestroy": true,
         "scrollCollapse": true,
-        "scrollX": true,
+        // "scrollX": true,
+        "scrollCollapse": true,
+        "scrollX": false,
+        "sScrollX": "100%",
         "autoWidth": false,
         "bProcessing": true,
         "bDeferRender": true,

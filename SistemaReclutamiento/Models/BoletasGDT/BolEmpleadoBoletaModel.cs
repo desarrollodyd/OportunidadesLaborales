@@ -221,5 +221,119 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (lista: listaBoletas, error: error);
         }
+        public (List<BolEmpleadoBoletaEntidad> lista, claseError error) BoolEmpleadoBoletaListarxEmpleadoFechasJson(string emp_co_trab, string stringAnio, string stringPeriodo)
+        {
+            claseError error = new claseError();
+            List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
+            string consulta = @"SELECT emp_co_trab, emp_co_empr, emp_anio, emp_periodo, 
+                            emp_ruta_pdf, emp_enviado, emp_descargado, emp_fecha_act, emp_fecha_reg, emp_no_trab, 
+                            emp_apel_pat, emp_apel_mat, emp_direc_mail, emp_nro_cel, emp_tipo_doc
+	                            FROM intranet.bol_empleado_boleta
+                                where emp_co_trab=@p0
+	                                and emp_anio in(" + stringAnio + ")" +
+                                    "and emp_periodo in (" + stringPeriodo + ");";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", emp_co_trab);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var boleta = new BolEmpleadoBoletaEntidad
+                                {
+                                    emp_co_trab = ManejoNulos.ManageNullStr(dr["emp_co_trab"]),
+                                    emp_co_empr = ManejoNulos.ManageNullStr(dr["emp_co_empr"]),
+                                    emp_anio = ManejoNulos.ManageNullStr(dr["emp_anio"]),
+                                    emp_periodo = ManejoNulos.ManageNullStr(dr["emp_periodo"]),
+                                    emp_ruta_pdf = ManejoNulos.ManageNullStr(dr["emp_ruta_pdf"]),
+                                    emp_enviado = ManejoNulos.ManageNullInteger(dr["emp_enviado"]),
+                                    emp_descargado = ManejoNulos.ManageNullInteger(dr["emp_descargado"]),
+                                    emp_fecha_act = ManejoNulos.ManageNullDate(dr["emp_fecha_act"]),
+                                    emp_fecha_reg = ManejoNulos.ManageNullDate(dr["emp_fecha_reg"]),
+                                    emp_no_trab = ManejoNulos.ManageNullStr(dr["emp_no_trab"]),
+                                    emp_apel_pat = ManejoNulos.ManageNullStr(dr["emp_apel_pat"]),
+                                    emp_apel_mat = ManejoNulos.ManageNullStr(dr["emp_apel_mat"]),
+                                    emp_direc_mail = ManejoNulos.ManageNullStr(dr["emp_direc_mail"]),
+                                    emp_nro_cel = ManejoNulos.ManageNullStr(dr["emp_nro_cel"]),
+                                    emp_tipo_doc = ManejoNulos.ManageNullStr(dr["emp_tipo_doc"]),
+                                };
+                                listaBoletas.Add(boleta);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
+            }
+            return (lista: listaBoletas, error: error);
+        }
+        public (List<BolEmpleadoBoletaEntidad> lista, claseError error) BoolEmpleadoBoletaListarxEmpleadoEmpresaFechasJson(string emp_co_empr,string emp_co_trab, string stringAnio)
+        {
+            claseError error = new claseError();
+            List<BolEmpleadoBoletaEntidad> listaBoletas = new List<BolEmpleadoBoletaEntidad>();
+            string consulta = @"SELECT emp_co_trab, emp_co_empr, emp_anio, emp_periodo, 
+                            emp_ruta_pdf, emp_enviado, emp_descargado, emp_fecha_act, emp_fecha_reg, emp_no_trab, 
+                            emp_apel_pat, emp_apel_mat, emp_direc_mail, emp_nro_cel, emp_tipo_doc
+	                            FROM intranet.bol_empleado_boleta
+                                where emp_co_trab=@p0 and emp_co_empr=@p1
+	                                and emp_anio in(" + stringAnio + ");";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", emp_co_trab);
+                    query.Parameters.AddWithValue("@p1", emp_co_empr);
+
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var boleta = new BolEmpleadoBoletaEntidad
+                                {
+                                    emp_co_trab = ManejoNulos.ManageNullStr(dr["emp_co_trab"]),
+                                    emp_co_empr = ManejoNulos.ManageNullStr(dr["emp_co_empr"]),
+                                    emp_anio = ManejoNulos.ManageNullStr(dr["emp_anio"]),
+                                    emp_periodo = ManejoNulos.ManageNullStr(dr["emp_periodo"]),
+                                    emp_ruta_pdf = ManejoNulos.ManageNullStr(dr["emp_ruta_pdf"]),
+                                    emp_enviado = ManejoNulos.ManageNullInteger(dr["emp_enviado"]),
+                                    emp_descargado = ManejoNulos.ManageNullInteger(dr["emp_descargado"]),
+                                    emp_fecha_act = ManejoNulos.ManageNullDate(dr["emp_fecha_act"]),
+                                    emp_fecha_reg = ManejoNulos.ManageNullDate(dr["emp_fecha_reg"]),
+                                    emp_no_trab = ManejoNulos.ManageNullStr(dr["emp_no_trab"]),
+                                    emp_apel_pat = ManejoNulos.ManageNullStr(dr["emp_apel_pat"]),
+                                    emp_apel_mat = ManejoNulos.ManageNullStr(dr["emp_apel_mat"]),
+                                    emp_direc_mail = ManejoNulos.ManageNullStr(dr["emp_direc_mail"]),
+                                    emp_nro_cel = ManejoNulos.ManageNullStr(dr["emp_nro_cel"]),
+                                    emp_tipo_doc = ManejoNulos.ManageNullStr(dr["emp_tipo_doc"]),
+                                };
+                                listaBoletas.Add(boleta);
+                            }
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
+            }
+            return (lista: listaBoletas, error: error);
+        }
     }
 }
