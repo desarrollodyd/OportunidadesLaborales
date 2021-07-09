@@ -4,6 +4,7 @@ using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.BoletasGDT;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.BoletasGDT;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -289,7 +291,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { mensaje, respuesta, data = listaBoletas });
         }
         [HttpPost]
-        public ActionResult BolProcesarPdf2(DateTime fechaProcesoPdf, string empresa, string nombreEmpresa)
+        public ActionResult BolProcesarPdf2(DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId)
         {
             string mensaje = "No se pudieron procesar las boletas";
             bool respuesta = false;
@@ -303,46 +305,55 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
             List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
             List<BolEmpleadoBoletaEntidad> listaEliminar = new List<BolEmpleadoBoletaEntidad>();
-
             try
             {
                 DateTime fechaProceso = fechaProcesoPdf;
                 int mes = fechaProceso.Month;
                 string carpetaMes = mes.ToString().PadLeft(2, '0') + "_" + meses[mes - 1];
                 string anio = Convert.ToString(fechaProceso.Year);
-
+                ProgressBarFunction.SendProgressBoletas("Conectando a Base de Datos ...",0, false, connectionId);
                 var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 var listaEliminarTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresa, anio, mes.ToString());
-
+                ProgressBarFunction.SendProgressBoletas("Conexión exitosa ...",10, false, connectionId);
                 string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
                 string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
-
                 if (listaPersonasTupla.error.Mensaje.Equals(string.Empty))
                 {
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
-
                     string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio, carpetaMes);
 
                     DirectoryInfo directorioRoot = Directory.CreateDirectory(Path.Combine(configuracion.config_valor, directorioProceso, nombreDirectorioEmpresa));
 
                     if (Directory.Exists(pathPdf))
                     {
+                        ProgressBarFunction.SendProgressBoletas("Limpiando Directorio ...",15, false, connectionId);
                         //eliminar la data y carpetas
                         if (listaEliminarTupla.error.Mensaje.Equals(string.Empty)) {
                             string[] subdirectoryEntries = Directory.GetDirectories(Path.Combine(configuracion.config_valor, directorioaProcesar));
                             if (subdirectoryEntries.Length > 0 &&listaEliminarTupla.lista.Count>0)
                             {
+                                int totalRegistrosEliminar = listaEliminarTupla.lista.Count;//100%
+                                int limit = 0;
                                 //eliminar pdfs
                                 foreach (var empleado in listaEliminarTupla.lista) {
                                     string myfile = Directory.GetFiles(Path.Combine(configuracion.config_valor), empleado.emp_ruta_pdf,SearchOption.AllDirectories).FirstOrDefault();
                                     if (myfile != null) {
                                         System.IO.File.Delete(myfile);
+                                        decimal porcentaje = decimal.Round( 20+((limit*10)/totalRegistrosEliminar),2);
+                                        if (porcentaje > 30)
+                                        {
+                                            porcentaje = 30;
+                                        }
+                                        ProgressBarFunction.SendProgressBoletas("Limpiando Archivos ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
+                                        limit++;
+
                                     }
                                 }
                             }
                             //eliminar de BD
+                            ProgressBarFunction.SendProgressBoletas("Limpiando Base de Datos ...",30, false, connectionId);
                             var eliminadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEliminarMasivoJson(empresa, anio, mes.ToString());
                         }
                        
@@ -351,16 +362,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         if (file != null)
                         {
                             //pdf encontrado
-
+                            ProgressBarFunction.SendProgressBoletas("Pdf Encontrado ...",30, false, connectionId);
                             using (PdfReader reader = new PdfReader(Path.Combine(pathPdf, file)))
                             {
                                 totalRegistrosBD = listaPersonas.Count;
                                 totalHojas = reader.NumberOfPages;
                                 if (reader.NumberOfPages == listaPersonas.Count)
                                 {
+                                    int totalRegistrosInsertar = listaPersonas.Count;//100%
+                                    int limit = 0;
                                     for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
                                     {
-
+                                        
                                         BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
 
                                         var item = listaPersonas.ElementAt(pagenumber - 1);
@@ -387,6 +400,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         empleado.emp_nro_cel = item.NU_TLF1;
                                         empleado.emp_tipo_doc = item.TI_DOCU_IDEN;
                                         listaInsertar.Add(empleado);
+
+                                        decimal porcentaje = decimal.Round(35 + ((limit * 10) / totalRegistrosInsertar), 2);
+                                        limit++;
+                                        if (porcentaje > 80)
+                                        {
+                                            porcentaje = 80;
+                                        }
+                                        ProgressBarFunction.SendProgressBoletas("Creando Pdf ... " +empleado.emp_ruta_pdf ,porcentaje, false, connectionId);
                                     }
                                     //llenado en base de datos
 
@@ -412,6 +433,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                             );
                                     }
                                     consulta = consulta.TrimEnd(',');
+                                    ProgressBarFunction.SendProgressBoletas("Insertando registros ... ",80, false, connectionId);
+
                                     var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
                                     if (totalInsertadosTupla.error.Mensaje.Equals(string.Empty))
                                     {
@@ -422,6 +445,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         mensaje = "PDFs procesados";
                                         mensajeConsola = "PDFs procesados---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas+"]"; 
                                         respuesta = true;
+                                        ProgressBarFunction.SendProgressBoletas("Registros Insertados ...", 90,false, connectionId);
+                                        Thread.Sleep(1000);
+                                        ProgressBarFunction.SendProgressBoletas("Proceso Terminado ...",100, true, connectionId);
+                                        Thread.Sleep(1000);
                                     }
                                 }
                                 else
@@ -451,6 +478,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
                 mensajeConsola = ex.Message + "--->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
 ;            }
+            if (!respuesta)
+            {
+                ProgressBarFunction.SendProgressBoletas(mensaje, 99, false, connectionId);
+                Thread.Sleep(2000);
+                ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+            }
             return Json(new { data = listaInsertar, mensaje, respuesta,mensajeConsola });
         }
         [HttpPost]
@@ -629,6 +662,26 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { mensaje, respuesta, data = listaBitacoras });
+        }
+        [HttpPost]
+        public JsonResult LongRunningProcess(string connectionId)
+        {
+            int itemsCount = 100;
+            int limit = 0;
+            bool hide = false;
+            for (int i = 0; i <= itemsCount; i++)
+            {
+                //simulating some task
+                Thread.Sleep(100);
+                //calling a function that calculattes percentaje and sends the data to the client
+                if (limit == itemsCount)
+                {
+                    hide = true;
+                }
+                ProgressBarFunction.SendProgress("Process in progress...", i, itemsCount, hide, connectionId);
+                limit++;
+            }
+            return Json("", JsonRequestBehavior.AllowGet);
         }
     }
 }

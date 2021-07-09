@@ -1,4 +1,6 @@
-﻿let panelBoletas=function(){
+﻿let panelBoletas = function () {
+    let progress = $.connection.progressHub;
+    let connectionId;
     let _inicio=function(){
         // let dateinicio = new Date(moment().format("YYYY"))
         var hoy = new Date();
@@ -71,7 +73,22 @@
             }
         })
     }
-    let _componentes=function(){
+    let ProgressBarModalBoletas=function (showHide) {
+        if (showHide === 'show') {
+            $('#mod-progress').modal('show')
+            if (arguments.length >= 2) {
+                $('#progressBarParagraph').text(arguments[1])
+    
+            } else {
+                $('#progressBarParagraph').text('U sdasdas')
+            }
+            window.ProgressBarActive = true
+        } else {
+            $('#mod-progress').modal('hide')
+            window.ProgressBarActive = false
+        }
+    }
+    let _componentes = function () {
         $(document).on('shown.bs.tab','.nav-tabs a',function(e){
             //   console.log(e.target)
             let tab=$(this).data('tab')
@@ -155,24 +172,43 @@
         })
         $(document).on('click','.btnProcesarPdf',function(e){
             e.preventDefault()
-          
             $("#formProcesarPdf").submit()
             if (_objetoForm_formProcesarPdf.valid()) {
                 let dataForm = $('#formProcesarPdf').serializeFormJSON()
-                let url='IntranetPJBoletasGDT/BolProcesarPdf2'
+                let url='/IntranetPJBoletasGDT/BolProcesarPdf2'
                 messageConfirmation({
                     content: '¿Esta seguro de realizar esta acción?',
                     callBackSAceptarComplete: function () {
-                        responseSimple({
-                            url: url,
-                            data:JSON.stringify(dataForm),
-                            refresh: false,
-                            callBackSuccess: function (response) {
-                            console.log(response.mensajeConsola)
-                              if(response.respuesta){
-                                llenarDatatableProceso(response.data)
-                              }
+                        progress.client.AddProgressBoletas = function (message,percentage, hide) {
+                            console.log(percentage)
+                            ProgressBarModalBoletas('show', message)
+                            $('#ProgressMessage').width(percentage)
+                            if (hide == true) {
+                                ProgressBarModalBoletas()
                             }
+                        }
+                        $.connection.hub.start().done(function () {
+                            connectionId = $.connection.hub.id
+                            dataForm['connectionId']=connectionId
+                            $.ajax({
+                                type: "POST",
+                                url: basePath+url,
+                                cache: false,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: JSON.stringify(dataForm),
+                                beforeSend: function (xhr) {
+                                },
+                                success: function (response) {
+                                    if(response.respuesta){
+                                    llenarDatatableProceso(response.data)
+                                    }
+                                },
+                                error: function (request, status, error) {
+                                },
+                                complete: function (resul) {
+                                }
+                            });
                         })
                     }
                 });

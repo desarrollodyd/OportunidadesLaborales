@@ -16,7 +16,6 @@
         <li class="active">Panel Boletas GDT</li>
     </ul><!-- /.breadcrumb -->
 </div>
-
 <div class="page-content">
     <div class="row">
         <div class="col-md-12">
@@ -256,10 +255,10 @@
                         </div>
                     </div>
                 </div>
-                </div>
             </div>
-
         </div>
+
+    </div>
 </div><!-- /.page-content -->
 <div class="modal fade" tabindex="-1" id="modalBoleta" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -276,11 +275,39 @@
                 </div>
             </div>
             <div class="modal-footer">
-                
+
             </div>
         </div>
     </div>
 </div>
+@*PROGRESS BAR MODAL*@
+<div class="modal fade in" id="mod-progress" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="i-circle warning"><i class="fa fa-info"></i></div>
+                    <div id="result" style="font-size: 1.1em; padding-bottom: 5px">
+                        <p id="progressBarParagraph"></p>
+                    </div>
+                    <div style="width: 30%; margin: 0 auto; display:none;">
+                        <div id="progressbar" style="width: 300px; height: 15px"></div>
+                        <br />
+                    </div>
+                    <div id="ProgressStripe" class="progress progress-striped active" style="position:relative; top:10px; width:100%;">
+                        <div id="ProgressMessage" class="progress-bar progress-bar-info" style="width: 100%; border:none;"></div>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 @section js
 {
     <script src="~/Content/intranetSGC/jqueryztree/js/jquery.ztree.core.js"></script>

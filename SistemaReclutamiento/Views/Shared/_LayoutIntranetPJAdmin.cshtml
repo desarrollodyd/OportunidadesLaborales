@@ -228,21 +228,21 @@
                     <b class="arrow"></b>
                 </li>
                 @*<li class="">
-            <a href="~/IntranetPjAdmin/PanelConfiguracionToken">
-                <i class="menu-icon fa fa-lock"></i>
-                <span class="menu-text"> Token </span>
-            </a>
+                        <a href="~/IntranetPjAdmin/PanelConfiguracionToken">
+                            <i class="menu-icon fa fa-lock"></i>
+                            <span class="menu-text"> Token </span>
+                        </a>
 
-            <b class="arrow"></b>
-        </li>
-        <li class="">
-            <a href="~/IntranetPjAdmin/PanelSistemas">
-                <i class="menu-icon fa fa-cogs"></i>
-                <span class="menu-text"> Sistemas </span>
-            </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="~/IntranetPjAdmin/PanelSistemas">
+                            <i class="menu-icon fa fa-cogs"></i>
+                            <span class="menu-text"> Sistemas </span>
+                        </a>
 
-            <b class="arrow"></b>
-        </li>*@
+                        <b class="arrow"></b>
+                    </li>*@
             </ul><!-- /.nav-list -->
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -320,6 +320,9 @@
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     @*<script src="~/Content/intranetSGC/assets/js/jquery-sortable.js"></script>*@
     <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
+    @*<script src="~/Scripts/Helper.js"></script>*@
+    <script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
     <script>
         $("#btnCerrarSesion").click(function () {
             $.ajax({
