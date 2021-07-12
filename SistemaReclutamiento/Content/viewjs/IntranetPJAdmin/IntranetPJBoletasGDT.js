@@ -78,6 +78,7 @@
             $('#mod-progress').modal('show')
             if (arguments.length >= 2) {
                 $('#progressBarParagraph').text(arguments[1])
+                $('#ProgressBarSpan').text(arguments[2])
     
             } else {
                 $('#progressBarParagraph').text('U sdasdas')
@@ -180,8 +181,7 @@
                     content: '¿Esta seguro de realizar esta acción?',
                     callBackSAceptarComplete: function () {
                         progress.client.AddProgressBoletas = function (message,percentage, hide) {
-                            console.log(percentage)
-                            ProgressBarModalBoletas('show', message)
+                            ProgressBarModalBoletas('show', message,percentage)
                             $('#ProgressMessage').width(percentage)
                             if (hide == true) {
                                 ProgressBarModalBoletas()
