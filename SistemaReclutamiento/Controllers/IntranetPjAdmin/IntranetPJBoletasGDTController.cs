@@ -358,14 +358,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                                 if (myfile != null)
                                                 {
                                                     System.IO.File.Delete(myfile);
-                                                    porcentaje = (limit * 100 / totalElementos);
-                                                    porcentaje = Math.Round(porcentaje, 2);
-                                                    //porcentaje = decimal.Round(((limit * 100) / totalElementos), 2);
-
-                                                    ProgressBarFunction.SendProgressBoletas("Limpiando Archivos ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
-                                                    limit++;
-
                                                 }
+                                                porcentaje = (limit * 100 / totalElementos);
+                                                porcentaje = Math.Round(porcentaje, 2);
+                                                //porcentaje = decimal.Round(((limit * 100) / totalElementos), 2);
+
+                                                ProgressBarFunction.SendProgressBoletas("Limpiando Archivos ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
+                                                limit++;
                                             }
                                         }
                                         //eliminar de BD

@@ -22,8 +22,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"INSERT INTO [dbo].[SEG_PermisoRol]
-           ([WEB_PermID],[WEB_RolID],[WEB_PRolFechaRegistro])VALUES(@p0,@p1,@p2)";
+            string consulta = @"INSERT INTO intranet.seg_permisorol
+           (WEB_PermID,WEB_RolID,WEB_PRolFechaRegistro)VALUES(@p0,@p1,@p2)";
 
             try
             {
@@ -52,12 +52,11 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_PermisoRolEntidad> lista = new List<SEG_PermisoRolEntidad>();
-            string consulta = @"select  [WEB_PRolID]
-                                      ,[WEB_PermID]
-                                      ,[WEB_RolID]
-                                      ,[WEB_PRolFechaRegistro]
-                                  FROM [dbo].[SEG_PermisoRol]
-";
+            string consulta = @"select WEB_PRolID
+                                      ,WEB_PermID
+                                      ,WEB_RolID
+                                      ,WEB_PRolFechaRegistro
+                                  FROM intranet.seg_permisorol";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -95,11 +94,11 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             SEG_PermisoRolEntidad webPermisoRol = new SEG_PermisoRolEntidad();
-            string consulta = @"SELECT [WEB_PRolID]
-                                  ,[WEB_PermID]
-                                  ,[WEB_RolID]
-                                  ,[WEB_PRolFechaRegistro]
-                              FROM [dbo].[SEG_PermisoRol] where WEB_PRolID =@p0";
+            string consulta = @"SELECT WEB_PRolID
+                                  ,WEB_PermID
+                                  ,WEB_RolID
+                                  ,WEB_PRolFechaRegistro
+                              FROM intranet.seg_permisorol where WEB_PRolID =@p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -136,15 +135,15 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             SEG_PermisoRolEntidad webPermisoRol = new SEG_PermisoRolEntidad();
-            string consulta = @"SELECT pr.[WEB_PRolID]
-                                  ,pr.[WEB_PermID]
-                                  ,pr.[WEB_RolID]
+            string consulta = @"SELECT pr.WEB_PRolID
+                                  ,pr.WEB_PermID
+                                  ,pr.WEB_RolID
                                   ,p.WEB_PermNombre
                                    ,p.WEB_PermNombreR
                                     ,p.WEB_PermControlador
-                                  ,pr.[WEB_PRolFechaRegistro]
-                              FROM [dbo].[SEG_PermisoRol] pr
-                                left join SEG_Permiso p on p.WEB_PermID=pr.WEB_PermID
+                                  ,pr.WEB_PRolFechaRegistro
+                              FROM intranet.seg_permisorol pr
+                                left join intranet.seg_permiso p on p.WEB_PermID=pr.WEB_PermID
                             where pr.WEB_RolID =@p0 and p.WEB_PermControlador=@p1 and p.WEB_PermNombre=@p2";
             try
             {
@@ -187,11 +186,11 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_PermisoRolEntidad> lista = new List<SEG_PermisoRolEntidad>();
-            string consulta = @"SELECT [WEB_PRolID]
-                                  ,[WEB_PermID]
-                                  ,[WEB_RolID]
-                                  ,[WEB_PRolFechaRegistro]
-                              FROM [dbo].[SEG_PermisoRol] where WEB_RolID =@p0";
+            string consulta = @"SELECT WEB_PRolID
+                                  ,WEB_PermID
+                                  ,WEB_RolID
+                                  ,WEB_PRolFechaRegistro
+                              FROM intranet.seg_permisorol where WEB_RolID =@p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -233,8 +232,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [dbo].[SEG_PermisoRol]
-                            SET [WEB_PermID] = @p1,[WEB_RolID] = @p2
+            string consulta = @"UPDATE intranet.seg_permisorol
+                            SET WEB_PermID = @p1,WEB_RolID = @p2
                             WHERE WEB_PRolID = @p0";
 
             try
@@ -263,7 +262,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"DELETE FROM SEG_PermisoRol WHERE WEB_PermID = @p0 and WEB_RolID = @p1";
+            string consulta = @"DELETE FROM intranet.seg_permisorol WHERE WEB_PermID = @p0 and WEB_RolID = @p1";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

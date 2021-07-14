@@ -22,8 +22,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"INSERT INTO [dbo].[SEG_Rol]
-           ([WEB_RolNombre],[WEB_RolDescripcion],[WEB_RolEstado],[WEB_RolFechaRegistro])
+            string consulta = @"INSERT INTO intranet.seg_rol
+           (WEB_RolNombre,WEB_RolDescripcion,WEB_RolEstado,WEB_RolFechaRegistro)
             VALUES(@p0,@p1,@p2,@p3)";
 
             try
@@ -54,8 +54,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_RolEntidad> lista = new List<SEG_RolEntidad>();
-            string consulta = @"SELECT [WEB_RolID],[WEB_RolNombre],[WEB_RolDescripcion],[WEB_RolEstado],[WEB_RolFechaRegistro]
-                                FROM [dbo].[SEG_Rol] order by WEB_RolID Desc";
+            string consulta = @"SELECT WEB_RolID,WEB_RolNombre,WEB_RolDescripcion,WEB_RolEstado,WEB_RolFechaRegistro
+                                FROM intranet.seg_rol order by WEB_RolID Desc";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -94,8 +94,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_RolEntidad> lista = new List<SEG_RolEntidad>();
-            string consulta = @"SELECT [WEB_RolID],[WEB_RolNombre],[WEB_RolDescripcion],[WEB_RolEstado],[WEB_RolFechaRegistro]
-                                FROM [dbo].[SEG_Rol]
+            string consulta = @"SELECT WEB_RolID,WEB_RolNombre,WEB_RolDescripcion,WEB_RolEstado,WEB_RolFechaRegistro
+                                FROM intranet.seg_rol
                                 where WEB_RolEstado=1
                                 order by WEB_RolID Desc";
             try
@@ -135,8 +135,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             SEG_RolEntidad webRol = new SEG_RolEntidad();
-            string consulta = @"SELECT [WEB_RolID],[WEB_RolNombre],[WEB_RolDescripcion],[WEB_RolEstado],[WEB_RolFechaRegistro]
-                                FROM [dbo].[SEG_Rol] where WEB_RolID =@p0";
+            string consulta = @"SELECT WEB_RolID,WEB_RolNombre,WEB_RolDescripcion,WEB_RolEstado,WEB_RolFechaRegistro
+                                FROM intranet.seg_rol where WEB_RolID =@p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -176,8 +176,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [dbo].[SEG_Rol]
-                            SET [WEB_RolNombre] = @p1,[WEB_RolDescripcion] = @p2
+            string consulta = @"UPDATE intranet.seg_rol
+                            SET WEB_RolNombre = @p1,WEB_RolDescripcion = @p2
                             WHERE WEB_RolID = @p0";
 
             try
@@ -206,8 +206,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [dbo].[SEG_Rol]
-                            SET [WEB_RolEstado] = @p1
+            string consulta = @"UPDATE intranet.seg_rol
+                            SET WEB_RolEstado = @p1
                             WHERE WEB_RolID = @p0";
             try
             {
@@ -233,7 +233,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"DELETE FROM [dbo].[SEG_Rol] WHERE WEB_RolID = @p0";
+            string consulta = @"DELETE FROM intranet.seg_rol WHERE WEB_RolID = @p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

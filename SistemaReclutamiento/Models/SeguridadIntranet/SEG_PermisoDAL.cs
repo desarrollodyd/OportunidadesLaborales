@@ -24,17 +24,18 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"if NOT exists(select * from SEG_Permiso  WITH (UPDLOCK, HOLDLOCK) where WEB_PermNombre=@p0 AND [Web_PermControlador]=@p2) 
-            INSERT INTO [dbo].[SEG_Permiso]
-           ([WEB_PermNombre],[WEB_PermTipo],[WEB_PermControlador],[WEB_PermDescripcion],[WEB_PermEstado],[WEB_PermFechaRegistro], [WEB_ModuloNombre])
+            string consulta = @"if NOT exists(select * from intranet.seg_permiso  where WEB_PermNombre=@p0 AND Web_PermControlador=@p2) 
+            INSERT INTO intranet.seg_permiso
+           (WEB_PermNombre,WEB_PermTipo,WEB_PermControlador,WEB_PermDescripcion,WEB_PermEstado,WEB_PermFechaRegistro,
+			WEB_ModuloNombre)
             VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6)
                  else 
-			  update [dbo].[SEG_Permiso]
+			  update intranet.seg_permiso
 			  SET
-			        [WEB_ModuloNombre]=@p6,
-                    [WEB_PermDescripcion]=@p3,
-                    [WEB_PermTipo]=@p1
-			    WHERE [WEB_PermNombre] = @p0 AND [Web_PermControlador]=@p2
+			        WEB_ModuloNombre=@p6,
+                    WEB_PermDescripcion=@p3,
+                    WEB_PermTipo=@p1
+			    WHERE WEB_PermNombre = @p0 AND Web_PermControlador=@p2
                 ";
 
             try
@@ -71,10 +72,9 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             claseError error = new claseError();
             bool respuesta = false;
             string consulta = @"
-                    declare @id int;
-                    set @id =(select  [WEB_PermID] from  [SEG_Permiso]   WHERE [WEB_PermNombre] = @p0 AND [Web_PermControlador]=@p1)
-                    Delete from [SEG_Permiso] WHERE [WEB_PermNombre] = @p0 AND [Web_PermControlador]=@p1
-                    Delete from [dbo].[SEG_PermisoRol] WHERE [WEB_PermID] = @id";
+                    Delete from intranet.seg_permiso WHERE WEB_PermNombre = @p0 AND Web_PermControlador=@p1;
+Delete from intranet.seg_permiso WHERE WEB_PermID = 
+(select  WEB_PermID from  intranet.seg_permiso   WHERE WEB_PermNombre =@p0 AND Web_PermControlador=@p1)";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -99,15 +99,15 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             claseError error = new claseError();
             SEG_PermisoEntidad webPermisoRol = new SEG_PermisoEntidad();
 
-            string consulta = @"SELECT [WEB_PermID]
-                              ,[WEB_PermNombre]
-                                ,[WEB_PermNombreR]
-                              ,[WEB_PermTipo]
-                              ,[WEB_PermControlador]
-                              ,[WEB_PermDescripcion]
-                              ,[WEB_PermEstado]
-                              ,[WEB_PermFechaRegistro]
-                              FROM [dbo].[SEG_Permiso] where WEB_PermNombre = @p0 and WEB_PermControlador=@p1";
+            string consulta = @"SELECT WEB_PermID
+                              ,WEB_PermNombre
+                              ,WEB_PermNombreR
+                              ,WEB_PermTipo
+                              ,WEB_PermControlador
+                              ,WEB_PermDescripcion
+                              ,WEB_PermEstado
+                              ,WEB_PermFechaRegistro
+                              FROM intranet.seg_permiso where WEB_PermNombre = @p0 and WEB_PermControlador=@p1";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -145,15 +145,15 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_PermisoEntidad> lista = new List<SEG_PermisoEntidad>();
-            string consulta = @"SELECT [WEB_PermID]
-                              ,[WEB_PermNombre]
-                              ,[WEB_PermNombreR]
-                              ,[WEB_PermTipo]
-                              ,[WEB_PermControlador]
-                              ,[WEB_PermDescripcion]
-                              ,[WEB_PermEstado]
-                              ,[WEB_PermFechaRegistro]
-                              FROM [dbo].[SEG_Permiso] order by WEB_PermControlador,WEB_PermNombre ASC";
+            string consulta = @"SELECT WEB_PermID
+                              ,WEB_PermNombre
+                              ,WEB_PermNombreR
+                              ,WEB_PermTipo
+                              ,WEB_PermControlador
+                              ,WEB_PermDescripcion
+                              ,WEB_PermEstado
+                              ,WEB_PermFechaRegistro
+                              FROM intranet.seg_permiso order by WEB_PermControlador,WEB_PermNombre ASC";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -195,15 +195,15 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_PermisoEntidad> lista = new List<SEG_PermisoEntidad>();
-            string consulta = @"SELECT [WEB_PermID]
-                              ,[WEB_PermNombre]
-                              ,[WEB_PermNombreR]
-                              ,[WEB_PermTipo]
-                              ,[WEB_PermControlador]
-                              ,[WEB_PermDescripcion]
-                              ,[WEB_PermEstado]
-                              ,[WEB_PermFechaRegistro]
-                              FROM [dbo].[SEG_Permiso]
+            string consulta = @"SELECT WEB_PermID
+                              ,WEB_PermNombre
+                              ,WEB_PermNombreR
+                              ,WEB_PermTipo
+                              ,WEB_PermControlador
+                              ,WEB_PermDescripcion
+                              ,WEB_PermEstado
+                              ,WEB_PermFechaRegistro
+                              FROM intranet.seg_permiso
                             where WEB_PermEstado = 1
                             order by WEB_PermControlador,WEB_PermNombre ASC";
             try
@@ -247,9 +247,9 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [SEG_Permiso]
-                        SET [WEB_PermEstado] =@p1
-                       WHERE [WEB_PermID] = @p0";
+            string consulta = @"UPDATE intranet.seg_permiso
+                        SET WEB_PermEstado =@p1
+                       WHERE WEB_PermID = @p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -274,9 +274,9 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [SEG_Permiso]
-                        SET [WEB_PermDescripcion] =@p1
-                       WHERE [WEB_PermID] = @p0";
+            string consulta = @"UPDATE intranet.seg_permiso
+                        SET WEB_PermDescripcion =@p1
+                       WHERE WEB_PermID = @p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -301,9 +301,9 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [SEG_Permiso]
-                        SET [WEB_PermNombreR] =@p1
-                       WHERE [WEB_PermID] = @p0";
+            string consulta = @"UPDATE intranet.seg_permiso
+                        SET WEB_PermNombreR =@p1
+                       WHERE WEB_PermID = @p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))

@@ -22,8 +22,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"INSERT INTO [dbo].[SEG_RolUsuario]
-           ([WEB_RolID],[UsuarioID],[WEB_RUsuFechaRegistro])VALUES(@p0,@p1,@p2)";
+            string consulta = @"INSERT INTO intranet.seg_rolusuario
+           (WEB_RolID,UsuarioID,WEB_RUsuFechaRegistro)VALUES(@p0,@p1,@p2)";
 
             try
             {
@@ -52,11 +52,11 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_RolUsuarioEntidad> lista = new List<SEG_RolUsuarioEntidad>();
-            string consulta = @"SELECT [WEB_RUsuID]
-                              ,[WEB_RolID]
-                              ,[UsuarioID]
-                              ,[WEB_RUsuFechaRegistro]
-                                FROM [dbo].[SEG_RolUsuario] order by WEB_RUsuID Desc";
+            string consulta = @"SELECT WEB_RUsuID
+                              ,WEB_RolID
+                              ,UsuarioID
+                              ,WEB_RUsuFechaRegistro
+                                FROM intranet.seg_rolusuario order by WEB_RUsuID Desc";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -94,11 +94,11 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             List<SEG_RolUsuarioEntidad> lista = new List<SEG_RolUsuarioEntidad>();
-            string consulta = @"SELECT [WEB_RUsuID]
-                              ,[WEB_RolID]
-                              ,[UsuarioID]
-                              ,[WEB_RUsuFechaRegistro]
-                                FROM [dbo].[SEG_RolUsuario] where WEB_RolID=@p0 order by WEB_RUsuID Desc";
+            string consulta = @"SELECT [WEB_RUsuID
+                              ,WEB_RolID
+                              ,UsuarioID
+                              ,WEB_RUsuFechaRegistro
+                                FROM intranet.seg_rolusuario where WEB_RolID=@p0 order by WEB_RUsuID Desc";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -137,11 +137,11 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             SEG_RolUsuarioEntidad webRolUsuario = new SEG_RolUsuarioEntidad();
-            string consulta = @"SELECT [WEB_RUsuID]
-                                  ,[WEB_RolID]
-                                  ,[UsuarioID]
-                                  ,[WEB_RUsuFechaRegistro]
-                              FROM [dbo].[SEG_RolUsuario] where UsuarioID = @p0";
+            string consulta = @"SELECT WEB_RUsuID
+                                  ,WEB_RolID
+                                  ,UsuarioID
+                                  ,WEB_RUsuFechaRegistro
+                              FROM intranet.seg_rolusuario where UsuarioID = @p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
@@ -179,8 +179,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"UPDATE [dbo].[[SEG_RolUsuario]]
-                            SET [[WEB_RolID]] = @p1,[[UsuarioID]] = @p2
+            string consulta = @"UPDATE intranet.seg_rolusuario
+                            SET WEB_RolID = @p1,UsuarioID = @p2
                             WHERE WEB_RUsuID = @p0";
 
             try
@@ -209,7 +209,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         {
             claseError error = new claseError();
             bool respuesta = false;
-            string consulta = @"DELETE FROM [dbo].[SEG_RolUsuario] WHERE UsuarioID = @p0";
+            string consulta = @"DELETE FROM intranet.seg_rolusuario WHERE UsuarioID = @p0";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
