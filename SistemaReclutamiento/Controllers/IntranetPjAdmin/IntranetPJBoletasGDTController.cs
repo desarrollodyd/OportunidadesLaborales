@@ -19,6 +19,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion]
     public class IntranetPJBoletasGDTController : Controller
     {
         SQLModel sqlbl = new SQLModel();

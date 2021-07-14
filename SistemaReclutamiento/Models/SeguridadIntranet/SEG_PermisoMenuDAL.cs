@@ -31,12 +31,12 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeNombre) == String.Empty ? SqlString.Null : Convert.ToString(permisoMENU.WEB_PMeNombre));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeNombre));
                     query.Parameters.AddWithValue("@p1", DateTime.Now);
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeDataMenu) == String.Empty ? SqlString.Null : Convert.ToString(permisoMENU.WEB_PMeDataMenu));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(permisoMENU.WEB_RolID) == String.Empty ? SqlString.Null : Convert.ToString(permisoMENU.WEB_RolID));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeEstado) == String.Empty ? SqlString.Null : Convert.ToString(permisoMENU.WEB_PMeEstado));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(permisoMENU.WEB_ModuloNombre) == String.Empty ? SqlString.Null : Convert.ToString(permisoMENU.WEB_ModuloNombre));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeDataMenu));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(permisoMENU.WEB_RolID));
+                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeEstado));
+                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(permisoMENU.WEB_ModuloNombre));
                     query.ExecuteNonQuery();
 
                     respuesta = true;
