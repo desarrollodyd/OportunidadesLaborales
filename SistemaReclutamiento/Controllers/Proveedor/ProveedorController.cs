@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+    [autorizacion(false)]
     public class ProveedorController : Controller
     {
         // GET: Proveedor

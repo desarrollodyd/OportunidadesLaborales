@@ -2,6 +2,7 @@
 using SistemaReclutamiento.Entidades.Postulante;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.Postulante;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.Postulante
 {
+    [autorizacion(false)]
     public class PostulanteFavoritosController : Controller
     {
         // GET: PostulanteFavoritos

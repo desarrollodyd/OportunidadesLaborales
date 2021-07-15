@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
+    [autorizacion(false)]
     public class IntranetMenuController : Controller
     {
         IntranetMenuModel intranetMenubl = new IntranetMenuModel();

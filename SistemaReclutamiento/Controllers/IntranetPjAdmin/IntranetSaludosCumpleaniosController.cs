@@ -17,6 +17,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetSaludosCumpleaniosController : Controller
     {
         // GET: IntranetSaludosCumpleanios

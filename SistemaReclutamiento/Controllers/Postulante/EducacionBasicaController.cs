@@ -9,6 +9,7 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
+    [autorizacion(false)]
     public class EducacionBasicaController : Controller
     {
         EducacionBasicaModel educacionBasicabl = new EducacionBasicaModel();

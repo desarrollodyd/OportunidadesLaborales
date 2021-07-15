@@ -1,6 +1,7 @@
 ﻿using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetElementoModalController : Controller
     {
         // GET: IntranetElementoModal

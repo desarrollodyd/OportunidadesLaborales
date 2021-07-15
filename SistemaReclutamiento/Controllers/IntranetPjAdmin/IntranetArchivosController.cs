@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SistemaReclutamiento.Utilitarios;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetArchivosController : Controller
     {
         // GET: IntranetArchivos

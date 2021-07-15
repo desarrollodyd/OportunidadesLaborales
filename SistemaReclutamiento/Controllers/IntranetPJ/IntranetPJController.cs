@@ -20,6 +20,7 @@ using SistemaReclutamiento.Models.BoletasGDT;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJ
 {
+    [autorizacion(false)]
     public class IntranetPJController : Controller
     {
         IntranetSeccionModel intraSeccionBL = new IntranetSeccionModel();

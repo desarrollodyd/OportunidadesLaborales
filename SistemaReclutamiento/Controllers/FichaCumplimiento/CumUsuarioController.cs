@@ -15,6 +15,7 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
+    [autorizacion(false)]
     public class CumUsuarioController : Controller
     {
         // GET: CumUsuario

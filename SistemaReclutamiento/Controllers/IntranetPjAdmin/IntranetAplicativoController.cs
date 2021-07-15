@@ -1,6 +1,7 @@
 ﻿using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
+    [autorizacion(false)]
     public class IntranetAplicativoController : Controller
     {
         IntranetAplicativoModel intranetAplicativobl = new IntranetAplicativoModel();

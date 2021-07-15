@@ -11,9 +11,11 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetTokenController : Controller
     {
         // GET: IntranetToken

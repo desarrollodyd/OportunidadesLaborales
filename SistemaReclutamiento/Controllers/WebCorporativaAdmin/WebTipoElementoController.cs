@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades.WebCorporativa;
 using SistemaReclutamiento.Models.WebCorporativa;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.WebCorporativaAdmin
 {
+    [autorizacion(false)]
     public class WebTipoElementoController : Controller
     {
         WebTipoElementoModel tipoelementobl = new WebTipoElementoModel();

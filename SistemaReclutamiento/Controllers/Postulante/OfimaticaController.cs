@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+    [autorizacion(false)]
     public class OfimaticaController : Controller
     {
         OfimaticaModel ofimaticabl = new OfimaticaModel();

@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+    [autorizacion(false)]
     public class SQLController : Controller
     {
         // GET: SQL

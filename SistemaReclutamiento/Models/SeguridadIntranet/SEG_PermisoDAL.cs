@@ -21,47 +21,41 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
         }
 
         public (bool respuesta, claseError error) GuardarPermiso(SEG_PermisoEntidad permiso)
+
         {
             claseError error = new claseError();
             bool respuesta = false;
-//            string consulta = @"if NOT exists(select * from intranet.seg_permiso  where WEB_PermNombre=@p0 AND Web_PermControlador=@p2) then
-//            INSERT INTO intranet.seg_permiso
-//           (WEB_PermNombre,WEB_PermTipo,WEB_PermControlador,WEB_PermDescripcion,WEB_PermEstado,WEB_PermFechaRegistro,
-//			WEB_ModuloNombre)
-//            VALUES(@p0,@p1,@p2,@p3,@p4,@p5,@p6);
-//                 else 
-//			  update intranet.seg_permiso
-//			  SET
-//			        WEB_ModuloNombre=@p6,
-//                    WEB_PermDescripcion=@p3,
-//                    WEB_PermTipo=@p1
-//			    WHERE WEB_PermNombre = @p0 AND Web_PermControlador=@p2;
-//END if
-//                ";
-            string consulta = @"
-                    do $$
-                        declare
-                          selected_permiso intranet.seg_permiso%rowtype;
-                        begin  
-                        select * from intranet.seg_permiso  
-                        into selected_permiso
-                        where WEB_PermNombre=@p0 
-                        AND Web_PermControlador=@p1;  
-                          if not found then
-                            INSERT INTO intranet.seg_permiso
-                                   (WEB_PermNombre,WEB_PermTipo,WEB_PermControlador,WEB_PermDescripcion,
-			                        WEB_PermEstado,WEB_PermFechaRegistro,
-			                        WEB_ModuloNombre)
-                                     VALUES(@p2,@p3,@p4,@p5,@p6,@p7,@p8);
-                          else
-                             update intranet.seg_permiso
-			                          SET
-			                                WEB_ModuloNombre=@p9,
-                                           WEB_PermDescripcion=@p10,
-                                            WEB_PermTipo=@p11
-			                            WHERE WEB_PermNombre = @p12 AND Web_PermControlador=@p13;
-                          end if;
-                        end $$
+
+            string consulta = $@"do $$
+	                    declare
+	                    selected_permiso intranet.seg_permiso%rowtype;
+	                    PermNombre intranet.seg_permiso.WEB_PermNombre%type := '{ManejoNulos.ManageNullStr(permiso.WEB_PermNombre)}';
+	                    PermTipo intranet.seg_permiso.WEB_PermTipo%type := '{ManejoNulos.ManageNullStr(permiso.WEB_PermTipo)}';
+	                    PermControlador intranet.seg_permiso.WEB_PermControlador%type := '{ManejoNulos.ManageNullStr(permiso.WEB_PermControlador)}';
+	                    PermDescripcion intranet.seg_permiso.WEB_PermDescripcion%type := '{ ManejoNulos.ManageNullStr(permiso.WEB_PermDescripcion == null ? "" : permiso.WEB_PermDescripcion)}';
+	                    PermEstado intranet.seg_permiso.WEB_PermEstado%type := '{ManejoNulos.ManageNullStr(permiso.WEB_PermEstado)}';
+	                    PermFechaRegistro intranet.seg_permiso.WEB_PermFechaRegistro%type := (select now());
+	                    ModuloNombre intranet.seg_permiso.WEB_ModuloNombre%type := '{ManejoNulos.ManageNullStr(permiso.WEB_ModuloNombre)}';
+	                    begin  
+	                    select * from intranet.seg_permiso  
+	                    into selected_permiso
+	                    where WEB_PermNombre=PermNombre 
+	                    AND Web_PermControlador=PermControlador;
+	                      if not found then
+		                    INSERT INTO intranet.seg_permiso
+			                       (WEB_PermNombre,WEB_PermTipo,WEB_PermControlador,WEB_PermDescripcion,
+				                    WEB_PermEstado,WEB_PermFechaRegistro,
+				                    WEB_ModuloNombre)
+				                     VALUES(PermNombre,PermTipo,PermControlador,PermDescripcion,PermEstado,PermFechaRegistro,ModuloNombre);
+	                      else
+		                     update intranet.seg_permiso
+				                      SET
+						                    WEB_ModuloNombre=ModuloNombre,
+					                       WEB_PermDescripcion=PermDescripcion,
+						                    WEB_PermTipo=PermTipo
+					                    WHERE WEB_PermNombre=PermNombre AND Web_PermControlador=PermControlador;
+	                      end if;
+	                    end $$
                 ";
 
             try
@@ -70,21 +64,6 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(permiso.WEB_PermNombre));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(permiso.WEB_PermControlador));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(permiso.WEB_ModuloNombre));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(permiso.WEB_PermTipo));
-                    query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(permiso.WEB_PermControlador));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullDate(permiso.WEB_PermDescripcion == null?"":permiso.WEB_PermDescripcion));
-                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullStr(permiso.WEB_PermEstado));
-                    query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullDate(permiso.WEB_PermFechaRegistro));
-                    query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(permiso.WEB_ModuloNombre));
-                    query.Parameters.AddWithValue("@p9", ManejoNulos.ManageNullStr(permiso.WEB_ModuloNombre));
-                    query.Parameters.AddWithValue("@p10", ManejoNulos.ManageNullStr(permiso.WEB_PermDescripcion == null ? "" : permiso.WEB_PermDescripcion));
-                    query.Parameters.AddWithValue("@p11", ManejoNulos.ManageNullStr(permiso.WEB_PermTipo));
-                    query.Parameters.AddWithValue("@p12", ManejoNulos.ManageNullStr(permiso.WEB_PermNombre));
-                    query.Parameters.AddWithValue("@p13", ManejoNulos.ManageNullStr(permiso.WEB_PermControlador));
-
                     query.ExecuteNonQuery();
 
                     respuesta = true;
@@ -96,7 +75,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                 error.Mensaje = ex.Message;
             }
 
-            return (respuesta,error);
+            return (respuesta, error);
         }
 
         public (bool respuesta,claseError error) BorrarPermiso(string permisonombre, string controlador)
@@ -236,7 +215,7 @@ Delete from intranet.seg_permiso WHERE WEB_PermID =
                               ,WEB_PermEstado
                               ,WEB_PermFechaRegistro
                               FROM intranet.seg_permiso
-                            where WEB_PermEstado = 1
+                            where WEB_PermEstado = '1'
                             order by WEB_PermControlador,WEB_PermNombre ASC";
             try
             {

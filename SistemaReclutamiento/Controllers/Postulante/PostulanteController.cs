@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+    [autorizacion(false)]
     public class PostulanteController : Controller
     {
         PosPreguntaOLAModel preguntabl = new PosPreguntaOLAModel();

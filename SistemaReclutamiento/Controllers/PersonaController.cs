@@ -10,7 +10,7 @@ using System.Net.Mail;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+    [autorizacion(false)]
     public class PersonaController : Controller
     {
         PersonaModel personabl = new PersonaModel();

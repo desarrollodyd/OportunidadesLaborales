@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades.IntranetPJ;
 using SistemaReclutamiento.Models.IntranetPJ;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetSistemasController : Controller
     {
         // GET: IntranetSistemas

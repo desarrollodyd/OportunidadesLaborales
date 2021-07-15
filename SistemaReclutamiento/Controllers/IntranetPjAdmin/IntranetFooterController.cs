@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetFooterController : Controller
     {
         // GET: IntranetFooter

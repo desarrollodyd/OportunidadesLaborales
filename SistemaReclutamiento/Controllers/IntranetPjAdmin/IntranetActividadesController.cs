@@ -13,6 +13,7 @@ using System.Web.Script.Serialization;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
+    [autorizacion(false)]
     public class IntranetActividadesController : Controller
     {
         IntranetActividadesModel intranetActividadesbl = new IntranetActividadesModel();

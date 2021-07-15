@@ -4,6 +4,7 @@ using Rotativa;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.FichaCumplimiento;
 using SistemaReclutamiento.Models;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
+    [autorizacion(false)]
     public class FichaSintomatologicaController : Controller
     {
         CumUsuarioModel cumUsuariobl = new CumUsuarioModel();

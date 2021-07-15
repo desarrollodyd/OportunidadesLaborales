@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+    [autorizacion(false)]
     public class EstOfimaticaController : Controller
     {
         // GET: OfimaticaHerramienta

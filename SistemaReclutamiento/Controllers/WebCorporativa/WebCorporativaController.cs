@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SistemaReclutamiento.Utilitarios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.WebCorporativa
 {
+    [autorizacion(false)]
     public class WebCorporativaController : Controller
     {
         // GET: WebCorporativa

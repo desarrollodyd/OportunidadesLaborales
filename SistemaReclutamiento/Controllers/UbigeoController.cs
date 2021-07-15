@@ -9,7 +9,7 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+    [autorizacion(false)]
     public class UbigeoController : Controller
     {
         UbigeoModel ubigeobl = new UbigeoModel();

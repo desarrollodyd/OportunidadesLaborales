@@ -12,6 +12,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
+    [autorizacion(false)]
     public class IntranetDetalleElementoModalController : Controller
     {
         // GET: IntranetDetalleElementoModal

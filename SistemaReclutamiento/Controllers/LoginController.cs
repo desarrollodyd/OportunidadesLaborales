@@ -10,7 +10,7 @@ using SistemaReclutamiento.Utilitarios;
 
 namespace SistemaReclutamiento.Controllers
 {
-  
+    [autorizacion(false)]
     public class LoginController : Controller
     {
         UsuarioModel usuariobl = new UsuarioModel();

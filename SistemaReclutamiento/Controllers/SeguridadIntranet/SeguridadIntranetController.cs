@@ -388,17 +388,17 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
                             var atributoscontroladorlinq = ((IEnumerable<dynamic>)atributosControladorobjeto).Cast<dynamic>();
                             if (atributoscontroladorlinq != null)
                             {
-                                var seguridadcontrolador = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "seguridad").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
+                                var seguridadcontrolador = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "autorizacion").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
                                 if (seguridadcontrolador != null)
                                 {
-                                    seguridad = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "seguridad").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
+                                    seguridad = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "autorizacion").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
                                 }
                             }
                             ///atributos de metodo,  reemplazan atributos de controlador
                             var objetolinq = ((IEnumerable<dynamic>)atributosobjeto).Cast<dynamic>();
                             if (objetolinq != null)
                             {
-                                var seguridaddelobjeto = objetolinq.Where(x => x.AttributeType.Name == "seguridad").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
+                                var seguridaddelobjeto = objetolinq.Where(x => x.AttributeType.Name == "autorizacion").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
                                 if (seguridaddelobjeto != null)
                                 {
                                     seguridad = seguridaddelobjeto;

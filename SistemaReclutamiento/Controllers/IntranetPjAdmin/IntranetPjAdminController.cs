@@ -16,6 +16,7 @@ using OfficeOpenXml;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
+    [autorizacion(false)]
     public class IntranetPjAdminController : Controller
     {
         IntranetUsuarioModel usuarioIntranetbl = new IntranetUsuarioModel();

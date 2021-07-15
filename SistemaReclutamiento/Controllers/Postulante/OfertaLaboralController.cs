@@ -11,7 +11,7 @@ using SistemaReclutamiento.Entidades.Postulante;
 
 namespace SistemaReclutamiento.Controllers
 {
-
+    [autorizacion(false)]
     public class OfertaLaboralController : Controller
     {
         OfertaLaboralModel ofertaLaboralbl = new OfertaLaboralModel();
