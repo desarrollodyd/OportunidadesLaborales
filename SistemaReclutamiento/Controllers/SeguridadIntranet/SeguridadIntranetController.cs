@@ -23,10 +23,11 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
         private UsuarioModel webUsuarioBl = new UsuarioModel();
 
         [autorizacion(false)]
-        public ActionResult SeguridadVista()
+        public ActionResult SeguridadIntranetVista()
         {
-            ViewBag.rolId = Session["rol"];
-            return View("~/Views/Seguridad/SeguridadVista.cshtml");
+            //ViewBag.rolId = Session["rol"];
+            ViewBag.rolId = 1;
+            return View("~/Views/SeguridadIntranet/SeguridadIntranetVista.cshtml");
         }
 
         [HttpPost]

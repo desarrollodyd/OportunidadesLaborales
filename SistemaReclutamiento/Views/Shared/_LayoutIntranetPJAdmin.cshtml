@@ -61,7 +61,7 @@
     <link href="~/Content/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <link href="~/Content/intranetSGC/assets/css/select2.min.css" rel="stylesheet" />
     <link href="~/Content/intranetSGC/assets/css/rowReorder.dataTables.min.css" rel="stylesheet" />
-
+    <link href="~/Content/intranetSGC/assets/css/icheck/all.css" rel="stylesheet" />
     <style>
         /*#seccionesListado > tbody > tr > td {
         padding-left:25px;
@@ -157,7 +157,7 @@
                     <b class="arrow"></b>
                 </li>
 
-                <li class="">
+                <li class="cabecera" data-menu1="Menus" data-titulo="Menus">
                     <a href="~/IntranetPjAdmin/PanelMenus">
                         <i class="menu-icon fa fa-list-alt"></i>
                         <span class="menu-text"> Menus </span>
@@ -165,7 +165,7 @@
 
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="Actividades" data-titulo="Actividades">
                     <a href="~/IntranetPjAdmin/PanelActividades">
                         <i class="menu-icon fa fa-list"></i>
                         <span class="menu-text"> Actividades </span>
@@ -173,7 +173,7 @@
 
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="Secciones" data-titulo="Secciones">
                     <a href="~/IntranetPjAdmin/PanelSecciones">
                         <i class="menu-icon fa fa-pencil-square-o"></i>
                         <span class="menu-text"> Secciones </span>
@@ -181,7 +181,7 @@
 
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="Comentarios" data-titulo="Comentarios">
                     <a href="~/IntranetPjAdmin/PanelComentarios">
                         <i class="menu-icon fa fa-envelope-o"></i>
                         <span class="menu-text"> Comentarios </span>
@@ -189,7 +189,7 @@
 
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="PieDePagina" data-titulo="Pie de Pagina">
                     <a href="~/IntranetPjAdmin/PanelFooter">
                         <i class="menu-icon fa fa-desktop"></i>
                         <span class="menu-text"> Pie de Pagina </span>
@@ -197,7 +197,7 @@
 
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="Archivos" data-titulo="Archivos">
                     <a href="~/IntranetPjAdmin/PanelArchivos">
                         <i class="menu-icon fa fa-file"></i>
                         <span class="menu-text"> Archivos </span>
@@ -206,43 +206,50 @@
                     <b class="arrow"></b>
                 </li>
 
-                <li class="">
+                <li class="cabecera" data-menu1="Fichas" data-titulo="Fichas">
                     <a href="~/IntranetPjAdmin/PanelFichas">
                         <i class="menu-icon fa fa-file-o"></i>
                         <span class="menu-text"> Fichas </span>
                     </a>
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="SubidaExcel" data-titulo="Subida Excel">
                     <a href="~/IntranetPjAdmin/PanelSubidaExcel">
                         <i class="menu-icon fa fa-file-o"></i>
                         <span class="menu-text"> Subida Excel </span>
                     </a>
                     <b class="arrow"></b>
                 </li>
-                <li class="">
+                <li class="cabecera" data-menu1="BoletasGDT" data-titulo="Boletas GDT">
                     <a href="~/IntranetPjAdmin/PanelBoletasGDT">
                         <i class="menu-icon fa fa-file-o"></i>
                         <span class="menu-text"> Boletas GDT</span>
                     </a>
                     <b class="arrow"></b>
                 </li>
+                <li class="cabecera" data-menu1="Seguridad" data-titulo="Seguridad">
+                    <a href="~/SeguridadIntranet/SeguridadIntranetVista">
+                        <i class="menu-icon fa fa-file-o"></i>
+                        <span class="menu-text"> Seguridad</span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
                 @*<li class="">
-                        <a href="~/IntranetPjAdmin/PanelConfiguracionToken">
-                            <i class="menu-icon fa fa-lock"></i>
-                            <span class="menu-text"> Token </span>
-                        </a>
+            <a href="~/IntranetPjAdmin/PanelConfiguracionToken">
+                <i class="menu-icon fa fa-lock"></i>
+                <span class="menu-text"> Token </span>
+            </a>
 
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="~/IntranetPjAdmin/PanelSistemas">
-                            <i class="menu-icon fa fa-cogs"></i>
-                            <span class="menu-text"> Sistemas </span>
-                        </a>
+            <b class="arrow"></b>
+        </li>
+        <li class="">
+            <a href="~/IntranetPjAdmin/PanelSistemas">
+                <i class="menu-icon fa fa-cogs"></i>
+                <span class="menu-text"> Sistemas </span>
+            </a>
 
-                        <b class="arrow"></b>
-                    </li>*@
+            <b class="arrow"></b>
+        </li>*@
             </ul><!-- /.nav-list -->
 
             <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -317,6 +324,7 @@
     <script src="~/Content/intranetSGC/assets/js/dataTables.select.min.js"></script>
     <script src="~/Content/intranetSGC/assets/js/ace-elements.min.js"></script>
     <script src="~/Content/intranetSGC/assets/js/ace.min.js"></script>
+    <script src="~/Content/intranetSGC/assets/js/icheck.min.js"></script>
     <script src="~/Content/vendors/jquery-validation/jquery.validate.min.js"></script>
     @*<script src="~/Content/intranetSGC/assets/js/jquery-sortable.js"></script>*@
     <script src="~/Content/viewjs/generalIntranetAdmin.js"></script>
