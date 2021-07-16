@@ -7,42 +7,22 @@
 @using System.Web.UI.WebControls
 
 @{
-        int rolId = 0;
-    }
+    int rolId = 0;
+}
 
-    @{
-        if (ViewBag.rolId == null)
-        {
-            Response.Redirect("~/Home/Login");
-        }
-        else
-        {
-            rolId = ViewBag.rolId;
-        }
+@{
+    if (ViewBag.rolId == null)
+    {
+        Response.Redirect("~/Home/Login");
     }
-    <script type="text/javascript">
+    else
+    {
+        rolId = ViewBag.rolId;
+    }
+}
+<script type="text/javascript">
         rolid =  (@Html.Raw(rolId));
-    </script>
-
-@*@section css{
-
-        <link href="@Url.Content("~/Content/assets/css/optional/timeline/component.css")" rel="stylesheet" type="text/css" />
-        <link href="@Url.Content("~/Content/assets/css/optional/timeline/timeline.css")" rel="stylesheet" type="text/css" />
-        <style>
-            .panel {
-                padding: 0px;
-            }
-
-            #listaRoles {
-                background: white;
-                border: 1px solid black;
-            }
-
-                #listaRoles li {
-                    border-bottom: 1px solid black;
-                }
-        </style>
-    }*@
+</script>
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
@@ -99,8 +79,8 @@
                                 </div>
                                 <input type="hidden" id="posicionMenu" />
                                 @*<ul class="" id="libody" style="margin-top: 6px;">
-                                    <li class="alert alert-danger" style="padding: 5px;">Espere mientras Cargan los Modulos</li>
-                                </ul>*@
+                                        <li class="alert alert-danger" style="padding: 5px;">Espere mientras Cargan los Modulos</li>
+                                    </ul>*@
                                 <div id="timeline-1">
                                     <div class="row">
                                         <div class="col-xs-12 col-sm-10 col-sm-offset-1">
@@ -125,35 +105,13 @@
 
                     <div id="tab2" class="tab-pane">
                         <div class="row">
-                            <div class="col-md-12">
-                                @*<p class="alert alert-danger" style="padding: 5px;">Listado de Roles y sus Permisos</p>*@
+                            <div class="col-sm-12">
+                                <div class="tabbable tabs-left">
+                                    <ul class="nav nav-tabs" id="listaRoles">
 
-                                <div class="mailbox">
-                                    <div class="row">
-                                        <div class="col-md-3 col-lg-2">
-                                            <div class="mailbox-menu">
-                                                <div class="mailbox-compose-outer">
-                                                    <div class="compose-message">
-
-                                                        <a href="javascript:void(0);" class="btn btn-block" role="button" style="background-color: #143958;color:white;">
-                                                            <span class="glyphicon glyphicon-arrow-down"></span>
-                                                            ROLES
-                                                        </a>
-                                                    </div>
-                                                    <div class="mailbox-mobile-menu-control">
-                                                        <button type="button" class="btn btn-default within-content-navbar-toggle" data-c-target="#listaRoles">
-                                                            <span class="sr-only">Toggle navigation</span>
-                                                            <span class="icon-bar"></span>
-                                                            <span class="icon-bar"></span>
-                                                            <span class="icon-bar"></span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <ul class="nav nav-pills nav-stacked" id="listaRoles"></ul>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-9 col-lg-10" id="tab2Permisos">
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="" class="tab-pane in active">
                                             <p class="alert alert-danger" style="padding: 5px;" id="alertapermisos">Seleccione Rol</p>
                                             <div class="mailbox-container mailbox-email-list" id="contenidopermisos" style="display:none;">
                                                 <div class="mailbox-controls">
@@ -183,13 +141,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12" id="bodyPermisosRoles">
-
-
-
-                                                    </div>
-                                                </div>
                                                 <div class="row" style="text-align:center;display:none;color:red;text-transform:uppercase;font-size:18px;;" id="divfaltanTotal">
                                                     <div class="col-md-12">
                                                         Faltan <span class="badge badge-bordered" style="position: relative;top: -3px" id="totalPermisosSpanFaltan"></span>
@@ -197,20 +148,17 @@
 
                                                 </div>
                                             </div>
+                                            <div class="col-md-12" id="bodyPermisosRoles">
+
+
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="table-responsive">
-                                    <ul id="tabsRoles" class="nav nav-tabs tabs-left"></ul>
-                                    <div id="divRoles" class="tab-content">
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
+                            </div><!-- /.col -->
+                            <div class="vspace-6-sm"></div>
+                        </div><!-- /.row -->
                     </div>
                     <div id="tab3" class="tab-pane">
                         <div class="row">

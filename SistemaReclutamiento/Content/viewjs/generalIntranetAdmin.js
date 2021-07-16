@@ -770,3 +770,47 @@ $(document).on("click", "#sidebar-collapse", function () {
     });
 
 });
+function Menu(loading) {
+    var data = {}
+    var url = basePath + "intranetpjadmin/ListadoMenus";
+
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        beforeSend: function () {
+            if (loading === true) {
+                block_general("body");
+            }
+        },
+        success: function (response) {
+            console.log(response)
+            var mensaje = response.mensaje;
+            var listado = response.dataResultado;
+           // console.log(listado)
+            if (listado.length > 0) {
+                // $(".mainnav li:not(:first)").hide();
+                //console.log(listado)
+                $.each(listado, function (index, value) {
+                    var menu = value.WEB_PMeDataMenu;
+                    $('.nav-list li[data-menu1="' + menu + '"]').removeClass('oculto');
+                });
+            } else {
+               $('.nav-list li').removeClass('oculto');
+            }
+            unblock('body');
+
+
+        },
+        complete: function () {
+            if (loading === true) {
+                unblock('body');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            
+        }
+    });
+}
+Menu(false)

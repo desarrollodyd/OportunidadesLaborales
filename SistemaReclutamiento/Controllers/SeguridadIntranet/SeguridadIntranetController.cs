@@ -25,8 +25,8 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
         [autorizacion(false)]
         public ActionResult SeguridadIntranetVista()
         {
-            //ViewBag.rolId = Session["rol"];
-            ViewBag.rolId = 1;
+            ViewBag.rolId = Session["rol"];
+            //ViewBag.rolId = 1;
             return View("~/Views/SeguridadIntranet/SeguridadIntranetVista.cshtml");
         }
 

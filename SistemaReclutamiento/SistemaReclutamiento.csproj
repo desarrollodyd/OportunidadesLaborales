@@ -170,6 +170,7 @@
     <Content Include="Content\images\pj.png" />
     <Content Include="Content\images\ray.png" />
     <Content Include="Content\images\splat.png" />
+    <Content Include="Content\intranetSGCcss.css" />
     <Content Include="Content\intranetSGC\assets\css\ace-rtl.min.css" />
     <Content Include="Content\intranetSGC\assets\css\ace-skins.min.css" />
     <Content Include="Content\intranetSGC\assets\css\ace.min.css" />
@@ -272,6 +273,8 @@
     <Content Include="Content\intranetSGC\assets\css\jquery-ui.custom.min.css" />
     <Content Include="Content\intranetSGC\assets\css\jquery-ui.min.css" />
     <Content Include="Content\intranetSGC\assets\css\jquery.gritter.min.css" />
+    <Content Include="Content\intranetSGC\assets\css\mCustomScrollbar\jquery.mCustomScrollbar.min.css" />
+    <Content Include="Content\intranetSGC\assets\css\mCustomScrollbar\mCSB_buttons.png" />
     <Content Include="Content\intranetSGC\assets\css\prettify.min.css" />
     <Content Include="Content\intranetSGC\assets\css\richtext.min.css" />
     <Content Include="Content\intranetSGC\assets\css\rowReorder.dataTables.min.css" />
@@ -369,6 +372,7 @@
     <Content Include="Content\intranetSGC\assets\js\jquery.jqGrid.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.knob.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.maskedinput.min.js" />
+    <Content Include="Content\intranetSGC\assets\js\jquery.mCustomScrollbar.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.mobile.custom.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.nestable.min.js" />
     <Content Include="Content\intranetSGC\assets\js\jquery.raty.min.js" />
@@ -5529,14 +5533,15 @@
     <Compile Include="Models\WebCorporativa\WebTipoElementoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilitarios\autorizacion.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
+    <Compile Include="Utilitarios\funciones.cs" />
     <Compile Include="Utilitarios\GeneradorPassword.cs" />
     <Compile Include="Utilitarios\ManejoNulos.cs" />
     <Compile Include="Utilitarios\ProgressBarFunction.cs" />
     <Compile Include="Utilitarios\RutaImagenes.cs" />
     <Compile Include="Utilitarios\Seguridad.cs" />
-    <Compile Include="Utilitarios\autorizacion.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

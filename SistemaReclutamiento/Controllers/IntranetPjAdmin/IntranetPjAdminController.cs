@@ -13,6 +13,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using OfficeOpenXml;
+using SistemaReclutamiento.Entidades.SeguridadIntranet;
+using SistemaReclutamiento.Models.SeguridadIntranet;
 
 namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
 {
@@ -38,6 +40,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
         string pathArchivosIntranet = ConfigurationManager.AppSettings["PathArchivosIntranet"].ToString();
         claseError error = new claseError();
         RutaImagenes rutaImagenes = new RutaImagenes();
+        private SEG_PermisoRolDAL webPermisoRolBL = new SEG_PermisoRolDAL();
+        private SEG_RolUsuarioDAL webRolUsuarioBL = new SEG_RolUsuarioDAL();
+        private SEG_PermisoMenuDAL webPermisoMenuBl = new SEG_PermisoMenuDAL();
         // GET: IntranetPjAdmin
         public ActionResult Index()
         {
@@ -838,6 +843,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             UsuarioEntidad usuario = new UsuarioEntidad();
             PersonaEntidad persona = new PersonaEntidad();
             claseError error = new claseError();
+            var permisoRol = new List<SEG_PermisoRolEntidad>();
+            var rolUsuario = new SEG_RolUsuarioEntidad();
             string pendiente = "";
             try
             {
@@ -854,9 +861,21 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                             {
                                 if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
                                 {
+                                    
                                     Session["usuSGC_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                                     persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                                     Session["perSGC_full"] = persona;
+
+                                    var rolUsuarioTupla= webRolUsuarioBL.GetRolUsuarioId(usuario.usu_id);
+                                    rolUsuario = rolUsuarioTupla.webRolUsuario;
+                                    //rolUsuario = webRolUsuarioBL.GetRolUsuarioId(usuario.UsuarioID);
+                                    int rol = rolUsuario.WEB_RolID;
+                                    var permisoRolTupla = webPermisoRolBL.GetPermisoRolrolid(rol);
+                                    permisoRol = permisoRolTupla.lista;
+                                    Session["rol"] = rol;
+                                    Session["permisos"] = permisoRol;
+                                    Session["UsuarioID"] = usuario.usu_id;
+                                    Session["UsuarioNombre"] = usuario.usu_nombre;
                                     respuesta = true;
                                     errormensaje = "Bienvenido, " + usuario.usu_nombre;
                                 }
@@ -1118,6 +1137,27 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                 errormensaje = ex.Message;
             }
             return Json(new { mensaje=errormensaje,respuesta=response,data=lista });
+        }
+       
+        [HttpPost]
+        public ActionResult ListadoMenus()
+        {
+            var errormensaje = "";
+            var resultado = new List<dynamic>();
+            var listaxMenuPrincipal = new List<SEG_PermisoMenuEntidad>();
+            try
+            {
+                var listaxMenuPrincipalTupla= webPermisoMenuBl.GetPermisoMenuRolId(Convert.ToInt32(Session["rol"]));
+                listaxMenuPrincipal = listaxMenuPrincipalTupla.lista;
+
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + ",Comuniquese con el Administrador";
+            }
+
+
+            return Json(new { dataResultado = listaxMenuPrincipal.ToList(), mensaje = errormensaje });
         }
     }
 }

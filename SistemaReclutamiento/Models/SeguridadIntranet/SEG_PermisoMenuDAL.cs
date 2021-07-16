@@ -34,7 +34,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeNombre));
                     query.Parameters.AddWithValue("@p1", DateTime.Now);
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeDataMenu));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(permisoMENU.WEB_RolID));
+                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(permisoMENU.WEB_RolID));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(permisoMENU.WEB_PMeEstado));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(permisoMENU.WEB_ModuloNombre));
                     query.ExecuteNonQuery();
