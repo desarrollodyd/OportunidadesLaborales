@@ -5366,6 +5366,8 @@
     <Compile Include="Controllers\Postulante\PostulanteController.cs" />
     <Compile Include="Controllers\Postulante\PostulanteFavoritosController.cs" />
     <Compile Include="Controllers\Proveedor\ProveedorController.cs" />
+    <Compile Include="Controllers\SeguridadIntranet\RolController.cs" />
+    <Compile Include="Controllers\SeguridadIntranet\RolUsuarioController.cs" />
     <Compile Include="Controllers\SeguridadIntranet\SeguridadIntranetController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
@@ -5632,6 +5634,8 @@
     <Folder Include="log\" />
     <Folder Include="Views\CumUsuario\" />
     <Folder Include="Views\IntranetPJBoletasGDT\" />
+    <Folder Include="Views\RolUsuario\" />
+    <Folder Include="Views\Rol\" />
     <Folder Include="Views\WebDetalleElemento\" />
     <Folder Include="Views\WebTipoElemento\" />
   </ItemGroup>

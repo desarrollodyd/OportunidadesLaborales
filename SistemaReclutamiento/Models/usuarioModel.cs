@@ -714,6 +714,52 @@ namespace SistemaReclutamiento.Models
             }
             return (listaUsuarios: listaUsuarios, error: error);
         }
+        public (List<UsuarioPersonaEntidad> listaUsuarios, claseError error) IntranetListarUsuariosJson()
+        {
+            List<UsuarioPersonaEntidad> listaUsuarios = new List<UsuarioPersonaEntidad>();
+            claseError error = new claseError();
+            string consulta = @"SELECT usu_nombre,
+		                        per_id, usu_id,
+		                        per_nombre,
+		                        per_apellido_pat, per_apellido_mat
+			                        FROM marketing.cpj_persona
+			                        join seguridad.seg_usuario
+			                        on marketing.cpj_persona.per_id=seguridad.seg_usuario.fk_persona
+			                        where usu_tipo='EMPLEADO';";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var usuario = new UsuarioPersonaEntidad()
+                                {
+                                    usu_nombre = ManejoNulos.ManageNullStr(dr["usu_nombre"]),
+                                    per_apellido_mat = ManejoNulos.ManageNullStr(dr["per_apellido_mat"]),
+                                    per_nombre = ManejoNulos.ManageNullStr(dr["per_nombre"]),
+                                    per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
+                                    per_id = ManejoNulos.ManageNullInteger(dr["per_id"]),
+                                    usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]),
+                                };
+                                listaUsuarios.Add(usuario);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception Ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = Ex.Message;
+            }
+            return (listaUsuarios: listaUsuarios, error: error);
+        }
         #endregion
     }
 }

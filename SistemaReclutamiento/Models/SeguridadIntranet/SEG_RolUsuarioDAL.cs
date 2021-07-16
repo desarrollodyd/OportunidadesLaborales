@@ -31,8 +31,8 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(rolUsuario.WEB_RolID));
-                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(rolUsuario.UsuarioID));
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(rolUsuario.WEB_RolID));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(rolUsuario.UsuarioID));
                     query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullDate(rolUsuario.WEB_RUsuFechaRegistro));
                     query.ExecuteNonQuery();
 
