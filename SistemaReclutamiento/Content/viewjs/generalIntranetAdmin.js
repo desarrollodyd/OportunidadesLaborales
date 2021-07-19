@@ -5,6 +5,20 @@ $.ajaxSetup({
         console.error(errorThrow)
     },
     statusCode: {
+        401: function () {
+            messageResponse({
+                text: "Sesion Caducada.(unauthorized 401)",
+                type: "error"
+            });
+        },
+        403: function () {
+            // var controlador = getCookie("controlador");
+
+            messageResponse({
+                text: "No tiene Permiso.(Forbidden 403) ",
+                type: "error"
+            });
+        },
         404: function () {
             messageResponse({
                 text: "No Se encuentra la Direccion.(404)",

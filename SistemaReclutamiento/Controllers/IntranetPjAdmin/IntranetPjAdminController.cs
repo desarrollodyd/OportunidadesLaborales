@@ -848,6 +848,43 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
             string pendiente = "";
             try
             {
+                string usuario_sgc = ConfigurationManager.AppSettings["usuario_sgc"].ToString();
+                string password_sgc = ConfigurationManager.AppSettings["password_sgc"].ToString();
+                if (usuario_sgc == usu_login)
+                {
+                    var contrasenia = Seguridad.EncriptarSHA512(usu_password.Trim());
+                    if (password_sgc == contrasenia)
+                    {
+                        usuario.usu_nombre = "administradorsgc";
+                        persona.per_nombre = "administradorsgc";
+
+                        Session["usuSGC_full"] = usuario;
+                        Session["perSGC_full"] = persona;
+
+                        rolUsuario.WEB_RolID = 1;
+                        //rolUsuario = webRolUsuarioBL.GetRolUsuarioId(usuario.UsuarioID);
+                        int rol = rolUsuario.WEB_RolID;
+                        Session["rol"] = rol;
+                        Session["permisos"] = permisoRol;
+
+                        Session["UsuarioID"] = usuario.usu_id;
+                        Session["UsuarioNombre"] = usuario.usu_nombre;
+
+                        usuario.usu_tipo="EMPLEADO";
+                        usuario.usu_nombre = "administradorsgc";
+                        Session["usuario"] = usuario;
+                        respuesta = true;
+                        return Json(new { respuesta,mensaje= "Bienvenido"+ usuario.usu_nombre });
+                    }
+                    else
+                    {
+                        
+                        respuesta = false;
+                        return Json(new { respuesta, mensaje="Contraseña no coincide" });
+                    }
+                }
+
+
                 var usuarioTupla = usuarioAccesobl.UsuarioIntranetSGCValidarCredenciales(usu_login.ToLower());
                 error = usuarioTupla.error;
                 if (error.Respuesta)
@@ -876,6 +913,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                                     Session["permisos"] = permisoRol;
                                     Session["UsuarioID"] = usuario.usu_id;
                                     Session["UsuarioNombre"] = usuario.usu_nombre;
+                                    Session["usuario"] = usuario;
                                     respuesta = true;
                                     errormensaje = "Bienvenido, " + usuario.usu_nombre;
                                 }

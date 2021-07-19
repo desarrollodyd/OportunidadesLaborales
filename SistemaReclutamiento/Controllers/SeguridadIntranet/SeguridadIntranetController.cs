@@ -569,7 +569,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
 
             foreach (var atributo in atributosobjeto)
             {
-                if (atributo.AttributeType.Name == "seguridad")
+                if (atributo.AttributeType.Name == "autorizacion")
                 {
                     seguridad = (bool)atributo.ConstructorArguments[0].Value;
                     atributoseguridaddefinido = true;
@@ -589,10 +589,10 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             var atributoscontroladorlinq = ((IEnumerable<dynamic>)atributosControladorobjeto).Cast<dynamic>();
             if (atributoscontroladorlinq != null)
             {
-                var seguridadcontrolador = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "seguridad").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
+                var seguridadcontrolador = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "autorizacion").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
                 if (seguridadcontrolador != null)
                 {
-                    seguridad = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "seguridad").Select(x => x.ConstructorArguments[0].Value
+                    seguridad = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "autorizacion").Select(x => x.ConstructorArguments[0].Value
                                            ).SingleOrDefault();
                 }
                 var modulocontrolador = atributoscontroladorlinq.Where(x => x.AttributeType.Name == "modulo").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
@@ -610,7 +610,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             var objetolinq = ((IEnumerable<dynamic>)atributosobjeto).Cast<dynamic>();
             if (objetolinq != null)
             {
-                var seguridaddelobjeto = objetolinq.Where(x => x.AttributeType.Name == "seguridad").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
+                var seguridaddelobjeto = objetolinq.Where(x => x.AttributeType.Name == "autorizacion").Select(x => x.ConstructorArguments[0].Value).SingleOrDefault();
                 if (seguridaddelobjeto != null)
                 {
                     seguridad = seguridaddelobjeto;

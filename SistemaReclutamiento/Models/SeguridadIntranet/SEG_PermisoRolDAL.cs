@@ -144,16 +144,16 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                                   ,pr.WEB_PRolFechaRegistro
                               FROM intranet.seg_permisorol pr
                                 left join intranet.seg_permiso p on p.WEB_PermID=pr.WEB_PermID
-                            where pr.WEB_RolID =@p0 and p.WEB_PermControlador=@p1 and p.WEB_PermNombre=@p2";
+                            where pr.WEB_RolID =@p0 and lower(p.WEB_PermControlador)=@p1 and lower(p.WEB_PermNombre)=@p2";
             try
             {
                 using (var con = new NpgsqlConnection(_conexion))
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
-                    query.Parameters.AddWithValue("@p0", rol_id);
-                    query.Parameters.AddWithValue("@p1", controlador);
-                    query.Parameters.AddWithValue("@p2", permiso);
+                    query.Parameters.AddWithValue("@p0",ManejoNulos.ManageNullInteger(rol_id));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(controlador.Trim().ToLower()));
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(permiso.Trim().ToLower()));
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

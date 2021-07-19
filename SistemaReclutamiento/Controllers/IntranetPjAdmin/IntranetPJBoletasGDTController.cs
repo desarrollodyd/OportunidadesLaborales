@@ -496,6 +496,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 if (listaBoletas.Count > 0)
                 {
+                    UsuarioEntidad usuario=(UsuarioEntidad)Session["usuSGC_full"];
                     string mes = "";
                     foreach (var boleta in listaBoletas)
                     {
@@ -513,7 +514,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         string asunto = "Boleta creada, Trabajador: " + nombreEmpleado ;
                         Task.Run(() =>
                         {
-                            Task oResp = EnviarCorreoAsync(remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
+                            Task oResp = EnviarCorreoAsync(usuario.usu_id,remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
                         }).ContinueWith(t =>
                         {
                             if (t.IsCompleted)
@@ -535,11 +536,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje,respuesta });
         }
-        public async Task<bool> EnviarCorreoAsync(string remitente, string password, string destinatarios,string asunto, string body = "")
+        public async Task<bool> EnviarCorreoAsync(int usu_id,string remitente, string password, string destinatarios,string asunto, string body = "")
         {
             bool respuesta = false;
             SmtpClient cliente;
             MailMessage email;
+            BolBitacoraEntidad bitacora = new BolBitacoraEntidad();
             try
             {
                 cliente = new SmtpClient("smtp.gmail.com", 587)
@@ -555,12 +557,25 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     BodyEncoding = System.Text.Encoding.UTF8,
                     SubjectEncoding = System.Text.Encoding.Default
                 };
-                await cliente.SendMailAsync(email);
+                await cliente.SendMailAsync(email).ContinueWith(t=> {
+                    bitacora.btc_fecha_reg = DateTime.Now;
+                    bitacora.btc_accion = "Envio Correo";
+                    bitacora.btc_usuario_id = usu_id;
+                    bitacora.btc_ruta_pdf = "ENVIADO - "+"remitente: " + remitente+"; destinatario: "+destinatarios;
+
+                    var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
+                }) ;
+               
                 respuesta = true;
             }
             catch (Exception ex)
             {
                 respuesta = false;
+                bitacora.btc_fecha_reg = DateTime.Now;
+                bitacora.btc_accion = "Envio Correo";
+                bitacora.btc_usuario_id = usu_id;
+                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - "+"remitente: " + remitente + "; destinatario: " + destinatarios;
+                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
             }
             return respuesta;
         }
