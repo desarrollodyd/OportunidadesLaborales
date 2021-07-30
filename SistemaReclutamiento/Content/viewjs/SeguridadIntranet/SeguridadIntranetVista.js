@@ -159,17 +159,17 @@
             }
         })
         $(document).on('click', '#listaRoles li', function (event) {
-            var id = $(this).data("id");
-            var nombreRol = $(this).find("a").text();
+            let id = $(this).data("id");
+            let nombreRol = $(this).find("a").text();
             console.log(nombreRol)
             $("#nombreRolSpan").text(nombreRol);
             ListadoPermisoRol(id);
         });
         $(document).on('ifChecked', '#tab2 input:checkbox', function (event) {
 
-            var todos = jQuery(this).data("todos");
-            var permiso = [];
-            var toaster = "";
+            let todos = jQuery(this).data("todos");
+            let permiso = [];
+            let toaster = "";
             if (todos == "2") {
                 $("#lblesperando").show();
                 $("#lblcheck").hide();
@@ -178,14 +178,14 @@
                     $("#tab2").iCheck("destroy");
                     $('#tab2 ul.task-list').each(function () {
                         $(this).find('input:checkbox:not(:checked)').each(function () {
-                            var idinputdata = jQuery(this).data("id");
-                            var ids = idinputdata.split("_");
-                            var idrolcheck = ids[0];
-                            var controladorcheck = ids[1];
-                            var idpermisocheck = ids[2];
+                            let idinputdata = jQuery(this).data("id");
+                            let ids = idinputdata.split("_");
+                            let idrolcheck = ids[0];
+                            let controladorcheck = ids[1];
+                            let idpermisocheck = ids[2];
                             permiso.push({ WEB_RolID: idrolcheck, WEB_PermID: idpermisocheck });
                             jQuery(this).click();
-                            var cant = $("#cant_" + controladorcheck).text();
+                            let cant = $("#cant_" + controladorcheck).text();
                             $("#cant_" + controladorcheck).text(parseInt(cant) + 1);
                         });
         
@@ -200,7 +200,7 @@
                     $(".badge.pull-right").css("border-bottom", "0px");
                     $.LoadingOverlay("hide");
                     if (permiso.length > 0) {
-                        var url = basePath + "Seguridadintranet/AgregarPermisoRol";
+                        let url = basePath + "Seguridadintranet/AgregarPermisoRol";
                         DataPostWithoutChangePermiso(url, permiso, toaster);
                     }
                     $("#lblesperando").hide();
@@ -212,16 +212,16 @@
         
             }
             else {
-                var id = jQuery(this).data("id");
-                var ids = id.split("_");
-                var idrol = ids[0];
-                var controlador = ids[1];
-                var idpermiso = ids[2];
+                let id = jQuery(this).data("id");
+                let ids = id.split("_");
+                let idrol = ids[0];
+                let controlador = ids[1];
+                let idpermiso = ids[2];
                 if (todos == "0") {
                     permiso.push({ WEB_RolID: idrol, WEB_PermID: idpermiso });
-                    var cant = $("#cant_" + controlador).text();
+                    let cant = $("#cant_" + controlador).text();
                     $("#cant_" + controlador).text(parseInt(cant) + 1);
-                    var nocheked = $('#' + controlador + ' ul.task-list input:checkbox:not(:checked)').length;
+                    let nocheked = $('#' + controlador + ' ul.task-list input:checkbox:not(:checked)').length;
                     if (nocheked == "0") {
                         $("#check_control_" + controlador).iCheck("destroy");
                         $("#check_control_" + controlador).click();
@@ -236,14 +236,14 @@
                 if (todos == "1") {
                     $("#" + controlador).iCheck("destroy");
                     $('#' + controlador + ' ul.task-list input:checkbox:not(:checked)').each(function () {
-                        var idinputdata = jQuery(this).data("id");
-                        var ids = idinputdata.split("_");
-                        var idrolcheck = ids[0];
-                        var controladorcheck = ids[1];
-                        var idpermisocheck = ids[2];
+                        let idinputdata = jQuery(this).data("id");
+                        let ids = idinputdata.split("_");
+                        let idrolcheck = ids[0];
+                        let controladorcheck = ids[1];
+                        let idpermisocheck = ids[2];
                         permiso.push({ WEB_RolID: idrolcheck, WEB_PermID: idpermisocheck });
                         jQuery(this).click();
-                        var cant = $("#cant_" + controladorcheck).text();
+                        let cant = $("#cant_" + controladorcheck).text();
                         $("#cant_" + controladorcheck).text(parseInt(cant) + 1);
         
                     });
@@ -256,16 +256,16 @@
                 }
         
                 if (permiso.length > 0) {
-                    var url = basePath + "Seguridadintranet/AgregarPermisoRol";
+                    let url = basePath + "Seguridadintranet/AgregarPermisoRol";
                     DataPostWithoutChangePermiso(url, permiso, toaster);
                 }
             };
         })
         $(document).on('ifUnchecked', '#tab2 input:checkbox', function (event) {
 
-            var todos = jQuery(this).data("todos");
-            var permiso = [];
-            var toaster = "";
+            let todos = jQuery(this).data("todos");
+            let permiso = [];
+            let toaster = "";
             if (todos == "2") {
                 $("#lblesperando").show();
                 $("#lblcheck").hide();
@@ -275,14 +275,14 @@
                     $("#tab2").iCheck("destroy");
                     $('#tab2 ul.task-list').each(function () {
                         $(this).find('input:checkbox:checked').each(function () {
-                            var idinputdata = jQuery(this).data("id");
-                            var ids = idinputdata.split("_");
-                            var idrolcheck = ids[0];
-                            var controladorcheck = ids[1];
-                            var idpermisocheck = ids[2];
+                            let idinputdata = jQuery(this).data("id");
+                            let ids = idinputdata.split("_");
+                            let idrolcheck = ids[0];
+                            let controladorcheck = ids[1];
+                            let idpermisocheck = ids[2];
                             permiso.push({ WEB_RolID: idrolcheck, WEB_PermID: idpermisocheck });
                             jQuery(this).click();
-                            var cant = $("#cant_" + controladorcheck).text();
+                            let cant = $("#cant_" + controladorcheck).text();
                             $("#cant_" + controladorcheck).text(parseInt(cant) - 1);
                         });
         
@@ -298,7 +298,7 @@
                     $(".badge.pull-right").css("border-bottom", "2px solid red");
                     $.LoadingOverlay("hide");
                     if (permiso.length > 0) {
-                        var url = basePath + "Seguridadintranet/QuitarPermisoRol";
+                        let url = basePath + "Seguridadintranet/QuitarPermisoRol";
                         DataPostWithoutChangePermiso(url, permiso, toaster);
                     }
                     $("#lblesperando").hide();
@@ -309,16 +309,16 @@
         
             }
             else {
-                var id = jQuery(this).data("id");
-                var ids = id.split("_");
-                var idrol = ids[0];
-                var controlador = ids[1];
-                var idpermiso = ids[2];
+                let id = jQuery(this).data("id");
+                let ids = id.split("_");
+                let idrol = ids[0];
+                let controlador = ids[1];
+                let idpermiso = ids[2];
                 if (todos == "0") {
                     permiso.push({ WEB_RolID: idrol, WEB_PermID: idpermiso });
-                    var cant = $("#cant_" + controlador).text();
+                    let cant = $("#cant_" + controlador).text();
                     $("#cant_" + controlador).text(parseInt(cant) - 1);
-                    var estado = $("#check_control_" + controlador).is(':checked');
+                    let estado = $("#check_control_" + controlador).is(':checked');
                     if (estado == true) {
                         $("#check_control_" + controlador).iCheck("destroy");
                         $("#check_control_" + controlador).click();
@@ -333,14 +333,14 @@
                 if (todos == "1") {
                     $("#" + controlador).iCheck("destroy");
                     $('#' + controlador + ' ul.task-list input:checkbox:checked').each(function () {
-                        var idinputdata = jQuery(this).data("id");
-                        var ids = idinputdata.split("_");
-                        var idrolcheck = ids[0];
-                        var controladorcheck = ids[1];
-                        var idpermisocheck = ids[2];
+                        let idinputdata = jQuery(this).data("id");
+                        let ids = idinputdata.split("_");
+                        let idrolcheck = ids[0];
+                        let controladorcheck = ids[1];
+                        let idpermisocheck = ids[2];
                         permiso.push({ WEB_RolID: idrolcheck, WEB_PermID: idpermisocheck });
                         jQuery(this).click();
-                        var cant = $("#cant_" + controladorcheck).text();
+                        let cant = $("#cant_" + controladorcheck).text();
                         $("#cant_" + controladorcheck).text(parseInt(cant) - 1);
         
                     });
@@ -353,7 +353,7 @@
                 };
         
                 if (permiso.length > 0) {
-                    var url = basePath + "Seguridadintranet/QuitarPermisoRol";
+                    let url = basePath + "Seguridadintranet/QuitarPermisoRol";
                     DataPostWithoutChangePermiso(url, permiso, toaster);
                 }
             };
@@ -361,6 +361,10 @@
         
             //console.log(permiso)
         });
+        $(document).on('keyup','.inputBuscar',function(e){
+            var texto = $.trim($(this).val());
+            searchTable(texto);
+        })
     }
     let DataPostWithoutChangePermiso=function(url, data, toaster) {
 
@@ -373,7 +377,7 @@
                 block_general("body")
             },
             success: function (response) {
-                var respuesta = response.respuesta;
+                let respuesta = response.respuesta;
                 //console.log(respuesta,"ase")
                 if (respuesta === true) {
                     if (toaster == 0) {
@@ -435,7 +439,7 @@
     
     }
     let ListadoPermisoRol=function(rolid) {
-        var url = basePath + "Seguridadintranet/ListadoControladorPermisos";
+        let url = basePath + "Seguridadintranet/ListadoControladorPermisos";
         $.ajax({
             url: url,
             type: "POST",
@@ -449,23 +453,23 @@
     
             },
             success: function (response) {
-                var controlador = response.controlador;
-                var permisosControlador = response.listaPermisoControlador;
-                var permisosRol = response.listaPermisosRol;
+                let controlador = response.controlador;
+                let permisosControlador = response.listaPermisoControlador;
+                let permisosRol = response.listaPermisosRol;
     
                 if (controlador) {
                     $("#bodyPermisosRoles").html("");
     
                     $.each(controlador, function (index, value) {
     
-                        var permisosLista = "";
-                        var cantPerm = "0";
-                        var permisosChek = "0";
+                        let permisosLista = "";
+                        let cantPerm = "0";
+                        let permisosChek = "0";
                         $.each(permisosControlador, function (index, valuePC) {
-                            var check = "";
+                            let check = "";
                             if (value.WEB_PermControlador == valuePC.WEB_PermControlador) {
                                 cantPerm = Number(cantPerm) + 1;
-                                var nombrePermiso = valuePC.WEB_PermNombreR ? valuePC.WEB_PermNombreR : valuePC.WEB_PermNombre;
+                                let nombrePermiso = valuePC.WEB_PermNombreR ? valuePC.WEB_PermNombreR : valuePC.WEB_PermNombre;
     
                                 $.each(permisosRol, function (key, valuePR) {
                                     if (valuePR.WEB_RolID == rolid && valuePR.WEB_PermID == valuePC.WEB_PermID) {
@@ -482,13 +486,13 @@
                                     '</li>';
                             };
                         });
-                        var todos = "";
+                        let todos = "";
                         if (Number(cantPerm) > 0) {
                             if (cantPerm == permisosChek) {
                                 todos = "checked";
                             };
                         }
-                        var border = "";
+                        let border = "";
                         if (permisosChek != cantPerm) {
                             border = 'border-bottom:2px solid red';
                         }
@@ -550,10 +554,139 @@
             }
         });
     }
+    let ListadoPermisoRol2=function(rolid){
+        let url = basePath + "Seguridadintranet/ListadoControladorPermisos";
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: JSON.stringify({ rolid: rolid }),
+            contentType: "application/json",
+            beforeSend: function () {
+                block_general("body")
+                $("#contenidopermisos").hide();
+                $("#alertapermisos").text("Cargando Permisos del Rol ...");
+                $("#alertapermisos").show();
+    
+            },
+            success: function (response) {
+                let controlador = response.controlador;
+                let permisosControlador = response.listaPermisoControlador;
+                let permisosRol = response.listaPermisosRol;
+    
+                if (controlador) {
+                    $("#bodyPermisosRoles").html("");
+    
+                    $.each(controlador, function (index, value) {
+    
+                        let permisosLista = "";
+                        let cantPerm = "0";
+                        let permisosChek = "0";
+                        $.each(permisosControlador, function (index, valuePC) {
+                            let check = "";
+                            if (value.WEB_PermControlador == valuePC.WEB_PermControlador) {
+                                cantPerm = Number(cantPerm) + 1;
+                                let nombrePermiso = valuePC.WEB_PermNombreR ? valuePC.WEB_PermNombreR : valuePC.WEB_PermNombre;
+    
+                                $.each(permisosRol, function (key, valuePR) {
+                                    if (valuePR.WEB_RolID == rolid && valuePR.WEB_PermID == valuePC.WEB_PermID) {
+                                        check = "checked";
+                                        permisosChek = Number(permisosChek) + 1;
+                                    }
+                                });
+                                permisosLista += `<li class="task-list-item">
+                                                    <div class="checkbox" style="overflow:hidden;width:500px">
+                                                        <label>
+                                                        <input id="${valuePC.WEB_PermID}_${rolid}" ${check} data-todos="0" data-id="${rolid}_${value.WEB_PermControlador}_${valuePC.WEB_PermID}"  type="checkbox" class="task-list-item-checkbox"/>
+                                                        ${nombrePermiso}
+                                                        </label>
+                                                    </div>
+                                                </li>`
+                            }
+                        })
+                        let todos = "";
+                        if (Number(cantPerm) > 0) {
+                            if (cantPerm == permisosChek) {
+                                todos = "checked";
+                            }
+                        }
+                        let border = ""
+                        if (permisosChek != cantPerm) {
+                            border = 'border-bottom:2px solid red'
+                        }
+                        $("#bodyPermisosRoles").append(`
+                            <div class="col-md-4" style="padding-right: 4px;padding-left: 4px;padding-bottom: 4px;">
+                                <div class= "panel panel-success">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a style="font-size: 14px;" class="collapsed" data-toggle="collapse"  href="#${value.WEB_PermControlador}">
+                                            ${value.WEB_PermControlador.replace("Controller", "")}
+                                                <span class="icon icon-arrow-down" style="margin-top: -3px;">
+                                                </span>
+                                                <span class="badge pull-right" style="margin-right: 5px;margin-top: 0px;width: 46px;${border}">
+                                                    <span id="cant_${value.WEB_PermControlador}">
+                                                    ${permisosChek}
+                                                    </span> 
+                                                    / ${cantPerm}
+                                                </span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="${value.WEB_PermControlador}" class="panel-collapse collapse">
+                                        <div class="panel-body taskPanel" style="padding-top: 5px;">
+                                            <div class="row">
+                                                <div class="checkbox" style="left:-6%">
+                                                    <label>
+                                                        <input type="checkbox" ${todos} id="check_control_${value.WEB_PermControlador}" data-todos="1" data-id="${rolid}_${value.WEB_PermControlador}" class="task-list-item-checkbox" /> 
+                                                        Seleccionar Todos
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <hr style="margin-top:0px;margin-bottom:10px" />
+                                            <ul class="task-list" style="left:-15%;width:100%">
+                                                ${permisosLista}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`)
+                    })
+    
+                    totales()
+                }
+                else {
+                    messageResponse({
+                        text: response.mensaje,
+                        type: "error"
+                    })
+                }
+    
+            },
+            complete: function () {
+                $("#contenidopermisos").show();
+                $("#alertapermisos").hide();
+                $("ul.task-list").mCustomScrollbar({
+                    autoHideScrollbar: true,
+                    scrollbarPosition: "outside",
+                    theme: "dark",
+                    setHeight: "210px"
+                });
+    
+                $("#tab2").iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-red',
+                    increaseArea: '2%' // optional
+                });
+                unblock('body')
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+    
+            }
+        });
+    }
     let totales=function() {
-        var totalno = $('#tab2 ul.task-list input:checkbox:not(:checked)').length;
-        var total = $('#tab2 ul.task-list input:checkbox').length;
-        var totalsi = $('#tab2 ul.task-list input:checkbox:checked').length;
+        let totalno = $('#tab2 ul.task-list input:checkbox:not(:checked)').length;
+        let total = $('#tab2 ul.task-list input:checkbox').length;
+        let totalsi = $('#tab2 ul.task-list input:checkbox:checked').length;
         $("#fullall").iCheck("destroy");
         if (totalno == "0") {
             $("#fullall").prop('checked', true);
@@ -571,8 +704,51 @@
         });
         $("#totalPermisosSpan").text(totalsi + "/" + total);
     }
+    let searchTable=function(inputVal) {
+        var listado = $('#bodyPermisosRoles .task-list li');
+        if (inputVal) {
+            listado.hide();
+            $("#lblcheck").hide();
+            $("#bodyPermisosRoles .col-md-4").hide();
+            var controllers = $("#bodyPermisosRoles .col-md-4");
+            controllers.each(function (index, div) {
+                $(this).find("h4").find("a").removeClass();
+                $(this).find("h4").find("a").addClass("collapsed");
+                $(this).find("div.row").hide();
+                $(this).find("div.panel-collapse.collapse.in").removeClass().addClass("panel-collapse collapse").css("height", "0px");
+            });
+    
+            var len = $('#bodyPermisosRoles .task-list li label:contains("' + inputVal + '")').length;
+            if (len > 0) {
+                $(".lblNo").remove();
+                $('#bodyPermisosRoles .task-list li label:contains("' + inputVal + '")').each(function () {
+                    var li = $(this).parent().parent();
+                    li.show();
+                    var colmd4 = $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent();
+                    colmd4.show();
+                    colmd4.find("h4").find("a").removeClass();
+                    colmd4.find(".panel-collapse.collapse").removeClass().addClass("panel-collapse collapse in").removeAttr("style");
+                });
+            } else {
+                $('#bodyPermisosRoles').append('<label class="alert alert-danger lblNo" style="margin-bottom:0px;margin-top:0px;width:100%;padding:2px">No se Encontraron Permisos</label>');
+            }
+        }
+        else {
+            console.log("vacio");
+            $(".lblNo").remove();
+            listado.show();
+            $("#lblcheck").show();
+            $('#bodyPermisosRoles .task-list li').show();
+            $('#bodyPermisosRoles .taskPanel div.row').show();
+            var element = $(".panel-collapse");
+            element.removeClass();
+            element.css("height", "");
+            element.addClass("panel-collapse collapse");
+            element.parent().parent().show();
+        }
+    }
     let ListadoRolestab=function() {
-        var url = basePath + "Seguridadintranet/ListadoRolesSeguridadPermiso";
+        let url = basePath + "Seguridadintranet/ListadoRolesSeguridadPermiso";
         $.ajax({
             url: url,
             type: "POST",
@@ -582,7 +758,7 @@
                 block_general("body")
             },
             success: function (response) {
-                var roles = response.roles;
+                let roles = response.roles;
                 if (roles) {
     
                     $("#listaRoles").html("");
