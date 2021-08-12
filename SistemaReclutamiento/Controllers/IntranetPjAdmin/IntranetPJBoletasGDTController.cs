@@ -515,13 +515,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         Task.Run(() =>
                         {
                             Task oResp = EnviarCorreoAsync(usuario.usu_id,remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
-                        }).ContinueWith(t =>
+                        })/*.ContinueWith(t =>
                         {
                             if (t.IsCompleted)
                             {
                                 var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
                             }
-                        })/*.GetAwaiter().GetResult()*/;
+                        })*//*.GetAwaiter().GetResult()*/;
                     }
                     mensaje = "Envio Iniciado";
                     respuesta = true;

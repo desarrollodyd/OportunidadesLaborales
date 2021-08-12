@@ -80,6 +80,7 @@
 
 <body class="no-skin">
     <input type="hidden" name="basePath" id="BasePath" value="@Request.Url.Scheme://@((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/'))/" />
+    <input type="hidden" id="UsuarioNombre" value="@Session["UsuarioNombre"]" />
     <div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top">
         <div class="navbar-container ace-save-state" id="navbar-container">
             <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">

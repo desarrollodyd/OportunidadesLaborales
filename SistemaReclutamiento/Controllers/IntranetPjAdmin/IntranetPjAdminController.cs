@@ -861,8 +861,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJAdmin
                         Session["usuSGC_full"] = usuario;
                         Session["perSGC_full"] = persona;
 
-                        rolUsuario.WEB_RolID = 1;
-                        //rolUsuario = webRolUsuarioBL.GetRolUsuarioId(usuario.UsuarioID);
+                        rolUsuario.WEB_RolID = 0;
                         int rol = rolUsuario.WEB_RolID;
                         Session["rol"] = rol;
                         Session["permisos"] = permisoRol;

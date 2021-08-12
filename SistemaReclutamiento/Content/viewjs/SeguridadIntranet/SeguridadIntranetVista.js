@@ -438,7 +438,7 @@
         });
     
     }
-    let ListadoPermisoRol=function(rolid) {
+    let ListadoPermisoRol2=function(rolid) {
         let url = basePath + "Seguridadintranet/ListadoControladorPermisos";
         $.ajax({
             url: url,
@@ -554,7 +554,7 @@
             }
         });
     }
-    let ListadoPermisoRol2=function(rolid){
+    let ListadoPermisoRol=function(rolid){
         let url = basePath + "Seguridadintranet/ListadoControladorPermisos";
         $.ajax({
             url: url,
@@ -710,15 +710,22 @@
             listado.hide();
             $("#lblcheck").hide();
             $("#bodyPermisosRoles .col-md-4").hide();
-            var controllers = $("#bodyPermisosRoles .col-md-4");
-            controllers.each(function (index, div) {
-                $(this).find("h4").find("a").removeClass();
-                $(this).find("h4").find("a").addClass("collapsed");
-                $(this).find("div.row").hide();
-                $(this).find("div.panel-collapse.collapse.in").removeClass().addClass("panel-collapse collapse").css("height", "0px");
-            });
-    
+            // var controllers = $("#bodyPermisosRoles .col-md-4");
+            // controllers.each(function (index, div) {
+            //     $(this).find("h4").find("a").removeClass();
+            //     $(this).find("h4").find("a").addClass("collapsed");
+            //     $(this).find("div.row").hide();
+            //     $(this).find("div.panel-collapse.collapse.in").removeClass().addClass("panel-collapse collapse").css("height", "0px");
+            // });
+
+            //Case Insensitive
+            jQuery.expr[':'].contains = function(a, i, m) {
+                return jQuery(a).text().toUpperCase()
+                    .indexOf(m[3].toUpperCase()) >= 0;
+            };
+            //
             var len = $('#bodyPermisosRoles .task-list li label:contains("' + inputVal + '")').length;
+            console.log(len)
             if (len > 0) {
                 $(".lblNo").remove();
                 $('#bodyPermisosRoles .task-list li label:contains("' + inputVal + '")').each(function () {

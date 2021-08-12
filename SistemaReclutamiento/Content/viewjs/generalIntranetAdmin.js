@@ -785,6 +785,10 @@ $(document).on("click", "#sidebar-collapse", function () {
 
 });
 function Menu(loading) {
+    if($("#UsuarioNombre").val()=='administradorsgc'){
+        $('.nav-list li').removeClass('oculto');
+        return;
+    }
     var data = {}
     var url = basePath + "intranetpjadmin/ListadoMenus";
 
@@ -810,9 +814,10 @@ function Menu(loading) {
                     var menu = value.WEB_PMeDataMenu;
                     $('.nav-list li[data-menu1="' + menu + '"]').removeClass('oculto');
                 });
-            } else {
-               $('.nav-list li').removeClass('oculto');
-            }
+            } 
+            //else {
+            //    $('.nav-list li').removeClass('oculto');
+            //}
             unblock('body');
 
 
