@@ -3,8 +3,8 @@
     let connectionId;
     let _inicio=function(){
         // let dateinicio = new Date(moment().format("YYYY"))
-        var hoy = new Date();
-        var fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
+        let hoy = new Date();
+        let fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
         $("#cboQuincena").select2({
             placeholder: "--Seleccione--", allowClear: true
         })
@@ -310,7 +310,6 @@
             e.preventDefault()
             $("#contenidoBoletaPdf").html('')
             let nombreEmpresa=$("#cboEmpresaListar").find(':selected').text()
-            
             let obj={
                 emp_co_trab:$(this).data("empcotrab"),
                 emp_ruta_pdf:$(this).data("emprutapdf"),
@@ -327,31 +326,27 @@
                     if (response.respuesta) {
                         let data = response.data;
                         $(".ui-pnotify").remove()
-                       $("#modalBoleta").modal('show')
-                        $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
-                            encodeURI(data) + "'></iframe>")
+                        easyPDF(data,"PDF Empleado : ")
+                        //cargarDialog()
+                    //    $("#modalBoleta").modal('show')
+                    //     $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
+                    //         encodeURI(data) + "'></iframe>")
 
 
-                        if (!($('.modal.in').length)) {
-                            $('.modal-dialog').css({
-                                top: 0,
-                                left: 0
-                            });
-                            }
-                            $('#modalBoleta').modal({
-                            backdrop: false,
-                            show: true
-                            });
-                        
-                            $('.modal-dialog').draggable({
-                            handle: ".modal-header"
-                            });    
-                        // let file = response.fileName;
-                        // let a = document.createElement('a');
-                        // a.target = '_self';
-                        // a.href = "data:application/pdf;base64, " + data;
-                        // a.download = file;
-                        // a.click();
+                    //     if (!($('.modal.in').length)) {
+                    //         $('.modal-dialog').css({
+                    //             top: 0,
+                    //             left: 0
+                    //         });
+                    //     }
+                    //     $('#modalBoleta').modal({
+                    //     backdrop: false,
+                    //     show: true
+                    //     });
+                    
+                    //     $('.modal-dialog').draggable({
+                    //     handle: ".modal-header"
+                    //     });    
                     }
                 }
             })
@@ -585,7 +580,7 @@
                     "bSortable": false,
                     className: 'align-center',
                     "render": function (value,row, oData) {
-                        var check = `<input type="checkbox" class="form-check-input-styled-info pdfListado" 
+                        let check = `<input type="checkbox" class="form-check-input-styled-info pdfListado" 
                                         data-empcotrab="${oData.emp_co_trab}" 
                                         data-emprutapdf="${oData.emp_ruta_pdf}" 
                                         data-empcoempr="${oData.emp_co_empr}"
@@ -631,8 +626,8 @@
                     data: null,
                     title: "Acciones",
                     "render": function (value,row, oData) {
-                        var span = '';
-                        var span = `<div class="hidden-sm hidden-xs action-buttons">
+                        let span = '';
+                        span = `<div class="hidden-sm hidden-xs action-buttons">
                                         <a class="red btnVisualizarPDF" href="#"    
                                             data-empcotrab="${oData.emp_co_trab}" 
                                             data-emprutapdf="${oData.emp_ruta_pdf}" 
@@ -717,6 +712,111 @@
             ]
         })
     }
+    let easyPDF=function(_base64, _title) {
+        // HTML definition of dialog elements
+        let dialog = `<div id="pdfDialog" title="${_title}">
+                        <label>Page: </label>
+                        <label id="pageNum"></label>
+                        <label> of </label>
+                        <label id="pageLength"></label>
+                        <canvas id="pdfview"></canvas>
+                    </div>`;
+        $("div[id=pdfDialog]").remove();
+        $(document.body).append(dialog);
+    
+        // We need the javascript object of the canvas, not the jQuery reference
+        let canvas = document.getElementById('pdfview');
+        // Init page count
+        let page = 1;
+        
+    
+        // Init page number and the document
+        $('#pageNum').text(page);
+        RenderPDF(0);
+    
+        // PDF.js control
+        function RenderPDF(pageNumber) {
+          let pdfData = atob(_base64);
+          pdfjsLib.disableWorker = true;
+    
+          // Get current global page number, defaults to 1
+          displayNum = parseInt($('#pageNum').html())
+          pageNumber = parseInt(pageNumber)
+    
+          let loadingTask = pdfjsLib.getDocument({data: pdfData});
+          loadingTask.promise.then(function(pdf) {
+              // Gets total page length of pdf
+              size = pdf.numPages;
+              $('#pageLength').text(size);
+              // Handling for changing pages
+              if(pageNumber == 1) {
+                  pageNumber = displayNum + 1;
+              }
+              if(pageNumber == -1) {
+                  pageNumber = displayNum - 1;
+              }
+              if(pageNumber == 0) {
+                  pageNumber = 1;
+              }
+          // If the requested page is outside the document bounds
+              if(pageNumber > size || pageNumber < 1) {
+                  throw "bad page number";
+              }
+              // Changes the cheeky global to our valid new page number
+              $('#pageNum').text(pageNumber)
+              pdf.getPage(pageNumber).then(function(page) {
+                  let scale = 1.0;
+                  let viewport = page.getViewport(scale);
+                  let context = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+                  let renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                  };
+                  page.render(renderContext);
+              });
+
+
+          }).catch(e => {});
+        }
+        // Dialog definition
+        $( "#pdfDialog" ).dialog({
+            // Moves controls to top of dialog
+            open: function (event, ui) {
+                $(this).before($(this).parent().find('.ui-dialog-buttonpane'));
+            },
+            width: ($(window).width() / 2),
+            modal: true,
+            position: {
+                my: "top",
+                at: "top",
+                of: window,
+                collision: "none"
+            },
+            buttons: {
+                "Download": {
+                click: function () {
+                    let data = _base64
+                    let a = document.createElement('a')
+                    a.target = '_self'
+                    a.href = "data:application/pdf;base64, " + data
+                    a.download = 'Pdf_Boleta'
+                    a.click();
+                },
+                text: 'Download',
+                },
+                "Confirm": {
+                    click: function () {
+                        $(this).dialog("close")
+                        $("#pdfDialog").remove()
+                    },
+                    text: 'Close',
+                }
+            }
+        });
+    }
+
     return {
         init: function () {
             _inicio()
@@ -726,6 +826,7 @@
     }
 }()
 document.addEventListener('DOMContentLoaded',function(){
+
     panelBoletas.init()
 })
 
