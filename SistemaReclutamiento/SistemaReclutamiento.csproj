@@ -424,6 +424,10 @@
     <Content Include="Content\intranetSGC\jqueryztree\js\jquery.ztree.exedit.min.js" />
     <Content Include="Content\intranetSGC\jqueryztree\js\jquery.ztree.exhide.js" />
     <Content Include="Content\intranetSGC\jqueryztree\js\jquery.ztree.exhide.min.js" />
+    <Content Include="Content\intranetSGC\pdfviewer\jquery-ui.css" />
+    <Content Include="Content\intranetSGC\pdfviewer\jquery-ui.js" />
+    <Content Include="Content\intranetSGC\pdfviewer\pdf.min.js" />
+    <Content Include="Content\intranetSGC\pdfviewer\pdf.worker.js" />
     <Content Include="Content\intranet\css\PgwModal.css" />
     <Content Include="Content\intranet\css\schemes\redori.css" />
     <Content Include="Content\intranet\css\venobox.css" />

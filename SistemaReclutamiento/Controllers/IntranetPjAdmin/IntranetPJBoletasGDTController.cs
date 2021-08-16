@@ -626,6 +626,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { data,mensaje,respuesta,fileName});
         }
+        [autorizacion(false)]
         [HttpPost]
         public ActionResult GuardarBitacoraJson(BolBitacoraEntidad bitacora)
         {
@@ -654,6 +655,36 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new {respuesta,mensaje });
+        }
+        [autorizacion(false)]
+        [HttpPost]
+        public ActionResult GuardarBitacoraSGCJson(BolBitacoraEntidad bitacora)
+        {
+            string mensaje = "No se pudo insertar";
+            bool respuesta = false;
+            UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
+            int idInsertado = 0;
+            try
+            {
+                bitacora.btc_fecha_reg = DateTime.Now;
+                bitacora.btc_estado = 1;
+                bitacora.btc_usuario_id = usuario.usu_id;
+                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
+                if (insertadoTupla.error.Respuesta)
+                {
+                    mensaje = "Registrado";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensaje = insertadoTupla.error.Mensaje;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
         }
         [HttpPost] 
         public ActionResult BitacoraListarFiltrosJson(DateTime fechaInicio, DateTime fechaFin)

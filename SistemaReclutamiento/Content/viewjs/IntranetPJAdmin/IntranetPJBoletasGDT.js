@@ -4,7 +4,7 @@
     let _inicio=function(){
         // let dateinicio = new Date(moment().format("YYYY"))
         let hoy = new Date();
-        let fecha_hoy = moment(hoy).format('YYYY-MM-DD hh:mm A');
+        let fecha_hoy = moment(hoy).format('YYYY-MM-DD');
         $("#cboQuincena").select2({
             placeholder: "--Seleccione--", allowClear: true
         })
@@ -310,6 +310,7 @@
             e.preventDefault()
             $("#contenidoBoletaPdf").html('')
             let nombreEmpresa=$("#cboEmpresaListar").find(':selected').text()
+            let emp_co_trab=$(this).data("empcotrab")
             let obj={
                 emp_co_trab:$(this).data("empcotrab"),
                 emp_ruta_pdf:$(this).data("emprutapdf"),
@@ -325,8 +326,9 @@
                     CloseMessages()
                     if (response.respuesta) {
                         let data = response.data;
+                        let fileName=response.fileName
                         $(".ui-pnotify").remove()
-                        easyPDF(data,"PDF Empleado : ")
+                        easyPDF(data,"PDF Empleado : "+ emp_co_trab,fileName)
                         //cargarDialog()
                     //    $("#modalBoleta").modal('show')
                     //     $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
@@ -390,6 +392,7 @@
                 }
             })
         })
+        $('body').on('contextmenu', '#pdfview', function(e){ return false; });
     }
     let _metodos=function(){
         validar_Form({
@@ -712,14 +715,18 @@
             ]
         })
     }
-    let easyPDF=function(_base64, _title) {
+    let easyPDF=function(_base64, _title,fileName) {
         // HTML definition of dialog elements
-        let dialog = `<div id="pdfDialog" title="${_title}">
-                        <label>Page: </label>
-                        <label id="pageNum"></label>
-                        <label> of </label>
-                        <label id="pageLength"></label>
-                        <canvas id="pdfview"></canvas>
+        let dialog = `<div style=" background:#000000;
+                        width:100%;
+                        height:100vh">
+                        <div id="pdfDialog" title="${_title}">
+                            <label>Page: </label>
+                            <label id="pageNum"></label>
+                            <label> of </label>
+                            <label id="pageLength"></label>
+                            <canvas id="pdfview"></canvas>
+                        </div>
                     </div>`;
         $("div[id=pdfDialog]").remove();
         $(document.body).append(dialog);
@@ -785,38 +792,62 @@
             // Moves controls to top of dialog
             open: function (event, ui) {
                 $(this).before($(this).parent().find('.ui-dialog-buttonpane'));
+                // $(event.target).parent().css('background-color','black');
             },
             width: ($(window).width() / 2),
             modal: true,
+            // position: ['center',20],
             position: {
-                my: "top",
+                my: "center",
                 at: "top",
                 of: window,
                 collision: "none"
             },
             buttons: {
                 "Download": {
-                click: function () {
-                    let data = _base64
-                    let a = document.createElement('a')
-                    a.target = '_self'
-                    a.href = "data:application/pdf;base64, " + data
-                    a.download = 'Pdf_Boleta'
-                    a.click();
-                },
-                text: 'Download',
+                    click: function () {
+                        let data = _base64
+                        let a = document.createElement('a')
+                        a.target = '_self'
+                        a.href = "data:application/pdf;base64, " + data
+                        a.download = fileName
+                        a.click();
+                        let objBitacora={
+                            btc_vista:getAbsolutePath(),
+                            btc_accion:'Descarga Pdf',
+                            btc_ruta_pdf:`Descarga de Pdf "${fileName}" desde gestor de contenido`
+                        }
+                        registrarBitacora(objBitacora)
+                    },
+                    text: 'Descargar',
                 },
                 "Confirm": {
                     click: function () {
                         $(this).dialog("close")
                         $("#pdfDialog").remove()
                     },
-                    text: 'Close',
+                    text: 'Cerrar',
                 }
             }
         });
     }
-
+    let registrarBitacora=function(data){
+        let dataForm=data;
+        responseSimple({
+            url: "IntranetPJBoletasGDT/GuardarBitacoraSGCJson",
+                refresh: false,
+                loader:false,
+                data:JSON.stringify(dataForm),
+                callBackSuccess: function (response) {
+                    CloseMessages()
+                }
+        })
+    }
+    let getAbsolutePath=function() {
+        var loc = window.location;
+        var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+        return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
+    }
     return {
         init: function () {
             _inicio()
