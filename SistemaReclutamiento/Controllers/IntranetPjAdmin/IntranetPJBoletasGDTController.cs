@@ -218,6 +218,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje,respuesta,data=listaBoletas });
         }
+        [autorizacion(false)]
         public ActionResult BolListarporEmpleadoJson(DateTime fechaProcesoInicio,DateTime fechaProcesoFin, string empresaListar, string nombreEmpresaListar,string empleado)
         {
             string mensaje = "No se pudieron listar las boletas";
@@ -589,6 +590,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Math.Round((kilobytes / 1024f), 2);
         }
         [HttpPost]
+        [autorizacion(false)]
         public ActionResult VisualizarPdfIntranetAdminJson(BolEmpleadoBoletaEntidad empleado)
         {
             string mensaje = "";

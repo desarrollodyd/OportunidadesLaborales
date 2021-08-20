@@ -181,6 +181,7 @@
                                                         data-emprutapdf="${oData.emp_ruta_pdf}" 
                                                         data-empcoempr="${oData.emp_co_empr}"
                                                         data-empdiremail="${oData.emp_direc_mail}"
+                                                        data-nombreempresa="${nombreEmpresaListar}"
                                                         data-rel="tooltip" title="View">
                                                         Ver
                                                     </a>
@@ -233,6 +234,7 @@
             $("#contenidoBoletaPdf").html('')
             // let nombreEmpresa=$("#cboEmpresas").find(':selected').text()
             let nombreEmpresa=$(this).data("nombreempresa").trim()
+            let emp_co_trab=$(this).data("empcotrab")
             console.log(nombreEmpresa)
             let obj={
                 emp_co_trab:$(this).data("empcotrab"),
@@ -248,17 +250,14 @@
                 callBackSuccess: function (response) {
                     if (response.respuesta) {
                         let data = response.data;
-                        let file = response.fileName;
-                        $("body").addClass("openModal");
-                        modal.style.display = "block";
-                        modal.style.zIndex = 10000;
-                        $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
-                            encodeURI(data) + "'></iframe>")
-                        // let pdfWindow = window.open("")
-                        // pdfWindow.document.write(
-                        //     "<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
-                        //     encodeURI(data) + "'></iframe>"
-                        // )
+                        let fileName = response.fileName;
+                        $(".ui-pnotify").remove()
+                        easyPDF(data,"PDF Empleado : "+ emp_co_trab,fileName)
+                        // $("body").addClass("openModal");
+                        // modal.style.display = "block";
+                        // modal.style.zIndex = 10000;
+                        // $("#contenidoBoletaPdf").append("<iframe width='100%' height='100%' src='data:application/pdf;base64, " +
+                        //     encodeURI(data) + "'></iframe>")
                         objBitacora={
                             btc_vista:'IntranetPJBoletasGDT/VisualizarPdfIntranetAdminJson',
                             btc_accion:'VISUALIZACION PDF'
@@ -281,6 +280,119 @@
         }
         $(document).on("click", "#btn_hide_show", function () {
             $('#scroll').toggle('slow');
+        });
+    }
+    let easyPDF=function(_base64, _title,fileName) {
+        // HTML definition of dialog elements
+        let dialog = `<div style=" background:#ffffff;
+                        width:100%;
+                        ">
+                        <div id="pdfDialog" title="${_title}">
+                            <label>Page: </label> <label id="pageNum"></label><label> of </label><label id="pageLength"></label>
+                            <canvas id="pdfview"></canvas>
+                        </div>
+                    </div>`;
+        $("div[id=pdfDialog]").remove();
+        $(document.body).append(dialog);
+    
+        // We need the javascript object of the canvas, not the jQuery reference
+        let canvas = document.getElementById('pdfview');
+        // Init page count
+        let page = 1;
+        
+    
+        // Init page number and the document
+        $('#pageNum').text(page);
+        RenderPDF(0);
+    
+        // PDF.js control
+        function RenderPDF(pageNumber) {
+          let pdfData = atob(_base64);
+          pdfjsLib.disableWorker = true;
+    
+          // Get current global page number, defaults to 1
+          displayNum = parseInt($('#pageNum').html())
+          pageNumber = parseInt(pageNumber)
+    
+          let loadingTask = pdfjsLib.getDocument({data: pdfData});
+          loadingTask.promise.then(function(pdf) {
+              // Gets total page length of pdf
+              size = pdf.numPages;
+              $('#pageLength').text(size);
+              // Handling for changing pages
+              if(pageNumber == 1) {
+                  pageNumber = displayNum + 1;
+              }
+              if(pageNumber == -1) {
+                  pageNumber = displayNum - 1;
+              }
+              if(pageNumber == 0) {
+                  pageNumber = 1;
+              }
+          // If the requested page is outside the document bounds
+              if(pageNumber > size || pageNumber < 1) {
+                  throw "bad page number";
+              }
+              // Changes the cheeky global to our valid new page number
+              $('#pageNum').text(pageNumber)
+              pdf.getPage(pageNumber).then(function(page) {
+                  let scale = 1.0;
+                  let viewport = page.getViewport(scale);
+                  let context = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+                  let renderContext = {
+                    canvasContext: context,
+                    viewport: viewport
+                  };
+                  page.render(renderContext);
+              });
+
+
+          }).catch(e => {});
+        }
+        // Dialog definition
+        $( "#pdfDialog" ).dialog({
+            // Moves controls to top of dialog
+            open: function (event, ui) {
+                $(this).before($(this).parent().find('.ui-dialog-buttonpane'));
+                $(event.target).parent().css('position', 'absolute');
+                $(event.target).parent().css('top', '0px');
+            },
+            width: ($(window).width() / 2),
+            modal: true,
+            position: {
+                my: "center top",
+                at: "center top",
+                of: window,
+                collision: "none"
+            },
+            buttons: {
+                "Download": {
+                    click: function () {
+                        let data = _base64
+                        let a = document.createElement('a')
+                        a.target = '_self'
+                        a.href = "data:application/pdf;base64, " + data
+                        a.download = fileName
+                        a.click();
+                        let objBitacora={
+                            btc_vista:getAbsolutePath(),
+                            btc_accion:'Descarga Pdf',
+                            btc_ruta_pdf:`Descarga de Pdf "${fileName}" desde gestor de contenido`
+                        }
+                        registrarBitacora(objBitacora)
+                    },
+                    text: 'Descargar',
+                },
+                "Confirm": {
+                    click: function () {
+                        $(this).dialog("close")
+                        $("#pdfDialog").remove()
+                    },
+                    text: 'Cerrar',
+                }
+            }
         });
     }
     let registrarBitacora=function(data){
