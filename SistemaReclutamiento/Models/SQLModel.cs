@@ -25,11 +25,18 @@ namespace SistemaReclutamiento.Models
             List<TMEMPR> lista = new List<TMEMPR>();
             claseError error = new claseError();
             string consulta = @"Select 
-                                CO_EMPR,
-                                DE_NOMB,
-                                DE_NOMB_CORT
+                                empresa.CO_EMPR,
+                                empresa.DE_NOMB,
+                                empresa.DE_NOMB_CORT,
+                                empresa.NO_DEPA,
+                                empresa.NO_PROV,
+                                empresa.NU_RUCS,
+                                empresa.NO_REPR_LEGA,
+                                pais.NO_PAIS
                                 from 
-                                TMEMPR";
+                                TMEMPR as empresa join TTPAIS as pais
+								on empresa.CO_PAIS=pais.CO_PAIS
+								where TI_SITU='ACT'";
             try
             {
                 using (var con = new SqlConnection(_conexion))
@@ -48,6 +55,11 @@ namespace SistemaReclutamiento.Models
                                     CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
                                     DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
                                     DE_NOMB_CORT = ManejoNulos.ManageNullStr(dr["DE_NOMB_CORT"]),
+                                    NO_DEPA = ManejoNulos.ManageNullStr(dr["NO_DEPA"]),
+                                    NO_PROV = ManejoNulos.ManageNullStr(dr["NO_PROV"]),
+                                    NU_RUCS = ManejoNulos.ManageNullStr(dr["NU_RUCS"]),
+                                    NO_REPR_LEGA = ManejoNulos.ManageNullStr(dr["NO_REPR_LEGA"]),
+                                    NO_PAIS = ManejoNulos.ManageNullStr(dr["NO_PAIS"]),
                                 };
                                 lista.Add(empresa);
                             }

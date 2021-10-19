@@ -64,6 +64,11 @@ namespace SistemaReclutamiento.Models
         public string CO_EMPR { get; set; }
         public string DE_NOMB { get; set; }
         public string DE_NOMB_CORT { get; set; }
+        public string NO_DEPA { get; set; }
+        public string NO_PROV { get; set; }
+        public string NU_RUCS { get; set; }
+        public string NO_REPR_LEGA { get; set; }
+        public string NO_PAIS { get; set; }
     }
     public class TTPUES_TRAB {
         public string CO_EMPR { get; set; }
