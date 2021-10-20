@@ -803,7 +803,6 @@ function Menu(loading) {
             }
         },
         success: function (response) {
-            console.log(response)
             var mensaje = response.mensaje;
             var listado = response.dataResultado;
            // console.log(listado)

@@ -4168,6 +4168,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBoletasGDT.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJEmpresas.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJExcel.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichaFormulario.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJFichaFormularioReporte.js" />
@@ -5389,7 +5390,9 @@
     <Compile Include="Controllers\WebCorporativa\WebCorporativaController.cs" />
     <Compile Include="Entidades\BoletasGDT\BolBitacoraEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\BoletasGDT\BolDetCertEmpresaEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolEmpleadoBoletaEntidad.cs" />
+    <Compile Include="Entidades\BoletasGDT\BolEmpresaEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioExcelEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioEntidad.cs" />
@@ -5468,7 +5471,9 @@
     <Compile Include="Hubs\ProgressHub.cs" />
     <Compile Include="Models\BoletasGDT\BolBitacoraModel.cs" />
     <Compile Include="Models\BoletasGDT\BolConfiguracionModel.cs" />
+    <Compile Include="Models\BoletasGDT\BolDetCertEmpresaModel.cs" />
     <Compile Include="Models\BoletasGDT\BolEmpleadoBoletaModel.cs" />
+    <Compile Include="Models\BoletasGDT\BolEmpresaModel.cs" />
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumCuestionarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioEntidad.cs" />
@@ -5626,6 +5631,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJBoletasGDT.cshtml" />
     <Content Include="Views\IntranetPJ\IntranetPJMisBoletasGDT.cshtml" />
     <Content Include="Views\SeguridadIntranet\SeguridadIntranetVista.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJEmpresas.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

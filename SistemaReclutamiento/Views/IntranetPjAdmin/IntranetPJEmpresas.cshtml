@@ -1,0 +1,169 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Empresas</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home3">
+                            <i class="orange ace-icon fa fa-tachometer bigger-110"></i>
+                            Empresas
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home3" class="tab-pane in active">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <div class="col-md-6">
+                                    <button class="btn btn-white btn-danger btn-block btn-round" title="Sincronizar">
+                                        <i class="ace-icon fa fa-refresh"></i> Sincronizar Empresas
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon input-group-sm">
+                                                Empresa
+                                            </span>
+                                            <select class="form-control mySelect" id="cboEmpresa"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="display:none" id="divInfoEmpresa">
+                                <div class="col-md-12">
+                                    <form class="">
+                                        <fieldset>
+                                            <legend>Informacion de la Empresa</legend>
+                                            <div class="col-md-7">
+                                                <div class="input-group form-group">
+                                                    <span class="input-group-addon">
+                                                        Razón Social
+                                                    </span>
+                                                    <input type="text" class="form-control input-sm" id="txtRazonSocial" readonly placeholder="Razón Social">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="input-group form-group">
+                                                    <span class="input-group-addon">
+                                                        Nomb. Corto
+                                                    </span>
+                                                    <input type="text" class="form-control input-sm" id="txtNombreCorto" readonly placeholder="Nombre Corto">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group form-group">
+                                                    <span class="input-group-addon">
+                                                        Rep. Legal
+                                                    </span>
+                                                    <input type="text" class="form-control input-sm" id="txtRepresentanteLegal" readonly placeholder="Representante Legal">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group form-group">
+                                                    <span class="input-group-addon">
+                                                        RUC
+                                                    </span>
+                                                    <input type="text" class="form-control input-sm" id="txtRucs" readonly placeholder="RUCs">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="input-group form-group">
+                                                    <span class="input-group-addon">
+                                                        Ubicación
+                                                    </span>
+                                                    <input type="text" class="form-control input-sm" id="txtUbicacion" readonly placeholder="Ubicación">
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-white btn-info btn-block btn-round">Editar Empresa</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a class="btn btn-white btn-warning btn-block btn-round" id="btnNuevoCertificado">Agregar Certificado</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div id="divDataTableDetalle"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-content -->
+<div class="modal fade" tabindex="-1" id="modalFormularioCertificado" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalDetalle"></span> Certificado</h4>
+            </div>
+            <div class="modal-body" id="">
+                <div class="row">
+                    <form class="" id="form_actividades" method="post">
+                        <input type="hidden" name="det_id" id="det_id" value="" />
+                        <input type="hidden" name="det_ruta_cert" id="det_ruta_cert" value="" />
+                        <div class="col-md-12">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Certificado(.pfx)
+                                </span>
+                                <input type="file" class="form-control input-sm" id="det_certificado" name="det_certificado" placeholder="Subir Certificado Digital(.pfx)">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Password
+                                </span>
+                                <input type="text" class="form-control input-sm" id="det_password_cert" name="det_password_cert" placeholder="Password Certificado">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Estado
+                                </span>
+                                <select class="form-control input-sm">
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJEmpresas.js"></script>
+}

@@ -22,7 +22,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             claseError error = new claseError();
             string consulta = @"SELECT config_id, config_descripcion, config_estado, 
                                 config_valor, config_tipo
-	                            FROM intranet.bol_configuracion;
+	                            FROM intranet.bol_configuracion
                                 where config_id=@p0;";
             try
             {

@@ -26,6 +26,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         BolConfiguracionModel bolConfigBL = new BolConfiguracionModel();
         BolEmpleadoBoletaModel empleadoBoletaBL = new BolEmpleadoBoletaModel();
         BolBitacoraModel bitacoraBL = new BolBitacoraModel();
+        BolEmpresaModel bolEmpresaBL = new BolEmpresaModel();
+        BolDetCertEmpresaModel bolDetCertEmpresaBL = new BolDetCertEmpresaModel();
 
         public string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre" };
 
@@ -129,6 +131,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 if (listaEmpresaTupla.error.Mensaje.Equals(string.Empty)&&configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaempresa = listaEmpresaTupla.listaempresa;
+                    //Sincronizar empresas hacia postgress
+                    SincronizarEmpresas(listaempresa);
+
                     configuracion = configuracionTupla.configuracion;
                     //Crear directorio principal
                     DirectoryInfo directorioPrincipal =Directory.CreateDirectory(Path.Combine(configuracion.config_valor+directorioHijo));
@@ -729,6 +734,135 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 limit++;
             }
             return Json("", JsonRequestBehavior.AllowGet);
+        }
+        public void SincronizarEmpresas(List<TMEMPR> listaEmpresas)
+        {
+            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
+            try
+            {
+                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
+                if (listaEmpresasPostgresTupla.error.Respuesta)
+                {
+                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
+                    foreach (var empresaOfisis in listaEmpresas)
+                    {
+                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
+                        if (empresaConsulta == null)
+                        {
+                            //insertar empresa
+                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
+                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
+                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
+                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
+                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
+                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
+                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
+                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
+                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
+                            var InsertadoTupla=bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
+                        }
+                    }
+                }
+                
+            }catch(Exception ex)
+            {
+            }
+        }
+        [HttpPost]
+        public ActionResult BolEmpresaListarJson()
+        {
+            string mensaje = "No se pudo insertar";
+            bool respuesta = false;
+            List<BolEmpresaEntidad> listaEmpresas = new List<BolEmpresaEntidad>();
+            try
+            {
+                var listaEmpresasTupla = bolEmpresaBL.BolEmpresaListarJson();
+                if (listaEmpresasTupla.error.Respuesta)
+                {
+                   listaEmpresas=listaEmpresasTupla.lista;
+                    respuesta = true;
+                    mensaje = "Listando Registros";
+                }
+                else
+                {
+                    mensaje = "No se pudo listar los registros";
+                }
+            }catch(Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje,data=listaEmpresas });
+        }
+        [HttpPost]
+        public ActionResult BolEmpresaIdObtenerJson(int emp_id)
+        {
+            string mensaje = "No se pudo insertar";
+            bool respuesta = false;
+            BolEmpresaEntidad empresa = new BolEmpresaEntidad();
+            try
+            {
+                var empresaTupla = bolEmpresaBL.BolEmpresaIdObtenerJson(emp_id);
+                if (empresaTupla.error.Respuesta)
+                {
+                    empresa = empresaTupla.empresa;
+                    respuesta = true;
+                    mensaje = "Obteniendo Registro";
+                }
+                else
+                {
+                    mensaje = "No se pudo obtener el registro";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje, data = empresa });
+        }
+        [HttpPost]
+        public ActionResult BolEmpresaSincronizarJson()
+        {
+            string mensaje = "No se pudo sincronizar";
+            bool respuesta = false;
+            try
+            {
+                List<TMEMPR> listaEmpresas = new List<TMEMPR>();
+                var listaEmpresasSQLTupla = sqlbl.EmpresaListarJson();
+                if (listaEmpresasSQLTupla.error.Respuesta)
+                {
+                    SincronizarEmpresas(listaEmpresasSQLTupla.listaempresa);
+                    respuesta = true;
+                    mensaje = "Se realizo la sincronizacio";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
+        }
+        [HttpPost]
+        public ActionResult BolDetCertEmpresaInsertarJson(BolDetCertEmpresaEntidad detalle)
+        {
+            bool respuesta = false;
+            string mensaje = "No se pudo insertar el registro";
+            try
+            {
+                var IdInsertadoTupla = bolDetCertEmpresaBL.BolDetCertEmpresaInsertarJson(detalle);
+                if (IdInsertadoTupla.error.Respuesta)
+                {
+                    mensaje = "Registro Insertado con éxito";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensaje = IdInsertadoTupla.error.Mensaje;
+                }
+            }catch(Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje,respuesta});
         }
     }
 }
