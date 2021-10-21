@@ -94,7 +94,7 @@
                                         </fieldset>
                                     </form>
                                     <div class="col-md-6">
-                                        <a class="btn btn-white btn-info btn-block btn-round">Editar Empresa</a>
+                                        <a class="btn btn-white btn-info btn-block btn-round" id="btnEditarEmpresa">Editar Empresa</a>
                                     </div>
                                     <div class="col-md-6">
                                         <a class="btn btn-white btn-warning btn-block btn-round" id="btnNuevoCertificado">Agregar Certificado</a>
@@ -153,6 +153,76 @@
             <div class="modal-footer">
                 <button class="btn btn-guardar btn-primary" id="btnGuardarCertificado"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* Modal Edicion Empresa *@
+<div class="modal fade" tabindex="-1" id="modalFormularioEmpresa" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalDetalle"></span> Empresa</h4>
+            </div>
+            <div class="modal-body" id="">
+                <div class="row">
+                    <form class="" id="form_actividades" method="post">
+                        <input type="hidden" name="emp_id" id="emp_id" value="" />
+                        <input type="hidden" name="emp_img_firma" id="emp_img_firma" value="" />
+                        <input type="hidden" name="emp_co_ofisis" id="emp_co_ofisis" value="" />
+                        <input type="hidden" name="emp_nomb" id="emp_nomb" value="" />
+                        <div class="col-md-12">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Firma
+                                </span>
+                                <input type="file" class="form-control input-sm" id="firma" name="firma" placeholder="Imagen de Firma (.png,.jpg,.jpeg)">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Nombre Corto
+                                </span>
+                                <input type="text" class="form-control input-sm" id="emp_nomb_corto" name="emp_nomb_corto" placeholder="Nombre Corto">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Representante Legal
+                                </span>
+                                <input type="text" class="form-control input-sm" id="emp_nom_rep_legal" name="emp_nom_rep_legal" placeholder="Representante Legal">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    RUC
+                                </span>
+                                <input type="text" class="form-control input-sm" id="emp_rucs" name="emp_rucs" placeholder="RUCs">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group form-group">
+                                <span class="input-group-addon">
+                                    Firma Visible
+                                </span>
+                                <select class="form-control input-sm" id="cboFirmaVisible" name="emp_firma_visible">
+                                    <option value="1">SI</option>
+                                    <option value="0">NO</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar btn-primary" id="btnGuardarEmpresa"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>
     </div>

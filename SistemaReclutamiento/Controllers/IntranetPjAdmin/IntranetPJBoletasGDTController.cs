@@ -873,8 +873,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensaje = "Debe seleccionar una archivo";
                     return Json(new { mensaje, respuesta });
                 }
+                var totalDetallesTupla = bolDetCertEmpresaBL.BolDetCertEmpresaListarxEmpresaIdJson(detalle.det_empr_id);
+                if (totalDetallesTupla.lista.Count > 0)
+                {
+                    detalle.det_en_uso = 0;
+                }
+                else
+                {
+                    detalle.det_en_uso = 1;
+                }
                 detalle.det_estado_cert = 1;
-                detalle.det_en_uso = 0;
                 detalle.det_fecha_reg = DateTime.Now;
                 var IdInsertadoTupla = bolDetCertEmpresaBL.BolDetCertEmpresaInsertarJson(detalle);
                 if (IdInsertadoTupla.error.Respuesta)
@@ -891,6 +899,132 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { mensaje,respuesta});
+        }
+        [HttpPost]
+        public ActionResult BolDetCertEmpresaEditarUsoJson(BolDetCertEmpresaEntidad detalle)
+        {
+            string mensaje = "No se pudo editar el registro";
+            bool respuesta = false;
+            try
+            {
+                var respuestaTupla = bolDetCertEmpresaBL.BolDetCertEmpresaQuitarUsoJson(detalle);
+                var respuestaEdicionTupla = bolDetCertEmpresaBL.BolDetCertEmpresaEditarUsoJson(detalle);
+                respuesta = respuestaEdicionTupla.error.Respuesta;
+                if (respuesta)
+                {
+                    mensaje = "Registro Editado";
+                }
+
+            }
+            catch(Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
+        }
+        [HttpPost]
+        public ActionResult BolDetCertEmpresaEliminarJson(BolDetCertEmpresaEntidad detalle)
+        {
+            string mensaje = "No se pudo eliminar el registro";
+            bool respuesta = false;
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            string tipoConfiguracion = "PATH";
+            string rutaEliminar = "";
+            try
+            {
+                string[] arrayNombreEmpresa = detalle.emp_nomb.Split(' ');
+                string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                string directorioEmpresa = detalle.emp_co_ofisis + "_" + nombreEmpresa;
+
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                configuracion = configuracionTupla.configuracion;
+
+                rutaEliminar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa, "CERTIFICADOS",detalle.det_ruta_cert);
+
+                if (System.IO.File.Exists(rutaEliminar))
+                {
+                    // If file found, delete it    
+                    System.IO.File.Delete(rutaEliminar);
+                }
+
+
+                var respuestaTupla = bolDetCertEmpresaBL.BolDetCertEmpresaEliminarJson(detalle);
+                respuesta = respuestaTupla.error.Respuesta;
+                if (respuesta)
+                {
+                    mensaje = "Registro Eliminado";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
+        }
+        [HttpPost]
+        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa)
+        {
+            HttpPostedFileBase file = Request.Files[0];
+            int tamanioMaximo = 4194304;
+            string extension = "";
+            string rutaInsertar = "";
+            bool respuesta = false;
+            string mensaje = "No se pudo editar el registro";
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            string tipoConfiguracion = "PATH";
+            try
+            {
+                string[] arrayNombreEmpresa = empresa.emp_nomb.Split(' ');
+                string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                string directorioEmpresa = empresa.emp_co_ofisis + "_" + nombreEmpresa;
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                configuracion = configuracionTupla.configuracion;
+                if (file != null)
+                {
+                    if (file.ContentLength > 0 && file.ContentLength <= tamanioMaximo)
+                    {
+                        extension = Path.GetExtension(file.FileName);
+                        if (extension == ".jpg" ||extension==".png" || extension==".jpeg")
+                        {
+                            rutaInsertar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa);
+                            if (Directory.Exists(rutaInsertar))
+                            {
+                                string nombreArchivo = Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
+                                file.SaveAs(Path.Combine(rutaInsertar, nombreArchivo));
+                                empresa.emp_firma_img = nombreArchivo;
+                            }
+                            else
+                            {
+                                mensaje = "No se encuentra el directorio a Insertar, Sincronize y Cree directorios nuevamente.";
+                                return Json(new { mensaje, respuesta });
+                            }
+                        }
+                        else
+                        {
+                            mensaje = "Solo se aceptan formaton .jpg,.png,.jpeg";
+                            return Json(new { mensaje, respuesta });
+                        }
+                    }
+                    else
+                    {
+                        mensaje = "Solo se permiten archivos de hasta 4Mb";
+                        return Json(new { mensaje, respuesta });
+                    }
+                }
+                else
+                {
+                    mensaje = "Debe seleccionar una archivo";
+                    return Json(new { mensaje, respuesta });
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { });
         }
         public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
         {

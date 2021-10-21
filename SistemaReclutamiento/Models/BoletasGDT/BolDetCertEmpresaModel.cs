@@ -132,5 +132,80 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (idInsertado: idInsertado, error: error);
         }
+        public (bool editado, claseError error) BolDetCertEmpresaEditarUsoJson(BolDetCertEmpresaEntidad detalle)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.bol_det_cert_empresa
+	                                SET det_en_uso=@p0
+	                                WHERE det_id=@p1 ;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullInteger(detalle.det_en_uso));
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(detalle.det_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
+            }
+            return (editado: response, error: error);
+        }
+        public (bool editado, claseError error) BolDetCertEmpresaQuitarUsoJson(BolDetCertEmpresaEntidad detalle)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"UPDATE intranet.bol_det_cert_empresa
+	                                SET det_en_uso=0
+	                                WHERE det_empr_id=@p1 ;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(detalle.det_empr_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
+            }
+            return (editado: response, error: error);
+        }
+        public (bool editado, claseError error) BolDetCertEmpresaEliminarJson(BolDetCertEmpresaEntidad detalle)
+        {
+            claseError error = new claseError();
+            bool response = false;
+            string consulta = @"delete from intranet.bol_det_cert_empresa
+	                                WHERE det_id=@p1 ;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullInteger(detalle.det_id));
+                    query.ExecuteNonQuery();
+                    response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
+            }
+            return (editado: response, error: error);
+        }
     }
 }
