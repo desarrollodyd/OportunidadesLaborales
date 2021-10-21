@@ -31,8 +31,8 @@
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
                                 <div class="col-md-6">
-                                    <button class="btn btn-white btn-danger btn-block btn-round" title="Sincronizar">
-                                        <i class="ace-icon fa fa-refresh"></i> Sincronizar Empresas
+                                    <button class="btn btn-white btn-danger btn-block btn-round" id="btnSincronizar" title="Sincronizar">
+                                        <i class="ace-icon fa fa-refresh"></i> Sincronizar Empresas y Crear Directorios
                                     </button>
                                 </div>
                                 <div class="col-md-6">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12" style="display:none" id="divInfoEmpresa">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="padding-bottom:10px">
                                     <form class="">
                                         <fieldset>
                                             <legend>Informacion de la Empresa</legend>
@@ -100,8 +100,13 @@
                                         <a class="btn btn-white btn-warning btn-block btn-round" id="btnNuevoCertificado">Agregar Certificado</a>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div id="divDataTableDetalle"></div>
+                                <div class="" id="divInfoCertificados" style="padding-top:10px;display:none;">
+                                    <div class="col-md-12">
+                                        <fieldset>
+                                            <legend>Certificados</legend>
+                                            <div id="divDataTableDetalle"></div>
+                                        </fieldset>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -125,39 +130,28 @@
                 <div class="row">
                     <form class="" id="form_actividades" method="post">
                         <input type="hidden" name="det_id" id="det_id" value="" />
-                        <input type="hidden" name="det_ruta_cert" id="det_ruta_cert" value="" />
+                        <input type="hidden" name="det_empr_id" id="det_empr_id" value="" />
                         <div class="col-md-12">
                             <div class="input-group form-group">
                                 <span class="input-group-addon">
                                     Certificado(.pfx)
                                 </span>
-                                <input type="file" class="form-control input-sm" id="det_certificado" name="det_certificado" placeholder="Subir Certificado Digital(.pfx)">
+                                <input type="file" class="form-control input-sm" id="certificado" name="certificado" placeholder="Subir Certificado Digital(.pfx)">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group form-group">
                                 <span class="input-group-addon">
                                     Password
                                 </span>
-                                <input type="text" class="form-control input-sm" id="det_password_cert" name="det_password_cert" placeholder="Password Certificado">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-group form-group">
-                                <span class="input-group-addon">
-                                    Estado
-                                </span>
-                                <select class="form-control input-sm">
-                                    <option value="1">Activo</option>
-                                    <option value="2">Inactivo</option>
-                                </select>
+                                <input type="text" class="form-control input-sm" id="det_pass_cert" name="det_pass_cert" placeholder="Password Certificado">
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button class="btn btn-guardar btn-primary" id="btnGuardarCertificado"><i class="fa fa-save"></i> Guardar</button>
                 <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
             </div>
         </div>

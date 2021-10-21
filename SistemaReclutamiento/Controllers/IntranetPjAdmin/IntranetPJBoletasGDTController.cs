@@ -131,10 +131,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 if (listaEmpresaTupla.error.Mensaje.Equals(string.Empty)&&configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaempresa = listaEmpresaTupla.listaempresa;
-                    //Sincronizar empresas hacia postgress
-                    SincronizarEmpresas(listaempresa);
 
                     configuracion = configuracionTupla.configuracion;
+                    //Sincronizar empresas hacia postgress
+
+                    bool sincronizado = SincronizarEmpresas(listaempresa,configuracion.config_valor);
+
                     //Crear directorio principal
                     DirectoryInfo directorioPrincipal =Directory.CreateDirectory(Path.Combine(configuracion.config_valor+directorioHijo));
                     //Creacion de arbol de directorios
@@ -308,10 +310,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string tipoConfiguracion = "PATH";
             string directorioProceso = "BOLETASPROCESADAS";
             string directorioaProcesar = "BOLETASAPROCESAR";
+            string directorioRaizCertificados = "DIRECTORIOCERTIFICADOS";
+            string directorioCertificadoEmpresa = "CERTIFICADOS";
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
             List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
             List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
             List<BolEmpleadoBoletaEntidad> listaEliminar = new List<BolEmpleadoBoletaEntidad>();
+            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
             try
             {
                 DateTime fechaProceso = fechaProcesoPdf;
@@ -323,9 +328,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 var listaEliminarTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresa, anio, mes.ToString());
+                var empresaPostgres = bolEmpresaBL.BolEmpresaObtenerxOfisisIdJson(empresa);
+                //Obtener certificado para firmar
+                detalleCertificadoEmpresa = empresaPostgres.empresa.DetalleCerts.Where(x => x.det_en_uso == 1).FirstOrDefault();
+                //
                 string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
                 string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
-                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty))
+                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty)&&detalleCertificadoEmpresa!=null)
                 {
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
@@ -396,11 +405,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                                         copy.AddPage(copy.GetImportedPage(reader, pagenumber));
                                         document.Close();
+
+                                        //Firmar Pdf Aqui
+                                        var certificado = new Certificado(
+                                            Path.Combine(
+                                                configuracion.config_valor, 
+                                                directorioRaizCertificados, 
+                                                nombreDirectorioEmpresa, 
+                                                directorioCertificadoEmpresa, 
+                                                detalleCertificadoEmpresa.det_ruta_cert
+                                                ),
+                                            detalleCertificadoEmpresa.det_pass_cert 
+                                            );
+                                        var firmante = new Firmante(certificado);
+                                        string secondFileName= item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + "_signed.pdf";
+                                        firmante.Firmar(
+                                            Path.Combine(subdirectorioEmpleado.FullName, filename), 
+                                            Path.Combine(subdirectorioEmpleado.FullName, secondFileName),
+                                            empresaPostgres.empresa
+                                            );
+                                        System.IO.File.Delete(Path.Combine(subdirectorioEmpleado.FullName, filename));
+
+                                        //Termino de Firma
                                         empleado.emp_co_trab = item.CO_TRAB;
                                         empleado.emp_co_empr = item.CO_EMPR;
                                         empleado.emp_anio = anio;
                                         empleado.emp_periodo = Convert.ToString(mes);
-                                        empleado.emp_ruta_pdf = filename;
+                                        empleado.emp_ruta_pdf = secondFileName;
                                         empleado.emp_no_trab = item.NO_TRAB;
                                         empleado.emp_apel_pat = item.NO_APEL_PATE;
                                         empleado.emp_apel_mat = item.NO_APEL_MATE;
@@ -585,15 +616,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return respuesta;
         }
-        static double ConvertBytesToMegabytes(long bytes)
-        {
-            return Math.Round(((bytes / 1024f) / 1024f), 2);
-        }
-
-        static double ConvertKilobytesToMegabytes(long kilobytes)
-        {
-            return Math.Round((kilobytes / 1024f), 2);
-        }
+  
         [HttpPost]
         [autorizacion(false)]
         public ActionResult VisualizarPdfIntranetAdminJson(BolEmpleadoBoletaEntidad empleado)
@@ -715,59 +738,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje, respuesta, data = listaBitacoras });
         }
-        [HttpPost]
-        public JsonResult LongRunningProcess(string connectionId)
-        {
-            int itemsCount = 100;
-            int limit = 0;
-            bool hide = false;
-            for (int i = 0; i <= itemsCount; i++)
-            {
-                //simulating some task
-                Thread.Sleep(100);
-                //calling a function that calculattes percentaje and sends the data to the client
-                if (limit == itemsCount)
-                {
-                    hide = true;
-                }
-                ProgressBarFunction.SendProgress("Process in progress...", i, itemsCount, hide, connectionId);
-                limit++;
-            }
-            return Json("", JsonRequestBehavior.AllowGet);
-        }
-        public void SincronizarEmpresas(List<TMEMPR> listaEmpresas)
-        {
-            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
-            try
-            {
-                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
-                if (listaEmpresasPostgresTupla.error.Respuesta)
-                {
-                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
-                    foreach (var empresaOfisis in listaEmpresas)
-                    {
-                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
-                        if (empresaConsulta == null)
-                        {
-                            //insertar empresa
-                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
-                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
-                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
-                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
-                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
-                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
-                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
-                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
-                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
-                            var InsertadoTupla=bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
-                        }
-                    }
-                }
-                
-            }catch(Exception ex)
-            {
-            }
-        }
+      
         [HttpPost]
         public ActionResult BolEmpresaListarJson()
         {
@@ -824,15 +795,19 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             string mensaje = "No se pudo sincronizar";
             bool respuesta = false;
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            string tipoConfiguracion = "PATH";
             try
             {
+
                 List<TMEMPR> listaEmpresas = new List<TMEMPR>();
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 var listaEmpresasSQLTupla = sqlbl.EmpresaListarJson();
+                configuracion = configuracionTupla.configuracion;
                 if (listaEmpresasSQLTupla.error.Respuesta)
                 {
-                    SincronizarEmpresas(listaEmpresasSQLTupla.listaempresa);
-                    respuesta = true;
-                    mensaje = "Se realizo la sincronizacio";
+                    respuesta=SincronizarEmpresas(listaEmpresasSQLTupla.listaempresa,configuracion.config_valor);
+                    mensaje = "Se realizo la sincronización";
                 }
             }
             catch (Exception ex)
@@ -844,10 +819,63 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         [HttpPost]
         public ActionResult BolDetCertEmpresaInsertarJson(BolDetCertEmpresaEntidad detalle)
         {
+            HttpPostedFileBase file = Request.Files[0];
+            int tamanioMaximo = 4194304;
+            string extension = "";
+            string rutaInsertar = "";
             bool respuesta = false;
             string mensaje = "No se pudo insertar el registro";
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            string tipoConfiguracion = "PATH";
             try
             {
+                string[] arrayNombreEmpresa = detalle.emp_nomb.Split(' ');
+                string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                string directorioEmpresa = detalle.emp_co_ofisis + "_" + nombreEmpresa;
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                configuracion = configuracionTupla.configuracion;
+                if (file != null)
+                {
+                    if (file.ContentLength > 0&&file.ContentLength<=tamanioMaximo)
+                    {
+                        extension = Path.GetExtension(file.FileName);
+                        if (extension == ".pfx")
+                        {
+                            rutaInsertar = Path.Combine(configuracion.config_valor,directorioFirma, directorioEmpresa, "CERTIFICADOS");
+                            if (Directory.Exists(rutaInsertar))
+                            {
+                                string nombreArchivo = Path.GetFileNameWithoutExtension(file.FileName)+ DateTime.Now.ToString("yyyyMMddHHmmss")+Path.GetExtension(file.FileName);
+                                file.SaveAs(Path.Combine(rutaInsertar,nombreArchivo));
+                                detalle.det_nomb_cert = Path.GetFileNameWithoutExtension(file.FileName);
+                                detalle.det_ruta_cert = nombreArchivo;
+                            }
+                            else
+                            {
+                                mensaje = "No se encuentra el directorio a Insertar, Sincronize y Cree directorios nuevamente.";
+                                return Json(new { mensaje, respuesta });
+                            }
+                        }
+                        else
+                        {
+                            mensaje = "Solo se aceptan formaton .pfx";
+                            return Json(new { mensaje, respuesta });
+                        }
+                    }
+                    else
+                    {
+                        mensaje = "Solo se permiten archivos de hasta 4Mb";
+                        return Json(new { mensaje, respuesta });
+                    }
+                }
+                else
+                {
+                    mensaje = "Debe seleccionar una archivo";
+                    return Json(new { mensaje, respuesta });
+                }
+                detalle.det_estado_cert = 1;
+                detalle.det_en_uso = 0;
+                detalle.det_fecha_reg = DateTime.Now;
                 var IdInsertadoTupla = bolDetCertEmpresaBL.BolDetCertEmpresaInsertarJson(detalle);
                 if (IdInsertadoTupla.error.Respuesta)
                 {
@@ -863,6 +891,70 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { mensaje,respuesta});
+        }
+        public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
+        {
+            bool respuesta = true;
+            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            try
+            {
+
+                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
+                if (listaEmpresasPostgresTupla.error.Respuesta)
+                {
+                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
+                    foreach (var empresaOfisis in listaEmpresas)
+                    {
+                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
+                        if (empresaConsulta == null)
+                        {
+                            //insertar empresa
+                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
+                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
+                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
+                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
+                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
+                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
+                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
+                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
+                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
+                            var InsertadoTupla = bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
+                            respuesta = InsertadoTupla.error.Respuesta;
+                        }
+                        if (!respuesta)
+                        {
+                            break;
+                        }
+                    }
+                }
+                //crear directorios
+                DirectoryInfo directorioPrincipal = Directory.CreateDirectory(Path.Combine(directorioRaizArchivosFirma) + directorioFirma);
+                foreach (var empresa in listaEmpresas)
+                {
+                    string[] arrayNombreEmpresa = empresa.DE_NOMB.Split(' ');
+                    string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                    string nombreDirectorio = empresa.CO_EMPR + "_" + nombreEmpresa;
+
+                    DirectoryInfo directorioEmpresa = directorioPrincipal.CreateSubdirectory(nombreDirectorio);
+                    DirectoryInfo directorioCertificados = directorioEmpresa.CreateSubdirectory("CERTIFICADOS");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+            }
+            return respuesta;
+        }
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return Math.Round(((bytes / 1024f) / 1024f), 2);
+        }
+
+        static double ConvertKilobytesToMegabytes(long kilobytes)
+        {
+            return Math.Round((kilobytes / 1024f), 2);
         }
     }
 }

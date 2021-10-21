@@ -14,5 +14,8 @@ namespace SistemaReclutamiento.Entidades.BoletasGDT
         public int det_estado_cert { get; set; }
         public int det_en_uso { get; set; }
         public int det_empr_id { get; set; }
+        public string emp_co_ofisis { get; set; }
+        public string emp_nomb { get; set; }
+        public DateTime det_fecha_reg { get; set; }
     }
 }

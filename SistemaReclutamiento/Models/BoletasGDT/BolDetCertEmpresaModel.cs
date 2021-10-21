@@ -21,7 +21,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             claseError error = new claseError();
             List<BolDetCertEmpresaEntidad> listaDetalle = new List<BolDetCertEmpresaEntidad>();
             string consulta = @"SELECT det_id, det_ruta_cert, det_nomb_cert, 
-                                det_pass_cert, det_estado_cert, det_en_uso, det_empr_id
+                                det_pass_cert, det_estado_cert, det_en_uso, det_empr_id,det_fecha_reg
 	                                FROM intranet.bol_det_cert_empresa where det_empr_id=@p0;";
             try
             {
@@ -44,6 +44,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
                                     det_estado_cert = ManejoNulos.ManageNullInteger(dr["det_estado_cert"]),
                                     det_en_uso = ManejoNulos.ManageNullInteger(dr["det_en_uso"]),
                                     det_empr_id = ManejoNulos.ManageNullInteger(dr["det_empr_id"]),
+                                    det_fecha_reg = ManejoNulos.ManageNullDate(dr["det_fecha_reg"]),
                                 };
                                 listaDetalle.Add(detalle);
                             }
@@ -63,7 +64,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             BolDetCertEmpresaEntidad detalle = new BolDetCertEmpresaEntidad();
             claseError error = new claseError();
             string consulta = @"SELECT det_id, det_ruta_cert, det_nomb_cert, 
-                                det_pass_cert, det_estado_cert, det_en_uso, det_empr_id
+                                det_pass_cert, det_estado_cert, det_en_uso, det_empr_id,det_fecha_reg
 	                                FROM intranet.bol_det_cert_empresa where det_id=@p0;";
             try
             {
@@ -85,6 +86,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
                                 detalle.det_estado_cert = ManejoNulos.ManageNullInteger(dr["det_estado_cert"]);
                                 detalle.det_en_uso = ManejoNulos.ManageNullInteger(dr["det_en_uso"]);
                                 detalle.det_empr_id = ManejoNulos.ManageNullInteger(dr["det_empr_id"]);
+                                detalle.det_fecha_reg = ManejoNulos.ManageNullDate(dr["det_fecha_reg"]);
                             }
                         }
                     }
@@ -102,8 +104,8 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             //bool response = false;
             int idInsertado = 0;
             string consulta = @"INSERT INTO intranet.bol_det_cert_empresa(
-	                            det_ruta_cert, det_nomb_cert, det_pass_cert, det_estado_cert, det_en_uso, det_empr_id)
-	                            VALUES (@p0, @p1, @p2, @p3, @p4, @p5);
+	                            det_ruta_cert, det_nomb_cert, det_pass_cert, det_estado_cert, det_en_uso, det_empr_id,det_fecha_reg)
+	                            VALUES (@p0, @p1, @p2, @p3, @p4, @p5,@p6)
                                 returning det_id;";
             claseError error = new claseError();
             try
@@ -118,6 +120,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
                     query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullInteger(detalle.det_estado_cert));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullInteger(detalle.det_en_uso));
                     query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullInteger(detalle.det_empr_id));
+                    query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullDate(detalle.det_fecha_reg));
 
                     idInsertado = Int32.Parse(query.ExecuteScalar().ToString());
                 }
