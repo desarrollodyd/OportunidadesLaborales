@@ -225,8 +225,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             claseError error = new claseError();
             bool response = false;
             string consulta = @"UPDATE intranet.bol_empresa
-	                            SET  emp_nomb=@p0, emp_nomb_corto=@p1, emp_depa=@p2, 
-                                    emp_prov=@p3, emp_rucs=@p4, emp_pais=@p5, emp_firma_visible=@p6, 
+	                            SET  emp_nomb=@p0, emp_nomb_corto=@p1, emp_rucs=@p4, emp_firma_visible=@p6, 
                                     emp_firma_img=@p7, emp_nom_rep_legal=@p8
 	                            WHERE emp_id=@p9;";
             try
@@ -237,10 +236,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(empresa.emp_nomb));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(empresa.emp_nomb_corto));
-                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullStr(empresa.emp_depa));
-                    query.Parameters.AddWithValue("@p3", ManejoNulos.ManageNullStr(empresa.emp_prov));
                     query.Parameters.AddWithValue("@p4", ManejoNulos.ManageNullStr(empresa.emp_rucs));
-                    query.Parameters.AddWithValue("@p5", ManejoNulos.ManageNullStr(empresa.emp_pais));
                     query.Parameters.AddWithValue("@p6", ManejoNulos.ManageNullInteger(empresa.emp_firma_visible));
                     query.Parameters.AddWithValue("@p7", ManejoNulos.ManageNullStr(empresa.emp_firma_img));
                     query.Parameters.AddWithValue("@p8", ManejoNulos.ManageNullStr(empresa.emp_nom_rep_legal));

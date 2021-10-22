@@ -18,6 +18,7 @@ namespace SistemaReclutamiento.Entidades.BoletasGDT
         public int emp_firma_visible { get; set; }
         public string emp_firma_img { get; set; }
         public string emp_nom_rep_legal { get; set; }
+        public string emp_firma_img_base64 { get; set; }
         public List<BolDetCertEmpresaEntidad> DetalleCerts { get; set; }
         public BolEmpresaEntidad()
         {

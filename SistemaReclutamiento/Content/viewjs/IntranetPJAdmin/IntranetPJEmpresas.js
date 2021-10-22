@@ -206,8 +206,8 @@
                     refresh:false,
                     callBackSuccess:function(response){
                         if(response.respuesta){
-                            ObtenerInformacionEmpresa(emp_id)
                             $("#modalFormularioEmpresa").modal('hide')
+                            ObtenerInformacionEmpresa(emp_id)
                         }
                     }
                 })
@@ -223,6 +223,7 @@
             refresh:false,
             data: JSON.stringify(dataForm),
             callBackSuccess:function(response){
+                console.log(response)
               if(response.respuesta){
                     $("#divInfoEmpresa").show()
                     let empresa=response.data
@@ -231,6 +232,14 @@
                     $("#txtRepresentanteLegal").val(empresa.emp_nom_rep_legal)
                     $("#txtRucs").val(empresa.emp_rucs)
                     $("#txtUbicacion").val(empresa.emp_prov+ " - " + empresa.emp_depa+" - "+empresa.emp_pais)
+                    $("#txtFirmaVisible").val(empresa.emp_firma_visible==1?"SI":"NO")
+                    if(empresa.emp_firma_img_base64!="" && empresa.emp_firma_img_base64!=null){
+                        $("#divEmpFirmaBase64").show()
+                        $("#imgEmpFirmaBase64").attr('src', 'data:image/png;base64,'+empresa.emp_firma_img_base64)
+                    }
+                    else{
+                        $("#divEmpFirmaBase64").hide()
+                    }
                     var addtabla = $("#divDataTableDetalle");
                     $(addtabla).empty();
                     if(empresa.DetalleCerts.length>0){

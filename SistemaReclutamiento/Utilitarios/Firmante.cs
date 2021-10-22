@@ -19,7 +19,7 @@ namespace SistemaReclutamiento.Utilitarios
             this.certificado = certificado;
         }
 
-        public void Firmar(string rutaDocumentoSinFirma, string rutaDocumentoFirmado, BolEmpresaEntidad empresa)
+        public void Firmar(string rutaDocumentoSinFirma, string rutaDocumentoFirmado, BolEmpresaEntidad empresa,string rutaImagen="")
         {
             using (var reader = new PdfReader(rutaDocumentoSinFirma))
             using (var writer = new FileStream(rutaDocumentoFirmado, FileMode.Create, FileAccess.Write))
@@ -48,10 +48,17 @@ namespace SistemaReclutamiento.Utilitarios
                 signature.Layer2Text = text;
                 if (empresa.emp_firma_visible==1)
                 {
-                    var image = iTextSharp.text.Image.GetInstance(@"F:\demos\mifirma.png");
-                    signature.Image = image;
-                    signature.Acro6Layers = true;
-                    signature.SetVisibleSignature(new iTextSharp.text.Rectangle(100, 100, 250, 150), 1, null);
+                    if (empresa.emp_firma_img != "" && empresa.emp_firma_img!=null)
+                    {
+                        var imagen = Path.Combine(rutaImagen, empresa.emp_firma_img);
+                        if (System.IO.File.Exists(imagen))
+                        {
+                            var image = iTextSharp.text.Image.GetInstance(imagen);
+                            signature.Image = image;
+                            signature.Acro6Layers = true;
+                        }
+                    }
+                    signature.SetVisibleSignature(new iTextSharp.text.Rectangle(100, 150, 250, 200), 1, null);
                 }
                 MakeSignature.SignDetached(signature, signatureKey, signatureChain, null, null, null, 0, standard);
             }

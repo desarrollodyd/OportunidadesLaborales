@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 {
@@ -390,7 +391,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     //
                                     for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
                                     {
-                                        
+
                                         BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
 
                                         var item = listaPersonas.ElementAt(pagenumber - 1);
@@ -407,25 +408,34 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         document.Close();
 
                                         //Firmar Pdf Aqui
-                                        var certificado = new Certificado(
-                                            Path.Combine(
-                                                configuracion.config_valor, 
-                                                directorioRaizCertificados, 
-                                                nombreDirectorioEmpresa, 
-                                                directorioCertificadoEmpresa, 
+                                        var rutaCertificado = Path.Combine(
+                                                configuracion.config_valor,
+                                                directorioRaizCertificados,
+                                                nombreDirectorioEmpresa,
+                                                directorioCertificadoEmpresa,
                                                 detalleCertificadoEmpresa.det_ruta_cert
-                                                ),
+                                                );
+                                        var rutaImagen = Path.Combine(
+                                                configuracion.config_valor,
+                                                directorioRaizCertificados,
+                                                nombreDirectorioEmpresa
+                                                );
+                                        var certificado = new Certificado(
+                                            rutaCertificado,
                                             detalleCertificadoEmpresa.det_pass_cert 
                                             );
                                         var firmante = new Firmante(certificado);
                                         string secondFileName= item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + "_signed.pdf";
-                                        firmante.Firmar(
-                                            Path.Combine(subdirectorioEmpleado.FullName, filename), 
-                                            Path.Combine(subdirectorioEmpleado.FullName, secondFileName),
-                                            empresaPostgres.empresa
-                                            );
-                                        System.IO.File.Delete(Path.Combine(subdirectorioEmpleado.FullName, filename));
-
+                                        if (System.IO.File.Exists(rutaCertificado))
+                                        {
+                                            firmante.Firmar(
+                                                Path.Combine(subdirectorioEmpleado.FullName, filename),
+                                                Path.Combine(subdirectorioEmpleado.FullName, secondFileName),
+                                                empresaPostgres.empresa,
+                                                rutaImagen
+                                                );
+                                            System.IO.File.Delete(Path.Combine(subdirectorioEmpleado.FullName, filename));
+                                        }
                                         //Termino de Firma
                                         empleado.emp_co_trab = item.CO_TRAB;
                                         empleado.emp_co_empr = item.CO_EMPR;
@@ -770,12 +780,34 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string mensaje = "No se pudo insertar";
             bool respuesta = false;
             BolEmpresaEntidad empresa = new BolEmpresaEntidad();
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            string tipoConfiguracion = "PATH";
+            string rutaAnterior = "";
+            string rutaInsertar = "";
             try
             {
+               
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                configuracion = configuracionTupla.configuracion;
+
                 var empresaTupla = bolEmpresaBL.BolEmpresaIdObtenerJson(emp_id);
                 if (empresaTupla.error.Respuesta)
                 {
                     empresa = empresaTupla.empresa;
+                    string[] arrayNombreEmpresa = empresa.emp_nomb.Split(' ');
+                    string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                    string directorioEmpresa = empresa.emp_co_ofisis + "_" + nombreEmpresa;
+                    if (empresa.emp_firma_img != "")
+                    {
+                        rutaInsertar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa);
+                        rutaAnterior = Path.Combine(rutaInsertar, empresa.emp_firma_img == null ? "" : empresa.emp_firma_img);
+                        if (System.IO.File.Exists(rutaAnterior))
+                        {
+                            byte[] imageArray = System.IO.File.ReadAllBytes(rutaAnterior);
+                            empresa.emp_firma_img_base64 = Convert.ToBase64String(imageArray);
+                        }
+                    }
                     respuesta = true;
                     mensaje = "Obteniendo Registro";
                 }
@@ -788,8 +820,93 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 mensaje = ex.Message;
             }
-            return Json(new { respuesta, mensaje, data = empresa });
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var resultData = new
+            {
+               respuesta,mensaje,data=empresa
+            };
+            var result = new ContentResult
+            {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return result;
+            //return Json(new { respuesta, mensaje, data = empresa });
         }
+        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa)
+        {
+            HttpPostedFileBase file = Request.Files[0];
+            int tamanioMaximo = 4194304;
+            string extension = "";
+            string rutaInsertar = "";
+            bool respuesta = false;
+            string mensaje = "No se pudo editar el registro";
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            string tipoConfiguracion = "PATH";
+            string rutaAnterior = "";
+            try
+            {
+                string[] arrayNombreEmpresa = empresa.emp_nomb.Split(' ');
+                string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                string directorioEmpresa = empresa.emp_co_ofisis + "_" + nombreEmpresa;
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                configuracion = configuracionTupla.configuracion;
+                if (file != null)
+                {
+                    if (file.ContentLength > 0 && file.ContentLength <= tamanioMaximo)
+                    {
+                        extension = Path.GetExtension(file.FileName);
+                        if (extension == ".jpg" || extension == ".png" || extension == ".jpeg")
+                        {
+                            rutaInsertar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa);
+                            if (Directory.Exists(rutaInsertar))
+                            {
+                                string nombreArchivo = Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
+                                rutaAnterior = Path.Combine(rutaInsertar, empresa.emp_firma_img == null ? "" : empresa.emp_firma_img);
+                                if (System.IO.File.Exists(rutaAnterior))
+                                {
+                                    System.IO.File.Delete(rutaAnterior);
+                                }
+                                file.SaveAs(Path.Combine(rutaInsertar, nombreArchivo));
+                                empresa.emp_firma_img = nombreArchivo;
+                            }
+                            else
+                            {
+                                mensaje = "No se encuentra el directorio a Insertar, Sincronize y Cree directorios nuevamente.";
+                                return Json(new { mensaje, respuesta });
+                            }
+                        }
+                        else
+                        {
+                            mensaje = "Solo se aceptan formaton .jpg,.png,.jpeg";
+                            return Json(new { mensaje, respuesta });
+                        }
+                    }
+                    else
+                    {
+                        mensaje = "Solo se permiten archivos de hasta 4Mb";
+                        return Json(new { mensaje, respuesta });
+                    }
+                }
+                //No se edito el archivo
+                var respuestaTupla = bolEmpresaBL.BolEmpresaEditarJson(empresa);
+                respuesta = respuestaTupla.editado;
+                if (respuesta)
+                {
+                    mensaje = "registro editado";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
+        }
+
         [HttpPost]
         public ActionResult BolEmpresaSincronizarJson()
         {
@@ -964,68 +1081,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { respuesta, mensaje });
         }
         [HttpPost]
-        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa)
-        {
-            HttpPostedFileBase file = Request.Files[0];
-            int tamanioMaximo = 4194304;
-            string extension = "";
-            string rutaInsertar = "";
-            bool respuesta = false;
-            string mensaje = "No se pudo editar el registro";
-            string directorioFirma = "DIRECTORIOCERTIFICADOS";
-            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
-            string tipoConfiguracion = "PATH";
-            try
-            {
-                string[] arrayNombreEmpresa = empresa.emp_nomb.Split(' ');
-                string nombreEmpresa = String.Join("", arrayNombreEmpresa);
-                string directorioEmpresa = empresa.emp_co_ofisis + "_" + nombreEmpresa;
-                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
-                configuracion = configuracionTupla.configuracion;
-                if (file != null)
-                {
-                    if (file.ContentLength > 0 && file.ContentLength <= tamanioMaximo)
-                    {
-                        extension = Path.GetExtension(file.FileName);
-                        if (extension == ".jpg" ||extension==".png" || extension==".jpeg")
-                        {
-                            rutaInsertar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa);
-                            if (Directory.Exists(rutaInsertar))
-                            {
-                                string nombreArchivo = Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
-                                file.SaveAs(Path.Combine(rutaInsertar, nombreArchivo));
-                                empresa.emp_firma_img = nombreArchivo;
-                            }
-                            else
-                            {
-                                mensaje = "No se encuentra el directorio a Insertar, Sincronize y Cree directorios nuevamente.";
-                                return Json(new { mensaje, respuesta });
-                            }
-                        }
-                        else
-                        {
-                            mensaje = "Solo se aceptan formaton .jpg,.png,.jpeg";
-                            return Json(new { mensaje, respuesta });
-                        }
-                    }
-                    else
-                    {
-                        mensaje = "Solo se permiten archivos de hasta 4Mb";
-                        return Json(new { mensaje, respuesta });
-                    }
-                }
-                else
-                {
-                    mensaje = "Debe seleccionar una archivo";
-                    return Json(new { mensaje, respuesta });
-                }
-            }
-            catch (Exception ex)
-            {
-                mensaje = ex.Message;
-            }
-            return Json(new { });
-        }
         public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
         {
             bool respuesta = true;
