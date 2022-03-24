@@ -835,9 +835,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return result;
             //return Json(new { respuesta, mensaje, data = empresa });
         }
-        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa)
+        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa,HttpPostedFileBase file)
         {
-            HttpPostedFileBase file = Request.Files[0];
+            //HttpPostedFileBase file;
             int tamanioMaximo = 4194304;
             string extension = "";
             string rutaInsertar = "";
@@ -854,6 +854,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string directorioEmpresa = empresa.emp_co_ofisis + "_" + nombreEmpresa;
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 configuracion = configuracionTupla.configuracion;
+                //if (empresa.emp_firma_img != null)
+                //{
+                //    file = Request.Files[0];
+                //}
+                //else
+                //{
+                //    file = null;
+                //}
                 if (file != null)
                 {
                     if (file.ContentLength > 0 && file.ContentLength <= tamanioMaximo)

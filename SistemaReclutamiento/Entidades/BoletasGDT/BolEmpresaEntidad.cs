@@ -24,5 +24,6 @@ namespace SistemaReclutamiento.Entidades.BoletasGDT
         {
             this.DetalleCerts = new List<BolDetCertEmpresaEntidad>();
         }
+        public string firma { get; set; }
     }
 }
