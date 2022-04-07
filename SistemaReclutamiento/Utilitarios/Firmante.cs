@@ -32,7 +32,7 @@ namespace SistemaReclutamiento.Utilitarios
                 signature.Location = empresa.emp_depa.ToUpper()+" - "+empresa.emp_pais.ToUpper();
                 var signatureKey = new PrivateKeySignature(certificado.Key, DigestAlgorithms.SHA256);
                 var signatureChain = certificado.Chain;
-                var standard = CryptoStandard.CADES;
+                var standard = CryptoStandard.CMS;
              
 
                 StringBuilder buf = new StringBuilder();
@@ -58,7 +58,7 @@ namespace SistemaReclutamiento.Utilitarios
                             signature.Acro6Layers = true;
                         }
                     }
-                    signature.SetVisibleSignature(new iTextSharp.text.Rectangle(100, 150, 250, 200), 1, null);
+                    signature.SetVisibleSignature(new iTextSharp.text.Rectangle(100, 80, 250, 120), 1, null);
                 }
                 MakeSignature.SignDetached(signature, signatureKey, signatureChain, null, null, null, 0, standard);
             }

@@ -28,6 +28,8 @@
         })
         $(document).on('click','#btnNuevoCertificado',function(e){
             e.preventDefault()
+            $("#certificado").val('')
+            $("#det_pass_cert").val('')
             $("#modalFormularioCertificado").modal('show')
         })
         $(document).on('click','#btnSincronizar',function(e){

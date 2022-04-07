@@ -29,6 +29,7 @@ namespace SistemaReclutamiento.Models.BoletasGDT
                 {
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@p0", det_empr_id);
                     using (var dr = query.ExecuteReader())
                     {
                         if (dr.HasRows)

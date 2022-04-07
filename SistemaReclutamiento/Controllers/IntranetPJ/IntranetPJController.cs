@@ -586,7 +586,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             PersonaSqlEntidad personaSQL = new PersonaSqlEntidad();
             if (personaSQLTupla.error.Respuesta)
             {
+                if (personaSQLTupla.persona.CO_TRAB==null)
+                {
+                    var personaSQLTupla2 = sqlbl.PersonaSQLObtenerInformacionPuestoTrabajoJson(persona.per_numdoc, mesActual - 1, anioActual);
+                    if (personaSQLTupla2.error.Respuesta)
+                    {
+                        personaSQL = personaSQLTupla2.persona;
+                    }
+                }
+                else
+                {
                 personaSQL = personaSQLTupla.persona;
+                }
             }
          
             var listaEmpresasSQLTupla = sqlbl.EmpresaListarxCodigoTrabajadorJson(persona.per_numdoc);
