@@ -897,6 +897,81 @@
                         let element = $(this)
                         let menu = element.data('menu1')
                         let titulo = element.data('titulo')
+                        let hijos = $('.' + menu);
+
+                        let tr=''
+                        let arrayTr=[]
+                        if(hijos.length>0){
+                            $(hijos).each(function (){
+                                let element1 = $(this);
+                                let menu1 = element1.data('menu1');
+                                let titulo1 = element1.data('titulo');
+                                let hijos1 = $('.' + menu1);
+                                if(hijos1.length > 0){
+                                    let existeMenu_ = jQuery.inArray(menu1, menus);
+                                    if (existeMenu_ >= 0) {
+                                        check = "checked";
+                                    } else {
+                                        check = "";
+                                    }
+                                    arrayTr.push(
+                                        `<tr>
+                                            <td style="font-weight: bolder;">
+                                                <span style="color:red !important;background-color:transparent !important" class="glyphicon glyphicon-star"></span>
+                                                ${titulo1}
+                                            </td>
+                                            <td>
+                                                <label style="float:right">
+                                                    <input type="checkbox"  ${check}  data-principal="2" data-tit="${titulo1}" value="${menu1}" name="square-checkbox">
+                                                </label>
+                                            </td>
+                                        </tr>`
+                                    )
+                                    $(hijos1).each(function () {
+                                        let element2 = $(this);
+                                        let menu2 = element2.data('menu1');
+                                        let titulo2 = element2.data('titulo');
+                                        //console.log('hijos2', '------' + element2.data('menu1'))
+    
+                                        let existeMenu2 = jQuery.inArray(menu2, menus);
+                                        if (existeMenu2 >= 0) {
+                                            check = "checked";
+                                        } else {
+                                            check = "";
+                                        }
+                                        arrayTr.push(
+                                            `<tr class="${menu1}">
+                                                <td> <span style="color:blue !important;background-color:transparent !important;padding-left: 20px;" class="glyphicon glyphicon-arrow-right"></span>
+                                                ${titulo2}
+                                                </td>
+                                            <td>
+                                                <label style="float:right"><input type="checkbox" ${check} data-tit="${titulo2}" value="${menu2}" name="square-checkbox"></label>
+                                            </td>
+                                            </tr>`
+                                        )
+                                    });
+                                }
+                                else{
+                                    var existeMenu1 = jQuery.inArray(menu1, menus);
+                                if (existeMenu1 >= 0) {
+                                    check = "checked";
+                                } else {
+                                    check = "";
+                                }
+                                arrayTr.push(
+                                    `<tr>
+                                        <td style="font-weight: bolder;"><span style="color:red !important;background-color:transparent !important" class="glyphicon glyphicon-star"></span> 
+                                            ${titulo1}
+                                        </td>
+                                        <td>
+                                        <label style="float:right"><input type="checkbox"  ${check} data-tit="${titulo1}" value="${menu1}" name="square-checkbox"></label>
+                                        </td>
+                                    </tr>`
+                                )
+                                }
+                            })
+                        }
+
                         let existeMenu_ = jQuery.inArray(menu, menus)
                         let check = ""
                         if (existeMenu_ >= 0) {
@@ -918,6 +993,11 @@
                                                 <div class="pull-right">
                                                     <!-- <i class="ace-icon fa fa-clock-o bigger-110"></i>-->
                                                     <input type="checkbox" data-tit="${titulo}" data-principal="1" value="${menu}"  ${check} name="square-checkbox">
+                                                    <table class="table table-condensed table-hover">
+                                                        <tbody>
+                                                            ${arrayTr.join('')}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>

@@ -56,6 +56,12 @@
                             Bitácora
                         </a>
                     </li>
+                    <li>
+                        <a data-toggle="tab" href="#tab5" data-tab="tab5">
+                            <i class="orange ace-icon fa fa-tachometer bigger-110"></i>
+                            Procesar PDFV2
+                        </a>
+                    </li>
 
                 </ul>
 
@@ -262,6 +268,57 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div id="tab5" class="tab-pane">
+                        <div class="row">
+                            <form id="formProcesarPdfV2">
+                                <input type="hidden" name="nombreEmpresa" value="" id="nombreEmpresaV2" />
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Empresa
+                                            </span>
+                                            <select class="form-control input-sm" name="empresa" id="cboEmpresaV2" style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha
+                                            </span>
+                                            <input type="text" name="fechaProcesoPdf" id="fechaProcesoPdfV2" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Archivo(.zip,.rar)
+                                            </span>
+                                            <input type="file" name="archivoProceso" id="archivoProceso" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-white btn-primary btn-block btn-round btnProcesarPdfV2" data-rel="tooltip" title="ProcesarPdf">
+                                            <i class="ace-icon glyphicon glyphicon-list-alt"></i> Procesar PDF
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div class="table-responsive" id="contenedorTablaProcesoPdfV2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

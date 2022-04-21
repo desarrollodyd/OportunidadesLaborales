@@ -1,5 +1,10 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using SharpCompress.Archives;
+using SharpCompress.Archives.Rar;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using SharpCompress.Readers;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.BoletasGDT;
 using SistemaReclutamiento.Models;
@@ -1152,6 +1157,341 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         static double ConvertKilobytesToMegabytes(long kilobytes)
         {
             return Math.Round((kilobytes / 1024f), 2);
+        }
+        [autorizacion(false)]
+        [HttpPost]
+        public ActionResult BolProcesarPdf(HttpPostedFileBase archivoProceso,DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId="")
+        {
+            string mensaje = string.Empty;
+            string mensajeConsola = string.Empty;
+            bool respuesta = false;
+            string archivoDescomprimido = string.Empty;
+            //Varialbes necesarias
+            int totalRegistrosBD = 0;
+            int totalHojas = 0;
+            const string TIPO_CONFIGURACION= "PATH";
+            const string DIRECTORIO_PROCESO = "BOLETASPROCESADAS";
+            const string DIRECTORIO_A_PROCESAR = "BOLETASAPROCESAR";
+            const string DIRECTORIO_RAIZ_CERTIFICADOS = "DIRECTORIOCERTIFICADOS";
+            const string DIRECTORIO_CERTIFICADO_EMPRESA = "CERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
+            List<BolEmpleadoBoletaEntidad> listaEliminar = new List<BolEmpleadoBoletaEntidad>();
+            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
+            try
+            {
+                //Iniciar Signalr
+                ProgressBarFunction.SendProgressBoletas("Iniciando ...", 0, false, connectionId);
+                Thread.Sleep(1000);
+
+                DateTime fechaProceso = fechaProcesoPdf;
+                int mes = fechaProceso.Month;
+                string carpetaMes = mes.ToString().PadLeft(2, '0') + "_" + meses[mes - 1];
+             
+                string anio = Convert.ToString(fechaProceso.Year);
+
+                //Nombre Directorio de la Empresa
+                string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
+                string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
+
+
+                if (archivoProceso == null)
+                {
+                    mensaje = "Archivo comprimido obligatorio";
+                    mensajeConsola = "Archivo comprimido obligatorio";
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+                //
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(TIPO_CONFIGURACION);
+                if (!configuracionTupla.error.Respuesta&&configuracionTupla.configuracion.config_id==0)
+                {
+                    mensaje = "No se pudo encontrar el registro de configuracion";
+                    mensajeConsola = configuracionTupla.error.Mensaje;
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+                configuracion = configuracionTupla.configuracion;
+                //ejemplo ruta C:\BoletasGDT\BOLETASAPROCESAR\01_IBERPERUSAC\2021\01_Enero
+                string pathDirectorioInsercionTemporal = Path.Combine(configuracion.config_valor, DIRECTORIO_A_PROCESAR, nombreDirectorioEmpresa, anio, carpetaMes);
+                //string pathDirectorioInsercionTemporal = AppDomain.CurrentDomain.BaseDirectory + "/App_Data/uploads/";
+                if (!Directory.Exists(pathDirectorioInsercionTemporal))
+                {
+                    // Try to create the directory.  
+                    //DirectoryInfo di = Directory.CreateDirectory(pathDirectorioInsercionTemporal);
+                    mensaje = "No se pudo encontrar el directorio de proceso";
+                    mensajeConsola = "Directorio de proceso"+ pathDirectorioInsercionTemporal;
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+                //Creacion de variables
+                var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
+                var listaEliminarTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresa, anio, mes.ToString());
+                var empresaPostgres = bolEmpresaBL.BolEmpresaObtenerxOfisisIdJson(empresa);
+                //Obtener certificado para firmar
+                detalleCertificadoEmpresa = empresaPostgres.empresa.DetalleCerts.Where(x => x.det_en_uso == 1).FirstOrDefault();
+
+                string nombreArchivo = Path.GetFileName(archivoProceso.FileName);
+                string pathInsercionArchivoTemporal = Path.Combine(pathDirectorioInsercionTemporal, nombreArchivo);
+                string extensionArchivo = Path.GetExtension(archivoProceso.FileName);
+                archivoProceso.SaveAs(pathInsercionArchivoTemporal);
+                archivoDescomprimido = DescomprimirArchivo(nombreArchivo,extensionArchivo,pathDirectorioInsercionTemporal);
+                if (archivoDescomprimido.Equals(string.Empty))
+                {
+                    mensaje = "No se pudo crear el archivo temporal para trabajo";
+                    mensajeConsola = "No se pudo crear el archivo temporal para trabajo";
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+                //realizar el mismo proceso de creacion de boletas
+                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty) && detalleCertificadoEmpresa != null)
+                {
+                    configuracion = configuracionTupla.configuracion;
+                    listaPersonas = listaPersonasTupla.lista;
+                    string pathPdf = Path.Combine(configuracion.config_valor, DIRECTORIO_A_PROCESAR, nombreDirectorioEmpresa, anio, carpetaMes);
+
+                    DirectoryInfo directorioRoot = Directory.CreateDirectory(Path.Combine(configuracion.config_valor, DIRECTORIO_PROCESO, nombreDirectorioEmpresa));
+
+                    if (Directory.Exists(pathPdf))
+                    {
+                        //realizar la busqueda del pdf y realizar la division de este
+                        string file = Directory.GetFiles(pathPdf, "*.pdf").FirstOrDefault();
+                        if (file != null)
+                        {
+                            //pdf encontrado
+                            using (PdfReader reader = new PdfReader(Path.Combine(pathPdf, file)))
+                            {
+                                totalRegistrosBD = listaPersonas.Count;
+                                totalHojas = reader.NumberOfPages;
+                                if (reader.NumberOfPages == listaPersonas.Count)
+                                {
+                                    int totalRegistrosInsertar = listaPersonas.Count;//100%
+                                    decimal totalElementos = totalRegistrosInsertar;
+                                    decimal limit = 0;
+                                    decimal porcentaje = 0;
+                                    //eliminar la data y carpetas
+                                    if (listaEliminarTupla.error.Mensaje.Equals(string.Empty))
+                                    {
+                                        string[] subdirectoryEntries = Directory.GetDirectories(Path.Combine(configuracion.config_valor, DIRECTORIO_A_PROCESAR));
+                                        if (subdirectoryEntries.Length > 0 && listaEliminarTupla.lista.Count > 0)
+                                        {
+                                            int totalRegistrosEliminar = listaEliminarTupla.lista.Count;//100%
+                                            totalElementos = totalRegistrosInsertar + totalRegistrosEliminar;
+                                            //eliminar pdfs
+                                            foreach (var empleado in listaEliminarTupla.lista)
+                                            {
+                                                string myfile = Directory.GetFiles(Path.Combine(configuracion.config_valor), empleado.emp_ruta_pdf, SearchOption.AllDirectories).FirstOrDefault();
+                                                if (myfile != null)
+                                                {
+                                                    System.IO.File.Delete(myfile);
+                                                }
+                                                porcentaje = (limit * 100 / totalElementos);
+                                                porcentaje = Math.Round(porcentaje, 2);
+                                                //porcentaje = decimal.Round(((limit * 100) / totalElementos), 2);
+
+                                                ProgressBarFunction.SendProgressBoletas("Limpiando Archivos ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
+                                                limit++;
+                                            }
+                                        }
+                                        //eliminar de BD
+                                        ProgressBarFunction.SendProgressBoletas("Limpiando Base de Datos ...", 30, false, connectionId);
+                                        var eliminadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEliminarMasivoJson(empresa, anio, mes.ToString());
+                                    }
+                                    //
+                                    for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
+                                    {
+
+                                        BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
+
+                                        var item = listaPersonas.ElementAt(pagenumber - 1);
+                                        string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
+                                        string filename = item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + ".pdf";
+
+                                        DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
+
+                                        Document document = new Document();
+                                        PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
+                                        document.Open();
+
+                                        copy.AddPage(copy.GetImportedPage(reader, pagenumber));
+                                        document.Close();
+
+                                        //Firmar Pdf Aqui
+                                        var rutaCertificado = Path.Combine(
+                                                configuracion.config_valor,
+                                                DIRECTORIO_RAIZ_CERTIFICADOS,
+                                                nombreDirectorioEmpresa,
+                                                DIRECTORIO_CERTIFICADO_EMPRESA,
+                                                detalleCertificadoEmpresa.det_ruta_cert
+                                                );
+                                        var rutaImagen = Path.Combine(
+                                                configuracion.config_valor,
+                                                DIRECTORIO_RAIZ_CERTIFICADOS,
+                                                nombreDirectorioEmpresa
+                                                );
+                                        var certificado = new Certificado(
+                                            rutaCertificado,
+                                            detalleCertificadoEmpresa.det_pass_cert
+                                            );
+                                        var firmante = new Firmante(certificado);
+                                        string secondFileName = item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + "_signed.pdf";
+                                        if (System.IO.File.Exists(rutaCertificado))
+                                        {
+                                            firmante.Firmar(
+                                                Path.Combine(subdirectorioEmpleado.FullName, filename),
+                                                Path.Combine(subdirectorioEmpleado.FullName, secondFileName),
+                                                empresaPostgres.empresa,
+                                                rutaImagen
+                                                );
+                                            System.IO.File.Delete(Path.Combine(subdirectorioEmpleado.FullName, filename));
+                                        }
+                                        //Termino de Firma
+                                        empleado.emp_co_trab = item.CO_TRAB;
+                                        empleado.emp_co_empr = item.CO_EMPR;
+                                        empleado.emp_anio = anio;
+                                        empleado.emp_periodo = Convert.ToString(mes);
+                                        empleado.emp_ruta_pdf = secondFileName;
+                                        empleado.emp_no_trab = item.NO_TRAB;
+                                        empleado.emp_apel_pat = item.NO_APEL_PATE;
+                                        empleado.emp_apel_mat = item.NO_APEL_MATE;
+                                        empleado.emp_direc_mail = item.NO_DIRE_MAI1;
+                                        empleado.emp_nro_cel = item.NU_TLF1;
+                                        empleado.emp_tipo_doc = item.TI_DOCU_IDEN;
+                                        listaInsertar.Add(empleado);
+
+                                        //porcentaje = decimal.Round(((limit * 100) / totalElementos), 2);
+                                        porcentaje = (limit * 100 / totalElementos);
+                                        porcentaje = Math.Round(porcentaje, 2);
+                                        limit++;
+                                        ProgressBarFunction.SendProgressBoletas("Creando Pdf ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
+                                    }
+                                    //llenado en base de datos
+
+                                    string consulta = "";
+                                    int totalInsertados = 0;
+                                    foreach (var empleado in listaInsertar)
+                                    {
+                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}'),",
+                                            empleado.emp_co_trab,
+                                            empleado.emp_co_empr,
+                                            empleado.emp_anio,
+                                            empleado.emp_periodo,
+                                            empleado.emp_ruta_pdf,
+                                            empleado.emp_enviado,
+                                            empleado.emp_descargado,
+                                            empleado.emp_fecha_reg.ToString("yyyy-MM-dd HH:mm:ss"),
+                                            empleado.emp_no_trab,
+                                            empleado.emp_apel_pat,
+                                            empleado.emp_apel_mat,
+                                            empleado.emp_direc_mail,
+                                            empleado.emp_nro_cel,
+                                            empleado.emp_tipo_doc
+                                            );
+                                    }
+                                    consulta = consulta.TrimEnd(',');
+
+                                    var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
+                                    if (totalInsertadosTupla.error.Mensaje.Equals(string.Empty))
+                                    {
+                                        totalInsertados = totalInsertadosTupla.totalInsertados;
+                                    }
+                                    if (totalInsertados == listaPersonas.Count)
+                                    {
+                                        mensaje = "PDFs procesados";
+                                        mensajeConsola = "PDFs procesados---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+                                        respuesta = true;
+                                        ProgressBarFunction.SendProgressBoletas("Registros Insertados ...", porcentaje, false, connectionId);
+                                        Thread.Sleep(1000);
+                                        ProgressBarFunction.SendProgressBoletas("Proceso Terminado ...", 100, true, connectionId);
+                                        Thread.Sleep(1000);
+                                    }
+                                }
+                                else
+                                {
+                                    mensaje = "Inconsistencia entre pdf y total de trabajadores";
+                                    mensajeConsola = "Inconsistencia entre pdf y total de trabajadores---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            mensaje = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente";
+                            mensajeConsola = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente ---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+
+                        }
+                    }
+                    else
+                    {
+                        mensaje = "No se encuentra el directorio, crearlo en el menú de creación de directorios";
+                        mensajeConsola = "No se encuentra el directorio, crearlo en el menú de creación de directorios --->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                mensaje = ex.Message;
+                mensajeConsola = ex.Message + "--->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
+            }
+            if (!respuesta)
+            {
+                ProgressBarFunction.SendProgressBoletas(mensaje, 99, false, connectionId);
+                Thread.Sleep(2000);
+                ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+            }
+            return Json(new { mensaje, mensajeConsola, respuesta });
+        }
+        [autorizacion(false)]
+        public string DescomprimirArchivo(string nombreArchivo, string extensionArchivo, string pathInsercionArchivoTemporal) 
+        {
+            string mensaje = string.Empty;
+            try
+            {
+                if (extensionArchivo.ToLower().Equals(".rar"))
+                {
+                    using (var archive = RarArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
+                    {
+                        if (archive.Entries.Count == 1)
+                        {
+                            foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                            {
+                                entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                                {
+                                    ExtractFullPath = true,
+                                    Overwrite = true
+                                });
+                                return entry.Key;
+                            }
+                        }
+                        return string.Empty;
+                    }
+                }
+                else if (extensionArchivo.ToLower().Equals(".zip"))
+                {
+                    using (var archive = ZipArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
+                    {
+                        if (archive.Entries.Count == 1)
+                        {
+                            foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                            {
+                                entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                                {
+                                    ExtractFullPath = true,
+                                    Overwrite = true
+                                });
+                                return entry.Key;
+                            }
+                        }
+                        return string.Empty;
+                    }
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            catch(Exception ex)
+            {
+                mensaje = string.Empty;
+            }
+            return mensaje;
         }
     }
 }
