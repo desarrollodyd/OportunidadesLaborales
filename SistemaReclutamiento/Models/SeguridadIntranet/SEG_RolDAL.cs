@@ -34,7 +34,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", ManejoNulos.ManageNullStr(rol.WEB_RolNombre));
                     query.Parameters.AddWithValue("@p1", ManejoNulos.ManageNullStr(rol.WEB_RolDescripcion));
-                    query.Parameters.AddWithValue("@p2", 1);
+                    query.Parameters.AddWithValue("@p2", ManejoNulos.ManageNullInteger(rol.WEB_RolEstado));
                     query.Parameters.AddWithValue("@p3", DateTime.Now);
                     query.ExecuteNonQuery();
 
@@ -177,7 +177,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             claseError error = new claseError();
             bool respuesta = false;
             string consulta = @"UPDATE intranet.seg_rol
-                            SET WEB_RolNombre = @p1,WEB_RolDescripcion = @p2
+                            SET WEB_RolNombre = @p1,WEB_RolDescripcion = @p2, WEB_RolEstado=@p3
                             WHERE WEB_RolID = @p0";
 
             try
@@ -189,6 +189,7 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
                     query.Parameters.AddWithValue("@p0", rol.WEB_RolID);
                     query.Parameters.AddWithValue("@p1", rol.WEB_RolNombre);
                     query.Parameters.AddWithValue("@p2", rol.WEB_RolDescripcion);
+                    query.Parameters.AddWithValue("@p3", rol.WEB_RolEstado);
                     query.ExecuteNonQuery();
                     respuesta = true;
                 }

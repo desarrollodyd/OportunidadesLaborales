@@ -11,23 +11,28 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
     public class RolController : Controller
     {
         private SEG_RolDAL webRolBl = new SEG_RolDAL();
+        public ActionResult ListadoRol()
+        {
+            return View("~/Views/SeguridadIntranet/RolListadoVista.cshtml");
+        }
         [HttpPost]
         public ActionResult GetListadoRol()
         {
             var errormensaje = "";
             var lista = new List<SEG_RolEntidad>();
+            bool respuesta = false;
             try
             {
                 var listaTupla = webRolBl.GetRoles();
                 lista = listaTupla.lista;
-
+                respuesta = true;
             }
             catch (Exception exp)
             {
                 errormensaje = exp.Message + " ,Llame Administrador";
             }
 
-            return Json(new { data = lista.ToList(), mensaje = errormensaje });
+            return Json(new { data = lista.ToList(), mensaje = errormensaje,respuesta });
             //  var aa = lista.ToList();
 
         }
@@ -58,7 +63,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             bool respuestaConsulta = false;
             try
             {
-                var respuestaConsutltaTupla= webRolBl.ActualizarRol(rol);
+                var respuestaConsutltaTupla = webRolBl.ActualizarRol(rol);
                 respuestaConsulta = respuestaConsutltaTupla.respuesta;
 
             }
@@ -77,7 +82,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             bool respuestaConsulta = false;
             try
             {
-                var respuestaConsultaTupla= webRolBl.ActualizarEstadoRol(rolId, estado);
+                var respuestaConsultaTupla = webRolBl.ActualizarEstadoRol(rolId, estado);
                 respuestaConsulta = respuestaConsultaTupla.respuesta;
 
             }
@@ -96,7 +101,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             bool respuestaConsulta = false;
             try
             {
-                var respuestaConsultaTupla= webRolBl.EliminarRol(rolId);
+                var respuestaConsultaTupla = webRolBl.EliminarRol(rolId);
                 respuestaConsulta = respuestaConsultaTupla.respuesta;
 
             }
@@ -106,6 +111,25 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             }
 
             return Json(new { respuesta = respuestaConsulta, mensaje = errormensaje });
+        }
+        [HttpPost]
+        public ActionResult GetRolId(int WEB_RolID)
+        {
+            var errormensaje = "";
+            var rol = new SEG_RolEntidad();
+            bool respuesta = false;
+            try
+            {
+                var listaTupla = webRolBl.GetRolId(WEB_RolID);
+                rol = listaTupla.webRol;
+                respuesta = true;
+            }
+            catch (Exception exp)
+            {
+                errormensaje = exp.Message + " ,Llame Administrador";
+            }
+
+            return Json(new { data = rol, mensaje = errormensaje,respuesta });
         }
     }
 }

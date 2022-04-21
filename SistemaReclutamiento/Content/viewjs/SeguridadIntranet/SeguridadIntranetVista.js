@@ -78,7 +78,6 @@
             let data = { WEB_RolID: idRol, WEB_PMeDataMenu: idPermNombre, WEB_PMeNombre: dataTitulo, WEB_PMeEstado: 1 }
             let url = basePath + "Seguridadintranet/AgregarPermisoMenu"
             let principal = jQuery(this).data("principal")
-            //console.log(data)
             if (principal == "1") {
                 console.log("entro 1")
                 $.ajax({
@@ -92,6 +91,7 @@
                     success: function (response) {
                         let respuesta = response.respuesta
                         if (respuesta === true) {
+                           
                             // $('.nav-list li[data-menu1="' + idPermNombre + '"]').removeClass('oculto');
                             messageResponse({
                                 text: 'Se Asigno Permiso',
@@ -108,21 +108,103 @@
                       unblock("body")
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        mensaje = false
                     }
                 })
+                $(this).parent().parent().parent().parent().find('input:checkbox:not(:checked)').each(function () {
+                    $(this).iCheck('check');
+                })
             } else {
-                console.log("entro 2")
+                if(principal=='2'){
+                    console.log("entro 2")
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        beforeSend: function () {
+                           block_general("body")
+                        },
+                        success: function (response) {
+                            let respuesta = response.respuesta
+                            if (respuesta === true) {
+                                // $('.nav-list li[data-menu1="' + idPermNombre + '"]').removeClass('oculto');
+                                messageResponse({
+                                    text: 'Se Asigno Permiso',
+                                    type: "success"
+                                })
+                            } else {
+                                messageResponse({
+                                    text: response.mensaje,
+                                    type: "error"
+                                })
+                            }
+                        },
+                        complete: function () {
+                          unblock("body")
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                        }
+                    })
+                    let secund = jQuery(this).parent().parent().parent().parent().parent().find('tr.' + idPermNombre).length;
+                    if (secund > 0) {
+                        jQuery(this).parent().parent().parent().parent().parent().find('tr.' + idPermNombre).each(function () {
+                            $(this).iCheck('check');
+                        });
+                    }
+                }
+                else{
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(data),
+                        beforeSend: function () {
+                            //$.LoadingOverlay("show");
+                        },
+                        complete: function () {
+                            //$.LoadingOverlay("hide");
+                        },
+                        success: function (response) {
+                            let respuesta = response.respuesta;
+                            if (respuesta === true) {
+                                messageResponse({
+                                    text: response.mensaje,
+                                    type: "success"
+                                })
+                            } else {
+                                messageResponse({
+                                    text: response.mensaje,
+                                    type: "error"
+                                })
+                            }
+                        },
+                        error: function (xmlHttpRequest, textStatus, errorThrow) {
+                            if (xmlHttpRequest.status == 400) {
+                                messageResponse({
+                                    text: xmlHttpRequest.responseText,
+                                    type: "error"
+                                })
+                            } else {
+                                messageResponse({
+                                    text: response.mensaje,
+                                    type: "error"
+                                })
+                            }
+                        }
+                    });
+                }
             }
         })
 
         $(document).on('ifUnchecked', '#libody input', function (event) {
+            
             let idRol = $("#cboRol_").val()
             let idPermNombre = jQuery(this).val()
             let dataTitulo = jQuery(this).data("tit")
             let data = { WEB_RolID: idRol, WEB_PMeDataMenu: idPermNombre }
             let url = basePath + "Seguridadintranet/QuitarPermisoMenu"
             let principal = jQuery(this).data("principal")
+            console.log(principal)
             if (principal == "1") {
                 $.ajax({
                     url: url,
@@ -135,6 +217,8 @@
                     success: function (response) {
                         let respuesta = response.respuesta
                         if (respuesta === true) {
+                        
+                          
                             // $('.nav-list li[data-menu1="' + idPermNombre + '"]').addClass('oculto');
                             messageResponse({
                                 text: 'Se Quitó Permiso',
@@ -154,8 +238,89 @@
                         mensaje = false
                     }
                 })
+                $(this).parent().parent().parent().parent().find('input:checkbox(:checked)').each(function(){
+                    $(this).iCheck('uncheck')
+                })
             } else {
-
+                if(principal=='2'){
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        beforeSend: function () {
+                           block_general("body")
+                        },
+                        success: function (response) {
+                            let respuesta = response.respuesta
+                            if (respuesta === true) {
+                                // $('.nav-list li[data-menu1="' + idPermNombre + '"]').addClass('oculto');
+                                messageResponse({
+                                    text: 'Se Quitó Permiso',
+                                    type: "success"
+                                })
+                            } else {
+                                messageResponse({
+                                    text: response.mensaje,
+                                    type: "error"
+                                })
+                            }
+                        },
+                        complete: function () {
+                          unblock("body")
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            mensaje = false
+                        }
+                    })
+                    let secund = jQuery(this).parent().parent().parent().parent().parent().find('tr.' + idPermNombre).length;
+                    if (secund > 0) {
+                        jQuery(this).parent().parent().parent().parent().parent().find('tr.' + idPermNombre).each(function () {
+                            $(this).iCheck('uncheck');
+                        });
+                    }
+                }
+              else{
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    beforeSend: function () {
+                        //$.LoadingOverlay("show");
+                    },
+                    complete: function () {
+                        //$.LoadingOverlay("hide");
+                    },
+                    success: function (response) {
+                        var respuesta = response.respuesta;
+                        if (respuesta === true) {
+                            messageResponse({
+                                text: response.mensaje,
+                                type: "success"
+                            })
+                        } else {
+                            messageResponse({
+                                text: response.mensaje,
+                                type: "error"
+                            })
+                        }
+                    },
+                    error: function (xmlHttpRequest, textStatus, errorThrow) {
+                        if (xmlHttpRequest.status == 400) {
+                            messageResponse({
+                                text: xmlHttpRequest.responseText,
+                                type: "error"
+                            })
+                        } else {
+                            messageResponse({
+                                text: response.mensaje,
+                                type: "error"
+                            })
+                        }
+                    }
+                });
+              }
             }
         })
         $(document).on('click', '#listaRoles li', function (event) {
@@ -892,13 +1057,13 @@
                         menus.push(value.WEB_PMeDataMenu)
                     })
                     $(".cabecera").each(function (i) {
+                        let check = ""
                         let aleatorio = Math.round(Math.random()*6)
                         let total = $(".cabecera").length - 1
                         let element = $(this)
                         let menu = element.data('menu1')
                         let titulo = element.data('titulo')
                         let hijos = $('.' + menu);
-
                         let tr=''
                         let arrayTr=[]
                         if(hijos.length>0){
@@ -916,7 +1081,7 @@
                                     }
                                     arrayTr.push(
                                         `<tr>
-                                            <td style="font-weight: bolder;">
+                                            <td style="font-weight: bolder;padding-left: 25px;">
                                                 <span style="color:red !important;background-color:transparent !important" class="glyphicon glyphicon-star"></span>
                                                 ${titulo1}
                                             </td>
@@ -941,39 +1106,41 @@
                                         }
                                         arrayTr.push(
                                             `<tr class="${menu1}">
-                                                <td> <span style="color:blue !important;background-color:transparent !important;padding-left: 20px;" class="glyphicon glyphicon-arrow-right"></span>
-                                                ${titulo2}
+                                                <td> 
+                                                    <span style="color:blue !important;background-color:transparent !important;padding-left: 20px;" class="glyphicon glyphicon-arrow-right"></span>
+                                                    ${titulo2}
+                                                    </td>
+                                                <td>
+                                                    <label style="float:right">
+                                                        <input type="checkbox" ${check} data-tit="${titulo2}" value="${menu2}" name="square-checkbox">
+                                                    </label>
                                                 </td>
-                                            <td>
-                                                <label style="float:right"><input type="checkbox" ${check} data-tit="${titulo2}" value="${menu2}" name="square-checkbox"></label>
-                                            </td>
                                             </tr>`
                                         )
                                     });
                                 }
                                 else{
                                     var existeMenu1 = jQuery.inArray(menu1, menus);
-                                if (existeMenu1 >= 0) {
-                                    check = "checked";
-                                } else {
-                                    check = "";
-                                }
-                                arrayTr.push(
-                                    `<tr>
-                                        <td style="font-weight: bolder;"><span style="color:red !important;background-color:transparent !important" class="glyphicon glyphicon-star"></span> 
-                                            ${titulo1}
-                                        </td>
-                                        <td>
-                                        <label style="float:right"><input type="checkbox"  ${check} data-tit="${titulo1}" value="${menu1}" name="square-checkbox"></label>
-                                        </td>
-                                    </tr>`
-                                )
+                                    if (existeMenu1 >= 0) {
+                                        check = "checked";
+                                    } else {
+                                        check = "";
+                                    }
+                                    arrayTr.push(
+                                        `<tr>
+                                            <td style="font-weight: bolder;padding-left: 25px;"><span style="color:red !important;background-color:transparent !important" class="glyphicon glyphicon-star"></span> 
+                                                ${titulo1}
+                                            </td>
+                                            <td style="padding-right: 25px;">
+                                            <label style="float:right"><input type="checkbox"  ${check} data-tit="${titulo1}" value="${menu1}" name="square-checkbox"></label>
+                                            </td>
+                                        </tr>`
+                                    )
                                 }
                             })
                         }
 
                         let existeMenu_ = jQuery.inArray(menu, menus)
-                        let check = ""
                         if (existeMenu_ >= 0) {
                             check = "checked"
                         } else {
@@ -983,23 +1150,27 @@
                             <div class="timeline-items">
                                 <div class="timeline-item clearfix">
                                     <div class="timeline-info">
-                                        <i class="timeline-indicator ace-icon fa fa-${icons[aleatorio]} btn btn-${colors[aleatorio]} no-hover"></i>
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse${i}">
+                                            <i class="timeline-indicator ace-icon fa fa-${icons[aleatorio]} btn btn-${colors[aleatorio]} no-hover"></i>
+                                        </a>
                                     </div>
-            
                                     <div class="widget-box clearfix">
                                         <div class="widget-body">
                                             <div class="widget-main">
-                                               ${titulo}
+                                                    <b>${titulo}</b>
                                                 <div class="pull-right">
-                                                    <!-- <i class="ace-icon fa fa-clock-o bigger-110"></i>-->
                                                     <input type="checkbox" data-tit="${titulo}" data-principal="1" value="${menu}"  ${check} name="square-checkbox">
-                                                    <table class="table table-condensed table-hover">
-                                                        <tbody>
-                                                            ${arrayTr.join('')}
-                                                        </tbody>
-                                                    </table>
                                                 </div>
+                                               
                                             </div>
+                                            <div class="panel-collapse collapse" id="collapse${i}">
+                                                <table class="table table-condensed table-hover" style="margin-bottom:5px">
+                                                    <tbody>
+                                                        ${arrayTr.join('')}
+                                                    </tbody>
+                                                </table>
+                                            </div> 
+                                          
                                         </div>
                                     </div>
                                 </div>

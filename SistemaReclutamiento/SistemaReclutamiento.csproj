@@ -4217,6 +4217,7 @@
     <Content Include="Content\viewjs\Proveedor\Proveedor.js" />
     <Content Include="Content\viewjs\Proveedor\ProveedorCambiarPasswordVista.js" />
     <Content Include="Content\viewjs\Proveedor\ReportePagosJs.js" />
+    <Content Include="Content\viewjs\SeguridadIntranet\Roles.js" />
     <Content Include="Content\viewjs\SeguridadIntranet\SeguridadIntranetVista.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebDepartamento.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebMenus.js" />
@@ -5640,6 +5641,7 @@
     <Content Include="Views\IntranetPJ\IntranetPJMisBoletasGDT.cshtml" />
     <Content Include="Views\SeguridadIntranet\SeguridadIntranetVista.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJEmpresas.cshtml" />
+    <Content Include="Views\SeguridadIntranet\RolListadoVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

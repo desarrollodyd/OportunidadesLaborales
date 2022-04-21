@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Roles</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget-box">
+                <div class="widget-header widget-header-flat widget-header-small">
+                    <h4 class="widget-title">Listado Roles</h4>
+                    <span class="widget-toolbar">
+                        <a href="#" class="btn btn-sm btn-success btn-minier" data-action="settings" id="btn_nuevo"><i class="ace-icon fa fa-file"></i> Nuevo</a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div>
+                            <table id="rolesListado" class="table table-condensed datatable-roleslistado table-striped table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+
+<div class="modal fade" tabindex="-1" id="modalFormulario" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModalRoles"></span> Rol</h4>
+            </div>
+            <div class="modal-body" id="">
+                <div class="row">
+                    <form class="" id="form_roles" >
+                        <input type="hidden" name="WEB_RolID" id="WEB_RolID" value="" />
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Nombre Rol</label>
+                                <input type="text" name="WEB_RolNombre" id="WEB_RolNombre" class="form-control" placeholder="Nombre Rol" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Descripcion Rol</label>
+                                <input type="text" name="WEB_RolDescripcion" id="WEB_RolDescripcion" class="form-control" placeholder="Descripcion Rol" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <select class="form-control" name="WEB_RolEstado" id="WEB_RolEstado">
+                                    <option value="1" selected>Activo</option>
+                                    <option value="0">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section js
+{
+    <script src="~/Content/viewjs/SeguridadIntranet/Roles.js"></script>
+}

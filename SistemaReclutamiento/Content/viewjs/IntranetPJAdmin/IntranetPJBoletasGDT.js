@@ -435,7 +435,7 @@
                                     console.log(response);
                                     if(response.respuesta){
                                         llenarDatatableProcesoV2(response.data)
-                                    }
+                                    } 
                                 },
                                 loader:false
                             });
