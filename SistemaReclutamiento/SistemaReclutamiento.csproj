@@ -4219,6 +4219,7 @@
     <Content Include="Content\viewjs\Proveedor\ReportePagosJs.js" />
     <Content Include="Content\viewjs\SeguridadIntranet\Roles.js" />
     <Content Include="Content\viewjs\SeguridadIntranet\SeguridadIntranetVista.js" />
+    <Content Include="Content\viewjs\SeguridadIntranet\UsuarioEmpresa.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebDepartamento.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebMenus.js" />
     <Content Include="Content\viewjs\WebCorporativaAdmin\WebSecciones.js" />
@@ -5385,6 +5386,7 @@
     <Compile Include="Controllers\SeguridadIntranet\RolController.cs" />
     <Compile Include="Controllers\SeguridadIntranet\RolUsuarioController.cs" />
     <Compile Include="Controllers\SeguridadIntranet\SeguridadIntranetController.cs" />
+    <Compile Include="Controllers\SeguridadIntranet\UsuarioEmpresaController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
@@ -5464,6 +5466,7 @@
     <Compile Include="Entidades\SeguridadIntranet\SEG_PermisoRolEntidad.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_RolEntidad.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_RolUsuarioEntidad.cs" />
+    <Compile Include="Entidades\SeguridadIntranet\SEG_UsuarioEmpresaEntidad.cs" />
     <Compile Include="Entidades\UbigeoEntidad.cs" />
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
@@ -5538,6 +5541,7 @@
     <Compile Include="Models\SeguridadIntranet\SEG_PermisoRolDAL.cs" />
     <Compile Include="Models\SeguridadIntranet\SEG_RolDAL.cs" />
     <Compile Include="Models\SeguridadIntranet\SEG_RolUsuarioDAL.cs" />
+    <Compile Include="Models\SeguridadIntranet\SEG_UsuarioEmpresaDAL.cs" />
     <Compile Include="Models\SQLModel.cs" />
     <Compile Include="Models\Proveedor\SubMenuModel.cs" />
     <Compile Include="Models\UbigeoModel.cs" />
@@ -5642,6 +5646,7 @@
     <Content Include="Views\SeguridadIntranet\SeguridadIntranetVista.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJEmpresas.cshtml" />
     <Content Include="Views\SeguridadIntranet\RolListadoVista.cshtml" />
+    <Content Include="Views\SeguridadIntranet\UsuarioEmpresaVista.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5661,6 +5666,7 @@
     <Folder Include="Views\IntranetPJBoletasGDT\" />
     <Folder Include="Views\RolUsuario\" />
     <Folder Include="Views\Rol\" />
+    <Folder Include="Views\UsuarioEmpresa\" />
     <Folder Include="Views\WebDetalleElemento\" />
     <Folder Include="Views\WebTipoElemento\" />
   </ItemGroup>
