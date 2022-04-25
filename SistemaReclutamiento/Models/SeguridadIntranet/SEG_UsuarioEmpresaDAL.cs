@@ -91,5 +91,30 @@ namespace SistemaReclutamiento.Models.SeguridadIntranet
             }
             return respuesta;
         }
+        public bool EliminarUsuarioEmpresaDAL(SEG_UsuarioEmpresaEntidad usuarioEmpresa)
+        {
+            bool respuesta = false;
+            string consulta = @"delete from intranet.seg_usuarioempresa
+           where usuario_id=@usuario_id and empresa_id=@empresa_id";
+
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@usuario_id", ManejoNulos.ManageNullInteger(usuarioEmpresa.usuario_id));
+                    query.Parameters.AddWithValue("@empresa_id", ManejoNulos.ManageNullInteger(usuarioEmpresa.empresa_id));
+                    query.ExecuteNonQuery();
+                    respuesta = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+            }
+
+            return respuesta;
+        }
     }
 }

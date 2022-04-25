@@ -6,7 +6,7 @@
             multiple: false, placeholder: "--Seleccione--"
         })
         responseSimple({
-            url:'IntranetPJBoletasGDT/BolEmpresaListarJson',
+            url:'IntranetPJBoletasGDT/BolEmpresaListarPorUsuarioJson',
             refresh:false,
             callBackSuccess:function(response){
                if(response.respuesta){

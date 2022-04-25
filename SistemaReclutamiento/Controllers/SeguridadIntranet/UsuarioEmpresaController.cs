@@ -62,5 +62,51 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
             }
             return Json(new { mensaje,respuesta,dataEmpresas=listaempresas,dataUsuario=usuario,dataPersona=persona });
         }
+        [HttpPost]
+        public ActionResult InsertarUsuarioEmpresaJson(SEG_UsuarioEmpresaEntidad usuarioEmpresa)
+        {
+            string mensaje = string.Empty;
+            bool respuesta = false;
+            try
+            {
+                respuesta = usuarioEmpresaDAL.InsertarUsuarioEmpresaDAL(usuarioEmpresa);
+                if (respuesta)
+                {
+                    mensaje = "Registro Insertado";
+                }
+                else
+                {
+                    mensaje = "No se pudo Insertar el Registro";
+                }
+            }
+            catch(Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje, respuesta });
+        }
+        [HttpPost]
+        public ActionResult EliminarUsuarioEmpresaJson(SEG_UsuarioEmpresaEntidad usuarioEmpresa)
+        {
+            string mensaje = string.Empty;
+            bool respuesta = false;
+            try
+            {
+                respuesta = usuarioEmpresaDAL.EliminarUsuarioEmpresaDAL(usuarioEmpresa);
+                if (respuesta)
+                {
+                    mensaje = "Registro Eliminado";
+                }
+                else
+                {
+                    mensaje = "No se pudo Eliminar el Registro";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje, respuesta });
+        }
     }
 }

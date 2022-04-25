@@ -252,5 +252,57 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (editado: response, error: error);
         }
+        public (List<BolEmpresaEntidad> lista, claseError error) BolEmpresaListarPorUsuarioJson(int usuario_id)
+        {
+            claseError error = new claseError();
+            List<BolEmpresaEntidad> listaEmpresas = new List<BolEmpresaEntidad>();
+            string consulta = @"SELECT empresa.emp_id, 
+	empresa.emp_co_ofisis, empresa.emp_nomb, empresa.emp_nomb_corto, 
+	empresa.emp_depa, empresa.emp_prov, empresa.emp_rucs, empresa.emp_pais, 
+	empresa.emp_firma_visible, empresa.emp_firma_img,empresa.emp_nom_rep_legal
+		FROM intranet.bol_empresa as empresa
+		left join intranet.seg_usuarioempresa as usuarioempresa
+		on empresa.emp_id=usuarioempresa.empresa_id
+		where usuarioempresa.usuario_id=@usuario_id;";
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@usuario_id", usuario_id);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var empresa = new BolEmpresaEntidad
+                                {
+                                    emp_id = ManejoNulos.ManageNullInteger(dr["emp_id"]),
+                                    emp_co_ofisis = ManejoNulos.ManageNullStr(dr["emp_co_ofisis"]),
+                                    emp_nomb = ManejoNulos.ManageNullStr(dr["emp_nomb"]),
+                                    emp_nomb_corto = ManejoNulos.ManageNullStr(dr["emp_nomb_corto"]),
+                                    emp_depa = ManejoNulos.ManageNullStr(dr["emp_depa"]),
+                                    emp_prov = ManejoNulos.ManageNullStr(dr["emp_prov"]),
+                                    emp_rucs = ManejoNulos.ManageNullStr(dr["emp_rucs"]),
+                                    emp_pais = ManejoNulos.ManageNullStr(dr["emp_pais"]),
+                                    emp_firma_visible = ManejoNulos.ManageNullInteger(dr["emp_firma_visible"]),
+                                    emp_firma_img = ManejoNulos.ManageNullStr(dr["emp_firma_img"]),
+                                    emp_nom_rep_legal = ManejoNulos.ManageNullStr(dr["emp_nom_rep_legal"]),
+                                };
+                                listaEmpresas.Add(empresa);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error.Respuesta = false;
+                error.Mensaje = ex.Message;
+            }
+            return (lista: listaEmpresas, error: error);
+        }
     }
 }

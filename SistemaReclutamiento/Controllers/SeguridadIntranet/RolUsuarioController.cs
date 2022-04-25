@@ -74,7 +74,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
                 var listaRolTupla = webRolBl.GetRoles();
                 listaRol = listaRolTupla.lista.OrderBy(x => x.WEB_RolNombre).ToList();
                 var listaUsuTupla = segUsuarioBl.IntranetListarUsuariosJson();
-                listaUsu = listaUsuTupla.listaUsuarios;
+                listaUsu = listaUsuTupla.listaUsuarios.Where(x=>x.usu_estado.Equals("A")).ToList();
                 var listaRolUsuarioTupla = webRolUsuarioBl.GetRolUsuario();
                 listaRolUsuario = listaRolUsuarioTupla.lista;
             }

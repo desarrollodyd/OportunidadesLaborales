@@ -1,13 +1,15 @@
-﻿@{
+﻿
+@{
     Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
 }
+
 <div class="breadcrumbs ace-save-state" id="breadcrumbs">
     <ul class="breadcrumb">
         <li>
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="#">Inicio</a>
         </li>
-        <li class="active">Panel UsuarioEmpresa</li>
+        <li class="active">Panel Usuario-Empresa</li>
     </ul><!-- /.breadcrumb -->
 </div>
 
@@ -16,11 +18,22 @@
         <div class="col-xs-12">
             <div class="widget-box">
                 <div class="widget-header widget-header-flat widget-header-small">
-                    <h4 class="widget-title">Listado Empresas Por Usuario</h4>
+                        <h4 class="widget-title">Seleccionar Usuario</h4>
+                   
                 </div>
                 <div class="widget-body">
+                  
                     <div class="widget-main no-padding">
-                        <div id="contenidoepresausuario">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Usuario
+                                </span>
+                                <select class="form-control input-sm" style="width:100%" id="cboUsuario" name="cboUsuario"></select>
+                            </div>
+                        </div>
+                        <div id="divEmpresas">
+
                         </div>
                     </div>
                 </div>
@@ -28,6 +41,7 @@
         </div>
     </div>
 </div><!-- /.page-content -->
+
 @section js
 {
     <script src="~/Content/viewjs/SeguridadIntranet/UsuarioEmpresa.js"></script>

@@ -721,7 +721,7 @@ namespace SistemaReclutamiento.Models
             string consulta = @"SELECT usu_nombre,
 		                        per_id, usu_id,
 		                        per_nombre,
-		                        per_apellido_pat, per_apellido_mat
+		                        per_apellido_pat, per_apellido_mat,usu_estado
 			                        FROM marketing.cpj_persona
 			                        join seguridad.seg_usuario
 			                        on marketing.cpj_persona.per_id=seguridad.seg_usuario.fk_persona
@@ -746,6 +746,7 @@ namespace SistemaReclutamiento.Models
                                     per_apellido_pat = ManejoNulos.ManageNullStr(dr["per_apellido_pat"]),
                                     per_id = ManejoNulos.ManageNullInteger(dr["per_id"]),
                                     usu_id = ManejoNulos.ManageNullInteger(dr["usu_id"]),
+                                    usu_estado = ManejoNulos.ManageNullStr(dr["usu_estado"]),
                                 };
                                 listaUsuarios.Add(usuario);
                             }

@@ -5390,6 +5390,7 @@
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebCorporativaAdminController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebDepartamentoController.cs" />
     <Compile Include="Controllers\WebCorporativaAdmin\WebDetalleElementoController.cs" />
@@ -5667,6 +5668,7 @@
     <Folder Include="Views\RolUsuario\" />
     <Folder Include="Views\Rol\" />
     <Folder Include="Views\UsuarioEmpresa\" />
+    <Folder Include="Views\Usuario\" />
     <Folder Include="Views\WebDetalleElemento\" />
     <Folder Include="Views\WebTipoElemento\" />
   </ItemGroup>

@@ -1493,5 +1493,53 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return mensaje;
         }
+        [HttpPost]
+        public ActionResult BolEmpresaListarPorUsuarioJson()
+        {
+            string mensaje = "No se pudo insertar";
+            bool respuesta = false;
+            List<BolEmpresaEntidad> listaEmpresas = new List<BolEmpresaEntidad>();
+            string usuario_sgc = ConfigurationManager.AppSettings["usuario_sgc"].ToString();
+            try
+            {
+                var usuarioId = Convert.ToInt32(Session["UsuarioID"]);
+                var usuarionNombre = Convert.ToString(Session["UsuarioNombre"]);
+                if (usuarionNombre == usuario_sgc)
+                {
+                    var listaEmpresasTupla = bolEmpresaBL.BolEmpresaListarJson();
+                    if (listaEmpresasTupla.error.Respuesta)
+                    {
+                        listaEmpresas = listaEmpresasTupla.lista;
+                        respuesta = true;
+                        mensaje = "Listando Registros";
+                    }
+                    else
+                    {
+                        mensaje = "No se pudo listar los registros";
+                    }
+                }
+                else
+                {
+                    var listaEmpresasTupla = bolEmpresaBL.BolEmpresaListarPorUsuarioJson(usuarioId);
+                    if (listaEmpresasTupla.error.Respuesta)
+                    {
+                        listaEmpresas = listaEmpresasTupla.lista;
+                        respuesta = true;
+                        mensaje = "Listando Registros";
+                    }
+                    else
+                    {
+                        mensaje = "No se pudo listar los registros";
+                    }
+                }
+             
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje, data = listaEmpresas });
+        }
+        
     }
 }
