@@ -22911,10 +22911,10 @@ input.typeahead.scrollable ~ .tt-menu {
     background-color: #0e0e0e;
 }
 
-.no-skin .nav-list > li .submenu > li > a:hover {
+/* .no-skin .nav-list > li .submenu > li > a:hover {
     color: #ffffff;
     background-color: #0e0e0e;
-}
+} */
 
 .no-skin .sidebar.menu-min .nav-list > li > .arrow:after {
     border-right-color: #e21c1c;

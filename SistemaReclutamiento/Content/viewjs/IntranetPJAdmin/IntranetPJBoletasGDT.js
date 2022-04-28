@@ -51,10 +51,41 @@
             maxDate:fecha_hoy
         })
         //carga de salas
+        // responseSimple({
+        //     url: "sql/TMEMPRListarJson",
+        //     refresh: false,
+        //     callBackSuccess: function (response) {
+        //         CloseMessages()
+        //         if(response.respuesta){
+        //             let data=response.data
+        //             $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
+        //             $("#cboEmpresaListar").append(`<option value="">--Seleccione--<option>`)
+        //             $("#cboEmpresaV2").append(`<option value="">--Seleccione--<option>`)
+        //             $.each(data, function (index, value) {
+        //                 $("#cboEmpresa").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+        //             });
+        //             $("#cboEmpresa").select2({
+        //                 placeholder: "--Seleccione--", allowClear: true
+        //             })
+        //             $.each(data, function (index, value) {
+        //                 $("#cboEmpresaV2").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+        //             });
+        //             $("#cboEmpresaV2").select2({
+        //                 placeholder: "--Seleccione--", allowClear: true
+        //             })
+        //             $.each(data, function (index, value) {
+        //                 $("#cboEmpresaListar").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+        //             });
+        //             $("#cboEmpresaListar").select2({
+        //                 placeholder: "--Seleccione--", allowClear: true
+        //             })
+        //         }
+        //     }
+        // })
         responseSimple({
-            url: "sql/TMEMPRListarJson",
-            refresh: false,
-            callBackSuccess: function (response) {
+            url:'IntranetPJBoletasGDT/BolEmpresaListarPorUsuarioJson',
+            refresh:false,
+            callBackSuccess:function(response){
                 CloseMessages()
                 if(response.respuesta){
                     let data=response.data
@@ -62,19 +93,19 @@
                     $("#cboEmpresaListar").append(`<option value="">--Seleccione--<option>`)
                     $("#cboEmpresaV2").append(`<option value="">--Seleccione--<option>`)
                     $.each(data, function (index, value) {
-                        $("#cboEmpresa").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+                        $("#cboEmpresa").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresa").select2({
                         placeholder: "--Seleccione--", allowClear: true
                     })
                     $.each(data, function (index, value) {
-                        $("#cboEmpresaV2").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+                        $("#cboEmpresaV2").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresaV2").select2({
                         placeholder: "--Seleccione--", allowClear: true
                     })
                     $.each(data, function (index, value) {
-                        $("#cboEmpresaListar").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
+                        $("#cboEmpresaListar").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresaListar").select2({
                         placeholder: "--Seleccione--", allowClear: true

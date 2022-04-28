@@ -764,14 +764,14 @@ function simpleAjaxDataTable(obj) {
 //});
 
 /*End Datatables*/
-$(document).on("click", "ul.ulnav li", function () {
-    var index = $(this).index();
-    localStorage.setItem('menuSelected', index);
-});
+// $(document).on("click", "ul.ulnav li", function () {
+//     var index = $(this).index();
+//     localStorage.setItem('menuSelected', index);
+// });
 
-var menuSeleccionado = localStorage.getItem('menuSelected');
-$("ul.ulnav li").removeClass("active");
-$("ul.ulnav li").eq(menuSeleccionado).addClass("active");
+// var menuSeleccionado = localStorage.getItem('menuSelected');
+// $("ul.ulnav li").removeClass("active");
+// $("ul.ulnav li").eq(menuSeleccionado).addClass("active");
 
 listaDatatable = [];
 
@@ -832,3 +832,15 @@ function Menu(loading) {
     });
 }
 Menu(false)
+
+//Seleccionar Menu
+let CURRENT_URL = window.location.href.split('#')[0].split('?')[0]
+CURRENT_URL = CURRENT_URL.replace(basePath, '/')
+$SIDEBAR_MENU = $('#sidebar')
+let $ETIQUETA=$SIDEBAR_MENU.find('a[href="' + CURRENT_URL + '"]')
+$ETIQUETA.parent('li').addClass('active')
+let $PARENT=$ETIQUETA.parent('li').parent('ul')
+if($PARENT.hasClass('submenu')){
+    $PARENT.addClass('nav-show')
+    $PARENT.parent('li').addClass('open')
+}
