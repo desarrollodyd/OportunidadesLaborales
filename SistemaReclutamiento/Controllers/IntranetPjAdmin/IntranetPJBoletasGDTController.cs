@@ -1232,6 +1232,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string nombreArchivo = Path.GetFileName(archivoProceso.FileName);
                 string pathInsercionArchivoTemporal = Path.Combine(pathDirectorioInsercionTemporal, nombreArchivo);
                 string extensionArchivo = Path.GetExtension(archivoProceso.FileName);
+                //Eliminar Archivos dentro
+                LimpiarDirectorio(pathDirectorioInsercionTemporal);
+                //Insertar Archivo
                 archivoProceso.SaveAs(pathInsercionArchivoTemporal);
                 archivoDescomprimido = DescomprimirArchivo(nombreArchivo,extensionArchivo,pathDirectorioInsercionTemporal);
                 if (archivoDescomprimido.Equals(string.Empty))
@@ -1539,6 +1542,31 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensaje = ex.Message;
             }
             return Json(new { respuesta, mensaje, data = listaEmpresas });
+        }
+        public bool LimpiarDirectorio(string PathDirectorio)
+        {
+            bool respuesta = false;
+            try
+            {
+                System.IO.DirectoryInfo di = new DirectoryInfo(PathDirectorio);
+                if (di == null)
+                {
+                    return respuesta;
+                }
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+                respuesta = true;
+            }catch(Exception ex)
+            {
+                respuesta = false;
+            }
+            return respuesta;
         }
         
     }

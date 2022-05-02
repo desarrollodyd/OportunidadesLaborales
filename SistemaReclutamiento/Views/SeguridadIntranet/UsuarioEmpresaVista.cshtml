@@ -16,15 +16,13 @@
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="widget-box">
-                <div class="widget-header widget-header-flat widget-header-small">
-                        <h4 class="widget-title">Seleccionar Usuario</h4>
-                   
-                </div>
-                <div class="widget-body">
-                  
-                    <div class="widget-main no-padding">
-                        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4>Seleccione usuario para asignar sus Empresas</h4>
+                        </div>
+                        <div class="col-md-6">
                             <div class="input-group">
                                 <span class="input-group-addon">
                                     Usuario
@@ -32,10 +30,66 @@
                                 <select class="form-control input-sm" style="width:100%" id="cboUsuario" name="cboUsuario"></select>
                             </div>
                         </div>
-                        <div id="divEmpresas">
-
-                        </div>
                     </div>
+                </div>
+                <div class="panel-body">
+                    <fieldset>
+                        <legend>Datos Usuario</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-12" style="padding-top:10px">
+                                <div class="input-group mt-10">
+                                    <span class="input-group-addon">
+                                        Usuario
+                                    </span>
+                                    <input type="text" id="txtusuario" class="form-control input-sm" />
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-xs-12" style="padding-top:10px">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        Nombres
+                                    </span>
+                                    <input type="text" id="txtPersona" class="form-control input-sm" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="padding-top:10px">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        Correo
+                                    </span>
+                                    <input type="text" id="txtusuario" class="form-control input-sm" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="padding-top:10px">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        Tipo
+                                    </span>
+                                    <input type="text" id="txtusuario" class="form-control input-sm" />
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-12" style="padding-top:10px">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        Estado
+                                    </span>
+                                    <input type="text" id="txtusuario" class="form-control input-sm" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+                    <fieldset>
+                        <legend>Empresas</legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="divEmpresas">
+
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                   
                 </div>
             </div>
         </div>

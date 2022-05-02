@@ -43,13 +43,6 @@
             defaultDate: fecha_hoy,
             maxDate:new Date()
         })
-        $('#fechaProcesoPdfV2').datetimepicker({
-            format: 'YYYY-MM',
-            ignoreReadonly: true,
-            allowInputToggle: true,
-            defaultDate: fecha_hoy,
-            maxDate:fecha_hoy
-        })
         //carga de salas
         // responseSimple({
         //     url: "sql/TMEMPRListarJson",
@@ -91,17 +84,10 @@
                     let data=response.data
                     $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
                     $("#cboEmpresaListar").append(`<option value="">--Seleccione--<option>`)
-                    $("#cboEmpresaV2").append(`<option value="">--Seleccione--<option>`)
                     $.each(data, function (index, value) {
                         $("#cboEmpresa").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresa").select2({
-                        placeholder: "--Seleccione--", allowClear: true
-                    })
-                    $.each(data, function (index, value) {
-                        $("#cboEmpresaV2").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
-                    });
-                    $("#cboEmpresaV2").select2({
                         placeholder: "--Seleccione--", allowClear: true
                     })
                     $.each(data, function (index, value) {
@@ -212,55 +198,6 @@
                 }
             })
         })
-        $(document).on('click','.btnProcesarPdf',function(e){
-            e.preventDefault()
-            $("#formProcesarPdf").submit()
-            if (_objetoForm_formProcesarPdf.valid()) {
-                let dataForm = $('#formProcesarPdf').serializeFormJSON()
-                let url='/IntranetPJBoletasGDT/BolProcesarPdf2'
-                messageConfirmation({
-                    content: '¿Esta seguro de realizar esta acción?',
-                    callBackSAceptarComplete: function () {
-                        progress.client.AddProgressBoletas = function (message,percentage, hide) {
-                            ProgressBarModalBoletas('show', message,percentage)
-                            $('#ProgressMessage').width(percentage)
-                            if (hide == true) {
-                                ProgressBarModalBoletas()
-                            }
-                        }
-                        $.connection.hub.start().done(function () {
-                            connectionId = $.connection.hub.id
-                            dataForm['connectionId']=connectionId
-                            $.ajax({
-                                type: "POST",
-                                url: basePath+url,
-                                cache: false,
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                data: JSON.stringify(dataForm),
-                                beforeSend: function (xhr) {
-                                },
-                                success: function (response) {
-                                    if(response.respuesta){
-                                    llenarDatatableProceso(response.data)
-                                    }
-                                },
-                                error: function (request, status, error) {
-                                },
-                                complete: function (resul) {
-                                }
-                            });
-                        })
-                    }
-                });
-            }
-            else{
-                messageResponse({
-                    text: "Complete los campos Obligatorios",
-                    type: "error"
-                })
-            }
-        })
         $(document).on('click','.btnListarData',function(e){
             e.preventDefault()
             $("#formListarPfds").submit()
@@ -290,10 +227,6 @@
         $(document).on('change','#cboEmpresa',function(e){
             let nombreEmpresa=$(this).find(':selected').text()
             $("#nombreEmpresa").val(nombreEmpresa)
-        })
-        $(document).on('change','#cboEmpresaV2',function(e){
-            let nombreEmpresa=$(this).find(':selected').text()
-            $("#nombreEmpresaV2").val(nombreEmpresa)
         })
         $(document).on("click", ".chkProcesoPdf", function (e) {
             $('#dataTableProcesoPdf').find('tbody :checkbox')
@@ -438,12 +371,12 @@
             })
         })
         $('body').on('contextmenu', '#pdfview', function(e){ return false; });
-        $(document).on('click','.btnProcesarPdfV2',function(e){
+        $(document).on('click','.btnProcesarPdf',function(e){
             e.preventDefault()
-            $("#formProcesarPdfV2").submit()
-            if (_objetoForm_formProcesarPdfV2.valid()) {
+            $("#formProcesarPdf").submit()
+            if (_objetoForm_formProcesarPdf.valid()) {
                 let url='/IntranetPJBoletasGDT/BolProcesarPdf'
-                let dataForm = new FormData(document.getElementById("formProcesarPdfV2"));
+                let dataForm = new FormData(document.getElementById("formProcesarPdf"));
                 messageConfirmation({
                     content: '¿Esta seguro de realizar esta acción?',
                     callBackSAceptarComplete: function () {
@@ -465,7 +398,7 @@
                                 callBackSuccess: function (response) {
                                     console.log(response);
                                     if(response.respuesta){
-                                        llenarDatatableProcesoV2(response.data)
+                                        llenarDatatableProceso(response.data)
                                     } 
                                 },
                                 loader:false
@@ -514,31 +447,6 @@
             }
         })
         validar_Form({
-            nameVariable: 'formProcesarPdf',
-            contenedor: '#formProcesarPdf',
-            rules: {
-                empresa:
-                {
-                    required: true,
-                },
-                fechaProcesoPdf:
-                {
-                    required: true,
-                },
-
-            },
-            messages: {
-                empresa:
-                {
-                    required: 'Campo Obligatorio',
-                },
-                fechaProcesoPdf:
-                {
-                    required: 'Campo Obligatorio',
-                },
-            }
-        });
-        validar_Form({
             nameVariable: 'formListarPfds',
             contenedor: '#formListarPfds',
             rules: {
@@ -563,8 +471,8 @@
             }
         });
         validar_Form({
-            nameVariable: 'formProcesarPdfV2',
-            contenedor: '#formProcesarPdfV2',
+            nameVariable: 'formProcesarPdf',
+            contenedor: '#formProcesarPdf',
             rules: {
                 empresa:
                 {
@@ -635,46 +543,6 @@
         // { name:"pNode 3 - no child", isParent:true}
     
     ];
-    let llenarDatatableProceso=function(data) {
-        if (!$().DataTable) {
-            console.warn('Advertencia - datatables.min.js no esta declarado.');
-            return;
-        }
-        let addtabla = $("#contenedorTablaProcesoPdf");
-        $(addtabla).empty();
-        $(addtabla).append('<table id="dataTableProcesoPdf" class="table table-condensed table-bordered table-hover" style="width:100%"></table>');
-        simpleDataTable({
-            uniform: false,
-            tableNameVariable: "datatable_dataTableProcesoPdf",
-            table: "#dataTableProcesoPdf",
-            tableColumnsData: data,
-            tableColumns: [
-                {
-                    data: "emp_co_trab",
-                    title: "Nro. Doc.",
-                },
-                {
-                    data: "emp_tipo_doc",
-                    title: "Tipo Doc.",
-                },
-                {
-                    data: "emp_co_trab",
-                    title: "Empleado",
-                    "render":function(value,row,oData){
-                        return oData.emp_apel_pat+ " " + oData.emp_apel_mat+"," + oData.emp_no_trab
-                    }
-                },
-                {
-                    data: "emp_direc_mail",
-                    title: "Dir. envio",
-                },
-                {
-                    data: "emp_ruta_pdf",
-                    title: "Pdf",
-                }
-            ]
-        })
-    }
     let llenarDatatablePdfs=function(data) {
         if (!$().DataTable) {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
@@ -963,17 +831,17 @@
         var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
         return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
     }
-    let llenarDatatableProcesoV2=function(data) {
+    let llenarDatatableProceso=function(data) {
         if (!$().DataTable) {
             console.warn('Advertencia - datatables.min.js no esta declarado.');
             return;
         }
-        let addtabla = $("#contenedorTablaProcesoPdfV2");
+        let addtabla = $("#contenedorTablaProcesoPdf");
         $(addtabla).empty();
-        $(addtabla).append('<table id="dataTableProcesoPdfV2" class="table table-condensed table-bordered table-hover" style="width:100%"></table>');
+        $(addtabla).append('<table id="dataTableProcesoPdf" class="table table-condensed table-bordered table-hover" style="width:100%"></table>');
         simpleDataTable({
             uniform: false,
-            tableNameVariable: "datatable_dataTableProcesoPdfV2",
+            tableNameVariable: "datatable_dataTableProcesoPdf",
             table: "#dataTableProcesoPdfV2",
             tableColumnsData: data,
             tableColumns: [

@@ -155,7 +155,7 @@
                     $.each(dataEmpresas,function(index,value){
                         let checked=value.seleccionado?"checked":""
                         let htmlTag=`
-                        <div  class="col-md-3 col-sm-4"  style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px">
+                        <div  class="col-md-4 col-sm-4"  style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px">
                             <div style="margin-bottom: 0px">
                             <div class="panel-heading" style="background: blanchedalmond;padding: 6px 6px;text-transform: uppercase;">
                                 <label>
