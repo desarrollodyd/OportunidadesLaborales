@@ -42,7 +42,7 @@ namespace SistemaReclutamiento.Controllers.SeguridadIntranet
                     persona = personaBL.PersonaIdObtenerJson(usuario.fk_persona);
                 }
                 var listaempresasTupla = bolEmpresaDAL.BolEmpresaListarJson();
-                listaempresas = listaempresasTupla.lista;
+                listaempresas = listaempresasTupla.lista.OrderBy(x=>x.emp_nomb).ToList();
                 listaUsuarioEmpresa = usuarioEmpresaDAL.GetListadoUsuarioEmpresaPorUsuario(usuario_id);
                 foreach(var item in listaUsuarioEmpresa)
                 {

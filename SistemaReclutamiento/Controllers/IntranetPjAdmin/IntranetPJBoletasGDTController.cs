@@ -7,8 +7,10 @@ using SharpCompress.Common;
 using SharpCompress.Readers;
 using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Entidades.BoletasGDT;
+using SistemaReclutamiento.Entidades.SeguridadIntranet;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Models.BoletasGDT;
+using SistemaReclutamiento.Models.SeguridadIntranet;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
@@ -34,6 +36,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         BolBitacoraModel bitacoraBL = new BolBitacoraModel();
         BolEmpresaModel bolEmpresaBL = new BolEmpresaModel();
         BolDetCertEmpresaModel bolDetCertEmpresaBL = new BolDetCertEmpresaModel();
+        private SEG_UsuarioEmpresaDAL usuarioEmpresaDAL = new SEG_UsuarioEmpresaDAL();
 
         public string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre" };
 
@@ -129,29 +132,33 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             List<dynamic> listaDirectorioEmpresa = new List<dynamic>();
             string direccion = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
             string directorioHijo = "BOLETASAPROCESAR";
+            List<SEG_UsuarioEmpresaEntidad> listaUsuarioEmpresa = new List<SEG_UsuarioEmpresaEntidad>();
+            List<BolEmpresaEntidad> listaEmpresasPostgres= new List<BolEmpresaEntidad>();
             try
             {
-                var listaEmpresaTupla = sqlbl.EmpresaListarJson();
+                var usuarioId = Convert.ToInt32(Session["UsuarioID"]);
+                //var listaEmpresaTupla = sqlbl.EmpresaListarJson();
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
+                var listaEmpresasTuplaPostgres = bolEmpresaBL.BolEmpresaListarPorUsuarioJson(usuarioId);
 
-                if (listaEmpresaTupla.error.Mensaje.Equals(string.Empty)&&configuracionTupla.error.Mensaje.Equals(string.Empty))
+                if (listaEmpresasTuplaPostgres.error.Respuesta&&configuracionTupla.error.Respuesta)
                 {
-                    listaempresa = listaEmpresaTupla.listaempresa;
+                    listaEmpresasPostgres = listaEmpresasTuplaPostgres.lista;
 
                     configuracion = configuracionTupla.configuracion;
                     //Sincronizar empresas hacia postgress
 
-                    bool sincronizado = SincronizarEmpresas(listaempresa,configuracion.config_valor);
+                    //bool sincronizado = SincronizarEmpresas(listaempresa,configuracion.config_valor);
 
                     //Crear directorio principal
                     DirectoryInfo directorioPrincipal =Directory.CreateDirectory(Path.Combine(configuracion.config_valor+directorioHijo));
                     //Creacion de arbol de directorios
-                    foreach (var empresa in listaempresa)
+                    foreach (var empresa in listaEmpresasPostgres)
                     {
                        
-                        string[] arrayNombreEmpresa = empresa.DE_NOMB.Split(' ');
+                        string[] arrayNombreEmpresa = empresa.emp_nomb.Split(' ');
                         string nombreEmpresa = String.Join("", arrayNombreEmpresa);
-                        string nombreDirectorio = empresa.CO_EMPR + "_" + nombreEmpresa;
+                        string nombreDirectorio = empresa.emp_co_ofisis + "_" + nombreEmpresa;
 
                         DirectoryInfo directorioEmpresa =directorioPrincipal.CreateSubdirectory(nombreDirectorio);
                         DirectoryInfo directorioAnio = directorioEmpresa.CreateSubdirectory(Convert.ToString(anio));
@@ -1439,7 +1446,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 Thread.Sleep(2000);
                 ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
             }
-            return Json(new { mensaje, mensajeConsola, respuesta });
+            return Json(new {data=listaInsertar, mensaje, mensajeConsola, respuesta });
         }
         [autorizacion(false)]
         public string DescomprimirArchivo(string nombreArchivo, string extensionArchivo, string pathInsercionArchivoTemporal) 

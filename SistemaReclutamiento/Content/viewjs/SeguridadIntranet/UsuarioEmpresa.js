@@ -5,6 +5,7 @@
     let _componentes=function(){
         $(document).on('change','#cboUsuario',function(e){
             e.preventDefault()
+            $("#divUsuario").hide()
             let usuario_id=$(this).val()
             if(usuario_id){
                 renderizarEmpresas(usuario_id)
@@ -151,13 +152,20 @@
                         text: response.mensaje,
                         type: "success"
                     })
+                    let dataPersona=response.dataPersona
+                    let dataUsuario=response.dataUsuario
+                    $("#txtUsuario").val(dataUsuario.usu_nombre.toUpperCase())
+                    $("#txtPersona").val(`${dataPersona.per_apellido_pat.toUpperCase()} ${dataPersona.per_apellido_mat.toUpperCase()}, ${dataPersona.per_nombre.toUpperCase()}`)
+                    $("#txtCorreo").val(dataPersona.per_correoelectronico.toUpperCase())
+                    $("#txtTipo").val(dataPersona.per_tipo.toUpperCase())
+                    $("#txtEstado").val(dataPersona.per_estado.toUpperCase()=='A'?'ACTIVO':'INACTIVO')
                     let dataEmpresas=response.dataEmpresas
                     $.each(dataEmpresas,function(index,value){
                         let checked=value.seleccionado?"checked":""
                         let htmlTag=`
                         <div  class="col-md-4 col-sm-4"  style="padding-right: 4px; padding-left: 4px; padding-bottom: 4px">
                             <div style="margin-bottom: 0px">
-                            <div class="panel-heading" style="background: blanchedalmond;padding: 6px 6px;text-transform: uppercase;">
+                            <div class="panel-heading" style="background: #ECF9ED;padding: 6px 6px;text-transform: uppercase;">
                                 <label>
                                     <input type="checkbox" class="myCheck" ${checked} value="${value.emp_id}"/>
                                     ${value.emp_nomb.trim()}
@@ -174,6 +182,7 @@
                         radioClass: 'iradio_square-red',
                         increaseArea: '2%' // optional
                     });
+                    $("#divUsuario").show()
                 }
                 else{
                     messageResponse({

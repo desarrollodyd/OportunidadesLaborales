@@ -43,38 +43,14 @@
             defaultDate: fecha_hoy,
             maxDate:new Date()
         })
-        //carga de salas
-        // responseSimple({
-        //     url: "sql/TMEMPRListarJson",
-        //     refresh: false,
-        //     callBackSuccess: function (response) {
-        //         CloseMessages()
-        //         if(response.respuesta){
-        //             let data=response.data
-        //             $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
-        //             $("#cboEmpresaListar").append(`<option value="">--Seleccione--<option>`)
-        //             $("#cboEmpresaV2").append(`<option value="">--Seleccione--<option>`)
-        //             $.each(data, function (index, value) {
-        //                 $("#cboEmpresa").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
-        //             });
-        //             $("#cboEmpresa").select2({
-        //                 placeholder: "--Seleccione--", allowClear: true
-        //             })
-        //             $.each(data, function (index, value) {
-        //                 $("#cboEmpresaV2").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
-        //             });
-        //             $("#cboEmpresaV2").select2({
-        //                 placeholder: "--Seleccione--", allowClear: true
-        //             })
-        //             $.each(data, function (index, value) {
-        //                 $("#cboEmpresaListar").append(`<option value="${value.CO_EMPR}">${value.DE_NOMB}</option>`);
-        //             });
-        //             $("#cboEmpresaListar").select2({
-        //                 placeholder: "--Seleccione--", allowClear: true
-        //             })
-        //         }
-        //     }
-        // })
+        $('#archivoProceso').ace_file_input({
+            no_file: 'sin archivo ...',
+            btn_choose: 'escoger',
+            btn_change: 'cambiar',
+            droppable: false,
+            onchange: null,
+            thumbnail: false
+        });
         responseSimple({
             url:'IntranetPJBoletasGDT/BolEmpresaListarPorUsuarioJson',
             refresh:false,
@@ -191,10 +167,16 @@
                 refresh: false,
                 data: JSON.stringify(dataForm),
                 callBackSuccess: function (response) {
-                    // CloseMessages()
-                    zNodes=response.data;
-                    $("#mostrarArbolDirectorios").show();
-                    $.fn.zTree.init($("#treeDemo2"), {}, zNodes)
+                    CloseMessages()
+                    if(response.respuesta){
+                        zNodes=response.data;
+                        $("#mostrarArbolDirectorios").show();
+                        $.fn.zTree.init($("#treeDemo2"), {}, zNodes)
+                    }
+                    messageResponse({
+                        text: response.mensaje,
+                        type: response.respuesta?'success':'error'
+                    })
                 }
             })
         })
@@ -371,50 +353,77 @@
             })
         })
         $('body').on('contextmenu', '#pdfview', function(e){ return false; });
+        $(document).off('click', ".btnProcesarPdf")
         $(document).on('click','.btnProcesarPdf',function(e){
             e.preventDefault()
-            $("#formProcesarPdf").submit()
-            if (_objetoForm_formProcesarPdf.valid()) {
-                let url='/IntranetPJBoletasGDT/BolProcesarPdf'
-                let dataForm = new FormData(document.getElementById("formProcesarPdf"));
-                messageConfirmation({
-                    content: '¿Esta seguro de realizar esta acción?',
-                    callBackSAceptarComplete: function () {
-                        progress.client.AddProgressBoletas = function (message,percentage, hide) {
-                            ProgressBarModalBoletas('show', message,percentage)
-                            $('#ProgressMessage').width(percentage)
-                            if (hide == true) {
-                                ProgressBarModalBoletas()
-                            }
-                        }
-                        $.connection.hub.start().done(function () {
-                            connectionId = $.connection.hub.id
-                            dataForm.append("connectionId",connectionId)
-                            // dataForm['connectionId']=connectionId
-                            responseFileSimple({
-                                url: url,
-                                data: dataForm,
-                                refresh: false,
-                                callBackSuccess: function (response) {
-                                    console.log(response);
-                                    if(response.respuesta){
-                                        llenarDatatableProceso(response.data)
-                                    } 
-                                },
-                                loader:false
-                            });
-                        })
-                    }
+            CloseMessages()
+          
+            if($("#cboEmpresa").val()==''){
+                messageResponse({
+                    text: "Debe seleccionar una empresa",
+                    type: "warning"
+                })
+                return false
+            }
+            if($("#fechaProcesoPdf").val()==''){
+                messageResponse({
+                    text: "Debe ingresar una fecha valida",
+                    type: "warning"
+                })
+                return false
+            }
+            let file = $('#archivoProceso')[0].files[0];
+            if(file==null){
+                messageResponse({
+                    text: "Debe seleccionar un archivo .rar ó .zip",
+                    type: "warning"
+                })
+                return false
+            }
+            let fileNameArray = file.name.split(".");
+            let extension = fileNameArray.pop().toLowerCase();
+            if (extension != 'rar' && extension !='zip') {
+                messageResponse({
+                    text: 'Sólo Se Permite formato Comprimido (rar ó zip)',
+                    type: "warning"
                 });
+                return false
+            }
+            $("#formProcesarPdf").submit()
+            let url='/IntranetPJBoletasGDT/BolProcesarPdf'
+            let dataForm = new FormData(document.getElementById("formProcesarPdf"));
+            messageConfirmation({
+                content: '¿Esta seguro de realizar esta acción?, la informacion anterior correspondiente a los campos seleccionados seran eliminados',
+                callBackSAceptarComplete: function () {
+                    progress.client.AddProgressBoletas = function (message,percentage, hide) {
+                        ProgressBarModalBoletas('show', message,percentage)
+                        $('#ProgressMessage').width(percentage)
+                        if (hide == true) {
+                            ProgressBarModalBoletas()
+                        }
+                    }
+                    $.connection.hub.start().done(function () {
+                        connectionId = $.connection.hub.id
+                        dataForm.append("connectionId",connectionId)
+                        // dataForm['connectionId']=connectionId
+                        responseFileSimple({
+                            url: url,
+                            data: dataForm,
+                            refresh: false,
+                            callBackSuccess: function (response) {
+                                console.log(response);
+                                if(response.respuesta){
+                                    llenarDatatableProceso(response.data)
+                                } 
+                            },
+                            loader:false
+                        });
+                    })
+                }
+            });
 
                
-            }
-            else{
-                messageResponse({
-                    text: "Complete los campos Obligatorios",
-                    type: "error"
-                })
-            }
+           
         })
     }
     let _metodos=function(){
@@ -482,7 +491,9 @@
                 {
                     required: true,
                 },
-
+                archivoProceso:{
+                    required: true,
+                }
             },
             messages: {
                 empresa:
@@ -493,6 +504,9 @@
                 {
                     required: 'Campo Obligatorio',
                 },
+                archivoProceso:{
+                    required: 'Campo Obligatorio',
+                }
             }
         });
     }
@@ -842,7 +856,7 @@
         simpleDataTable({
             uniform: false,
             tableNameVariable: "datatable_dataTableProcesoPdf",
-            table: "#dataTableProcesoPdfV2",
+            table: "#dataTableProcesoPdf",
             tableColumnsData: data,
             tableColumns: [
                 {
