@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.SeguridadIntranet
 {
-    [autorizacion(false)]
+    [autorizacion]
     public class UsuarioEmpresaController : Controller
     {
         private BolEmpresaModel bolEmpresaDAL = new BolEmpresaModel();

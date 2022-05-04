@@ -211,7 +211,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje, respuesta,data=listaDirectorioEmpresa });
         }
-
         public ActionResult BolListarPdfJson(DateTime fechaListar,string empresaListar,string nombreEmpresaListar)
         {
             string mensaje = "No se pudieron listar las boletas";
@@ -595,50 +594,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje,respuesta });
         }
-        public async Task<bool> EnviarCorreoAsync(int usu_id,string remitente, string password, string destinatarios,string asunto, string body = "")
-        {
-            bool respuesta = false;
-            SmtpClient cliente;
-            MailMessage email;
-            BolBitacoraEntidad bitacora = new BolBitacoraEntidad();
-            try
-            {
-                cliente = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(remitente, password)
-                };
-                email = new MailMessage(remitente, destinatarios.Trim(), asunto, body)
-                {
-                    IsBodyHtml = true,
-                    BodyEncoding = System.Text.Encoding.UTF8,
-                    SubjectEncoding = System.Text.Encoding.Default
-                };
-                await cliente.SendMailAsync(email).ContinueWith(t=> {
-                    bitacora.btc_fecha_reg = DateTime.Now;
-                    bitacora.btc_accion = "Envio Correo";
-                    bitacora.btc_usuario_id = usu_id;
-                    bitacora.btc_ruta_pdf = "ENVIADO - "+"remitente: " + remitente+"; destinatario: "+destinatarios;
-
-                    var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
-                }) ;
-               
-                respuesta = true;
-            }
-            catch (Exception ex)
-            {
-                respuesta = false;
-                bitacora.btc_fecha_reg = DateTime.Now;
-                bitacora.btc_accion = "Envio Correo";
-                bitacora.btc_usuario_id = usu_id;
-                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - "+"remitente: " + remitente + "; destinatario: " + destinatarios;
-                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
-            }
-            return respuesta;
-        }
-  
         [HttpPost]
         [autorizacion(false)]
         public ActionResult VisualizarPdfIntranetAdminJson(BolEmpleadoBoletaEntidad empleado)
@@ -760,7 +715,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { mensaje, respuesta, data = listaBitacoras });
         }
-      
         [HttpPost]
         public ActionResult BolEmpresaListarJson()
         {
@@ -926,7 +880,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta, mensaje });
         }
-
         [HttpPost]
         public ActionResult BolEmpresaSincronizarJson()
         {
@@ -1101,72 +1054,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { respuesta, mensaje });
         }
         [HttpPost]
-        public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
-        {
-            bool respuesta = true;
-            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
-            string directorioFirma = "DIRECTORIOCERTIFICADOS";
-            try
-            {
-
-                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
-                if (listaEmpresasPostgresTupla.error.Respuesta)
-                {
-                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
-                    foreach (var empresaOfisis in listaEmpresas)
-                    {
-                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
-                        if (empresaConsulta == null)
-                        {
-                            //insertar empresa
-                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
-                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
-                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
-                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
-                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
-                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
-                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
-                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
-                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
-                            var InsertadoTupla = bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
-                            respuesta = InsertadoTupla.error.Respuesta;
-                        }
-                        if (!respuesta)
-                        {
-                            break;
-                        }
-                    }
-                }
-                //crear directorios
-                DirectoryInfo directorioPrincipal = Directory.CreateDirectory(Path.Combine(directorioRaizArchivosFirma) + directorioFirma);
-                foreach (var empresa in listaEmpresas)
-                {
-                    string[] arrayNombreEmpresa = empresa.DE_NOMB.Split(' ');
-                    string nombreEmpresa = String.Join("", arrayNombreEmpresa);
-                    string nombreDirectorio = empresa.CO_EMPR + "_" + nombreEmpresa;
-
-                    DirectoryInfo directorioEmpresa = directorioPrincipal.CreateSubdirectory(nombreDirectorio);
-                    DirectoryInfo directorioCertificados = directorioEmpresa.CreateSubdirectory("CERTIFICADOS");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                respuesta = false;
-            }
-            return respuesta;
-        }
-        static double ConvertBytesToMegabytes(long bytes)
-        {
-            return Math.Round(((bytes / 1024f) / 1024f), 2);
-        }
-
-        static double ConvertKilobytesToMegabytes(long kilobytes)
-        {
-            return Math.Round((kilobytes / 1024f), 2);
-        }
-        [autorizacion(false)]
-        [HttpPost]
         public ActionResult BolProcesarPdf(HttpPostedFileBase archivoProceso,DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId="")
         {
             string mensaje = string.Empty;
@@ -1207,14 +1094,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 {
                     mensaje = "Archivo comprimido obligatorio";
                     mensajeConsola = "Archivo comprimido obligatorio";
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
                 //
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(TIPO_CONFIGURACION);
                 if (!configuracionTupla.error.Respuesta&&configuracionTupla.configuracion.config_id==0)
                 {
-                    mensaje = "No se pudo encontrar el registro de configuracion";
+                    mensaje = "No se pudo encontrar el registro de configuracion en intranet.bol_configuracion";
                     mensajeConsola = configuracionTupla.error.Mensaje;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
                 configuracion = configuracionTupla.configuracion;
@@ -1227,6 +1116,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     //DirectoryInfo di = Directory.CreateDirectory(pathDirectorioInsercionTemporal);
                     mensaje = "No se pudo encontrar el directorio de proceso";
                     mensajeConsola = "Directorio de proceso"+ pathDirectorioInsercionTemporal;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
                 //Creacion de variables
@@ -1239,6 +1129,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string nombreArchivo = Path.GetFileName(archivoProceso.FileName);
                 string pathInsercionArchivoTemporal = Path.Combine(pathDirectorioInsercionTemporal, nombreArchivo);
                 string extensionArchivo = Path.GetExtension(archivoProceso.FileName);
+                //Verificar que sea .rar
+                if (!extensionArchivo.ToLower().Equals(".rar"))
+                {
+                    mensaje = "El archivo debe tener formato .rar";
+                    mensajeConsola = "Extension de Archivo: "+extensionArchivo;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
                 //Eliminar Archivos dentro
                 LimpiarDirectorio(pathDirectorioInsercionTemporal);
                 //Insertar Archivo
@@ -1246,8 +1144,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 archivoDescomprimido = DescomprimirArchivo(nombreArchivo,extensionArchivo,pathDirectorioInsercionTemporal);
                 if (archivoDescomprimido.Equals(string.Empty))
                 {
-                    mensaje = "No se pudo crear el archivo temporal para trabajo";
-                    mensajeConsola = "No se pudo crear el archivo temporal para trabajo";
+                    mensaje = "Error al Extraer Archivo, el archivo comprimido debe ser un documento .pdf";
+                    mensajeConsola = "Error al descomprimir archivo";
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
                 //realizar el mismo proceso de creacion de boletas
@@ -1448,61 +1347,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new {data=listaInsertar, mensaje, mensajeConsola, respuesta });
         }
-        [autorizacion(false)]
-        public string DescomprimirArchivo(string nombreArchivo, string extensionArchivo, string pathInsercionArchivoTemporal) 
-        {
-            string mensaje = string.Empty;
-            try
-            {
-                if (extensionArchivo.ToLower().Equals(".rar"))
-                {
-                    using (var archive = RarArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
-                    {
-                        if (archive.Entries.Count == 1)
-                        {
-                            foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                            {
-                                entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
-                                {
-                                    ExtractFullPath = true,
-                                    Overwrite = true
-                                });
-                                return entry.Key;
-                            }
-                        }
-                        return string.Empty;
-                    }
-                }
-                else if (extensionArchivo.ToLower().Equals(".zip"))
-                {
-                    using (var archive = ZipArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
-                    {
-                        if (archive.Entries.Count == 1)
-                        {
-                            foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                            {
-                                entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
-                                {
-                                    ExtractFullPath = true,
-                                    Overwrite = true
-                                });
-                                return entry.Key;
-                            }
-                        }
-                        return string.Empty;
-                    }
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            catch(Exception ex)
-            {
-                mensaje = string.Empty;
-            }
-            return mensaje;
-        }
         [HttpPost]
         public ActionResult BolEmpresaListarPorUsuarioJson()
         {
@@ -1550,6 +1394,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta, mensaje, data = listaEmpresas });
         }
+        [autorizacion(false)]
         public bool LimpiarDirectorio(string PathDirectorio)
         {
             bool respuesta = false;
@@ -1575,6 +1420,194 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return respuesta;
         }
-        
+        [autorizacion(false)]
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return Math.Round(((bytes / 1024f) / 1024f), 2);
+        }
+        [autorizacion(false)]
+        static double ConvertKilobytesToMegabytes(long kilobytes)
+        {
+            return Math.Round((kilobytes / 1024f), 2);
+        }
+        [autorizacion(false)]
+        public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
+        {
+            bool respuesta = true;
+            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            try
+            {
+
+                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
+                if (listaEmpresasPostgresTupla.error.Respuesta)
+                {
+                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
+                    foreach (var empresaOfisis in listaEmpresas)
+                    {
+                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
+                        if (empresaConsulta == null)
+                        {
+                            //insertar empresa
+                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
+                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
+                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
+                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
+                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
+                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
+                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
+                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
+                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
+                            var InsertadoTupla = bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
+                            respuesta = InsertadoTupla.error.Respuesta;
+                        }
+                        if (!respuesta)
+                        {
+                            break;
+                        }
+                    }
+                }
+                //crear directorios
+                DirectoryInfo directorioPrincipal = Directory.CreateDirectory(Path.Combine(directorioRaizArchivosFirma) + directorioFirma);
+                foreach (var empresa in listaEmpresas)
+                {
+                    string[] arrayNombreEmpresa = empresa.DE_NOMB.Split(' ');
+                    string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                    string nombreDirectorio = empresa.CO_EMPR + "_" + nombreEmpresa;
+
+                    DirectoryInfo directorioEmpresa = directorioPrincipal.CreateSubdirectory(nombreDirectorio);
+                    DirectoryInfo directorioCertificados = directorioEmpresa.CreateSubdirectory("CERTIFICADOS");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+            }
+            return respuesta;
+        }
+        [autorizacion(false)]
+        public string DescomprimirArchivo(string nombreArchivo, string extensionArchivo, string pathInsercionArchivoTemporal)
+        {
+            string mensaje = string.Empty;
+            try
+            {
+                if (extensionArchivo.ToLower().Equals(".rar"))
+                {
+                    using (var archive = RarArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
+                    {
+                        if (archive.Entries.Count == 1)
+                        {
+                            var entry = archive.Entries.Where(x => !x.IsDirectory).FirstOrDefault();
+                            if (entry == null)
+                            {
+                                return string.Empty;
+                            }
+                            string FileExtension = Path.GetExtension(entry.Key);
+                            if (!FileExtension.ToLower().Equals(".pdf"))
+                            {
+                                return string.Empty;
+                            }
+                            entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                            {
+                                ExtractFullPath = true,
+                                Overwrite = true
+                            });
+                            return entry.Key;
+                        }
+                        return string.Empty;
+                    }
+                }
+                //else if (extensionArchivo.ToLower().Equals(".zip"))
+                //{
+                //    using (var archive = ZipArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
+                //    {
+                //        if (archive.Entries.Count == 1)
+                //        {
+                //            var entry = archive.Entries.Where(x => !x.IsDirectory).FirstOrDefault();
+                //            if (entry == null)
+                //            {
+                //                return string.Empty;
+                //            }
+                //            string FileExtension = Path.GetExtension(entry.Key);
+                //            if (!FileExtension.ToLower().Equals(".pdf"))
+                //            {
+                //                return string.Empty;
+                //            }
+                //            entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                //            {
+                //                ExtractFullPath = true,
+                //                Overwrite = true
+                //            });
+                //            return entry.Key;
+                //            //foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                //            //{
+                //            //    entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                //            //    {
+                //            //        ExtractFullPath = true,
+                //            //        Overwrite = true
+                //            //    });
+                //            //    return entry.Key;
+                //            //}
+                //        }
+                //        return string.Empty;
+                //    }
+                //}
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = string.Empty;
+            }
+            return mensaje;
+        }
+        [autorizacion(false)]
+        public async Task<bool> EnviarCorreoAsync(int usu_id, string remitente, string password, string destinatarios, string asunto, string body = "")
+        {
+            bool respuesta = false;
+            SmtpClient cliente;
+            MailMessage email;
+            BolBitacoraEntidad bitacora = new BolBitacoraEntidad();
+            try
+            {
+                cliente = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(remitente, password)
+                };
+                email = new MailMessage(remitente, destinatarios.Trim(), asunto, body)
+                {
+                    IsBodyHtml = true,
+                    BodyEncoding = System.Text.Encoding.UTF8,
+                    SubjectEncoding = System.Text.Encoding.Default
+                };
+                await cliente.SendMailAsync(email).ContinueWith(t => {
+                    bitacora.btc_fecha_reg = DateTime.Now;
+                    bitacora.btc_accion = "Envio Correo";
+                    bitacora.btc_usuario_id = usu_id;
+                    bitacora.btc_ruta_pdf = "ENVIADO - " + "remitente: " + remitente + "; destinatario: " + destinatarios;
+
+                    var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
+                });
+
+                respuesta = true;
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                bitacora.btc_fecha_reg = DateTime.Now;
+                bitacora.btc_accion = "Envio Correo";
+                bitacora.btc_usuario_id = usu_id;
+                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - " + "remitente: " + remitente + "; destinatario: " + destinatarios;
+                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
+            }
+            return respuesta;
+        }
+
     }
 }

@@ -375,16 +375,16 @@
             let file = $('#archivoProceso')[0].files[0];
             if(file==null){
                 messageResponse({
-                    text: "Debe seleccionar un archivo .rar ó .zip",
+                    text: "Debe seleccionar un archivo .rar",
                     type: "warning"
                 })
                 return false
             }
             let fileNameArray = file.name.split(".");
             let extension = fileNameArray.pop().toLowerCase();
-            if (extension != 'rar' && extension !='zip') {
+            if (extension != 'rar') {
                 messageResponse({
-                    text: 'Sólo Se Permite formato Comprimido (rar ó zip)',
+                    text: 'Sólo Se Permite formato Comprimido .rar',
                     type: "warning"
                 });
                 return false
@@ -414,7 +414,8 @@
                                 console.log(response);
                                 if(response.respuesta){
                                     llenarDatatableProceso(response.data)
-                                } 
+                                }
+                                $('#mod-progress').modal('hide') 
                             },
                             loader:false
                         });
