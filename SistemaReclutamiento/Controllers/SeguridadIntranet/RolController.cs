@@ -1,5 +1,6 @@
 ﻿using SistemaReclutamiento.Entidades.SeguridadIntranet;
 using SistemaReclutamiento.Models.SeguridadIntranet;
+using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace SistemaReclutamiento.Controllers.SeguridadIntranet
 {
+    [autorizacion]
     public class RolController : Controller
     {
         private SEG_RolDAL webRolBl = new SEG_RolDAL();

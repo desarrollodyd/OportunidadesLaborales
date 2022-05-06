@@ -59,7 +59,6 @@ namespace SistemaReclutamiento.Utilitarios
             ////
             string control = filterContext.Controller.ValueProvider.GetValue("Controller").AttemptedValue;
             string accion = filterContext.Controller.ValueProvider.GetValue("action").AttemptedValue;
-            
             bool authorize = false;
             Metodo_atributos metodoObjeto = new SeguridadIntranetController().Metodo_Objeto(control, accion);
             if (metodoObjeto.seguridad == false)
@@ -196,7 +195,9 @@ namespace SistemaReclutamiento.Utilitarios
                     mensaje.Expires = now.AddYears(50);
                     context.HttpContext.Response.Cookies.Add(mensaje);
 
-                    context.Result = new RedirectToRouteResult("reporte", null);
+                    //context.Result = new RedirectToRouteResult("reporte", null);
+                    //var httpContext = context.HttpContext;
+                    context.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "Error", action = "noautorizadointranetsgc" }));
                 }
 
             }

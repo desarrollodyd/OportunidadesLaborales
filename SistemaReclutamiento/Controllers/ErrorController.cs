@@ -20,5 +20,10 @@ namespace SistemaReclutamiento.Controllers
             Response.StatusCode = 404;
             return View("NotFound");
         }
+        public ActionResult NoAutorizadoIntranetSGC()
+        {
+            Response.StatusCode = 401;
+            return View("NoAutorizadoIntranetSGC");
+        }
     }
 }

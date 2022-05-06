@@ -5648,6 +5648,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJEmpresas.cshtml" />
     <Content Include="Views\SeguridadIntranet\RolListadoVista.cshtml" />
     <Content Include="Views\SeguridadIntranet\UsuarioEmpresaVista.cshtml" />
+    <Content Include="Views\Error\NoAutorizadoIntranetSGC.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
