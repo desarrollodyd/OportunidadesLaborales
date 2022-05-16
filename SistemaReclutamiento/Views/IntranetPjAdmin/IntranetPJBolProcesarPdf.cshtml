@@ -1,0 +1,118 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Proceso Boletas GDT</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab1" data-tab="tab1">
+                            <i class="orange ace-icon fa fa-tachometer bigger-110"></i>
+                            Procesar PDF
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab1" class="tab-pane in active">
+                        <div class="row">
+                            <form id="formProcesarPdf">
+                                <input type="hidden" name="nombreEmpresa" value="" id="nombreEmpresa" />
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Empresa
+                                            </span>
+                                            <select class="form-control input-sm" name="empresa" id="cboEmpresa" style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha
+                                            </span>
+                                            <input type="text" name="fechaProcesoPdf" id="fechaProcesoPdf" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Archivo(.zip,.rar)
+                                            </span>
+                                            <input type="file" name="archivoProceso" id="archivoProceso" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-white btn-primary btn-block btn-round btnProcesarPdf" data-rel="tooltip" title="ProcesarPdf">
+                                            <i class="ace-icon glyphicon glyphicon-list-alt"></i> Procesar PDF
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div class="table-responsive" id="contenedorTablaProcesoPdf">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div><!-- /.page-content -->
+@*PROGRESS BAR MODAL*@
+<div class="modal fade in" id="mod-progress" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="i-circle warning"><i class="fa fa-info"></i></div>
+                    <div id="result" style="font-size: 1.1em; padding-bottom: 5px">
+                        <p id="progressBarParagraph"></p>
+                    </div>
+                    <div style="width: 30%; margin: 0 auto; display:none;">
+                        <div id="progressbar" style="width: 300px; height: 15px"></div>
+                        <br />
+                    </div>
+                    <div>
+                        <div id="ProgressStripe" class="progress progress-striped active" style="position:relative; top:10px; width:100%;">
+                            <span id="ProgressBarSpan" align="center" style="position:absolute"></span>
+                            <div id="ProgressMessage" class="progress-bar progress-bar-info" style="width: 100%; border:none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBolProcesarPdf.js"></script>
+}

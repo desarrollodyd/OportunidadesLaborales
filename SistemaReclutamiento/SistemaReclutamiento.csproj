@@ -4173,6 +4173,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBoletasGDT.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolProcesarPdf.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJEmpresas.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJExcel.js" />
@@ -5479,6 +5480,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\EnvioCorreoHub.cs" />
     <Compile Include="Hubs\ProgressHub.cs" />
     <Compile Include="Models\BoletasGDT\BolBitacoraModel.cs" />
     <Compile Include="Models\BoletasGDT\BolConfiguracionModel.cs" />
@@ -5558,6 +5560,7 @@
     <Compile Include="Utilitarios\Certificado.cs" />
     <Compile Include="Utilitarios\Conversiones.cs" />
     <Compile Include="Utilitarios\Correo.cs" />
+    <Compile Include="Utilitarios\EnvioCorreosFunction.cs" />
     <Compile Include="Utilitarios\Firmante.cs" />
     <Compile Include="Utilitarios\funciones.cs" />
     <Compile Include="Utilitarios\GeneradorPassword.cs" />
@@ -5649,6 +5652,10 @@
     <Content Include="Views\SeguridadIntranet\RolListadoVista.cshtml" />
     <Content Include="Views\SeguridadIntranet\UsuarioEmpresaVista.cshtml" />
     <Content Include="Views\Error\NoAutorizadoIntranetSGC.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJBolProcesarPdf.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJBolConfiguracionDirectorios.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJBolEnvioBoletas.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJBolBitacora.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

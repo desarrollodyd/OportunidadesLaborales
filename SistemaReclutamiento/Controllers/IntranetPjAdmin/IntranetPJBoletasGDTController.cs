@@ -1608,6 +1608,107 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return respuesta;
         }
+        [autorizacion(false)]
+        [HttpPost]
+        public ActionResult BolEnviarCorreosHub(List<BolEmpleadoBoletaEntidad> listaBoletas,string connectionId)
+        {
+            string mensaje = "";
+            bool respuesta = false;
+            string remitente = ConfigurationManager.AppSettings["user_boletasgdt"].ToString();
+            string password = ConfigurationManager.AppSettings["password_boletasgdt"].ToString();
+            string direccionesEnvio = ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
+            try
+            {
+                var basePath = "http://" + Request.Url.Authority;
+                if (listaBoletas.Count > 0)
+                {
+                    UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
+                    string mes = "";
+
+                    decimal totalElementos = listaBoletas.Count;
+                    decimal limit = 0;
+                    decimal porcentaje = 0;
+                    foreach (var boleta in listaBoletas)
+                    {
+                        string mensajeSignalr = "No se pudo enviar el correo a :";
+                        //string direccionesEnvio = boleta.emp_direc_mail;
+                        int periodo = Convert.ToInt32(boleta.emp_periodo) - 1;
+                        mes = meses[periodo];
+                        //string direccionesEnvio = "diego.canchari@gladcon.com";
+                        string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
+                        string cuerpoMensaje = ("Buenos dias, se ha creado su boleta <br>" +
+                             " <br>Mes : " + mes + " <br>Año : " + boleta.emp_anio + "<br>Cod. Trabajador :" + boleta.emp_co_trab +
+                             "<br>Empresa: " + boleta.nombreEmpresa +
+                             " <br>Puede visualizarla en:" +
+                             " <h3><a href='"+basePath+"/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
+                             "<br>");
+                        string asunto = "Boleta creada, Trabajador: " + nombreEmpleado;
+                        bool respuestaEnvio = EnviarEmailBoleta(usuario.usu_id, remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
+                        if (respuestaEnvio)
+                        {
+                            mensajeSignalr = "Correo Enviado a :";
+                        }
+                        porcentaje = (limit * 100 / totalElementos);
+                        porcentaje = Math.Round(porcentaje, 2);
+
+                        limit++;
+                        EnvioCorreosFunction.SendProgressBoletas(mensajeSignalr + direccionesEnvio, porcentaje, false, connectionId);
+                    }
+
+                    mensaje = "Envio Iniciado";
+                    respuesta = true;
+                }
+                else
+                {
+                    mensaje = "No se encontro registros a enviar";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { mensaje, respuesta });
+        }
+        public bool EnviarEmailBoleta(int usu_id, string remitente, string password, string destinatarios, string asunto, string body = "")
+        {
+            bool respuesta = false;
+            BolBitacoraEntidad bitacora = new BolBitacoraEntidad();
+            SmtpClient cliente;
+            MailMessage email;
+            try
+            {
+                cliente = new SmtpClient("smtp.gmail.com", 587)
+                {
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(remitente, password)
+                };
+                email = new MailMessage(remitente, destinatarios.Trim(), asunto, body)
+                {
+                    IsBodyHtml = true,
+                    BodyEncoding = System.Text.Encoding.UTF8,
+                    SubjectEncoding = System.Text.Encoding.Default
+                };
+                cliente.Send(email);
+                respuesta = true;
+            }
+            catch(Exception ex)
+            {
+                respuesta = false;
+                bitacora.btc_fecha_reg = DateTime.Now;
+                bitacora.btc_accion = "Envio Correo";
+                bitacora.btc_usuario_id = usu_id;
+                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - " + "remitente: " + remitente + "; destinatario: " + destinatarios;
+                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
+            }
+            return respuesta;
+        }
+        public ActionResult BolProcesarPdfVista()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJBolProcesarPdf.cshtml");
+        }
 
     }
 }

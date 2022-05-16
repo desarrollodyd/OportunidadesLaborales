@@ -223,13 +223,13 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-                <li class="cabecera oculto" data-menu1="BoletasGDT" data-titulo="Boletas GDT">
+                @*<li class="cabecera oculto" data-menu1="BoletasGDT" data-titulo="Boletas GDT">
                     <a href="~/IntranetPjAdmin/PanelBoletasGDT">
                         <i class="menu-icon fa fa-file-o"></i>
                         <span class="menu-text"> Boletas GDT</span>
                     </a>
                     <b class="arrow"></b>
-                </li>
+                </li>*@
                 <li class="cabecera oculto" data-menu1="Empresas" data-titulo="Empresas">
                     <a href="~/IntranetPjAdmin/PanelEmpresas">
                         <i class="menu-icon fa fa-file-o"></i>
@@ -237,13 +237,24 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-                @*<li class="cabecera oculto" data-menu1="Seguridad" data-titulo="Seguridad">
-                    <a href="~/SeguridadIntranet/SeguridadIntranetVista">
-                        <i class="menu-icon fa fa-file-o"></i>
-                        <span class="menu-text"> Seguridad</span>
+                <li class="cabecera" data-menu1="BoletasGDT" data-titulo="BoletasGDT">
+                    <a href="#" class="dropdown-toggle">
+                        <i class="menu-icon fa fa-lock"></i>
+                        <span class="menu-text"> Boletas GDT</span>
+                        <b class="arrow fa fa-angle-down"></b>
                     </a>
+
                     <b class="arrow"></b>
-                </li>*@
+                    <ul class="submenu">
+                        <li class="BoletasGDT oculto" data-menu1="ProcesarPdf" data-titulo="ProcesarPdf">
+                            <a href="~/IntranetPJBoletasGDT/BolProcesarPdfVista">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Procesar Pdfs
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    </ul>
+                </li>
                 <li class="cabecera" data-menu1="Seguridad" data-titulo="Seguridad">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon fa fa-lock"></i>
