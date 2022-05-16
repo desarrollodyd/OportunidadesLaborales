@@ -1,7 +1,92 @@
 ﻿
 @{
-    ViewBag.Title = "IntranetPJBolEnvioBoletas";
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
 }
+@section AddToHead
+{
+    @* Pdf Viewer *@
+    <link href="~/Content/intranetSGC/pdfviewer/jquery-ui.css" rel="stylesheet" />
+    <script src="~/Content/intranetSGC/pdfviewer/pdf.min.js"></script>
+    <script src="~/Content/intranetSGC/pdfviewer/pdf.worker.js"></script>
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Boletas GDT</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li  class="active">
+                        <a data-toggle="tab" href="#tab3" data-tab="tab3">
+                            <i class="green ace-icon fa fa-linkedin-square bigger-110"></i>
+                            Envío PDFs
+                        </a>
+                    </li>
+                </ul>
 
-<h2>IntranetPJBolEnvioBoletas</h2>
+                <div class="tab-content">
+                    <div id="tab3" class="tab-pane">
+                        <div class="row">
+                            <form id="formListarPfds">
+                                <input type="hidden" name="nombreEmpresaListar" value="" id="nombreEmpresaListar" />
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Empresa
+                                            </span>
+                                            <select class="form-control input-sm" name="empresaListar" id="cboEmpresaListar" style="width:100%"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha
+                                            </span>
+                                            <input type="text" name="fechaListar" id="fechaListar" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <button class="btn btn-white btn-primary btn-block btn-round btnListarData" data-rel="tooltip" title="Listar">
+                                            <i class="ace-icon glyphicon glyphicon-list-alt"></i> Listar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12" style="display:none" id="divEnvioPDFs">
+                                <div class="form-group">
+                                    <button class="btn btn-white btn-success btn-block btn-round btnEnviarPDFs" data-rel="tooltip" title="Enviar Correos">
+                                        <i class="ace-icon glyphicon glyphicon-list-alt"></i> Enviar Correos
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div class="table-responsive" id="contenedorTablaListar">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+</div><!-- /.page-content -->
+<!-- /.modal -->
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBoletasGDT.js"></script>
+}
