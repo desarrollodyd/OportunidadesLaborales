@@ -552,6 +552,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string direccionesEnvio= ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
             try
             {
+                var basePath = "http://" + Request.Url.Authority;
                 if (listaBoletas.Count > 0)
                 {
                     UsuarioEntidad usuario=(UsuarioEntidad)Session["usuSGC_full"];
@@ -567,7 +568,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                              " <br>Mes : "+mes+" <br>Año : "+boleta.emp_anio +"<br>Cod. Trabajador :"+boleta.emp_co_trab+
                              "<br>Empresa: "+boleta.nombreEmpresa+
                              " <br>Puede visualizarla en:"+
-                             " <h3><a href='http://181.65.130.36:2222/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
+                             " <h3><a href='"+basePath+"/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
                              "<br>");
                         string asunto = "Boleta creada, Trabajador: " + nombreEmpleado ;
                         Task.Run(() =>
@@ -1620,6 +1621,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 var basePath = "http://" + Request.Url.Authority;
+                EnvioCorreosFunction.SendProgressBoletas("Iniciando Proceso", 0, false, connectionId);
+                Thread.Sleep(1000);
                 if (listaBoletas.Count > 0)
                 {
                     UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
@@ -1652,6 +1655,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         porcentaje = Math.Round(porcentaje, 2);
 
                         limit++;
+                        var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
                         EnvioCorreosFunction.SendProgressBoletas(mensajeSignalr + direccionesEnvio, porcentaje, false, connectionId);
                     }
 
@@ -1662,6 +1666,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 {
                     mensaje = "No se encontro registros a enviar";
                 }
+                EnvioCorreosFunction.SendProgressBoletas("Proceso Terminado", 100, true, connectionId);
+                Thread.Sleep(1000);
 
             }
             catch (Exception ex)
@@ -1708,6 +1714,18 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         public ActionResult BolProcesarPdfVista()
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJBolProcesarPdf.cshtml");
+        }
+        public ActionResult BolEnvioBoletasVista()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJBolEnvioBoletas.cshtml");
+        }
+        public ActionResult BolConfiguracionDirectorioVista()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJBolConfiguracionDirectorios.cshtml");
+        }
+        public ActionResult BolBitacoraVista()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJBolBitacora.cshtml");
         }
 
     }

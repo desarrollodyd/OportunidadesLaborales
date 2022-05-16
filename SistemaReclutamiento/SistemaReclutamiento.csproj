@@ -4172,6 +4172,9 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminIndex.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJAdminLogin.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolBitacora.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolConfiguracionDirectorios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolEnvioBoletas.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBoletasGDT.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolProcesarPdf.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJComentarios.js" />

@@ -15,7 +15,7 @@
             <i class="ace-icon fa fa-home home-icon"></i>
             <a href="#">Inicio</a>
         </li>
-        <li class="active">Panel Boletas GDT</li>
+        <li class="active">Panel Envio Boletas GDT</li>
     </ul><!-- /.breadcrumb -->
 </div>
 <div class="page-content">
@@ -23,7 +23,7 @@
         <div class="col-md-12">
             <div class="tabbable" style="margin-left:10px;margin-top:10px;">
                 <ul class="nav nav-tabs" id="myTab3">
-                    <li  class="active">
+                    <li class="active">
                         <a data-toggle="tab" href="#tab3" data-tab="tab3">
                             <i class="green ace-icon fa fa-linkedin-square bigger-110"></i>
                             Envío PDFs
@@ -32,7 +32,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div id="tab3" class="tab-pane">
+                    <div id="tab3" class="tab-pane  in active">
                         <div class="row">
                             <form id="formListarPfds">
                                 <input type="hidden" name="nombreEmpresaListar" value="" id="nombreEmpresaListar" />
@@ -85,8 +85,40 @@
 
     </div>
 </div><!-- /.page-content -->
+@*PROGRESS BAR MODAL*@
+<div class="modal fade in" id="mod-progress" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <div class="i-circle warning"><i class="fa fa-info"></i></div>
+                    <div id="result" style="font-size: 1.1em; padding-bottom: 5px">
+                        <p id="progressBarParagraph"></p>
+                    </div>
+                    <div style="width: 30%; margin: 0 auto; display:none;">
+                        <div id="progressbar" style="width: 300px; height: 15px"></div>
+                        <br />
+                    </div>
+                    <div>
+                        <div id="ProgressStripe" class="progress progress-striped active" style="position:relative; top:10px; width:100%;">
+                            <span id="ProgressBarSpan" align="center" style="position:absolute"></span>
+                            <div id="ProgressMessage" class="progress-bar progress-bar-info" style="width: 100%; border:none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 <!-- /.modal -->
 @section js
 {
-    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBoletasGDT.js"></script>
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBolEnvioBoletas.js"></script>
 }

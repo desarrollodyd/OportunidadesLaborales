@@ -1,7 +1,119 @@
 ﻿
 @{
-    ViewBag.Title = "IntranetPJBolConfiguracionDirectorios";
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
 }
+@section AddToHead
+{
+    <link href="~/Content/intranetSGC/jqueryztree/css/demo.css" rel="stylesheet" />
+    <link href="~/Content/intranetSGC/jqueryztree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet" />
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Configuracion Directorios Boletas GDT</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab2" data-tab="tab2" data-tipoconfiguracion="PATH">
+                            <i class="red ace-icon fa fa-envelope bigger-110"></i>
+                            Creación de Directorios
+                        </a>
+                    </li>
+                </ul>
 
-<h2>IntranetPJBolConfiguracionDirectorios</h2>
+                <div class="tab-content">
+                    <div id="tab2" class="tab-pane in active">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="alert alert-warning" style="margin-left:10px">
+                                        Creacion de Directorios GDT
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    Año
+                                                </span>
+                                                <input type="text" name="anioCreacion" id="anioCreacion" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <button class="btn btn-white btn-warning btn-sm btn-block btn-round btnCrearDirectorio" data-id="1" data-rel="tooltip" title="Crear">
+                                                <i class="ace-icon glyphicon glyphicon-list-alt"></i> Crear
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="widget-box">
+                                    <div class="widget-header widget-header-flat widget-header-small">
+                                        <h5 class="widget-title">
+                                            <i class="ace-icon fa fa-signal"></i>
+                                            Configuracion
+                                        </h5>
+                                        <div class="widget-toolbar">
+                                            <a href="#" class="btn btn-minier btnGuardarPathPrincipal btn-primary" data-action="settings"><i class="fa fa-save"></i> Guardar Path</a>
+                                        </div>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="widget-main">
+                                            <div class="row">
+                                                <form class="" id="formPathPrincipal">
+                                                    <input type="hidden" name="config_id" value="" id="config_id" />
+                                                    <input type="hidden" name="config_tipo" value="PATH" id="config_tipo" />
+                                                    <input type="hidden" name="config_estado" value="1" id="config_estado" />
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label>Descripción</label>
+                                                            <input type="text" name="config_descripcion" id="config_descripcion" class="form-control input-sm" placeholder="Descripcion" value="Path raiz para creacion de directorios" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-xs-12">
+                                                        <div class="form-group">
+                                                            <label>Path</label>
+                                                            <input type="text" name="config_valor" id="config_valor" class="form-control input-sm" placeholder="C:/BoletasGDT/" value="C:/BoletasGDT/" />
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
 
+                                        </div><!-- /.widget-main -->
+                                    </div><!-- /.widget-body -->
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div id="mostrarArbolDirectorios" style="display:none;padding-left:10px;padding-right:10px" align="center">
+                                        <h3>Arbol de Directorios</h3>
+                                        <ul id="treeDemo2" class="ztree" style="width:100%"></ul>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div><!-- /.page-content -->
+<!-- /.modal -->
+@section js
+{
+    <script src="~/Content/intranetSGC/jqueryztree/js/jquery.ztree.core.js"></script>
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBolConfiguracionDirectorios.js"></script>
+}

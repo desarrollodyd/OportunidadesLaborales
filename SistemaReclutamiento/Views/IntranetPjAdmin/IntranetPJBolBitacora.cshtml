@@ -1,7 +1,76 @@
 ﻿
 @{
-    ViewBag.Title = "IntranetPJBolBitacora";
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
 }
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Bitácora Boletas GDT</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabbable" style="margin-left:10px;margin-top:10px;">
+                <ul class="nav nav-tabs" id="myTab3">
+                    <li class="active">
+                        <a data-toggle="tab" href="#tab4" data-tab="tab4">
+                            <i class="green ace-icon fa fa-linkedin-square bigger-110"></i>
+                            Bitácora
+                        </a>
+                    </li>
+                </ul>
 
-<h2>IntranetPJBolBitacora</h2>
+                <div class="tab-content">
+                    <div id="tab4" class="tab-pane in active">
+                        <div class="row">
+                            <form id="formListarBitacora">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha Inicio
+                                            </span>
+                                            <input type="text" name="fechaInicio" id="fechaInicio" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Fecha Fin
+                                            </span>
+                                            <input type="text" name="fechaFin" id="fechaFin" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <button class="btn btn-white btn-danger btn-block btn-round btnListarBitacora" data-rel="tooltip" title="Listar">
+                                            <i class="ace-icon glyphicon glyphicon-list-alt"></i> Listar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="row">
+                                    <div class="table-responsive" id="contenedorTablaBitacora">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+</div><!-- /.page-content -->
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBolBitacora.js"></script>
+}
