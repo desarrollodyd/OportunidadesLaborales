@@ -1287,10 +1287,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                             empleado.emp_enviado,
                                             empleado.emp_descargado,
                                             empleado.emp_fecha_reg.ToString("yyyy-MM-dd HH:mm:ss"),
-                                            empleado.emp_no_trab,
-                                            empleado.emp_apel_pat,
-                                            empleado.emp_apel_mat,
-                                            empleado.emp_direc_mail,
+                                            empleado.emp_no_trab.Replace("'",@"''"),
+                                            empleado.emp_apel_pat.Replace("'",@"''"),
+                                            empleado.emp_apel_mat.Replace("'",@"''"),
+                                            empleado.emp_direc_mail.Replace("'",@"''"),
                                             empleado.emp_nro_cel,
                                             empleado.emp_tipo_doc
                                             );
