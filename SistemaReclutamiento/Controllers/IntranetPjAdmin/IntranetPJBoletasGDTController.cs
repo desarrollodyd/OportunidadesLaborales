@@ -1276,9 +1276,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                                     string consulta = "";
                                     int totalInsertados = 0;
+                                    List<string> listaStringInsertar = new List<string>();
                                     foreach (var empleado in listaInsertar)
                                     {
-                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}'),",
+                                        listaStringInsertar.Add(
+                                            String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}')",
                                             empleado.emp_co_trab,
                                             empleado.emp_co_empr,
                                             empleado.emp_anio,
@@ -1293,9 +1295,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                             empleado.emp_direc_mail.Replace("'",@"''"),
                                             empleado.emp_nro_cel,
                                             empleado.emp_tipo_doc
-                                            );
+                                            ));
                                     }
-                                    consulta = consulta.TrimEnd(',');
+                                    consulta = String.Join(",",listaStringInsertar);
 
                                     var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
                                     if (totalInsertadosTupla.error.Mensaje.Equals(string.Empty))
@@ -1617,7 +1619,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             bool respuesta = false;
             string remitente = ConfigurationManager.AppSettings["user_boletasgdt"].ToString();
             string password = ConfigurationManager.AppSettings["password_boletasgdt"].ToString();
-            string direccionesEnvio = ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
+            //string direccionesEnvio = ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
             try
             {
                 var basePath = "http://" + Request.Url.Authority;
@@ -1634,7 +1636,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     foreach (var boleta in listaBoletas)
                     {
                         string mensajeSignalr = "No se pudo enviar el correo a :";
-                        //string direccionesEnvio = boleta.emp_direc_mail;
+                        string direccionesEnvio = boleta.emp_direc_mail;
                         int periodo = Convert.ToInt32(boleta.emp_periodo) - 1;
                         mes = meses[periodo];
                         //string direccionesEnvio = "diego.canchari@gladcon.com";
