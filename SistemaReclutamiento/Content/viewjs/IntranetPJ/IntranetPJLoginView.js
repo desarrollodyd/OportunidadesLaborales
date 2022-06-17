@@ -14,7 +14,7 @@
                     callBackSuccess: function (response) {
                         console.log(response);
                         if (response.respuesta) {
-                            redirect({ site: "IntranetPJ/index?menu=1" });
+                            redirect({ site: "IntranetPJ/MisBoletasGDT" });
                         }
                         else {
                             $("#usu_password").val("");
