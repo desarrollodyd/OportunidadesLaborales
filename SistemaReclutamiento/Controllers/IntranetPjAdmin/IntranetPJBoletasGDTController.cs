@@ -1639,7 +1639,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         string direccionesEnvio = boleta.emp_direc_mail;
                         int periodo = Convert.ToInt32(boleta.emp_periodo) - 1;
                         mes = meses[periodo];
-                        //string direccionesEnvio = "diego.canchari@gladcon.com";
+                        //string direccionesEnvio = "bvqr09@gmail.com bvqr09@gmail.com|||";
                         string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
                         string cuerpoMensaje = ("Buenos dias, se ha creado su boleta <br>" +
                              " <br>Mes : " + mes + " <br>Año : " + boleta.emp_anio + "<br>Cod. Trabajador :" + boleta.emp_co_trab +
@@ -1652,12 +1652,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         if (respuestaEnvio)
                         {
                             mensajeSignalr = "Correo Enviado a :";
+                            var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
                         }
                         porcentaje = (limit * 100 / totalElementos);
                         porcentaje = Math.Round(porcentaje, 2);
 
                         limit++;
-                        var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
                         EnvioCorreosFunction.SendProgressBoletas(mensajeSignalr + direccionesEnvio, porcentaje, false, connectionId);
                     }
 
