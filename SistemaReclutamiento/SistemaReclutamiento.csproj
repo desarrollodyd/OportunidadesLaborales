@@ -4174,6 +4174,7 @@
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJArchivos.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolBitacora.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolConfiguracionDirectorios.js" />
+    <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolEmailRemitente.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolEnvioBoletas.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBoletasGDT.js" />
     <Content Include="Content\viewjs\IntranetPJAdmin\IntranetPJBolProcesarPdf.js" />
@@ -5405,6 +5406,7 @@
     <Compile Include="Entidades\BoletasGDT\BolBitacoraEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolConfiguracionEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolDetCertEmpresaEntidad.cs" />
+    <Compile Include="Entidades\BoletasGDT\BolEmailRemitenteEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolEmpleadoBoletaEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolEmpresaEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
@@ -5488,6 +5490,7 @@
     <Compile Include="Models\BoletasGDT\BolBitacoraModel.cs" />
     <Compile Include="Models\BoletasGDT\BolConfiguracionModel.cs" />
     <Compile Include="Models\BoletasGDT\BolDetCertEmpresaModel.cs" />
+    <Compile Include="Models\BoletasGDT\BolEmailRemitenteModel.cs" />
     <Compile Include="Models\BoletasGDT\BolEmpleadoBoletaModel.cs" />
     <Compile Include="Models\BoletasGDT\BolEmpresaModel.cs" />
     <Compile Include="Models\ConfiguracionModel.cs" />
@@ -5659,6 +5662,7 @@
     <Content Include="Views\IntranetPjAdmin\IntranetPJBolConfiguracionDirectorios.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJBolEnvioBoletas.cshtml" />
     <Content Include="Views\IntranetPjAdmin\IntranetPJBolBitacora.cshtml" />
+    <Content Include="Views\IntranetPjAdmin\IntranetPJBolEmailRemitente.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

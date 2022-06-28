@@ -1,0 +1,145 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutIntranetPJAdmin.cshtml";
+}
+<div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+        <li>
+            <i class="ace-icon fa fa-home home-icon"></i>
+            <a href="#">Inicio</a>
+        </li>
+        <li class="active">Panel Email Remitente</li>
+    </ul><!-- /.breadcrumb -->
+</div>
+
+<div class="page-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="widget-box">
+                <div class="widget-header widget-header-flat widget-header-small">
+                    <h4 class="widget-title">Listado Actividades</h4>
+                    <span class="widget-toolbar">
+                        <a href="#" class="btn btn-sm btn-success btn-minier" data-action="settings" id="btn_nuevo"><i class="ace-icon fa fa-file"></i> Nuevo</a>
+                    </span>
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+                        <div>
+                            <table id="emailRemitenteListado" class="table table-condensed datatable-emailremitentelistado table-striped table-bordered table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="6">
+                                            <div class="alert alert-warning alert-dismissible text-center"><span>Listando Data</span></div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /.page-content -->
+
+
+<div class="modal fade" tabindex="-1" id="modalFormulario" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header blackheader">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="nf"><span id="tituloModal"></span> Email Remitente</h4>
+            </div>
+            <div class="modal-body" id="">
+                <div class="row">
+                    <form class="" id="form_emailremitente" method="post">
+                        <input type="hidden" name="email_id" id="email_id" value="0" />
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Nombre
+                                </span>
+                                <input id="email_nombre" name="email_nombre" type="text" class="form-control input-sm">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Direccion
+                                </span>
+                                <input id="email_direccion" name="email_direccion" type="text" class="form-control input-sm">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Password
+                                </span>
+                                <input id="email_password" name="email_password" type="text" class="form-control input-sm">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    SSL
+                                </span>
+                                <select class="form-control input-sm" id="email_ssl" name="email_ssl">
+                                    <option value="true" selected>SI</option>
+                                    <option value="false">NO</option>
+                                </select>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    SMTP
+                                </span>
+                                <input id="email_smtp" name="email_smtp" type="text" class="form-control input-sm" value="smtp.gmail.com">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Puerto
+                                </span>
+                                <input id="email_puerto" name="email_puerto" type="text" class="form-control input-sm" value="587">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Estado
+                                </span>
+                                <select class="form-control input-sm" id="email_estado" name="email_estado">
+                                    <option value="1" selected>Activo</option>  
+                                    <option value="0">Inactivo</option>  
+                                </select>
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6" style="padding-bottom:5px;">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    Limite Envios
+                                </span>
+                                <input id="email_limite" name="email_limite" type="text" class="form-control input-sm" value="500">
+                            </div><!-- /input-group -->
+                        </div><!-- /.col-lg-6 -->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-guardar btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-cancelar  btn-dark" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section js
+{
+    <script src="~/Content/viewjs/IntranetPJAdmin/IntranetPJBolEmailRemitente.js"></script>
+}
+

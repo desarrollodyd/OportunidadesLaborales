@@ -37,6 +37,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         BolEmpresaModel bolEmpresaBL = new BolEmpresaModel();
         BolDetCertEmpresaModel bolDetCertEmpresaBL = new BolDetCertEmpresaModel();
         private SEG_UsuarioEmpresaDAL usuarioEmpresaDAL = new SEG_UsuarioEmpresaDAL();
+        private BolEmailRemitenteModel emailRemitenteDAL= new BolEmailRemitenteModel();
 
         public string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre" };
 
@@ -62,7 +63,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensaje = configuracionTupla.error.Mensaje;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
@@ -86,11 +87,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         respuesta = true;
                     }
                 }
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
-            return Json(new { mensaje,respuesta,idInsertado });
+            return Json(new { mensaje, respuesta, idInsertado });
         }
         [HttpPost]
         public ActionResult BolConfiguracionEditarJson(BolConfiguracionEntidad configuracion)
@@ -116,7 +117,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 mensaje = ex.Message;
             }
-            return Json(new { mensaje, respuesta,idInsertado });
+            return Json(new { mensaje, respuesta, idInsertado });
         }
         #endregion
         [HttpPost]
@@ -133,7 +134,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string direccion = Request.Url.Scheme + "://" + ((Request.Url.Authority + Request.ApplicationPath).TrimEnd('/')) + "/";
             string directorioHijo = "BOLETASAPROCESAR";
             List<SEG_UsuarioEmpresaEntidad> listaUsuarioEmpresa = new List<SEG_UsuarioEmpresaEntidad>();
-            List<BolEmpresaEntidad> listaEmpresasPostgres= new List<BolEmpresaEntidad>();
+            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
             try
             {
                 var usuarioId = Convert.ToInt32(Session["UsuarioID"]);
@@ -141,7 +142,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 var listaEmpresasTuplaPostgres = bolEmpresaBL.BolEmpresaListarPorUsuarioJson(usuarioId);
 
-                if (listaEmpresasTuplaPostgres.error.Respuesta&&configuracionTupla.error.Respuesta)
+                if (listaEmpresasTuplaPostgres.error.Respuesta && configuracionTupla.error.Respuesta)
                 {
                     listaEmpresasPostgres = listaEmpresasTuplaPostgres.lista;
 
@@ -151,16 +152,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     //bool sincronizado = SincronizarEmpresas(listaempresa,configuracion.config_valor);
 
                     //Crear directorio principal
-                    DirectoryInfo directorioPrincipal =Directory.CreateDirectory(Path.Combine(configuracion.config_valor+directorioHijo));
+                    DirectoryInfo directorioPrincipal = Directory.CreateDirectory(Path.Combine(configuracion.config_valor + directorioHijo));
                     //Creacion de arbol de directorios
                     foreach (var empresa in listaEmpresasPostgres)
                     {
-                       
+
                         string[] arrayNombreEmpresa = empresa.emp_nomb.Split(' ');
                         string nombreEmpresa = String.Join("", arrayNombreEmpresa);
                         string nombreDirectorio = empresa.emp_co_ofisis + "_" + nombreEmpresa;
 
-                        DirectoryInfo directorioEmpresa =directorioPrincipal.CreateSubdirectory(nombreDirectorio);
+                        DirectoryInfo directorioEmpresa = directorioPrincipal.CreateSubdirectory(nombreDirectorio);
                         DirectoryInfo directorioAnio = directorioEmpresa.CreateSubdirectory(Convert.ToString(anio));
 
                         List<dynamic> listaDirectorioAnio = new List<dynamic>();
@@ -168,17 +169,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         int nroMes = 1;
                         foreach (var mes in meses) {
                             string iconoPdf = "pdf_flat.png";
-                            DirectoryInfo directorioMes = directorioAnio.CreateSubdirectory(nroMes.ToString().PadLeft(2, '0')+"_"+mes);
+                            DirectoryInfo directorioMes = directorioAnio.CreateSubdirectory(nroMes.ToString().PadLeft(2, '0') + "_" + mes);
                             nroMes++;
                             FileInfo[] filesMes = directorioMes.GetFiles();
 
-                            List<dynamic> listFilesMes =new List<dynamic>();
+                            List<dynamic> listFilesMes = new List<dynamic>();
                             //var direccion = Server.MapPath("/") + Request.ApplicationPath;
 
                             foreach (var file in filesMes) {
                                 double mbytes = ConvertBytesToMegabytes(file.Length);
                                 listFilesMes.Add(new {
-                                    name = file.Name + " \t \t "+mbytes+"Mb.",
+                                    name = file.Name + " \t \t " + mbytes + "Mb.",
                                     icon = direccion + "/Content/intranetSGC/jqueryztree/css/zTreeStyle/img/diy/" + iconoPdf,
                                 });
                             }
@@ -186,7 +187,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             listaDirectorioMes.Add(new {
                                 name = directorioMes.Name,
                                 open = false,
-                                children=listFilesMes
+                                children = listFilesMes
                             });
                         }
                         listaDirectorioAnio.Add(new {
@@ -195,9 +196,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             open = false
                         });
                         listaDirectorioEmpresa.Add(new {
-                            name=directorioEmpresa.Name,
-                            open=false,
-                            children=listaDirectorioAnio
+                            name = directorioEmpresa.Name,
+                            open = false,
+                            children = listaDirectorioAnio
                         });
                     }
 
@@ -209,9 +210,9 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 mensaje = ex.Message;
             }
-            return Json(new { mensaje, respuesta,data=listaDirectorioEmpresa });
+            return Json(new { mensaje, respuesta, data = listaDirectorioEmpresa });
         }
-        public ActionResult BolListarPdfJson(DateTime fechaListar,string empresaListar,string nombreEmpresaListar)
+        public ActionResult BolListarPdfJson(DateTime fechaListar, string empresaListar, string nombreEmpresaListar)
         {
             string mensaje = "No se pudieron listar las boletas";
             bool respuesta = false;
@@ -235,10 +236,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             catch (Exception ex) {
                 mensaje = ex.Message;
             }
-            return Json(new { mensaje,respuesta,data=listaBoletas });
+            return Json(new { mensaje, respuesta, data = listaBoletas });
         }
         [autorizacion(false)]
-        public ActionResult BolListarporEmpleadoJson(DateTime fechaProcesoInicio,DateTime fechaProcesoFin, string empresaListar, string nombreEmpresaListar,string empleado)
+        public ActionResult BolListarporEmpleadoJson(DateTime fechaProcesoInicio, DateTime fechaProcesoFin, string empresaListar, string nombreEmpresaListar, string empleado)
         {
             string mensaje = "No se pudieron listar las boletas";
             bool respuesta = false;
@@ -248,7 +249,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 int mesInicio = fechaProcesoInicio.Month;
                 int anioInicio = fechaProcesoInicio.Year;
                 int mesFin = fechaProcesoFin.Month;
-                int anioFin= fechaProcesoFin.Year;
+                int anioFin = fechaProcesoFin.Year;
 
                 //string stringPeriodo = "";
                 //List<string> periodos = new List<string>();
@@ -267,16 +268,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     _anios.Add(i);
                 }
                 stringAnio = String.Join(",", anios);
-                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoEmpresaFechasJson(empresaListar,empleado,stringAnio);
+                var listaBoletasTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarxEmpleadoEmpresaFechasJson(empresaListar, empleado, stringAnio);
 
                 if (listaBoletasTupla.error.Mensaje.Equals(string.Empty))
                 {
                     listaBoletas = listaBoletasTupla.lista;
-                    foreach(var anio in _anios)
+                    foreach (var anio in _anios)
                     {
                         if (anio == anioInicio)
                         {
-                            for (int i = 1; i < mesInicio ; i++)
+                            for (int i = 1; i < mesInicio; i++)
                             {
                                 var boleta = listaBoletas.Where(x => x.emp_anio.Equals(anio.ToString()) && x.emp_periodo.Equals(i.ToString())).FirstOrDefault();
                                 if (boleta != null)
@@ -287,7 +288,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         }
                         if (anio == anioFin)
                         {
-                            for (int i = mesFin+1; i <= 12; i++)
+                            for (int i = mesFin + 1; i <= 12; i++)
                             {
                                 var boleta = listaBoletas.Where(x => x.emp_anio.Equals(anio.ToString()) && x.emp_periodo.Equals(i.ToString())).FirstOrDefault();
                                 if (boleta != null)
@@ -346,7 +347,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 //
                 string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
                 string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
-                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty)&&detalleCertificadoEmpresa!=null)
+                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty) && detalleCertificadoEmpresa != null)
                 {
                     configuracion = configuracionTupla.configuracion;
                     listaPersonas = listaPersonasTupla.lista;
@@ -433,10 +434,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                                 );
                                         var certificado = new Certificado(
                                             rutaCertificado,
-                                            detalleCertificadoEmpresa.det_pass_cert 
+                                            detalleCertificadoEmpresa.det_pass_cert
                                             );
                                         var firmante = new Firmante(certificado);
-                                        string secondFileName= item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + "_signed.pdf";
+                                        string secondFileName = item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + "_signed.pdf";
                                         if (System.IO.File.Exists(rutaCertificado))
                                         {
                                             firmante.Firmar(
@@ -465,7 +466,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                         porcentaje = (limit * 100 / totalElementos);
                                         porcentaje = Math.Round(porcentaje, 2);
                                         limit++;
-                                        ProgressBarFunction.SendProgressBoletas("Creando Pdf ... " +empleado.emp_ruta_pdf ,porcentaje, false, connectionId);
+                                        ProgressBarFunction.SendProgressBoletas("Creando Pdf ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
                                     }
                                     //llenado en base de datos
 
@@ -500,11 +501,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                     if (totalInsertados == listaPersonas.Count)
                                     {
                                         mensaje = "PDFs procesados";
-                                        mensajeConsola = "PDFs procesados---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas+"]"; 
+                                        mensajeConsola = "PDFs procesados---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
                                         respuesta = true;
-                                        ProgressBarFunction.SendProgressBoletas("Registros Insertados ...", porcentaje,false, connectionId);
+                                        ProgressBarFunction.SendProgressBoletas("Registros Insertados ...", porcentaje, false, connectionId);
                                         Thread.Sleep(1000);
-                                        ProgressBarFunction.SendProgressBoletas("Proceso Terminado ...",100, true, connectionId);
+                                        ProgressBarFunction.SendProgressBoletas("Proceso Terminado ...", 100, true, connectionId);
                                         Thread.Sleep(1000);
                                     }
                                 }
@@ -534,14 +535,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             {
                 mensaje = ex.Message;
                 mensajeConsola = ex.Message + "--->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
-;            }
+                ; }
             if (!respuesta)
             {
                 ProgressBarFunction.SendProgressBoletas(mensaje, 99, false, connectionId);
                 Thread.Sleep(2000);
                 ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
             }
-            return Json(new { data = listaInsertar, mensaje, respuesta,mensajeConsola });
+            return Json(new { data = listaInsertar, mensaje, respuesta, mensajeConsola });
         }
         [HttpPost]
         public ActionResult EnviarBoletasEmailJson(List<BolEmpleadoBoletaEntidad> listaBoletas) {
@@ -549,31 +550,31 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             bool respuesta = false;
             string remitente = ConfigurationManager.AppSettings["user_boletasgdt"].ToString();
             string password = ConfigurationManager.AppSettings["password_boletasgdt"].ToString();
-            string direccionesEnvio= ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
+            string direccionesEnvio = ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
             try
             {
                 var basePath = "http://" + Request.Url.Authority;
                 if (listaBoletas.Count > 0)
                 {
-                    UsuarioEntidad usuario=(UsuarioEntidad)Session["usuSGC_full"];
+                    UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
                     string mes = "";
                     foreach (var boleta in listaBoletas)
                     {
                         //string direccionesEnvio = boleta.emp_direc_mail;
-                        int periodo = Convert.ToInt32(boleta.emp_periodo)-1;
+                        int periodo = Convert.ToInt32(boleta.emp_periodo) - 1;
                         mes = meses[periodo];
                         //string direccionesEnvio = "diego.canchari@gladcon.com";
                         string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
                         string cuerpoMensaje = ("Buenos dias, se ha creado su boleta <br>" +
-                             " <br>Mes : "+mes+" <br>Año : "+boleta.emp_anio +"<br>Cod. Trabajador :"+boleta.emp_co_trab+
-                             "<br>Empresa: "+boleta.nombreEmpresa+
-                             " <br>Puede visualizarla en:"+
-                             " <h3><a href='"+basePath+"/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
+                             " <br>Mes : " + mes + " <br>Año : " + boleta.emp_anio + "<br>Cod. Trabajador :" + boleta.emp_co_trab +
+                             "<br>Empresa: " + boleta.nombreEmpresa +
+                             " <br>Puede visualizarla en:" +
+                             " <h3><a href='" + basePath + "/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
                              "<br>");
-                        string asunto = "Boleta creada, Trabajador: " + nombreEmpleado ;
+                        string asunto = "Boleta creada, Trabajador: " + nombreEmpleado;
                         Task.Run(() =>
                         {
-                            Task oResp = EnviarCorreoAsync(usuario.usu_id,remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
+                            Task oResp = EnviarCorreoAsync(usuario.usu_id, remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
                         })/*.ContinueWith(t =>
                         {
                             if (t.IsCompleted)
@@ -588,12 +589,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 else {
                     mensaje = "No se encontro registros a enviar";
                 }
-              
+
             }
             catch (Exception ex) {
                 mensaje = ex.Message;
             }
-            return Json(new { mensaje,respuesta });
+            return Json(new { mensaje, respuesta });
         }
         [HttpPost]
         [autorizacion(false)]
@@ -614,7 +615,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 if (configuracionTupla.error.Mensaje.Equals(string.Empty))
                 {
-                    string pathArchivo = Path.Combine(configuracionTupla.configuracion.config_valor,directorioProceso, nombreDirectorioEmpresa, nombreDirectorioEmpleado, nombreArchivo);
+                    string pathArchivo = Path.Combine(configuracionTupla.configuracion.config_valor, directorioProceso, nombreDirectorioEmpresa, nombreDirectorioEmpleado, nombreArchivo);
                     if (System.IO.File.Exists(pathArchivo))
                     {
                         Byte[] bytes = System.IO.File.ReadAllBytes(pathArchivo);
@@ -632,7 +633,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             catch (Exception ex) {
 
             }
-            return Json(new { data,mensaje,respuesta,fileName});
+            return Json(new { data, mensaje, respuesta, fileName });
         }
         [autorizacion(false)]
         [HttpPost]
@@ -658,11 +659,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensaje = insertadoTupla.error.Mensaje;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
-            return Json(new {respuesta,mensaje });
+            return Json(new { respuesta, mensaje });
         }
         [autorizacion(false)]
         [HttpPost]
@@ -694,7 +695,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta, mensaje });
         }
-        [HttpPost] 
+        [HttpPost]
         public ActionResult BitacoraListarFiltrosJson(DateTime fechaInicio, DateTime fechaFin)
         {
             string mensaje = "No se pudieron listar los datos";
@@ -705,12 +706,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var listaTupla = bitacoraBL.BitacoraListarFiltrosJson(fechaInicio, fechaFin);
                 if (listaTupla.error.Respuesta)
                 {
-                    listaBitacoras = listaTupla.lista.OrderByDescending(x=>x.btc_fecha_reg).ToList();
+                    listaBitacoras = listaTupla.lista.OrderByDescending(x => x.btc_fecha_reg).ToList();
                     mensaje = "Listando Registros";
                     respuesta = true;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
@@ -727,7 +728,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var listaEmpresasTupla = bolEmpresaBL.BolEmpresaListarJson();
                 if (listaEmpresasTupla.error.Respuesta)
                 {
-                   listaEmpresas=listaEmpresasTupla.lista;
+                    listaEmpresas = listaEmpresasTupla.lista;
                     respuesta = true;
                     mensaje = "Listando Registros";
                 }
@@ -735,11 +736,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 {
                     mensaje = "No se pudo listar los registros";
                 }
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
-            return Json(new { respuesta, mensaje,data=listaEmpresas });
+            return Json(new { respuesta, mensaje, data = listaEmpresas });
         }
         [HttpPost]
         public ActionResult BolEmpresaIdObtenerJson(int emp_id)
@@ -754,7 +755,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string rutaInsertar = "";
             try
             {
-               
+
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 configuracion = configuracionTupla.configuracion;
 
@@ -792,7 +793,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
             var resultData = new
             {
-               respuesta,mensaje,data=empresa
+                respuesta, mensaje, data = empresa
             };
             var result = new ContentResult
             {
@@ -802,7 +803,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return result;
             //return Json(new { respuesta, mensaje, data = empresa });
         }
-        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa,HttpPostedFileBase file)
+        public ActionResult BolEmpresaEditarJson(BolEmpresaEntidad empresa, HttpPostedFileBase file)
         {
             //HttpPostedFileBase file;
             int tamanioMaximo = 4194304;
@@ -897,7 +898,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 configuracion = configuracionTupla.configuracion;
                 if (listaEmpresasSQLTupla.error.Respuesta)
                 {
-                    respuesta=SincronizarEmpresas(listaEmpresasSQLTupla.listaempresa,configuracion.config_valor);
+                    respuesta = SincronizarEmpresas(listaEmpresasSQLTupla.listaempresa, configuracion.config_valor);
                     mensaje = "Se realizo la sincronización";
                 }
             }
@@ -928,16 +929,16 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 configuracion = configuracionTupla.configuracion;
                 if (file != null)
                 {
-                    if (file.ContentLength > 0&&file.ContentLength<=tamanioMaximo)
+                    if (file.ContentLength > 0 && file.ContentLength <= tamanioMaximo)
                     {
                         extension = Path.GetExtension(file.FileName);
                         if (extension == ".pfx")
                         {
-                            rutaInsertar = Path.Combine(configuracion.config_valor,directorioFirma, directorioEmpresa, "CERTIFICADOS");
+                            rutaInsertar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa, "CERTIFICADOS");
                             if (Directory.Exists(rutaInsertar))
                             {
-                                string nombreArchivo = Path.GetFileNameWithoutExtension(file.FileName)+ DateTime.Now.ToString("yyyyMMddHHmmss")+Path.GetExtension(file.FileName);
-                                file.SaveAs(Path.Combine(rutaInsertar,nombreArchivo));
+                                string nombreArchivo = Path.GetFileNameWithoutExtension(file.FileName) + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(file.FileName);
+                                file.SaveAs(Path.Combine(rutaInsertar, nombreArchivo));
                                 detalle.det_nomb_cert = Path.GetFileNameWithoutExtension(file.FileName);
                                 detalle.det_ruta_cert = nombreArchivo;
                             }
@@ -985,11 +986,11 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 {
                     mensaje = IdInsertadoTupla.error.Mensaje;
                 }
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
-            return Json(new { mensaje,respuesta});
+            return Json(new { mensaje, respuesta });
         }
         [HttpPost]
         public ActionResult BolDetCertEmpresaEditarUsoJson(BolDetCertEmpresaEntidad detalle)
@@ -1007,7 +1008,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = ex.Message;
             }
@@ -1031,7 +1032,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
                 configuracion = configuracionTupla.configuracion;
 
-                rutaEliminar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa, "CERTIFICADOS",detalle.det_ruta_cert);
+                rutaEliminar = Path.Combine(configuracion.config_valor, directorioFirma, directorioEmpresa, "CERTIFICADOS", detalle.det_ruta_cert);
 
                 if (System.IO.File.Exists(rutaEliminar))
                 {
@@ -1055,7 +1056,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { respuesta, mensaje });
         }
         [HttpPost]
-        public ActionResult BolProcesarPdf(HttpPostedFileBase archivoProceso,DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId="")
+        public ActionResult BolProcesarPdf(HttpPostedFileBase archivoProceso, DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId = "")
         {
             string mensaje = string.Empty;
             string mensajeConsola = string.Empty;
@@ -1064,7 +1065,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             //Varialbes necesarias
             int totalRegistrosBD = 0;
             int totalHojas = 0;
-            const string TIPO_CONFIGURACION= "PATH";
+            const string TIPO_CONFIGURACION = "PATH";
             const string DIRECTORIO_PROCESO = "BOLETASPROCESADAS";
             const string DIRECTORIO_A_PROCESAR = "BOLETASAPROCESAR";
             const string DIRECTORIO_RAIZ_CERTIFICADOS = "DIRECTORIOCERTIFICADOS";
@@ -1083,7 +1084,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 DateTime fechaProceso = fechaProcesoPdf;
                 int mes = fechaProceso.Month;
                 string carpetaMes = mes.ToString().PadLeft(2, '0') + "_" + meses[mes - 1];
-             
+
                 string anio = Convert.ToString(fechaProceso.Year);
 
                 //Nombre Directorio de la Empresa
@@ -1100,7 +1101,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 }
                 //
                 var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(TIPO_CONFIGURACION);
-                if (!configuracionTupla.error.Respuesta&&configuracionTupla.configuracion.config_id==0)
+                if (!configuracionTupla.error.Respuesta && configuracionTupla.configuracion.config_id == 0)
                 {
                     mensaje = "No se pudo encontrar el registro de configuracion en intranet.bol_configuracion";
                     mensajeConsola = configuracionTupla.error.Mensaje;
@@ -1116,7 +1117,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     // Try to create the directory.  
                     //DirectoryInfo di = Directory.CreateDirectory(pathDirectorioInsercionTemporal);
                     mensaje = "No se pudo encontrar el directorio de proceso";
-                    mensajeConsola = "Directorio de proceso"+ pathDirectorioInsercionTemporal;
+                    mensajeConsola = "Directorio de proceso" + pathDirectorioInsercionTemporal;
                     ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
@@ -1134,7 +1135,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 if (!extensionArchivo.ToLower().Equals(".rar"))
                 {
                     mensaje = "El archivo debe tener formato .rar";
-                    mensajeConsola = "Extension de Archivo: "+extensionArchivo;
+                    mensajeConsola = "Extension de Archivo: " + extensionArchivo;
                     ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
@@ -1142,7 +1143,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 LimpiarDirectorio(pathDirectorioInsercionTemporal);
                 //Insertar Archivo
                 archivoProceso.SaveAs(pathInsercionArchivoTemporal);
-                archivoDescomprimido = DescomprimirArchivo(nombreArchivo,extensionArchivo,pathDirectorioInsercionTemporal);
+                archivoDescomprimido = DescomprimirArchivo(nombreArchivo, extensionArchivo, pathDirectorioInsercionTemporal);
                 if (archivoDescomprimido.Equals(string.Empty))
                 {
                     mensaje = "Error al Extraer Archivo, el archivo comprimido debe ser un documento .pdf";
@@ -1289,15 +1290,15 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                                             empleado.emp_enviado,
                                             empleado.emp_descargado,
                                             empleado.emp_fecha_reg.ToString("yyyy-MM-dd HH:mm:ss"),
-                                            empleado.emp_no_trab.Replace("'",@"''"),
-                                            empleado.emp_apel_pat.Replace("'",@"''"),
-                                            empleado.emp_apel_mat.Replace("'",@"''"),
-                                            empleado.emp_direc_mail.Replace("'",@"''"),
+                                            empleado.emp_no_trab.Replace("'", @"''"),
+                                            empleado.emp_apel_pat.Replace("'", @"''"),
+                                            empleado.emp_apel_mat.Replace("'", @"''"),
+                                            empleado.emp_direc_mail.Replace("'", @"''"),
                                             empleado.emp_nro_cel,
                                             empleado.emp_tipo_doc
                                             ));
                                     }
-                                    consulta = String.Join(",",listaStringInsertar);
+                                    consulta = String.Join(",", listaStringInsertar);
 
                                     var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
                                     if (totalInsertadosTupla.error.Mensaje.Equals(string.Empty))
@@ -1337,7 +1338,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = ex.Message;
                 mensajeConsola = ex.Message + "--->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
@@ -1348,7 +1349,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 Thread.Sleep(2000);
                 ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
             }
-            return Json(new {data=listaInsertar, mensaje, mensajeConsola, respuesta });
+            return Json(new { data = listaInsertar, mensaje, mensajeConsola, respuesta });
         }
         [HttpPost]
         public ActionResult BolEmpresaListarPorUsuarioJson()
@@ -1389,7 +1390,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                         mensaje = "No se pudo listar los registros";
                     }
                 }
-             
+
             }
             catch (Exception ex)
             {
@@ -1417,7 +1418,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     dir.Delete(true);
                 }
                 respuesta = true;
-            }catch(Exception ex)
+            } catch (Exception ex)
             {
                 respuesta = false;
             }
@@ -1613,7 +1614,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         }
         [autorizacion(false)]
         [HttpPost]
-        public ActionResult BolEnviarCorreosHub(List<BolEmpleadoBoletaEntidad> listaBoletas,string connectionId)
+        public ActionResult BolEnviarCorreosHub(List<BolEmpleadoBoletaEntidad> listaBoletas, string connectionId)
         {
             string mensaje = "";
             bool respuesta = false;
@@ -1645,7 +1646,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                              " <br>Mes : " + mes + " <br>Año : " + boleta.emp_anio + "<br>Cod. Trabajador :" + boleta.emp_co_trab +
                              "<br>Empresa: " + boleta.nombreEmpresa +
                              " <br>Puede visualizarla en:" +
-                             " <h3><a href='"+basePath+"/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
+                             " <h3><a href='" + basePath + "/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
                              "<br>");
                         string asunto = "Boleta creada, Trabajador: " + nombreEmpleado;
                         bool respuestaEnvio = EnviarEmailBoleta(usuario.usu_id, remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
@@ -1702,7 +1703,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 cliente.Send(email);
                 respuesta = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 respuesta = false;
                 bitacora.btc_fecha_reg = DateTime.Now;
@@ -1729,6 +1730,70 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJBolBitacora.cshtml");
         }
-
+        #region Region Email Remitente
+        public ActionResult BolEmailRemitenteVista()
+        {
+            return View("~/Views/IntranetPJAdmin/IntranetPJBolEmailRemitente.cshtml");
+        }
+        [HttpPost]
+        public ActionResult BolEmailRemitenteListadoJson()
+        {
+            string mensaje = "No se pudieron listar los registros";
+            bool respuesta = false;
+            List<BolEmailRemitenteEntidad> lista = new List<BolEmailRemitenteEntidad>();
+            try
+            {
+                lista = emailRemitenteDAL.BolEmailRemitenteListarJson();
+                respuesta = true;
+                mensaje = "Listando Registros";
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje, data = lista });
+        }
+        [HttpPost]
+        public ActionResult BolEmailRemitenteIdObtenerJson(int email_id)
+        {
+            string mensaje = "No se pudo obtener el registro";
+            bool respuesta = false;
+            BolEmailRemitenteEntidad remitente= new BolEmailRemitenteEntidad();
+            try
+            {
+                remitente = emailRemitenteDAL.BolEmailRemitenteIdObtenerJson(email_id);
+                remitente.email_password = Seguridad.Desencriptar(remitente.email_password);
+                respuesta = true;
+                mensaje = "Obteniendo Registro";
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje, data = remitente });
+        }
+        [HttpPost]
+        public ActionResult BolEmailRemitenteInsertarJson(BolEmailRemitenteEntidad email)
+        {
+            string mensaje = "No se pudo insertar el registro";
+            bool respuesta = false;
+            int idInsertado=0;
+            try
+            {
+                email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
+                idInsertado = emailRemitenteDAL.BolEmailRemitenteInsertarJson(email);
+                if (idInsertado != 0)
+                {
+                    respuesta = true;
+                    mensaje = "Registro Insertado";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje, data = idInsertado });
+        }
+        #endregion
     }
 }
