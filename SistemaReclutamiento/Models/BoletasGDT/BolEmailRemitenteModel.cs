@@ -62,6 +62,7 @@ email_estado,
 email_limite, 
 email_cantidad_envios, 
 email_ultimo_envio
+,(email_limite-email_cantidad_envios) as envios_restantes
 	FROM intranet.bol_email_remitente;";
             try
             {
@@ -87,6 +88,7 @@ email_ultimo_envio
                                     email_limite = ManejoNulos.ManageNullInteger(dr["email_limite"]),
                                     email_cantidad_envios = ManejoNulos.ManageNullInteger(dr["email_cantidad_envios"]),
                                     email_ultimo_envio = ManejoNulos.ManageNullDate(dr["email_ultimo_envio"]),
+                                    envios_restantes = ManejoNulos.ManageNullInteger(dr["envios_restantes"]),
                                 };
 
                                 lista.Add(bitacora);

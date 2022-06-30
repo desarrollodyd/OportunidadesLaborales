@@ -34,6 +34,10 @@
                             title: "Limite Envios",
                         },
                         {
+                            data: "envios_restantes",
+                            title: "Envios Restantes",
+                        },
+                        {
                             data: "email_ultimo_envio",
                             title: "Ultimo Envio",
                             render: function(value){
