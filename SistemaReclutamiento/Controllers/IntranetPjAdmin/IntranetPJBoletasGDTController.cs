@@ -1794,6 +1794,47 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta, mensaje, data = idInsertado });
         }
+        [HttpPost]
+        public ActionResult BolEmailRemitenteEditarJson(BolEmailRemitenteEntidad email)
+        {
+            string mensaje = "No se pudo editar el registro";
+            bool respuesta = false;
+            try
+            {
+                email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
+                respuesta = emailRemitenteDAL.BolEmailRemitenteEditarJson(email);
+                if (respuesta)
+                {
+                    respuesta = true;
+                    mensaje = "Registro Editado";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
+        }
+        [HttpPost]
+        public ActionResult BolEmailRemitenteEliminarJson(int email_id)
+        {
+            string mensaje = "No se pudo eliminar el registro";
+            bool respuesta = false;
+            try
+            {
+                respuesta = emailRemitenteDAL.BolEmailRemitenteEliminarJson(email_id);
+                if (respuesta)
+                {
+                    respuesta = true;
+                    mensaje = "Registro Eliminado";
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = ex.Message;
+            }
+            return Json(new { respuesta, mensaje });
+        }
         #endregion
     }
 }

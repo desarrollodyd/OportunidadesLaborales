@@ -26,6 +26,25 @@
                             title: "Direccion",
                         },
                         {
+                            data: "email_cantidad_envios",
+                            title: "Cantidad Envios",
+                        },
+                        {
+                            data: "email_limite",
+                            title: "Limite Envios",
+                        },
+                        {
+                            data: "email_ultimo_envio",
+                            title: "Ultimo Envio",
+                            render: function(value){
+                                let fecha=moment(value).format("DD/MM/YYYY")
+                                if(fecha!='31/12/1752'){
+                                    return moment(value).format("DD/MM/YYYY HH:mm:ss");
+                                }
+                                return ''
+                            }
+                        },
+                        {
                             data: "email_estado",
                             title: "Estado",
                             "render": function (value) {
