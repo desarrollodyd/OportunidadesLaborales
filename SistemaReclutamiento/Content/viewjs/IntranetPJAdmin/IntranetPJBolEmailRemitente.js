@@ -34,15 +34,19 @@
                             title: "Limite Envios",
                         },
                         {
-                            data: "envios_restantes",
+                            data: null,
                             title: "Envios Restantes",
+                            render:function(value,type,oData){
+                                let enviosRestantes=oData.email_limite-oData.email_cantidad_envios
+                                return enviosRestantes
+                            }
                         },
                         {
                             data: "email_ultimo_envio",
                             title: "Ultimo Envio",
                             render: function(value){
                                 let fecha=moment(value).format("DD/MM/YYYY")
-                                if(fecha!='31/12/1752'){
+                                if(fecha!='31/12/1752' && fecha!='31/12/0000'){
                                     return moment(value).format("DD/MM/YYYY HH:mm:ss");
                                 }
                                 return ''

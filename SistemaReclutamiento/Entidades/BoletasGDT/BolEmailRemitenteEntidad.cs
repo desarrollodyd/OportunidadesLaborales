@@ -18,6 +18,5 @@ namespace SistemaReclutamiento.Entidades.BoletasGDT
         public int email_limite { get; set; }
         public int email_cantidad_envios { get; set; }
         public DateTime email_ultimo_envio { get; set; }
-        public int envios_restantes { get; set; }
     }
 }

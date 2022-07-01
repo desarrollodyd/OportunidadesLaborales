@@ -1765,16 +1765,17 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 string mes = "";
 
                 decimal totalElementos = listaBoletas.Count;
-                decimal limit = 0;
+                decimal limit = 1;
                 decimal porcentaje = 0;
                     
                 foreach (var boleta in listaBoletas)
                 {
                     string mensajeSignalr = "No se pudo enviar el correo a : ";
+                    //string direccionesEnvio = "bvqr09@gmail.com bvqr09@gmail.com|||";
+
                     string direccionesEnvio = boleta.emp_direc_mail;
                     int periodo = Convert.ToInt32(boleta.emp_periodo) - 1;
                     mes = meses[periodo];
-                    //string direccionesEnvio = "bvqr09@gmail.com bvqr09@gmail.com|||";
                     string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
 
                     string cuerpoMensaje = $@"
@@ -1838,14 +1839,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     remitenteUsar = ObtenerRemitenteUsar();
                     if (remitenteUsar.email_id != 0)
                     {
-                        //bool respuestaEnvio = EnviarEmailBoleta(usuario.usu_id, remitenteUsar.email_direccion, password, direccionesEnvio, asunto, cuerpoMensaje);
                         bool respuestaenvio = EnviarEmailBoleta(usuario.usu_id, remitenteUsar, direccionesEnvio, asunto, cuerpoMensaje);
-                        if (respuestaenvio)
+                        if (respuesta)
                         {
                             mensajeSignalr = "Correo Enviado a : ";
                             var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
                             remitenteUsar.email_ultimo_envio = DateTime.Now;
                             var remitenteEditado = emailRemitenteDAL.BolEmailRemitenteAumentarCantidadEnviosJson(remitenteUsar);
+                            //Thread.Sleep(1000);
                         }
                         EnvioCorreosFunction.SendProgressBoletas(mensajeSignalr + direccionesEnvio, porcentaje, false, connectionId);
                     }
@@ -1877,10 +1878,10 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             BolEmailRemitenteEntidad remitente = new BolEmailRemitenteEntidad();
             try
             {
-                listaRemitentes = emailRemitenteDAL.BolEmailRemitenteListarJson().Where(x => x.email_estado == 1).Where(x=>x.envios_restantes>0).ToList();
-                int MinimaCantidad = listaRemitentes.Min(obj => obj.envios_restantes);//menos envios restantes
+                listaRemitentes = emailRemitenteDAL.BolEmailRemitenteListarJson().Where(x => x.email_estado == 1).Where(x=>x.email_cantidad_envios<x.email_limite).ToList();
+                int MaximaCantidad = listaRemitentes.Max(obj => obj.email_cantidad_envios);//obtener el numero maximo de cantidad de envios de la lista
                 //obteniendo registro con menos registros restantes
-                var remitenteUso = listaRemitentes.Where(x => x.envios_restantes == MinimaCantidad).FirstOrDefault();
+                var remitenteUso = listaRemitentes.Where(x => x.email_cantidad_envios == MaximaCantidad).FirstOrDefault();
                 if (remitenteUso != null)
                 {
                     remitente = remitenteUso;
