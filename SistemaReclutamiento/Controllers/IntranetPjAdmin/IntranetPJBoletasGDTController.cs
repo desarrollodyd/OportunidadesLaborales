@@ -313,290 +313,6 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return Json(new { mensaje, respuesta, data = listaBoletas });
         }
         [HttpPost]
-        public ActionResult BolProcesarPdf2(DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId)
-        {
-            string mensaje = "No se pudieron procesar las boletas";
-            bool respuesta = false;
-            string mensajeConsola = "";
-            int totalRegistrosBD = 0;
-            int totalHojas = 0;
-            string tipoConfiguracion = "PATH";
-            string directorioProceso = "BOLETASPROCESADAS";
-            string directorioaProcesar = "BOLETASAPROCESAR";
-            string directorioRaizCertificados = "DIRECTORIOCERTIFICADOS";
-            string directorioCertificadoEmpresa = "CERTIFICADOS";
-            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
-            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
-            List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
-            List<BolEmpleadoBoletaEntidad> listaEliminar = new List<BolEmpleadoBoletaEntidad>();
-            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
-            try
-            {
-                DateTime fechaProceso = fechaProcesoPdf;
-                int mes = fechaProceso.Month;
-                string carpetaMes = mes.ToString().PadLeft(2, '0') + "_" + meses[mes - 1];
-                string anio = Convert.ToString(fechaProceso.Year);
-                ProgressBarFunction.SendProgressBoletas("Iniciando ...", 0, false, connectionId);
-                Thread.Sleep(1000);
-                var listaPersonasTupla = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProceso.Month, fechaProceso.Year);
-                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(tipoConfiguracion);
-                var listaEliminarTupla = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresa, anio, mes.ToString());
-                var empresaPostgres = bolEmpresaBL.BolEmpresaObtenerxOfisisIdJson(empresa);
-                //Obtener certificado para firmar
-                detalleCertificadoEmpresa = empresaPostgres.empresa.DetalleCerts.Where(x => x.det_en_uso == 1).FirstOrDefault();
-                //
-                string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
-                string nombreDirectorioEmpresa = empresa + "_" + String.Join("", arrayNombreEmpresa);
-                if (listaPersonasTupla.error.Mensaje.Equals(string.Empty) && detalleCertificadoEmpresa != null)
-                {
-                    configuracion = configuracionTupla.configuracion;
-                    listaPersonas = listaPersonasTupla.lista;
-                    string pathPdf = Path.Combine(configuracion.config_valor, directorioaProcesar, nombreDirectorioEmpresa, anio, carpetaMes);
-
-                    DirectoryInfo directorioRoot = Directory.CreateDirectory(Path.Combine(configuracion.config_valor, directorioProceso, nombreDirectorioEmpresa));
-
-                    if (Directory.Exists(pathPdf))
-                    {
-                        //realizar la busqueda del pdf y realizar la division de este
-                        string file = Directory.GetFiles(pathPdf, "*.pdf").FirstOrDefault();
-                        if (file != null)
-                        {
-                            //pdf encontrado
-                            using (PdfReader reader = new PdfReader(Path.Combine(pathPdf, file)))
-                            {
-                                totalRegistrosBD = listaPersonas.Count;
-                                totalHojas = reader.NumberOfPages;
-                                if (reader.NumberOfPages == listaPersonas.Count)
-                                {
-                                    int totalRegistrosInsertar = listaPersonas.Count;//100%
-                                    decimal totalElementos = totalRegistrosInsertar;
-                                    decimal limit = 0;
-                                    decimal porcentaje = 0;
-                                    //eliminar la data y carpetas
-                                    if (listaEliminarTupla.error.Mensaje.Equals(string.Empty))
-                                    {
-                                        string[] subdirectoryEntries = Directory.GetDirectories(Path.Combine(configuracion.config_valor, directorioaProcesar));
-                                        if (subdirectoryEntries.Length > 0 && listaEliminarTupla.lista.Count > 0)
-                                        {
-                                            int totalRegistrosEliminar = listaEliminarTupla.lista.Count;//100%
-                                            totalElementos = totalRegistrosInsertar + totalRegistrosEliminar;
-                                            //eliminar pdfs
-                                            foreach (var empleado in listaEliminarTupla.lista)
-                                            {
-                                                string myfile = Directory.GetFiles(Path.Combine(configuracion.config_valor), empleado.emp_ruta_pdf, SearchOption.AllDirectories).FirstOrDefault();
-                                                if (myfile != null)
-                                                {
-                                                    System.IO.File.Delete(myfile);
-                                                }
-                                                porcentaje = (limit * 100 / totalElementos);
-                                                porcentaje = Math.Round(porcentaje, 2);
-                                                //porcentaje = decimal.Round(((limit * 100) / totalElementos), 2);
-
-                                                ProgressBarFunction.SendProgressBoletas("Limpiando Archivos ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
-                                                limit++;
-                                            }
-                                        }
-                                        //eliminar de BD
-                                        ProgressBarFunction.SendProgressBoletas("Limpiando Base de Datos ...", 30, false, connectionId);
-                                        var eliminadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEliminarMasivoJson(empresa, anio, mes.ToString());
-                                    }
-                                    //
-                                    for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
-                                    {
-
-                                        BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
-
-                                        var item = listaPersonas.ElementAt(pagenumber - 1);
-                                        string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
-                                        string filename = item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + ".pdf";
-
-                                        DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
-
-                                        Document document = new Document();
-                                        PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
-                                        document.Open();
-
-                                        copy.AddPage(copy.GetImportedPage(reader, pagenumber));
-                                        document.Close();
-
-                                        //Firmar Pdf Aqui
-                                        var rutaCertificado = Path.Combine(
-                                                configuracion.config_valor,
-                                                directorioRaizCertificados,
-                                                nombreDirectorioEmpresa,
-                                                directorioCertificadoEmpresa,
-                                                detalleCertificadoEmpresa.det_ruta_cert
-                                                );
-                                        var rutaImagen = Path.Combine(
-                                                configuracion.config_valor,
-                                                directorioRaizCertificados,
-                                                nombreDirectorioEmpresa
-                                                );
-                                        var certificado = new Certificado(
-                                            rutaCertificado,
-                                            detalleCertificadoEmpresa.det_pass_cert
-                                            );
-                                        var firmante = new Firmante(certificado);
-                                        string secondFileName = item.CO_TRAB + "_" + item.CO_EMPR + "_" + anio + "_" + mes + "_signed.pdf";
-                                        if (System.IO.File.Exists(rutaCertificado))
-                                        {
-                                            firmante.Firmar(
-                                                Path.Combine(subdirectorioEmpleado.FullName, filename),
-                                                Path.Combine(subdirectorioEmpleado.FullName, secondFileName),
-                                                empresaPostgres.empresa,
-                                                rutaImagen
-                                                );
-                                            System.IO.File.Delete(Path.Combine(subdirectorioEmpleado.FullName, filename));
-                                        }
-                                        //Termino de Firma
-                                        empleado.emp_co_trab = item.CO_TRAB;
-                                        empleado.emp_co_empr = item.CO_EMPR;
-                                        empleado.emp_anio = anio;
-                                        empleado.emp_periodo = Convert.ToString(mes);
-                                        empleado.emp_ruta_pdf = secondFileName;
-                                        empleado.emp_no_trab = item.NO_TRAB;
-                                        empleado.emp_apel_pat = item.NO_APEL_PATE;
-                                        empleado.emp_apel_mat = item.NO_APEL_MATE;
-                                        empleado.emp_direc_mail = item.NO_DIRE_MAI1;
-                                        empleado.emp_nro_cel = item.NU_TLF1;
-                                        empleado.emp_tipo_doc = item.TI_DOCU_IDEN;
-                                        listaInsertar.Add(empleado);
-
-                                        //porcentaje = decimal.Round(((limit * 100) / totalElementos), 2);
-                                        porcentaje = (limit * 100 / totalElementos);
-                                        porcentaje = Math.Round(porcentaje, 2);
-                                        limit++;
-                                        ProgressBarFunction.SendProgressBoletas("Creando Pdf ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
-                                    }
-                                    //llenado en base de datos
-
-                                    string consulta = "";
-                                    int totalInsertados = 0;
-                                    foreach (var empleado in listaInsertar)
-                                    {
-                                        consulta += String.Format("('{0}', '{1}', '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}', '{9}', '{10}', '{11}', '{12}', '{13}'),",
-                                            empleado.emp_co_trab,
-                                            empleado.emp_co_empr,
-                                            empleado.emp_anio,
-                                            empleado.emp_periodo,
-                                            empleado.emp_ruta_pdf,
-                                            empleado.emp_enviado,
-                                            empleado.emp_descargado,
-                                            empleado.emp_fecha_reg.ToString("yyyy-MM-dd HH:mm:ss"),
-                                            empleado.emp_no_trab,
-                                            empleado.emp_apel_pat,
-                                            empleado.emp_apel_mat,
-                                            empleado.emp_direc_mail,
-                                            empleado.emp_nro_cel,
-                                            empleado.emp_tipo_doc
-                                            );
-                                    }
-                                    consulta = consulta.TrimEnd(',');
-
-                                    var totalInsertadosTupla = empleadoBoletaBL.BoolEmpleadoBoletaInsertarMasivoJson(consulta);
-                                    if (totalInsertadosTupla.error.Mensaje.Equals(string.Empty))
-                                    {
-                                        totalInsertados = totalInsertadosTupla.totalInsertados;
-                                    }
-                                    if (totalInsertados == listaPersonas.Count)
-                                    {
-                                        mensaje = "PDFs procesados";
-                                        mensajeConsola = "PDFs procesados---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
-                                        respuesta = true;
-                                        ProgressBarFunction.SendProgressBoletas("Registros Insertados ...", porcentaje, false, connectionId);
-                                        Thread.Sleep(1000);
-                                        ProgressBarFunction.SendProgressBoletas("Proceso Terminado ...", 100, true, connectionId);
-                                        Thread.Sleep(1000);
-                                    }
-                                }
-                                else
-                                {
-                                    mensaje = "Inconsistencia entre pdf y total de trabajadores";
-                                    mensajeConsola = "Inconsistencia entre pdf y total de trabajadores---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            mensaje = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente";
-                            mensajeConsola = "No se encontro el archivo pdf, subir el pdf a su carpeta correspondiente ---> TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
-
-                        }
-                    }
-                    else
-                    {
-                        mensaje = "No se encuentra el directorio, crearlo en el menú de creación de directorios";
-                        mensajeConsola = "No se encuentra el directorio, crearlo en el menú de creación de directorios --->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                mensaje = ex.Message;
-                mensajeConsola = ex.Message + "--->TotalRegistrosBD:[" + totalRegistrosBD + "]" + "; ---- Total Hojas PDF:[" + totalHojas + "]";
-                ; }
-            if (!respuesta)
-            {
-                ProgressBarFunction.SendProgressBoletas(mensaje, 99, false, connectionId);
-                Thread.Sleep(2000);
-                ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
-            }
-            return Json(new { data = listaInsertar, mensaje, respuesta, mensajeConsola });
-        }
-        [HttpPost]
-        public ActionResult EnviarBoletasEmailJson(List<BolEmpleadoBoletaEntidad> listaBoletas) {
-            string mensaje = "";
-            bool respuesta = false;
-            string remitente = ConfigurationManager.AppSettings["user_boletasgdt"].ToString();
-            string password = ConfigurationManager.AppSettings["password_boletasgdt"].ToString();
-            string direccionesEnvio = ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
-            try
-            {
-                var basePath = "http://" + Request.Url.Authority;
-                if (listaBoletas.Count > 0)
-                {
-                    UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
-                    string mes = "";
-                    foreach (var boleta in listaBoletas)
-                    {
-                        //string direccionesEnvio = boleta.emp_direc_mail;
-                        int periodo = Convert.ToInt32(boleta.emp_periodo) - 1;
-                        mes = meses[periodo];
-                        //string direccionesEnvio = "diego.canchari@gladcon.com";
-                        string nombreEmpleado = boleta.emp_no_trab + " " + boleta.emp_apel_pat + " " + boleta.emp_apel_mat;
-                        string cuerpoMensaje = ("Buenos dias, se ha creado su boleta <br>" +
-                             " <br>Mes : " + mes + " <br>Año : " + boleta.emp_anio + "<br>Cod. Trabajador :" + boleta.emp_co_trab +
-                             "<br>Empresa: " + boleta.nombreEmpresa +
-                             " <br>Puede visualizarla en:" +
-                             " <h3><a href='" + basePath + "/ExtranetPJ/IntranetPJ/Login'><strong>Link de Intranet Gladcon</strong></a></h3>" +
-                             "<br>");
-                        string asunto = "Boleta creada, Trabajador: " + nombreEmpleado;
-                        Task.Run(() =>
-                        {
-                            Task oResp = EnviarCorreoAsync(usuario.usu_id, remitente, password, direccionesEnvio, asunto, cuerpoMensaje);
-                        })/*.ContinueWith(t =>
-                        {
-                            if (t.IsCompleted)
-                            {
-                                var editadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEditarEnvioJson(boleta.emp_ruta_pdf, DateTime.Now);
-                            }
-                        })*//*.GetAwaiter().GetResult()*/;
-                    }
-                    mensaje = "Envio Iniciado";
-                    respuesta = true;
-                }
-                else {
-                    mensaje = "No se encontro registros a enviar";
-                }
-
-            }
-            catch (Exception ex) {
-                mensaje = ex.Message;
-            }
-            return Json(new { mensaje, respuesta });
-        }
-        [HttpPost]
         [autorizacion(false)]
         public ActionResult VisualizarPdfIntranetAdminJson(BolEmpleadoBoletaEntidad empleado)
         {
@@ -1398,220 +1114,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta, mensaje, data = listaEmpresas });
         }
-        [autorizacion(false)]
-        public bool LimpiarDirectorio(string PathDirectorio)
-        {
-            bool respuesta = false;
-            try
-            {
-                System.IO.DirectoryInfo di = new DirectoryInfo(PathDirectorio);
-                if (di == null)
-                {
-                    return respuesta;
-                }
-                foreach (FileInfo file in di.GetFiles())
-                {
-                    file.Delete();
-                }
-                foreach (DirectoryInfo dir in di.GetDirectories())
-                {
-                    dir.Delete(true);
-                }
-                respuesta = true;
-            } catch (Exception ex)
-            {
-                respuesta = false;
-            }
-            return respuesta;
-        }
-        [autorizacion(false)]
-        static double ConvertBytesToMegabytes(long bytes)
-        {
-            return Math.Round(((bytes / 1024f) / 1024f), 2);
-        }
-        [autorizacion(false)]
-        static double ConvertKilobytesToMegabytes(long kilobytes)
-        {
-            return Math.Round((kilobytes / 1024f), 2);
-        }
-        [autorizacion(false)]
-        public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
-        {
-            bool respuesta = true;
-            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
-            string directorioFirma = "DIRECTORIOCERTIFICADOS";
-            try
-            {
-
-                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
-                if (listaEmpresasPostgresTupla.error.Respuesta)
-                {
-                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
-                    foreach (var empresaOfisis in listaEmpresas)
-                    {
-                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
-                        if (empresaConsulta == null)
-                        {
-                            //insertar empresa
-                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
-                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
-                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
-                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
-                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
-                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
-                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
-                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
-                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
-                            var InsertadoTupla = bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
-                            respuesta = InsertadoTupla.error.Respuesta;
-                        }
-                        if (!respuesta)
-                        {
-                            break;
-                        }
-                    }
-                }
-                //crear directorios
-                DirectoryInfo directorioPrincipal = Directory.CreateDirectory(Path.Combine(directorioRaizArchivosFirma) + directorioFirma);
-                foreach (var empresa in listaEmpresas)
-                {
-                    string[] arrayNombreEmpresa = empresa.DE_NOMB.Split(' ');
-                    string nombreEmpresa = String.Join("", arrayNombreEmpresa);
-                    string nombreDirectorio = empresa.CO_EMPR + "_" + nombreEmpresa;
-
-                    DirectoryInfo directorioEmpresa = directorioPrincipal.CreateSubdirectory(nombreDirectorio);
-                    DirectoryInfo directorioCertificados = directorioEmpresa.CreateSubdirectory("CERTIFICADOS");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                respuesta = false;
-            }
-            return respuesta;
-        }
-        [autorizacion(false)]
-        public string DescomprimirArchivo(string nombreArchivo, string extensionArchivo, string pathInsercionArchivoTemporal)
-        {
-            string mensaje = string.Empty;
-            try
-            {
-                if (extensionArchivo.ToLower().Equals(".rar"))
-                {
-                    using (var archive = RarArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
-                    {
-                        if (archive.Entries.Count == 1)
-                        {
-                            var entry = archive.Entries.Where(x => !x.IsDirectory).FirstOrDefault();
-                            if (entry == null)
-                            {
-                                return string.Empty;
-                            }
-                            string FileExtension = Path.GetExtension(entry.Key);
-                            if (!FileExtension.ToLower().Equals(".pdf"))
-                            {
-                                return string.Empty;
-                            }
-                            entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
-                            {
-                                ExtractFullPath = true,
-                                Overwrite = true
-                            });
-                            return entry.Key;
-                        }
-                        return string.Empty;
-                    }
-                }
-                //else if (extensionArchivo.ToLower().Equals(".zip"))
-                //{
-                //    using (var archive = ZipArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
-                //    {
-                //        if (archive.Entries.Count == 1)
-                //        {
-                //            var entry = archive.Entries.Where(x => !x.IsDirectory).FirstOrDefault();
-                //            if (entry == null)
-                //            {
-                //                return string.Empty;
-                //            }
-                //            string FileExtension = Path.GetExtension(entry.Key);
-                //            if (!FileExtension.ToLower().Equals(".pdf"))
-                //            {
-                //                return string.Empty;
-                //            }
-                //            entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
-                //            {
-                //                ExtractFullPath = true,
-                //                Overwrite = true
-                //            });
-                //            return entry.Key;
-                //            //foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
-                //            //{
-                //            //    entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
-                //            //    {
-                //            //        ExtractFullPath = true,
-                //            //        Overwrite = true
-                //            //    });
-                //            //    return entry.Key;
-                //            //}
-                //        }
-                //        return string.Empty;
-                //    }
-                //}
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                mensaje = string.Empty;
-            }
-            return mensaje;
-        }
-        [autorizacion(false)]
-        public async Task<bool> EnviarCorreoAsync(int usu_id, string remitente, string password, string destinatarios, string asunto, string body = "")
-        {
-            bool respuesta = false;
-            SmtpClient cliente;
-            MailMessage email;
-            BolBitacoraEntidad bitacora = new BolBitacoraEntidad();
-            try
-            {
-                cliente = new SmtpClient("smtp.gmail.com", 587)
-                {
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(remitente, password)
-                };
-                email = new MailMessage(remitente, destinatarios.Trim(), asunto, body)
-                {
-                    IsBodyHtml = true,
-                    BodyEncoding = System.Text.Encoding.UTF8,
-                    SubjectEncoding = System.Text.Encoding.Default
-                };
-                await cliente.SendMailAsync(email).ContinueWith(t => {
-                    bitacora.btc_fecha_reg = DateTime.Now;
-                    bitacora.btc_accion = "Envio Correo";
-                    bitacora.btc_usuario_id = usu_id;
-                    bitacora.btc_ruta_pdf = "ENVIADO - " + "remitente: " + remitente + "; destinatario: " + destinatarios;
-
-                    var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
-                });
-
-                respuesta = true;
-            }
-            catch (Exception ex)
-            {
-                respuesta = false;
-                bitacora.btc_fecha_reg = DateTime.Now;
-                bitacora.btc_accion = "Envio Correo";
-                bitacora.btc_usuario_id = usu_id;
-                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - " + "remitente: " + remitente + "; destinatario: " + destinatarios;
-                var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
-            }
-            return respuesta;
-        }
+    
       
         public ActionResult BolProcesarPdfVista()
         {
@@ -1931,6 +1434,325 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
             }
             return respuesta;
+        }
+        #region MetodosExtra
+        [autorizacion(false)]
+        public static string ObtenerDocumentoDesdePDF(string RutaPdf)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string returnedText = string.Empty;
+            string pdfText = string.Empty;
+            List<string> pdfTextSplited = new List<string>();
+            string lineSeparator = ((char)0x2028).ToString();
+            string paragraphSeparator = ((char)0x2029).ToString();
+            string pattern = @"([A-Z]{1,3}-[0-9]{1,})\w+";
+            try
+            {
+                using (PdfReader reader = new PdfReader(RutaPdf))
+                {
+                    iTextSharp.text.pdf.parser.ITextExtractionStrategy strategy = new iTextSharp.text.pdf.parser.SimpleTextExtractionStrategy();
+                    pdfText = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(reader, 1, strategy);
+                    pdfTextSplited = System.Text.Encoding.UTF8.GetString(System.Text.ASCIIEncoding.Convert(System.Text.Encoding.Default, System.Text.Encoding.UTF8, System.Text.Encoding.Default.GetBytes(pdfText))).Split(' ').ToList();
+                }
+                foreach (var splited in pdfTextSplited)
+                {
+                    string textSplited = splited.Replace("\n\n", " ").Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace(lineSeparator, " ").Replace(paragraphSeparator, " ");
+                    List<string> subListSplited = textSplited.Split(' ').ToList();
+                    foreach (var subList in subListSplited)
+                    {
+                        if (System.Text.RegularExpressions.Regex.IsMatch(subList.Trim(), pattern))
+                        {
+                            returnedText = subList.Trim();
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                returnedText = string.Empty;
+            }
+            return returnedText;
+        }
+        [autorizacion(false)]
+        public bool LimpiarDirectorio(string PathDirectorio)
+        {
+            bool respuesta = false;
+            try
+            {
+                System.IO.DirectoryInfo di = new DirectoryInfo(PathDirectorio);
+                if (di == null)
+                {
+                    return respuesta;
+                }
+                foreach (FileInfo file in di.GetFiles())
+                {
+                    file.Delete();
+                }
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                {
+                    dir.Delete(true);
+                }
+                respuesta = true;
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+            }
+            return respuesta;
+        }
+        [autorizacion(false)]
+        static double ConvertBytesToMegabytes(long bytes)
+        {
+            return Math.Round(((bytes / 1024f) / 1024f), 2);
+        }
+        [autorizacion(false)]
+        static double ConvertKilobytesToMegabytes(long kilobytes)
+        {
+            return Math.Round((kilobytes / 1024f), 2);
+        }
+        [autorizacion(false)]
+        public bool SincronizarEmpresas(List<TMEMPR> listaEmpresas, string directorioRaizArchivosFirma)
+        {
+            bool respuesta = true;
+            List<BolEmpresaEntidad> listaEmpresasPostgres = new List<BolEmpresaEntidad>();
+            string directorioFirma = "DIRECTORIOCERTIFICADOS";
+            try
+            {
+
+                var listaEmpresasPostgresTupla = bolEmpresaBL.BolEmpresaListarJson();
+                if (listaEmpresasPostgresTupla.error.Respuesta)
+                {
+                    listaEmpresasPostgres = listaEmpresasPostgresTupla.lista;
+                    foreach (var empresaOfisis in listaEmpresas)
+                    {
+                        var empresaConsulta = listaEmpresasPostgres.Where(x => x.emp_co_ofisis.Equals(empresaOfisis.CO_EMPR)).FirstOrDefault();
+                        if (empresaConsulta == null)
+                        {
+                            //insertar empresa
+                            BolEmpresaEntidad empresaInsertar = new BolEmpresaEntidad();
+                            empresaInsertar.emp_nomb = empresaOfisis.DE_NOMB;
+                            empresaInsertar.emp_nomb_corto = empresaOfisis.DE_NOMB_CORT;
+                            empresaInsertar.emp_pais = empresaOfisis.NO_PAIS;
+                            empresaInsertar.emp_prov = empresaOfisis.NO_PROV;
+                            empresaInsertar.emp_depa = empresaOfisis.NO_DEPA;
+                            empresaInsertar.emp_rucs = empresaOfisis.NU_RUCS;
+                            empresaInsertar.emp_co_ofisis = empresaOfisis.CO_EMPR;
+                            empresaInsertar.emp_nom_rep_legal = empresaOfisis.NO_REPR_LEGA;
+                            var InsertadoTupla = bolEmpresaBL.BolEmpresaInsertarJson(empresaInsertar);
+                            respuesta = InsertadoTupla.error.Respuesta;
+                        }
+                        if (!respuesta)
+                        {
+                            break;
+                        }
+                    }
+                }
+                //crear directorios
+                DirectoryInfo directorioPrincipal = Directory.CreateDirectory(Path.Combine(directorioRaizArchivosFirma) + directorioFirma);
+                foreach (var empresa in listaEmpresas)
+                {
+                    string[] arrayNombreEmpresa = empresa.DE_NOMB.Split(' ');
+                    string nombreEmpresa = String.Join("", arrayNombreEmpresa);
+                    string nombreDirectorio = empresa.CO_EMPR + "_" + nombreEmpresa;
+
+                    DirectoryInfo directorioEmpresa = directorioPrincipal.CreateSubdirectory(nombreDirectorio);
+                    DirectoryInfo directorioCertificados = directorioEmpresa.CreateSubdirectory("CERTIFICADOS");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+            }
+            return respuesta;
+        }
+        [autorizacion(false)]
+        public string DescomprimirArchivo(string nombreArchivo, string extensionArchivo, string pathInsercionArchivoTemporal)
+        {
+            string mensaje = string.Empty;
+            try
+            {
+                if (extensionArchivo.ToLower().Equals(".rar"))
+                {
+                    using (var archive = RarArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
+                    {
+                        if (archive.Entries.Count == 1)
+                        {
+                            var entry = archive.Entries.Where(x => !x.IsDirectory).FirstOrDefault();
+                            if (entry == null)
+                            {
+                                return string.Empty;
+                            }
+                            string FileExtension = Path.GetExtension(entry.Key);
+                            if (!FileExtension.ToLower().Equals(".pdf"))
+                            {
+                                return string.Empty;
+                            }
+                            entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                            {
+                                ExtractFullPath = true,
+                                Overwrite = true
+                            });
+                            return entry.Key;
+                        }
+                        return string.Empty;
+                    }
+                }
+                //else if (extensionArchivo.ToLower().Equals(".zip"))
+                //{
+                //    using (var archive = ZipArchive.Open(Path.Combine(pathInsercionArchivoTemporal, nombreArchivo)))
+                //    {
+                //        if (archive.Entries.Count == 1)
+                //        {
+                //            var entry = archive.Entries.Where(x => !x.IsDirectory).FirstOrDefault();
+                //            if (entry == null)
+                //            {
+                //                return string.Empty;
+                //            }
+                //            string FileExtension = Path.GetExtension(entry.Key);
+                //            if (!FileExtension.ToLower().Equals(".pdf"))
+                //            {
+                //                return string.Empty;
+                //            }
+                //            entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                //            {
+                //                ExtractFullPath = true,
+                //                Overwrite = true
+                //            });
+                //            return entry.Key;
+                //            //foreach (var entry in archive.Entries.Where(entry => !entry.IsDirectory))
+                //            //{
+                //            //    entry.WriteToDirectory(Path.Combine(pathInsercionArchivoTemporal), new ExtractionOptions()
+                //            //    {
+                //            //        ExtractFullPath = true,
+                //            //        Overwrite = true
+                //            //    });
+                //            //    return entry.Key;
+                //            //}
+                //        }
+                //        return string.Empty;
+                //    }
+                //}
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                mensaje = string.Empty;
+            }
+            return mensaje;
+        }
+        #endregion
+        [HttpPost]
+        public ActionResult BolProcesarPdfV2(HttpPostedFileBase archivoProceso, DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId = "")
+        {
+            string mensaje = string.Empty;
+            string mensajeConsola = string.Empty;
+            bool respuesta = false;
+            string archivoDescomprimido = string.Empty;
+            //Varialbes necesarias
+            int totalRegistrosBD = 0;
+            int totalHojas = 0;
+            const string TIPO_CONFIGURACION = "PATH";
+            const string DIRECTORIO_PROCESO = "BOLETASPROCESADAS";
+            const string DIRECTORIO_A_PROCESAR = "BOLETASAPROCESAR";
+            const string DIRECTORIO_RAIZ_CERTIFICADOS = "DIRECTORIOCERTIFICADOS";
+            const string DIRECTORIO_CERTIFICADO_EMPRESA = "CERTIFICADOS";
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
+            List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
+            List<BolEmpleadoBoletaEntidad> listaEliminar = new List<BolEmpleadoBoletaEntidad>();
+            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
+            string directorioRaizAProcesar;
+            try
+            {
+                ProgressBarFunction.SendProgressBoletas("Iniciando ...", 0, false, connectionId);
+                Thread.Sleep(1000);
+                if (archivoProceso == null)
+                {
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    mensaje = "Archivo a procesar no encontrado";
+                    mensajeConsola = "archivo proceso==null";
+                    return Json(new { mensaje, respuesta });
+                }
+                mensaje = VerificarDataNecesaria(archivoProceso.FileName, fechaProcesoPdf, empresa, nombreEmpresa,out directorioRaizAProcesar);
+
+                if (!mensaje.Equals(string.Empty))
+                {
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    mensajeConsola = "Error em metodo VerificarDataNecesaria";
+                    return Json(new { mensaje, respuesta });
+                }
+
+            }
+            catch(Exception ex)
+            {
+                mensaje = "Error";
+                mensajeConsola = ex.Message;
+            }
+            
+            return Json(new { data = listaInsertar, mensaje, mensajeConsola, respuesta });
+        }
+        [autorizacion(false)]
+        public string VerificarDataNecesaria(string nombreArchivo,DateTime fechaProcesoPdf,string codEmpresa,string nombreEmpresa, out string directorioRaizAProcesar)
+        {
+            const string TIPO_CONFIGURACION = "PATH";
+            const string DIRECTORIO_PROCESO = "BOLETASPROCESADAS";
+            const string DIRECTORIO_A_PROCESAR = "BOLETASAPROCESAR";
+            const string DIRECTORIO_RAIZ_CERTIFICADOS = "DIRECTORIOCERTIFICADOS";
+            const string DIRECTORIO_CERTIFICADO_EMPRESA = "CERTIFICADOS";
+            string mensaje = string.Empty;
+            BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
+            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
+            string directorioBase = string.Empty;
+            try
+            {
+               
+                int numeroMes = fechaProcesoPdf.Month;
+                string carpetaMes = numeroMes.ToString().PadLeft(2, '0') + "_" + meses[numeroMes - 1];
+
+                string anio = Convert.ToString(fechaProcesoPdf.Year);
+
+                //Nombre Directorio de la Empresa
+                string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
+                string nombreDirectorioEmpresa = codEmpresa + "_" + String.Join("", arrayNombreEmpresa);
+
+
+                if (nombreArchivo.Equals(string.Empty))
+                {
+                    mensaje = "Archivo Comprimido Obligatorio";
+                }
+                var configuracionTupla = bolConfigBL.BoolConfiguracionObtenerxTipoJson(TIPO_CONFIGURACION);
+                if (!configuracionTupla.error.Respuesta && configuracionTupla.configuracion.config_id == 0)
+                {
+                    mensaje = "No se pudo encontrar el registro de configuracion en intranet.bol_configuracion";
+                }
+                configuracion = configuracionTupla.configuracion;
+                string rutaBase = configuracion.config_valor;
+
+                string pathDirectorioInsercionTemporal = Path.Combine(configuracion.config_valor, DIRECTORIO_A_PROCESAR, nombreDirectorioEmpresa, anio, carpetaMes);
+                if (!Directory.Exists(pathDirectorioInsercionTemporal))
+                {
+                    mensaje = "No se pudo encontrar el directorio de proceso";
+                }
+
+                var empresaPostgres = bolEmpresaBL.BolEmpresaObtenerxOfisisIdJson(codEmpresa);
+                detalleCertificadoEmpresa = empresaPostgres.empresa.DetalleCerts.Where(x => x.det_en_uso == 1).FirstOrDefault();
+                if (detalleCertificadoEmpresa == null)
+                {
+                    mensaje = "No existe certificado a usar para esta empresa";
+                }
+                directorioBase = configuracion.config_valor;
+            }
+            catch(Exception ex)
+            {
+                mensaje = string.Empty;
+            }
+            directorioRaizAProcesar = directorioBase;
+            return mensaje;
         }
     }
 }
