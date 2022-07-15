@@ -37,7 +37,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         BolEmpresaModel bolEmpresaBL = new BolEmpresaModel();
         BolDetCertEmpresaModel bolDetCertEmpresaBL = new BolDetCertEmpresaModel();
         private SEG_UsuarioEmpresaDAL usuarioEmpresaDAL = new SEG_UsuarioEmpresaDAL();
-        private BolEmailRemitenteModel emailRemitenteDAL= new BolEmailRemitenteModel();
+        private BolEmailRemitenteModel emailRemitenteDAL = new BolEmailRemitenteModel();
 
         public string[] meses = { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre" };
 
@@ -1114,8 +1114,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             }
             return Json(new { respuesta, mensaje, data = listaEmpresas });
         }
-    
-      
+
+
         public ActionResult BolProcesarPdfVista()
         {
             return View("~/Views/IntranetPJAdmin/IntranetPJBolProcesarPdf.cshtml");
@@ -1160,7 +1160,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             string mensaje = "No se pudo obtener el registro";
             bool respuesta = false;
-            BolEmailRemitenteEntidad remitente= new BolEmailRemitenteEntidad();
+            BolEmailRemitenteEntidad remitente = new BolEmailRemitenteEntidad();
             try
             {
                 remitente = emailRemitenteDAL.BolEmailRemitenteIdObtenerJson(email_id);
@@ -1179,7 +1179,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         {
             string mensaje = "No se pudo insertar el registro";
             bool respuesta = false;
-            int idInsertado=0;
+            int idInsertado = 0;
             try
             {
                 email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
@@ -1247,14 +1247,14 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             string remitente = ConfigurationManager.AppSettings["user_boletasgdt"].ToString();
             string password = ConfigurationManager.AppSettings["password_boletasgdt"].ToString();
             //string direccionesEnvio = ConfigurationManager.AppSettings["user_envio_boletas_dt"].ToString();
-            BolEmailRemitenteEntidad remitenteUsar=new BolEmailRemitenteEntidad();
+            BolEmailRemitenteEntidad remitenteUsar = new BolEmailRemitenteEntidad();
             try
             {
                 var basePath = "http://" + Request.Url.Authority;
                 EnvioCorreosFunction.SendProgressBoletas("Iniciando Proceso", 0, false, connectionId);
                 Thread.Sleep(1000);
 
-             
+
                 if (listaBoletas.Count == 0)
                 {
                     EnvioCorreosFunction.SendProgressBoletas("Proceso Terminado", 100, true, connectionId);
@@ -1262,7 +1262,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensaje = "No se seleccionaron boletas a enviar";
                     return Json(new { mensaje, respuesta });
                 }
-                
+
 
                 UsuarioEntidad usuario = (UsuarioEntidad)Session["usuSGC_full"];
                 string mes = "";
@@ -1270,7 +1270,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 decimal totalElementos = listaBoletas.Count;
                 decimal limit = 1;
                 decimal porcentaje = 0;
-                    
+
                 foreach (var boleta in listaBoletas)
                 {
                     string mensajeSignalr = "No se pudo enviar el correo a : ";
@@ -1332,7 +1332,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             </table>
                         </div>
                     ";
-                     
+
                     string asunto = "Boleta creada, Trabajador: " + nombreEmpleado;
 
                     porcentaje = (limit * 100 / totalElementos);
@@ -1363,7 +1363,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
 
                 mensaje = "Envio Iniciado";
                 respuesta = true;
-                
+
                 EnvioCorreosFunction.SendProgressBoletas("Proceso Terminado", 100, true, connectionId);
                 Thread.Sleep(1000);
 
@@ -1381,7 +1381,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             BolEmailRemitenteEntidad remitente = new BolEmailRemitenteEntidad();
             try
             {
-                listaRemitentes = emailRemitenteDAL.BolEmailRemitenteListarJson().Where(x => x.email_estado == 1).Where(x=>x.email_cantidad_envios<x.email_limite).ToList();
+                listaRemitentes = emailRemitenteDAL.BolEmailRemitenteListarJson().Where(x => x.email_estado == 1).Where(x => x.email_cantidad_envios < x.email_limite).ToList();
                 int MaximaCantidad = listaRemitentes.Max(obj => obj.email_cantidad_envios);//obtener el numero maximo de cantidad de envios de la lista
                 //obteniendo registro con menos registros restantes
                 var remitenteUso = listaRemitentes.Where(x => x.email_cantidad_envios == MaximaCantidad).FirstOrDefault();
@@ -1390,7 +1390,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     remitente = remitenteUso;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 remitente = new BolEmailRemitenteEntidad();
             }
@@ -1646,31 +1646,44 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             return mensaje;
         }
         #endregion
+        [autorizacion(false)]
         [HttpPost]
         public ActionResult BolProcesarPdfV2(HttpPostedFileBase archivoProceso, DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId = "")
         {
             string mensaje = string.Empty;
             string mensajeConsola = string.Empty;
             bool respuesta = false;
-            string archivoDescomprimido = string.Empty;
+            string ArchivoDescomprimido = string.Empty;
             //Varialbes necesarias
-            int totalRegistrosBD = 0;
-            int totalHojas = 0;
+            int totalRegistrosBDOFISIS = 0;
+            int totalHojasPDF = 0;
             const string TIPO_CONFIGURACION = "PATH";
             const string DIRECTORIO_PROCESO = "BOLETASPROCESADAS";
             const string DIRECTORIO_A_PROCESAR = "BOLETASAPROCESAR";
             const string DIRECTORIO_RAIZ_CERTIFICADOS = "DIRECTORIOCERTIFICADOS";
             const string DIRECTORIO_CERTIFICADO_EMPRESA = "CERTIFICADOS";
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
-            List<PersonaSqlEntidad> listaPersonas = new List<PersonaSqlEntidad>();
-            List<BolEmpleadoBoletaEntidad> listaInsertar = new List<BolEmpleadoBoletaEntidad>();
-            List<BolEmpleadoBoletaEntidad> listaEliminar = new List<BolEmpleadoBoletaEntidad>();
-            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
-            string directorioRaizAProcesar;
+            List<PersonaSqlEntidad> ListaPersonasOFISIS = new List<PersonaSqlEntidad>();
+            List<BolEmpleadoBoletaEntidad> ListaInsertarPOSTGRES = new List<BolEmpleadoBoletaEntidad>();
+            List<BolEmpleadoBoletaEntidad> ListaEliminarPOSTGRES = new List<BolEmpleadoBoletaEntidad>();
+            BolEmpresaEntidad empresaProceso = new BolEmpresaEntidad();
+            BolDetCertEmpresaEntidad detalleCertificado = new BolDetCertEmpresaEntidad();
+            string directorioRaizAProcesar = string.Empty;
+            string mensajeErrorMetodo = string.Empty;
             try
             {
+                //Iniciar Signalr
                 ProgressBarFunction.SendProgressBoletas("Iniciando ...", 0, false, connectionId);
                 Thread.Sleep(1000);
+                //Declarar variables
+                int NumeroMes = fechaProcesoPdf.Month;
+                string Anio = fechaProcesoPdf.Year.ToString();
+
+                string CarpetaMes = $@"{ meses.ToString().PadLeft(2, '0')}_{meses[NumeroMes - 1]}";
+                string NombreDirectorioEmpresa = $@"{empresa}_{String.Join(string.Empty, nombreEmpresa.Split(' '))}";
+
+                //Validar Data Necesaria y directorios raiz para proceso
+
                 if (archivoProceso == null)
                 {
                     ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
@@ -1678,48 +1691,221 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensajeConsola = "archivo proceso==null";
                     return Json(new { mensaje, respuesta });
                 }
-                mensaje = VerificarDataNecesaria(archivoProceso.FileName, fechaProcesoPdf, empresa, nombreEmpresa,out directorioRaizAProcesar);
-
+                mensaje = VerificarDataNecesaria(archivoProceso.FileName, fechaProcesoPdf, empresa, nombreEmpresa, out directorioRaizAProcesar, out empresaProceso);
+                detalleCertificado = empresaProceso.DetalleCerts.Where(x=>x.det_en_uso==1).FirstOrDefault();
                 if (!mensaje.Equals(string.Empty))
                 {
                     ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
-                    mensajeConsola = "Error em metodo VerificarDataNecesaria";
+                    mensajeConsola = "Error em metodo VerificarDataNecesaria : " + mensaje;
                     return Json(new { mensaje, respuesta });
+                }
+                //Descomprimir archivo
+
+                string NombreArchivoComprimido = Path.GetFileName(archivoProceso.FileName);
+                string ExtensionArchivoComprimido = Path.GetExtension(archivoProceso.FileName);
+                //Verificar que sera .rar
+                if (!ExtensionArchivoComprimido.ToLower().Equals(".rar"))
+                {
+                    mensaje = "El archivo debe tener formato .rar";
+                    mensajeConsola = "Extension de Archivo: " + ExtensionArchivoComprimido;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+                //Obtener path de carpeta donde se insertara el archivo comprimido para luego extraer pdf de procesof -
+                //ejemplo ruta C:\BoletasGDT\BOLETASAPROCESAR\01_IBERPERUSAC\2021\01_Enero
+                string PathDirectorioProceso = Path.Combine(directorioRaizAProcesar, DIRECTORIO_A_PROCESAR, NombreDirectorioEmpresa, Anio, CarpetaMes);
+
+                //Limpiar Directorio
+                LimpiarDirectorio(PathDirectorioProceso);
+
+                archivoProceso.SaveAs(PathDirectorioProceso);
+                ArchivoDescomprimido = DescomprimirArchivo(NombreArchivoComprimido, ExtensionArchivoComprimido, PathDirectorioProceso);
+                //Devuelve el nombre del archivo descomprimido
+                if (ArchivoDescomprimido.Equals(string.Empty))
+                {
+                    mensaje = "Error al Extraer Archivo, el archivo comprimido debe ser un documento .pdf";
+                    mensajeConsola = "Error al descomprimir archivo";
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+
+                //consultas a BD
+                var ListaPersonasTuplaOFISIS = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProcesoPdf.Month, fechaProcesoPdf.Year);
+                var ListaEliminarTuplaPOSTGRES = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresa, Anio, NumeroMes.ToString());
+
+                if (ListaPersonasTuplaOFISIS.error.Respuesta == false)
+                {
+                    mensaje = "Error a conectarse a OFISIS";
+                    mensajeConsola = ListaPersonasTuplaOFISIS.error.Mensaje;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+                if (ListaEliminarTuplaPOSTGRES.error.Respuesta == false)
+                {
+                    mensaje = "Error a conectarse a Mesa de Partes";
+                    mensajeConsola = ListaEliminarTuplaPOSTGRES.error.Mensaje;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+
+                ListaPersonasOFISIS = ListaPersonasTuplaOFISIS.lista;
+                ListaEliminarPOSTGRES = ListaEliminarTuplaPOSTGRES.lista;
+                //ejemplo : C:\BoletasGDT\BOLETASPROCESADAS\15_CORPORACIONPJENTRETENIMIENTOS.A.C
+                string PathDirectorioEmpresaBoletasProcesadas = Path.Combine(directorioRaizAProcesar, DIRECTORIO_PROCESO, NombreDirectorioEmpresa);
+                DirectoryInfo directorioRoot = Directory.CreateDirectory(PathDirectorioEmpresaBoletasProcesadas);
+                //Obtener pdf del directorio BOLETASAPROCESAR
+                totalRegistrosBDOFISIS = ListaPersonasOFISIS.Count();
+                using (PdfReader reader = new PdfReader(Path.Combine(PathDirectorioProceso, ArchivoDescomprimido)))
+                {
+                    totalHojasPDF = reader.NumberOfPages;
+                }
+                if (totalHojasPDF != totalRegistrosBDOFISIS)
+                {
+                    mensaje = "Inconsistencia entre pdf y total de trabajadores";
+                    mensajeConsola = "Inconsistencia entre pdf y total de trabajadores---> TotalRegistrosBD:[" + totalRegistrosBDOFISIS + "]" + "; ---- Total Hojas PDF:[" + totalHojasPDF + "]";
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
+
+                decimal totalElementos = totalRegistrosBDOFISIS;
+                decimal limit = 0;
+                decimal porcentaje = 0;
+                //Eliminar data y carpetas del la fecha de proceso
+
+                int totalRegistrosEliminar = ListaEliminarPOSTGRES.Count;
+                totalElementos = totalRegistrosBDOFISIS + totalRegistrosEliminar;
+
+                //eliminar pdfs
+                foreach (var empleado in ListaEliminarPOSTGRES)
+                {
+                    string ArchivoEliminar = Directory.GetFiles(directorioRaizAProcesar, empleado.emp_ruta_pdf, SearchOption.AllDirectories).FirstOrDefault();
+                    if (ArchivoEliminar != null)
+                    {
+                        System.IO.File.Delete(ArchivoEliminar);
+                    }
+                    porcentaje = (limit * 100 / totalElementos);
+                    porcentaje = Math.Round(porcentaje, 2);
+
+                    ProgressBarFunction.SendProgressBoletas("Limpiando Archivos ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
+                    limit++;
+                }
+                //Eliminar de BD
+                ProgressBarFunction.SendProgressBoletas("Limpiando Base de Datos ...", 30, false, connectionId);
+                var eliminadoTupla = empleadoBoletaBL.BoolEmpleadoBoletaEliminarMasivoJson(empresa, Anio, NumeroMes.ToString());
+
+                int TotalInsertados = 0;
+                //Procesar PDF Grande
+                using (PdfReader reader = new PdfReader(Path.Combine(PathDirectorioProceso, ArchivoDescomprimido)))
+                {
+                    for (int pagenumber = 1; pagenumber <= reader.NumberOfPages; pagenumber++)
+                    {
+                        BolEmpleadoBoletaEntidad empleado = new BolEmpleadoBoletaEntidad();
+                        string NroDocumento = ObtenerNroDocumentDesdePDF(reader,pagenumber);
+                        var item = ListaPersonasOFISIS.Where(x=>x.CO_TRAB.ToLower().Trim().Equals(NroDocumento.Trim())).FirstOrDefault();
+                        if (item != null)
+                        {
+                            string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
+                            string filename = item.CO_TRAB + "_" + item.CO_EMPR + "_" + Anio + "_" + NumeroMes.ToString() + ".pdf";
+                            DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
+                            using (Document document = new Document())
+                            {
+                                PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
+                                copy.AddPage(copy.GetImportedPage(reader, pagenumber));
+                            }
+                            //Document document = new Document();
+                            //document.Open();
+                            //document.Close();
+                            //FirmarPDF
+                            var rutaCertificado = Path.Combine(
+                                               directorioRaizAProcesar,
+                                               DIRECTORIO_RAIZ_CERTIFICADOS,
+                                               NombreDirectorioEmpresa,
+                                               DIRECTORIO_CERTIFICADO_EMPRESA,
+                                               detalleCertificado.det_ruta_cert
+                                               );
+                            var rutaImagen = Path.Combine(
+                                    directorioRaizAProcesar,
+                                    DIRECTORIO_RAIZ_CERTIFICADOS,
+                                    NombreDirectorioEmpresa
+                                    );
+                            var certificado = new Certificado(
+                                rutaCertificado,
+                                detalleCertificado.det_pass_cert
+                                );
+                            var firmante = new Firmante(certificado);
+                            string secondFileName = item.CO_TRAB + "_" + item.CO_EMPR + "_" + Anio + "_" + NumeroMes + "_signed.pdf";
+                            if (System.IO.File.Exists(rutaCertificado))
+                            {
+                                firmante.Firmar(
+                                    Path.Combine(subdirectorioEmpleado.FullName, filename),
+                                    Path.Combine(subdirectorioEmpleado.FullName, secondFileName),
+                                    empresaProceso,
+                                    rutaImagen
+                                    );
+                                System.IO.File.Delete(Path.Combine(subdirectorioEmpleado.FullName, filename));
+                            }
+                            //Termino la firma
+                            empleado.emp_co_trab = item.CO_TRAB;
+                            empleado.emp_co_empr = item.CO_EMPR;
+                            empleado.emp_anio = Anio;
+                            empleado.emp_periodo = Convert.ToString(NumeroMes);
+                            empleado.emp_ruta_pdf = secondFileName;
+                            empleado.emp_no_trab = item.NO_TRAB;
+                            empleado.emp_apel_pat = item.NO_APEL_PATE;
+                            empleado.emp_apel_mat = item.NO_APEL_MATE;
+                            empleado.emp_direc_mail = item.NO_DIRE_MAI1;
+                            empleado.emp_nro_cel = item.NU_TLF1;
+                            empleado.emp_tipo_doc = item.TI_DOCU_IDEN;
+                            empleado.emp_fecha_reg = DateTime.Now;
+                            empleado.emp_enviado = 0;
+                            empleado.emp_descargado = 0;
+                            //Insertar a BD
+                            int idInsertado = empleadoBoletaBL.BoolEmpleadoBoletaInsertarJson(empleado);
+                            if (idInsertado > 0)
+                            {
+                                TotalInsertados++;
+                            }
+                            
+                        }
+                    }
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = "Error";
                 mensajeConsola = ex.Message;
             }
-            
-            return Json(new { data = listaInsertar, mensaje, mensajeConsola, respuesta });
+
+            return Json(new { data = ListaInsertarPOSTGRES, mensaje, mensajeConsola, respuesta });
         }
         [autorizacion(false)]
-        public string VerificarDataNecesaria(string nombreArchivo,DateTime fechaProcesoPdf,string codEmpresa,string nombreEmpresa, out string directorioRaizAProcesar)
+        public string VerificarDataNecesaria(
+            string nombreArchivo,
+            DateTime fechaProcesoPdf,
+            string codEmpresa,
+            string nombreEmpresa,
+            out string directorioRaizAProcesar,
+            out BolEmpresaEntidad empresaProceso)
         {
             const string TIPO_CONFIGURACION = "PATH";
-            const string DIRECTORIO_PROCESO = "BOLETASPROCESADAS";
             const string DIRECTORIO_A_PROCESAR = "BOLETASAPROCESAR";
-            const string DIRECTORIO_RAIZ_CERTIFICADOS = "DIRECTORIOCERTIFICADOS";
-            const string DIRECTORIO_CERTIFICADO_EMPRESA = "CERTIFICADOS";
             string mensaje = string.Empty;
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
-            BolDetCertEmpresaEntidad detalleCertificadoEmpresa = new BolDetCertEmpresaEntidad();
+            BolEmpresaEntidad empresaRetorno = new BolEmpresaEntidad();
             string directorioBase = string.Empty;
+            string mensajeError = string.Empty;
             try
             {
-               
+
                 int numeroMes = fechaProcesoPdf.Month;
+
                 string carpetaMes = numeroMes.ToString().PadLeft(2, '0') + "_" + meses[numeroMes - 1];
 
                 string anio = Convert.ToString(fechaProcesoPdf.Year);
 
                 //Nombre Directorio de la Empresa
-                string[] arrayNombreEmpresa = nombreEmpresa.Split(' ');
-                string nombreDirectorioEmpresa = codEmpresa + "_" + String.Join("", arrayNombreEmpresa);
-
+                string nombreDirectorioEmpresa = $@"{codEmpresa}_{String.Join(string.Empty, nombreEmpresa.Split(' '))}";
 
                 if (nombreArchivo.Equals(string.Empty))
                 {
@@ -1731,28 +1917,72 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     mensaje = "No se pudo encontrar el registro de configuracion en intranet.bol_configuracion";
                 }
                 configuracion = configuracionTupla.configuracion;
-                string rutaBase = configuracion.config_valor;
 
-                string pathDirectorioInsercionTemporal = Path.Combine(configuracion.config_valor, DIRECTORIO_A_PROCESAR, nombreDirectorioEmpresa, anio, carpetaMes);
-                if (!Directory.Exists(pathDirectorioInsercionTemporal))
+                string pathDirectorioInsercionArchivoComprimido = Path.Combine(configuracion.config_valor, DIRECTORIO_A_PROCESAR, nombreDirectorioEmpresa, anio, carpetaMes);
+                if (!Directory.Exists(pathDirectorioInsercionArchivoComprimido))
                 {
                     mensaje = "No se pudo encontrar el directorio de proceso";
                 }
 
                 var empresaPostgres = bolEmpresaBL.BolEmpresaObtenerxOfisisIdJson(codEmpresa);
-                detalleCertificadoEmpresa = empresaPostgres.empresa.DetalleCerts.Where(x => x.det_en_uso == 1).FirstOrDefault();
-                if (detalleCertificadoEmpresa == null)
+                if (empresaPostgres.empresa.DetalleCerts.Where(x => x.det_en_uso == 1).FirstOrDefault() == null)
                 {
                     mensaje = "No existe certificado a usar para esta empresa";
                 }
                 directorioBase = configuracion.config_valor;
+                empresaRetorno = empresaPostgres.empresa;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 mensaje = string.Empty;
+                empresaRetorno = new BolEmpresaEntidad();
             }
             directorioRaizAProcesar = directorioBase;
+            empresaProceso = empresaRetorno;
             return mensaje;
+        }
+        [autorizacion(false)]
+        public static string ObtenerNroDocumentDesdePDF(PdfReader reader, int pagina)
+        {
+            System.Text.StringBuilder builder = new System.Text.StringBuilder();
+            string pattern = @"^([0-9]{8,20})$";
+            try
+            {
+                Rectangle mediabox = reader.GetPageSize(pagina);
+
+                Rectangle rect = new Rectangle(mediabox.Left + 45, mediabox.Top - 160, mediabox.Left + 100, mediabox.Top - 110);
+
+
+                iTextSharp.text.pdf.parser.RenderFilter[] filter = { new iTextSharp.text.pdf.parser.RegionTextRenderFilter(rect) };
+                iTextSharp.text.pdf.parser.ITextExtractionStrategy strategy;
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                string lineSeparator = ((char)0x2028).ToString();
+                string paragraphSeparator = ((char)0x2029).ToString();
+
+                strategy = new iTextSharp.text.pdf.parser.FilteredTextRenderListener(new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy(), filter);
+                //sb.AppendLine(PdfTextExtractor.GetTextFromPage(reader, i, strategy));
+                string texto = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(reader, pagina, strategy);
+
+                List<string> listasplited = texto.Split(' ').ToList();
+                List<string> listaSplitedFinal = new List<string>();
+                foreach (var splited in listasplited)
+                {
+                    string text = splited.Replace("\n\n", " ").Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace(lineSeparator, " ").Replace(paragraphSeparator, " ");
+                    List<string> subListaSplited = text.Split(' ').ToList();
+                    foreach (var subLista in subListaSplited)
+                    {
+                        if (System.Text.RegularExpressions.Regex.IsMatch(subLista.Trim(), pattern))
+                        {
+                            return subLista.Trim();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+            return string.Empty;
         }
     }
 }

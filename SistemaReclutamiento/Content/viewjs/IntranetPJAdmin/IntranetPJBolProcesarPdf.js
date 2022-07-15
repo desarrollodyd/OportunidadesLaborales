@@ -135,7 +135,7 @@
                 return false
             }
             $("#formProcesarPdf").submit()
-            let url='/IntranetPJBoletasGDT/BolProcesarPdf'
+            let url='/IntranetPJBoletasGDT/BolProcesarPdfV2'
             let dataForm = new FormData(document.getElementById("formProcesarPdf"));
             messageConfirmation({
                 content: '¿Esta seguro de realizar esta acción?, la informacion anterior correspondiente a los campos seleccionados seran eliminados',

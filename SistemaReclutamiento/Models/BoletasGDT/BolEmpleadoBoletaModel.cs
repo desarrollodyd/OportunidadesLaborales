@@ -335,5 +335,73 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (lista: listaBoletas, error: error);
         }
+        public int BoolEmpleadoBoletaInsertarJson(BolEmpleadoBoletaEntidad empleado)
+        {
+            //bool response = false;
+            int idInsertado = 0;
+            string consulta = @"INSERT INTO intranet.bol_empleado_boleta
+(emp_co_trab, 
+emp_co_empr, 
+emp_anio, 
+emp_periodo, 
+emp_ruta_pdf, 
+emp_enviado, 
+emp_descargado, 
+emp_fecha_reg, 
+emp_no_trab, 
+emp_apel_pat, 
+emp_apel_mat, 
+emp_direc_mail, 
+emp_nro_cel, 
+emp_tipo_doc)
+	VALUES 
+(
+@emp_co_trab, 
+@emp_co_empr, 
+@emp_anio, 
+@emp_periodo, 
+@emp_ruta_pdf, 
+@emp_enviado, 
+@emp_descargado, 
+@emp_fecha_reg, 
+@emp_no_trab, 
+@emp_apel_pat, 
+@emp_apel_mat, 
+@emp_direc_mail, 
+@emp_nro_cel, 
+@emp_tipo_doc)
+returning btc_id;";
+            claseError error = new claseError();
+            try
+            {
+                using (var con = new NpgsqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new NpgsqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@emp_co_trab", ManejoNulos.ManageNullStr(empleado.emp_co_trab));
+                    query.Parameters.AddWithValue("@emp_co_empr", ManejoNulos.ManageNullStr(empleado.emp_co_empr));
+                    query.Parameters.AddWithValue("@emp_anio", ManejoNulos.ManageNullStr(empleado.emp_anio));
+                    query.Parameters.AddWithValue("@emp_periodo", ManejoNulos.ManageNullStr(empleado.emp_periodo));
+                    query.Parameters.AddWithValue("@emp_ruta_pdf", ManejoNulos.ManageNullStr(empleado.emp_ruta_pdf));
+                    query.Parameters.AddWithValue("@emp_enviado", ManejoNulos.ManageNullInteger(empleado.emp_enviado));
+                    query.Parameters.AddWithValue("@emp_descargado", ManejoNulos.ManageNullInteger(empleado.emp_descargado));
+                    query.Parameters.AddWithValue("@emp_fecha_reg", ManejoNulos.ManageNullDate(empleado.emp_fecha_reg));
+                    query.Parameters.AddWithValue("@emp_no_trab", ManejoNulos.ManageNullStr(empleado.emp_no_trab));
+                    query.Parameters.AddWithValue("@emp_apel_pat", ManejoNulos.ManageNullStr(empleado.emp_apel_pat));
+                    query.Parameters.AddWithValue("@emp_apel_mat", ManejoNulos.ManageNullStr(empleado.emp_apel_mat));
+                    query.Parameters.AddWithValue("@emp_direc_mail", ManejoNulos.ManageNullStr(empleado.emp_direc_mail));
+                    query.Parameters.AddWithValue("@emp_nro_cel", ManejoNulos.ManageNullStr(empleado.emp_nro_cel));
+                    query.Parameters.AddWithValue("@emp_tipo_doc", ManejoNulos.ManageNullStr(empleado.emp_tipo_doc));
+                    idInsertado = Int32.Parse(query.ExecuteScalar().ToString());
+                    //query.ExecuteNonQuery();
+                    //response = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                idInsertado = 0;
+            }
+            return idInsertado;
+        }
     }
 }
