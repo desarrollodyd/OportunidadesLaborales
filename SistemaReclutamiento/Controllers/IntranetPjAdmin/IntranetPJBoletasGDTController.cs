@@ -1664,7 +1664,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             const string DIRECTORIO_CERTIFICADO_EMPRESA = "CERTIFICADOS";
             BolConfiguracionEntidad configuracion = new BolConfiguracionEntidad();
             List<PersonaSqlEntidad> ListaPersonasOFISIS = new List<PersonaSqlEntidad>();
-            List<BolEmpleadoBoletaEntidad> ListaInsertarPOSTGRES = new List<BolEmpleadoBoletaEntidad>();
+            List<BolEmpleadoBoletaEntidad> ListaRespuesta = new List<BolEmpleadoBoletaEntidad>();
             List<BolEmpleadoBoletaEntidad> ListaEliminarPOSTGRES = new List<BolEmpleadoBoletaEntidad>();
             BolEmpresaEntidad empresaProceso = new BolEmpresaEntidad();
             BolDetCertEmpresaEntidad detalleCertificado = new BolDetCertEmpresaEntidad();
@@ -1679,7 +1679,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 int NumeroMes = fechaProcesoPdf.Month;
                 string Anio = fechaProcesoPdf.Year.ToString();
 
-                string CarpetaMes = $@"{ meses.ToString().PadLeft(2, '0')}_{meses[NumeroMes - 1]}";
+                string CarpetaMes = $@"{ NumeroMes.ToString().PadLeft(2, '0')}_{meses[NumeroMes - 1]}";
                 string NombreDirectorioEmpresa = $@"{empresa}_{String.Join(string.Empty, nombreEmpresa.Split(' '))}";
 
                 //Validar Data Necesaria y directorios raiz para proceso
@@ -1718,7 +1718,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 //Limpiar Directorio
                 LimpiarDirectorio(PathDirectorioProceso);
 
-                archivoProceso.SaveAs(PathDirectorioProceso);
+                archivoProceso.SaveAs(Path.Combine(PathDirectorioProceso,NombreArchivoComprimido));
                 ArchivoDescomprimido = DescomprimirArchivo(NombreArchivoComprimido, ExtensionArchivoComprimido, PathDirectorioProceso);
                 //Devuelve el nombre del archivo descomprimido
                 if (ArchivoDescomprimido.Equals(string.Empty))
@@ -1807,14 +1807,12 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             string directorioEmpleado = item.CO_EMPR + "_" + item.CO_TRAB;
                             string filename = item.CO_TRAB + "_" + item.CO_EMPR + "_" + Anio + "_" + NumeroMes.ToString() + ".pdf";
                             DirectoryInfo subdirectorioEmpleado = directorioRoot.CreateSubdirectory(directorioEmpleado);
-                            using (Document document = new Document())
-                            {
-                                PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
-                                copy.AddPage(copy.GetImportedPage(reader, pagenumber));
-                            }
-                            //Document document = new Document();
-                            //document.Open();
-                            //document.Close();
+                            Document document = new Document();
+                            PdfCopy copy = new PdfCopy(document, new FileStream(Path.Combine(subdirectorioEmpleado.FullName, filename), FileMode.Create));
+                            document.Open();
+                            copy.AddPage(copy.GetImportedPage(reader, pagenumber));
+                            document.Close();
+
                             //FirmarPDF
                             var rutaCertificado = Path.Combine(
                                                directorioRaizAProcesar,
@@ -1860,16 +1858,29 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                             empleado.emp_enviado = 0;
                             empleado.emp_descargado = 0;
                             //Insertar a BD
-                            int idInsertado = empleadoBoletaBL.BoolEmpleadoBoletaInsertarJson(empleado);
-                            if (idInsertado > 0)
+                            bool insertado= empleadoBoletaBL.BoolEmpleadoBoletaInsertarJson(empleado);
+                            empleado.boletaCreada = insertado;
+                            ListaRespuesta.Add(empleado);
+                            porcentaje = (limit * 100 / totalElementos);
+                            porcentaje = Math.Round(porcentaje, 2);
+                            limit++;
+                            if (insertado)
                             {
                                 TotalInsertados++;
+                                ProgressBarFunction.SendProgressBoletas("Creando Pdf ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
+                            }
+                            else
+                            {
+                                ProgressBarFunction.SendProgressBoletas("No se pudo crear ... " + empleado.emp_ruta_pdf, porcentaje, false, connectionId);
                             }
                             
                         }
                     }
                 }
-
+                
+                ProgressBarFunction.SendProgressBoletas("Proceso Terminado", 100, true, connectionId);
+                respuesta = true;
+                mensaje = "Proceso Terminado";
             }
             catch (Exception ex)
             {
@@ -1877,7 +1888,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 mensajeConsola = ex.Message;
             }
 
-            return Json(new { data = ListaInsertarPOSTGRES, mensaje, mensajeConsola, respuesta });
+            return Json(new { data = ListaRespuesta, mensaje, mensajeConsola, respuesta });
         }
         [autorizacion(false)]
         public string VerificarDataNecesaria(

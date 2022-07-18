@@ -141,6 +141,7 @@
                 content: '¿Esta seguro de realizar esta acción?, la informacion anterior correspondiente a los campos seleccionados seran eliminados',
                 callBackSAceptarComplete: function () {
                     progress.client.AddProgressBoletas = function (message,percentage, hide) {
+                        console.info(message,percentage,hide);
                         ProgressBarModalBoletas('show', message,percentage)
                         $('#ProgressMessage').width(percentage)
                         if (hide == true) {
@@ -371,8 +372,21 @@
                     title: "Dir. envio",
                 },
                 {
+                    data: null,
+                    title: "Creado",
+                    "render":function(value,row,oData){
+                        let spanOculto='<div style="display:none;">'+oData.boletaCreada+'</div>'
+                        let style=oData.boletaCreada?"success":"danger"
+                        let spanCreado=`<span class="label label-sm label-${style}">${(oData.boletaCreada?"Creado":"No se pudo crear")}</span>`
+                        return spanOculto+spanCreado
+                    }
+                },
+                {
                     data: "emp_ruta_pdf",
                     title: "Pdf",
+                    "render":function(value,row,oData){
+                        return oData.boletaCreada?oData.emp_ruta_pdf:""
+                    }
                 }
             ]
         })

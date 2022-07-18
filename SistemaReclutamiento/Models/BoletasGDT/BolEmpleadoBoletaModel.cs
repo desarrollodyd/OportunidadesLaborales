@@ -335,10 +335,10 @@ namespace SistemaReclutamiento.Models.BoletasGDT
             }
             return (lista: listaBoletas, error: error);
         }
-        public int BoolEmpleadoBoletaInsertarJson(BolEmpleadoBoletaEntidad empleado)
+        public bool BoolEmpleadoBoletaInsertarJson(BolEmpleadoBoletaEntidad empleado)
         {
-            //bool response = false;
-            int idInsertado = 0;
+            bool response = false;
+            //int idInsertado = 0;
             string consulta = @"INSERT INTO intranet.bol_empleado_boleta
 (emp_co_trab, 
 emp_co_empr, 
@@ -370,7 +370,7 @@ emp_tipo_doc)
 @emp_direc_mail, 
 @emp_nro_cel, 
 @emp_tipo_doc)
-returning btc_id;";
+;";
             claseError error = new claseError();
             try
             {
@@ -392,16 +392,16 @@ returning btc_id;";
                     query.Parameters.AddWithValue("@emp_direc_mail", ManejoNulos.ManageNullStr(empleado.emp_direc_mail));
                     query.Parameters.AddWithValue("@emp_nro_cel", ManejoNulos.ManageNullStr(empleado.emp_nro_cel));
                     query.Parameters.AddWithValue("@emp_tipo_doc", ManejoNulos.ManageNullStr(empleado.emp_tipo_doc));
-                    idInsertado = Int32.Parse(query.ExecuteScalar().ToString());
-                    //query.ExecuteNonQuery();
-                    //response = true;
+                    //idInsertado = Int32.Parse(query.ExecuteScalar().ToString());
+                    query.ExecuteNonQuery();
+                    response = true;
                 }
             }
             catch (Exception ex)
             {
-                idInsertado = 0;
+                response = false;
             }
-            return idInsertado;
+            return response;
         }
     }
 }
