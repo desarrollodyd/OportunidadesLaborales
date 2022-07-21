@@ -1648,7 +1648,13 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
         #endregion
         [autorizacion(false)]
         [HttpPost]
-        public ActionResult BolProcesarPdfV2(HttpPostedFileBase archivoProceso, DateTime fechaProcesoPdf, string empresa, string nombreEmpresa, string connectionId = "")
+        public ActionResult BolProcesarPdfV2(
+            HttpPostedFileBase archivoProceso, 
+            DateTime fechaProcesoPdf, 
+            string empresa, 
+            string nombreEmpresa, 
+            string connectionId = "",string rucEmpresa
+            )
         {
             string mensaje = string.Empty;
             string mensajeConsola = string.Empty;
@@ -1728,7 +1734,24 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                     ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
                     return Json(new { mensaje, mensajeConsola, respuesta });
                 }
-
+                //Validar Pdf
+                int UltimoDiaMes = DateTime.DaysInMonth(fechaProcesoPdf.Year, fechaProcesoPdf.Month);
+                string fechaInicio = $"01/{NumeroMes.ToString().PadLeft(2, '0')}/{fechaProcesoPdf.Year}";
+                string fechaFin = $"{UltimoDiaMes.ToString().PadLeft(2,'0')}/{NumeroMes.ToString().PadLeft(2, '0')}/{fechaProcesoPdf.Year}";
+                string PdfValidado = ValidarPdfPorFechaYEmpresa(Path.Combine(PathDirectorioProceso, ArchivoDescomprimido), nombreEmpresa,rucEmpresa, fechaInicio, fechaFin);
+                if (!PdfValidado.Equals(string.Empty))
+                {
+                    mensaje = PdfValidado;
+                    mensajeConsola = $@"
+                        rutaPdf={Path.Combine(PathDirectorioProceso, ArchivoDescomprimido)}
+                        nombreEmpresa={nombreEmpresa}
+                        rucEmpresa={rucEmpresa}
+                        fechaInicio={fechaInicio}
+                        fechaFin={fechaFin}
+                    " ;
+                    ProgressBarFunction.SendProgressBoletas(mensaje, 100, true, connectionId);
+                    return Json(new { mensaje, mensajeConsola, respuesta });
+                }
                 //consultas a BD
                 var ListaPersonasTuplaOFISIS = sqlbl.PersonaSQLObtenrListadoBoletasGDTJson(empresa, fechaProcesoPdf.Month, fechaProcesoPdf.Year);
                 var ListaEliminarTuplaPOSTGRES = empleadoBoletaBL.BoolEmpleadoBoletaListarJson(empresa, Anio, NumeroMes.ToString());
@@ -1994,6 +2017,72 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 return string.Empty;
             }
             return string.Empty;
+        }
+        [autorizacion(false)]
+        public static string ValidarPdfPorFechaYEmpresa(string RutaPdf, string NombreEmpresa,string RucEmpresa, string fechaInicio, string fechaFin)
+        {
+            string mensajeRespuesta = string.Empty;
+            string pdfText = string.Empty;
+            string text = string.Empty;
+            List<string> pdfTextSplited = new List<string>();
+            List<string> listaContenidoPDF = new List<string>();
+            List<string> listaPalabras = new List<string>();
+            try
+            {
+                string lineSeparator = ((char)0x2028).ToString();
+                string paragraphSeparator = ((char)0x2029).ToString();
+                using (PdfReader reader = new PdfReader(RutaPdf))
+                {
+                    Rectangle mediabox = reader.GetPageSize(1);
+
+                    Rectangle rect = new Rectangle(mediabox.Left + 100, mediabox.Top - 110, mediabox.Left + 500, mediabox.Top);
+
+
+                    iTextSharp.text.pdf.parser.RenderFilter[] filter = { new iTextSharp.text.pdf.parser.RegionTextRenderFilter(rect) };
+                    iTextSharp.text.pdf.parser.ITextExtractionStrategy strategy;
+
+                    strategy = new iTextSharp.text.pdf.parser.FilteredTextRenderListener(new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy(), filter);
+                    text = iTextSharp.text.pdf.parser.PdfTextExtractor.GetTextFromPage(reader, 1, strategy);
+                }
+                pdfTextSplited = text.Split('\n').ToList();
+                foreach (var splited in pdfTextSplited)
+                {
+                    listaContenidoPDF.Add(splited);
+                    string textSplited = splited.Replace("\n\n", " ").Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace(lineSeparator, " ").Replace(paragraphSeparator, " ");
+                    List<string> subListSplited = textSplited.Split(' ').ToList();
+                    foreach (var subList in subListSplited)
+                    {
+                        listaPalabras.Add(subList.ToLower());
+                    }
+                }
+                //Validar PDF
+                var existeEmpresa = listaContenidoPDF.ConvertAll(x=>x.ToUpper()).Contains(NombreEmpresa.ToUpper().Trim());
+                var existeRuc = listaContenidoPDF.Contains(RucEmpresa);
+                var existeFechaInicio = listaPalabras.Contains(fechaInicio);
+                var existeFechaFin = listaPalabras.Contains(fechaFin);
+                if (!existeEmpresa)
+                {
+                    mensajeRespuesta = "El Nombre de la Empresa no coincide con la del PDF";
+                }
+                if (!existeRuc)
+                {
+                    mensajeRespuesta = "El RUC de la empresa seleccionada no corresponde con el RUC del PDF";
+                }
+                if (!existeFechaInicio)
+                {
+                    mensajeRespuesta = "La fecha seleccionada no coincide con la fecha del PDF";
+                }
+                if (!existeEmpresa)
+                {
+                    mensajeRespuesta = "La fecha seleccionada no coincide con la fecha del PDF";
+                }
+
+            }
+            catch(Exception ex)
+            {
+                mensajeRespuesta = ex.Message;
+            }
+            return mensajeRespuesta;
         }
     }
 }

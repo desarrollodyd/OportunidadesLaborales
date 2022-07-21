@@ -61,13 +61,13 @@
                     $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
                     $("#cboEmpresaListar").append(`<option value="">--Seleccione--<option>`)
                     $.each(data, function (index, value) {
-                        $("#cboEmpresa").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
+                        $("#cboEmpresa").append(`<option value="${value.emp_co_ofisis}" data-ruc=${value.emp_rucs}>${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresa").select2({
                         placeholder: "--Seleccione--", allowClear: true
                     })
                     $.each(data, function (index, value) {
-                        $("#cboEmpresaListar").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
+                        $("#cboEmpresaListar").append(`<option value="${value.emp_co_ofisis}" data-ruc=${value.emp_rucs}>${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresaListar").select2({
                         placeholder: "--Seleccione--", allowClear: true
@@ -208,6 +208,8 @@
         })
         $(document).on('change','#cboEmpresa',function(e){
             let nombreEmpresa=$(this).find(':selected').text()
+            let rucEmpresa=$(this).find(':selected').data('ruc')
+            $("#rucEmpresa").val(rucEmpresa)
             $("#nombreEmpresa").val(nombreEmpresa)
         })
         $(document).on("click", ".chkProcesoPdf", function (e) {
