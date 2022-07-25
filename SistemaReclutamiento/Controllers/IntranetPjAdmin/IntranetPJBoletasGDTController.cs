@@ -1653,7 +1653,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             DateTime fechaProcesoPdf, 
             string empresa, 
             string nombreEmpresa, 
-            string connectionId = "",string rucEmpresa
+            string connectionId = "",string rucEmpresa=""
             )
         {
             string mensaje = string.Empty;

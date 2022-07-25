@@ -36,7 +36,7 @@
                     let data=response.data
                     $("#cboEmpresa").append(`<option value="">--Seleccione--<option>`)
                     $.each(data, function (index, value) {
-                        $("#cboEmpresa").append(`<option value="${value.emp_co_ofisis}">${value.emp_nomb}</option>`);
+                        $("#cboEmpresa").append(`<option value="${value.emp_co_ofisis}" data-ruc="${value.emp_rucs}">${value.emp_nomb}</option>`);
                     });
                     $("#cboEmpresa").select2({
                         placeholder: "--Seleccione--", allowClear: true
@@ -64,7 +64,9 @@
     let _componentes = function () {
         $(document).on('change','#cboEmpresa',function(e){
             let nombreEmpresa=$(this).find(':selected').text()
+            let rucEmpresa=$(this).find(':selected').data('ruc')
             $("#nombreEmpresa").val(nombreEmpresa)
+            $("#rucEmpresa").val(rucEmpresa)
         })
         $(document).on('click','.btnVisualizarPDF',function(e){
             e.preventDefault()
