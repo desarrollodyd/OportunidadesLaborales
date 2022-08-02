@@ -5370,6 +5370,7 @@
     <Compile Include="Controllers\IntranetPjAdmin\IntranetSistemasController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetTipoElementoController.cs" />
     <Compile Include="Controllers\IntranetPjAdmin\IntranetTokenController.cs" />
+    <Compile Include="Controllers\OfisisController.cs" />
     <Compile Include="Controllers\Postulante\EducacionBasicaController.cs" />
     <Compile Include="Controllers\Postulante\EducacionSuperiorController.cs" />
     <Compile Include="Controllers\Postulante\EstIdiomaController.cs" />
@@ -5680,6 +5681,7 @@
     <Folder Include="log\" />
     <Folder Include="Views\CumUsuario\" />
     <Folder Include="Views\IntranetPJBoletasGDT\" />
+    <Folder Include="Views\Ofisis\" />
     <Folder Include="Views\RolUsuario\" />
     <Folder Include="Views\Rol\" />
     <Folder Include="Views\UsuarioEmpresa\" />
