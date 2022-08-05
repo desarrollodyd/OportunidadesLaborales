@@ -1135,8 +1135,9 @@ order by trab.FE_INGR_EMPR desc ;";
                                 persona.NO_DIRE_TRAB = ManejoNulos.ManageNullStr(dr["NO_DIRE_TRAB"]);
                                 persona.NU_RUCS = ManejoNulos.ManageNullStr(dr["NU_RUCS"]);
                                 persona.CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]);
-                                persona.FE_CESE_TRAB = ManejoNulos.ManageNullStr(dr["FE_CESE_TRAB"]);
-                                persona.FE_INGR_EMPR = ManejoNulos.ManageNullStr(dr["FE_INGR_EMPR"]);
+                                persona.FE_CESE_TRAB = ManejoNulos.ManageNullDate(dr["FE_CESE_TRAB"]);
+                                persona.FE_INGR_EMPR = ManejoNulos.ManageNullDate(dr["FE_INGR_EMPR"]);
+                                persona.FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]);
                             }
                         }
                     }

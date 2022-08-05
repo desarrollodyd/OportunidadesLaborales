@@ -36,8 +36,8 @@ namespace SistemaReclutamiento.Entidades
         public string NU_RUCS;
         public string CO_CENT_COST;
         public string TI_DOCU_IDEN;
-        public string FE_CESE_TRAB;
-        public string FE_INGR_EMPR;
+        public DateTime FE_CESE_TRAB;
+        public DateTime FE_INGR_EMPR;
 
     }
 }
