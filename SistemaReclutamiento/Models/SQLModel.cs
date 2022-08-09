@@ -1093,7 +1093,9 @@ emp.NO_DIRE_MAI1,
 emp.NO_DIRE_TRAB,
 empresa.NU_RUCS,
 trab.FE_CESE_TRAB,
-trab.FE_INGR_EMPR
+trab.FE_INGR_EMPR,
+CASE
+WHEN trab.FE_CESE_TRAB IS NULL THEN 0  ELSE 1 END AS CESE_ESTADO
 from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
 inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
 inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
@@ -1138,6 +1140,7 @@ order by trab.FE_INGR_EMPR desc ;";
                                 persona.FE_CESE_TRAB = ManejoNulos.ManageNullDate(dr["FE_CESE_TRAB"]);
                                 persona.FE_INGR_EMPR = ManejoNulos.ManageNullDate(dr["FE_INGR_EMPR"]);
                                 persona.FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]);
+                                persona.CESE_ESTADO = ManejoNulos.ManageNullInteger(dr["CESE_ESTADO"]);
                             }
                         }
                     }

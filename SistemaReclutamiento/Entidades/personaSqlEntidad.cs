@@ -38,6 +38,7 @@ namespace SistemaReclutamiento.Entidades
         public string TI_DOCU_IDEN;
         public DateTime FE_CESE_TRAB;
         public DateTime FE_INGR_EMPR;
+        public int CESE_ESTADO;
 
     }
 }
