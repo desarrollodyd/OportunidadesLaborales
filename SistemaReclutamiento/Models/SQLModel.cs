@@ -1065,48 +1065,142 @@ FROM " + nombre_tabla+" as pago "+
         {
             PersonaSqlEntidad persona = new PersonaSqlEntidad();
             claseError error = new claseError();
-            string consulta = @"Select top 1
-emp.CO_TRAB, 
-emp.NO_TRAB, 
-emp.NO_APEL_PATE, 
-emp.NO_APEL_MATE, 
-emp.TI_SITU, 
-empresa.CO_EMPR, 
-empresa.DE_NOMB, 
-unidad.CO_UNID, 
-unidad.DE_UNID, 
-sede.CO_SEDE, 
-sede.DE_SEDE, 
-gerencia.CO_DEPA, 
-gerencia.DE_DEPA, 
-area.CO_AREA, 
-area.DE_AREA, 
-grupo.CO_GRUP_OCUP, 
-grupo.DE_GRUP_OCUP, 
-puesto.CO_PUES_TRAB, 
-puesto.DE_PUES_TRAB, 
-emp.FE_INGR_CORP, 
-emp.FE_NACI_TRAB, 
-emp.NU_TLF1, 
-emp.NU_TLF2, 
-emp.NO_DIRE_MAI1, 
-emp.NO_DIRE_TRAB,
-empresa.NU_RUCS,
-trab.FE_CESE_TRAB,
-trab.FE_INGR_EMPR,
-CASE
-WHEN trab.FE_CESE_TRAB IS NULL THEN 0  ELSE 1 END AS CESE_ESTADO
-from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
-inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
-inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
-inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
-inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
-inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
-inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
-inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
-inner join TMTRAB_EMPR as trab on trab.CO_TRAB=emp.CO_TRAB and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
-where emp.CO_TRAB=@p0
-order by trab.FE_INGR_EMPR desc ;";
+//            string consulta = @"Select top 1
+//emp.CO_TRAB, 
+//emp.NO_TRAB, 
+//emp.NO_APEL_PATE, 
+//emp.NO_APEL_MATE, 
+//emp.TI_SITU, 
+//empresa.CO_EMPR, 
+//empresa.DE_NOMB, 
+//unidad.CO_UNID, 
+//unidad.DE_UNID, 
+//sede.CO_SEDE, 
+//sede.DE_SEDE, 
+//gerencia.CO_DEPA, 
+//gerencia.DE_DEPA, 
+//area.CO_AREA, 
+//area.DE_AREA, 
+//grupo.CO_GRUP_OCUP, 
+//grupo.DE_GRUP_OCUP, 
+//puesto.CO_PUES_TRAB, 
+//puesto.DE_PUES_TRAB, 
+//emp.FE_INGR_CORP, 
+//emp.FE_NACI_TRAB, 
+//emp.NU_TLF1, 
+//emp.NU_TLF2, 
+//emp.NO_DIRE_MAI1, 
+//emp.NO_DIRE_TRAB,
+//empresa.NU_RUCS,
+//trab.FE_CESE_TRAB,
+//trab.FE_INGR_EMPR,
+//CASE
+//WHEN trab.FE_CESE_TRAB IS NULL THEN 0  ELSE 1 END AS CESE_ESTADO
+//from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+//inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+//inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+//inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+//inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+//inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+//inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+//inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+//inner join TMTRAB_EMPR as trab on trab.CO_TRAB=emp.CO_TRAB and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+//where emp.CO_TRAB=@p0
+//order by trab.FE_INGR_EMPR desc ;"; 
+            string consulta = @"	declare @codTrab varchar(max)=@p0
+	declare @fechaCese datetime = (select top 1 tra.FE_CESE_TRAB
+									from TMTRAB_PERS per (nolock)
+									inner join TMTRAB_EMPR tra (nolock) on tra.CO_TRAB=per.CO_TRAB
+									inner join TMEMPR emp (nolock) on tra.CO_EMPR=emp.CO_EMPR                     
+									where  per.CO_TRAB = @codTrab	order by FE_INGR_EMPR desc)
+
+	if(@fechaCese is null)
+		Select top 1
+		emp.CO_TRAB, 
+		emp.NO_TRAB, 
+		emp.NO_APEL_PATE, 
+		emp.NO_APEL_MATE, 
+		emp.TI_SITU, 
+		empresa.CO_EMPR, 
+		empresa.DE_NOMB, 
+		unidad.CO_UNID, 
+		unidad.DE_UNID, 
+		sede.CO_SEDE, 
+		sede.DE_SEDE, 
+		gerencia.CO_DEPA, 
+		gerencia.DE_DEPA, 
+		area.CO_AREA, 
+		area.DE_AREA, 
+		grupo.CO_GRUP_OCUP, 
+		grupo.DE_GRUP_OCUP, 
+		puesto.CO_PUES_TRAB, 
+		puesto.DE_PUES_TRAB, 
+		emp.FE_INGR_CORP, 
+		emp.FE_NACI_TRAB, 
+		emp.NU_TLF1, 
+		emp.NU_TLF2, 
+		emp.NO_DIRE_MAI1, 
+		emp.NO_DIRE_TRAB,
+		empresa.NU_RUCS,
+		trab.FE_CESE_TRAB,
+		trab.FE_INGR_EMPR,
+		CASE
+		WHEN trab.FE_CESE_TRAB IS NULL THEN 0  ELSE 1 END AS CESE_ESTADO
+		from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+		inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+		inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+		inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+		inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+		inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+		inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+		inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+		inner join TMTRAB_EMPR as trab on trab.CO_TRAB=emp.CO_TRAB and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+		where emp.CO_TRAB=@codTrab and trab.FE_CESE_TRAB is null
+		order by periodo.NU_ANNO desc, periodo.NU_PERI desc 
+	else
+		Select top 1
+		emp.CO_TRAB, 
+		emp.NO_TRAB, 
+		emp.NO_APEL_PATE, 
+		emp.NO_APEL_MATE, 
+		emp.TI_SITU, 
+		empresa.CO_EMPR, 
+		empresa.DE_NOMB, 
+		unidad.CO_UNID, 
+		unidad.DE_UNID, 
+		sede.CO_SEDE, 
+		sede.DE_SEDE, 
+		gerencia.CO_DEPA, 
+		gerencia.DE_DEPA, 
+		area.CO_AREA, 
+		area.DE_AREA, 
+		grupo.CO_GRUP_OCUP, 
+		grupo.DE_GRUP_OCUP, 
+		puesto.CO_PUES_TRAB, 
+		puesto.DE_PUES_TRAB, 
+		emp.FE_INGR_CORP, 
+		emp.FE_NACI_TRAB, 
+		emp.NU_TLF1, 
+		emp.NU_TLF2, 
+		emp.NO_DIRE_MAI1, 
+		emp.NO_DIRE_TRAB,
+		empresa.NU_RUCS,
+		trab.FE_CESE_TRAB,
+		trab.FE_INGR_EMPR,
+		CASE
+		WHEN trab.FE_CESE_TRAB IS NULL THEN 0  ELSE 1 END AS CESE_ESTADO
+		from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+		inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+		inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+		inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+		inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+		inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+		inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+		inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+		inner join TMTRAB_EMPR as trab on trab.CO_TRAB=emp.CO_TRAB and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+		where emp.CO_TRAB=@codTrab and trab.FE_CESE_TRAB is not null
+		order by periodo.NU_ANNO desc, periodo.NU_PERI desc, trab.FE_INGR_EMPR desc  
+		";
             try
             {
                 using (var con = new SqlConnection(_conexion))
