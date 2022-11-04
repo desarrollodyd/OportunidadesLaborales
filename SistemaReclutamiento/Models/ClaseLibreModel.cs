@@ -69,6 +69,60 @@ namespace SistemaReclutamiento.Models
         public string NU_RUCS { get; set; }
         public string NO_REPR_LEGA { get; set; }
         public string NO_PAIS { get; set; }
+        public string CO_GIRO { get; set; }
+        public string DE_DIRE { get; set; }
+        public string CO_UBIC_GEOG { get; set; }
+        public string CO_PAIS { get; set; }
+        public string DE_CODI_POST { get; set; }
+        public string NU_TLF1 { get; set; }
+        public string NU_TLF2 { get; set; }
+        public string NU_FAXS { get; set; }
+        public string DE_DIRE_WEBS { get; set; }
+        public string DE_DIRE_MAIL { get; set; }
+        public string CO_MONE_NACI { get; set; }
+        public string NU_CERT_INSC { get; set; }
+        public string NU_REGI_PUBL { get; set; }
+        public string NU_LICE_MUNI { get; set; }
+        public string NO_GERE_GRAL { get; set; }
+        public string ST_PLAN { get; set; }
+        public string ST_CONT { get; set; }
+        public string ST_TESO { get; set; }
+        public string ST_LOGI { get; set; }
+        public string ST_VENT { get; set; }
+        public string ST_PROD { get; set; }
+        public string ST_ACTI { get; set; }
+        public string ST_PRES { get; set; }
+        public string ST_SIS1 { get; set; }
+        public string ST_SIS2 { get; set; }
+        public string ST_SIS3 { get; set; }
+        public string ST_SIS4 { get; set; }
+        public string ST_SIS5 { get; set; }
+        public int NV_INFO_OSER { get; set; }
+        public string NV_QUIE_OSER { get; set; }
+        public string DE_RUTA_LOGO { get; set; }
+        public string TI_DOID_REPR { get; set; }
+        public string NU_DOID_REPR { get; set; }
+        public string TI_DOID_GERE { get; set; }
+        public string NU_DOID_GERE { get; set; }
+        public string TI_SITU { get; set; }
+        public string CO_REGI_LABO { get; set; }
+        public DateTime FE_INSC { get; set; }
+        public string CO_USUA_CREA { get; set; }
+        public DateTime FE_USUA_CREA { get; set; }
+        public string CO_USUA_MODI { get; set; }
+        public DateTime FE_USUA_MODI { get; set; }
+        public string ST_RERS { get; set; }
+        public string DE_RUTA_BBVA { get; set; }
+        public string de_ruta_exce { get; set; }
+        public string ST_SCHU { get; set; }
+        public string IP_SERV_SMTP { get; set; }
+        public string NO_PORT { get; set; }
+        public string ST_SSLS { get; set; }
+        public string DE_DIRE_MAIL_WAPI { get; set; }
+        public string NO_CLAV_MAIL_WAPI { get; set; }
+        public string DE_DIRE_MAIL_ATEN { get; set; }
+        public string ST_ORGA_EMPR { get; set; }
+        public string ST_ORGA_PUES { get; set; }
     }
     public class TTPUES_TRAB {
         public string CO_EMPR { get; set; }
@@ -98,6 +152,19 @@ namespace SistemaReclutamiento.Models
         public string NU_CASA { get; set; }
         public string NU_INTE { get; set; }
         public string NO_ZONA { get; set; }
+
+        public string CO_TIPO_CASA { get; set; }
+        public string CO_TIPO_VIAS { get; set; }
+        public string CO_TIPO_ZONA { get; set; }
+        public string DE_REFE { get; set; }
+        public string NU_FRUC { get; set; }
+        public string ST_CRIE { get; set; }
+        public double IM_CRIE { get; set; }
+        public string CO_UBIC_GEOG { get; set; }
+        public string CO_USUA_CREA { get; set; }
+        public DateTime FE_USUA_CREA { get; set; }
+        public string CO_USUA_MODI { get; set; }
+        public DateTime FE_USUA_MODI { get; set; }
     }
 
 }

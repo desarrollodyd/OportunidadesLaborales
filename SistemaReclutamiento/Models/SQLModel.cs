@@ -1247,5 +1247,316 @@ FROM " + nombre_tabla+" as pago "+
 
             return persona;
         }
+        public List<TMEMPR> ListarEmpresas()
+        {
+            List<TMEMPR> lista = new List<TMEMPR>();
+
+            string consulta = @"SELECT [CO_EMPR]
+                                  ,[DE_NOMB]
+                                  ,[DE_NOMB_CORT]
+                                  ,[CO_GIRO]
+                                  ,[DE_DIRE]
+                                  ,[CO_UBIC_GEOG]
+                                  ,[CO_PAIS]
+                                  ,[NO_DEPA]
+                                  ,[NO_PROV]
+                                  ,[DE_CODI_POST]
+                                  ,[NU_TLF1]
+                                  ,[NU_TLF2]
+                                  ,[NU_FAXS]
+                                  ,[NU_RUCS]
+                                  ,[DE_DIRE_WEBS]
+                                  ,[DE_DIRE_MAIL]
+                                  ,[CO_MONE_NACI]
+                                  ,[NU_CERT_INSC]
+                                  ,[NU_REGI_PUBL]
+                                  ,[NU_LICE_MUNI]
+                                  ,[NO_REPR_LEGA]
+                                  ,[NO_GERE_GRAL]
+                                  ,[ST_PLAN]
+                                  ,[ST_CONT]
+                                  ,[ST_TESO]
+                                  ,[ST_LOGI]
+                                  ,[ST_VENT]
+                                  ,[ST_PROD]
+                                  ,[ST_ACTI]
+                                  ,[ST_PRES]
+                                  ,[ST_SIS1]
+                                  ,[ST_SIS2]
+                                  ,[ST_SIS3]
+                                  ,[ST_SIS4]
+                                  ,[ST_SIS5]
+                                  ,[NV_INFO_OSER]
+                                  ,[NV_QUIE_OSER]
+                                  ,[DE_RUTA_LOGO]
+                                  ,[TI_DOID_REPR]
+                                  ,[NU_DOID_REPR]
+                                  ,[TI_DOID_GERE]
+                                  ,[NU_DOID_GERE]
+                                  ,[TI_SITU]
+                                  ,[CO_REGI_LABO]
+                                  ,[FE_INSC]
+                                  ,[CO_USUA_CREA]
+                                  ,[FE_USUA_CREA]
+                                  ,[CO_USUA_MODI]
+                                  ,[FE_USUA_MODI]
+                                  ,[ST_RERS]
+                                  ,[DE_RUTA_BBVA]
+                                  ,[de_ruta_exce]
+                                  ,[ST_SCHU]
+                                  ,[IP_SERV_SMTP]
+                                  ,[NO_PORT]
+                                  ,[ST_SSLS]
+                                  ,[DE_DIRE_MAIL_WAPI]
+                                  ,[NO_CLAV_MAIL_WAPI]
+                                  ,[DE_DIRE_MAIL_ATEN]
+                                  ,[ST_ORGA_EMPR]
+                                  ,[ST_ORGA_PUES]
+                              FROM [TMEMPR] where TI_SITU='ACT'";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var empresa = new TMEMPR()
+                                {
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    DE_NOMB_CORT = ManejoNulos.ManageNullStr(dr["DE_NOMB_CORT"]),
+                                    CO_GIRO = ManejoNulos.ManageNullStr(dr["CO_GIRO"]),
+                                    DE_DIRE = ManejoNulos.ManageNullStr(dr["DE_DIRE"]),
+                                    CO_UBIC_GEOG = ManejoNulos.ManageNullStr(dr["CO_UBIC_GEOG"]),
+                                    CO_PAIS = ManejoNulos.ManageNullStr(dr["CO_PAIS"]),
+                                    NO_DEPA = ManejoNulos.ManageNullStr(dr["NO_DEPA"]),
+                                    NO_PROV = ManejoNulos.ManageNullStr(dr["NO_PROV"]),
+                                    DE_CODI_POST = ManejoNulos.ManageNullStr(dr["DE_CODI_POST"]),
+                                    NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
+                                    NU_TLF2 = ManejoNulos.ManageNullStr(dr["NU_TLF2"]),
+                                    NU_FAXS = ManejoNulos.ManageNullStr(dr["NU_FAXS"]),
+                                    NU_RUCS = ManejoNulos.ManageNullStr(dr["NU_RUCS"]),
+                                    DE_DIRE_WEBS = ManejoNulos.ManageNullStr(dr["DE_DIRE_WEBS"]),
+                                    DE_DIRE_MAIL = ManejoNulos.ManageNullStr(dr["DE_DIRE_MAIL"]),
+                                    CO_MONE_NACI = ManejoNulos.ManageNullStr(dr["CO_MONE_NACI"]),
+                                    NU_CERT_INSC = ManejoNulos.ManageNullStr(dr["NU_CERT_INSC"]),
+                                    NU_REGI_PUBL = ManejoNulos.ManageNullStr(dr["NU_REGI_PUBL"]),
+                                    NU_LICE_MUNI = ManejoNulos.ManageNullStr(dr["NU_LICE_MUNI"]),
+                                    NO_REPR_LEGA = ManejoNulos.ManageNullStr(dr["NO_REPR_LEGA"]),
+                                    NO_GERE_GRAL = ManejoNulos.ManageNullStr(dr["NO_GERE_GRAL"]),
+                                    ST_PLAN = ManejoNulos.ManageNullStr(dr["ST_PLAN"]),
+                                    ST_CONT = ManejoNulos.ManageNullStr(dr["ST_CONT"]),
+                                    ST_TESO = ManejoNulos.ManageNullStr(dr["ST_TESO"]),
+                                    ST_LOGI = ManejoNulos.ManageNullStr(dr["ST_LOGI"]),
+                                    ST_VENT = ManejoNulos.ManageNullStr(dr["ST_VENT"]),
+                                    ST_PROD = ManejoNulos.ManageNullStr(dr["ST_PROD"]),
+                                    ST_ACTI = ManejoNulos.ManageNullStr(dr["ST_ACTI"]),
+                                    ST_PRES = ManejoNulos.ManageNullStr(dr["ST_PRES"]),
+                                    ST_SIS1 = ManejoNulos.ManageNullStr(dr["ST_SIS1"]),
+                                    ST_SIS2 = ManejoNulos.ManageNullStr(dr["ST_SIS2"]),
+                                    ST_SIS3 = ManejoNulos.ManageNullStr(dr["ST_SIS3"]),
+                                    ST_SIS4 = ManejoNulos.ManageNullStr(dr["ST_SIS4"]),
+                                    ST_SIS5 = ManejoNulos.ManageNullStr(dr["ST_SIS5"]),
+                                    NV_INFO_OSER = ManejoNulos.ManageNullInteger(dr["NV_INFO_OSER"]),
+                                    NV_QUIE_OSER = ManejoNulos.ManageNullStr(dr["NV_QUIE_OSER"]),
+                                    DE_RUTA_LOGO = ManejoNulos.ManageNullStr(dr["DE_RUTA_LOGO"]),
+                                    TI_DOID_REPR = ManejoNulos.ManageNullStr(dr["TI_DOID_REPR"]),
+                                    NU_DOID_REPR = ManejoNulos.ManageNullStr(dr["NU_DOID_REPR"]),
+                                    TI_DOID_GERE = ManejoNulos.ManageNullStr(dr["TI_DOID_GERE"]),
+                                    NU_DOID_GERE = ManejoNulos.ManageNullStr(dr["NU_DOID_GERE"]),
+                                    TI_SITU = ManejoNulos.ManageNullStr(dr["TI_SITU"]),
+                                    CO_REGI_LABO = ManejoNulos.ManageNullStr(dr["CO_REGI_LABO"]),
+                                    FE_INSC = ManejoNulos.ManageNullDate(dr["FE_INSC"]),
+                                    CO_USUA_CREA = ManejoNulos.ManageNullStr(dr["CO_USUA_CREA"]),
+                                    FE_USUA_CREA = ManejoNulos.ManageNullDate(dr["FE_USUA_CREA"]),
+                                    CO_USUA_MODI = ManejoNulos.ManageNullStr(dr["CO_USUA_MODI"]),
+                                    FE_USUA_MODI = ManejoNulos.ManageNullDate(dr["FE_USUA_MODI"]),
+                                    ST_RERS = ManejoNulos.ManageNullStr(dr["ST_RERS"]),
+                                    DE_RUTA_BBVA = ManejoNulos.ManageNullStr(dr["DE_RUTA_BBVA"]),
+                                    de_ruta_exce = ManejoNulos.ManageNullStr(dr["de_ruta_exce"]),
+                                    ST_SCHU = ManejoNulos.ManageNullStr(dr["ST_SCHU"]),
+                                    IP_SERV_SMTP = ManejoNulos.ManageNullStr(dr["IP_SERV_SMTP"]),
+                                    NO_PORT = ManejoNulos.ManageNullStr(dr["NO_PORT"]),
+                                    ST_SSLS = ManejoNulos.ManageNullStr(dr["ST_SSLS"]),
+                                    DE_DIRE_MAIL_WAPI = ManejoNulos.ManageNullStr(dr["DE_DIRE_MAIL_WAPI"]),
+                                    NO_CLAV_MAIL_WAPI = ManejoNulos.ManageNullStr(dr["NO_CLAV_MAIL_WAPI"]),
+                                    DE_DIRE_MAIL_ATEN = ManejoNulos.ManageNullStr(dr["DE_DIRE_MAIL_ATEN"]),
+                                    ST_ORGA_EMPR = ManejoNulos.ManageNullStr(dr["ST_ORGA_EMPR"]),
+                                    ST_ORGA_PUES = ManejoNulos.ManageNullStr(dr["ST_ORGA_PUES"]),
+                                };
+                                lista.Add(empresa);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch(Exception ex)
+            {
+                lista = new List<TMEMPR>();
+            }
+            return lista;
+        }
+        public List<TTSEDE> ListarSedesPorEmpresa(string CO_EMPR)
+        {
+            List<TTSEDE> lista = new List<TTSEDE>();
+
+            string consulta = @"SELECT [CO_EMPR]
+      ,[CO_SEDE]
+      ,[DE_SEDE]
+      ,[ST_DOMI_FISC]
+      ,[TI_SEDE_RTPS]
+      ,[NU_RUCS_SEDE]
+      ,[CO_TIPO_CASA]
+      ,[CO_TIPO_VIAS]
+      ,[NO_DIRE_SEDE]
+      ,[NU_CASA]
+      ,[NU_INTE]
+      ,[CO_TIPO_ZONA]
+      ,[NO_ZONA]
+      ,[DE_REFE]
+      ,[NU_FRUC]
+      ,[ST_CRIE]
+      ,[IM_CRIE]
+      ,[CO_UBIC_GEOG]
+      ,[CO_USUA_CREA]
+      ,[FE_USUA_CREA]
+      ,[CO_USUA_MODI]
+      ,[FE_USUA_MODI]
+  FROM [TTSEDE] where [CO_EMPR]=@CO_EMPR";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@CO_EMPR", CO_EMPR.Trim());
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var sede = new TTSEDE()
+                                {
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    CO_SEDE = ManejoNulos.ManageNullStr(dr["CO_SEDE"]),
+                                    DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]),
+                                    ST_DOMI_FISC = ManejoNulos.ManageNullStr(dr["ST_DOMI_FISC"]),
+                                    TI_SEDE_RTPS = ManejoNulos.ManageNullStr(dr["TI_SEDE_RTPS"]),
+                                    NU_RUCS_SEDE = ManejoNulos.ManageNullStr(dr["NU_RUCS_SEDE"]),
+                                    CO_TIPO_CASA = ManejoNulos.ManageNullStr(dr["CO_TIPO_CASA"]),
+                                    CO_TIPO_VIAS = ManejoNulos.ManageNullStr(dr["CO_TIPO_VIAS"]),
+                                    NO_DIRE_SEDE = ManejoNulos.ManageNullStr(dr["NO_DIRE_SEDE"]),
+                                    NU_CASA = ManejoNulos.ManageNullStr(dr["NU_CASA"]),
+                                    NU_INTE= ManejoNulos.ManageNullStr(dr["NU_INTE"]),
+                                    CO_TIPO_ZONA= ManejoNulos.ManageNullStr(dr["CO_TIPO_ZONA"]),
+                                    NO_ZONA = ManejoNulos.ManageNullStr(dr["NO_ZONA"]),
+                                    DE_REFE = ManejoNulos.ManageNullStr(dr["DE_REFE"]),
+                                    NU_FRUC = ManejoNulos.ManageNullStr(dr["NU_FRUC"]),
+                                    ST_CRIE = ManejoNulos.ManageNullStr(dr["ST_CRIE"]),
+                                    IM_CRIE = ManejoNulos.ManageNullInteger(dr["IM_CRIE"]),
+                                    CO_UBIC_GEOG = ManejoNulos.ManageNullStr(dr["CO_UBIC_GEOG"]),
+                                    CO_USUA_CREA = ManejoNulos.ManageNullStr(dr["CO_USUA_CREA"]),
+                                    FE_USUA_CREA = ManejoNulos.ManageNullDate(dr["FE_USUA_CREA"]),
+                                    CO_USUA_MODI = ManejoNulos.ManageNullStr(dr["CO_USUA_MODI"]),
+                                    FE_USUA_MODI = ManejoNulos.ManageNullDate(dr["FE_USUA_MODI"]),
+                                };
+                                lista.Add(sede);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lista = new List<TTSEDE>();
+            }
+            return lista;
+        }
+        public List<PersonaSqlEntidad> ListarTrabajadoresPorSedeYEmpresa(int periodo, int anio, string CO_EMPR,string CO_SEDE)
+        {
+            List<PersonaSqlEntidad> lista = new List<PersonaSqlEntidad>();
+
+            string consulta = @"Select emp.CO_TRAB, emp.NO_TRAB, emp.NO_APEL_PATE, emp.NO_APEL_MATE, emp.TI_SITU, 
+emp.FE_INGR_CORP, emp.FE_NACI_TRAB, emp.NU_TLF1, emp.NU_TLF2, emp.NO_DIRE_MAI1,    
+empresa.CO_EMPR, empresa.DE_NOMB, 
+unidad.CO_UNID, unidad.DE_UNID, 
+sede.CO_SEDE, sede.DE_SEDE, 
+gerencia.CO_DEPA, gerencia.DE_DEPA, 
+area.CO_AREA, area.DE_AREA, 
+grupo.CO_GRUP_OCUP,grupo.DE_GRUP_OCUP, 
+puesto.CO_PUES_TRAB,puesto.DE_PUES_TRAB 
+from TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+inner join TMUNID_EMPR as unidad on unidad.CO_EMPR=empresa.CO_EMPR and unidad.CO_UNID=periodo.CO_UNID 
+inner join TTSEDE as sede on sede.CO_EMPR=empresa.CO_EMPR and periodo.CO_SEDE=sede.CO_SEDE 
+inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO_DEPA=gerencia.CO_DEPA 
+inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
+inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
+inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
+where periodo.NU_ANNO=@anio and periodo.NU_PERI=@periodo and empresa.CO_EMPR=@CO_EMPR and sede.CO_SEDE=@CO_SEDE";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@periodo", periodo);
+                    query.Parameters.AddWithValue("@anio", anio);
+                    query.Parameters.AddWithValue("@CO_EMPR", CO_EMPR);
+                    query.Parameters.AddWithValue("@CO_SEDE", CO_SEDE);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var sede = new PersonaSqlEntidad()
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    TI_SITU = ManejoNulos.ManageNullStr(dr["TI_SITU"]),
+                                    FE_INGR_CORP = ManejoNulos.ManageNullDate(dr["FE_INGR_CORP"]),
+                                    FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]),
+                                    NU_TLF1 = ManejoNulos.ManageNullStr(dr["NU_TLF1"]),
+                                    NU_TLF2 = ManejoNulos.ManageNullStr(dr["NU_TLF2"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    CO_UNID = ManejoNulos.ManageNullStr(dr["CO_UNID"]),
+                                    DE_UNID = ManejoNulos.ManageNullStr(dr["DE_UNID"]),
+                                    CO_SEDE = ManejoNulos.ManageNullStr(dr["CO_SEDE"]),
+                                    DE_SEDE = ManejoNulos.ManageNullStr(dr["DE_SEDE"]),
+                                    CO_DEPA = ManejoNulos.ManageNullStr(dr["CO_DEPA"]),
+                                    DE_DEPA = ManejoNulos.ManageNullStr(dr["DE_DEPA"]),
+                                    CO_AREA = ManejoNulos.ManageNullStr(dr["CO_AREA"]),
+                                    DE_AREA = ManejoNulos.ManageNullStr(dr["DE_AREA"]),
+                                    CO_GRUP_OCUP = ManejoNulos.ManageNullStr(dr["CO_GRUP_OCUP"]),
+                                    DE_GRUP_OCUP = ManejoNulos.ManageNullStr(dr["DE_GRUP_OCUP"]),
+                                    CO_PUES_TRAB = ManejoNulos.ManageNullStr(dr["CO_PUES_TRAB"]),
+                                    DE_PUES_TRAB = ManejoNulos.ManageNullStr(dr["DE_PUES_TRAB"]),
+                                };
+                                lista.Add(sede);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lista = new List<PersonaSqlEntidad>();
+            }
+            return lista;
+        }
     }
 }
