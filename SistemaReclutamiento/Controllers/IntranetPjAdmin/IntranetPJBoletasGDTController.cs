@@ -1164,7 +1164,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             try
             {
                 remitente = emailRemitenteDAL.BolEmailRemitenteIdObtenerJson(email_id);
-                remitente.email_password = Seguridad.Desencriptar(remitente.email_password);
+                //remitente.email_password = Seguridad.Desencriptar(remitente.email_password);
                 respuesta = true;
                 mensaje = "Obteniendo Registro";
             }
@@ -1182,7 +1182,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             int idInsertado = 0;
             try
             {
-                email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
+                //email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
                 idInsertado = emailRemitenteDAL.BolEmailRemitenteInsertarJson(email);
                 if (idInsertado != 0)
                 {
@@ -1203,7 +1203,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             bool respuesta = false;
             try
             {
-                email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
+                //email.email_password = email.email_password != null ? Seguridad.Encriptar(email.email_password) : "";
                 respuesta = emailRemitenteDAL.BolEmailRemitenteEditarJson(email);
                 if (respuesta)
                 {
@@ -1404,7 +1404,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
             MailMessage email;
             try
             {
-                string PasswordRemitente = Seguridad.Desencriptar(remitente.email_password);
+                //string PasswordRemitente = Seguridad.Desencriptar(remitente.email_password);
+                string PasswordRemitente =remitente.email_password;
                 string ServidorSMTP = remitente.email_smtp.Trim().ToLower();
                 int Puerto = Convert.ToInt32(remitente.email_puerto);
                 bool SSL = Convert.ToBoolean(remitente.email_ssl);
@@ -1430,7 +1431,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPjAdmin
                 bitacora.btc_fecha_reg = DateTime.Now;
                 bitacora.btc_accion = "Envio Correo";
                 bitacora.btc_usuario_id = usu_id;
-                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - " + "remitente: " + remitente + "; destinatario: " + destinatarios;
+                bitacora.btc_ruta_pdf = "NO SE PUDO ENVIAR - " + "remitente: " + remitente + "; destinatario: " + destinatarios+";errormensaje:"+ex.Message;
                 var insertadoTupla = bitacoraBL.BitacoraInsertarJson(bitacora);
             }
             return respuesta;

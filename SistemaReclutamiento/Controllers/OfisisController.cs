@@ -79,5 +79,20 @@ namespace SistemaReclutamiento.Controllers
 
             return Json(new { data = result }, JsonRequestBehavior.AllowGet);
         }
+        [AcceptVerbs(HttpVerbs.Get|HttpVerbs.Post)]
+        public ActionResult ListarCumpleaniosOfisis(string CO_EMPR)
+        {
+            List<PersonaSqlEntidad> resul = new List<PersonaSqlEntidad>();
+            try
+            {
+                resul = sqlbl.ListarCumpleaniosOfisis(CO_EMPR);
+            }
+            catch (Exception)
+            {
+                resul = new List<PersonaSqlEntidad>();
+                throw;
+            }
+            return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

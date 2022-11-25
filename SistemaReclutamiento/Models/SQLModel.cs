@@ -1558,5 +1558,66 @@ where periodo.NU_ANNO=@anio and periodo.NU_PERI=@periodo and empresa.CO_EMPR=@CO
             }
             return lista;
         }
+        public List<PersonaSqlEntidad> ListarCumpleaniosOfisis(string CO_EMPR)
+        {
+            List<PersonaSqlEntidad> lista = new List<PersonaSqlEntidad>();
+
+            string consulta = $@"select 
+                                    dateadd(year,year(getdate())-year(emp.FE_NACI_TRAB),emp.FE_NACI_TRAB) as fechacalculada,
+emp.CO_TRAB,
+emp.NO_TRAB, 
+emp.NO_APEL_PATE, 
+emp.NO_APEL_MATE,
+FE_NACI_TRAB,
+emp.NO_DIRE_MAI1,
+empresa.CO_EMPR,
+empresa.DE_NOMB 
+from
+                                                                    TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+                                                                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                                                                    where 
+                                                                    periodo.NU_ANNO=year(getdate()) 
+								                                    and periodo.NU_PERI=MONTH(GETDATE()) 
+								                                    and DATEADD(year,year(getdate())-year(emp.FE_NACI_TRAB),emp.FE_NACI_TRAB)>=GETDATE()
+								                                    and year(GETDATE())-year(emp.FE_NACI_TRAB)>=18
+								                                    and empresa.CO_EMPR in ({CO_EMPR}) 
+								                                    order by fechacalculada asc";
+            try
+            {
+                using (var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@CO_EMPR", CO_EMPR);
+                    using (var dr = query.ExecuteReader())
+                    {
+                        if (dr.HasRows)
+                        {
+                            while (dr.Read())
+                            {
+                                var sede = new PersonaSqlEntidad()
+                                {
+                                    CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]),
+                                    NO_TRAB = ManejoNulos.ManageNullStr(dr["NO_TRAB"]),
+                                    NO_APEL_PATE = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]),
+                                    NO_APEL_MATE = ManejoNulos.ManageNullStr(dr["NO_APEL_MATE"]),
+                                    FE_NACI_TRAB = ManejoNulos.ManageNullDate(dr["FE_NACI_TRAB"]),
+                                    CO_EMPR = ManejoNulos.ManageNullStr(dr["CO_EMPR"]),
+                                    DE_NOMB = ManejoNulos.ManageNullStr(dr["DE_NOMB"]),
+                                    NO_DIRE_MAI1 = ManejoNulos.ManageNullStr(dr["NO_DIRE_MAI1"]),
+                                };
+                                lista.Add(sede);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lista = new List<PersonaSqlEntidad>();
+            }
+            return lista;
+        }
     }
 }
