@@ -5393,6 +5393,7 @@
     <Compile Include="Controllers\SeguridadIntranet\RolUsuarioController.cs" />
     <Compile Include="Controllers\SeguridadIntranet\SeguridadIntranetController.cs" />
     <Compile Include="Controllers\SeguridadIntranet\UsuarioEmpresaController.cs" />
+    <Compile Include="Controllers\AdministrativoController.cs" />
     <Compile Include="Controllers\SQLController.cs" />
     <Compile Include="Controllers\SuperController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
@@ -5411,6 +5412,7 @@
     <Compile Include="Entidades\BoletasGDT\BolEmpleadoBoletaEntidad.cs" />
     <Compile Include="Entidades\BoletasGDT\BolEmpresaEntidad.cs" />
     <Compile Include="Entidades\ConfiguracionEntidad.cs" />
+    <Compile Include="Entidades\DetalleMovAuxTitoEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioExcelEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumUsuarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioDetalleEntidad.cs" />
@@ -5497,6 +5499,7 @@
     <Compile Include="Models\ConfiguracionModel.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumCuestionarioEntidad.cs" />
     <Compile Include="Entidades\FichaCumplimiento\CumEnvioEntidad.cs" />
+    <Compile Include="Models\DetalleMovAuxTitoModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumEnvioDetModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumEnvioModel.cs" />
     <Compile Include="Models\FichaCumplimiento\CumUsuarioExcelModel.cs" />
