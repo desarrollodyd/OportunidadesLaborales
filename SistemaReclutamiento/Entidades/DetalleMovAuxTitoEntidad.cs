@@ -14,5 +14,7 @@ namespace SistemaReclutamiento.Entidades
         public int Estado { get; set; }
         public DateTime FechaTicketIni { get; set; }
         public DateTime FechaTicketFin { get; set; }
+        public DateTime FechaOperacion { get; set; }
+        public DateTime FechaOperacionIni { get; set; }
     }
 }

@@ -27,13 +27,16 @@ namespace SistemaReclutamiento.Models
                                 TitoPromocionNoDest,
 		                        Estado,
                                 FechaTicketIni,
-                                FechaTicketFin	
+                                FechaTicketFin,
+								FechaOperacion,
+								FechaOperacionIni
                                 from DetalleMovAuxTito
                                 where TitoCortesia+TitoCortesiaNoDest+TitoPromocion+TitoPromocionNoDest>0
                                 and 
                                 ( FechaOperacion between @p0 and @p1
                                 or FechaOperacionIni between @p0 and @p1)
-                                and CodSala=@p2";
+                                and CodSala=@p2
+								order by FechaOperacion desc, FechaOperacionIni desc";
             try
             {
                 using (var con = new SqlConnection(_conexionAdministrativo))
@@ -58,6 +61,8 @@ namespace SistemaReclutamiento.Models
                                     Estado = ManejoNulos.ManageNullInteger(dr["Estado"]),
                                     FechaTicketIni = ManejoNulos.ManageNullDate(dr["FechaTicketIni"]),
                                     FechaTicketFin = ManejoNulos.ManageNullDate(dr["FechaTicketFin"]),
+                                    FechaOperacion = ManejoNulos.ManageNullDate(dr["FechaOperacion"]),
+                                    FechaOperacionIni = ManejoNulos.ManageNullDate(dr["FechaOperacionIni"]),
                                 };
                                 lista.Add(detalleMovAuxTitoEntidad);
                             }
