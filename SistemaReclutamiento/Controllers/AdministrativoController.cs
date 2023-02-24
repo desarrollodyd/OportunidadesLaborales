@@ -15,6 +15,7 @@ namespace SistemaReclutamiento.Controllers
     public class AdministrativoController : Controller
     {
         DetalleMovAuxTitoModel detalleMovAuxTitoBL = new DetalleMovAuxTitoModel();
+        MaquinaDetalleModel maquinaDetalleBL = new MaquinaDetalleModel();
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult ListarDetalleMovAuxTitoAdministrativo(string FechaIni, string FechaFin, string CodSala)
@@ -51,5 +52,98 @@ namespace SistemaReclutamiento.Controllers
             return result;
 
         }
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult ListarMaquinaDetalleAdministrativo(string codMaquina) {
+            MaquinaDetalleEntidad result = new MaquinaDetalleEntidad();
+            bool respuesta = false;
+            try {
+                result = maquinaDetalleBL.ListarMaquinaDetalleAdministrativo(codMaquina);
+                respuesta = true;
+            } catch(Exception) {
+                result = new MaquinaDetalleEntidad();
+                throw;
+            }
+
+            //return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
+
+            //SERVER
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var resultData = new {
+                respuesta,
+                data = result
+            };
+            var resul = new ContentResult {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return resul;
+
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult ListarMaquinasAdministrativo() {
+            List<MaquinaDetalleEntidad> result = new List<MaquinaDetalleEntidad>();
+            bool respuesta = false;
+            try {
+                result = maquinaDetalleBL.ListarMaquinasAdministrativo();
+                respuesta = true;
+            } catch(Exception) {
+                result = new List<MaquinaDetalleEntidad>();
+                throw;
+            }
+
+            //return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
+
+            //SERVER
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var resultData = new {
+                respuesta,
+                data = result
+            };
+            var resul = new ContentResult {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return resul;
+
+        }
+
+
+        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+        public ActionResult ListarMaquinasAdministrativoxSala(string codSala) {
+            List<MaquinaDetalleEntidad> result = new List<MaquinaDetalleEntidad>();
+            bool respuesta = false;
+            try {
+                result = maquinaDetalleBL.ListarMaquinasAdministrativo(codSala);
+                respuesta = true;
+            } catch(Exception) {
+                result = new List<MaquinaDetalleEntidad>();
+                throw;
+            }
+
+            //return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
+
+            //SERVER
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var resultData = new {
+                respuesta,
+                data = result
+            };
+            var resul = new ContentResult {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return resul;
+
+        }
+
     }
 }

@@ -5438,6 +5438,7 @@
     <Compile Include="Entidades\IntranetPJ\IntranetSistemasEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetTipoElementoEntidad.cs" />
     <Compile Include="Entidades\IntranetPJ\IntranetUsuarioEntidad.cs" />
+    <Compile Include="Entidades\MaquinaDetalleEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetPreguntaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\DetRespuestaOLAEntidad.cs" />
     <Compile Include="Entidades\Postulante\EducacionBasicaEntidad.cs" />
@@ -5524,6 +5525,7 @@
     <Compile Include="Models\IntranetPJ\IntranetSistemasModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetTipoElementoModel.cs" />
     <Compile Include="Models\IntranetPJ\IntranetUsuarioModel.cs" />
+    <Compile Include="Models\MaquinaDetalleModel.cs" />
     <Compile Include="Models\Postulante\DetPreguntaOLAModel.cs" />
     <Compile Include="Models\Postulante\DetRespuestaOLAModel.cs" />
     <Compile Include="Models\Postulante\EducacionBasicaModel.cs" />
