@@ -1562,26 +1562,43 @@ where periodo.NU_ANNO=@anio and periodo.NU_PERI=@periodo and empresa.CO_EMPR=@CO
         {
             List<PersonaSqlEntidad> lista = new List<PersonaSqlEntidad>();
 
-            string consulta = $@"select 
-                                    dateadd(year,year(getdate())-year(emp.FE_NACI_TRAB),emp.FE_NACI_TRAB) as fechacalculada,
-emp.CO_TRAB,
-emp.NO_TRAB, 
-emp.NO_APEL_PATE, 
-emp.NO_APEL_MATE,
-FE_NACI_TRAB,
-emp.NO_DIRE_MAI1,
-empresa.CO_EMPR,
-empresa.DE_NOMB 
-from
-                                                                    TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
-                                                                    inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
-                                                                    where 
-                                                                    periodo.NU_ANNO=year(getdate()) 
-								                                    and periodo.NU_PERI=MONTH(GETDATE()) 
-								                                    and DATEADD(year,year(getdate())-year(emp.FE_NACI_TRAB),emp.FE_NACI_TRAB)>=GETDATE()
-								                                    and year(GETDATE())-year(emp.FE_NACI_TRAB)>=18
-								                                    and empresa.CO_EMPR in ({CO_EMPR}) 
-								                                    order by fechacalculada asc";
+            string consulta = $@"declare @limiteEdad int = 18
+                                declare @fechaBusqueda datetime = (select GETDATE())
+                                declare @mesAnterior datetime = (select DATEADD(month,-1,@fechaBusqueda))
+                                declare @totalRegistrosActuales int= (
+	                                select count(*) from TMTRAB_CALC as periodo
+	                                inner join TMEMPR as empresa
+	                                on periodo.CO_EMPR=empresa.CO_EMPR
+	                                where 
+	                                periodo.NU_ANNO=YEAR(@fechaBusqueda) and
+	                                periodo.NU_PERI=MONTH(@fechaBusqueda) and
+	                                empresa.CO_EMPR in ({CO_EMPR})
+	                                )
+                                if(@totalRegistrosActuales=0)
+                                begin
+	                                set @fechaBusqueda=@mesAnterior
+                                end
+
+                                select DISTINCT top 100
+                                dateadd(year,year(getdate())-year(emp.FE_NACI_TRAB),emp.FE_NACI_TRAB) as fechacalculada,
+                                emp.CO_TRAB,
+                                emp.NO_TRAB, 
+                                emp.NO_APEL_PATE, 
+                                emp.NO_APEL_MATE,
+                                FE_NACI_TRAB,
+                                emp.NO_DIRE_MAI1,
+                                empresa.CO_EMPR,
+                                empresa.DE_NOMB 
+                                from
+                                TMTRAB_PERS as emp inner join TMTRAB_CALC as periodo on emp.CO_TRAB=periodo.CO_TRAB 
+                                inner join TMEMPR as empresa on periodo.CO_EMPR=empresa.CO_EMPR 
+                                where 
+                                periodo.NU_ANNO=year(@fechaBusqueda) 
+                                and periodo.NU_PERI=MONTH(@fechaBusqueda) 
+                                and DATEADD(year,year(getdate())-year(emp.FE_NACI_TRAB),emp.FE_NACI_TRAB)>=GETDATE()
+                                and year(GETDATE())-year(emp.FE_NACI_TRAB)>=@limiteEdad
+                                and empresa.CO_EMPR in ({CO_EMPR}) 
+                                order by fechacalculada asc";
             try
             {
                 using (var con = new SqlConnection(_conexion))
