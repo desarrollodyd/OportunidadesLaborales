@@ -1,4 +1,5 @@
-﻿using SistemaReclutamiento.Entidades;
+﻿using Microsoft.Win32;
+using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Utilitarios;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace SistemaReclutamiento.Controllers
 {
@@ -80,19 +82,37 @@ namespace SistemaReclutamiento.Controllers
             return Json(new { data = result }, JsonRequestBehavior.AllowGet);
         }
         [AcceptVerbs(HttpVerbs.Get|HttpVerbs.Post)]
-        public ActionResult ListarCumpleaniosOfisis(string CO_EMPR)
+        public ActionResult ListarCumpleaniosOfisis(string CO_EMPR="", int limite=0)
         {
             List<PersonaSqlEntidad> resul = new List<PersonaSqlEntidad>();
             try
             {
-                resul = sqlbl.ListarCumpleaniosOfisis(CO_EMPR);
+                string limiteStr = string.Empty;
+                if(!string.IsNullOrEmpty(CO_EMPR))
+                {
+                    CO_EMPR =$@" and empresa.CO_EMPR={CO_EMPR}";
+                }
+                if(limite > 0)
+                {
+                    limiteStr = $" top {limite}";
+                }
+                resul = sqlbl.ListarCumpleaniosOfisis(CO_EMPR, limiteStr);
             }
             catch (Exception)
             {
                 resul = new List<PersonaSqlEntidad>();
-                throw;
             }
-            return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
+
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var data = new ContentResult
+            {
+                Content = serializer.Serialize(new{ data = resul }),
+                ContentType = "application/json"
+            };
+            return data;
+            //return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
         }
     }
 }
