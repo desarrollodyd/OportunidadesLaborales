@@ -1501,7 +1501,8 @@ inner join TTDEPA as gerencia on gerencia.CO_EMPR=empresa.CO_EMPR and periodo.CO
 inner join TTAREA as area on area.CO_AREA=periodo.CO_AREA and area.CO_EMPR=periodo.CO_EMPR and periodo.CO_DEPA=area.CO_DEPA 
 inner join TTGRUP_OCUP as grupo on grupo.CO_EMPR=empresa.CO_EMPR and grupo.CO_GRUP_OCUP=periodo.CO_GRUP_OCUP 
 inner join TTPUES_TRAB as puesto on puesto.CO_EMPR=empresa.CO_EMPR and puesto.CO_PUES_TRAB=periodo.CO_PUES_TRAB 
-where periodo.NU_ANNO=@anio and periodo.NU_PERI=@periodo and empresa.CO_EMPR=@CO_EMPR and sede.CO_SEDE=@CO_SEDE";
+where periodo.NU_ANNO=@anio and periodo.NU_PERI=@periodo and empresa.CO_EMPR=@CO_EMPR and sede.CO_SEDE=@CO_SEDE
+order by emp.NO_APEL_PATE asc,emp.NO_APEL_MATE asc, emp.NO_TRAB asc";
             try
             {
                 using (var con = new SqlConnection(_conexion))
@@ -1645,6 +1646,184 @@ where periodo.NU_ANNO=@anio and periodo.NU_PERI=@periodo and empresa.CO_EMPR=@CO
                 lista = new List<PersonaSqlEntidad>();
             }
             return lista;
+        }
+
+        public TDINFO_TRAB GetInfoEnvio(string COD_EMPRESA, string CO_TRAB, string CO_PLAN, int NU_CORR_PERI, string CO_CPTO_FORM, int PERIODO, int anio)
+        {
+            TDINFO_TRAB registro = new TDINFO_TRAB();
+            claseError error = new claseError();
+          
+            string consulta = @"Select [CO_TRAB]
+                      ,[CO_EMPR]
+                      ,[CO_PLAN]
+                      ,[NU_ANNO]
+                      ,[NU_PERI]
+                      ,[NU_CORR_PERI]
+                      ,[CO_CPTO_FORM]
+                      ,[FE_INIC_VIGE]
+                      ,[FE_FINA_VIGE]
+                      ,[NU_DATO_INFO]
+                      ,[CO_USUA_CREA]
+                      ,[FE_USUA_CREA]
+                      ,[CO_USUA_MODI]
+                      ,[FE_USUA_MODI]
+                        from TDINFO_TRAB 
+                        where NU_ANNO=@NU_ANNO and NU_PERI=@NU_PERI and CO_EMPR=@CO_EMPR and CO_PLAN=@CO_PLAN and CO_TRAB=@CO_TRAB and NU_CORR_PERI=@NU_CORR_PERI and CO_CPTO_FORM=@CO_CPTO_FORM
+                        order by [NU_ANNO] asc,[NU_PERI] asc,[NU_CORR_PERI] asc
+		";
+            try
+            {
+                using(var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@COD_EMPRESA", COD_EMPRESA);
+                    query.Parameters.AddWithValue("@CO_TRAB", CO_TRAB);
+                    query.Parameters.AddWithValue("@CO_PLAN", CO_PLAN);
+                    query.Parameters.AddWithValue("@NU_CORR_PERI", NU_CORR_PERI);
+                    query.Parameters.AddWithValue("@CO_CPTO_FORM", CO_CPTO_FORM);
+                    query.Parameters.AddWithValue("@PERIODO", PERIODO);
+                    query.Parameters.AddWithValue("@anio", anio);
+                    using(var dr = query.ExecuteReader())
+                    {
+                        if(dr.HasRows)
+                        {
+                            while(dr.Read())
+
+                            {
+                                registro.CO_TRAB = ManejoNulos.ManageNullStr(dr["CO_TRAB"]);
+                                registro.CO_EMPR = ManejoNulos.ManageNullStr(dr["NO_TRAB"]);
+                                registro.CO_PLAN = ManejoNulos.ManageNullStr(dr["NO_APEL_PATE"]);
+                                registro.NU_ANNO = ManejoNulos.ManageNullInteger(dr["NO_APEL_MATE"]);
+                                registro.NU_PERI = ManejoNulos.ManageNullInteger(dr["TI_SITU"]);
+                                registro.NU_CORR_PERI = ManejoNulos.ManageNullInteger(dr["DE_NOMB"]);
+                                registro.CO_CPTO_FORM = ManejoNulos.ManageNullStr(dr["DE_UNID"]);
+                                registro.FE_INIC_VIGE = ManejoNulos.ManageNullDate(dr["DE_SEDE"]);
+                                registro.FE_FINA_VIGE = ManejoNulos.ManageNullDate(dr["DE_DEPA"]);
+                                registro.NU_DATO_INFO = ManejoNulos.ManageNullDouble(dr["DE_AREA"]);
+                                registro.CO_USUA_CREA = ManejoNulos.ManageNullStr(dr["DE_GRUP_OCUP"]);
+                                registro.FE_USUA_CREA = ManejoNulos.ManageNullDate(dr["DE_PUES_TRAB"]);
+                                registro.CO_USUA_MODI = ManejoNulos.ManageNullStr(dr["NU_TLF1"]);
+                                registro.FE_USUA_MODI = ManejoNulos.ManageNullDate(dr["NO_DIRE_TRAB"]);
+                             
+                            }
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                registro = new TDINFO_TRAB();
+            }
+
+            return registro;
+        }
+
+        public bool CreateInfoEnvio(TDINFO_TRAB ofiplan)
+        {
+            bool respuesta = false;
+            string consulta = @"Insert into [TDINFO_TRAB] ([CO_TRAB],[CO_EMPR],[CO_PLAN],[NU_ANNO],[NU_PERI],[NU_CORR_PERI],[CO_CPTO_FORM],[FE_INIC_VIGE],[FE_FINA_VIGE],[NU_DATO_INFO],[CO_USUA_CREA],[FE_USUA_CREA],CO_USUA_MODI,FE_USUA_MODI) 
+                                         VALUES (@CO_TRAB,@CO_EMPR,@CO_PLAN,@NU_ANNO,@NU_PERI,@NU_CORR_PERI,@CO_CPTO_FORM,@FE_INIC_VIGE,@FE_FINA_VIGE,@NU_DATO_INFO,@CO_USUA_CREA,@FE_USUA_CREA,@CO_USUA_MODI,@FE_USUA_MODI)";
+
+            try
+            {
+                using(var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@CO_TRAB", ManejoNulos.ManageNullStr(ofiplan.CO_TRAB));
+                    query.Parameters.AddWithValue("@CO_EMPR", ManejoNulos.ManageNullStr(ofiplan.CO_EMPR));
+                    query.Parameters.AddWithValue("@CO_PLAN", ManejoNulos.ManageNullStr(ofiplan.CO_PLAN));
+                    query.Parameters.AddWithValue("@NU_ANNO", ManejoNulos.ManageNullInteger(ofiplan.NU_ANNO));
+                    query.Parameters.AddWithValue("@NU_PERI", ManejoNulos.ManageNullInteger(ofiplan.NU_PERI));
+                    query.Parameters.AddWithValue("@NU_CORR_PERI", ManejoNulos.ManageNullInteger(ofiplan.NU_CORR_PERI));
+                    query.Parameters.AddWithValue("@CO_CPTO_FORM", ManejoNulos.ManageNullStr(ofiplan.CO_CPTO_FORM));
+                    query.Parameters.AddWithValue("@FE_INIC_VIGE", ManejoNulos.ManageNullDate(ofiplan.FE_INIC_VIGE));
+                    query.Parameters.AddWithValue("@FE_FINA_VIGE", ManejoNulos.ManageNullDate(ofiplan.FE_FINA_VIGE));
+                    query.Parameters.AddWithValue("@NU_DATO_INFO", ManejoNulos.ManageNullDouble(ofiplan.NU_DATO_INFO));
+                    query.Parameters.AddWithValue("@CO_USUA_CREA", ManejoNulos.ManageNullStr(ofiplan.CO_USUA_CREA));
+                    query.Parameters.AddWithValue("@FE_USUA_CREA", ManejoNulos.ManageNullDate(ofiplan.FE_USUA_CREA));
+                    query.Parameters.AddWithValue("@CO_USUA_MODI", ManejoNulos.ManageNullStr(ofiplan.CO_USUA_MODI));
+                    query.Parameters.AddWithValue("@FE_USUA_MODI", ManejoNulos.ManageNullDate(ofiplan.FE_USUA_MODI));
+                    query.ExecuteNonQuery();
+
+                    respuesta = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                respuesta = false;
+            }
+
+            return respuesta;
+        }
+
+        public bool DeleteInfoEnvio(string COD_EMPRESA, string COD_TRABAJADOR, int PERIODO, int anio)
+        {
+            bool respuesta = false;
+            string consulta = @"Delete from [TDINFO_TRAB] where CO_EMPR=@CO_EMPR  and NU_ANNO=@NU_ANNO and NU_PERI=@NU_PERI and CO_TRAB=@CO_TRAB and CO_USUA_CREA='regasist' ";
+
+            try
+            {
+                using(var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@CO_EMPR", ManejoNulos.ManageNullStr(COD_EMPRESA));
+                    query.Parameters.AddWithValue("@NU_ANNO", ManejoNulos.ManageNullInteger(anio));
+                    query.Parameters.AddWithValue("@NU_PERI", ManejoNulos.ManageNullInteger(PERIODO));
+                    query.Parameters.AddWithValue("@CO_TRAB", ManejoNulos.ManageNullStr(COD_TRABAJADOR));
+
+                    query.ExecuteNonQuery();
+
+                    respuesta = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                respuesta = false;
+            }
+
+            return respuesta;
+        }
+
+        public bool UpdateInfoenvio(string COD_EMPRESA, string CO_TRAB, int PERIODO, int anio, string CO_CPTO_FORM, DateTime FE_USUA_MODI, double NU_DATO_INFO)
+        {
+            bool respuesta = false;
+            string consulta = @"UPDATE TDINFO_TRAB
+                                SET
+                                    NU_DATO_INFO=@NU_DATO_INFO,
+                                    FE_USUA_MODI=@FE_USUA_MODI
+                                    where CO_EMPR=@CO_EMPR and CO_TRAB=@CO_TRAB and NU_CORR_PERI=@NU_CORR_PERI and CO_CPTO_FORM=@CO_CPTO_FORM and NU_ANNO=@NU_ANNO and  NU_PERI=@NU_PERI";
+
+            try
+            {
+                using(var con = new SqlConnection(_conexion))
+                {
+                    con.Open();
+                    var query = new SqlCommand(consulta, con);
+                    query.Parameters.AddWithValue("@CO_EMPR", ManejoNulos.ManageNullStr(COD_EMPRESA));
+                    query.Parameters.AddWithValue("@CO_TRAB", ManejoNulos.ManageNullStr(CO_TRAB));
+                    query.Parameters.AddWithValue("@NU_CORR_PERI", ManejoNulos.ManageNullInteger(PERIODO));
+                    query.Parameters.AddWithValue("@CO_CPTO_FORM", ManejoNulos.ManageNullStr(CO_CPTO_FORM));
+                    query.Parameters.AddWithValue("@NU_ANNO", ManejoNulos.ManageNullInteger(anio));
+                    query.Parameters.AddWithValue("@NU_PERI", ManejoNulos.ManageNullInteger(PERIODO));
+                    query.Parameters.AddWithValue("@NU_DATO_INFO", ManejoNulos.ManageNullDouble(NU_DATO_INFO));
+                    query.Parameters.AddWithValue("@FE_USUA_MODI", ManejoNulos.ManageNullDate(FE_USUA_MODI));
+                    query.ExecuteNonQuery();
+
+                    respuesta = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                Trace.WriteLine("" + ex.Message + this.GetType().FullName + " " + DateTime.Now.ToLongDateString());
+                respuesta = false;
+            }
+
+            return respuesta;
         }
     }
 }

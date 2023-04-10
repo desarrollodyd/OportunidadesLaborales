@@ -5478,6 +5478,7 @@
     <Compile Include="Entidades\SeguridadIntranet\SEG_RolEntidad.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_RolUsuarioEntidad.cs" />
     <Compile Include="Entidades\SeguridadIntranet\SEG_UsuarioEmpresaEntidad.cs" />
+    <Compile Include="Entidades\TDINFO_TRAB.cs" />
     <Compile Include="Entidades\UbigeoEntidad.cs" />
     <Compile Include="Entidades\UsuarioEntidad.cs" />
     <Compile Include="Entidades\UsuarioPersonaEntidad.cs" />
