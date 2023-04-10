@@ -116,8 +116,8 @@ namespace SistemaReclutamiento.Controllers
             //return Json(new { data = resul }, JsonRequestBehavior.AllowGet);
         }
 
-        [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        //[HttpGet]
+    
+        [HttpPost]
         public ActionResult ListarEnvios(string COD_EMPRESA, string CO_TRAB, string CO_PLAN, int NU_CORR_PERI, string CO_CPTO_FORM, int PERIODO, int anio)
         {
             TDINFO_TRAB result = new TDINFO_TRAB();
@@ -173,12 +173,12 @@ namespace SistemaReclutamiento.Controllers
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         //[HttpGet]
-        public ActionResult UpdateInfoenvio(string COD_EMPRESA, string CO_TRAB, int PERIODO, int anio, string CO_CPTO_FORM, DateTime FE_USUA_MODI, double NU_DATO_INFO)
+        public ActionResult UpdateInfoenvio(string COD_EMPRESA, string CO_TRAB, int NU_CORR_PERI, int PERIODO, int anio, string CO_CPTO_FORM, DateTime FE_USUA_MODI, double NU_DATO_INFO)
         {
             bool result = false;
             try
             {
-                result = sqlbl.UpdateInfoenvio( COD_EMPRESA,  CO_TRAB,  PERIODO,  anio,  CO_CPTO_FORM,  FE_USUA_MODI,  NU_DATO_INFO);
+                result = sqlbl.UpdateInfoenvio( COD_EMPRESA,  CO_TRAB, NU_CORR_PERI, PERIODO,  anio,  CO_CPTO_FORM,  FE_USUA_MODI,  NU_DATO_INFO);
 
             }
             catch(Exception ex)
