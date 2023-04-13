@@ -17,7 +17,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
         }
         
         #region Region Acceso a Intranet
-        public (UsuarioEntidad intranetUsuarioEncontrado, claseError error) UsuarioIntranetValidarCredenciales(string usu_login)
+        public (UsuarioEntidad intranetUsuarioEncontrado, claseError error) UsuarioIntranetValidarCredenciales(string usu_login, string usu_password)
         {
             UsuarioEntidad usuario = new UsuarioEntidad();
             claseError error = new claseError();
@@ -28,7 +28,8 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                                 usu_id,
                                 fk_persona
                                 FROM seguridad.seg_usuario
-                                where usu_nombre = @p0
+                                where usu_nombre = @p0 and usu_contraseña = @p1
+                                order by usu_estado desc
                                ; ";
             try
             {
@@ -37,6 +38,7 @@ namespace SistemaReclutamiento.Models.IntranetPJ
                     con.Open();
                     var query = new NpgsqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@p0", usu_login);
+                    query.Parameters.AddWithValue("@p1", usu_password);
 
                     using (var dr = query.ExecuteReader())
                     {

@@ -719,7 +719,8 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
             string pendiente = "";
             try
             {
-                var usuarioTupla = usuarioAccesobl.UsuarioIntranetValidarCredenciales(usu_login.ToLower());
+                var contrasenia = Seguridad.EncriptarSHA512(usu_password.Trim());
+                var usuarioTupla = usuarioAccesobl.UsuarioIntranetValidarCredenciales(usu_login.ToLower(), contrasenia);
                 error = usuarioTupla.error;
                 if (error.Respuesta)
                 {
@@ -730,23 +731,23 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                         {
                             if (usuario.usu_tipo == "EMPLEADO")
                             {
-                                var contrasenia = Seguridad.EncriptarSHA512(usu_password.Trim());
-                                if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
-                                {
+                                //var contrasenia = Seguridad.EncriptarSHA512(usu_password.Trim());
+                                //if (usuario.usu_contrasenia == Seguridad.EncriptarSHA512(usu_password.Trim()))
+                                //{
                                     //creacion de Token usuario y dni ira en el token separado de un punto
                                     Session["usuIntranet_full"] = usuariobl.UsuarioObtenerxID(usuario.usu_id);
                                     persona = personabl.PersonaIdObtenerJson(usuario.fk_persona);
                                     Session["perIntranet_full"] = persona;
                                     respuesta = true;
                                     errormensaje = "Bienvenido, " + usuario.usu_nombre;
-                                }
-                                else{
-                                    errormensaje = "Contraseña no Coincide";
-                                }
+                                //}
+                                //else{
+                                //    errormensaje = "Contraseña no Coincide";
+                                //}
                             }
                             else
                             {
-                                errormensaje = "Usuario no Pertenece";
+                                errormensaje = "Usuario no es empleado";
                             }
                         }
                         else
@@ -756,7 +757,7 @@ namespace SistemaReclutamiento.Controllers.IntranetPJ
                     }
                     else
                     {
-                        errormensaje = "Usuario no Encontrado";
+                        errormensaje = "Credenciales Incorrectas";
                     }
                 }
                 else {
