@@ -16,6 +16,7 @@ namespace SistemaReclutamiento.Controllers
     {
         DetalleMovAuxTitoModel detalleMovAuxTitoBL = new DetalleMovAuxTitoModel();
         MaquinaDetalleModel maquinaDetalleBL = new MaquinaDetalleModel();
+        DetalleContadoresGameModel detalleContadoreGamesBL = new DetalleContadoresGameModel();
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
         public ActionResult ListarDetalleMovAuxTitoAdministrativo(string FechaIni, string FechaFin, string CodSala)
@@ -143,6 +144,27 @@ namespace SistemaReclutamiento.Controllers
             };
             return resul;
 
+        }
+        [HttpPost]
+        public ActionResult ListarDetalleContadoresPorFechaOperacion(DateTime fechaInicio,DateTime fechaFin, int codSala) {
+            List<DetalleContadoresGameEntidad> result = new List<DetalleContadoresGameEntidad>();
+            try {
+                result = detalleContadoreGamesBL.ListarDetalleContadoresGamePorFechaOperacionYSala(fechaInicio,fechaFin,codSala);
+            } catch(Exception) {
+                result = new List<DetalleContadoresGameEntidad>();
+            }
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+
+            var resultData = new
+            {
+                result
+            };
+            var resul = new ContentResult {
+                Content = serializer.Serialize(resultData),
+                ContentType = "application/json"
+            };
+            return resul;
         }
 
     }
