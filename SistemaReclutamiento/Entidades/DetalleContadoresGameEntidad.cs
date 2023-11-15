@@ -76,5 +76,6 @@ namespace SistemaReclutamiento.Entidades {
         public int RetiroTemporal { get; set; }
 
         public decimal TiempoJuego { get; set; }
+        public string CodMaquinaLey { get; set; }
     }
 }

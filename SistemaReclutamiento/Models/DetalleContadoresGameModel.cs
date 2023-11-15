@@ -13,57 +13,58 @@ namespace SistemaReclutamiento.Models {
         public DetalleContadoresGameModel() {
             _conexionAdministrativo = ConfigurationManager.ConnectionStrings["conexionAdministrativo"].ConnectionString;
         }
-        public List<DetalleContadoresGameEntidad> ListarDetalleContadoresGamePorFechaOperacionYSala(DateTime fechaInicio,DateTime fechaFin, int codSala) {
+        public List<DetalleContadoresGameEntidad> ListarDetalleContadoresGamePorFechaOperacionYSala(DateTime fechaInicio,DateTime fechaFin, string stringSalas) {
             List<DetalleContadoresGameEntidad> lista = new List<DetalleContadoresGameEntidad>();
-
-            string consulta = @"SET dateformat dmy;
+            string consulta = $@"SET dateformat dmy;
 
                                             DECLARE @StartDate DATE = @fechaInicio;
                                             DECLARE @EndDate DATE = @fechaFin;
-                                            DECLARE @CodSala int = @sala
 
                                             SELECT 
-                                                CodDetalleContadoresGame,
-                                                CodContadoresGame,
-                                                CodMaquina,
-                                                CodSala,
-                                                CodEmpresa,
-                                                CodMoneda,
-                                                FechaOperacion,
-                                                CoinInIni,
-                                                CoinInFin,
-                                                CoinOutIni,
-                                                CoinOutFin,
-                                                JackpotIni,
-                                                JackpotFin,
-                                                HandPayIni,
-                                                HandPayFin,
-                                                CancelCreditIni,
-                                                CancelCreditFin,
-                                                GamesPlayedIni,
-                                                GamesPlayedFin,
-                                                ProduccionPorSlot1,
-                                                ProduccionPorSlot2Reset,
-                                                ProduccionPorSlot3Rollover,
-                                                ProduccionPorSlot4Prueba,
-                                                ProduccionTotalPorSlot5Dia,
-                                                TipoCambio,
-                                                FechaRegistro,
-                                                FechaModificacion,
-                                                Activo,
-                                                Estado,
-                                                SaldoCoinIn,
-                                                SaldoCoinOut,
-                                                SaldoJackpot,
-                                                SaldoGamesPlayed,
-                                                CodUsuario,
-                                                RetiroTemporal,
-                                                TiempoJuego
+                                                cgame.CodDetalleContadoresGame,
+                                                cgame.CodContadoresGame,
+                                                cgame.CodMaquina,
+                                                cgame.CodSala,
+                                                cgame.CodEmpresa,
+                                                cgame.CodMoneda,
+                                                cgame.FechaOperacion,
+                                                cgame.CoinInIni,
+                                                cgame.CoinInFin,
+                                                cgame.CoinOutIni,
+                                                cgame.CoinOutFin,
+                                                cgame.JackpotIni,
+                                                cgame.JackpotFin,
+                                                cgame.HandPayIni,
+                                                cgame.HandPayFin,
+                                                cgame.CancelCreditIni,
+                                                cgame.CancelCreditFin,
+                                                cgame.GamesPlayedIni,
+                                                cgame.GamesPlayedFin,
+                                                cgame.ProduccionPorSlot1,
+                                                cgame.ProduccionPorSlot2Reset,
+                                                cgame.ProduccionPorSlot3Rollover,
+                                                cgame.ProduccionPorSlot4Prueba,
+                                                cgame.ProduccionTotalPorSlot5Dia,
+                                                cgame.TipoCambio,
+                                                cgame.FechaRegistro,
+                                                cgame.FechaModificacion,
+                                                cgame.Activo,
+                                                cgame.Estado,
+                                                cgame.SaldoCoinIn,
+                                                cgame.SaldoCoinOut,
+                                                cgame.SaldoJackpot,
+                                                cgame.SaldoGamesPlayed,
+                                                cgame.CodUsuario,
+                                                cgame.RetiroTemporal,
+                                                cgame.TiempoJuego,
+                                                maq.CodMaquinaLey
                                             FROM 
-                                                dbo.DetalleContadoresGame
+                                                dbo.DetalleContadoresGame as cgame
+join dbo.Maquina as maq
+on cgame.CodMaquina=maq.CodMaquina
                                             WHERE 
-                                                CodSala = @CodSala
-                                                AND FechaOperacion BETWEEN @StartDate AND @EndDate
+                                                cgame.FechaOperacion BETWEEN @StartDate AND @EndDate
+                                                {stringSalas}
                                            ";
             try {
                 using(var con = new SqlConnection(_conexionAdministrativo)) {
@@ -71,7 +72,7 @@ namespace SistemaReclutamiento.Models {
                     var query = new SqlCommand(consulta, con);
                     query.Parameters.AddWithValue("@fechaInicio", fechaInicio.Date);
                     query.Parameters.AddWithValue("@fechaFin",fechaFin.Date);
-                    query.Parameters.AddWithValue("@sala", codSala);
+              
                     using(var dr = query.ExecuteReader()) {
                         if(dr.HasRows) {
                             while(dr.Read()) {
@@ -111,7 +112,8 @@ namespace SistemaReclutamiento.Models {
                                     SaldoGamesPlayed = ManejoNulos.ManageNullDecimal(dr["SaldoGamesPlayed"]),
                                     CodUsuario = ManejoNulos.ManageNullStr(dr["CodUsuario"]),
                                     RetiroTemporal = ManejoNulos.ManageNullInteger(dr["RetiroTemporal"]),
-                                    TiempoJuego = ManejoNulos.ManageNullDecimal(dr["TiempoJuego"])
+                                    TiempoJuego = ManejoNulos.ManageNullDecimal(dr["TiempoJuego"]),
+                                    CodMaquinaLey = ManejoNulos.ManageNullStr(dr["CodMaquinaLey"]),
                                 };
                                 lista.Add(maquina);
                             }

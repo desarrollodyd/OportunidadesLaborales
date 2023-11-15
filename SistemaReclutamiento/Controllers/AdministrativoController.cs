@@ -146,20 +146,21 @@ namespace SistemaReclutamiento.Controllers
 
         }
         [HttpPost]
-        public ActionResult ListarDetalleContadoresPorFechaOperacion(DateTime fechaInicio,DateTime fechaFin, int codSala) {
+        public ActionResult ListarDetalleContadoresPorFechaOperacion(DateTime fechaInicio,DateTime fechaFin, List<int> listaSalas) {
             List<DetalleContadoresGameEntidad> result = new List<DetalleContadoresGameEntidad>();
             try {
-                result = detalleContadoreGamesBL.ListarDetalleContadoresGamePorFechaOperacionYSala(fechaInicio,fechaFin,codSala);
+                string stringSalas = string.Empty;
+                if(listaSalas.Count > 0) {
+                    stringSalas = $" and cgame.CodSala in ({String.Join(",",listaSalas)}) ";
+                }
+                result = detalleContadoreGamesBL.ListarDetalleContadoresGamePorFechaOperacionYSala(fechaInicio,fechaFin, stringSalas);
             } catch(Exception) {
                 result = new List<DetalleContadoresGameEntidad>();
             }
             var serializer = new JavaScriptSerializer();
             serializer.MaxJsonLength = Int32.MaxValue;
 
-            var resultData = new
-            {
-                result
-            };
+            var resultData = result;
             var resul = new ContentResult {
                 Content = serializer.Serialize(resultData),
                 ContentType = "application/json"
