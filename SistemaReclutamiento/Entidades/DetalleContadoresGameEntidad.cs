@@ -77,5 +77,6 @@ namespace SistemaReclutamiento.Entidades {
 
         public decimal TiempoJuego { get; set; }
         public string CodMaquinaLey { get; set; }
+        public string CodAlterno { get; set; }
     }
 }

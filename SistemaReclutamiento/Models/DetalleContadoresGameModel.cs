@@ -20,7 +20,7 @@ namespace SistemaReclutamiento.Models {
                                             DECLARE @StartDate DATE = @fechaInicio;
                                             DECLARE @EndDate DATE = @fechaFin;
 
-                                            SELECT 
+                                            SELECT  
                                                 cgame.CodDetalleContadoresGame,
                                                 cgame.CodContadoresGame,
                                                 cgame.CodMaquina,
@@ -57,7 +57,8 @@ namespace SistemaReclutamiento.Models {
                                                 cgame.CodUsuario,
                                                 cgame.RetiroTemporal,
                                                 cgame.TiempoJuego,
-                                                maq.CodMaquinaLey
+                                                maq.CodMaquinaLey,
+maq.CodAlterno
                                             FROM 
                                                 dbo.DetalleContadoresGame as cgame
 join dbo.Maquina as maq
@@ -114,6 +115,7 @@ on cgame.CodMaquina=maq.CodMaquina
                                     RetiroTemporal = ManejoNulos.ManageNullInteger(dr["RetiroTemporal"]),
                                     TiempoJuego = ManejoNulos.ManageNullDecimal(dr["TiempoJuego"]),
                                     CodMaquinaLey = ManejoNulos.ManageNullStr(dr["CodMaquinaLey"]),
+                                    CodAlterno = ManejoNulos.ManageNullStr(dr["CodAlterno"]),
                                 };
                                 lista.Add(maquina);
                             }
