@@ -17,29 +17,29 @@ namespace SistemaReclutamiento.Models {
             MaquinaDetalleEntidad item = new MaquinaDetalleEntidad();
 
             string consulta = @"SELECT 
-		                            maq.CodMaquina,
-		                            maq.CodLinea,
-		                            maq.CodJuego,
-		                            maq.CodSala,
-		                            maq.CodModeloMaquina,
-		                            mom.CodMarcaMaquina,
-		                            maq.CodContrato,
-		                            maq.CodFicha,
-		                            maq.CodMaquinaLey,
-		                            lin.Nombre as NombreLinea,
-		                            maq.NroSerie as NroSerie,
-		                            jue.Nombre as NombreJuego,
-		                            sal.Nombre as NombreSala,
-		                            mom.Nombre as NombreModeloMaquina,
-		                            con.Descripcion as DescripcionContrato,
-		                            fic.Nombre as NombreFicha,
-		                            mar.Nombre as NombreMarcaMaquina, 
-		                            maq.Token as Token,
-	                                maq.CodZona as CodZona,
-	                                zo.Nombre as NombreZona,
-	                                maq.CodIsla as COdIsla,
-	                                isl.Nombre as NombreIsla,
-	                                maq.Posicion as Posicion
+                                    maq.CodMaquina,
+                                    maq.CodLinea,
+                                    maq.CodJuego,
+                                    maq.CodSala,
+                                    maq.CodModeloMaquina,
+                                    mom.CodMarcaMaquina,
+                                    maq.CodContrato,
+                                    maq.CodFicha,
+                                    maq.CodMaquinaLey,
+                                    lin.Nombre as NombreLinea,
+                                    maq.NroSerie as NroSerie,
+                                    jue.Nombre as NombreJuego,
+                                    sal.Nombre as NombreSala,
+                                    mom.Nombre as NombreModeloMaquina,
+                                    con.Descripcion as DescripcionContrato,
+                                    fic.Nombre as NombreFicha,
+                                    mar.Nombre as NombreMarcaMaquina, 
+                                    maq.Token as Token,
+                                    maq.CodZona as CodZona,
+                                    zo.Nombre as NombreZona,
+                                    maq.CodIsla as COdIsla,
+                                    isl.Nombre as NombreIsla,
+                                    maq.Posicion as Posicion
                                 FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
                                 INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
                                 INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego
@@ -100,41 +100,44 @@ namespace SistemaReclutamiento.Models {
         public List<MaquinaDetalleEntidad> ListarMaquinasAdministrativo() {
             List<MaquinaDetalleEntidad> lista = new List<MaquinaDetalleEntidad>();
 
-            string consulta = @"SELECT 
-		                            maq.CodMaquina,
-		                            maq.CodLinea,
-		                            maq.CodJuego,
-		                            maq.CodSala,
-		                            maq.CodModeloMaquina,
-		                            mom.CodMarcaMaquina,
-		                            maq.CodContrato,
-		                            maq.CodFicha,
-		                            maq.CodMaquinaLey,
-		                            lin.Nombre as NombreLinea,
-		                            maq.NroSerie as NroSerie,
-		                            jue.Nombre as NombreJuego,
-		                            sal.Nombre as NombreSala,
-		                            mom.Nombre as NombreModeloMaquina,
-		                            con.Descripcion as DescripcionContrato,
-		                            fic.Nombre as NombreFicha,
-		                            mar.Nombre as NombreMarcaMaquina, 
-		                            maq.Token as Token,
-	                                maq.CodZona as CodZona,
-	                                zo.Nombre as NombreZona,
-	                                maq.CodIsla as COdIsla,
-	                                isl.Nombre as NombreIsla,
-	                                maq.Posicion as Posicion
-                                FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
-                                INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
-                                INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego
-                                INNER JOIN Sala sal ON sal.CodSala = maq.CodSala
-                                INNER JOIN ModeloMaquina mom ON mom.CodModeloMaquina = maq.CodModeloMaquina
-                                INNER JOIN MarcaMaquina mar ON mar.CodMarcaMaquina = mom.CodMarcaMaquina
-                                INNER JOIN Contrato con ON con.CodContrato = maq.CodContrato
-                                INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha ORDER BY maq.CodMaquinaLey ASC
-                                INNER JOIN Zona zo ON zo.CodZona = maq.CodZona
-                                INNER JOIN Isla isl ON isl.CodIsla = maq.CodIsla
-";
+            string consulta = @"
+                SELECT 
+                    maq.CodMaquina,
+                    maq.CodLinea,
+                    maq.CodJuego,
+                    maq.CodSala,
+                    maq.CodModeloMaquina,
+                    mom.CodMarcaMaquina,
+                    maq.CodContrato,
+                    maq.CodFicha,
+                    maq.CodMaquinaLey,
+                    lin.Nombre as NombreLinea,
+                    maq.NroSerie as NroSerie,
+                    jue.Nombre as NombreJuego,
+                    sal.Nombre as NombreSala,
+                    mom.Nombre as NombreModeloMaquina,
+                    con.Descripcion as DescripcionContrato,
+                    fic.Nombre as NombreFicha,
+                    mar.Nombre as NombreMarcaMaquina, 
+                    maq.Token as Token,
+                    maq.CodZona as CodZona,
+                    zo.Nombre as NombreZona,
+                    maq.CodIsla as COdIsla,
+                    isl.Nombre as NombreIsla,
+                    maq.Posicion as Posicion
+                FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
+                INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
+                INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego
+                INNER JOIN Sala sal ON sal.CodSala = maq.CodSala
+                INNER JOIN ModeloMaquina mom ON mom.CodModeloMaquina = maq.CodModeloMaquina
+                INNER JOIN MarcaMaquina mar ON mar.CodMarcaMaquina = mom.CodMarcaMaquina
+                INNER JOIN Contrato con ON con.CodContrato = maq.CodContrato
+                INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha
+                INNER JOIN Zona zo ON zo.CodZona = maq.CodZona
+                INNER JOIN Isla isl ON isl.CodIsla = maq.CodIsla
+                ORDER BY maq.CodMaquinaLey ASC
+            ";
+
             try {
                 using(var con = new SqlConnection(_conexionAdministrativo)) {
                     con.Open();
@@ -187,29 +190,29 @@ namespace SistemaReclutamiento.Models {
             List<MaquinaDetalleEntidad> lista = new List<MaquinaDetalleEntidad>();
 
             string consulta = @"SELECT 
-		                            maq.CodMaquina,
-		                            maq.CodLinea,
-		                            maq.CodJuego,
-		                            maq.CodSala,
-		                            maq.CodModeloMaquina,
-		                            mom.CodMarcaMaquina,
-		                            maq.CodContrato,
-		                            maq.CodFicha,
-		                            maq.CodMaquinaLey,
-		                            lin.Nombre as NombreLinea,
-		                            maq.NroSerie as NroSerie,
-		                            jue.Nombre as NombreJuego,
-		                            sal.Nombre as NombreSala,
-		                            mom.Nombre as NombreModeloMaquina,
-		                            con.Descripcion as DescripcionContrato,
-		                            fic.Nombre as NombreFicha,
-		                            mar.Nombre as NombreMarcaMaquina, 
-		                            maq.Token as Token,
-	                                maq.CodZona as CodZona,
-	                                zo.Nombre as NombreZona,
-	                                maq.CodIsla as COdIsla,
-	                                isl.Nombre as NombreIsla,
-	                                maq.Posicion as Posicion
+                                    maq.CodMaquina,
+                                    maq.CodLinea,
+                                    maq.CodJuego,
+                                    maq.CodSala,
+                                    maq.CodModeloMaquina,
+                                    mom.CodMarcaMaquina,
+                                    maq.CodContrato,
+                                    maq.CodFicha,
+                                    maq.CodMaquinaLey,
+                                    lin.Nombre as NombreLinea,
+                                    maq.NroSerie as NroSerie,
+                                    jue.Nombre as NombreJuego,
+                                    sal.Nombre as NombreSala,
+                                    mom.Nombre as NombreModeloMaquina,
+                                    con.Descripcion as DescripcionContrato,
+                                    fic.Nombre as NombreFicha,
+                                    mar.Nombre as NombreMarcaMaquina, 
+                                    maq.Token as Token,
+                                    maq.CodZona as CodZona,
+                                    zo.Nombre as NombreZona,
+                                    maq.CodIsla as COdIsla,
+                                    isl.Nombre as NombreIsla,
+                                    maq.Posicion as Posicion
                                 FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
                                 INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
                                 INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego

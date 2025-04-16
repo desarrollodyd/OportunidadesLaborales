@@ -1,35 +1,26 @@
-﻿using OfficeOpenXml.DataValidation;
-using SistemaReclutamiento.Entidades;
+﻿using SistemaReclutamiento.Entidades;
 using SistemaReclutamiento.Models;
 using SistemaReclutamiento.Utilitarios;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 
-namespace SistemaReclutamiento.Controllers
-{
+namespace SistemaReclutamiento.Controllers {
     [autorizacion(false)]
-    public class AdministrativoController : Controller
-    {
+    public class AdministrativoController : Controller {
         DetalleMovAuxTitoModel detalleMovAuxTitoBL = new DetalleMovAuxTitoModel();
         MaquinaDetalleModel maquinaDetalleBL = new MaquinaDetalleModel();
         DetalleContadoresGameModel detalleContadoreGamesBL = new DetalleContadoresGameModel();
 
         [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
-        public ActionResult ListarDetalleMovAuxTitoAdministrativo(string FechaIni, string FechaFin, string CodSala)
-        {
+        public ActionResult ListarDetalleMovAuxTitoAdministrativo(string FechaIni, string FechaFin, string CodSala) {
             List<DetalleMovAuxTitoEntidad> resul = new List<DetalleMovAuxTitoEntidad>();
             bool respuesta = false;
-            try
-            {         
+            try {
                 resul = detalleMovAuxTitoBL.ListarDetalleMovAuxTitoAdministrativo(Convert.ToDateTime(FechaIni), Convert.ToDateTime(FechaFin), Convert.ToInt32(CodSala));
                 respuesta = true;
-            }
-            catch (Exception)
-            {
+            } catch(Exception) {
                 resul = new List<DetalleMovAuxTitoEntidad>();
                 throw;
             }
@@ -40,13 +31,11 @@ namespace SistemaReclutamiento.Controllers
             var serializer = new JavaScriptSerializer();
             serializer.MaxJsonLength = Int32.MaxValue;
 
-            var resultData = new
-            {
+            var resultData = new {
                 respuesta,
                 data = resul
             };
-            var result = new ContentResult
-            {
+            var result = new ContentResult {
                 Content = serializer.Serialize(resultData),
                 ContentType = "application/json"
             };
@@ -146,14 +135,14 @@ namespace SistemaReclutamiento.Controllers
 
         }
         [HttpPost]
-        public ActionResult ListarDetalleContadoresPorFechaOperacion(DateTime fechaInicio,DateTime fechaFin, List<int> listaSalas) {
+        public ActionResult ListarDetalleContadoresPorFechaOperacion(DateTime fechaInicio, DateTime fechaFin, List<int> listaSalas) {
             List<DetalleContadoresGameEntidad> result = new List<DetalleContadoresGameEntidad>();
             try {
                 string stringSalas = string.Empty;
                 if(listaSalas.Count > 0) {
-                    stringSalas = $" and cgame.CodSala in ({String.Join(",",listaSalas)}) ";
+                    stringSalas = $" and cgame.CodSala in ({String.Join(",", listaSalas)}) ";
                 }
-                result = detalleContadoreGamesBL.ListarDetalleContadoresGamePorFechaOperacionYSala(fechaInicio,fechaFin, stringSalas);
+                result = detalleContadoreGamesBL.ListarDetalleContadoresGamePorFechaOperacionYSala(fechaInicio, fechaFin, stringSalas);
             } catch(Exception) {
                 result = new List<DetalleContadoresGameEntidad>();
             }
