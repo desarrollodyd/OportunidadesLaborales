@@ -4,17 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using static iTextSharp.text.pdf.AcroFields;
 
 namespace SistemaReclutamiento.Models {
     public class MaquinaDetalleModel {
-
         string _conexionAdministrativo;
+
         public MaquinaDetalleModel() {
             _conexionAdministrativo = ConfigurationManager.ConnectionStrings["conexionAdministrativo"].ConnectionString;
         }
+
         public MaquinaDetalleEntidad ListarMaquinaDetalleAdministrativo(string codMaquina) {
             MaquinaDetalleEntidad item = new MaquinaDetalleEntidad();
 
@@ -36,7 +34,12 @@ namespace SistemaReclutamiento.Models {
 		                            con.Descripcion as DescripcionContrato,
 		                            fic.Nombre as NombreFicha,
 		                            mar.Nombre as NombreMarcaMaquina, 
-		                            maq.Token as Token
+		                            maq.Token as Token,
+	                                maq.CodZona as CodZona,
+	                                zo.Nombre as NombreZona,
+	                                maq.CodIsla as COdIsla,
+	                                isl.Nombre as NombreIsla,
+	                                maq.Posicion as Posicion
                                 FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
                                 INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
                                 INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego
@@ -45,6 +48,8 @@ namespace SistemaReclutamiento.Models {
                                 INNER JOIN MarcaMaquina mar ON mar.CodMarcaMaquina = mom.CodMarcaMaquina
                                 INNER JOIN Contrato con ON con.CodContrato = maq.CodContrato
                                 INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha
+                                INNER JOIN Zona zo ON zo.CodZona = maq.CodZona
+                                INNER JOIN Isla isl ON isl.CodIsla = maq.CodIsla
                                 WHERE CodMaquina=@p0";
             try {
                 using(var con = new SqlConnection(_conexionAdministrativo)) {
@@ -54,7 +59,6 @@ namespace SistemaReclutamiento.Models {
                     using(var dr = query.ExecuteReader()) {
                         if(dr.HasRows) {
                             while(dr.Read()) {
-
                                 item.CodMaquina = ManejoNulos.ManageNullInteger(dr["CodMaquina"]);
                                 item.CodLinea = ManejoNulos.ManageNullInteger(dr["CodLinea"]);
                                 item.CodJuego = ManejoNulos.ManageNullInteger(dr["CodJuego"]);
@@ -73,7 +77,15 @@ namespace SistemaReclutamiento.Models {
                                 item.NombreFicha = ManejoNulos.ManageNullStr(dr["NombreFicha"]);
                                 item.NombreMarcaMaquina = ManejoNulos.ManageNullStr(dr["NombreMarcaMaquina"]);
                                 item.Token = ManejoNulos.ManageNullDouble(dr["Token"]);
-
+                                item.Zona = new ZonaEntidad() {
+                                    Codigo = ManejoNulos.ManageNullInteger(dr["CodZona"]),
+                                    Nombre = ManejoNulos.ManageNullStr(dr["NombreZona"]),
+                                };
+                                item.Isla = new IslaEntidad() {
+                                    Codigo = ManejoNulos.ManageNullInteger(dr["CodIsla"]),
+                                    Nombre = ManejoNulos.ManageNullStr(dr["NombreIsla"]),
+                                };
+                                item.Posicion = ManejoNulos.ManageNullInteger(dr["Posicion"]);
                             }
                         }
                     }
@@ -84,6 +96,7 @@ namespace SistemaReclutamiento.Models {
             }
             return item;
         }
+
         public List<MaquinaDetalleEntidad> ListarMaquinasAdministrativo() {
             List<MaquinaDetalleEntidad> lista = new List<MaquinaDetalleEntidad>();
 
@@ -105,7 +118,12 @@ namespace SistemaReclutamiento.Models {
 		                            con.Descripcion as DescripcionContrato,
 		                            fic.Nombre as NombreFicha,
 		                            mar.Nombre as NombreMarcaMaquina, 
-		                            maq.Token as Token
+		                            maq.Token as Token,
+	                                maq.CodZona as CodZona,
+	                                zo.Nombre as NombreZona,
+	                                maq.CodIsla as COdIsla,
+	                                isl.Nombre as NombreIsla,
+	                                maq.Posicion as Posicion
                                 FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
                                 INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
                                 INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego
@@ -113,7 +131,10 @@ namespace SistemaReclutamiento.Models {
                                 INNER JOIN ModeloMaquina mom ON mom.CodModeloMaquina = maq.CodModeloMaquina
                                 INNER JOIN MarcaMaquina mar ON mar.CodMarcaMaquina = mom.CodMarcaMaquina
                                 INNER JOIN Contrato con ON con.CodContrato = maq.CodContrato
-                                INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha ORDER BY maq.CodMaquinaLey ASC";
+                                INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha ORDER BY maq.CodMaquinaLey ASC
+                                INNER JOIN Zona zo ON zo.CodZona = maq.CodZona
+                                INNER JOIN Isla isl ON isl.CodIsla = maq.CodIsla
+";
             try {
                 using(var con = new SqlConnection(_conexionAdministrativo)) {
                     con.Open();
@@ -140,6 +161,15 @@ namespace SistemaReclutamiento.Models {
                                     NombreFicha = ManejoNulos.ManageNullStr(dr["NombreFicha"]),
                                     NombreMarcaMaquina = ManejoNulos.ManageNullStr(dr["NombreMarcaMaquina"]),
                                     Token = ManejoNulos.ManageNullDouble(dr["Token"]),
+                                    Zona = new ZonaEntidad() {
+                                        Codigo = ManejoNulos.ManageNullInteger(dr["CodZona"]),
+                                        Nombre = ManejoNulos.ManageNullStr(dr["NombreZona"]),
+                                    },
+                                    Isla = new IslaEntidad() {
+                                        Codigo = ManejoNulos.ManageNullInteger(dr["CodIsla"]),
+                                        Nombre = ManejoNulos.ManageNullStr(dr["NombreIsla"]),
+                                    },
+                                    Posicion = ManejoNulos.ManageNullInteger(dr["Posicion"]),
                                 };
                                 lista.Add(maquina);
                             }
@@ -152,7 +182,6 @@ namespace SistemaReclutamiento.Models {
             }
             return lista;
         }
-
 
         public List<MaquinaDetalleEntidad> ListarMaquinasAdministrativo(string codSala) {
             List<MaquinaDetalleEntidad> lista = new List<MaquinaDetalleEntidad>();
@@ -175,7 +204,12 @@ namespace SistemaReclutamiento.Models {
 		                            con.Descripcion as DescripcionContrato,
 		                            fic.Nombre as NombreFicha,
 		                            mar.Nombre as NombreMarcaMaquina, 
-		                            maq.Token as Token
+		                            maq.Token as Token,
+	                                maq.CodZona as CodZona,
+	                                zo.Nombre as NombreZona,
+	                                maq.CodIsla as COdIsla,
+	                                isl.Nombre as NombreIsla,
+	                                maq.Posicion as Posicion
                                 FROM [BD_S3K_ADMINISTRATIVO_DATA].[dbo].[Maquina] maq
                                 INNER JOIN Linea lin ON lin.CodLinea = maq.CodLinea
                                 INNER JOIN Juego jue ON jue.CodJuego = maq.CodJuego
@@ -183,7 +217,9 @@ namespace SistemaReclutamiento.Models {
                                 INNER JOIN ModeloMaquina mom ON mom.CodModeloMaquina = maq.CodModeloMaquina
                                 INNER JOIN MarcaMaquina mar ON mar.CodMarcaMaquina = mom.CodMarcaMaquina
                                 INNER JOIN Contrato con ON con.CodContrato = maq.CodContrato
-                                INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha 
+                                INNER JOIN Ficha fic ON fic.CodFicha = maq.CodFicha
+                                INNER JOIN Zona zo ON zo.CodZona = maq.CodZona
+                                INNER JOIN Isla isl ON isl.CodIsla = maq.CodIsla
                                 WHERE maq.CodSala = @p0
                                 ORDER BY maq.CodMaquinaLey ASC";
             try {
@@ -213,6 +249,15 @@ namespace SistemaReclutamiento.Models {
                                     NombreFicha = ManejoNulos.ManageNullStr(dr["NombreFicha"]),
                                     NombreMarcaMaquina = ManejoNulos.ManageNullStr(dr["NombreMarcaMaquina"]),
                                     Token = ManejoNulos.ManageNullDouble(dr["Token"]),
+                                    Zona = new ZonaEntidad() {
+                                        Codigo = ManejoNulos.ManageNullInteger(dr["CodZona"]),
+                                        Nombre = ManejoNulos.ManageNullStr(dr["NombreZona"]),
+                                    },
+                                    Isla = new IslaEntidad() {
+                                        Codigo = ManejoNulos.ManageNullInteger(dr["CodIsla"]),
+                                        Nombre = ManejoNulos.ManageNullStr(dr["NombreIsla"]),
+                                    },
+                                    Posicion = ManejoNulos.ManageNullInteger(dr["Posicion"]),
                                 };
                                 lista.Add(maquina);
                             }

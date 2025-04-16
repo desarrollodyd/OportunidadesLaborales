@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace SistemaReclutamiento.Entidades {
+﻿namespace SistemaReclutamiento.Entidades {
     public class MaquinaDetalleEntidad {
         public int CodMaquina { get; set; }
         public int CodLinea { get; set; }
@@ -23,5 +18,18 @@ namespace SistemaReclutamiento.Entidades {
         public string NombreFicha { get; set; }
         public string NombreMarcaMaquina { get; set; }
         public double Token { get; set; }
+        public ZonaEntidad Zona { get; set; } = new ZonaEntidad();
+        public IslaEntidad Isla { get; set; } = new IslaEntidad();
+        public int Posicion { get; set; }
+    }
+
+    public class ZonaEntidad {
+        public int Codigo { get; set; }
+        public string Nombre { get; set; } = string.Empty;
+    }
+
+    public class IslaEntidad {
+        public int Codigo { get; set; }
+        public string Nombre { get; set; } = string.Empty;
     }
 }
